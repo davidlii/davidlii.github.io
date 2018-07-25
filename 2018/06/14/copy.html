@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="This is Davidli&#39;s blog ~">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" type="image/ico" href="/image/logo.png"/> 
+  
+  <title>
+    
+      拷贝相关知识点 | Davidli
+    
+  </title>
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+  <script src="/js/qrious.js"></script>
+<script src="/js/gitment.js"></script>
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+</head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>Davidli</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>拷贝相关知识点</h2>
+  <p class="post-date">2018-06-14</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h2 id="1、概念理解"><a href="#1、概念理解" class="headerlink" title="#1、概念理解"></a>#1、概念理解</h2><p>&emsp;<a href="https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/Collections/Articles/Copying.html" target="_blank" rel="noopener">(Apple文档)：</a></p>
+<blockquote>
+<p>Copying an object creates a new object with the same class and properties as the original object. You copy an object when you want your own version of the data that the object contains. If you receive an object from elsewhere in an application but do not copy it, you share the object with its owner (and perhaps others), who might change the encapsulated contents. If you are creating a subclass, you might consider making it possible for others to copy instances of your class. Generally, an object should be “copyable” when it is a value object—an object whose main purpose is to encapsulate some data.</p>
+</blockquote>
+<p>拷贝：创造出一个副本，副本与原对象的类名及属性相同。</p>
+<blockquote>
+<p>Copies of objects can be shallow or deep. Both shallow- and deep-copy approaches directly duplicate scalar properties but differ on how they handle pointer references, particularly references to objects (for example, NSString *str). A deep copy duplicates the objects referenced while a shallow copy duplicates only the references to those objects. So if object A is shallow-copied to object B, object B refers to the same instance variable (or property) that object A refers to. Deep-copying objects is preferred to shallow-copying, especially with value objects.</p>
+</blockquote>
+<p>浅拷贝：指针拷贝，即将原始对象的指针值复制到副本中，原始对象和副本共享引用数据。</p>
+<p>&emsp;</p>
+<p>深拷贝：对象拷贝，即复制指针所引用的数据，并将其赋给副本的实例变量。因此副本和原始对象指向不同的地址，在副本上的修改不会对原对象造成影响。</p>
+<h2 id="2、集合-非集合类对象？"><a href="#2、集合-非集合类对象？" class="headerlink" title="#2、集合/非集合类对象？"></a>#2、集合/非集合类对象？</h2><p>&emsp;集合类对象是指像 NSArray、NSDictionary、NSSet 这类可以包含其他对象的类。非集合类对象则是指像 NSString、NSNumber 这些不能包含其他对象的类。</p>
+<h2 id="3、对不可变字符串的拷贝？"><a href="#3、对不可变字符串的拷贝？" class="headerlink" title="#3、对不可变字符串的拷贝？"></a>#3、对不可变字符串的拷贝？</h2><p>&emsp;#示例1：对不可变字符串的复制是深拷贝/浅拷贝？</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">NSString *str1 = @&quot;hello&quot;;</span><br><span class="line">NSString *str2 = [str1 copy]; // 浅拷贝</span><br><span class="line">NSString *str3 = [str1 mutableCopy]; // 深拷贝</span><br><span class="line"></span><br><span class="line">NSLog(@&quot;str1 = %p&quot;,str1);</span><br><span class="line">NSLog(@&quot;str2 = %p&quot;,str2);</span><br><span class="line">NSLog(@&quot;str3 = %p&quot;,str3);</span><br></pre></td></tr></table></figure>
+<p>&emsp;输出日志如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">str1 = 0x10ae55810</span><br><span class="line">str2 = 0x10ae55810</span><br><span class="line">str3 = 0x600000258ea0</span><br></pre></td></tr></table></figure>
+<p>&emsp;从打印出的内存地址分析：str1 与 str2 指向同一片内存区域，也就是说对不可变字符串的 copy 操作只是指针拷贝。而 str3 与 str1 指向了不同的内存区域，说明对不可变字符串的 mutableCopy 产生了新的对象，此对象的内存地址与 str1 指向的地址完全不同。由此可以得出以下结论：</p>
+<blockquote>
+<p>结论1：对于不可变字符串的 copy 是浅拷贝，mutableCopy 是深拷贝。</p>
+</blockquote>
+<h2 id="4、对可变字符串的拷贝？"><a href="#4、对可变字符串的拷贝？" class="headerlink" title="#4、对可变字符串的拷贝？"></a>#4、对可变字符串的拷贝？</h2><p>&emsp;#示例2：对可变字符串的复制是深拷贝/浅拷贝？</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">NSMutableString *str1 = [NSMutableString stringWithString:@&quot;hello&quot;];</span><br><span class="line">NSString *str2 = [str1 copy]; // 深拷贝</span><br><span class="line">NSString *str3 = [str1 mutableCopy]; // 深拷贝</span><br><span class="line"></span><br><span class="line">NSLog(@&quot;str1 = %p&quot;,str1);</span><br><span class="line">NSLog(@&quot;str2 = %p&quot;,str2);</span><br><span class="line">NSLog(@&quot;str3 = %p&quot;,str3);</span><br></pre></td></tr></table></figure>
+<p>&emsp;输出日志如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">str1 = 0x604000451040</span><br><span class="line">str2 = 0xa00006f6c6c65685</span><br><span class="line">str3 = 0x604000450fe0</span><br></pre></td></tr></table></figure>
+<p>&emsp;可以看出，对可变字符串的两种复制（copy / mutablecopy）都产生了新的对象，三个对象的地址完全不同。</p>
+<blockquote>
+<p>结论2：对于可变字符串的复制，不论 copy 还是 mutableCopy 都是深拷贝。</p>
+</blockquote>
+<h2 id="5、拷贝对字符串可变性的影响？"><a href="#5、拷贝对字符串可变性的影响？" class="headerlink" title="#5、拷贝对字符串可变性的影响？"></a>#5、拷贝对字符串可变性的影响？</h2><p>&emsp;#示例3：字符串复制后返回的对象是否可变？</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">NSString *str1 = @&quot;hi&quot;;</span><br><span class="line">NSMutableString *str2 = [str1 mutableCopy];</span><br><span class="line">[str2 appendString:@&quot;xx&quot;];</span><br><span class="line"></span><br><span class="line">NSMutableString *str3 = [NSMutableString stringWithString:@&quot;hello&quot;];</span><br><span class="line">NSMutableString *str4 = [str3 copy]; // 不可变</span><br><span class="line">NSMutableString *str5 = [str3 mutableCopy]; // 可变</span><br><span class="line"></span><br><span class="line">[str4 appendString:@&quot;world&quot;]; //报错</span><br><span class="line">[str5 appendString:@&quot;Kitty&quot;]; //正常</span><br></pre></td></tr></table></figure>
+<p>&emsp;示例在运行到 [str4 appendString:@”world”] 这一行时会报错“unrecognized selector sent to instance”，这就是说可变字符串在执行 copy 操作后返回的对象不再是可变字符串，因此对其执行 appendString 方法时出现了崩溃。注释掉这一行后，程序正常执行，因此可以得出：</p>
+<blockquote>
+<p>结论3：字符串（可变/不可变）执行 copy 后返回的对象是不可变的；mutableCopy 后返回的对象是可变的。</p>
+</blockquote>
+<h2 id="6、对自定义类的拷贝？"><a href="#6、对自定义类的拷贝？" class="headerlink" title="#6、对自定义类的拷贝？"></a>#6、对自定义类的拷贝？</h2><p>&emsp;#示例4：对自定义类的拷贝是深/浅拷贝？</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">@interface Model : NSObject</span><br><span class="line">&lt;NSCopying,</span><br><span class="line">NSMutableCopying&gt;</span><br><span class="line"></span><br><span class="line">@property (nonatomic, copy) NSString *name;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">#import &quot;Model.h&quot;</span><br><span class="line">@implementation Model</span><br><span class="line"></span><br><span class="line">- (id)copyWithZone:(NSZone *)zone</span><br><span class="line">&#123;</span><br><span class="line">    Model *newModel = [[[self class] allocWithZone:zone] init];</span><br><span class="line">    newModel.name = self.name;</span><br><span class="line">    NSLog(@&quot;++++copyWithZone newObject:%p&quot;,newModel);</span><br><span class="line">    return newModel;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (id)mutableCopyWithZone:(NSZone *)zone</span><br><span class="line">&#123;</span><br><span class="line">    Model *newModel = [[[self class] allocWithZone:zone] init];</span><br><span class="line">    newModel.name = self.name;</span><br><span class="line">    NSLog(@&quot;++++mutableCopyWithZone newObject:%p&quot;,newModel);</span><br><span class="line">    return newModel;</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<p>&emsp;以上是通常情况下我们自定义一个类及实现拷贝协议的方式，协议实现中我们返回的是一个属性值与元对象相同的副本。</p>
+<p>&emsp;调用示例：对自定义对象的copy与mutablecopy</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Model *model = [Model new];</span><br><span class="line">model.name = @&quot;sakura&quot;;</span><br><span class="line">NSLog(@&quot;++++model = %p;&quot;,model);</span><br><span class="line"></span><br><span class="line">Model *copymodel = [model copy]; // 深拷贝</span><br><span class="line">NSLog(@&quot;++++copymodel = %p&quot;,copymodel);</span><br><span class="line"></span><br><span class="line">Model *mutableCopymodel = [model mutableCopy]; // 深拷贝</span><br><span class="line">NSLog(@&quot;++++mutableCopymodel = %p&quot;,mutableCopymodel);</span><br></pre></td></tr></table></figure>
+<p>&emsp;输出日志：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">++++model = 0x600000015a70;</span><br><span class="line">++++copyWithZone newObject:0x600000015ac0</span><br><span class="line">++++copymodel = 0x600000015ac0</span><br><span class="line">++++mutableCopyWithZone newObject:0x600000015ad0</span><br><span class="line">++++mutableCopymodel = 0x600000015ad0</span><br></pre></td></tr></table></figure>
+<p>&emsp;可以看出，变量 copymodel 与 mutableCopymodel 对象的地址和原对象 model 的完全不同。且 copymodel 的地址与 copyWithZone：方法中返回的新对象的地址一致；mutableCopymodel 的地址与 mutableCopyWithZone：方法中返回的新对象的地址一致。也就是说两种拷贝最终返回的对象正是我们在协议的实现中新建的对象。</p>
+<blockquote>
+<p>结论4：对于我们自定义的类，其 copy 与 mutableCopy 都是深拷贝，因为在我们实现 copyWithZone 与 mutableCopyWithZone 方法时，都是返回了一个新创建的副本。</p>
+</blockquote>
+<h2 id="7、对集合类对象的拷贝？"><a href="#7、对集合类对象的拷贝？" class="headerlink" title="#7、对集合类对象的拷贝？"></a>#7、对集合类对象的拷贝？</h2><blockquote>
+<p>There are two kinds of object copying: shallow copies and deep copies. The normal copy is a shallow copy that produces a new collection that shares ownership of the objects with the original. Deep copies create new objects from the originals and add those to the new collection. </p>
+</blockquote>
+<h3 id="7-1-集合对象的浅拷贝："><a href="#7-1-集合对象的浅拷贝：" class="headerlink" title="#7.1 集合对象的浅拷贝："></a>#7.1 集合对象的浅拷贝：</h3><p>&emsp;集合的浅拷贝会产生新的集合对象，新旧集合内的元素指针相同。当对一个集合进行浅拷贝时，原集合中的每个元素会收到一条 retain 消息，引用计数+1，它们的指针会被拷贝到新建的集合中。可以通过下面这些方法实现集合对象的浅拷贝： </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- copyWithZone: （如 [anArr copyWithZone:nil];）</span><br><span class="line">- mutableCopyWithZone:</span><br><span class="line">- initWithArray:copyItems:NO（第二个参数为NO）</span><br><span class="line">- initWithDictionary:copyItems:NO（第二个参数为NO）</span><br></pre></td></tr></table></figure>
+<p>&emsp;#示例5：集合对象的浅拷贝</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Model *model = [[Model alloc] init];</span><br><span class="line">NSArray *array = [NSArray arrayWithObject:model];</span><br><span class="line">NSLog(@&quot;++++model:%p&quot;,model);</span><br><span class="line">NSLog(@&quot;+++array:%p,+++array[0]:%p&quot;,array,array[0]);</span><br><span class="line"></span><br><span class="line">NSArray *shallowCopyArray = [array copyWithZone:nil];</span><br><span class="line">NSLog(@&quot;+++shallowCopyArray:%p,+++shallowCopyArray[0]:%p&quot;,</span><br><span class="line">        shallowCopyArray,shallowCopyArray[0]);</span><br></pre></td></tr></table></figure>
+<p>&emsp;输出日志：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">++++model:0x600000209e70</span><br><span class="line">+++array:0x600000257b80,+++array[0]:0x600000209e70</span><br><span class="line">+++shallowCopyArray:0x60400001f4c0,+++shallowCopyArray[0]:0x600000209e70</span><br></pre></td></tr></table></figure>
+<p>&emsp;日志显示通过 copyWithZone: 确实产生了新的集合对象 shallowCopyArray，且 shallowCopyArray[0] 与原数组 array 中的 model 对象指向同一片内存。</p>
+<h3 id="7-2-集合对象的深拷贝："><a href="#7-2-集合对象的深拷贝：" class="headerlink" title="#7.2 集合对象的深拷贝："></a>#7.2 集合对象的深拷贝：</h3><p>&emsp;集合的深拷贝会产生新的集合对象，新旧集合内的元素指针不相同，新集合中的元素是从原集合中的元素拷贝而来。</p>
+<p>&emsp;方案1：（通过集合类对象的实例方法）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">- initWithArray:copyItems:YES（第二个参数为YES）</span><br><span class="line">- initWithDictionary:copyItems:YES（第二个参数为YES）</span><br></pre></td></tr></table></figure>
+<p>&emsp;copyItems 的参数 = YES，这种方式下集合中的每个对象都会调用一次 copyWithZone: 方法，如果这些对象实现了 NSCopying 协议，那么这些对象会被深拷贝到新集合中。如果没有实现 NSCopying 协议，则运行时会报错。</p>
+<p>&emsp;需要注意的是，这种拷贝方式下调用了 copyWithZone: 方法，它只能提供单层深拷贝（one-level-deep copy），而非真正的深拷贝！！！</p>
+<hr>
+<p>&emsp;这里区分一下浅拷贝、深拷贝、单层深拷的概念：</p>
+<blockquote>
+<p>浅拷贝(shallow copy)： 在浅拷贝操作时，对于被拷贝对象的每一层都是指针拷贝。</p>
+</blockquote>
+<blockquote>
+<p>深拷贝(one-level-deep copy)：在深拷贝操作时，对于被拷贝对象，至少有一层是深拷贝。</p>
+</blockquote>
+<blockquote>
+<p>完全拷贝(real-deep copy)：在完全拷贝操作时，对于被拷贝对象的每一层都是对象拷贝。</p>
+</blockquote>
+<p>&emsp;#示例6：集合对象的“单层深拷贝”</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Model *model = [[Model alloc] init];</span><br><span class="line">NSArray *array = [NSArray arrayWithObject:model];</span><br><span class="line">NSLog(@&quot;++++%p&quot;,model);</span><br><span class="line">NSLog(@&quot;+++%p,+++%p&quot;,array,array[0]);</span><br><span class="line"></span><br><span class="line">NSArray *deepCopyArray=[[NSArray alloc] initWithArray:array copyItems:YES];</span><br><span class="line">NSLog(@&quot;+++%p,+++%p&quot;,deepCopyArray,deepCopyArray[0]);</span><br></pre></td></tr></table></figure>
+<p>&emsp;输出日志</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">++++model:0x600000207310</span><br><span class="line">+++array:0x600000449540,+++array[0]:0x600000207310</span><br><span class="line">++++copyWithZone newObject:0x6000002072a0</span><br><span class="line">+++deepCopyArray:0x600000207290,+++deepCopyArray[0]:0x6000002072a0</span><br></pre></td></tr></table></figure>
+<p>&emsp;示例中 deepCopyArray 为新产生的集合副本，其中的元素 deepCopyArray[0] 的地址 与 array[0] 实际指向的 model 对象的地址不同。这说明了这种拷贝是深拷贝。</p>
+<p>&emsp;通过日志“++++copyWithZone newObject:0x6000002072a0”可以看出，在深拷贝 array 对象时，自动调用了一次 array 数组中 model 对象的 copyWithZone: 方法，返回的 Model 副本与 deepCopyArray[0] 地址相同。</p>
+<p>&emsp;方案2：（通过归档解档）</p>
+<blockquote>
+<p>If you need a true deep copy, such as when you have an array of arrays, you can archive and then unarchive the collection, provided the contents all conform to the NSCoding protocol. </p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">NSArray* trueDeepCopyArray = [NSKeyedUnarchiver unarchiveObjectWithData:</span><br><span class="line">          [NSKeyedArchiver archivedDataWithRootObject:oldArray]];</span><br></pre></td></tr></table></figure>
+<p>&emsp;这是集合真正意义上的深拷贝，这种方式下集合中的所有对象都要实现 NSCoding 协议，不然也会出现崩溃。</p>
+<h2 id="8、拷贝对集合是否可变的影响"><a href="#8、拷贝对集合是否可变的影响" class="headerlink" title="#8、拷贝对集合是否可变的影响?"></a>#8、拷贝对集合是否可变的影响?</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- copyWithZone:</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>makes the surface level immutable. All deeper levels have the mutability they previously had.</p>
+</blockquote>
+<p>&emsp;上层不可变，其他更深层对象的可变性与原对象相同。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- initWithArray:copyItems:NO:</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>gives the surface level the mutability of the class it is allocated as. All deeper levels have the mutability they previously had.</p>
+</blockquote>
+<p>&emsp;上层可变性与其初始化时的类型保持一致，其他更深层的可变性与原对象相同。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- initWithArray:copyItems:YES:</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>gives the surface level the mutability of the class it is allocated as. The next level is immutable, and all deeper levels have the mutability they previously had.</p>
+</blockquote>
+<p>&emsp;上层可变性与其初始化时的类型保持一致，接下来的一层不可变，其他更深层的可变性与原对象相同。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- Archiving and unarchiving:</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Archiving and unarchiving the collection leaves the mutability of all levels as it was before.</p>
+</blockquote>
+<p>&emsp;所有层的可变性与原对象完全相同。</p>
+<hr>
+<h2 id="9、集合类对象的copy与mutableCopy"><a href="#9、集合类对象的copy与mutableCopy" class="headerlink" title="#9、集合类对象的copy与mutableCopy"></a>#9、集合类对象的copy与mutableCopy</h2><p>&emsp;#示例7：对不可变集合类对象的拷贝？</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">NSArray *element = @[@(1)];</span><br><span class="line">NSArray *oriArray = @[element];</span><br><span class="line">NSMutableArray *copyArray = [oriArray copy];</span><br><span class="line">NSMutableArray *mutableCopyArray = [oriArray mutableCopy];</span><br><span class="line"></span><br><span class="line">NSLog(@&quot;+++oriArr:%p,element:%p&quot;,oriArray,element);</span><br><span class="line">NSLog(@&quot;++++copyArr:%p,indexAt0:%p&quot;,copyArray,copyArray[0]);</span><br><span class="line">NSLog(@&quot;++++mutableCopyArr:%p,indexAt0:%p&quot;,mutableCopyArray,mutableCopyArray[0]);</span><br></pre></td></tr></table></figure>
+<p>&emsp;输出日志：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">+++oriArr:0x60000000f6f0,element:0x60000000f630</span><br><span class="line">++++copyArr:0x60000000f6f0,indexAt0:0x60000000f630</span><br><span class="line">++++mutableCopyArr:0x600000450ef0,indexAt0:0x60000000f630</span><br></pre></td></tr></table></figure>
+<p>&emsp;不可变数组 oriArray 中包含了一个数组对象 element 。从日志可以看出，oriArray 与从其 copy 出来的数组 copyArray 指向同一片内存，而与从其 mutableCopy 出来的数组 mutableCopyArray 的内存则不同。这说明与不可变非集合类对象类似，对不可变数组的 copy 只是指针拷贝，不会产生新的集合对象；mutableCopy 是内容拷贝，会产生新的集合对象。</p>
+<blockquote>
+<p>结论5：对于不可变集合类对象，copy 是指针拷贝，不产生新对象；mutableCopy 是内容拷贝，会产生新对象。</p>
+</blockquote>
+<p>&emsp;#示例8：对可变集合类对象的拷贝？</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">NSArray *element = @[@(1)];</span><br><span class="line">NSMutableArray *oriArray = [NSMutableArray arrayWithObject:element];</span><br><span class="line">NSMutableArray *copyArray = [oriArray copy];</span><br><span class="line">NSMutableArray *mutableCopyArray = [oriArray mutableCopy];</span><br><span class="line"></span><br><span class="line">NSLog(@&quot;+++oriArr:%p,element:%p&quot;,oriArray,element);</span><br><span class="line">NSLog(@&quot;++++copyArr:%p,indexAt0:%p&quot;,copyArray,copyArray[0]);</span><br><span class="line">NSLog(@&quot;++++mutableCopyArr:%p,indexAt0:%p&quot;,mutableCopyArray,mutableCopyArray[0]);</span><br></pre></td></tr></table></figure>
+<p>&emsp;输出日志：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">+++oriArr:0x604000247d70,element:0x604000207590</span><br><span class="line">++++copyArr:0x604000207530,indexAt0:0x604000207590</span><br><span class="line">++++mutableCopyArr:0x604000247dd0,indexAt0:0x604000207590</span><br></pre></td></tr></table></figure>
+<p>&emsp;打印的日志显示，对可变数组 oriArray 的两种拷贝都是内容拷贝，都产生了新对象。</p>
+<blockquote>
+<p>结论6：对于可变集合类对象的拷贝，不论 copy 还是 mutableCopy 都是内容拷贝，会产生新的集合对象；</p>
+</blockquote>
+<p>&emsp;另外需要注意的是：示例5与示例6中，元素 element 与 copyArray[0] 和 mutableCopyArray[0] 都是指向同一片内存。也就是说两种拷贝下，新旧集合内容部的元素都只是指针拷贝。</p>
+<blockquote>
+<p>结论7：对于集合类对象的拷贝，不论是可变还是不可变集合，其内部元素始终都是指针拷贝。</p>
+</blockquote>
+<p>&emsp;#示例9：集合内元素的指针拷贝</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">NSArray *elementArr = [NSMutableArray arrayWithObject:@1];</span><br><span class="line">NSMutableArray *oriArray = [NSMutableArray arrayWithObject:elementArr];</span><br><span class="line">NSMutableArray *mutableCopyArray = [oriArray mutableCopy];</span><br><span class="line">[mutableCopyArray[0] addObject:@2];</span><br><span class="line">NSLog(@&quot;++++objects in element:%p++++&quot;,elementArr);</span><br><span class="line">for (NSNumber *num in elementArr) &#123;</span><br><span class="line">    NSLog(@&quot;++++%d&quot;,[num intValue]);</span><br><span class="line">&#125;</span><br><span class="line">NSLog(@&quot;++++objects in mutableCopyArray[0]:%p++++&quot;,mutableCopyArray[0]);</span><br><span class="line">for (NSNumber *num in mutableCopyArray[0]) &#123;</span><br><span class="line">    NSLog(@&quot;++++%d&quot;,[num intValue]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>&emsp;输出日志：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">++++objects in element:0x600000249450++++</span><br><span class="line">++++1</span><br><span class="line">++++2</span><br><span class="line">++++objects in mutableCopyArray[0]:0x600000249450++++</span><br><span class="line">++++1</span><br><span class="line">++++2</span><br></pre></td></tr></table></figure>
+<p>&emsp;示例显示，mutableCopyArray 内的元素与 oriArray 内的元素，都是指向同一片地址，也就是 element 的地址。因此，后续对 mutableCopyArray[0] 执行添加数据的操作时，element 数组也受到影响，跟着增加了相同的对象。因此实际开发过程中，需要留意这一点！</p>
+<hr>
+<p>相关参考：</p>
+<p>#<a href="https://www.cnblogs.com/gaoxiao228/archive/2012/04/21/2462561.html" target="_blank" rel="noopener">©传送门</a></p>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#拷贝" >
+    <span class="tag-code">拷贝</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2018/04/13/kvo.html">
+        <span class="nav-arrow">← </span>
+        
+          KVO 的底层实现细节
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2018/06/22/autolayout.html">
+        
+          布局与约束相关知识点
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1、概念理解"><span class="toc-nav-text">#1、概念理解</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2、集合-非集合类对象？"><span class="toc-nav-text">#2、集合/非集合类对象？</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3、对不可变字符串的拷贝？"><span class="toc-nav-text">#3、对不可变字符串的拷贝？</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4、对可变字符串的拷贝？"><span class="toc-nav-text">#4、对可变字符串的拷贝？</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#5、拷贝对字符串可变性的影响？"><span class="toc-nav-text">#5、拷贝对字符串可变性的影响？</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#6、对自定义类的拷贝？"><span class="toc-nav-text">#6、对自定义类的拷贝？</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#7、对集合类对象的拷贝？"><span class="toc-nav-text">#7、对集合类对象的拷贝？</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#7-1-集合对象的浅拷贝："><span class="toc-nav-text">#7.1 集合对象的浅拷贝：</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#7-2-集合对象的深拷贝："><span class="toc-nav-text">#7.2 集合对象的深拷贝：</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#8、拷贝对集合是否可变的影响"><span class="toc-nav-text">#8、拷贝对集合是否可变的影响?</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#9、集合类对象的copy与mutableCopy"><span class="toc-nav-text">#9、集合类对象的copy与mutableCopy</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'http://yoursite.com/2018/06/14/copy.html';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+     // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+        
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+
+    // qrcode
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+
+    // gitment
+    var gitmentConfig = "";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "拷贝相关知识点",
+        owner: "",
+        repo: "",
+        oauth: {
+          client_id: "",
+          client_secret: ""
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  })();
+</script>
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2018 | <a href="https://github.com/davidlii" target="_blank">Davidli</a>
+    <br>
+    <a href="https://hexo.io" target="_blank">Hexo</a> | Theme-<a href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+<script src="/js/script.js"></script>
+  </body>
+</html>

@@ -162,29 +162,217 @@
   
     <article class="article-card">
       <h2 class="article-head">
-        <a href="/2018/07/23/hello-world.html">Hello World</a>
+        <a href="/2018/07/15/launch.html">App 的启动过程</a>
       </h2>
-      <p class="article-date">July 23, 2018</p>
+      <p class="article-date">July 15, 2018</p>
       
         
-  <a href="/tags#Hello" >
-    <span class="tag-code">Hello</span>
-  </a>
-
-  <a href="/tags#world" >
-    <span class="tag-code">world</span>
+  <a href="/tags#APP启动" >
+    <span class="tag-code">APP启动</span>
   </a>
 
       
       <div class="article-summary">
         
-          Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer ...
+          我们的 APP 从本质上来说是一个静态的二进制文件，它是由IDE（如Xcode）将源代码编译之后得到的可执行文件。点击 APP 的那一刻，启动过程就已经开始。这个过程中系统内核（XUN）会通过调用各个相关函数来默默地帮我们完成各项启动的步骤：
+#1、XNU 加载 Mach-O 和 dyld  ...
         
       </div>
-      <a class="more" href="/2018/07/23/hello-world.html">Read more</a>
+      <a class="more" href="/2018/07/15/launch.html">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2018/07/11/dsym.html">结合dSYM文件分析crash日志</a>
+      </h2>
+      <p class="article-date">July 11, 2018</p>
+      
+        
+  <a href="/tags#dSYM" >
+    <span class="tag-code">dSYM</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          &emsp;一、dSYM &amp; DWARF文件1.1、dSYM&emsp;.dSYM 调试符号表，是苹果为了方便调试和定位问题而使用的一种调试方案，它实际上是从 Mach-O 文件中抽取调试信息而得到的文件目录。它使用的是 DWARF 结构，在 .xcarchive 目录中其层次结构如 ...
+        
+      </div>
+      <a class="more" href="/2018/07/11/dsym.html">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2018/07/07/mach_o.html">Mach-O</a>
+      </h2>
+      <p class="article-date">July 7, 2018</p>
+      
+        
+  <a href="/tags#Mach-O" >
+    <span class="tag-code">Mach-O</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          &emsp;Xcode 构建一个程序的过程中，会把源文件 (.m 和 .h) 文件转换为一个可执行文件（Mach-O executable）。这个可执行文件中包含的字节码将会被 CPU (iOS 设备中的 ARM 处理器或 Mac 上的 Intel 处理器) 执行。当然，我们也可以不使用 X ...
+        
+      </div>
+      <a class="more" href="/2018/07/07/mach_o.html">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2018/06/22/autolayout.html">布局与约束相关知识点</a>
+      </h2>
+      <p class="article-date">June 22, 2018</p>
+      
+        
+  <a href="/tags#UI" >
+    <span class="tag-code">UI</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          #1、布局相关的接口1- (void)layoutSubviews;
+系统重写布局，若需要更精确控制子view，就需要重写该方法。此方法会在以下场景下触发：
+
+使用-init初始化时不会触发。
+用-initWithFrame 初始化且 rect 的值不为 CGRectZero 时会触发；
+调 ...
+        
+      </div>
+      <a class="more" href="/2018/06/22/autolayout.html">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2018/06/14/copy.html">拷贝相关知识点</a>
+      </h2>
+      <p class="article-date">June 14, 2018</p>
+      
+        
+  <a href="/tags#拷贝" >
+    <span class="tag-code">拷贝</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          #1、概念理解&emsp;(Apple文档)：
+
+Copying an object creates a new object with the same class and properties as the original object. You copy an object when ...
+        
+      </div>
+      <a class="more" href="/2018/06/14/copy.html">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2018/04/13/kvo.html">KVO 的底层实现细节</a>
+      </h2>
+      <p class="article-date">April 13, 2018</p>
+      
+        
+  <a href="/tags#KVO" >
+    <span class="tag-code">KVO</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          #是啥?&emsp;KVO 是通过一个 key 来找到某个属性并监听其值的改变。其实这也是一种典型的观察者模式。
+#咋用?
+添加观察者
+在观察者中实现监听方法：-observeValueForKeyPath: ofObject: change: context:。
+移除观察者
+
+&emsp; ...
+        
+      </div>
+      <a class="more" href="/2018/04/13/kvo.html">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2018/04/12/kvc.html">KVC 的底层实现细节</a>
+      </h2>
+      <p class="article-date">April 12, 2018</p>
+      
+        
+  <a href="/tags#KVC" >
+    <span class="tag-code">KVC</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          #KVC是啥?&emsp;键值编码（key value coding）是一种可以通过字符串的名字（key）来访问类属性的机制。区别于通过调用Setter、Getter来访问属性的方法。
+#啥用?&emsp;通常我们要访问一个类的属性赋值时，可以使用点语法（如 people.name）。但当你 ...
+        
+      </div>
+      <a class="more" href="/2018/04/12/kvc.html">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2018/03/15/block.html">block 捕获变量</a>
+      </h2>
+      <p class="article-date">March 15, 2018</p>
+      
+        
+  <a href="/tags#block" >
+    <span class="tag-code">block</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          #1、block 对变量的捕获1.1.可以捕获但不可以修改的变量
+局部变量
+
+1.2.可以捕获且可以修改的变量
+静态变量
+全局变量
+静态全局变量
+
+1234567891011121314151617181920212223242526272829303132333435int aGloabl ...
+        
+      </div>
+      <a class="more" href="/2018/03/15/block.html">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2018/01/31/source_code_afn.html">AFNetworking 源码阅读</a>
+      </h2>
+      <p class="article-date">January 31, 2018</p>
+      
+        
+  <a href="/tags#源码" >
+    <span class="tag-code">源码</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          &emsp;导入 AFN 的 Podfile：12345source &apos;https://github.com/CocoaPods/Specs.git&apos;platform :ios, &apos;8.0&apos;target &apos;TargetName&apos; d ...
+        
+      </div>
+      <a class="more" href="/2018/01/31/source_code_afn.html">Read more</a>
     </article>
   
 
+  
+    <div class="guide-pager">
+  
+    <a class="unvisible" href="/"><span class="page-arrow">←</span> Prev</a>
+  
+  
+    <a href="/page/2/">Next<span class="page-arrow"> →</span></a>
+  
+</div>
   
 </main>
 
@@ -194,9 +382,9 @@
 </div>
     <footer class="app-footer">
   <p class="copyright">
-    &copy; 2018 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    &copy; 2018 | <a href="https://github.com/davidlii" target="_blank">Davidli</a>
     <br>
-    Theme by <a href="https://github.com/yanm1ng">yanm1ng</a>
+    <a href="https://hexo.io" target="_blank">Hexo</a> | Theme-<a href="https://github.com/yanm1ng">yanm1ng</a>
   </p>
 </footer>
 

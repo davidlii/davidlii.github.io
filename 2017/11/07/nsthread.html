@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="This is Davidli&#39;s blog ~">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" type="image/ico" href="/image/logo.png"/> 
+  
+  <title>
+    
+      多线程：NSThread | Davidli
+    
+  </title>
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+  <script src="/js/qrious.js"></script>
+<script src="/js/gitment.js"></script>
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+</head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>Davidli</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>多线程：NSThread</h2>
+  <p class="post-date">2017-11-07</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h3 id="1、进程-amp-线程"><a href="#1、进程-amp-线程" class="headerlink" title="1、进程 &amp; 线程"></a>1、进程 &amp; 线程</h3><p>#定义与划分尺度：</p>
+<ul>
+<li>程序的一次执行过程就是进程，它是系统进行资源分配和调度的一个独立单位。</li>
+<li>线程是进程的一个实体，是进程内的一个执行单元，一个进程至少有一个线程。</li>
+</ul>
+<p>#地址空间：</p>
+<ul>
+<li>进程有自己独立的虚拟地址空间，而线程共享进程的地址空间。</li>
+</ul>
+<p>#拥有的资源：</p>
+<ul>
+<li>进程是资源分配和拥有的单位；同一个进程内的线程共享进程资源。</li>
+</ul>
+<p>#执行单位：</p>
+<ul>
+<li>线程是CPU调度和分派的基本单位，而进程不是。</li>
+</ul>
+<p>#并发：</p>
+<ul>
+<li>二者均可并发执行。（对于进程：如打开多个应用；对于线程：如多线程同时执行下载任务）。</li>
+</ul>
+<hr>
+<h3 id="2、并发-amp-并行"><a href="#2、并发-amp-并行" class="headerlink" title="2、并发&amp;并行"></a>2、并发&amp;并行</h3><p>1、场景：</p>
+<p>并发，一个处理器同时处理多个任务。 </p>
+<p>并行，多个处理器或多核的处理器同时处理多个不同的任务。</p>
+<p>2、概念区分：</p>
+<p>并发(Concurrency)：在同一时刻只能有一条指令执行，但多个进程指令被快速的轮换执行，使得在宏观上具有多个进程同时执行的效果，但在微观上并不是同时执行的，只是把时间分成若干段，使多个进程快速交替的执行。这就好像两个人用同一把铁锨，轮流挖坑，一小时后，两个人各挖一个小一点的坑，要想挖两个大一点得坑，一定会用两个小时。</p>
+<p>并行(Parallel)：在同一时刻，有多条指令在多个处理器上同时执行。就好像两个人各拿一把铁锨在挖坑，一小时后，每人一个大坑。所以无论从微观还是从宏观来看，二者都是一起执行的。</p>
+<hr>
+<h3 id="3、多线程"><a href="#3、多线程" class="headerlink" title="3、多线程"></a>3、多线程</h3><p>iOS应用中主线程用来处理界面更新、响应用户触摸事件等。在主线程中执行大量耗时操作会造成主线程阻塞，进而出现卡顿现象以致影响使用和用户体验。故需要将这种耗时操作放到其他的线程中执行。所以多线程编程是防止主线程堵塞，增加运行效率的最佳方法。</p>
+<p>iOS支持多个层次的多线程编程，层次越高的抽象程度越高，使用也越方便，也是苹果最推荐使用的方法。根据抽象程度由低到高列出如下：</p>
+<ul>
+<li><strong>NSThread ：</strong></li>
+</ul>
+<p>是三种方法里面相对轻量级的，需要自己管理线程的生命周期、同步、加锁问题，这会导致一定的性能开销。</p>
+<ul>
+<li><strong>NSOperation：</strong></li>
+</ul>
+<p>是基于OC实现的，它以面向对象的方式封装了需要执行的操作，不必关心线程管理、同步等问题。NSOperation是一个抽象基类，iOS提供了两种默认实现：NSInvocationOperation和NSBlockOperation，也可以自定义NSOperation。</p>
+<ul>
+<li><strong>Grand Central Dispatch(简称GCD，iOS4才开始支持)：</strong></li>
+</ul>
+<p>提供了一些新特性、运行库来支持多核并行编程，它的关注点更高：如何在多个cpu上提升效率。</p>
+<h3 id="4、NSThread-："><a href="#4、NSThread-：" class="headerlink" title="4、NSThread ："></a>4、NSThread ：</h3><h4 id="4-1-线程的状态与生命周期"><a href="#4-1-线程的状态与生命周期" class="headerlink" title="4.1.线程的状态与生命周期"></a>4.1.线程的状态与生命周期</h4><p>#创建</p>
+<ul>
+<li>实例方法：创建后需要手动调用start函数来启动线程；</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">- (instancetype)initWithTarget:(id)target </span><br><span class="line">selector:(SEL)selector </span><br><span class="line">object:(id)argument;</span><br><span class="line"></span><br><span class="line">- (instancetype)initWithBlock:(void (^)(void))block ;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>类方法：自动启动线程，无需手动调用start函数。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">+ (void)detachNewThreadWithBlock:(void (^)(void))block ;</span><br><span class="line"></span><br><span class="line">+ (void)detachNewThreadSelector:(SEL)selector </span><br><span class="line">toTarget:(id)target </span><br><span class="line">withObject:(id)argument;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>分类创建：NSObject(NSThreadPerformAdditions)</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">- (void)performSelectorInBackground:(SEL)aSelector </span><br><span class="line">withObject:(id)arg;</span><br></pre></td></tr></table></figure>
+<p>#就绪</p>
+<ul>
+<li>将线程放进可调度线程池,等待被CPU调度:</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[threadObj start]；</span><br></pre></td></tr></table></figure>
+<p>#运行</p>
+<ul>
+<li>CPU负责调度线程池中处于”就绪状态”的线程。</li>
+</ul>
+<p>#阻塞</p>
+<ul>
+<li>正在运行的线程,可以用休眠或者锁来阻塞线程的执行。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">+ (void)sleepUntilDate:(NSDate *)date;</span><br><span class="line">+ (void)sleepForTimeInterval:(NSTimeInterval)ti;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>互斥锁</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@synchronized(self)</span><br></pre></td></tr></table></figure>
+<p>#死亡</p>
+<p>一般情况下（不考虑引用、runloop），线程执行完任务后，会自动销毁。也可以在满足某条件后，调用exit方法，强制线程退出。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[NSThread exit];</span><br></pre></td></tr></table></figure>
+<h4 id="4-2-线程间的通信："><a href="#4-2-线程间的通信：" class="headerlink" title="4.2.线程间的通信："></a>4.2.线程间的通信：</h4><ul>
+<li>指定当前线程执行操作</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[self performSelector:@selector(run)];</span><br><span class="line">[self performSelector:@selector(run) withObject:nil];</span><br><span class="line">[self performSelector:@selector(run) withObject:nil afterDelay:5.0];</span><br></pre></td></tr></table></figure>
+<ul>
+<li>在主线程指定其他线程执行操作</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[self performSelector:@selector(run) </span><br><span class="line">onThread:newThread withObject:nil waitUntilDone:YES]; </span><br><span class="line">[self performSelectorInBackground:@selector(run) withObject:nil];</span><br></pre></td></tr></table></figure>
+<ul>
+<li>在其他线程中指定主线程执行操作</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[self performSelectorOnMainThread:@selector(run) withObject:nil waitUntilDone:YES];</span><br></pre></td></tr></table></figure>
+<h4 id="4-3-线程同步"><a href="#4-3-线程同步" class="headerlink" title="4.3.线程同步"></a>4.3.线程同步</h4><p>多个线程同时读写同一份共享资源时，可能会引起冲突。线程同步是指是指在一定的时间内只允许某一个线程访问某个资源。OC 中实现线程加锁有 NSLock 和 @synchronized 等方式。</p>
+<ul>
+<li>NSLock 创建锁对象、加锁和解锁:</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">NSLock * lock = [[NSLock alloc]init];</span><br><span class="line">  </span><br><span class="line">dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^&#123;</span><br><span class="line">    [lock lock];</span><br><span class="line">    // do work</span><br><span class="line">    [lock unlock];</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<ul>
+<li>@synchronized()指令对一段代码进行加锁。它需要一个参数，该参数可以是任何的OC对象，包括self。这个对象就是互斥信号量。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">@synchronized(self)  &#123;</span><br><span class="line">    // do work</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#多线程" >
+    <span class="tag-code">多线程</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2017/09/09/runloop.html">
+        <span class="nav-arrow">← </span>
+        
+          Runloop
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2017/11/08/gcd.html">
+        
+          多线程：GCD
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1、进程-amp-线程"><span class="toc-nav-text">1、进程 &amp; 线程</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2、并发-amp-并行"><span class="toc-nav-text">2、并发&amp;并行</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3、多线程"><span class="toc-nav-text">3、多线程</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#4、NSThread-："><span class="toc-nav-text">4、NSThread ：</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#4-1-线程的状态与生命周期"><span class="toc-nav-text">4.1.线程的状态与生命周期</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#4-2-线程间的通信："><span class="toc-nav-text">4.2.线程间的通信：</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#4-3-线程同步"><span class="toc-nav-text">4.3.线程同步</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'http://yoursite.com/2017/11/07/nsthread.html';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+     // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+        
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+
+    // qrcode
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+
+    // gitment
+    var gitmentConfig = "";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "多线程：NSThread",
+        owner: "",
+        repo: "",
+        oauth: {
+          client_id: "",
+          client_secret: ""
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  })();
+</script>
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2018 | <a href="https://github.com/davidlii" target="_blank">Davidli</a>
+    <br>
+    <a href="https://hexo.io" target="_blank">Hexo</a> | Theme-<a href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+<script src="/js/script.js"></script>
+  </body>
+</html>

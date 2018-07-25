@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="This is Davidli&#39;s blog ~">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" type="image/ico" href="/image/logo.png"/> 
+  
+  <title>
+    
+      iOS 文件下载 | Davidli
+    
+  </title>
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+  <script src="/js/qrious.js"></script>
+<script src="/js/gitment.js"></script>
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+</head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>Davidli</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>iOS 文件下载</h2>
+  <p class="post-date">2017-12-22</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><p>iOS 中实现文件下载有以下几种方式：</p>
+<h3 id="1、NSData"><a href="#1、NSData" class="headerlink" title="1、NSData"></a>1、NSData</h3><p>NSData 提供了类方法实现文件下载：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">NSURL  *aUrl = [NSURL URLWithString:@&quot;https://example.jpg&quot;];</span><br><span class="line">NSData *data = [NSData dataWithContentsOfURL:aUrl];</span><br><span class="line">UIImage *image = [UIImage imageWithData:data];</span><br></pre></td></tr></table></figure>
+<p>使用这种方式会一次性返回整个下载到的文件，且在当前线程中同步下载文件。所以，在主线程中下载时，遇到网络状况不佳的情况时，会出现卡顿的现象。</p>
+<p>&emsp;解决方案之一：把下载任务放到异步线程中进行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">dispatch_queue_t downloadQueue = dispatch_queue_create(</span><br><span class="line">&quot;downloadQueue&quot;, DISPATCH_QUEUE_CONCURRENT);</span><br><span class="line"></span><br><span class="line">dispatch_async(downloadQueue, ^&#123;</span><br><span class="line">    NSURL *aUrl = [NSURL URLWithString:@&quot;https://example.jpg&quot;];</span><br><span class="line">    NSData *data = [NSData dataWithContentsOfURL:aUrl];</span><br><span class="line">    UIImage *image = [UIImage imageWithData:data];</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>此方法虽然解决了卡顿的问题，但还有另外的问题：返回的 data 是在内存中的。当目标文件过大时，内存会爆掉。所以，我们希望有这样一种方案：</p>
+<ol>
+<li>文件数据能分批返回。</li>
+<li>解决保存返回的数据时内存占用过大的情况。</li>
+</ol>
+<p>对于第1点，我们可以使用系统提供的 NSURLConnection、NSURLSession 类来解决。它们都可以通过代理来不断接收返回的数据。</p>
+<p>对于第2点，我们可以把接收到的数据保存到沙盒里。待全部数据接收并处理完成后，删除此沙盒文件即可。</p>
+<h3 id="2、NSURLConnection"><a href="#2、NSURLConnection" class="headerlink" title="2、NSURLConnection"></a>2、NSURLConnection</h3><p>通过 <strong>NSURLConnection</strong> 可以实现创建连接、自动发送请求、通过代理接收服务器返回的数据。同时，可以实现暂停和断点续传功能。</p>
+<h4 id="2-1-下载功能"><a href="#2-1-下载功能" class="headerlink" title="2.1.下载功能"></a>2.1.下载功能</h4><ol>
+<li>创建一个 NSURL 对象，设置请求地址；</li>
+<li>创建一个 NSURLRequest 对象，设置请求头和请求体；</li>
+<li>使用 NSURLConnection 发送请求；</li>
+<li>通过代理方法接收服务器的响应和数据，写入沙盒中；</li>
+</ol>
+<h4 id="2-2-暂停功能"><a href="#2-2-暂停功能" class="headerlink" title="2.2.暂停功能"></a>2.2.暂停功能</h4><p>NSURLConnection 本身并没有暂停的相关函数，但我们可以使用它提供的 <code>cancel</code> 方法来实现暂停功能。</p>
+<h4 id="2-3-断点续传功能"><a href="#2-3-断点续传功能" class="headerlink" title="2.3.断点续传功能"></a>2.3.断点续传功能</h4><p>要实现断点续传，可借助 HTTP 请求头的 <code>range</code> 字段。它可以指定每次从网络上下载的数据包的大小。<code>range</code> 字段的格式如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">bytes = 0-100，             从0到100的100个字节。</span><br><span class="line">bytes = 200-,               从200字节以后的所有字节。</span><br><span class="line">bytes = - 500,              最后500个字节。</span><br><span class="line">bytes = 200-300，500-800，  同时指定几个范围。</span><br></pre></td></tr></table></figure>
+<p>每次暂停时，在 <code>connection:didReceiveData:</code> 回调中记录已经接收到的数据大小，在恢复下载时，把此大小对应的 <code>range</code> 字段设置到请求头中，重新创建连接并发送请求即可。</p>
+<p>具体可参考以下示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">//DataTaskTool.h</span><br><span class="line"></span><br><span class="line">#import &lt;Foundation/Foundation.h&gt;</span><br><span class="line"></span><br><span class="line">@class DataTaskTool;</span><br><span class="line"></span><br><span class="line">@protocol DataTaskToolDelegate</span><br><span class="line"></span><br><span class="line">- (void)dataTaskTool:(DataTaskTool*)tool </span><br><span class="line">onDownloadProgress:(double)progress;</span><br><span class="line"></span><br><span class="line">- (void)dataTaskTool:(DataTaskTool*)tool </span><br><span class="line">onDownloadFinishedWithInfo:(id)info;</span><br><span class="line"></span><br><span class="line">- (void)dataTaskTool:(DataTaskTool*)tool </span><br><span class="line">onDownloadFailedWithError:(NSError*)error;</span><br><span class="line"></span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@interface DataTaskTool : NSObject</span><br><span class="line"></span><br><span class="line">- (instancetype)initWithURL:(NSString*)URL </span><br><span class="line">delegate:(id&lt;DataTaskToolDelegate&gt;)delegate;</span><br><span class="line"></span><br><span class="line">- (void)start;</span><br><span class="line">- (void)pause;</span><br><span class="line">- (void)resume;</span><br><span class="line">- (void)cancel;</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br></pre></td><td class="code"><pre><span class="line">//DataTaskTool.m</span><br><span class="line"></span><br><span class="line">#import &quot;DataTaskTool.h&quot;</span><br><span class="line"></span><br><span class="line">@interface DataTaskTool ()</span><br><span class="line">&lt;</span><br><span class="line">NSURLConnectionDataDelegate</span><br><span class="line">&gt;</span><br><span class="line">&#123;</span><br><span class="line">    NSMutableURLRequest *mRequest; //请求对象</span><br><span class="line">    NSURLConnection *mUrlConnection; //连接对象</span><br><span class="line">    NSFileHandle *mFileHandle; //文件管理</span><br><span class="line">    NSString *mFilePath; //沙盒文件路径</span><br><span class="line">    unsigned long long mTotalContentLength; //文件总长度</span><br><span class="line">    unsigned long long mCurrentContentLength; //当前接收到的数据总长度</span><br><span class="line">    double mProgressValue; //当前下载进度值</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@property (nonatomic, weak) id &lt;DataTaskToolDelegate&gt; delegate;</span><br><span class="line"></span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation DataTaskTool</span><br><span class="line"></span><br><span class="line">- (instancetype)initWithURL:(NSString*)URL </span><br><span class="line">delegate:(id&lt;DataTaskToolDelegate&gt;)delegate</span><br><span class="line">&#123;</span><br><span class="line">    if (self = [super init])</span><br><span class="line">    &#123;</span><br><span class="line">        if (0 == URL.length) &#123;</span><br><span class="line">            return nil;</span><br><span class="line">        &#125;</span><br><span class="line">        _delegate = delegate;</span><br><span class="line">        </span><br><span class="line">        //设置请求</span><br><span class="line">        mRequest = [[NSMutableURLRequest alloc] </span><br><span class="line">        initWithURL:[NSURL URLWithString:URL]];</span><br><span class="line">        </span><br><span class="line">        mRequest.HTTPMethod = @&quot;GET&quot;;</span><br><span class="line">        mRequest.timeoutInterval = 60;</span><br><span class="line">        </span><br><span class="line">        //创建连接对象</span><br><span class="line">        mUrlConnection = [[NSURLConnection alloc] </span><br><span class="line">        initWithRequest:mRequest </span><br><span class="line">        delegate:self];</span><br><span class="line">    &#125;</span><br><span class="line">    return self;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#pragma mark -NSURLConnectionDataDelegate</span><br><span class="line">//接收到服务器的响应</span><br><span class="line">-(void)connection:(NSURLConnection *)connection </span><br><span class="line">didReceiveResponse:(NSURLResponse *)response</span><br><span class="line">&#123;</span><br><span class="line">    mTotalContentLength = response.expectedContentLength;</span><br><span class="line">    </span><br><span class="line">    //设置文件路径</span><br><span class="line">    NSString *fileName = response.suggestedFilename;</span><br><span class="line">    NSString* caches = [NSSearchPathForDirectoriesInDomains(</span><br><span class="line">    NSCachesDirectory, NSUserDomainMask, YES) </span><br><span class="line">    lastObject];</span><br><span class="line">    </span><br><span class="line">    mFilePath = [caches stringByAppendingPathComponent:fileName];</span><br><span class="line">    </span><br><span class="line">    if (![[NSFileManager defaultManager] fileExistsAtPath:mFilePath])</span><br><span class="line">    &#123;</span><br><span class="line">        [[NSFileManager defaultManager] </span><br><span class="line">        createFileAtPath:mFilePath </span><br><span class="line">        contents:nil attributes:nil];</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    mFileHandle = [NSFileHandle fileHandleForWritingAtPath:mFilePath];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//接收到服务器返回的数据（此方法可能会回调多次）</span><br><span class="line">-(void)connection:(NSURLConnection *)connection </span><br><span class="line">didReceiveData:(NSData *)data</span><br><span class="line">&#123;</span><br><span class="line">    //移动到文件的结尾</span><br><span class="line">    [mFileHandle seekToEndOfFile];</span><br><span class="line">    //新数据追加到文件中</span><br><span class="line">    [mFileHandle writeData:data];</span><br><span class="line">    </span><br><span class="line">    //计算当前下载进度</span><br><span class="line">    mCurrentContentLength += data.length;</span><br><span class="line">    mProgressValue = (double)mCurrentContentLength / mTotalContentLength;</span><br><span class="line">    </span><br><span class="line">    //回调进度</span><br><span class="line">    [_delegate dataTaskTool:self onDownloadProgress:mProgressValue];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//下载完成</span><br><span class="line">-(void)connectionDidFinishLoading:(NSURLConnection *)connection</span><br><span class="line">&#123;</span><br><span class="line">    //结束写入</span><br><span class="line">    [mFileHandle closeFile];</span><br><span class="line">    NSError *error = [NSError new];</span><br><span class="line">    [[NSFileManager defaultManager] removeItemAtPath:mFilePath error:&amp;error];</span><br><span class="line">    </span><br><span class="line">    //完成回调</span><br><span class="line">    [_delegate dataTaskTool:self onDownloadFinishedWithInfo:nil];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">-(void)connection:(NSURLConnection *)connection </span><br><span class="line">didFailWithError:(NSError *)error</span><br><span class="line">&#123;</span><br><span class="line">    [_delegate dataTaskTool:self onDownloadFailedWithError:error];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#pragma mark -BUSINESS API</span><br><span class="line">//开始请求</span><br><span class="line">- (void)start</span><br><span class="line">&#123;</span><br><span class="line">    [mUrlConnection start];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//暂停</span><br><span class="line">- (void)pause</span><br><span class="line">&#123;</span><br><span class="line">    [mUrlConnection cancel];</span><br><span class="line">    mUrlConnection = nil;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//恢复</span><br><span class="line">- (void)resume</span><br><span class="line">&#123;</span><br><span class="line">    //设置断点下载的区间</span><br><span class="line">    NSString *range = [NSString stringWithFormat:</span><br><span class="line">    @&quot;bytes=%lld-&quot;, mCurrentContentLength];</span><br><span class="line">    </span><br><span class="line">    [mRequest setValue:range forHTTPHeaderField:@&quot;Range&quot;];</span><br><span class="line">    </span><br><span class="line">    mUrlConnection = [[NSURLConnection alloc] </span><br><span class="line">    initWithRequest:mRequest delegate:self];</span><br><span class="line">    </span><br><span class="line">    [mUrlConnection start];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//取消请求</span><br><span class="line">- (void)cancel</span><br><span class="line">&#123;</span><br><span class="line">    [mUrlConnection cancel];</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<p>调用示例</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">/*Windows10下载地址</span><br><span class="line">URL: https://software-download.microsoft.com/</span><br><span class="line">db/Win10_1709_Chinese(Simplified)_x32.iso?</span><br><span class="line">t=e56bdb47-6973-4da2-9e94-5a6a458c9192&amp;e</span><br><span class="line">=1513964531&amp;h=d9ba28ed1645810206cd89e7c4675a5b</span><br><span class="line">*/</span><br><span class="line">DataTaskTool *tool = [[DataTaskTool alloc] </span><br><span class="line">initWithURL:url delegate:self];</span><br><span class="line"></span><br><span class="line">[tool start];</span><br></pre></td></tr></table></figure>
+<p>需要注意的是，iOS9之后，NSURLConnection 已被废弃，苹果转而推荐使用 NSURLSession。</p>
+<h3 id="3、NSURLSession"><a href="#3、NSURLSession" class="headerlink" title="3、NSURLSession"></a>3、NSURLSession</h3><p>NSURLSession 是苹果在 iOS7 后为 HTTP 数据传输提供的一系列接口，它比 NSURLConnection 更强大。NSURLSession 发送请求也非常简单，与 NSURLConnection 不同的是，任务创建后不会自动发送请求，需要手动开始执行任务。</p>
+<p>在 NSURLSession 中，任何请求都可以被视为一个任务（NSURLSessionTask），细分为三种类型：</p>
+<ul>
+<li>NSURLSessionDataTask      （普通的GET\POST请求）</li>
+<li>NSURLSessionDownloadTask  （文件下载）</li>
+<li>NSURLSessionUploadTask    （文件上传）</li>
+</ul>
+<h4 id="3-1-NSURLSessionDataTask"><a href="#3-1-NSURLSessionDataTask" class="headerlink" title="3.1.NSURLSessionDataTask"></a>3.1.NSURLSessionDataTask</h4><p>它是与数据相关的任务，其实 dataTask 也可以胜任 downloadTask 和 uploadTask 的工作。区别在于，dataTask 不支持后台下载，而 downloadask 则支持。</p>
+<p>GET请求示例</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">NSURLSession *session = [NSURLSession sharedSession];</span><br><span class="line">NSURLSessionDataTask *dataTask =[session dataTaskWithURL:</span><br><span class="line">[NSURL URLWithString:url]</span><br><span class="line">completionHandler:^(NSData *data, </span><br><span class="line">NSURLResponse *response, NSError *error) </span><br><span class="line">&#123;</span><br><span class="line">//data为服务器返回的数据</span><br><span class="line">if (!error) &#123;</span><br><span class="line">    UIImage *image = [UIImage imageWithData:data];</span><br><span class="line">    NSLog(@&quot;+++文件大小：%lld&quot;,response.expectedContentLength);</span><br><span class="line">&#125;</span><br><span class="line">&#125;];</span><br><span class="line">//启动任务</span><br><span class="line">[dataTask resume];</span><br></pre></td></tr></table></figure>
+<h4 id="3-2-NSURLSessionDownloadTask"><a href="#3-2-NSURLSessionDownloadTask" class="headerlink" title="3.2.NSURLSessionDownloadTask"></a>3.2.NSURLSessionDownloadTask</h4><p>使用 NSURLSessionDownloadTask 下载文件时，不需要考虑边下载边写入沙盒的问题，苹果都帮我们做好了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">NSURLSession *session = [NSURLSession sharedSession];</span><br><span class="line">NSURLSessionDownloadTask *dataTask = [session downloadTaskWithURL:</span><br><span class="line">[NSURL URLWithString:url]</span><br><span class="line">completionHandler:^(NSURL *location, </span><br><span class="line">NSURLResponse *response, NSError *error) &#123;</span><br><span class="line">if (!error) &#123;</span><br><span class="line">    NSLog(@&quot;++++文件位置：%@ \n文件大小：%lld&quot;,</span><br><span class="line">    location,response.expectedContentLength);</span><br><span class="line">    </span><br><span class="line">    NSString *caches = [NSSearchPathForDirectoriesInDomains(</span><br><span class="line">    NSCachesDirectory, NSUserDomainMask, YES) lastObject];</span><br><span class="line">    NSString *filePath = [caches stringByAppendingPathComponent:</span><br><span class="line">    response.suggestedFilename];</span><br><span class="line">    //移动文件</span><br><span class="line">    [[NSFileManager defaultManager] moveItemAtPath:location.path </span><br><span class="line">    toPath:filePath error:nil];</span><br><span class="line">&#125;</span><br><span class="line">&#125;];</span><br><span class="line">//开始任务</span><br><span class="line">[dataTask resume];</span><br></pre></td></tr></table></figure>
+<p>输出日志：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">++++文件位置：Users/xxx/Library/Developer/CoreSimulator/</span><br><span class="line">Devices/2EDED966-0D34-4965-A946-F547BBCE33DA/data/</span><br><span class="line">Containers/Data/Application/5A2FAF81-62D5-485A-B059-22AD6DECA518</span><br><span class="line">/tmp/CFNetworkDownload_JVNOrU.tmp </span><br><span class="line">文件大小：100626</span><br></pre></td></tr></table></figure>
+<p>从回调的参数可以看到，并没有 NSData 字段传回来。回调中包括了一个 <code>location</code> 参数，它就是下载好的文件写入沙盒的地址。根据打印的日志可以看到，下载好的文件被放到 <code>tmp</code> 目录下。由于 <code>tmp</code> 目录下的文件随时可能被系统自动删除，我们在回调中把文件移动指定的目录下即可。</p>
+<ul>
+<li>NSURLSessionDownloadDelegate</li>
+</ul>
+<p>上面的示例中，NSURLSession 通过 block 的方式返回数据，这种方式有个不好的地方是无法监听下载进度。如果想要在接收数据过程中做进一步的处理，可以通过 <code>NSURLSessionDownloadDelegate</code> 协议来实现。(更新：iOS11后可以使用新增的 <code>NSProgress * progress</code> 属性来监听进度了)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">- (void)sendRequest</span><br><span class="line">&#123;</span><br><span class="line">    NSURLSessionConfiguration *config = [NSURLSessionConfiguration</span><br><span class="line">    defaultSessionConfiguration];</span><br><span class="line">    </span><br><span class="line">    config.timeoutIntervalForRequest = 60;</span><br><span class="line">    config.allowsCellularAccess = YES;</span><br><span class="line">    </span><br><span class="line">    NSURLSession *session = [NSURLSession sessionWithConfiguration:config</span><br><span class="line">    delegate:self delegateQueue:[NSOperationQueue new]];</span><br><span class="line">    </span><br><span class="line">    NSURLSessionDownloadTask *dataTask = [session downloadTaskWithURL:</span><br><span class="line">    [NSURL URLWithString:url]];</span><br><span class="line">    </span><br><span class="line">    //开始任务</span><br><span class="line">    [dataTask resume];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#pragma mark -NSURLSessionDownloadDelegate</span><br><span class="line"></span><br><span class="line">//下载完成</span><br><span class="line">-(void)URLSession:(NSURLSession *)session</span><br><span class="line">     downloadTask:(NSURLSessionDownloadTask *)downloadTask</span><br><span class="line">didFinishDownloadingToURL:(NSURL *)location</span><br><span class="line">&#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//每次写入沙盒完成后</span><br><span class="line">-(void)URLSession:(NSURLSession *)session</span><br><span class="line">     downloadTask:(NSURLSessionDownloadTask *)downloadTask</span><br><span class="line">     didWriteData:(int64_t)bytesWritten</span><br><span class="line">totalBytesWritten:(int64_t)totalBytesWritten</span><br><span class="line">totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite</span><br><span class="line">&#123;</span><br><span class="line">    NSLog(@&quot;+++下载进度：%f&quot;,(double)totalBytesWritten/totalBytesExpectedToWrite);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//恢复下载后</span><br><span class="line">-(void)URLSession:(NSURLSession *)session</span><br><span class="line">     downloadTask:(NSURLSessionDownloadTask *)downloadTask</span><br><span class="line">didResumeAtOffset:(int64_t)fileOffset</span><br><span class="line">expectedTotalBytes:(int64_t)expectedTotalBytes</span><br><span class="line">&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注意：如果给下载任务设置了 <code>completionHandler</code> 这个 block，同时又实现了 <code>NSURLSessionDownloadDelegate</code> 代理方法，则优先执行 block，代理方法也就不会执行了。</p>
+<h4 id="3-3、断点下载"><a href="#3-3、断点下载" class="headerlink" title="3.3、断点下载"></a>3.3、断点下载</h4><p>NSURLSessionDownloadTask 提供了断点下载的相关方法。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[dataTask cancelByProducingResumeData:^(NSData * _Nullable resumeData) &#123;</span><br><span class="line">    _mResumeData = resumeData;</span><br><span class="line">&#125;];</span><br></pre></td></tr></table></figure>
+<p>此方法用来取消下载任务，取消下载后的回调中，参数 <code>resumeData</code> 包含了继续下载文件的位置信息。<code>resumeData</code> 只包含了url和已经下载了多少数据，不会很大，不用担心内存问题。</p>
+<p>恢复下载时，可使用下面的方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mDataTask = [mURLSession downloadTaskWithResumeData:_mResumeData];</span><br><span class="line">[mDataTask resume];</span><br></pre></td></tr></table></figure>
+<p>另外，由于下载失败导致的下载中断会进入此协议方法，也可以得到用来恢复的数据：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">- (void)URLSession:(NSURLSession *)session </span><br><span class="line">task:(NSURLSessionTask *)task</span><br><span class="line">didCompleteWithError:(NSError *)error</span><br><span class="line">&#123;</span><br><span class="line">    // 保存恢复数据</span><br><span class="line">    _mResumeData = error.userInfo[NSURLSessionDownloadTaskResumeData];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>其他函数：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- (void)suspend;//暂停当前的任务。</span><br><span class="line">- (void)resume; //可以启动任务,也可以唤醒suspend状态的任务。</span><br><span class="line">- (void)cancel; //取消当前的任务。</span><br></pre></td></tr></table></figure></section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#下载" >
+    <span class="tag-code">下载</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2017/11/28/crash.html">
+        <span class="nav-arrow">← </span>
+        
+          iOS异常捕获
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2017/12/24/initializer.html">
+        
+          构造函数
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1、NSData"><span class="toc-nav-text">1、NSData</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2、NSURLConnection"><span class="toc-nav-text">2、NSURLConnection</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-1-下载功能"><span class="toc-nav-text">2.1.下载功能</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-2-暂停功能"><span class="toc-nav-text">2.2.暂停功能</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-3-断点续传功能"><span class="toc-nav-text">2.3.断点续传功能</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3、NSURLSession"><span class="toc-nav-text">3、NSURLSession</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3-1-NSURLSessionDataTask"><span class="toc-nav-text">3.1.NSURLSessionDataTask</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3-2-NSURLSessionDownloadTask"><span class="toc-nav-text">3.2.NSURLSessionDownloadTask</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3-3、断点下载"><span class="toc-nav-text">3.3、断点下载</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'http://yoursite.com/2017/12/22/download.html';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+     // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+        
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+
+    // qrcode
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+
+    // gitment
+    var gitmentConfig = "";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "iOS 文件下载",
+        owner: "",
+        repo: "",
+        oauth: {
+          client_id: "",
+          client_secret: ""
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  })();
+</script>
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2018 | <a href="https://github.com/davidlii" target="_blank">Davidli</a>
+    <br>
+    <a href="https://hexo.io" target="_blank">Hexo</a> | Theme-<a href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+<script src="/js/script.js"></script>
+  </body>
+</html>

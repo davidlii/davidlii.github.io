@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="This is Davidli&#39;s blog ~">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" type="image/ico" href="/image/logo.png"/> 
+  
+  <title>
+    
+      Davidli
+    
+  </title>
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+  <script src="/js/qrious.js"></script>
+<script src="/js/gitment.js"></script>
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+</head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>Davidli</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link active">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link mobile-active">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <main class="app-body">
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2018/01/28/source_code_sd.html">SDWebImage 源码阅读</a>
+      </h2>
+      <p class="article-date">January 28, 2018</p>
+      
+        
+  <a href="/tags#源码" >
+    <span class="tag-code">源码</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          1、使用 cocoapods 导入 SD库 到工程中：
+使用终端 cd 到工程.xcodeproj 所在的根目录中新建 Podfile 文件：
+
+1touch Podfile
+
+执行下面命令行进入编辑模式，输入i：
+
+1vim Podfile
+
+输入一下内容：
+
+12345platform  ...
+        
+      </div>
+      <a class="more" href="/2018/01/28/source_code_sd.html">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2018/01/27/compile.html">编译器、代码编译过程、Xcode Build过程</a>
+      </h2>
+      <p class="article-date">January 27, 2018</p>
+      
+        
+  <a href="/tags#编译" >
+    <span class="tag-code">编译</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          iOS 开发目前的常用语言 OC 和 Swift 都是编译语言（区别于解释语言），需要编译才能执行。
+编译过程可以划分为前端和后端两步：
+1、编译器前端：Clang编译器前端将不同的高级编程语言经过词法分析、语法分析转化为与前端语言无关的统一的中间表示。iOS 中的编译器前端使用的是 Cla ...
+        
+      </div>
+      <a class="more" href="/2018/01/27/compile.html">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2018/01/21/autoreleasepool.html">autoreleasepool</a>
+      </h2>
+      <p class="article-date">January 21, 2018</p>
+      
+        
+  <a href="/tags#autoreleasepool" >
+    <span class="tag-code">autoreleasepool</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          Autorelease 机制是 iOS 开发者管理对象内存的好伙伴。MRC中，调用[obj autorelease]来延迟内存的释放是一件简单自然的事，ARC下，我们甚至可以完全不知道 Autorelease 就能管理好内存。而在这背后，objc和编译器都帮我们做了哪些事呢？它们是如何协作来 ...
+        
+      </div>
+      <a class="more" href="/2018/01/21/autoreleasepool.html">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2018/01/20/reuse_cell.html">UITableViewCell 的重用机制</a>
+      </h2>
+      <p class="article-date">January 20, 2018</p>
+      
+        
+  <a href="/tags#UITableViewCell" >
+    <span class="tag-code">UITableViewCell</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          常见用法&emsp;当数据项比较多时，Tableview 不可能给每一项都创建一个 cell 来显示。想象一下1千个 cell 时内存会是什么量级。Apple 推出的 Cell 的重用机制就解决了上面的问题。另外，这个机制还促进显示与数据的分离。
+&emsp;先看下面这段代码：
+123456 ...
+        
+      </div>
+      <a class="more" href="/2018/01/20/reuse_cell.html">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2018/01/18/patterns.html">常用架构模式</a>
+      </h2>
+      <p class="article-date">January 18, 2018</p>
+      
+        
+  <a href="/tags#架构模式" >
+    <span class="tag-code">架构模式</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          架构模式
+用于描述软件系统里的基本的结构组织或纲要。架构模式提供了一些定义好的子系统，指定它们的责任，并给出把它们组织在一起的法则和指南。
+
+好架构模式的特点？
+任务均衡分摊给具有清晰角色的实体。
+高内聚、低耦合。
+高重用性、低维护成本。
+可单独测试。
+
+一、MVC模式1.1.功能划分模型层 ...
+        
+      </div>
+      <a class="more" href="/2018/01/18/patterns.html">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2018/01/14/retain_circle.html">循环引用问题</a>
+      </h2>
+      <p class="article-date">January 14, 2018</p>
+      
+        
+  <a href="/tags#循环引用" >
+    <span class="tag-code">循环引用</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          1、循环引用循环引用可以简单理解为 A 引用了 B，而 B 又引用了 A，双方都同时保持对方的一个引用，导致任何时候引用计数都不为0，始终无法释放。
+循环引用的影响？
+导致对象无法释放，造成内存泄露。如果是 ViewController 内出现循环引用，在反复 push &amp; pop  ...
+        
+      </div>
+      <a class="more" href="/2018/01/14/retain_circle.html">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2018/01/09/framework.html">静态库 & 动态库、.a & .framework、制作库</a>
+      </h2>
+      <p class="article-date">January 9, 2018</p>
+      
+        
+  <a href="/tags#库" >
+    <span class="tag-code">库</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          库？&emsp;库是代码的集合、共享代码的一种方式。分为：
+
+开源库：源代码公开，能看到具体的实现。（如SD、AF）
+闭源库：源码不公开，是经过编译后的二进制文件，看不到具体实现。
+
+&emsp;其中，闭源库有两种形式：
+
+静态库：.a 和 .framework
+动态库：.dylib 和 . ...
+        
+      </div>
+      <a class="more" href="/2018/01/09/framework.html">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2018/01/07/uiresponder.html">事件传递 & 事件响应、hitTest</a>
+      </h2>
+      <p class="article-date">January 7, 2018</p>
+      
+        
+  <a href="/tags#UIResponder" >
+    <span class="tag-code">UIResponder</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          1、UIResponder此类用来响应用户的操作并处理各种事件：
+
+触摸事件
+加速计事件
+远程控制事件
+
+1.1.谁能接收和处理事件？继承自 UIResponder 的类对象（如：UIView、UIViewController、UIApplication）才能接收和处理事件，它们被称为“响应 ...
+        
+      </div>
+      <a class="more" href="/2018/01/07/uiresponder.html">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2017/12/29/code_confusion.html">代码混淆、shell 脚本自动替换</a>
+      </h2>
+      <p class="article-date">December 29, 2017</p>
+      
+        
+  <a href="/tags#代码混淆" >
+    <span class="tag-code">代码混淆</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          1、逆向&amp;破解：
+通过 dumpdecrypted 给 APP 砸壳；
+通过 class-dump 查看 .h文件里的函数；
+通过 Hopper、IDA Pro 等工具反编译后分析业务代码；
+通过 Reveal 在运行时调试和修改 iOS应用的 UI；
+
+2、混淆代码类名、方法名、变 ...
+        
+      </div>
+      <a class="more" href="/2017/12/29/code_confusion.html">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2017/12/24/initializer.html">构造函数</a>
+      </h2>
+      <p class="article-date">December 24, 2017</p>
+      
+        
+  <a href="/tags#构造函数" >
+    <span class="tag-code">构造函数</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          1、指定构造函数（Designated Initializer）&emsp;在 OC 的很多头文件中，都会出现 NS_DESIGNATED_INITIALIZER 这个宏，如：
+12- (instancetype)initWithNibName:(NSString *)nibNameOrNi ...
+        
+      </div>
+      <a class="more" href="/2017/12/24/initializer.html">Read more</a>
+    </article>
+  
+
+  
+    <div class="guide-pager">
+  
+    <a href="/"><span class="page-arrow">← </span>Prev</a>
+  
+  
+    <a href="/page/3/">Next<span class="page-arrow"> →</span></a>
+  
+</div>
+  
+</main>
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2018 | <a href="https://github.com/davidlii" target="_blank">Davidli</a>
+    <br>
+    <a href="https://hexo.io" target="_blank">Hexo</a> | Theme-<a href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+<script src="/js/script.js"></script>
+  </body>
+</html>

@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="This is Davidli&#39;s blog ~">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" type="image/ico" href="/image/logo.png"/> 
+  
+  <title>
+    
+      编译器、代码编译过程、Xcode Build过程 | Davidli
+    
+  </title>
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+  <script src="/js/qrious.js"></script>
+<script src="/js/gitment.js"></script>
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+</head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>Davidli</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>编译器、代码编译过程、Xcode Build过程</h2>
+  <p class="post-date">2018-01-27</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><p>iOS 开发目前的常用语言 OC 和 Swift 都是编译语言（区别于解释语言），需要编译才能执行。</p>
+<p>编译过程可以划分为前端和后端两步：</p>
+<h3 id="1、编译器前端：Clang"><a href="#1、编译器前端：Clang" class="headerlink" title="1、编译器前端：Clang"></a>1、编译器前端：Clang</h3><p>编译器前端将不同的高级编程语言经过词法分析、语法分析转化为与前端语言无关的统一的中间表示。iOS 中的编译器前端使用的是 Clang，它是一个 C++ 编写的、基于LLVM 的 C/C++/Objective-C/Objective-C++ 编译器。其主要任务是处理一些和具体机器无关的针对语言的分析操作：</p>
+<p>预处理：</p>
+<ul>
+<li>符号化 (Tokenization)</li>
+<li>宏定义的展开</li>
+<li>#include 的展开。</li>
+</ul>
+<p>语法和语义分析：</p>
+<ul>
+<li>将符号化后的内容转化为一棵解析树 (parse tree)</li>
+<li>解析树做语义分析（包含类型检查和其他检查）</li>
+<li>输出一棵抽象语法树（Abstract Syntax Tree* (AST)）</li>
+</ul>
+<p>生成代码</p>
+<ul>
+<li>将 AST 转换为更低级的中间码 (LLVM IR)</li>
+</ul>
+<h3 id="2、编译器后端：LLVM"><a href="#2、编译器后端：LLVM" class="headerlink" title="2、编译器后端：LLVM"></a>2、编译器后端：LLVM</h3><p>编译器后端负责将中间代码进行优化并最终生成对应平台的汇编代码。LLVM 属于编译器后端，其主要作用是：</p>
+<p>代码优化</p>
+<ul>
+<li>对生成的中间码做优化</li>
+<li>生成特定目标代码</li>
+<li>输出汇编代码</li>
+</ul>
+<p>汇编器</p>
+<ul>
+<li>将汇编代码转换为以.o 结尾的目标对象文件（将可读的汇编代码转换为机器代码）。</li>
+</ul>
+<p>链接器</p>
+<ul>
+<li>读取所有的目标文件和库并解决所有未知符号的问题，将它们编码进一个可执行文件（或动态库）中。</li>
+</ul>
+<h3 id="3、Xcode-build流程："><a href="#3、Xcode-build流程：" class="headerlink" title="3、Xcode build流程："></a>3、Xcode build流程：</h3><p>通过解析 Xcode 编译 log，可以发现 xcode 是根据 target 分开进行编译的。每个 target 的具体的编译过程也可以通过展开 log 日志获得。基本的格式就是首先简明一句说明要干什么，然后缩进的几行说明具体的操作。比如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">Build target CodeMix of project CodeMix with configuration Debug</span><br><span class="line"></span><br><span class="line">CompileC /Users/../XXViewController.o CodeMix/XXViewController.m </span><br><span class="line">normal x86_64 objective-c com.apple.compilers.llvm.clang.1_0.compiler</span><br><span class="line">    cd /Users/../CodeMix</span><br><span class="line">    export LANG=en_US.US-ASCII</span><br><span class="line">    export PATH=“../XXViewController.o</span><br><span class="line"></span><br><span class="line">Ld /Users/../Debug-iphonesimulator/CodeMix.app/CodeMix normal x86_64</span><br><span class="line">    cd /Users/../CodeMix</span><br><span class="line">    export IPHONES_DEPLOYMENT_TARGET=11.2</span><br><span class="line">    ..</span><br><span class="line"></span><br><span class="line">PhaseScriptExecution Run\ Script /Users/../Script-0AC86E9E1FF6721A00098A24.sh</span><br><span class="line">    cd /Users/Macmafia/Desktop/CodeMix</span><br><span class="line">    export ACTION=build</span><br><span class="line">    export AD_HOC_CODE_SIGNING_ALLOWED=YES</span><br><span class="line">    export ALTERNATE_GROUP=staff</span><br><span class="line"></span><br><span class="line">    /bin/sh -c /Users/../Script-0AC86E9E1FF6721A00098A24.sh</span><br><span class="line"></span><br><span class="line">PRAGMA foreign_keys=OFF;</span><br><span class="line">BEGIN TRANSACTION;</span><br><span class="line">CREATE TABLE symbols(src text, des text);</span><br><span class="line">COMMIT;</span><br><span class="line"></span><br><span class="line">Touch /Users/../Build/Products/Debug-iphonesimulator/CodeMix.app</span><br><span class="line">    cd /Users/../CodeMix</span><br><span class="line">    export PATH=&quot;/Applications/Xcode.app/../Debug-iphonesimulator/CodeMix.app</span><br><span class="line"></span><br><span class="line">CodeSign /Users/../Debug-iphonesimulator/CodeMix.app</span><br><span class="line">    cd /Users/../CodeMix</span><br><span class="line">    export CODESIGN_ALLOCATE=/Applications/Xcode.app/../codesign_allocate</span><br><span class="line">    </span><br><span class="line">Signing Identity:     &quot;-&quot;</span><br><span class="line">    ..</span><br><span class="line">Build succeeded    2018/1/26 下午9:35</span><br></pre></td></tr></table></figure>
+<p>从上面日志可以看到，大致的过程是：</p>
+<ul>
+<li>compile各个.m文件</li>
+<li>copy静态资源，包括img，string，font。</li>
+<li>compile xib</li>
+<li>compile storyboard</li>
+<li>compile asset catalogs</li>
+<li>process info.plist</li>
+<li>link storyboards</li>
+<li>run custom script</li>
+<li>touch app</li>
+<li>sign app</li>
+<li>validate app(真机build有)</li>
+</ul>
+<hr>
+<p>参考文章：</p>
+<p>#<a href="https://objccn.io/issue-6-2/" target="_blank" rel="noopener">©编译器-objccn</a> </p>
+<p>#<a href="http://wiki.jikexueyuan.com/project/objc/Build-tool/6-3.html" target="_blank" rel="noopener">©极客公园-OC期刊</a></p>
+<p>#<a href="https://blog.csdn.net/u012491514/article/details/24736041" target="_blank" rel="noopener">©GCC编译器</a></p>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#编译" >
+    <span class="tag-code">编译</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2018/01/21/autoreleasepool.html">
+        <span class="nav-arrow">← </span>
+        
+          autoreleasepool
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2018/01/28/source_code_sd.html">
+        
+          SDWebImage 源码阅读
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1、编译器前端：Clang"><span class="toc-nav-text">1、编译器前端：Clang</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2、编译器后端：LLVM"><span class="toc-nav-text">2、编译器后端：LLVM</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3、Xcode-build流程："><span class="toc-nav-text">3、Xcode build流程：</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'http://yoursite.com/2018/01/27/compile.html';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+     // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+        
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+
+    // qrcode
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+
+    // gitment
+    var gitmentConfig = "";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "编译器、代码编译过程、Xcode Build过程",
+        owner: "",
+        repo: "",
+        oauth: {
+          client_id: "",
+          client_secret: ""
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  })();
+</script>
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2018 | <a href="https://github.com/davidlii" target="_blank">Davidli</a>
+    <br>
+    <a href="https://hexo.io" target="_blank">Hexo</a> | Theme-<a href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+<script src="/js/script.js"></script>
+  </body>
+</html>

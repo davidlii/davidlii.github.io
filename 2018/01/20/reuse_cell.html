@@ -10,7 +10,7 @@
   
   <title>
     
-      Hello World | Davidli
+      UITableViewCell 的重用机制 | Davidli
     
   </title>
   <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -126,8 +126,8 @@
 </header>
 
     <div id="article-banner">
-  <h2>Hello World</h2>
-  <p class="post-date">2018-07-23</p>
+  <h2>UITableViewCell 的重用机制</h2>
+  <p class="post-date">2018-01-20</p>
   <div class="arrow-down">
     <a href="javascript:;"></a>
   </div>
@@ -135,27 +135,33 @@
 <main class="app-body flex-box">
   <!-- Article START -->
   <article class="post-article">
-    <section class="markdown-content"><p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"file name"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo s</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo g</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo d</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
+    <section class="markdown-content"><h3 id="常见用法"><a href="#常见用法" class="headerlink" title="常见用法"></a>常见用法</h3><p>&emsp;当数据项比较多时，Tableview 不可能给每一项都创建一个 cell 来显示。想象一下1千个 cell 时内存会是什么量级。Apple 推出的 Cell 的重用机制就解决了上面的问题。另外，这个机制还促进显示与数据的分离。</p>
+<p>&emsp;先看下面这段代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">- (UITableViewCell *)tableView:(UITableView *)tableView</span><br><span class="line">cellForRowAtIndexPath:(NSIndexPath *)indexPath </span><br><span class="line">&#123;</span><br><span class="line">  static NSString *CellIdentifier = @&quot;Cell&quot;;</span><br><span class="line">  UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];</span><br><span class="line">  if (nil == cell) &#123;</span><br><span class="line">    cell = [[UITableViewCell alloc] initWithStyle:</span><br><span class="line">    UITableViewCellStyleDefault </span><br><span class="line">    reuseIdentifier:CellIdentifier];</span><br><span class="line">  &#125;</span><br><span class="line">  return cell;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>&emsp;[tableView dequeueReusableCellWithIdentifier:CellIdentifier]; 就是 cell 重用的标志性语句。上面的代码逻辑是：当需要显示一个 Cell 时，系统会先去重用队列中查询是否有可重用的 cell，如果有则复用它，如果没有则新建一个 cell。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">+ (void)ivarList</span><br><span class="line">&#123;</span><br><span class="line">    unsigned int count = 0;</span><br><span class="line">    Ivar *ivars = class_copyIvarList([UITableView class], &amp;count);</span><br><span class="line">    </span><br><span class="line">    for (int i = 0; i&lt;count; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        Ivar ivar = ivars[i];</span><br><span class="line">        const char *charName = ivar_getName(ivar);</span><br><span class="line">        const char *charType = ivar_getTypeEncoding(ivar);</span><br><span class="line">        </span><br><span class="line">        NSLog(@&quot;Name:%s,Type:%s&quot;,charName,charType);</span><br><span class="line">    &#125;</span><br><span class="line">    free(ivars);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>&emsp;这段代码的作用是通过运行时函数 class_copyIvarList 来读取 UITableView 中所有成员变量，输出日志如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">Name:_visibleCells,Type:@&quot;NSMutableArray&quot;</span><br><span class="line">Name:_reusableTableCells,Type:@&quot;NSMutableDictionary&quot;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>&emsp;从打印结果可以看到，UITableView 中包括了以下两个属性：</p>
+<ul>
+<li><strong>visibleCells</strong>：（保存当前屏幕范围内显示的 cells）</li>
+<li><strong>reusableTableCells</strong>：（保存可重用的 cells）</li>
+</ul>
+<h3 id="具体的重用逻辑："><a href="#具体的重用逻辑：" class="headerlink" title="具体的重用逻辑："></a>具体的重用逻辑：</h3><p>1、假如当前屏幕能显示10个 Cell，在 UITableView 开始渲染时，系统会通过 -initWithStyle:reuseIdentifier:方法创建10个新的 cell （标志相同） 并显示，这些 cell 会被放入 visibleCells 这个数组中。</p>
+<p>2、向下滑动 TableView，当 <strong>cell1</strong> 完全移出屏幕，并且 <strong>cell11</strong> (它也是alloc出来的，原因同上)完全显示出来时，<strong>cell11</strong> 会被加入到 visiableCells，而 <strong>cell1</strong> 则被移出 visiableCells 并加入到 reusableTableCells 中。</p>
+<p>3、接着向下滑动 TableView，因为 <strong>cell1</strong> 已经在 reusableTableCells 中，所以 即将显示的第12个 cell 会重用 <strong>cell1</strong>。因此 <strong>cell1</strong> 会被移出 reusableTableCells 并加入到 visiableCells 中；同时 <strong>cell2</strong> 移出 visiableCells 并加入到 reusableTableCells 中。</p>
+<p>4、。。接下来的重用以此类推<br>&emsp;<br>&emsp;<strong>ps：</strong> 需要注意的是，因为 cell 是重用的，所以在配置 cell 时一定要注意对取出重用的 cell 重新赋值，不要遗留老数据。</p>
+<hr>
+<p>相关参考：</p>
+<p>#<a href="http://blog.csdn.net/huifeidexin_1/article/details/7678986" target="_blank" rel="noopener">©传送门</a></p>
 </section>
     <!-- Tags START -->
     
       <div class="tags">
         <span>Tags:</span>
         
-  <a href="/tags#Hello" >
-    <span class="tag-code">Hello</span>
-  </a>
-
-  <a href="/tags#world" >
-    <span class="tag-code">world</span>
+  <a href="/tags#UITableViewCell" >
+    <span class="tag-code">UITableViewCell</span>
   </a>
 
       </div>
@@ -166,10 +172,17 @@
   <div class="nav-container">
     <!-- reverse left and right to put prev and next in a more logic postition -->
     
-    
-      <a class="nav-right" href="/2018/07/23/fast-github.html">
+      <a class="nav-left" href="/2018/01/18/patterns.html">
+        <span class="nav-arrow">← </span>
         
-          Github 访问慢的解决方案
+          常用架构模式
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2018/01/21/autoreleasepool.html">
+        
+          autoreleasepool
         
         <span class="nav-arrow"> →</span>
       </a>
@@ -211,7 +224,7 @@
   <div class="toc-main">
     <strong class="toc-title">Catalog</strong>
     
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Quick-Start"><span class="toc-nav-text">Quick Start</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Create-a-new-post"><span class="toc-nav-text">Create a new post</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Run-server"><span class="toc-nav-text">Run server</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Generate-static-files"><span class="toc-nav-text">Generate static files</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Deploy-to-remote-sites"><span class="toc-nav-text">Deploy to remote sites</span></a></li></ol></li></ol>
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#常见用法"><span class="toc-nav-text">常见用法</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#具体的重用逻辑："><span class="toc-nav-text">具体的重用逻辑：</span></a></li></ol>
     
   </div>
 </aside>
@@ -221,7 +234,7 @@
 
 <script>
   (function () {
-    var url = 'http://yoursite.com/2018/07/23/hello-world.html';
+    var url = 'http://yoursite.com/2018/01/20/reuse_cell.html';
     var banner = ''
     if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
       $('#article-banner').css({
@@ -277,7 +290,7 @@
     var gitmentConfig = "";
     if (gitmentConfig !== 'undefined') {
       var gitment = new Gitment({
-        id: "Hello World",
+        id: "UITableViewCell 的重用机制",
         owner: "",
         repo: "",
         oauth: {
@@ -307,9 +320,9 @@
 </div>
     <footer class="app-footer">
   <p class="copyright">
-    &copy; 2018 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    &copy; 2018 | <a href="https://github.com/davidlii" target="_blank">Davidli</a>
     <br>
-    Theme by <a href="https://github.com/yanm1ng">yanm1ng</a>
+    <a href="https://hexo.io" target="_blank">Hexo</a> | Theme-<a href="https://github.com/yanm1ng">yanm1ng</a>
   </p>
 </footer>
 

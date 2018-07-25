@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="This is Davidli&#39;s blog ~">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" type="image/ico" href="/image/logo.png"/> 
+  
+  <title>
+    
+      构造函数 | Davidli
+    
+  </title>
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+  <script src="/js/qrious.js"></script>
+<script src="/js/gitment.js"></script>
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+</head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>Davidli</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>构造函数</h2>
+  <p class="post-date">2017-12-24</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h3 id="1、指定构造函数（Designated-Initializer）"><a href="#1、指定构造函数（Designated-Initializer）" class="headerlink" title="1、指定构造函数（Designated Initializer）"></a>1、指定构造函数（Designated Initializer）</h3><p>&emsp;在 OC 的很多头文件中，都会出现 NS_DESIGNATED_INITIALIZER 这个宏，如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">- (instancetype)initWithNibName:(NSString *)nibNameOrNil</span><br><span class="line">bundle:(NSBundle *)nibBundleOrNil NS_DESIGNATED_INITIALIZER;</span><br></pre></td></tr></table></figure>
+<p>&emsp;这个宏就是 “指定构造函数” 的标志，它用来告诉调用者使用这个方法来初始化类对象。一个类可以定义多个构造方法，不同的构造方法可以传入不同的参数，或者通过不同的方式来初始化一个类对象。指定构造函数通常是参数最多的构造函数。</p>
+<p>&emsp;有时候为了方便，我们想使用尽量少或者不用参数，就能创建一个类对象。这时就可以使用“便利构造函数”来解决。</p>
+<h3 id="2、便利构造函数（Convenience-Initializer）"><a href="#2、便利构造函数（Convenience-Initializer）" class="headerlink" title="2、便利构造函数（Convenience Initializer）"></a>2、便利构造函数（Convenience Initializer）</h3><p>&emsp;顾名思义，它是为了方便调用者快速创建一个类对象而定义的一种构造函数。通常会在便利构造函数中给成员变量提供一个默认值。</p>
+<p>&emsp;请看如下示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">#import &lt;Foundation/Foundation.h&gt;</span><br><span class="line"></span><br><span class="line">@interface Initializer : NSObject</span><br><span class="line">&#123;</span><br><span class="line">    NSString *aTitle;</span><br><span class="line">    NSDate   *aDate;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//Designated Initializer</span><br><span class="line">- (instancetype)initWithTitle:(NSString *)title</span><br><span class="line">date:(NSDate*)date; NS_DESIGNATED_INITIALIZER;</span><br><span class="line"></span><br><span class="line">//Convenience Initializer</span><br><span class="line">- (instancetype)initWithTitle:(NSString *)title;</span><br><span class="line"></span><br><span class="line">//不希望调用父类(NSObject)的这个 Designated Initializer</span><br><span class="line">- (instancetype)init NS_UNAVAILABLE;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">#import &quot;Initializer.h&quot;</span><br><span class="line"></span><br><span class="line">@implementation Initializer</span><br><span class="line"></span><br><span class="line">//父类（NSObject）的 Designated Initializer</span><br><span class="line">- (instancetype) init</span><br><span class="line">&#123;</span><br><span class="line">    return [self initWithTitle:@&quot;defaultTitle&quot;];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//Convenience Initializer</span><br><span class="line">- (instancetype)initWithTitle:(NSString *)title</span><br><span class="line">&#123;</span><br><span class="line">    return [self initWithTitle:title date:[NSDate date]];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//Designated Initializer</span><br><span class="line">- (instancetype) initWithTitle:(NSString *)title </span><br><span class="line">date:(NSDate*)date</span><br><span class="line">&#123;</span><br><span class="line">    if (self = [super init]) </span><br><span class="line">    &#123;</span><br><span class="line">        aTitle = title;</span><br><span class="line">        aDate  = date;</span><br><span class="line">    &#125;</span><br><span class="line">    return self;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>&emsp;调用示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">//1</span><br><span class="line">Initializer *ai1 = [[Initializer alloc] init];</span><br><span class="line">//2</span><br><span class="line">Initializer *ai2 = [[Initializer alloc] initWithTitle:@&quot;title2&quot;];</span><br><span class="line">//3</span><br><span class="line">Initializer *ai3 = [[Initializer alloc] initWithTitle:@&quot;title3&quot; </span><br><span class="line">date:[NSDate date]];</span><br></pre></td></tr></table></figure>
+<p>&emsp;上面的调用示例中，第一种在编译时会报错。因为不希望调用者使用此方法来初始化这个类对象，所以头文件中已把 init 方法声明为 NS_UNAVAILABLE。</p>
+<h3 id="3、使用规范"><a href="#3、使用规范" class="headerlink" title="3、使用规范"></a>3、使用规范</h3><p>&emsp;如果子类有 Designated Initializer，那么这个 Designated Initializer 中必须调用它直接父类的 Designated Initializer，并且需要重写父类的 Designated Initializer。</p>
+<p>&emsp;如果子类有 Designated Initializer，那么 Convenience Initializer 必须调用这个子类中其它初始化函数(包括 Designated Initializer 和 其他Convenience Initializer)，不能调用 super 的初始化函数。<br>&emsp;<br>&emsp;由上可以推理出：</p>
+<ul>
+<li>Convenience Initializer 只能调用自己类中的其他初始化方法。</li>
+<li>Designated Initializer 才有资格调用父类的 Designated Initializer。</li>
+<li>所有的 Convenience Initializer 最终都会调到该类的 Designated Initializer。</li>
+</ul>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#构造函数" >
+    <span class="tag-code">构造函数</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2017/12/22/download.html">
+        <span class="nav-arrow">← </span>
+        
+          iOS 文件下载
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2017/12/29/code_confusion.html">
+        
+          代码混淆、shell 脚本自动替换
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1、指定构造函数（Designated-Initializer）"><span class="toc-nav-text">1、指定构造函数（Designated Initializer）</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2、便利构造函数（Convenience-Initializer）"><span class="toc-nav-text">2、便利构造函数（Convenience Initializer）</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3、使用规范"><span class="toc-nav-text">3、使用规范</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'http://yoursite.com/2017/12/24/initializer.html';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+     // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+        
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+
+    // qrcode
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+
+    // gitment
+    var gitmentConfig = "";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "构造函数",
+        owner: "",
+        repo: "",
+        oauth: {
+          client_id: "",
+          client_secret: ""
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  })();
+</script>
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2018 | <a href="https://github.com/davidlii" target="_blank">Davidli</a>
+    <br>
+    <a href="https://hexo.io" target="_blank">Hexo</a> | Theme-<a href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+<script src="/js/script.js"></script>
+  </body>
+</html>

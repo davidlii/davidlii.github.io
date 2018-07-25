@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="This is Davidli&#39;s blog ~">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" type="image/ico" href="/image/logo.png"/> 
+  
+  <title>
+    
+      静态库 &amp; 动态库、.a &amp; .framework、制作库 | Davidli
+    
+  </title>
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+  <script src="/js/qrious.js"></script>
+<script src="/js/gitment.js"></script>
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+</head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>Davidli</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>静态库 & 动态库、.a & .framework、制作库</h2>
+  <p class="post-date">2018-01-09</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h3 id="库？"><a href="#库？" class="headerlink" title="库？"></a>库？</h3><p>&emsp;库是代码的集合、共享代码的一种方式。分为：</p>
+<ul>
+<li>开源库：源代码公开，能看到具体的实现。（如SD、AF）</li>
+<li>闭源库：源码不公开，是经过编译后的二进制文件，看不到具体实现。</li>
+</ul>
+<p>&emsp;其中，闭源库有两种形式：</p>
+<ul>
+<li>静态库：.a 和 .framework</li>
+<li>动态库：.dylib 和 .framework</li>
+</ul>
+<p>&emsp;问：framework 为啥即是静态库又是动态库呢？</p>
+<p>&emsp;答：系统的.framework 是动态库，我们自己建的.framework 是静态库。</p>
+<h4 id="1、静态库-与-动态库的区别？"><a href="#1、静态库-与-动态库的区别？" class="headerlink" title="1、静态库 与 动态库的区别？"></a>1、静态库 与 动态库的区别？</h4><ul>
+<li>静态库在连接时会被完整的复制到可执行文件中，被多次使用就有多份冗余拷贝。</li>
+<li>动态库则不复制，由系统动态加载且只加载一次到内存，可供多个程序调用，节省内存。</li>
+</ul>
+<h4 id="2、-a-与-framework-的区别？"><a href="#2、-a-与-framework-的区别？" class="headerlink" title="2、.a 与.framework 的区别？"></a>2、.a 与.framework 的区别？</h4><ul>
+<li>.a是一个纯二进制文件，.framework 中除了有二进制文件之外还有资源文件。</li>
+<li>.a文件不能直接使用，至少要有.h文件配合，.framework 文件可以直接使用。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.a + .h + sourceFile = .framework</span><br></pre></td></tr></table></figure>
+<h3 id="a-的制作？"><a href="#a-的制作？" class="headerlink" title=".a 的制作？"></a>.a 的制作？</h3><ul>
+<li>新建 Cocoa Touch Static Library 工程，编写逻辑代码。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">//.h文件</span><br><span class="line">@interface Aframe : NSObject</span><br><span class="line">- (void)mathAdd;</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">//.m文件</span><br><span class="line">#import &quot;Aframe.h&quot;</span><br><span class="line">@implementation Aframe</span><br><span class="line">- (void)mathAdd&#123;</span><br><span class="line">    NSLog(@&quot;1 + 1 = 2&quot;);</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<ul>
+<li>Targets-&gt;Build Settings 参数设置：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;Build Active Architecture Only&quot; 设置为&quot;NO&quot;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>Targets-&gt;Build Phases 参数设置：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;Copy Files&quot; 中添加需要暴露的.h 文件</span><br></pre></td></tr></table></figure>
+<ul>
+<li>Run 修改 scheme</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">选择左上角静态库-&gt;Run-&gt;Info-&gt;Build Configuration 设置为Release</span><br></pre></td></tr></table></figure>
+<ul>
+<li>编译生成静态库.a文件：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">分别选择真机和 iPhone 模拟器进行编译。</span><br><span class="line">找到真机和模拟器编译成功生成的.a文件,Show In Finder，分别在 Release-iphoneos、Release-iphonesimulator目录中。</span><br></pre></td></tr></table></figure>
+<ul>
+<li>合成通用版的静态库.a文件</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">打开终端输入以下命令行：</span><br><span class="line">lipo -create /xx.a(真机.a文件路径) /xx.a(模拟器.a文件路径) -output Desktop/xx.a</span><br></pre></td></tr></table></figure>
+<ul>
+<li>测试自己制作的静态库文件</li>
+</ul>
+<p>&emsp;将.h 以及上步导出的.a文件导入自己的工程中，调用.h 中的接口。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">#import &quot;AppDelegate.h&quot;</span><br><span class="line">#import &quot;Aframe.h&quot;</span><br><span class="line"></span><br><span class="line">@implementation AppDelegate</span><br><span class="line"></span><br><span class="line">- (void)testLibA&#123;</span><br><span class="line">    Aframe *aframe = [Aframe new];</span><br><span class="line">    [aframe mathAdd];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (BOOL)application:(UIApplication *)application</span><br><span class="line">didFinishLaunchingWithOptions:(NSDictionary *)launchOptions</span><br><span class="line">&#123;</span><br><span class="line">    [self testLibA];</span><br><span class="line">    return YES;</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<h3 id="framework的制作？"><a href="#framework的制作？" class="headerlink" title=".framework的制作？"></a>.framework的制作？</h3><ul>
+<li>新建 Cocoa Touch Framework 工程，编写逻辑代码。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">//.h文件</span><br><span class="line">#import &lt;Foundation/Foundation.h&gt;</span><br><span class="line"></span><br><span class="line">@interface MathTool : NSObject</span><br><span class="line">- (void)mathAdd;</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">//.m文件</span><br><span class="line">#import &quot;MathTool.h&quot;</span><br><span class="line"></span><br><span class="line">@implementation MathTool</span><br><span class="line">- (void)mathAdd&#123;</span><br><span class="line">    NSLog(@&quot;1 + 1 = 2&quot;);</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<ul>
+<li>更改参数：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">TARGETS-&gt;Build Settings-&gt;Dead Code Stripping 设置为NO。</span><br><span class="line">TARGETS-&gt;Build Settings-&gt;Link With Stantard Libraries 设置为NO。</span><br><span class="line">Mach-O Type 设置为 Static Library。</span><br></pre></td></tr></table></figure>
+<ul>
+<li>设置需要暴露的头文件</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">TARGETS-&gt;Build Phases-&gt;Headers 的 public选项下 把需要暴露的头文件拖进来。</span><br></pre></td></tr></table></figure>
+<ul>
+<li>在新建项目时，自动生成的xxx.h文件里将要暴露的头文件 import 进来。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">#import &lt;UIKit/UIKit.h&gt;</span><br><span class="line"></span><br><span class="line">//! Project version number for Framework.</span><br><span class="line">FOUNDATION_EXPORT double FrameworkVersionNumber;</span><br><span class="line"></span><br><span class="line">//! Project version string for Framework.</span><br><span class="line">FOUNDATION_EXPORT const unsigned char FrameworkVersionString[];</span><br><span class="line"></span><br><span class="line">//import all the public headers of your framework</span><br><span class="line"></span><br><span class="line">#import &lt;Framework/MathTool.h&gt;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>Edit Scheme</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">左上角scheme-&gt;Run-&gt;Info-&gt;Build Configuration 设置为 Release</span><br></pre></td></tr></table></figure>
+<ul>
+<li>编译 framework</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">分别选中模拟器和Generic iOS Device 编译。</span><br><span class="line">选中 Products 下的xxx.framework，show in Finder。</span><br></pre></td></tr></table></figure>
+<ul>
+<li>合成通用 framework</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">lipo -create /xx.framework/xx(真机.framework文件路径) </span><br><span class="line">/xx.framework/xx(模拟器.framework文件路径) </span><br><span class="line">-output Desktop/xx</span><br></pre></td></tr></table></figure>
+<p>&emsp;这一步可能会报错，但是依然会生成一个 xx.lipo 文件，将其后缀去掉并 复制到/xx.framework(真机.framework文件路径) 下，替换目录中原有的 framework。</p>
+<ul>
+<li>测试 framework</li>
+</ul>
+<p>&emsp;将上一步中替换完成的xx.framework 复制到新的工程里，导入头文件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">#import &lt;Framework/Framework.h&gt;</span><br><span class="line"></span><br><span class="line">@implementation AppDelegate</span><br><span class="line"></span><br><span class="line">- (void)testFramework&#123;</span><br><span class="line">    MathTool *mathTool = [MathTool new];</span><br><span class="line">    [mathTool mathAdd];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (BOOL)application:(UIApplication *)application </span><br><span class="line">didFinishLaunchingWithOptions:(NSDictionary *)launchOptions</span><br><span class="line">&#123;</span><br><span class="line">    [self testFramework];</span><br><span class="line">    return YES;</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure></section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#库" >
+    <span class="tag-code">库</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2018/01/07/uiresponder.html">
+        <span class="nav-arrow">← </span>
+        
+          事件传递 &amp; 事件响应、hitTest
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2018/01/14/retain_circle.html">
+        
+          循环引用问题
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#库？"><span class="toc-nav-text">库？</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#1、静态库-与-动态库的区别？"><span class="toc-nav-text">1、静态库 与 动态库的区别？</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2、-a-与-framework-的区别？"><span class="toc-nav-text">2、.a 与.framework 的区别？</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#a-的制作？"><span class="toc-nav-text">.a 的制作？</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#framework的制作？"><span class="toc-nav-text">.framework的制作？</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'http://yoursite.com/2018/01/09/framework.html';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+     // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+        
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+
+    // qrcode
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+
+    // gitment
+    var gitmentConfig = "";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "静态库 & 动态库、.a & .framework、制作库",
+        owner: "",
+        repo: "",
+        oauth: {
+          client_id: "",
+          client_secret: ""
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  })();
+</script>
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2018 | <a href="https://github.com/davidlii" target="_blank">Davidli</a>
+    <br>
+    <a href="https://hexo.io" target="_blank">Hexo</a> | Theme-<a href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+<script src="/js/script.js"></script>
+  </body>
+</html>

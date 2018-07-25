@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="This is Davidli&#39;s blog ~">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" type="image/ico" href="/image/logo.png"/> 
+  
+  <title>
+    
+      Runtime：元类 | Davidli
+    
+  </title>
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+  <script src="/js/qrious.js"></script>
+<script src="/js/gitment.js"></script>
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+</head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>Davidli</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>Runtime：元类</h2>
+  <p class="post-date">2017-08-22</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h2 id="1、对象"><a href="#1、对象" class="headerlink" title="1、对象"></a>1、对象</h2><blockquote>
+<p>OC中，含有isa指针且该指针可以正确指向类的数据结构，都可以视为对象。</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">#if !OBJC_TYPES_DEFINED</span><br><span class="line">/// An opaque type that represents an Objective-C class.</span><br><span class="line">typedef struct objc_class *Class;</span><br><span class="line"></span><br><span class="line">/// Represents an instance of a class.</span><br><span class="line">struct objc_object &#123;</span><br><span class="line">Class isa  OBJC_ISA_AVAILABILITY;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">/// A pointer to an instance of a class.</span><br><span class="line">typedef struct objc_object *id;</span><br><span class="line">#endif</span><br></pre></td></tr></table></figure>
+<p>以上代码是objc.h文件中的相关定义。<br>&emsp;<br>从第六行objc_object的定义可以看出：”任何带有以isa指针开始并指向类结构”的结构都可以被视作objc_object。</p>
+<h2 id="2、类"><a href="#2、类" class="headerlink" title="2、类"></a>2、类</h2><p><code>runtime.h</code>文件中对 <code>objc_class</code> 的定义：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">struct objc_class &#123;</span><br><span class="line">Class isa  OBJC_ISA_AVAILABILITY;       //指针</span><br><span class="line"></span><br><span class="line">#if !__OBJC2__</span><br><span class="line">Class super_class                       //父类;</span><br><span class="line">const char *name                        //类名;</span><br><span class="line">long version                                             //类的版本信息，默认为0;</span><br><span class="line">long info                               //位标识;</span><br><span class="line">long instance_size                      //类的实例变量大小;</span><br><span class="line">struct objc_ivar_list *ivars            //类的成员变量链表;</span><br><span class="line">struct objc_method_list **methodLists   //方法定义的链表;</span><br><span class="line">struct objc_cache *cache                //方法缓存;</span><br><span class="line">struct objc_protocol_list *protocols    //协议链表;</span><br><span class="line">#endif</span><br><span class="line"></span><br><span class="line">&#125; OBJC2_UNAVAILABLE;</span><br></pre></td></tr></table></figure>
+<p><code>objc_class</code>也是以isa开始并指向类的数据结构。OC作为运行时语言，类与元类在运行时都是<code>objc_class</code>类型。由此可以引出：类和元类也是一种对象。</p>
+<p>&emsp;<br>在OC中，任何的类都是对象。</p>
+<h2 id="3、实例对象、类对象、元类"><a href="#3、实例对象、类对象、元类" class="headerlink" title="3、实例对象、类对象、元类"></a>3、实例对象、类对象、元类</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">NSObject *obj = [NSObject alloc];</span><br></pre></td></tr></table></figure>
+<h3 id="3-1-实例对象：-Instance-object"><a href="#3-1-实例对象：-Instance-object" class="headerlink" title="3.1.实例对象：(Instance object)"></a>3.1.实例对象：(Instance object)</h3><p>一个类实例化来的对象叫实例对象；(示例中”obj”就是实例对象)</p>
+<h3 id="3-2-类对象：-Class-object"><a href="#3-2-类对象：-Class-object" class="headerlink" title="3.2.类对象：(Class object)"></a>3.2.类对象：(Class object)</h3><p>调用一个 “类方法” ，如 [NSObject alloc]，实质上是向它的类对象(NSObject)发送了一个消息。<br>&emsp;<br>类作为对象时，就称之为类对象；类对象是由编译器创建的，任何继承自NSObject的类，它的实例对象中都有一个isa指针，指向它的类对象。</p>
+<h3 id="3-3-元类：-Metaclass"><a href="#3-3-元类：-Metaclass" class="headerlink" title="3.3.元类：(Metaclass)"></a>3.3.元类：(Metaclass)</h3><p>一个类实例化来的对象叫实例对象；类作为对象（称之为类对象），又是什么类的对象？答案就是：元类（Metaclass）。<br>&emsp;<br>元类的定义：元类是类对象所属的类。</p>
+<p>&emsp;<br>区别：</p>
+<ul>
+<li>类对象：&emsp;保存的是关于实例对象的信息(变量，实例方法、遵守的协议等)；</li>
+<li>元类对象：保存的是关于类的信息(类的版本，名字，类方法等)；</li>
+</ul>
+<p>封闭的循环：</p>
+<blockquote>
+<p>实例对象是类的实例；<br>类作为对象又是元类(Metaclass)的实例;<br>元类作为对象是根元类的实例；<br>根元类是其自身的实例。</p>
+</blockquote>
+<h2 id="4、相关函数："><a href="#4、相关函数：" class="headerlink" title="4、相关函数："></a>4、相关函数：</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-class</span><br></pre></td></tr></table></figure>
+<p>对于实例对象<code>instance</code>，返回的是其 isa 指针所指的类<code>class</code>；<br>&emsp;<br>对于类对象<code>class</code>，返回的是其本身<code>class</code>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">object_getClass(id obj)</span><br></pre></td></tr></table></figure>
+<p>返回isa指针指向的内容。<br>&emsp;<br>对于实例对象<code>instance</code>，返回的是其 isa 指向的类<code>class</code>；<br>&emsp;<br>对于类对象<code>class</code>，返回的是其对应的元类<code>metaclass</code>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">objc_getMetaClass(const char *name)</span><br></pre></td></tr></table></figure>
+<p>返回此类对应的<code>元类</code>。</p>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#runtime" >
+    <span class="tag-code">runtime</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2017/07/24/hello-world.html">
+        <span class="nav-arrow">← </span>
+        
+          Hello World
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2017/08/23/runtime_message.html">
+        
+          Runtime：消息机制
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1、对象"><span class="toc-nav-text">1、对象</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2、类"><span class="toc-nav-text">2、类</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3、实例对象、类对象、元类"><span class="toc-nav-text">3、实例对象、类对象、元类</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-1-实例对象：-Instance-object"><span class="toc-nav-text">3.1.实例对象：(Instance object)</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-2-类对象：-Class-object"><span class="toc-nav-text">3.2.类对象：(Class object)</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-3-元类：-Metaclass"><span class="toc-nav-text">3.3.元类：(Metaclass)</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4、相关函数："><span class="toc-nav-text">4、相关函数：</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'http://yoursite.com/2017/08/22/runtime_metaclass.html';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+     // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+        
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+
+    // qrcode
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+
+    // gitment
+    var gitmentConfig = "";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "Runtime：元类",
+        owner: "",
+        repo: "",
+        oauth: {
+          client_id: "",
+          client_secret: ""
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  })();
+</script>
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2018 | <a href="https://github.com/davidlii" target="_blank">Davidli</a>
+    <br>
+    <a href="https://hexo.io" target="_blank">Hexo</a> | Theme-<a href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+<script src="/js/script.js"></script>
+  </body>
+</html>

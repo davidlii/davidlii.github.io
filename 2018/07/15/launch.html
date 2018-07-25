@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="This is Davidli&#39;s blog ~">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" type="image/ico" href="/image/logo.png"/> 
+  
+  <title>
+    
+      App 的启动过程 | Davidli
+    
+  </title>
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+  <script src="/js/qrious.js"></script>
+<script src="/js/gitment.js"></script>
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+</head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>Davidli</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>App 的启动过程</h2>
+  <p class="post-date">2018-07-15</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><p>我们的 APP 从本质上来说是一个静态的二进制文件，它是由IDE（如Xcode）将源代码编译之后得到的可执行文件。点击 APP 的那一刻，启动过程就已经开始。这个过程中系统内核（XUN）会通过调用各个相关函数来默默地帮我们完成各项启动的步骤：</p>
+<h2 id="1、XNU-加载-Mach-O-和-dyld-的流程"><a href="#1、XNU-加载-Mach-O-和-dyld-的流程" class="headerlink" title="#1、XNU 加载 Mach-O 和 dyld 的流程"></a>#1、XNU 加载 Mach-O 和 dyld 的流程</h2><p>大致流程图如下：</p>
+<p><img src="http://outofmemory.cn/j/objective-c/talk-about-app-startup/1.png" alt="image"></p>
+<p>相关函数调用顺序如下：</p>
+<h3 id="1-1、load-init-program"><a href="#1-1、load-init-program" class="headerlink" title="1.1、load_init_program()"></a>1.1、load_init_program()</h3><p>此函数的作用是负责加载初始化程序，非 debug 模式下会加载 launchd。这里 launchd 是一个负责进程管理的后台守护进程。</p>
+<h3 id="1-2、load-init-program-at-path"><a href="#1-2、load-init-program-at-path" class="headerlink" title="1.2、load_init_program_at_path()"></a>1.2、load_init_program_at_path()</h3><p>load_init_program_at_path 会调用 __mac_execve 函数来启动新进程和 task。我们的 APP 最后就是跑在这个新的进程上。在这之后继续调用 exec_activate_image 函数。</p>
+<h3 id="1-3、exec-activate-image"><a href="#1-3、exec-activate-image" class="headerlink" title="1.3、exec_activate_image()"></a>1.3、exec_activate_image()</h3><p>此函数负责按照二进制文件的格式，分发映射内存的函数，目前格式有三种：单指令集 binary、Fat binary、shell 脚本。如果是 Fat binary，会先进行指令集级别 Mach-O 的分解，然后再循环调用 execsw 来分发进行映射内存。execsw结构体和数组定义如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">struct execsw&#123;</span><br><span class="line">    int (*ex_imgact)(struct image_params *);</span><br><span class="line">    const char *ex_name;</span><br><span class="line">&#125; execsw [] = &#123;</span><br><span class="line">    &#123;exec_mach_imgact,  &quot;Mach-O Binary&quot;&#125;,//单指令集的Mach-O</span><br><span class="line">    &#123;exec_fat_imgact,   &quot;Fat Binary&quot;&#125;,   //多指令集的Mach-O</span><br><span class="line">    &#123;exec_shell_imgact, &quot;Interpreter Script&quot;&#125;,//shell 脚本</span><br><span class="line">    &#123;NULL , NULL&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>对于单指令集 Mach-O 二进制文件，系统会调用 exec_mach_imgact 函数，它主要完成以下几项工作：</p>
+<ul>
+<li style="list-style: none"><input type="checkbox" checked> 为 vfork 生成新的线程（vfork生成进程不会生成线程）;</li>
+<li style="list-style: none"><input type="checkbox" checked> 把 Mach-O 映射进内存；</li>
+<li style="list-style: none"><input type="checkbox" checked> 签名、uid等权限处理，dyld相关的处理工作；</li>
+<li style="list-style: none"><input type="checkbox" checked> 释放资源。</li>
+</ul>
+<h3 id="1-4、load-machfile"><a href="#1-4、load-machfile" class="headerlink" title="1.4、load_machfile()"></a>1.4、load_machfile()</h3><p>此函数负责除 Mach-O 解析之外所有和加载相关的工作（如加载 Mach-O 文件）:</p>
+<ul>
+<li style="list-style: none"><input type="checkbox" checked> 为当前 task 分配可执行内存；</li>
+<li style="list-style: none"><input type="checkbox" checked> Mach-O 和 dyld ASLR的随机；</li>
+<li style="list-style: none"><input type="checkbox" checked> 为 exec_mach_imgact 回传结果。</li>
+</ul>
+<p>上面这一流程中有一个创建虚拟内存映射的 vm_map_create() 函数， 它创建了一个 0~max_offset 大的空间，也就是一个 App 最大的虚拟内存空间。ARM 处理器 64bit 的架构情况下 App 最大的虚拟内存空间为 64GB。</p>
+<h3 id="1-5、parse-machfile"><a href="#1-5、parse-machfile" class="headerlink" title="1.5、parse_machfile()"></a>1.5、parse_machfile()</h3><p>parse_machfile 函数主要完成了以下几个工作：</p>
+<ul>
+<li style="list-style: none"><input type="checkbox" checked> Mach-O 文件的解析，segment 虚拟内存分配；</li>
+<li style="list-style: none"><input type="checkbox" checked> dyld 的加载；</li>
+<li style="list-style: none"><input type="checkbox" checked> dyld 的解析及虚拟内存分配；</li>
+</ul>
+<p>这里先明确下 parse_machfile() 三个特别的逻辑：</p>
+<p>&emsp;</p>
+<p>1、parse_machfile()是递归解析的，最初的递归深度为0，最高深度到6，防止无限递归。使用递归解析，主要是将不同 Mach-O 文件类型按照依赖关系，分前后进行解析。如解析可执行二进制文件类型(MH_EXECUTABLE)的 Mach-O 文件需要调用 load_dylinker() 来处理加载命令LC_LOAD_DYLINKER，而动态链接器也是 Mach-O 文件，所以就需要递归到不同的深度进行解析；</p>
+<p>&emsp;</p>
+<p>2、parse_machfile()的每一次递归，在解析加载命令时，会将内核需要解析的加载命令按照加载循序划分为三组进行解析，在代码的体现上就是通过三次循环，每趟循环只关注当前趟需要解析的命令： </p>
+<ul>
+<li style="list-style: none"><input type="checkbox" checked> 解析线程状态、UUID 和代码签名：相关命令为LC_UNIXTHREAD、LC_MAIN、LC_UUID、LC_CODE_SIGNATURE；</li>
+<li style="list-style: none"><input type="checkbox" checked> 解析代码段 Segment：相关命令为LC_SEGMENT、LC_SEGMENT_64； </li>
+<li style="list-style: none"><input type="checkbox" checked> 解析动态链接库、加密信息：相关命令为：LC_ENCRYPTION_INFO、LC_ENCRYPTION_INFO_64、LC_LOAD_DYLINKER。</li>
+</ul>
+<p>3、关于 Mach-O 的入口点。解析完可执行二进制文件类型的 Mach-O 文件(假设为A)之后，我们会得到A的入口点；但线程并不立刻进入到这个入口点。这是由于我们还会加载动态链接器(dyld)，在 load_dylinker() 中，dyld会保存A的入口点，递归调用 parse_machfile() 之后，将线程的入口点设为dyld的入口点；动态链接器dyld完成加载库的工作之后，再将入口点设回A的入口点，程序启动完成；</p>
+<h3 id="1-6、load-dylinker"><a href="#1-6、load-dylinker" class="headerlink" title="1.6、load_dylinker()"></a>1.6、load_dylinker()</h3><p>load_dylinker 函数负责 dyld 的加载、解析等工作。之后就会进入 dylb 流程。</p>
+<h2 id="2、main-函数到-didFinishLaunch-方法结束这段时间"><a href="#2、main-函数到-didFinishLaunch-方法结束这段时间" class="headerlink" title="#2、main 函数到 didFinishLaunch 方法结束这段时间"></a>#2、main 函数到 didFinishLaunch 方法结束这段时间</h2><p>1、执行main函数;</p>
+<p>2、执行UIApplicationMain函数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">创建UIApplication，启动主Runloop;</span><br><span class="line">创建AppDelegate对象，开始处理系统事件;</span><br></pre></td></tr></table></figure>
+<p>3、检查Info.plist设置、创建显示主窗口：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">加载SB;</span><br><span class="line">创建Keywindow;</span><br><span class="line">创建rootViewController;</span><br><span class="line">显示主窗口;</span><br></pre></td></tr></table></figure>
+<hr>
+<p>在Xcode中，可以通过设置环境变量来查看App的启动时间，DYLD_PRINT_STATISTICS和DYLD_PRINT_STATISTICS_DETAILS。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Edit Schemes-&gt;Run-&gt;Arguments-&gt;Environment Variables-&gt;新增上述变量之一，value=1</span><br></pre></td></tr></table></figure>
+<p>设置后再次启动APP即可在控制台看到日志：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Total pre-main time: 1.3 seconds (100.0%)</span><br><span class="line">         dylib loading time: 160.66 milliseconds (11.5%)</span><br><span class="line">        rebase/binding time: 1.1 seconds (81.2%)</span><br><span class="line">            ObjC setup time:  52.53 milliseconds (3.7%)</span><br><span class="line">           initializer time:  47.49 milliseconds (3.4%)</span><br><span class="line">           slowest intializers :</span><br><span class="line">               libSystem.dylib :   3.80 milliseconds (0.2%)</span><br></pre></td></tr></table></figure>
+<h2 id="3、优化启动时间"><a href="#3、优化启动时间" class="headerlink" title="#3、优化启动时间:"></a>#3、优化启动时间:</h2><ul>
+<li style="list-style: none"><input type="checkbox" checked> 内嵌的dylib尽可能少，或者合并起来。</li>
+<li style="list-style: none"><input type="checkbox" checked> 将不必须在+load中做的事延迟到+ initialize中。</li>
+<li style="list-style: none"><input type="checkbox" checked> 不使用xib，直接用代码加载首页视图。</li>
+<li style="list-style: none"><input type="checkbox" checked> release版不要用NSLog输出。</li>
+<li style="list-style: none"><input type="checkbox" checked> 启动时的网络请求尽可能异步。</li>
+<li style="list-style: none"><input type="checkbox" checked> Rebase/Binding 减少__DATA中需要修正的指针。 对于OC来说减少 class, selector, category 这些元数据的数量，对与C++来说，减少虚函数数量。swift结构体需要修正的比较少。</li>
+</ul>
+<hr>
+<p>相关参考：</p>
+<p>#<a href="https://mp.weixin.qq.com/s/I60p2M-IHDmeUanDUkFdVw" target="_blank" rel="noopener">©MissionPeak</a></p>
+<p>#<a href="http://oncenote.com/2015/06/01/How-App-Launch/" target="_blank" rel="noopener">©Jamin’s blog</a></p>
+<p>#<a href="https://www.jianshu.com/p/65901441903e" target="_blank" rel="noopener">©简书</a></p>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#APP启动" >
+    <span class="tag-code">APP启动</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2018/07/11/dsym.html">
+        <span class="nav-arrow">← </span>
+        
+          结合dSYM文件分析crash日志
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2018/07/23/fast-github.html">
+        
+          Github 访问慢的解决方案
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1、XNU-加载-Mach-O-和-dyld-的流程"><span class="toc-nav-text">#1、XNU 加载 Mach-O 和 dyld 的流程</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1-1、load-init-program"><span class="toc-nav-text">1.1、load_init_program()</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1-2、load-init-program-at-path"><span class="toc-nav-text">1.2、load_init_program_at_path()</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1-3、exec-activate-image"><span class="toc-nav-text">1.3、exec_activate_image()</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1-4、load-machfile"><span class="toc-nav-text">1.4、load_machfile()</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1-5、parse-machfile"><span class="toc-nav-text">1.5、parse_machfile()</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1-6、load-dylinker"><span class="toc-nav-text">1.6、load_dylinker()</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2、main-函数到-didFinishLaunch-方法结束这段时间"><span class="toc-nav-text">#2、main 函数到 didFinishLaunch 方法结束这段时间</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3、优化启动时间"><span class="toc-nav-text">#3、优化启动时间:</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'http://yoursite.com/2018/07/15/launch.html';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+     // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+        
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+
+    // qrcode
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+
+    // gitment
+    var gitmentConfig = "";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "App 的启动过程",
+        owner: "",
+        repo: "",
+        oauth: {
+          client_id: "",
+          client_secret: ""
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  })();
+</script>
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2018 | <a href="https://github.com/davidlii" target="_blank">Davidli</a>
+    <br>
+    <a href="https://hexo.io" target="_blank">Hexo</a> | Theme-<a href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+<script src="/js/script.js"></script>
+  </body>
+</html>

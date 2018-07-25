@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="This is Davidli&#39;s blog ~">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" type="image/ico" href="/image/logo.png"/> 
+  
+  <title>
+    
+      iOS异常捕获 | Davidli
+    
+  </title>
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+  <script src="/js/qrious.js"></script>
+<script src="/js/gitment.js"></script>
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+</head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>Davidli</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>iOS异常捕获</h2>
+  <p class="post-date">2017-11-28</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h3 id="线上APP获取崩溃信息的方式："><a href="#线上APP获取崩溃信息的方式：" class="headerlink" title="线上APP获取崩溃信息的方式："></a>线上APP获取崩溃信息的方式：</h3><ul>
+<li>使用系统 API 收集崩溃信息并上传到服务器。</li>
+<li>使用友盟、Bugly 等第三方收集分析SDK。</li>
+<li>使用 iTunes Connect 上的崩溃收集服务。</li>
+</ul>
+<p>&emsp;这里暂时只讲第一种。iOS提供了异常发生时的处理API，在程序启动的时候可以添加这样的Handler，这样程序发生异常的时候就可以对异常进行必要的处理。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">void NSSetUncaughtExceptionHandler(NSUncaughtExceptionHandler * _Nullable);</span><br></pre></td></tr></table></figure>
+<p>&emsp;下面的类就利用了系统提供的API来捕获出现的崩溃，并将异常信息存储到固定目录下的文件中，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">//.h文件</span><br><span class="line">#import &lt;Foundation/Foundation.h&gt;</span><br><span class="line"></span><br><span class="line">@interface ExceptionHandler : NSObject</span><br><span class="line"></span><br><span class="line">+ (void)setDefaultHandler;</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">//.m文件</span><br><span class="line">#import &quot;ExceptionHandler.h&quot;</span><br><span class="line"></span><br><span class="line">volatile int32_t UncaughtExceptionCount = 0;   //当前处理的异常个数</span><br><span class="line">volatile int32_t UncaughtExceptionMaximum = 10;//最大能够处理的异常个数</span><br><span class="line"></span><br><span class="line">#pragma mark -文件目录</span><br><span class="line">NSString *exceptionFilePath()</span><br><span class="line">&#123;</span><br><span class="line">	return [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask, YES) lastObject];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#pragma mark -收到异常通知时的回调函数</span><br><span class="line">void UncaughtExceptionHandler(NSException *exception)</span><br><span class="line">&#123;</span><br><span class="line">	NSArray *arr = [exception callStackSymbols];</span><br><span class="line">	NSString *reason = [exception reason];</span><br><span class="line">	NSString *name = [exception name];</span><br><span class="line"></span><br><span class="line">	NSString *info = [NSString stringWithFormat:@&quot;+异常崩溃报告+\nname:\n%@\nreason:\n%@\ncallStackSymbols:\n%@&quot;,name,reason,[arr componentsJoinedByString:@&quot;\n&quot;]];</span><br><span class="line"></span><br><span class="line">	NSString *path = [exceptionFilePath() stringByAppendingPathComponent:@&quot;Exception.txt&quot;];</span><br><span class="line"></span><br><span class="line">	[info writeToFile:path atomically:YES encoding:NSUTF8StringEncoding error:nil];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@implementation ExceptionHandler</span><br><span class="line"></span><br><span class="line">#pragma mark -开始监听异常</span><br><span class="line">+ (void)setDefaultHandler</span><br><span class="line">&#123;</span><br><span class="line">	NSSetUncaughtExceptionHandler (&amp;UncaughtExceptionHandler);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>&emsp;调用代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">- (BOOL)application:(UIApplication *)application</span><br><span class="line">didFinishLaunchingWithOptions:(NSDictionary *)launchOptions</span><br><span class="line">&#123;</span><br><span class="line">	[ExceptionHandler setDefaultHandler];</span><br><span class="line">	NSArray *anArr = @[@(0)];</span><br><span class="line">	anArr[5];</span><br><span class="line"></span><br><span class="line">	return YES;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>&emsp;崩溃后得到日志信息如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">+异常崩溃报告+</span><br><span class="line">name:</span><br><span class="line">NSRangeException</span><br><span class="line">reason:</span><br><span class="line">*** -[__NSSingleObjectArrayI objectAtIndex:]: index 5 beyond bounds [0 .. 0]</span><br><span class="line">callStackSymbols:</span><br><span class="line">0   CoreFoundation      0x00000001070dd1ab __exceptionPreprocess + 171</span><br><span class="line">1   libobjc.A.dylib     0x0000000106772f41 objc_exception_throw + 48</span><br><span class="line">2   CoreFoundation      0x000000010711d2df -[__NSSingleObjectArrayI objectAtIndex:] + 111</span><br><span class="line">3   ASDF                0x0000000105e5a8b2 -[AppDelegate application:didFinishLaunchingWithOptions:] + 242</span><br><span class="line">...</span><br><span class="line">28  CoreFoundation      0x0000000107064b49 __CFRunLoopDoSources0 + 185</span><br><span class="line">29  CoreFoundation      0x000000010706412f __CFRunLoopRun + 1279</span><br><span class="line">30  CoreFoundation      0x00000001070639b9 CFRunLoopRunSpecific + 409</span><br><span class="line">31  GraphicsServices    0x000000010c0ad9c6 GSEventRunModal + 62</span><br><span class="line">32  UIKit               0x00000001075585e8 UIApplicationMain + 159</span><br><span class="line">33  ASDF                0x0000000105e5bf4f main + 111</span><br><span class="line">34  libdyld.dylib       0x000000010aa71d81 start + 1</span><br></pre></td></tr></table></figure>
+<p>&emsp;但是，并不是所有的程序崩溃都是由于发生可以捕捉的异常的，有些时候引起崩溃的原因可能是：内存访问错误、重复释放等。上面的API对这些错误就无能为力了，因为这种错误它抛出的是Signal，所以必须要专门做Signal处理。</p>
+<p>&emsp;此时，可以使用下面的函数来注册signal异常时的回调函数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">signal(SIGABRT, signalExceptionHandler);</span><br></pre></td></tr></table></figure>
+<p>&emsp;这样，当应用发生错误而产生上述signal后，就会进入我们自定义的回调函数signalExceptionHandler中。为了得到崩溃时的现场信息，还可以加入一些获取CallTrace的方法，完整代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">#import &lt;Foundation/Foundation.h&gt;</span><br><span class="line"></span><br><span class="line">@interface ExceptionHandler : NSObject</span><br><span class="line"></span><br><span class="line">+ (instancetype)shareInstance;</span><br><span class="line">+ (NSArray *)backtrace;</span><br><span class="line">+ (void)installExceptionHandler;</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br></pre></td><td class="code"><pre><span class="line">#import &quot;ExceptionHandler.h&quot;</span><br><span class="line">#import &lt;UIKit/UIKit.h&gt;</span><br><span class="line">#include &lt;libkern/OSAtomic.h&gt;</span><br><span class="line">#include &lt;execinfo.h&gt;</span><br><span class="line">#include &lt;sys/signal.h&gt;</span><br><span class="line"></span><br><span class="line">//当前处理的异常个数</span><br><span class="line">volatile int32_t UncaughtExceptionCount = 0;</span><br><span class="line">//最大能够处理的异常个数</span><br><span class="line">volatile int32_t UncaughtExceptionMaximum = 10;</span><br><span class="line"></span><br><span class="line">const NSInteger ExceptionHandlerSkipAddressCount = 5;</span><br><span class="line">const NSInteger ExceptionHandlerReportAddressCount = 10;</span><br><span class="line"></span><br><span class="line">static ExceptionHandler *mExceptionHandler =  nil;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">#pragma mark -捕获信号后的回调函数</span><br><span class="line">void signalExceptionHandler(int signo)</span><br><span class="line">&#123;</span><br><span class="line">	int32_t exceptionCount = OSAtomicIncrement32(&amp;UncaughtExceptionCount);</span><br><span class="line">	if (exceptionCount &gt; UncaughtExceptionMaximum)&#123;</span><br><span class="line">		return;</span><br><span class="line">	&#125;</span><br><span class="line">	NSArray *callStack = [ExceptionHandler backtrace];</span><br><span class="line"></span><br><span class="line">	NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithObject:</span><br><span class="line">	[NSNumber numberWithInt:signo] forKey:@&quot;signal&quot;];</span><br><span class="line">	[userInfo setValue:callStack forKey:@&quot;callStack&quot;];</span><br><span class="line"></span><br><span class="line">	//创建一个OC异常对象</span><br><span class="line">	NSException *ex = [NSException exceptionWithName:@&quot;Name&quot; reason:nil userInfo:userInfo];</span><br><span class="line"></span><br><span class="line">	//处理异常消息</span><br><span class="line">	[[ExceptionHandler shareInstance] performSelectorOnMainThread:@selector(onHandleSignalException:) withObject:ex waitUntilDone:YES];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">@implementation ExceptionHandler</span><br><span class="line"></span><br><span class="line">+ (instancetype)shareInstance</span><br><span class="line">&#123;</span><br><span class="line">static dispatch_once_t onceToken;</span><br><span class="line">dispatch_once(&amp;onceToken, ^&#123;</span><br><span class="line">	if (mExceptionHandler == nil) &#123;</span><br><span class="line">		mExceptionHandler  =  [[ExceptionHandler alloc] init];</span><br><span class="line">	&#125;</span><br><span class="line">&#125;);</span><br><span class="line">	return mExceptionHandler;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">#pragma mark -注册异常处理回调</span><br><span class="line">+ (void)installExceptionHandler</span><br><span class="line">&#123;</span><br><span class="line">//注册程序由于abort()函数调用发生的程序中止信号</span><br><span class="line">signal(SIGABRT, signalExceptionHandler);</span><br><span class="line"></span><br><span class="line">//注册程序由于非法指令产生的程序中止信号</span><br><span class="line">signal(SIGILL, signalExceptionHandler);</span><br><span class="line"></span><br><span class="line">//注册程序由于无效内存的引用导致的程序中止信号</span><br><span class="line">signal(SIGSEGV, signalExceptionHandler);</span><br><span class="line"></span><br><span class="line">//注册程序由于浮点数异常导致的程序中止信号</span><br><span class="line">signal(SIGFPE, signalExceptionHandler);</span><br><span class="line"></span><br><span class="line">//注册程序由于内存地址未对齐导致的程序中止信号</span><br><span class="line">signal(SIGBUS, signalExceptionHandler);</span><br><span class="line"></span><br><span class="line">//程序通过端口发送消息失败导致的程序中止信号</span><br><span class="line">signal(SIGPIPE, signalExceptionHandler);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#pragma mark -处理异常用到的方法</span><br><span class="line">- (void)onHandleSignalException:(NSException *)exception</span><br><span class="line">&#123;</span><br><span class="line">	NSLog(@&quot;++++出现崩溃:\n%@&quot;,exception.userInfo);</span><br><span class="line"></span><br><span class="line">	NSSetUncaughtExceptionHandler(NULL);</span><br><span class="line"></span><br><span class="line">	signal(SIGABRT, SIG_DFL);</span><br><span class="line">	signal(SIGILL, SIG_DFL);</span><br><span class="line">	signal(SIGSEGV, SIG_DFL);</span><br><span class="line">	signal(SIGFPE, SIG_DFL);</span><br><span class="line">	signal(SIGBUS, SIG_DFL);</span><br><span class="line">	signal(SIGPIPE, SIG_DFL);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#pragma mark -获取调用堆栈</span><br><span class="line">+ (NSArray *)backtrace</span><br><span class="line">&#123;</span><br><span class="line">	void* callstack[128];</span><br><span class="line"></span><br><span class="line">	//该函数用于获取当前线程的调用堆栈</span><br><span class="line">	int frames = backtrace(callstack, 128);</span><br><span class="line"></span><br><span class="line">	//将从backtrace函数获取的信息转化为一个字符串数组</span><br><span class="line">	char **strs = backtrace_symbols(callstack, frames);</span><br><span class="line"></span><br><span class="line">	int i;</span><br><span class="line"></span><br><span class="line">	NSMutableArray *backtrace = [NSMutableArray arrayWithCapacity:frames];</span><br><span class="line"></span><br><span class="line">	for (i = ExceptionHandlerSkipAddressCount;</span><br><span class="line">		i &lt; ExceptionHandlerSkipAddressCount + ExceptionHandlerReportAddressCount; i++)</span><br><span class="line">	&#123;</span><br><span class="line">		[backtrace addObject:[NSString stringWithUTF8String:strs[i]]];</span><br><span class="line">	&#125;</span><br><span class="line">	free(strs);</span><br><span class="line">	return backtrace;</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<p>&emsp;调用示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">- (BOOL)application:(UIApplication *)application</span><br><span class="line">didFinishLaunchingWithOptions:(NSDictionary *)launchOptions</span><br><span class="line">&#123;</span><br><span class="line">	[ExceptionHandler installExceptionHandler];</span><br><span class="line">	return YES;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>&emsp;这样，基本上所有崩溃都能捕获了。</p>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#异常捕获" >
+    <span class="tag-code">异常捕获</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2017/11/27/bad_access.html">
+        <span class="nav-arrow">← </span>
+        
+          内存错误调试
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2017/12/22/download.html">
+        
+          iOS 文件下载
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#线上APP获取崩溃信息的方式："><span class="toc-nav-text">线上APP获取崩溃信息的方式：</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'http://yoursite.com/2017/11/28/crash.html';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+     // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+        
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+
+    // qrcode
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+
+    // gitment
+    var gitmentConfig = "";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "iOS异常捕获",
+        owner: "",
+        repo: "",
+        oauth: {
+          client_id: "",
+          client_secret: ""
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  })();
+</script>
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2018 | <a href="https://github.com/davidlii" target="_blank">Davidli</a>
+    <br>
+    <a href="https://hexo.io" target="_blank">Hexo</a> | Theme-<a href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+<script src="/js/script.js"></script>
+  </body>
+</html>

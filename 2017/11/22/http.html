@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="This is Davidli&#39;s blog ~">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" type="image/ico" href="/image/logo.png"/> 
+  
+  <title>
+    
+      网络知识点笔记 | Davidli
+    
+  </title>
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+  <script src="/js/qrious.js"></script>
+<script src="/js/gitment.js"></script>
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+</head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>Davidli</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>网络知识点笔记</h2>
+  <p class="post-date">2017-11-22</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h3 id="1、网络分层（由上往下）："><a href="#1、网络分层（由上往下）：" class="headerlink" title="1、网络分层（由上往下）："></a>1、网络分层（由上往下）：</h3><ul>
+<li>应用层</li>
+<li>表示层</li>
+<li>会话层</li>
+<li>传输层</li>
+<li>网络层</li>
+<li>数据链路层</li>
+<li>物理层</li>
+</ul>
+<h3 id="2、区别术语："><a href="#2、区别术语：" class="headerlink" title="2、区别术语："></a>2、区别术语：</h3><ul>
+<li>TCP/IP：代表传输控制协议/网际协议，指的是一系列协议。</li>
+<li>IP协议：网络层协议，解决网络路由和寻址问题。</li>
+<li>TCP：传输层协议，解决如何在IP层可靠的传递数据包问题。可靠、面向连接。</li>
+<li>UDP：传输层协议，无连接、没TCP可靠。</li>
+<li>HTTP：应用层协议。</li>
+<li>SOCKET：是对TCP/IP协议的封装，它本身并不是协议，而是一套API。</li>
+</ul>
+<h3 id="3、TCP连接的三次握手："><a href="#3、TCP连接的三次握手：" class="headerlink" title="3、TCP连接的三次握手："></a>3、TCP连接的三次握手：</h3><ol>
+<li>客户端发送syn包(syn=j)到服务器，并进入SYN_SEND状态，等待服务器确认；</li>
+<li>服务器收到syn包，必须确认客户的SYN（ack=j+1），同时自己也发送一个SYN包（syn=k），即SYN+ACK包，此时服务器进入SYN_RECV状态；</li>
+<li>客户端收到服务器的SYN＋ACK包，向服务器发送确认包ACK(ack=k+1)，此包发送完毕，客户端和服务器进入ESTABLISHED状态，完成三次握手。</li>
+</ol>
+<ul>
+<li>握手过程中传送的包里不包含数据，三次握手完毕后，客户端与服务器才正式开始传送数据。断开连接时服务器和客户端均可以主动发起断开TCP连接的请求，断开过程需要经过“四次握手”。</li>
+</ul>
+<h3 id="4、如何理解HTTP协议是无状态的"><a href="#4、如何理解HTTP协议是无状态的" class="headerlink" title="4、如何理解HTTP协议是无状态的"></a>4、如何理解HTTP协议是无状态的</h3><p>&emsp;HTTP协议是无状态的，指的是协议对于事务处理没有记忆能力，服务器不知道客户端是什么状态。也就是说，打开一个服务器上的网页和你之前打开这个服务器上的网页之间没有任何联系。HTTP是一个无状态的面向连接的协议，无状态不代表HTTP不能保持TCP连接，更不能代表HTTP使用的是UDP协议（无连接）。</p>
+<h3 id="5、短连接、长连接"><a href="#5、短连接、长连接" class="headerlink" title="5、短连接、长连接"></a>5、短连接、长连接</h3><p>&emsp;在HTTP/1.0中，默认使用的是短连接。也就是说，浏览器和服务器每进行一次HTTP操作，就建立一次连接，但任务结束就中断连接。如果客户端浏览器访问的某个HTML或其他类型的 Web页中包含有其他的Web资源，如JavaScript文件、图像文件、CSS文件等；当浏览器每遇到这样一个Web资源，就会建立一个HTTP会话。</p>
+<p>&emsp;但从 HTTP/1.1起，默认使用长连接，用以保持连接特性。使用长连接的HTTP协议，会在响应头有加入这行代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Connection:keep-alive</span><br></pre></td></tr></table></figure>
+<p>&emsp;在使用长连接的情况下，当一个网页打开完成后，客户端和服务器之间用于传输HTTP数据的 TCP连接不会关闭，如果客户端再次访问这个服务器上的网页，会继续使用这一条已经建立的连接。Keep-Alive不会永久保持连接，它有一个保持时间，可以在不同的服务器软件（如Apache）中设定这个时间。实现长连接要客户端和服务端都支持长连接。</p>
+<p>&emsp;现在各个浏览器的高版本基本都是支持长连接。</p>
+<h4 id="5-1-优点和缺点"><a href="#5-1-优点和缺点" class="headerlink" title="5.1.优点和缺点"></a>5.1.优点和缺点</h4><p>&emsp;短连接：对于服务器来说管理较为简单，存在的连接都是有用的连接，不需要额外的控制手段。但如果客户请求频繁，将在TCP的建立和关闭操作上浪费时间和带宽。</p>
+<p>&emsp;长连接：可以省去较多的TCP建立和关闭的操作，减少浪费，节约时间。对于频繁请求资源的客户来说，较适用长连接。但，Client与Server之间的连接如果一直不关闭的话，会存在一个问题，随着客户端连接越来越多，server早晚有扛不住的时候。</p>
+<h4 id="5-2-长连接模式下客户端如何判断服务端数据已发送完成"><a href="#5-2-长连接模式下客户端如何判断服务端数据已发送完成" class="headerlink" title="5.2.长连接模式下客户端如何判断服务端数据已发送完成"></a>5.2.长连接模式下客户端如何判断服务端数据已发送完成</h4><p>&emsp;短连接模式下，服务器通常在发送回所请求的数据之后就关闭连接。这样客户端读数据时会返回EOF（-1），就知道数据已经接收完全了。但是长连接模式发送玩数据HTTP服务器不会自动断开连接，所以不能再使用返回EOF（-1）来判断。</p>
+<ul>
+<li><strong>Conent-Length</strong></li>
+</ul>
+<p>&emsp;当客户端向服务器请求一个静态页面或者一张图片时，服务器可以很清楚的知道内容大小，通过Content-length消息首部字段告诉客户端需要接收多少数据。客户端可以根据这个值来判断数据是否接收完成。</p>
+<ul>
+<li><strong>Transfer-Encoding</strong></li>
+</ul>
+<p>&emsp;如果是动态页面等时，服务器是不可能预先知道内容大小，这时就可以使用Transfer-Encoding：chunk模式来传输数据了。即如果要一边产生数据，一边发给客户端，服务器就需要使用”Transfer-Encoding: chunked”这样的方式来代替Content-Length。</p>
+<p>&emsp;chunk编码将数据分成一块一块的发生。Chunked编码将使用若干个Chunk串连而成，由一个标明长度为0的chunk标示结束。每个Chunk分为头部和正文两部分，头部内容指定正文的字符总数（十六进制的数字）和数量单位（一般不写），正文部分就是指定长度的实际内容，两部分之间用回车换行(CRLF)隔开。在最后一个长度为0的Chunk中的内容是称为footer的内容，是一些附加的Header信息（通常可以直接忽略）。</p>
+<p>&emsp;Chunk编码的格式如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">Chunked-Body = *chunk</span><br><span class="line">&quot;0&quot; CRLF</span><br><span class="line">footer</span><br><span class="line">CRLF</span><br><span class="line">chunk = chunk-size [ chunk-ext ] CRLF</span><br><span class="line">chunk-data CRLF</span><br><span class="line"></span><br><span class="line">hex-no-zero = &lt;HEX excluding &quot;0&quot;&gt;</span><br><span class="line"></span><br><span class="line">chunk-size = hex-no-zero *HEX</span><br><span class="line">chunk-ext = *( &quot;;&quot; chunk-ext-name [ &quot;=&quot; chunk-ext-value ] )</span><br><span class="line">chunk-ext-name = token</span><br><span class="line">chunk-ext-val = token | quoted-string</span><br><span class="line">chunk-data = chunk-size(OCTET)</span><br><span class="line"></span><br><span class="line">footer = *entity-header</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>消息长度的总结</strong></li>
+</ul>
+<ol>
+<li>为了兼容HTTP/1.0应用程序，HTTP/1.1的请求消息体中必须包含一个合法的Content-Length头字段，除非知道服务器兼容HTTP/1.1。</li>
+<li>在包含消息内容的Header中，如果有content-length字段，该字段对应的值必须完全和消息主体里面的长度匹配。</li>
+<li>如果同时收到了Transfer-Encoding段和Content-Length头字段，必须忽略Content-Length字段。</li>
+<li>如果采用短连接，则直接可以通过服务器关闭连接来确定消息的传输长度。</li>
+</ol>
+<h3 id="6、HTTP头部"><a href="#6、HTTP头部" class="headerlink" title="6、HTTP头部"></a>6、HTTP头部</h3><p>&emsp;HTTP协议采用了请求/响应模型。客户端向服务器发送一个请求，请求头包含请求的方法、URI、协议版本、以及包含请求修饰符、客户信息和内容的类似于MIME的消息结构。服务器以一个状态行作为响应，相应的内容包括消息协议的版本，成功或者错误编码加上包含服务器信息、实体元信息以及可能的实体内容。</p>
+<p>&emsp;通常HTTP消息包括客户机向服务器的请求消息和服务器向客户机的响应消息。这两种类型的消息由一个起始行，一个或者多个头域，一个只是头域结束的空行和可选的消息体组成。HTTP的头域包括通用头，请求头，响应头和实体头四个部分。每个头域由一个域名，冒号（:）和域值三部分组成。域名是大小写无关的，域值前可以添加任何数量的空格符，头域可以被扩展为多行，在每行开始处，使用至少一个空格或制表符。</p>
+<h4 id="6-1-HTTP-请求消息头部实例："><a href="#6-1-HTTP-请求消息头部实例：" class="headerlink" title="6.1.HTTP 请求消息头部实例："></a>6.1.HTTP 请求消息头部实例：</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Host：rss.sina.com.cn</span><br><span class="line">User-Agent：Mozilla/5、0 (Windows; U; Windows NT 5、1; zh-CN; </span><br><span class="line">rv:1、8、1、14) Gecko/20080404 Firefox/2、0、0、14</span><br><span class="line">Accept：text/xml,application/xml,application/xhtml+xml,text/html;</span><br><span class="line">q=0、9,text/plain;q=0、8,image/png,*/*;q=0、5</span><br><span class="line">Accept-Language：zh-cn,zh;q=0、5</span><br><span class="line">Accept-Encoding：gzip,deflate</span><br><span class="line">Accept-Charset：gb2312,utf-8;q=0、7,*;q=0、7</span><br><span class="line">Keep-Alive：300</span><br><span class="line">Connection：keep-alive</span><br><span class="line">Cookie：userId=C5bYpXrimdmsiQmsBPnE1Vn8ZQmdWSm3WRlEB3vRwTnRtW &amp;lt;-- Cookie</span><br><span class="line">If-Modified-Since：Sun, 01 Jun 2008 12:05:30 GMT</span><br><span class="line">Cache-Control：max-age=0</span><br></pre></td></tr></table></figure>
+<h4 id="6-2-HTTP-响应消息头部实例："><a href="#6-2-HTTP-响应消息头部实例：" class="headerlink" title="6.2.HTTP 响应消息头部实例："></a>6.2.HTTP 响应消息头部实例：</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">Status：OK - 200 &amp;lt;-- 响应状态码，表示 web 服务器处理的结果。</span><br><span class="line">Date：Sun, 01 Jun 2008 12:35:47 GMT</span><br><span class="line">Server：Apache/2、0、61 (Unix)</span><br><span class="line">Last-Modified：Sun, 01 Jun 2008 12:35:30 GMT</span><br><span class="line">Accept-Ranges：bytes</span><br><span class="line">Content-Length：18616</span><br><span class="line">Cache-Control：max-age=120</span><br><span class="line">Expires：Sun, 01 Jun 2008 12:37:47 GMT</span><br><span class="line">Content-Type：application/xml</span><br><span class="line">Age：2</span><br><span class="line">X-Cache：HIT from 236-41、D07071951、sina、com、cn &amp;lt;</span><br><span class="line">-- 反向代理服务器使用的 HTTP 头部</span><br><span class="line">Via：1.0 236-41.D07071951.sina.com.cn:80 (squid/2.6.STABLE13)</span><br><span class="line">Connection：close</span><br></pre></td></tr></table></figure>
+<h4 id="6-3-Content-Type参数："><a href="#6-3-Content-Type参数：" class="headerlink" title="6.3.Content-Type参数："></a>6.3.Content-Type参数：</h4><p>&emsp;用于指定请求和响应的HTTP内容的类型。如果未指定默认为text/html。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">类型格式：type/subtype(;parameter)? type</span><br><span class="line">type，主类型，任意的字符串，如text，*代表所有；</span><br><span class="line">subtype，子类型，任意的字符串，如html，*代表所有；</span><br><span class="line">parameter，可选，一些参数，如Accept请求头的q参数， Content-Type的 charset参数。</span><br></pre></td></tr></table></figure>
+<p>&emsp;常见的媒体格式类型如下：</p>
+<ul>
+<li>text/html ： HTML格式</li>
+<li>text/plain ：纯文本格式</li>
+<li>text/xml ：  XML格式</li>
+<li>image/gif ：gif图片格式</li>
+<li>image/jpeg ：jpg图片格式</li>
+<li>image/png：png图片格式</li>
+</ul>
+<p>&emsp;以application开头的媒体格式类型：</p>
+<ul>
+<li>application/xhtml+xml ：XHTML格式</li>
+<li>application/xml     ： XML数据格式</li>
+<li>application/atom+xml  ：Atom XML聚合格式</li>
+<li>application/json    ： JSON数据格式</li>
+<li>application/pdf       ：pdf格式</li>
+<li>application/msword  ： Word文档格式</li>
+<li>application/<font color="#0000FF"><strong>x-www-form-urlencoded</strong></font> ：表单默认的提交数据的格式（表单键值对）</li>
+<li>application/<font color="#0000FF"><strong>octet-stream</strong></font> ：上传二进制数据（只能提交一个文件）</li>
+<li><font color="#0000FF"><strong>multipart/form-data</strong></font> ：既可以上传表单键值对，也可以上传二进制数据（可传多个文件）</li>
+</ul>
+<h3 id="7、HTTP中GET与POST的区别"><a href="#7、HTTP中GET与POST的区别" class="headerlink" title="7、HTTP中GET与POST的区别"></a>7、HTTP中GET与POST的区别</h3><blockquote>
+<p>URL全称是资源描述符，用于描述一个网络上的资源。Http定义了与服务器交互的不同方法，最基本的方法有4种：GET，POST，PUT，DELETE。它们分别对应着对资源的查 ，改 ，增 ，删 4个操作。</p>
+</blockquote>
+<h4 id="7-1-用途："><a href="#7-1-用途：" class="headerlink" title="7.1.用途："></a>7.1.用途：</h4><ul>
+<li>GET一般用于获取/查询 资源信息，而POST一般用于更新资源信息。</li>
+</ul>
+<h4 id="7-2-参数-amp-数据："><a href="#7-2-参数-amp-数据：" class="headerlink" title="7.2.参数&amp;数据："></a>7.2.参数&amp;数据：</h4><ul>
+<li>GET请求的数据会附在URL之后，以?分割URL和传输数据，参数之间以&amp;分割。</li>
+<li>POST请求的数据被放在HTTP包的body中。</li>
+<li>所以GET比POST更不安全，因为参数直接暴露在URL上，不能用来传递敏感信息。</li>
+</ul>
+<h4 id="7-3-浏览器发送请求："><a href="#7-3-浏览器发送请求：" class="headerlink" title="7.3.浏览器发送请求："></a>7.3.浏览器发送请求：</h4><ul>
+<li>GET请求只产生一个TCP数据包，浏览器会把Http Header和Data一并发送出去，服务器响应200；</li>
+<li>POST请求产生两个TCP数据包，浏览器先发送Header，服务器响应100 continue，浏览器再发送data，服务器响应200。</li>
+</ul>
+<h3 id="8、HTTP-amp-HTTPS"><a href="#8、HTTP-amp-HTTPS" class="headerlink" title="8、HTTP &amp; HTTPS"></a>8、HTTP &amp; HTTPS</h3><blockquote>
+<p>&emsp;<strong>Http</strong>（超文本传输协议），属于应用层的一种协议。</p>
+</blockquote>
+<p>&emsp;缺点：</p>
+<ul>
+<li>通信使用明文（不加密），内容可能会被窃听。</li>
+<li>不验证通信方的身份，因此有可能遭遇伪装。</li>
+<li>无法证明报文的完整性，所以有可能已遭篡改。</li>
+</ul>
+<p>&emsp;优点：</p>
+<ul>
+<li>传输速度快</li>
+</ul>
+<blockquote>
+<p>&emsp;<strong>Https</strong>并非是应用层的一种新协议，它只是 Http 通信接口部分用 SSL （安全套接字层）和TLS （安全传输层协议）代替而已。即添加了加密及认证机制的 Http 称为 Https （ HTTP Secure ）。</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Https = Http + 加密 + 认证 + 完整性保护</span><br></pre></td></tr></table></figure>
+<h4 id="8-1-使用两把密钥的公开密钥加密"><a href="#8-1-使用两把密钥的公开密钥加密" class="headerlink" title="8.1.使用两把密钥的公开密钥加密"></a>8.1.使用两把密钥的公开密钥加密</h4><p>&emsp;公开密钥加密使用一对非对称的密钥：一把叫私钥，另一把叫公钥。私钥不能让其他任何人知道，而公钥则可以随意发布，任何人都可以获得。使用公钥加密方式时，发送密文的一方使用对方的公钥进行加密处理，对方收到被加密的信息后，再使用自己的私钥进行解密。利用这种方式，不需要发送用来解密的私钥，也不必担心密钥被攻击者窃听而盗走。</p>
+<p>过程</p>
+<ol>
+<li>服务器把自己的公钥登录至数字证书认证机构。</li>
+<li>数字证书机构把自己的私有密钥向服务器的公开密码部署数字签名并颁发公钥证书。</li>
+<li>客户端拿到服务器的公钥证书后，使用数字证书认证机构的公开密钥，向数字证书认证机构验证公钥证书上的数字签名。以确认服务器公钥的真实性。</li>
+<li>使用服务器的公开密钥对报文加密后发送。</li>
+<li>服务器用私有密钥对报文解密。</li>
+</ol>
+<h4 id="8-2-Https的工作原理"><a href="#8-2-Https的工作原理" class="headerlink" title="8.2.Https的工作原理"></a>8.2.Https的工作原理</h4><p>&emsp;Https在传输数据之前需要客户端（浏览器）与服务端（网站）之间进行一次握手，在握手过程中将确立双方加密传输数据的密码信息。TLS/SSL协议不仅仅是一套加密传输的协议，更是一件经过艺术家精心设计的艺术品，TLS/SSL中使用了非对称加密，对称加密以及HASH算法。握手过程的简单描述如下：</p>
+<p>&emsp;1. 浏览器将自己支持的一套加密规则发送给网站。</p>
+<p>&emsp;2. 网站从中选出一组加密算法与HASH算法，并将自己的身份信息以证书的形式发回给浏览器。证书里面包含了网站地址，加密公钥，以及证书的颁发机构等信息。</p>
+<p>&emsp;3. 获得网站证书之后浏览器要做以下工作：</p>
+<p>&emsp;a) 验证证书的合法性（颁发证书的机构是否合法，证书中包含的网站地址是否与正在访问的地址一致等），如果证书受信任，则浏览器栏里面会显示一个小锁头，否则会给出证书不受信的提示。</p>
+<p>&emsp;b) 如果证书受信任，或者是用户接受了不受信的证书，浏览器会生成一串随机数的密码，并用证书中提供的公钥加密。</p>
+<p>&emsp;c) 使用约定好的HASH计算握手消息，并使用生成的随机数对消息进行加密，最后将之前生成的所有信息发送给网站。</p>
+<p>&emsp;4. 网站接收浏览器发来的数据之后要做以下的操作：</p>
+<p>&emsp;a) 使用自己的私钥将信息解密取出密码，使用密码解密浏览器发来的握手消息，并验证HASH是否与浏览器发来的一致。</p>
+<p>&emsp;b) 使用密码加密一段握手消息，发送给浏览器。</p>
+<p>&emsp;5. 浏览器解密并计算握手消息的HASH，如果与服务端发来的HASH一致，此时握手过程结束，之后所有的通信数据将由之前浏览器生成的随机密码并利用对称加密算法进行加密。</p>
+<p>&emsp;这里浏览器与网站互相发送加密的握手消息并验证，目的是为了保证双方都获得了一致的密码，并且可以正常的加密解密数据，为后续真正数据的传输做一次测试。另外，HTTPS一般使用的加密与HASH算法如下：</p>
+<ul>
+<li>非对称加密算法：RSA，DSA/DSS</li>
+<li>对称加密算法：AES，RC4，3DES</li>
+<li>HASH算法：MD5，SHA1，SHA256</li>
+</ul>
+<p>&emsp;其中：</p>
+<ul>
+<li>非对称加密算法用于在握手过程中加密生成的密码。</li>
+<li>对称加密算法用于对真正传输的数据进行加密</li>
+<li>HASH算法用于验证数据的完整性</li>
+</ul>
+<p>&emsp;由于浏览器生成的密码是整个数据加密的关键，因此在传输的时候使用了非对称加密算法对其加密。非对称加密算法会生成公钥和私钥，公钥只能用于加密数据，因此可以随意传输，而网站的私钥用于对数据进行解密，所以网站都会非常小心的保管自己的私钥，防止泄漏。</p>
+<hr>
+<p>相关参考：</p>
+<p>#<a href="https://www.cnblogs.com/Yfling/p/6670495.html" target="_blank" rel="noopener">©传送门</a></p>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#网络" >
+    <span class="tag-code">网络</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2017/11/21/lock.html">
+        <span class="nav-arrow">← </span>
+        
+          iOS中的八大锁
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2017/11/23/atomic.html">
+        
+          atomic一定线程安全吗？
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1、网络分层（由上往下）："><span class="toc-nav-text">1、网络分层（由上往下）：</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2、区别术语："><span class="toc-nav-text">2、区别术语：</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3、TCP连接的三次握手："><span class="toc-nav-text">3、TCP连接的三次握手：</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#4、如何理解HTTP协议是无状态的"><span class="toc-nav-text">4、如何理解HTTP协议是无状态的</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#5、短连接、长连接"><span class="toc-nav-text">5、短连接、长连接</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#5-1-优点和缺点"><span class="toc-nav-text">5.1.优点和缺点</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#5-2-长连接模式下客户端如何判断服务端数据已发送完成"><span class="toc-nav-text">5.2.长连接模式下客户端如何判断服务端数据已发送完成</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#6、HTTP头部"><span class="toc-nav-text">6、HTTP头部</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#6-1-HTTP-请求消息头部实例："><span class="toc-nav-text">6.1.HTTP 请求消息头部实例：</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#6-2-HTTP-响应消息头部实例："><span class="toc-nav-text">6.2.HTTP 响应消息头部实例：</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#6-3-Content-Type参数："><span class="toc-nav-text">6.3.Content-Type参数：</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#7、HTTP中GET与POST的区别"><span class="toc-nav-text">7、HTTP中GET与POST的区别</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#7-1-用途："><span class="toc-nav-text">7.1.用途：</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#7-2-参数-amp-数据："><span class="toc-nav-text">7.2.参数&amp;数据：</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#7-3-浏览器发送请求："><span class="toc-nav-text">7.3.浏览器发送请求：</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#8、HTTP-amp-HTTPS"><span class="toc-nav-text">8、HTTP &amp; HTTPS</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#8-1-使用两把密钥的公开密钥加密"><span class="toc-nav-text">8.1.使用两把密钥的公开密钥加密</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#8-2-Https的工作原理"><span class="toc-nav-text">8.2.Https的工作原理</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'http://yoursite.com/2017/11/22/http.html';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+     // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+        
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+
+    // qrcode
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+
+    // gitment
+    var gitmentConfig = "";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "网络知识点笔记",
+        owner: "",
+        repo: "",
+        oauth: {
+          client_id: "",
+          client_secret: ""
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  })();
+</script>
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2018 | <a href="https://github.com/davidlii" target="_blank">Davidli</a>
+    <br>
+    <a href="https://hexo.io" target="_blank">Hexo</a> | Theme-<a href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+<script src="/js/script.js"></script>
+  </body>
+</html>

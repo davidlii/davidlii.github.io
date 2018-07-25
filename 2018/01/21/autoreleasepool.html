@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="This is Davidli&#39;s blog ~">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" type="image/ico" href="/image/logo.png"/> 
+  
+  <title>
+    
+      autoreleasepool | Davidli
+    
+  </title>
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+  <script src="/js/qrious.js"></script>
+<script src="/js/gitment.js"></script>
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+</head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>Davidli</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>autoreleasepool</h2>
+  <p class="post-date">2018-01-21</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><p>Autorelease 机制是 iOS 开发者管理对象内存的好伙伴。MRC中，调用[obj autorelease]来延迟内存的释放是一件简单自然的事，ARC下，我们甚至可以完全不知道 Autorelease 就能管理好内存。而在这背后，objc和编译器都帮我们做了哪些事呢？它们是如何协作来正确管理内存的呢？</p>
+<h3 id="Autorelease-对象什么时候释放？"><a href="#Autorelease-对象什么时候释放？" class="headerlink" title="Autorelease 对象什么时候释放？"></a>Autorelease 对象什么时候释放？</h3><p>“当前作用域大括号结束时释放”？显然这个回答是不正确的。<br>&emsp;<br>正解：每个线程都会拥有一个 NSRunLoop 对象，Event loop 开始前，系统会自动创建一个 autoreleasepool ，并在 Event loop 结束时 drain。 在没有手加 Autorelease Pool 的情况下，被标记为 Autorelease 的对象是在当前 runloop 迭代结束时释放的。</p>
+<h3 id="AutoreleasePoolPage"><a href="#AutoreleasePoolPage" class="headerlink" title="AutoreleasePoolPage?"></a>AutoreleasePoolPage?</h3><p>ARC下我们使用 @autoreleasepool{}来使用一个AutoreleasePool，随后编译器将其改成如下样子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">void *context = objc_autoreleasePoolPush();</span><br><span class="line">//用户代码，所有接收到 autorelease 消息的对象都被加到此autoreleasepool中</span><br><span class="line">objc_autoreleasePoolPop(context);</span><br></pre></td></tr></table></figure>
+<p>autoreleasepool 其实就是一个指针的堆栈，其中的指针代表的是需要 release 的对象或哨兵对象。而它能够释放的原因是系统在每个 runloop 迭代中都加入了autoreleasePoolPush 和 Pop。</p>
+<p>这两个函数都是对 AutoreleasePoolPage 的简单封装，AutoreleasePoolPage 是一个C++实现的类：</p>
+<p><img src="http://ww2.sinaimg.cn/mw690/51530583gw1elj2ugt21wj20f109m3zl.jpg" alt="image"></p>
+<ul>
+<li>AutoreleasePool 并没有单独的结构，而是由若干个 AutoreleasePoolPage 以双向链表的形式组合而成。</li>
+<li>AutoreleasePool 是按线程一 一对应的（结构中的thread指针指向当前线程）</li>
+<li>AutoreleasePoolPage 每个对象会开辟4096字节内存，除了上面的实例变量所占空间，剩下的空间全部用来储存 autorelease 对象的地址。</li>
+<li>上面的id *next指针作为游标指向栈顶最新 add 进来的 autorelease 对象的下一个位置。</li>
+<li>一个 AutoreleasePoolPage 的空间被占满时，会新建一个 AutoreleasePoolPage 对象，连接链表，后来的 autorelease 对象在新的 page 加入。</li>
+</ul>
+<p>所以，若当前线程中只有一个 AutoreleasePoolPage 对象并记录了很多 autorelease 对象地址时，其内存如下：</p>
+<p><img src="http://ww2.sinaimg.cn/mw690/51530583gw1elj5gvphtqj20dy0cx756.jpg" alt="image"></p>
+<p>图中的情况，这一页再加入一个 autorelease 对象就要满了（也就是next指针马上指向栈顶），这时就要执行上面说的操作，建立下一页page对象，与这一页链表连接完成后，新page的next指针被初始化在栈底（begin的位置），然后继续向栈顶添加新对象。</p>
+<p>所以，向一个对象发送 -autorelease 消息，就是将这个对象加入到当前 AutoreleasePoolPage 的栈顶next指针指向的位置。</p>
+<h3 id="释放的原理"><a href="#释放的原理" class="headerlink" title="释放的原理"></a>释放的原理</h3><p>每当进行一次 objc_autoreleasePoolPush 调用时，runtime向当前的 AutoreleasePoolPage 中 add 进一个哨兵对象，值为0（也就是个nil），那么这一个page就变成了下面的样子：</p>
+<p><img src="http://ww2.sinaimg.cn/large/51530583gw1elj5z7hawej20ji0dewff.jpg" alt="image"></p>
+<p>objc_autoreleasePoolPush 的返回值正是这个哨兵对象的地址，被 objc_autoreleasePoolPop(哨兵对象) 作为入参，接下来的流程是：</p>
+<ul>
+<li>根据传入的哨兵对象地址找到哨兵对象所处的 page。</li>
+<li>在当前 page中向晚于哨兵对象插入的所有 autorelease 对象发送- release 消息。</li>
+<li>向回移动 next 指针到正确位置。</li>
+<li>从最新加入的对象一直向前清理，可以向前跨越若干个page，直到哨兵所在的page。</li>
+</ul>
+<p>objc_autoreleasePoolPop 执行后，最终变成了下面的样子：</p>
+<p><img src="http://ww3.sinaimg.cn/mw690/51530583gw1elj6u2i3fyj20dz0bqdgi.jpg" alt="image"></p>
+<h3 id="嵌套的AutoreleasePool"><a href="#嵌套的AutoreleasePool" class="headerlink" title="嵌套的AutoreleasePool"></a>嵌套的AutoreleasePool</h3><p>知道了上面的原理，嵌套的 AutoreleasePool 就非常简单了，pop的时候总会释放到上次push的位置为止，多层的pool就是多个哨兵对象而已，就像剥洋葱一样，每次一层，互不影响。</p>
+<h3 id="什么时候使用autoreleasepool？"><a href="#什么时候使用autoreleasepool？" class="headerlink" title="什么时候使用autoreleasepool？"></a>什么时候使用autoreleasepool？</h3><p>通常情况下，我们是不需要手动添加 autoreleasepool 的，使用线程自动维护的 autoreleasepool 就好了。根据苹果<a href="https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/MemoryMgmt/Articles/mmAutoreleasePools.html#//apple_ref/doc/uid/20000047-CJBFBEDI" target="_blank" rel="noopener">官方文档</a>的描述，在下面三种情况下是需要我们手动添加 autoreleasepool 的：</p>
+<ul>
+<li>如果你创建了一个辅助线程。</li>
+<li>如果你编写的循环中创建了大量的临时对象。</li>
+<li>如果你编写的程序不是基于 UI 框架的，比如说命令行工具。</li>
+</ul>
+<hr>
+<p>相关参考：</p>
+<p>#<a href="http://blog.sunnyxx.com/2014/10/15/behind-autorelease/" target="_blank" rel="noopener">©sunnyxx</a></p>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#autoreleasepool" >
+    <span class="tag-code">autoreleasepool</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2018/01/20/reuse_cell.html">
+        <span class="nav-arrow">← </span>
+        
+          UITableViewCell 的重用机制
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2018/01/27/compile.html">
+        
+          编译器、代码编译过程、Xcode Build过程
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Autorelease-对象什么时候释放？"><span class="toc-nav-text">Autorelease 对象什么时候释放？</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#AutoreleasePoolPage"><span class="toc-nav-text">AutoreleasePoolPage?</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#释放的原理"><span class="toc-nav-text">释放的原理</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#嵌套的AutoreleasePool"><span class="toc-nav-text">嵌套的AutoreleasePool</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#什么时候使用autoreleasepool？"><span class="toc-nav-text">什么时候使用autoreleasepool？</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'http://yoursite.com/2018/01/21/autoreleasepool.html';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+     // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+        
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+
+    // qrcode
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+
+    // gitment
+    var gitmentConfig = "";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "autoreleasepool",
+        owner: "",
+        repo: "",
+        oauth: {
+          client_id: "",
+          client_secret: ""
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  })();
+</script>
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2018 | <a href="https://github.com/davidlii" target="_blank">Davidli</a>
+    <br>
+    <a href="https://hexo.io" target="_blank">Hexo</a> | Theme-<a href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+<script src="/js/script.js"></script>
+  </body>
+</html>

@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="This is Davidli&#39;s blog ~">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" type="image/ico" href="/image/logo.png"/> 
+  
+  <title>
+    
+      Davidli
+    
+  </title>
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+  <script src="/js/qrious.js"></script>
+<script src="/js/gitment.js"></script>
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+</head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>Davidli</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link active">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link mobile-active">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <main class="app-body">
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2017/12/22/download.html">iOS 文件下载</a>
+      </h2>
+      <p class="article-date">December 22, 2017</p>
+      
+        
+  <a href="/tags#下载" >
+    <span class="tag-code">下载</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          iOS 中实现文件下载有以下几种方式：
+1、NSDataNSData 提供了类方法实现文件下载：
+123NSURL  *aUrl = [NSURL URLWithString:@&quot;https://example.jpg&quot;];NSData *data = [NSData d ...
+        
+      </div>
+      <a class="more" href="/2017/12/22/download.html">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2017/11/28/crash.html">iOS异常捕获</a>
+      </h2>
+      <p class="article-date">November 28, 2017</p>
+      
+        
+  <a href="/tags#异常捕获" >
+    <span class="tag-code">异常捕获</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          线上APP获取崩溃信息的方式：
+使用系统 API 收集崩溃信息并上传到服务器。
+使用友盟、Bugly 等第三方收集分析SDK。
+使用 iTunes Connect 上的崩溃收集服务。
+
+&emsp;这里暂时只讲第一种。iOS提供了异常发生时的处理API，在程序启动的时候可以添加这样的Hand ...
+        
+      </div>
+      <a class="more" href="/2017/11/28/crash.html">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2017/11/27/bad_access.html">内存错误调试</a>
+      </h2>
+      <p class="article-date">November 27, 2017</p>
+      
+        
+  <a href="/tags#调试" >
+    <span class="tag-code">调试</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          1、内存错误是啥&emsp;在C和OC中，你一直在处理指针。指针是存储另一个变量的内存地址的变量。当向一个对象发送消息时，指向该对象的指针将会被引用。这意味着，你获取了指针所指的内存地址，并访问该存储区域的值。
+&emsp;当该存储器区域不再映射到你的应用时，或者换句话说，该内存区域在你认为 ...
+        
+      </div>
+      <a class="more" href="/2017/11/27/bad_access.html">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2017/11/27/weak.html">weak 的实现原理</a>
+      </h2>
+      <p class="article-date">November 27, 2017</p>
+      
+        
+  <a href="/tags#weak" >
+    <span class="tag-code">weak</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          
+weak 表示的是一个弱引用，不会增加对象的引用计数，并且在所指向的对象被释放之后，weak 指针会被置为nil。weak 引用通常是用于处理循环引用的问题。
+
+1、weak 的实现原理：（1） 初始化：Runtime 调用objc_initWeak函数，初始化一个新的 weak 指针指向 ...
+        
+      </div>
+      <a class="more" href="/2017/11/27/weak.html">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2017/11/25/sandbox.html">沙盒 & 本地持久化方案</a>
+      </h2>
+      <p class="article-date">November 25, 2017</p>
+      
+        
+  <a href="/tags#数据持久化" >
+    <span class="tag-code">数据持久化</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          1、沙盒
+iOS程序默认情况下只能访问程序自己的目录，这个目录被称为“沙盒”。
+
+&emsp;沙盒的目录结构：
+123456&quot;应用程序包&quot;- Documents- LibraryCachesPreferences- tmp
+1.1.”应用程序包”:这里存放的是应用程序的源 ...
+        
+      </div>
+      <a class="more" href="/2017/11/25/sandbox.html">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2017/11/24/faq.html">常见问题汇总</a>
+      </h2>
+      <p class="article-date">November 24, 2017</p>
+      
+        
+  <a href="/tags#FAQ" >
+    <span class="tag-code">FAQ</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          1、宏定义使用错误案例123456789101112#define MATH_MAX(a,b) a &gt; b ? a : b- (void)defineExmple&#123;    //case1    printf(&quot;result: %d\n&quot;,MATH_MAX( ...
+        
+      </div>
+      <a class="more" href="/2017/11/24/faq.html">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2017/11/24/memory.html">虚拟内存分配</a>
+      </h2>
+      <p class="article-date">November 24, 2017</p>
+      
+        
+  <a href="/tags#内存" >
+    <span class="tag-code">内存</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          分区及职责&emsp;1. 栈区(stack)：存放局部变量和方法实参。
+&emsp;2. 堆区(heap)：存放OC中使用new等方法创建的对象。
+&emsp;3. 全局（静态）区：包括以下两个分区：
+123.1. 数据段（Data segment）：初始化的全局变量和静态变量。3.2.  ...
+        
+      </div>
+      <a class="more" href="/2017/11/24/memory.html">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2017/11/24/property.html">属性的修饰符、setter与getter。。</a>
+      </h2>
+      <p class="article-date">November 24, 2017</p>
+      
+        
+  <a href="/tags#property" >
+    <span class="tag-code">property</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          区别与作用：1.retain：相当于ARC下的 strong，强引用，将属性的指针指向新值的地址，同时持有这个新值（新值的引用计数被加1）。
+12345678-(void)setName:(NSString *)newName&#123;    if (_name != newName) & ...
+        
+      </div>
+      <a class="more" href="/2017/11/24/property.html">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2017/11/24/udid_idfa.html">iOS 设备唯一标识符</a>
+      </h2>
+      <p class="article-date">November 24, 2017</p>
+      
+        
+  <a href="/tags#设备" >
+    <span class="tag-code">设备</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          1、UDIDUDID（Unique Device Identifier），iOS 设备的唯一识别码，是一个40位十六进制序列。
+1[[UIDevice cuurrent] uniqueIdenfier];
+移动广告商等往往需要通过UDID用来识别玩家用户，并对用户活动进行跟踪。这会泄露用户的 ...
+        
+      </div>
+      <a class="more" href="/2017/11/24/udid_idfa.html">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2017/11/23/atomic.html">atomic一定线程安全吗？</a>
+      </h2>
+      <p class="article-date">November 23, 2017</p>
+      
+        
+  <a href="/tags#多线程" >
+    <span class="tag-code">多线程</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          1、atomic与存取方法的线程安全？&emsp;nonatomic是非原子性的，非原子性的操作本来就是线程不安全。而atomic的操作是原子性的，但并不意味着它修饰的属性就是完全线程安全的，它会增加正确的几率，能够更好的避免线程错误，但仍旧是不安全的。
+&emsp;atomic 与 non ...
+        
+      </div>
+      <a class="more" href="/2017/11/23/atomic.html">Read more</a>
+    </article>
+  
+
+  
+    <div class="guide-pager">
+  
+    <a href="/page/2/"><span class="page-arrow">← </span>Prev</a>
+  
+  
+    <a href="/page/4/">Next<span class="page-arrow"> →</span></a>
+  
+</div>
+  
+</main>
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2018 | <a href="https://github.com/davidlii" target="_blank">Davidli</a>
+    <br>
+    <a href="https://hexo.io" target="_blank">Hexo</a> | Theme-<a href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+<script src="/js/script.js"></script>
+  </body>
+</html>

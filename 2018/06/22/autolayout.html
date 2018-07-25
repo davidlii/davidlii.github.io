@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="This is Davidli&#39;s blog ~">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" type="image/ico" href="/image/logo.png"/> 
+  
+  <title>
+    
+      布局与约束相关知识点 | Davidli
+    
+  </title>
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+  <script src="/js/qrious.js"></script>
+<script src="/js/gitment.js"></script>
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+</head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>Davidli</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>布局与约束相关知识点</h2>
+  <p class="post-date">2018-06-22</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h2 id="1、布局相关的接口"><a href="#1、布局相关的接口" class="headerlink" title="#1、布局相关的接口"></a>#1、布局相关的接口</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (void)layoutSubviews;</span><br></pre></td></tr></table></figure>
+<p>系统重写布局，若需要更精确控制子view，就需要重写该方法。此方法会在以下场景下触发：</p>
+<ul>
+<li>使用-init初始化时不会触发。</li>
+<li>用-initWithFrame 初始化且 rect 的值不为 CGRectZero 时会触发；</li>
+<li>调用 addSubview 时会触发；</li>
+<li>设置 view 的frame 且frame的值设置前后发生了变化时会触发；</li>
+<li>UIScrollView 发生滚动时会触发；</li>
+<li>旋转屏幕会触发父 UIView 上的 layoutSubviews 事件；</li>
+<li>改变一个视图大小时也会触发父视图上的 layoutSubviews 事件。</li>
+</ul>
+<p>此方法由系统自动调用，不建议我们直接调用此方法。如果有需要时，我们可以通过 [view layoutIfNeeded] 的方式来让系统自动触发-layoutSubviews方法。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (void)layoutIfNeeded;</span><br></pre></td></tr></table></figure>
+<p>强制立即更新页面布局，从当前 view 开始，此方法会遍历整个 view 层次（包括superviews）请求重新布局。因此调用此方法会强制整个 view 层次布局。如果希望立刻生成新的 frame 需要调用此方法，利用这点一般布局动画可以在更新布局后直接使用这个方法让动画生效。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (void)setNeedsLayout;</span><br></pre></td></tr></table></figure>
+<p>告知页面需要更新，但是不会立刻开始更新。此方法会将 view 当前的 layout 设置为无效的，并在下一个 upadte cycle 里去触发 layout 更新。执行后会立刻调用 layoutSubviews。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (void)drawRect:(CGRect)rect;</span><br></pre></td></tr></table></figure>
+<p>若需要在当前 view 上绘制自定义的内容，则需要重写此方法。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-  void)setNeedsDisplay;</span><br></pre></td></tr></table></figure>
+<p>标记整个视图的边界矩形需要重绘。</p>
+<h2 id="2、约束相关的属性-amp-接口"><a href="#2、约束相关的属性-amp-接口" class="headerlink" title="#2、约束相关的属性&amp;接口"></a>#2、约束相关的属性&amp;接口</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">/* By default, the autoresizing mask on a view gives rise to </span><br><span class="line">constraints that fully determine the view&apos;s position. </span><br><span class="line">This allows the auto layout system to track the frames of views </span><br><span class="line">whose layout is controlled manually (through -setFrame:, for example).</span><br><span class="line">When you elect to position the view using auto layout by </span><br><span class="line">adding your own constraints, you must set this property to NO. </span><br><span class="line">IB will do this for you.</span><br><span class="line"> */</span><br><span class="line">BOOL translatesAutoresizingMaskIntoConstraints; // Default YES</span><br></pre></td></tr></table></figure>
+<p>除了AutoLayout，Autoresizing 也是一种布局方式。默认情况下 translatesAutoresizingMaskIntoConstraints ＝ YES , 此时视图的 AutoresizingMask 会被转换成对应效果的约束。这样很可能就会和我们手动添加的其它约束有冲突。此属性设置成 NO 时，AutoresizingMask 就不会变成约束，也就是说当前视图的 AutoresizingMask 失效了。</p>
+<p>手写代码添加视图时，此属性的值默认为 YES，因为我们需要手动添加和修改约束，所以需要将此属性置为 NO。使用 IB 创建视图时，系统会自动将此属性置为 NO。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (BOOL)needsUpdateConstraints;</span><br></pre></td></tr></table></figure>
+<p>“Constraint-based layout system” 使用此返回值去决定是否需要调用 updateConstraints 作为正常布局过程的一部分。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (void)updateConstraints;</span><br></pre></td></tr></table></figure>
+<p>系统更新约束，自定义 view 时可以重写此方法，在其中添加 view 需要的局部 contraints。注意：要在实现在最后调用 [super updateConstraints]。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (void)updateConstraintsIfNeeded;</span><br></pre></td></tr></table></figure>
+<p>立即触发约束更新，自动更新布局。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (void)setNeedsUpdateConstraints;</span><br></pre></td></tr></table></figure>
+<p>当有约束需要更新时，调用此方法来标记这些约束需要在未来的某个点更新，系统之后调用 updateConstraints。</p>
+<h2 id="3、-Auto-Layout-自动布局的过程"><a href="#3、-Auto-Layout-自动布局的过程" class="headerlink" title="#3、(Auto Layout)自动布局的过程"></a>#3、(Auto Layout)自动布局的过程</h2><p>updating constraints -&gt; layout -&gt; display，每一个步骤都依赖于上一步。</p>
+<p>（1）updating constraints：从下向上（from subview to superview），为下一步layout准备信息。可以通过调用方法 setNeedUpdateConstraints 去触发此步。constraints 的改变也会自动的触发此步。但是当你自定义 view 时，如果一些改变可能会影响到布局时，需要自己去调用 updateConstraintsIfNeeded 以通知自动布局更新约束。</p>
+<p>（2）layout：从上向下（from superview to subview），此步主要应用上一步的信息去设置 view 的 center 和 bounds。可以通过调用 setNeedsLayout 去触发此步骤，此方法不会立即应用 layout。如果想要系统立即的更新 layout，可以调用 layoutIfNeeded。另外自定义 view 时可以重写 layoutSubViews 方法来得到更多的定制化效果。</p>
+<p>（3）display：从上向下（from superview to subview）。此步是把 view 渲染到屏幕上，它与你是否使用 Auto layout 无关，通过调用 setNeedsDisplay 触发，系统会调用 UIView 的 drawRect 方法。</p>
+<h2 id="4、UIViewController的布局过程"><a href="#4、UIViewController的布局过程" class="headerlink" title="#4、UIViewController的布局过程"></a>#4、UIViewController的布局过程</h2><p>viewDidLoad -&gt; viewWillAppear -&gt; updateViewConstraints -&gt; viewWillLayoutSubviews -&gt; viewDidLayoutSubviews -&gt; viewDidAppear -&gt; viewWillDisAppear -&gt; updateViewConstraints -&gt; viewDidDisAppear。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">/* Base implementation sends -updateConstraints to the view.</span><br><span class="line">When a view has a view controller, this message is sent </span><br><span class="line">to the view controller during the autolayout updateConstraints </span><br><span class="line">pass in lieu of sending updateConstraints directly to the view.</span><br><span class="line"></span><br><span class="line">You may override this method in a UIViewController subclass for </span><br><span class="line">updating custom constraints instead of subclassing your view </span><br><span class="line">and overriding -[UIView updateConstraints].</span><br><span class="line"></span><br><span class="line">Overrides must call super or send -updateConstraints to the view.</span><br><span class="line">*/</span><br><span class="line">- (void)updateViewConstraints;</span><br></pre></td></tr></table></figure>
+<p>注意，这是 UIViewController 中的 -(void)updateViewConstraints 方法，不是 UIView 中的 - (void)updateConstraints 方法。。“view 属于某个 VC”（比如 self.view），当此 view 需要执行 updateConstraints 时，会调用 VC 的 updateViewConstraints，这样就不用你再自定义此 view 并重写其 updateConstraints 方法了。方法的最后需要调用其 super 方法。这个方法的默认实现是调用其所有 subview 的 updateConstraints 方法，这样就自上而下的完成了布局。 </p>
+<h2 id="5、小结："><a href="#5、小结：" class="headerlink" title="#5、小结："></a>#5、小结：</h2><p>一个 view 的实际 frame 要在以下两个方法执行完之后才能确定：</p>
+<ul>
+<li>view 的 layoutSubViews;</li>
+<li>VC 的 viewDidLayoutSubviews;</li>
+</ul>
+<p>所以，当我们真的需要 frame 时要在这个两个时间点以后再去获取。 </p>
+<p>这也可以解释为什么 viewDidLoad 里通过 setFrame 的方式修改原先在 storyboard 里拖动的约束代码无效了。因为 updateViewConstraints 在 viewDidLoad 后执行，会覆盖掉之前的设置的frame，所以无效。</p>
+<p>另外需要注意一点：在使用 sb 或者 xib 加载 VC 时，viewDidLoad 中只有 self.view 的 frame 信息是准确的，其他所有的控件的 frame 都是它们在 sb 或 xib 中的原始尺寸，与当前设备可能不符。</p>
+<hr>
+<p>相关参考：</p>
+<p>#<a href="https://blog.csdn.net/zpz5789/article/details/50922469" target="_blank" rel="noopener">©传送门</a></p>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#UI" >
+    <span class="tag-code">UI</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2018/06/14/copy.html">
+        <span class="nav-arrow">← </span>
+        
+          拷贝相关知识点
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2018/07/07/mach_o.html">
+        
+          Mach-O
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1、布局相关的接口"><span class="toc-nav-text">#1、布局相关的接口</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2、约束相关的属性-amp-接口"><span class="toc-nav-text">#2、约束相关的属性&amp;接口</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3、-Auto-Layout-自动布局的过程"><span class="toc-nav-text">#3、(Auto Layout)自动布局的过程</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4、UIViewController的布局过程"><span class="toc-nav-text">#4、UIViewController的布局过程</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#5、小结："><span class="toc-nav-text">#5、小结：</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'http://yoursite.com/2018/06/22/autolayout.html';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+     // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+        
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+
+    // qrcode
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+
+    // gitment
+    var gitmentConfig = "";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "布局与约束相关知识点",
+        owner: "",
+        repo: "",
+        oauth: {
+          client_id: "",
+          client_secret: ""
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  })();
+</script>
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2018 | <a href="https://github.com/davidlii" target="_blank">Davidli</a>
+    <br>
+    <a href="https://hexo.io" target="_blank">Hexo</a> | Theme-<a href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+<script src="/js/script.js"></script>
+  </body>
+</html>

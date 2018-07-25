@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="This is Davidli&#39;s blog ~">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" type="image/ico" href="/image/logo.png"/> 
+  
+  <title>
+    
+      block 捕获变量 | Davidli
+    
+  </title>
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+  <script src="/js/qrious.js"></script>
+<script src="/js/gitment.js"></script>
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+</head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>Davidli</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>block 捕获变量</h2>
+  <p class="post-date">2018-03-15</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h3 id="1、block-对变量的捕获"><a href="#1、block-对变量的捕获" class="headerlink" title="#1、block 对变量的捕获"></a>#1、block 对变量的捕获</h3><h4 id="1-1-可以捕获但不可以修改的变量"><a href="#1-1-可以捕获但不可以修改的变量" class="headerlink" title="1.1.可以捕获但不可以修改的变量"></a>1.1.可以捕获但不可以修改的变量</h4><ul>
+<li>局部变量</li>
+</ul>
+<h4 id="1-2-可以捕获且可以修改的变量"><a href="#1-2-可以捕获且可以修改的变量" class="headerlink" title="1.2.可以捕获且可以修改的变量"></a>1.2.可以捕获且可以修改的变量</h4><ul>
+<li>静态变量</li>
+<li>全局变量</li>
+<li>静态全局变量</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">int aGloableVal = 1;//全局变量</span><br><span class="line">static int aStaticGloable = 2;//静态全局变量</span><br><span class="line"></span><br><span class="line">@implementation AppDelegate</span><br><span class="line"></span><br><span class="line">- (BOOL)application:(UIApplication *)application</span><br><span class="line">didFinishLaunchingWithOptions:(NSDictionary *)launchOptions</span><br><span class="line">&#123;</span><br><span class="line">    static int aStaticVal = 3;//静态变量</span><br><span class="line">    int anInt = 0;//局部变量</span><br><span class="line">    NSMutableArray *array = [NSMutableArray array];//可变数组</span><br><span class="line">    </span><br><span class="line">    void (^blockT)(int) = ^(int blockVal)&#123;</span><br><span class="line">        aGloableVal = 8;</span><br><span class="line">        aStaticGloable = 9;</span><br><span class="line">        aStaticVal = 10;//以上三个都可以正常赋值</span><br><span class="line">        </span><br><span class="line">        //anInt = 1;</span><br><span class="line">        //array = [NSMutableArray array];</span><br><span class="line">        //以上两个赋值操作会报错:&quot;variable is not assignable&quot;!!</span><br><span class="line">        [array addObject:@&quot;2&quot;];//数组可以正常添加对象</span><br><span class="line">        NSLog(@&quot;局部变量:%d,\n全局变量:%d,\n静态全局变量:%d,\n静态变量:%d,\n数组容量:%lu&quot;,</span><br><span class="line">        anInt,aGloableVal,aStaticGloable,aStaticVal,(unsigned long)array.count);</span><br><span class="line">    &#125;;</span><br><span class="line">    aGloableVal = 4;</span><br><span class="line">    aStaticGloable = 5;</span><br><span class="line">    aStaticVal = 6;</span><br><span class="line">    anInt = 7;</span><br><span class="line">    [array addObject:@&quot;1&quot;];</span><br><span class="line">    </span><br><span class="line">    blockT(5);</span><br><span class="line">    </span><br><span class="line">    return YES;</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<p>&emsp;输出日志：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">局部变量:0,</span><br><span class="line">全局变量:8,</span><br><span class="line">静态全局变量:9,</span><br><span class="line">静态变量:10,</span><br><span class="line">数组容量:2</span><br></pre></td></tr></table></figure>
+<p>根据示例，可以得到以下几个信息：</p>
+<p>&emsp;1、全局变量、静态变量、静态全局变量都可以正常在 block 内被重新赋值。而局部变量 anInt 在 block 内部重新赋值时，编译器报错“variable is not assignable”。所以， block 内不能给在它外部声明的局部变量（没有使用__block修饰的情况下）重新赋值。</p>
+<p>&emsp;2、全局变量、静态变量、静态全局变量在初始化时都有默认值，block 内重新赋值后，最终打印出的都是重新修改之后的值。而局部变量 anInt 初始化时 = 0，在调用 block 之前重新赋值为1；调用 block 之后，打印所得信息显示 block 内 anInt 的值仍为赋值前的0。这说明 block 内保留的局部变量是 blok 声明之前的那个值。</p>
+<p>&emsp;3、局部变量 array 赋值时报错“variable is not assignable”，而执行 addObject 操作却不会报错。所以，block 中使用到的局部变量可以执行操作而不能赋值。</p>
+<p>&emsp;4、block 捕获外部变量仅仅只捕获 block 闭包里面会用到的值，其他用不到的变量，它并不会去捕获。</p>
+<hr>
+<h3 id="二、问题来了"><a href="#二、问题来了" class="headerlink" title="#二、问题来了"></a>#二、问题来了</h3><p><em>为啥全局变量、静态变量在 block 内能修改，而局部变量不能修改？</em><br>&emsp;<br>OC的内存区域分为：堆区、栈区、全局区(数据区)、代码区。</p>
+<p>其中全局变量、静态全局变量都存储在全局区，所以在 block 内可以直接被修改。</p>
+<p>其次，静态变量传递给 block 的是内存地址值，所以能在 block 里面直接改变值。</p>
+<p>最后，局部变量是以值传递方式传递到 block 的构造函数里面去的。由于只捕获了局部变量的值，并非内存地址，所以 block 内部不能改变自动变量的值。</p>
+<p>因此，想要在 block 中修改变量的值，有2种方式：</p>
+<ul>
+<li>传递内存地址指针到 block 中;</li>
+<li>改变存储区方式(如__block anInt);</li>
+</ul>
+<p>__block 修饰的局部变量之所以可以在 block 内部修改，是因为此时传递给 block 的变量实质上是一个结构体指针，再次赋值时我们是通过修改 anInt 指向的内存地址上的 value 来修改 anInt 的值。</p>
+<hr>
+<p>相关参考：</p>
+<p>#<a href="https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/Blocks/Articles/bxVariables.html" target="_blank" rel="noopener">©Apple官方文档</a></p>
+<p>#<a href="http://www.cnblogs.com/YouXianMing/p/3702508.html?utm_source=tuicool&amp;utm_medium=referral" target="_blank" rel="noopener">©翻译</a></p>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#block" >
+    <span class="tag-code">block</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2018/01/31/source_code_afn.html">
+        <span class="nav-arrow">← </span>
+        
+          AFNetworking 源码阅读
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2018/04/12/kvc.html">
+        
+          KVC 的底层实现细节
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1、block-对变量的捕获"><span class="toc-nav-text">#1、block 对变量的捕获</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#1-1-可以捕获但不可以修改的变量"><span class="toc-nav-text">1.1.可以捕获但不可以修改的变量</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#1-2-可以捕获且可以修改的变量"><span class="toc-nav-text">1.2.可以捕获且可以修改的变量</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#二、问题来了"><span class="toc-nav-text">#二、问题来了</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'http://yoursite.com/2018/03/15/block.html';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+     // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+        
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+
+    // qrcode
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+
+    // gitment
+    var gitmentConfig = "";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "block 捕获变量",
+        owner: "",
+        repo: "",
+        oauth: {
+          client_id: "",
+          client_secret: ""
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  })();
+</script>
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2018 | <a href="https://github.com/davidlii" target="_blank">Davidli</a>
+    <br>
+    <a href="https://hexo.io" target="_blank">Hexo</a> | Theme-<a href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+<script src="/js/script.js"></script>
+  </body>
+</html>

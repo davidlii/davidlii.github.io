@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="This is Davidli&#39;s blog ~">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" type="image/ico" href="/image/logo.png"/> 
+  
+  <title>
+    
+      Runtime：成员变量、属性、快速序列化、dic转Model | Davidli
+    
+  </title>
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+  <script src="/js/qrious.js"></script>
+<script src="/js/gitment.js"></script>
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+</head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>Davidli</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>Runtime：成员变量、属性、快速序列化、dic转Model</h2>
+  <p class="post-date">2017-08-25</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h3 id="获取成员变量及其信息"><a href="#获取成员变量及其信息" class="headerlink" title="获取成员变量及其信息"></a>获取成员变量及其信息</h3><h4 id="Ivar"><a href="#Ivar" class="headerlink" title="Ivar"></a>Ivar</h4><p>在”objc/runtime.h”中，Ivar的描述如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">/// An opaque type that represents an instance variable.</span><br><span class="line">typedef struct objc_ivar *Ivar;</span><br><span class="line"></span><br><span class="line">struct objc_ivar &#123;</span><br><span class="line">char *ivar_name</span><br><span class="line">char *ivar_type</span><br><span class="line">int ivar_offset</span><br><span class="line">#ifdef __LP64__</span><br><span class="line">int space</span><br><span class="line">#endif</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Ivar，对象的成员变量，是一个指向objc_ivar结构体的指针，包括名字与类型。</p>
+<p>&emsp;<br>常用操作函数有：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">// 获取所有成员变量</span><br><span class="line">class_copyIvarList</span><br><span class="line">// 获取成员变量名</span><br><span class="line">ivar_getName</span><br><span class="line">// 获取成员变量类型编码</span><br><span class="line">ivar_getTypeEncoding</span><br><span class="line">// 获取指定名称的成员变量</span><br><span class="line">class_getInstanceVariable</span><br><span class="line">// 获取某个对象成员变量的值</span><br><span class="line">object_getIvar</span><br><span class="line">// 设置某个对象成员变量的值</span><br><span class="line">object_setIvar</span><br></pre></td></tr></table></figure>
+<p>相关代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">//IvarTool.h</span><br><span class="line">@interface IvarTool : NSObject</span><br><span class="line">&#123;</span><br><span class="line">double ivar_double;</span><br><span class="line"></span><br><span class="line">@public</span><br><span class="line">float  ivar_float;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@property(nonatomic,copy)  NSString *property_string;</span><br><span class="line">//成员变量列表</span><br><span class="line">+ (void)ivarList;</span><br><span class="line">//属性列表</span><br><span class="line">+ (void)propertyList;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">//IvarTool.m</span><br><span class="line">#import &quot;IvarTool.h&quot;</span><br><span class="line">#import &lt;objc/runtime.h&gt;</span><br><span class="line"></span><br><span class="line">@interface IvarTool()</span><br><span class="line">&#123;</span><br><span class="line">int ivar_int;</span><br><span class="line"></span><br><span class="line">@public</span><br><span class="line">NSArray *ivar_array;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@property(nonatomic, strong) NSDictionary *property_dic;</span><br><span class="line"></span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">@implementation IvarTool</span><br><span class="line"></span><br><span class="line">+ (void)ivarList</span><br><span class="line">&#123;</span><br><span class="line">unsigned int count = 0;</span><br><span class="line">Ivar *ivars = class_copyIvarList([IvarTool class], &amp;count);</span><br><span class="line"></span><br><span class="line">for (int i = 0; i&lt;count; i++)</span><br><span class="line">&#123;</span><br><span class="line">Ivar ivar = ivars[i];</span><br><span class="line">const char *charName = ivar_getName(ivar);</span><br><span class="line">const char *charType = ivar_getTypeEncoding(ivar);</span><br><span class="line"></span><br><span class="line">NSLog(@&quot;Name:%s,Type:%s&quot;,charName,charType);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">free(ivars);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">+ (void)propertyList</span><br><span class="line">&#123;</span><br><span class="line">unsigned int count = 0;</span><br><span class="line">objc_property_t *properties = class_copyPropertyList([IvarTool class], &amp;count);</span><br><span class="line"></span><br><span class="line">for (int i = 0; i&lt;count; i++)</span><br><span class="line">&#123;</span><br><span class="line">objc_property_t aProperty = properties[i];</span><br><span class="line">const char *charName = property_getName(aProperty);</span><br><span class="line">const char *charType = property_getAttributes(aProperty);</span><br><span class="line">NSLog(@&quot;Name:%s,Type:%s&quot;,charName,charType);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">free(properties);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>调用[IvarTool ivarList]，输出日志如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Name:ivar_double,Type:d</span><br><span class="line">Name:ivar_float,Type:f</span><br><span class="line">Name:ivar_int,Type:i</span><br><span class="line">Name:ivar_array,Type:@&quot;NSArray&quot;</span><br><span class="line">Name:_property_string,Type:@&quot;NSString&quot;</span><br><span class="line">Name:_property_dic,Type:@&quot;NSDictionary&quot;</span><br></pre></td></tr></table></figure>
+<h4 id="property"><a href="#property" class="headerlink" title="property"></a>property</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/// An opaque type that represents an Objective-C declared property.</span><br><span class="line">typedef struct objc_property *objc_property_t;</span><br></pre></td></tr></table></figure>
+<p>属性，一个指向<code>objc_property</code>结构体的指针，通常以@property来声明：</p>
+<p>&emsp;<br>属性与成员变量的关系：</p>
+<p>iOS5以前，声明一个属性，通常需要三步：</p>
+<ol>
+<li>大括号声明成员变量；</li>
+<li>@property声明属性；</li>
+<li>@synthesize生成setter\getter方法；</li>
+</ol>
+<p>代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">//IvarTool.h</span><br><span class="line">@interface IvarTool : NSObject</span><br><span class="line">&#123;</span><br><span class="line">    double ivar_double;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@property(nonatomic)  double ivar_double;</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">//IvarTool.m</span><br><span class="line">@implementation IvarTool</span><br><span class="line"></span><br><span class="line">@synthesize ivar_double = _ivar_double;</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<p>而在iOS5以后，苹果将编译器从GCC转为LLVM，以@property声明的属性，编译器会默认为其生成一个下划线开头的成员变量，同时也会生成<code>setter/getter</code>方法。 在.m文件中，我们可以直接使用<code>_ivar_double</code>，也可以使用<code>self.ivar_double</code>。其中，后者实际上是调用了<code>ivar_double</code>的<code>getter\setter</code>函数。<br>&emsp;<br>属性的常用操作函数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// 获取所有属性</span><br><span class="line">class_copyPropertyList</span><br><span class="line">// 获取属性名</span><br><span class="line">property_getName</span><br><span class="line">// 获取属性特性描述字符串</span><br><span class="line">property_getAttributes</span><br><span class="line">// 获取所有属性特性</span><br><span class="line">property_copyAttributeList</span><br></pre></td></tr></table></figure>
+<p>其中，<code>property_getAttributes</code>返回的是一个<code>objc_property_attribute_t</code>结构体列表：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">/// Defines a property attribute</span><br><span class="line">typedef struct &#123;</span><br><span class="line">const char *name;           /**&lt; The name of the attribute */</span><br><span class="line">const char *value;          /**&lt; The value of the attribute (usually empty) */</span><br><span class="line">&#125; objc_property_attribute_t;</span><br></pre></td></tr></table></figure>
+<p>常用的值如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">属性类型  name值：T  value：NSString等</span><br><span class="line">编码类型  name值：C(copy)、&amp;(strong\retain)、W(weak)、R(readonly)、空(assign) 等 value：无</span><br><span class="line">非/原子性 name值：空(atomic) N(Nonatomic)  value：无</span><br><span class="line">属性名称  name值：V  value：自定义的名字</span><br></pre></td></tr></table></figure>
+<p>调用<code>[IvarTool propertyList]</code>，输出日志如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Name:property_dic,Type:T@&quot;NSDictionary&quot;,&amp;,N,V_property_dic</span><br><span class="line">Name:property_string,Type:T@&quot;NSString&quot;,C,N,V_property_string</span><br></pre></td></tr></table></figure>
+<h4 id="成员变量的访问权限："><a href="#成员变量的访问权限：" class="headerlink" title="成员变量的访问权限："></a>成员变量的访问权限：</h4><p>作用范围：</p>
+<p>@public: 任何地方都能直接访问对象的成员变量；</p>
+<p>@private: 只能在当前类的实例方法中直接访问；</p>
+<p>@protected: 可以在当前类及其子类实例方法中直接访问；</p>
+<p>@package: 在同一个包下就可以直接访问；</p>
+<p>&emsp;<br>默认值：</p>
+<p>.h中默认为@protected；</p>
+<p>.m中默认为@private；</p>
+<p>&emsp;<br>调用示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">IvarTool *ivarTool = [IvarTool new];</span><br><span class="line"></span><br><span class="line">ivarTool-&gt;ivar_float  = 0.00;</span><br><span class="line"></span><br><span class="line">//下面三个会报错</span><br><span class="line">ivarTool-&gt;ivar_double = 0.00;</span><br><span class="line">ivarTool-&gt;ivar_int    = 0;</span><br><span class="line">ivarTool-&gt;ivar_array  = nil;</span><br></pre></td></tr></table></figure>
+<p>若想实现成员变量支持外部访问，需要在头文件的声明中给该成员变量添加@public修饰符，同时在外部访问时使用”-&gt;”。m文件内即使添加@public修饰符，访问时仍会报错。</p>
+<h3 id="应用场景：快速序列化"><a href="#应用场景：快速序列化" class="headerlink" title="应用场景：快速序列化"></a>应用场景：快速序列化</h3><p>原理：利用runtime提供的函数，遍历model的属性，并对属性进行decode与encode。</p>
+<p>&emsp;<br>相关代码及使用方法如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br></pre></td><td class="code"><pre><span class="line">//ModelSerialiseHelper.h</span><br><span class="line"></span><br><span class="line">#ifndef ModelSerialiseHelper_h</span><br><span class="line">#define ModelSerialiseHelper_h</span><br><span class="line"></span><br><span class="line">#import &lt;objc/runtime.h&gt;</span><br><span class="line">/*</span><br><span class="line"> 序列化工具使用示例:</span><br><span class="line"> </span><br><span class="line"> 1、TLObject头文件中声明NSCoding协议</span><br><span class="line"> </span><br><span class="line"> @interface TLObject : NSObject&lt;NSCoding&gt;</span><br><span class="line"> @property (nonatomic, copy) NSString *mName;</span><br><span class="line"> @property (nonatomic) BOOL mIsTrue;</span><br><span class="line"> @property (nonatomic) NSInteger mInteger;</span><br><span class="line"> @property (nonatomic) UIImage *mImage;</span><br><span class="line"> @end</span><br><span class="line"> </span><br><span class="line"> 2、m文件中导入头文件和宏即可</span><br><span class="line"> </span><br><span class="line"> #import &quot;TLObject.h&quot;</span><br><span class="line"> #import &quot;ModelSerialiseHelper.h&quot;</span><br><span class="line"> @implementation TLObject</span><br><span class="line"> </span><br><span class="line"> ModelCodingProtocol()</span><br><span class="line"> </span><br><span class="line"> @end</span><br><span class="line"> */</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">#define ModelCodingProtocol()\</span><br><span class="line">- (id)initWithCoder:(NSCoder *)coder\</span><br><span class="line">&#123;\</span><br><span class="line">    Class cls = [self class];\</span><br><span class="line">    while (cls != [NSObject class])\</span><br><span class="line">    &#123;\</span><br><span class="line">        unsigned int count = 0;\</span><br><span class="line">        Ivar *ivarList = class_copyIvarList([cls class], &amp;count);\</span><br><span class="line">        for (int i = 0; i &lt; count; i++)\</span><br><span class="line">        &#123;\</span><br><span class="line">            const char *varName = ivar_getName(*(ivarList + i));\</span><br><span class="line">            NSString *key = [NSString stringWithUTF8String:varName];\</span><br><span class="line">            NSString *aStr = [key substringToIndex:1];\</span><br><span class="line">            if ([aStr isEqualToString:@&quot;_&quot;]) &#123;\</span><br><span class="line">                key = [key substringFromIndex:1];\</span><br><span class="line">            &#125;\</span><br><span class="line">            id varValue = [coder decodeObjectForKey:key];\</span><br><span class="line">            if (varValue) &#123;\</span><br><span class="line">                [self setValue:varValue forKey:key];\</span><br><span class="line">            &#125;\</span><br><span class="line">        &#125;\</span><br><span class="line">        free(ivarList);\</span><br><span class="line">        cls = class_getSuperclass(cls);\</span><br><span class="line">    &#125;\</span><br><span class="line">    return self;\</span><br><span class="line">&#125;\</span><br><span class="line">- (void)encodeWithCoder:(NSCoder *)coder\</span><br><span class="line">&#123;\</span><br><span class="line">    Class cls = [self class];\</span><br><span class="line">    while (cls != [NSObject class])\</span><br><span class="line">    &#123;\</span><br><span class="line">        unsigned int count = 0;\</span><br><span class="line">        Ivar *ivarList = class_copyIvarList([cls class], &amp;count);\</span><br><span class="line">        for (int i = 0; i &lt; count; i++)\</span><br><span class="line">        &#123;\</span><br><span class="line">            const char *varName = ivar_getName(*(ivarList + i));\</span><br><span class="line">            NSString *key = [NSString stringWithUTF8String:varName];\</span><br><span class="line">            NSString *aStr = [key substringToIndex:1];\</span><br><span class="line">            if ([aStr isEqualToString:@&quot;_&quot;]) &#123;\</span><br><span class="line">                key = [key substringFromIndex:1];\</span><br><span class="line">            &#125;\</span><br><span class="line">            id varValue = [self valueForKey:key];\</span><br><span class="line">            if (varValue) &#123;\</span><br><span class="line">                [coder encodeObject:varValue forKey:key];\</span><br><span class="line">            &#125;\</span><br><span class="line">        &#125;\</span><br><span class="line">        free(ivarList);\</span><br><span class="line">        cls = class_getSuperclass(cls);\</span><br><span class="line">    &#125;\</span><br><span class="line">&#125;\</span><br><span class="line"></span><br><span class="line">#define ModelCopyProtocol()\</span><br><span class="line">- (id)copyWithZone:(NSZone *)zone\</span><br><span class="line">&#123;\</span><br><span class="line">    id copy = [[[self class] allocWithZone:zone] init];\</span><br><span class="line">    Class cls = [self class];\</span><br><span class="line">    while (cls != [NSObject class])\</span><br><span class="line">    &#123;\</span><br><span class="line">        unsigned int count = 0;\</span><br><span class="line">        Ivar *ivarList = class_copyIvarList([cls class], &amp;count);\</span><br><span class="line">        for (int i = 0; i &lt; count; i++)\</span><br><span class="line">        &#123;\</span><br><span class="line">            const char *varName = ivar_getName(*(ivarList + i));\</span><br><span class="line">            NSString *key = [NSString stringWithUTF8String:varName];\</span><br><span class="line">            NSString *aStr = [key substringToIndex:1];\</span><br><span class="line">            if ([aStr isEqualToString:@&quot;_&quot;]) &#123;\</span><br><span class="line">                key = [key substringFromIndex:1];\</span><br><span class="line">            &#125;\</span><br><span class="line">            id varValue = [self valueForKey:key];\</span><br><span class="line">            if (varValue) &#123;\</span><br><span class="line">                [copy setValue:varValue forKey:key];\</span><br><span class="line">            &#125;\</span><br><span class="line">        &#125;\</span><br><span class="line">        free(ivarList);\</span><br><span class="line">        cls = class_getSuperclass(cls);\</span><br><span class="line">    &#125;\</span><br><span class="line">    return copy;\</span><br><span class="line">&#125;\</span><br><span class="line"></span><br><span class="line">#endif /* ModelSerialiseHelper_h */</span><br></pre></td></tr></table></figure>
+<p>上述代码为 ModelSerialiseHelper.h，其中：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ModelCopyProtocol()    封装了copy协议的相关实现代码；</span><br><span class="line">ModelCodingProtocol()  封装了encode和decode的相关代码；</span><br></pre></td></tr></table></figure>
+<p>在需要实现这两个协议的model类中，只需导入 ModelSerialiseHelper.h 头文件并引用上述两个宏定义即可。</p>
+<h3 id="应用场景：json字典转换Model"><a href="#应用场景：json字典转换Model" class="headerlink" title="应用场景：json字典转换Model"></a>应用场景：json字典转换Model</h3><p>原理：获取模型的属性列表，通过kvc从字典中取值并赋值给对应的属性字段。</p>
+<p>&emsp;<br>相关代码及使用方法如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">#import &quot;NSObject+JsonToModel.h&quot;</span><br><span class="line">#import &lt;objc/runtime.h&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">@implementation NSObject (JsonToModel)</span><br><span class="line"></span><br><span class="line">- (instancetype)initModelWithDictionary:(NSDictionary *)jsonDic</span><br><span class="line">&#123;</span><br><span class="line">if (self = [self init])</span><br><span class="line">&#123;</span><br><span class="line">NSMutableArray * keysArr;</span><br><span class="line">if (!jsonDic) &#123;</span><br><span class="line">return nil;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">keysArr = [NSMutableArray array];</span><br><span class="line"></span><br><span class="line">//获取类的属性及属性对应的类型</span><br><span class="line">unsigned int count;</span><br><span class="line">objc_property_t * properties = class_copyPropertyList([self class], &amp;count);</span><br><span class="line">for (int i = 0; i &lt; count; i++)</span><br><span class="line">&#123;</span><br><span class="line">objc_property_t property = properties[i];</span><br><span class="line">//获取属性名</span><br><span class="line">const char *charName = property_getName(property);</span><br><span class="line">NSString *propertyName = [NSString stringWithCString:charName encoding:NSUTF8StringEncoding];</span><br><span class="line"></span><br><span class="line">if (propertyName.length) &#123;</span><br><span class="line">[keysArr addObject:propertyName];</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line">free(properties);</span><br><span class="line"></span><br><span class="line">//给属性赋值</span><br><span class="line">for (NSString * key in keysArr) &#123;</span><br><span class="line">[self setValue:jsonDic[key] forKey:key];</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line">return self;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>调用示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">NSDictionary *dic = @&#123;@&quot;name&quot;:@&quot;xxx&quot;,@&quot;sex&quot;:@(1),@&quot;age&quot;:@(20)&#125;;</span><br><span class="line">PersonModel *person = [[PersonModel alloc] initModelWithDictionary:dic];</span><br></pre></td></tr></table></figure>
+<p>上面的示例只是一个简单的应用，实际应用中可能会有更复杂的需求。</p>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#runtime" >
+    <span class="tag-code">runtime</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2017/08/23/runtime_message.html">
+        <span class="nav-arrow">← </span>
+        
+          Runtime：消息机制
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2017/08/30/runtime_associate.html">
+        
+          Runtime：对象关联、objc_setAssociatedObject
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#获取成员变量及其信息"><span class="toc-nav-text">获取成员变量及其信息</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Ivar"><span class="toc-nav-text">Ivar</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#property"><span class="toc-nav-text">property</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#成员变量的访问权限："><span class="toc-nav-text">成员变量的访问权限：</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#应用场景：快速序列化"><span class="toc-nav-text">应用场景：快速序列化</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#应用场景：json字典转换Model"><span class="toc-nav-text">应用场景：json字典转换Model</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'http://yoursite.com/2017/08/25/runtime_ivar.html';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+     // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+        
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+
+    // qrcode
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+
+    // gitment
+    var gitmentConfig = "";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "Runtime：成员变量、属性、快速序列化、dic转Model",
+        owner: "",
+        repo: "",
+        oauth: {
+          client_id: "",
+          client_secret: ""
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  })();
+</script>
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2018 | <a href="https://github.com/davidlii" target="_blank">Davidli</a>
+    <br>
+    <a href="https://hexo.io" target="_blank">Hexo</a> | Theme-<a href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+<script src="/js/script.js"></script>
+  </body>
+</html>

@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="This is Davidli&#39;s blog ~">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" type="image/ico" href="/image/logo.png"/> 
+  
+  <title>
+    
+      Davidli
+    
+  </title>
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+  <script src="/js/qrious.js"></script>
+<script src="/js/gitment.js"></script>
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+</head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>Davidli</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link active">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link mobile-active">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <main class="app-body">
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2017/11/22/http.html">网络知识点笔记</a>
+      </h2>
+      <p class="article-date">November 22, 2017</p>
+      
+        
+  <a href="/tags#网络" >
+    <span class="tag-code">网络</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          1、网络分层（由上往下）：
+应用层
+表示层
+会话层
+传输层
+网络层
+数据链路层
+物理层
+
+2、区别术语：
+TCP/IP：代表传输控制协议/网际协议，指的是一系列协议。
+IP协议：网络层协议，解决网络路由和寻址问题。
+TCP：传输层协议，解决如何在IP层可靠的传递数据包问题。可靠、面向连接。
+ ...
+        
+      </div>
+      <a class="more" href="/2017/11/22/http.html">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2017/11/21/lock.html">iOS中的八大锁</a>
+      </h2>
+      <p class="article-date">November 21, 2017</p>
+      
+        
+  <a href="/tags#锁" >
+    <span class="tag-code">锁</span>
+  </a>
+
+  <a href="/tags#线程同步" >
+    <span class="tag-code">线程同步</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          1、锁防止在多线程(多任务)的情况下对共享资源(临界资源)的脏读或者脏写。也可以理解为：执行多线程时用于强行限制资源访问的同步机制，即并发控制中保证互斥的要求。
+1.1.锁的机制
+Mutex 互斥锁
+Spin lock 自旋锁
+Condition Variable 条件变量
+Read/Wri ...
+        
+      </div>
+      <a class="more" href="/2017/11/21/lock.html">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2017/11/17/nsoperation.html">多线程：NSOperation</a>
+      </h2>
+      <p class="article-date">November 17, 2017</p>
+      
+        
+  <a href="/tags#多线程" >
+    <span class="tag-code">多线程</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          
+iOS2.0时 MacOX 与 iOS 的程序都普遍采用 NSOperation 来编写线程代码，而之后出现的GCD技术大体是依照前者的原则来实现的，而随着GCD的普及，在iOS4.0 与 MacOS X 10.6以后，OperationQueue 的底层实现都是用GCD来实现的。
+
+1、 ...
+        
+      </div>
+      <a class="more" href="/2017/11/17/nsoperation.html">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2017/11/08/gcd.html">多线程：GCD</a>
+      </h2>
+      <p class="article-date">November 8, 2017</p>
+      
+        
+  <a href="/tags#多线程" >
+    <span class="tag-code">多线程</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          1、GCD
+&emsp;GCD 是Apple开发的一套多核编程的较新的解决方案。它是一个在线程池模式基础上执行的并行任务，CPU根据可用的处理资源，安排这些任务在可用的处理器核心上执行。在OS X 10.6雪豹中首次推出，iOS中4.0版本后可用。
+
+1.1.GCD的优点：&emsp;1、G ...
+        
+      </div>
+      <a class="more" href="/2017/11/08/gcd.html">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2017/11/07/nsthread.html">多线程：NSThread</a>
+      </h2>
+      <p class="article-date">November 7, 2017</p>
+      
+        
+  <a href="/tags#多线程" >
+    <span class="tag-code">多线程</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          1、进程 &amp; 线程#定义与划分尺度：
+
+程序的一次执行过程就是进程，它是系统进行资源分配和调度的一个独立单位。
+线程是进程的一个实体，是进程内的一个执行单元，一个进程至少有一个线程。
+
+#地址空间：
+
+进程有自己独立的虚拟地址空间，而线程共享进程的地址空间。
+
+#拥有的资源：
+
+进程 ...
+        
+      </div>
+      <a class="more" href="/2017/11/07/nsthread.html">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2017/09/09/runloop.html">Runloop</a>
+      </h2>
+      <p class="article-date">September 9, 2017</p>
+      
+        
+  <a href="/tags#runloop" >
+    <span class="tag-code">runloop</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          1、Runloop
+Run loops are part of the fundamental infrastructure associated with threads.A run loop is an event processing loop that you use to sche ...
+        
+      </div>
+      <a class="more" href="/2017/09/09/runloop.html">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2017/09/01/runtime_addClass.html">Runtime：动态增加新类、方法、属性</a>
+      </h2>
+      <p class="article-date">September 1, 2017</p>
+      
+        
+  <a href="/tags#runtime" >
+    <span class="tag-code">runtime</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          
+runtime是一套底层的C语言API，包含很多强大实用的C语言数据类型和C语言函数，平时我们编写的OC代码，底层都是基于runtime实现的。
+
+运行时的常用场景：
+消息机制；
+获取成员变量及其信息；
+获取函数列表及其信息；
+动态为某个类增加属性；
+动态为某个类添加方法、交换方法；
+动态 ...
+        
+      </div>
+      <a class="more" href="/2017/09/01/runtime_addClass.html">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2017/09/01/runtime_swizzle.html">Runtime：黑魔法：方法交换、数组对对象检测</a>
+      </h2>
+      <p class="article-date">September 1, 2017</p>
+      
+        
+  <a href="/tags#runtime" >
+    <span class="tag-code">runtime</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          方法交换（Method Swizzling）作用：动态交换两个方法的实现(即IMP指针)；
+原理：在类的数据结构体中有一个”方法列表”，它存放着 SEL 与 IMP 的映射关系。Method Swizzling 就是对这个列表进行的操作，通过改变这种映射关系，实现两个方法实现的交换；
+&em ...
+        
+      </div>
+      <a class="more" href="/2017/09/01/runtime_swizzle.html">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2017/08/30/runtime_associate.html">Runtime：对象关联、objc_setAssociatedObject</a>
+      </h2>
+      <p class="article-date">August 30, 2017</p>
+      
+        
+  <a href="/tags#runtime" >
+    <span class="tag-code">runtime</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          对象关联使用关联，我们可以在不修改类定义的前提下，为其对象增加存储空间。
+&emsp;适合的场景：
+
+把某对象与特定对象相关联；
+OC允许给分类增加属性，但不会自动生成getter、setter函数，因此调用时会崩溃，使用关联可以解决此问题；
+
+创建关联创建关联，要使用到OC的一个运行时函数 ...
+        
+      </div>
+      <a class="more" href="/2017/08/30/runtime_associate.html">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2017/08/25/runtime_ivar.html">Runtime：成员变量、属性、快速序列化、dic转Model</a>
+      </h2>
+      <p class="article-date">August 25, 2017</p>
+      
+        
+  <a href="/tags#runtime" >
+    <span class="tag-code">runtime</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          获取成员变量及其信息Ivar在”objc/runtime.h”中，Ivar的描述如下：
+1234567891011/// An opaque type that represents an instance variable.typedef struct objc_ivar *Ivar;st ...
+        
+      </div>
+      <a class="more" href="/2017/08/25/runtime_ivar.html">Read more</a>
+    </article>
+  
+
+  
+    <div class="guide-pager">
+  
+    <a href="/page/3/"><span class="page-arrow">← </span>Prev</a>
+  
+  
+    <a href="/page/5/">Next<span class="page-arrow"> →</span></a>
+  
+</div>
+  
+</main>
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2018 | <a href="https://github.com/davidlii" target="_blank">Davidli</a>
+    <br>
+    <a href="https://hexo.io" target="_blank">Hexo</a> | Theme-<a href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+<script src="/js/script.js"></script>
+  </body>
+</html>
