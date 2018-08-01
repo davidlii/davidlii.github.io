@@ -137,7 +137,7 @@
   <article class="post-article">
     <section class="markdown-content"><p>我们的 APP 从本质上来说是一个静态的二进制文件，它是由IDE（如Xcode）将源代码编译之后得到的可执行文件。点击 APP 的那一刻，启动过程就已经开始。这个过程中系统内核（XUN）会通过调用各个相关函数来默默地帮我们完成各项启动的步骤：</p>
 <h2 id="1、XNU-加载-Mach-O-和-dyld-的流程"><a href="#1、XNU-加载-Mach-O-和-dyld-的流程" class="headerlink" title="#1、XNU 加载 Mach-O 和 dyld 的流程"></a>#1、XNU 加载 Mach-O 和 dyld 的流程</h2><p>大致流程图如下：</p>
-<p><img src="http://outofmemory.cn/j/objective-c/talk-about-app-startup/1.png" alt="image"></p>
+<p><img src="http://pc7lkjphf.bkt.clouddn.com/picmach-o_execution.png" alt="image"></p>
 <p>相关函数调用顺序如下：</p>
 <h3 id="1-1、load-init-program"><a href="#1-1、load-init-program" class="headerlink" title="1.1、load_init_program()"></a>1.1、load_init_program()</h3><p>此函数的作用是负责加载初始化程序，非 debug 模式下会加载 launchd。这里 launchd 是一个负责进程管理的后台守护进程。</p>
 <h3 id="1-2、load-init-program-at-path"><a href="#1-2、load-init-program-at-path" class="headerlink" title="1.2、load_init_program_at_path()"></a>1.2、load_init_program_at_path()</h3><p>load_init_program_at_path 会调用 __mac_execve 函数来启动新进程和 task。我们的 APP 最后就是跑在这个新的进程上。在这之后继续调用 exec_activate_image 函数。</p>
