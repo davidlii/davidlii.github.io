@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="This is Davidli&#39;s blog ~">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" type="image/ico" href="/image/logo.png"/> 
+  
+  <title>
+    
+      ipa 重新签名 | Davidli
+    
+  </title>
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+  <script src="/js/qrious.js"></script>
+<script src="/js/gitment.js"></script>
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+</head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>Davidli</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>ipa 重新签名</h2>
+  <p class="post-date">2018-08-02</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h2 id="1、需求："><a href="#1、需求：" class="headerlink" title="1、需求："></a>1、需求：</h2><ul>
+<li>非企业证书签名的 <code>ipa</code> 想要在企业内分发。</li>
+<li>对商店中下载的应用砸壳并修改内容后，希望重新打包并安装到手机上；</li>
+</ul>
+<p>这些都需要对<code>ipa</code>重新签名~</p>
+<h2 id="2、原理"><a href="#2、原理" class="headerlink" title="2、原理"></a>2、原理</h2><p>移除原有签名，通过<code>codesign</code>工具对原 ipa 使用新证书重新签名并得到新的安装包。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ codesign</span><br><span class="line">Usage: codesign -s identity [-fv*] [-o flags] [-r reqs] [-i ident] path ... # sign</span><br><span class="line">       codesign -v [-v*] [-R=&lt;req string&gt;|-R &lt;req file path&gt;] path|[+]pid ... # verify</span><br><span class="line">       codesign -d [options] path ... # display contents</span><br><span class="line">       codesign -h pid ... # display hosting paths</span><br></pre></td></tr></table></figure>
+<h2 id="3、流程"><a href="#3、流程" class="headerlink" title="3、流程"></a>3、流程</h2><h3 id="3-1-准备工作："><a href="#3-1-准备工作：" class="headerlink" title="3.1.准备工作："></a>3.1.准备工作：</h3><ul>
+<li>解压ipa</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ unzip xx.ipa</span><br></pre></td></tr></table></figure>
+<ul>
+<li>找到开发者证书</li>
+</ul>
+<p>证书可以在钥匙串中查找，也可以通过下面的命令行来查找：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ security find-identity -p codesigning -v</span><br></pre></td></tr></table></figure>
+<ul>
+<li>找到开发环境配置文件并复制到<code>xx.app</code>文件夹下</li>
+</ul>
+<p>如果是自己的 ipa 那么这个<code>.mobileprovision</code>文件可以直接使用现成的，从<code>Xcode-&gt;账户</code>中找到，show in finder 后复制一份重命名为<code>embedded.mobileprovision</code>，拖到<code>.app</code>文件夹下即可<br>&emsp;</p>
+<p>也可以使用命令行操作：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cp xx.mobileprovision Payload/xx.app/embedded.mobileprovision</span><br></pre></td></tr></table></figure>
+<p>注意：复制到<code>xx.app</code>目录下的配置文件一定要命名为<code>embedded.mobileprovision</code>！</p>
+<ul>
+<li>修改包的 Bundle Identifier</li>
+</ul>
+<p>如果是别人的 ipa 那么就要需要修改原安装包的<code>info.plist</code>中的<code>Bundle identifier</code>，使其与配置文件中的<code>Bundle Identifier</code>保持一致：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ /usr/libexec/PlistBuddy -c &quot;Set :CFBundleIdentifier com.xx.xx&quot; Payload/xx.app/Info.plist</span><br></pre></td></tr></table></figure>
+<ul>
+<li>生成新的 entitlements.plist</li>
+</ul>
+<p><a href="https://developer.apple.com/library/archive/documentation/Miscellaneous/Reference/EntitlementKeyReference/Chapters/AboutEntitlements.html" target="_blank" rel="noopener">Entitlements</a> 是应用功能和授权相关的文件，涉及到iCloud、推送等功能的配置信息。可以通过开发环境配置文件重新生成一份，后面签名要用到：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ security cms -D -i xx.mobileprovision &gt; profile.plist</span><br></pre></td></tr></table></figure>
+<p>上面会生成一个完整的 plist，我们只需要里面的<code>Entitlements</code>字段，执行命令行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ /usr/libexec/PlistBuddy -x -c &apos;Print :Entitlements&apos; profile.plist &gt; entitlements.plist</span><br></pre></td></tr></table></figure>
+<p>结果如下:</p>
+<p><img src="http://pc7lkjphf.bkt.clouddn.com/entitleplist.png" alt="plist"></p>
+<ul>
+<li>移除之前的签名文件夹：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ rm -rf Payload/xx.app/_CodeSignature</span><br></pre></td></tr></table></figure>
+<h3 id="3-2-重新签名："><a href="#3-2-重新签名：" class="headerlink" title="3.2.重新签名："></a>3.2.重新签名：</h3><p>重新签名有顺序，先把<code>framework</code>和<code>dylib</code>签名，最后再签名<code>xx.app/xx</code>，顺序弄错了，就算签名成功也可能会安装失败!</p>
+<ul>
+<li>重新签名framework：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ codesign -f -s &quot;iPhone Distribution: xxxx (xx)&quot; --entitlements entitlements.plist /Payload/xx.app/Frameworks/yy.framework</span><br></pre></td></tr></table></figure>
+<ul>
+<li>重新签名应用的执行文件</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ codesign -f -s &quot;iPhone Distribution: xxxx (xx)&quot; --entitlements entitlements.plist Payload/xx.app/xx</span><br></pre></td></tr></table></figure>
+<ul>
+<li>查看应用签名信息</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ codesign -vv -d Payload/xx.app</span><br></pre></td></tr></table></figure>
+<h3 id="3-3-调试"><a href="#3-3-调试" class="headerlink" title="3.3.调试"></a>3.3.调试</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ios-deploy -d -b Payload/xx.app</span><br></pre></td></tr></table></figure>
+<p>出现<code>success</code>字样，就说明成功了~<br>&emsp;</p>
+<p>如果遇到错误提示：“Error: There was an internal API error. AMDeviceSecureInstallApplication(0, device, url, options, install_callback, 0)”,就可能存在有 framework 或者 dylib 未签名的情况。这时就需要把 app 文件夹下的 framework 全都签名。<br>&emsp;</p>
+<p>重新打包，生成新的ipa</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ zip -r new.ipa Payload/</span><br></pre></td></tr></table></figure>
+<p>接下来就可以通过 iTunes 或第三方工具安装到手机了~</p>
+<hr>
+<p>相关参考：</p>
+<p>#<a href="https://www.jb51.net/article/132328.htm" target="_blank" rel="noopener">©传送门</a></p>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#签名" >
+    <span class="tag-code">签名</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2018/07/27/iosreverse.html">
+        <span class="nav-arrow">← </span>
+        
+          iOS 应用逆向工程
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1、需求："><span class="toc-nav-text">1、需求：</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2、原理"><span class="toc-nav-text">2、原理</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3、流程"><span class="toc-nav-text">3、流程</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-1-准备工作："><span class="toc-nav-text">3.1.准备工作：</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-2-重新签名："><span class="toc-nav-text">3.2.重新签名：</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-3-调试"><span class="toc-nav-text">3.3.调试</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'http://yoursite.com/2018/08/02/resign.html';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+     // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+        
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+
+    // qrcode
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+
+    // gitment
+    var gitmentConfig = "";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "ipa 重新签名",
+        owner: "",
+        repo: "",
+        oauth: {
+          client_id: "",
+          client_secret: ""
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  })();
+</script>
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2018 | <a href="https://github.com/davidlii" target="_blank">Davidli</a>
+    <br>
+    <a href="https://hexo.io" target="_blank">Hexo</a> | Theme-<a href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+<script src="/js/script.js"></script>
+  </body>
+</html>
