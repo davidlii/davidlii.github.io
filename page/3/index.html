@@ -347,8 +347,8 @@ iOS程序默认情况下只能访问程序自己的目录，这个目录被称�
       
       <div class="article-summary">
         
-          区别与作用：1.retain：相当于ARC下的 strong，强引用，将属性的指针指向新值的地址，同时持有这个新值（新值的引用计数被加1）。
-12345678-(void)setName:(NSString *)newName&#123;    if (_name != newName) & ...
+          区别与作用：1.retain：类似于ARC下的 strong，表示强引用和持有的关系：将属性成员变量的指针指向源对象，同时持有源对象（此对象的引用计数会加1）。
+123456789//strong-(void)setName:(NSString *)newName&#123;    if ( ...
         
       </div>
       <a class="more" href="/2017/11/24/property.html">Read more</a>
