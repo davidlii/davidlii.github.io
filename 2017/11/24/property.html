@@ -144,10 +144,10 @@
 <p><strong>assign</strong> 可修饰对象类型和基本类型，一般用于修饰基本类型。<strong>weak</strong> 只可以修饰对象类型，修饰基本数据类型时编译器会报错。<br>&emsp;</p>
 <p>2、修饰对象类型时是否产生野指针</p>
 <p><strong>weak</strong> 不会产生野指针问题：weak 修饰的对象释放后指针会自动被置nil，之后再向该对象发消息也不会崩溃。<strong>assign</strong> 修饰对象类型时可能会产生野指针问题：assign 修饰的象被释放后指针不会自动被置空，此时向对象发消息会崩溃。<br>另外，如果assign只是修饰基本数据类型，则是安全的。<br>&emsp;</p>
-<p>3、小结：<br>值类型会被放入栈中，遵循先进后出原则，由系统负责管理栈内存。而引用类型会被放入堆中，需要我们自己手动管理内存或通过ARC管理。<strong>weak</strong> 适用于 delegate 和 block 等引用类型，不会导致野指针问题，可解用于决循环引用问题，是安全的。<strong>assign</strong> 适用于基本数据类型，不适用于引用类型。</p>
-<h4 id="3-copy："><a href="#3-copy：" class="headerlink" title="3.copy："></a>3.copy：</h4><p>表示拷贝和持有：会在内存中拷贝一份源对象，并将属性对应的成员变量的指针指向此拷贝出的对象，新对象的引用计数 = 1。</p>
+<p>3、小结：<br>值类型会被放入栈中，遵循先进后出原则，由系统负责管理栈内存。而引用类型会被放入堆中，需要我们自己手动管理内存或通过ARC管理。<strong>weak</strong> 适用于 delegate 和 block 等引用类型，不会导致野指针问题，可用于解决循环引用问题，是安全的。<strong>assign</strong> 适用于基本数据类型，不适用于引用类型。</p>
+<h4 id="3-copy："><a href="#3-copy：" class="headerlink" title="3.copy："></a>3.copy：</h4><p>表示拷贝和持有：会在内存中拷贝一份源对象，并将属性对应的成员变量的指针指向此拷贝出的新对象，新对象的引用计数 = 1。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">-(void)setName:(NSString *)newName</span><br><span class="line">&#123;</span><br><span class="line">    if (_name != newName) &#123;</span><br><span class="line">        [_name release];</span><br><span class="line">        _name = [newName copy];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>与 strong 的区别在于：<code>strong</code> 修饰的变量与原对象指向同一片内存空间，对变量的修改会影响到源对象。而<code>copy</code> 修饰的对象与源对象指向两片不同的内存空间，变量与原兑现两者互不影响。</p>
+<p>与 strong 的区别在于：<code>strong</code> 修饰的变量与原对象指向同一片内存空间，对变量的修改会影响到源对象。而<code>copy</code> 修饰的对象与源对象指向两片不同的内存空间，变量与原对象两者互不影响。</p>
 <h4 id="4-readwrite："><a href="#4-readwrite：" class="headerlink" title="4.readwrite："></a>4.readwrite：</h4><p>编译器自动为属性创建 setter/getter 方法。</p>
 <h4 id="5-readonly："><a href="#5-readonly：" class="headerlink" title="5.readonly："></a>5.readonly：</h4><p>编译器只为属性创建 getter 方法。</p>
 <h4 id="6-nonatomic："><a href="#6-nonatomic：" class="headerlink" title="6.nonatomic："></a>6.nonatomic：</h4><p>nonatomic 修饰的对象不保证<code>setter</code>和<code>getter</code>的完整性，所以多个线程对它进行访问，它可能会返回未初始化的对象。正因为如此，它比 atomic 快，但它不是线程安全的。</p>

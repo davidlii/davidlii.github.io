@@ -129,7 +129,7 @@
   
     <article class="article-card">
       <h2 class="article-head">
-        <a href="/2018/03/15/block.html">block 捕获变量</a>
+        <a href="/2018/03/15/block.html">block与变量捕获</a>
       </h2>
       <p class="article-date">March 15, 2018</p>
       
@@ -141,15 +141,16 @@
       
       <div class="article-summary">
         
-          #1、block 对变量的捕获1.1.可以捕获但不可以修改的变量
-局部变量
+          #1.Block：带有自动变量的匿名函数。
+1.1.Block语法#Block表达式:
 
-1.2.可以捕获且可以修改的变量
-静态变量
-全局变量
-静态全局变量
+^ 返回值类型 (参数列表) {表达式}
 
-1234567891011121314151617181920212223242526272829303132333435int aGloabl ...
+示例1：
+123^int(int a, int b) &#123;    return a * b;&#125;;
+#Block类型变量:
+
+返回值类型 (^ ...
         
       </div>
       <a class="more" href="/2018/03/15/block.html">Read more</a>

@@ -10,7 +10,7 @@
   
   <title>
     
-      block 捕获变量 | Davidli
+      block与变量捕获 | Davidli
     
   </title>
   <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -126,7 +126,7 @@
 </header>
 
     <div id="article-banner">
-  <h2>block 捕获变量</h2>
+  <h2>block与变量捕获</h2>
   <p class="post-date">2018-03-15</p>
   <div class="arrow-down">
     <a href="javascript:;"></a>
@@ -135,23 +135,47 @@
 <main class="app-body flex-box">
   <!-- Article START -->
   <article class="post-article">
-    <section class="markdown-content"><h3 id="1、block-对变量的捕获"><a href="#1、block-对变量的捕获" class="headerlink" title="#1、block 对变量的捕获"></a>#1、block 对变量的捕获</h3><h4 id="1-1-可以捕获但不可以修改的变量"><a href="#1-1-可以捕获但不可以修改的变量" class="headerlink" title="1.1.可以捕获但不可以修改的变量"></a>1.1.可以捕获但不可以修改的变量</h4><ul>
+    <section class="markdown-content"><h3 id="1-Block："><a href="#1-Block：" class="headerlink" title="#1.Block："></a>#1.Block：</h3><p>带有自动变量的匿名函数。</p>
+<h4 id="1-1-Block语法"><a href="#1-1-Block语法" class="headerlink" title="1.1.Block语法"></a>1.1.Block语法</h4><p>#Block表达式:</p>
+<blockquote>
+<p>^ 返回值类型 (参数列表) {表达式}</p>
+</blockquote>
+<p>示例1：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">^int(int a, int b) &#123;</span><br><span class="line">    return a * b;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>#Block类型变量:</p>
+<blockquote>
+<p>返回值类型 (^变量名)(参数列表) = Block表达式</p>
+</blockquote>
+<p>示例2：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">int (^increment)(int) = ^(int count) &#123;</span><br><span class="line">    return count + 1;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>#Block类型变量作为函数的参数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- (int)blockAsParam:(int (^)(int a,int b))ablock</span><br><span class="line">&#123;</span><br><span class="line">    return ablock(2,3);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>#Block类型变量作为返回值：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">- (int(^)(int a,int b))blockAsReturnValue&#123;</span><br><span class="line">    return ^int (int x,int y)&#123;</span><br><span class="line">        return 0;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<p>完整的示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">@interface UOBlocks : NSObject</span><br><span class="line">- (void)callBlocks;</span><br><span class="line">- (int)blockAsParam:(int (^)(int a,int b))ablock;//作为参数</span><br><span class="line">- (int(^)(int a,int b))blockAsReturnValue;//作为返回值</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">#import &quot;UOBlocks.h&quot;</span><br><span class="line"></span><br><span class="line">typedef int(^multiBlock)(int a,int b);//宏定义</span><br><span class="line"></span><br><span class="line">@interface UOBlocks()</span><br><span class="line">//作为属性</span><br><span class="line">@property (nonatomic, copy) multiBlock mMultiBlock;</span><br><span class="line">@property (nonatomic, copy) int (^clickBlock)(int a);</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation UOBlocks</span><br><span class="line"></span><br><span class="line">- (void)callBlocks</span><br><span class="line">&#123;</span><br><span class="line">    self.mMultiBlock = ^int(int a, int b) &#123;</span><br><span class="line">        return a * b;</span><br><span class="line">    &#125;;</span><br><span class="line">    NSLog(@&quot;++++%d&quot;,self.mMultiBlock(2,3));</span><br><span class="line">    </span><br><span class="line">    self.clickBlock = ^int(int a) &#123;</span><br><span class="line">        return a;</span><br><span class="line">    &#125;;</span><br><span class="line">    self.clickBlock(5);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (int)blockAsParam:(int (^)(int a,int b))ablock</span><br><span class="line">&#123;</span><br><span class="line">    return ablock(2,3);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (int(^)(int a,int b))blockAsReturnValue&#123;</span><br><span class="line">    return ^int (int x,int y)&#123;</span><br><span class="line">        return 0;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<p>#调用示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">UOBlocks *blocks = [UOBlocks new];</span><br><span class="line">[blocks callBlocks];</span><br><span class="line">[blocks blockAsParam:^int(int a, int b) &#123;</span><br><span class="line">    return a * b;</span><br><span class="line">&#125;];</span><br></pre></td></tr></table></figure>
+<hr>
+<h3 id="2-block-对变量的捕获"><a href="#2-block-对变量的捕获" class="headerlink" title="#2.block 对变量的捕获"></a>#2.block 对变量的捕获</h3><h4 id="2-1-可以捕获但不可以修改的变量"><a href="#2-1-可以捕获但不可以修改的变量" class="headerlink" title="2.1.可以捕获但不可以修改的变量"></a>2.1.可以捕获但不可以修改的变量</h4><ul>
 <li>局部变量</li>
 </ul>
-<h4 id="1-2-可以捕获且可以修改的变量"><a href="#1-2-可以捕获且可以修改的变量" class="headerlink" title="1.2.可以捕获且可以修改的变量"></a>1.2.可以捕获且可以修改的变量</h4><ul>
+<h4 id="2-2-可以捕获且可以修改的变量"><a href="#2-2-可以捕获且可以修改的变量" class="headerlink" title="2.2.可以捕获且可以修改的变量"></a>2.2.可以捕获且可以修改的变量</h4><ul>
 <li>静态变量</li>
 <li>全局变量</li>
 <li>静态全局变量</li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">int aGloableVal = 1;//全局变量</span><br><span class="line">static int aStaticGloable = 2;//静态全局变量</span><br><span class="line"></span><br><span class="line">@implementation AppDelegate</span><br><span class="line"></span><br><span class="line">- (BOOL)application:(UIApplication *)application</span><br><span class="line">didFinishLaunchingWithOptions:(NSDictionary *)launchOptions</span><br><span class="line">&#123;</span><br><span class="line">    static int aStaticVal = 3;//静态变量</span><br><span class="line">    int anInt = 0;//局部变量</span><br><span class="line">    NSMutableArray *array = [NSMutableArray array];//可变数组</span><br><span class="line">    </span><br><span class="line">    void (^blockT)(int) = ^(int blockVal)&#123;</span><br><span class="line">        aGloableVal = 8;</span><br><span class="line">        aStaticGloable = 9;</span><br><span class="line">        aStaticVal = 10;//以上三个都可以正常赋值</span><br><span class="line">        </span><br><span class="line">        //anInt = 1;</span><br><span class="line">        //array = [NSMutableArray array];</span><br><span class="line">        //以上两个赋值操作会报错:&quot;variable is not assignable&quot;!!</span><br><span class="line">        [array addObject:@&quot;2&quot;];//数组可以正常添加对象</span><br><span class="line">        NSLog(@&quot;局部变量:%d,\n全局变量:%d,\n静态全局变量:%d,\n静态变量:%d,\n数组容量:%lu&quot;,</span><br><span class="line">        anInt,aGloableVal,aStaticGloable,aStaticVal,(unsigned long)array.count);</span><br><span class="line">    &#125;;</span><br><span class="line">    aGloableVal = 4;</span><br><span class="line">    aStaticGloable = 5;</span><br><span class="line">    aStaticVal = 6;</span><br><span class="line">    anInt = 7;</span><br><span class="line">    [array addObject:@&quot;1&quot;];</span><br><span class="line">    </span><br><span class="line">    blockT(5);</span><br><span class="line">    </span><br><span class="line">    return YES;</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
-<p>&emsp;输出日志：</p>
+<p>输出日志：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">局部变量:0,</span><br><span class="line">全局变量:8,</span><br><span class="line">静态全局变量:9,</span><br><span class="line">静态变量:10,</span><br><span class="line">数组容量:2</span><br></pre></td></tr></table></figure>
 <p>根据示例，可以得到以下几个信息：</p>
-<p>&emsp;1、全局变量、静态变量、静态全局变量都可以正常在 block 内被重新赋值。而局部变量 anInt 在 block 内部重新赋值时，编译器报错“variable is not assignable”。所以， block 内不能给在它外部声明的局部变量（没有使用__block修饰的情况下）重新赋值。</p>
-<p>&emsp;2、全局变量、静态变量、静态全局变量在初始化时都有默认值，block 内重新赋值后，最终打印出的都是重新修改之后的值。而局部变量 anInt 初始化时 = 0，在调用 block 之前重新赋值为1；调用 block 之后，打印所得信息显示 block 内 anInt 的值仍为赋值前的0。这说明 block 内保留的局部变量是 blok 声明之前的那个值。</p>
-<p>&emsp;3、局部变量 array 赋值时报错“variable is not assignable”，而执行 addObject 操作却不会报错。所以，block 中使用到的局部变量可以执行操作而不能赋值。</p>
-<p>&emsp;4、block 捕获外部变量仅仅只捕获 block 闭包里面会用到的值，其他用不到的变量，它并不会去捕获。</p>
-<h3 id="二、问题来了"><a href="#二、问题来了" class="headerlink" title="#二、问题来了"></a>#二、问题来了</h3><p><em>为啥全局变量、静态变量在 block 内能修改，而局部变量不能修改？</em><br>&emsp;<br>OC的内存区域分为：堆区、栈区、全局区(数据区)、代码区。</p>
+<p>1、全局变量、静态变量、静态全局变量都可以正常在 block 内被重新赋值。而局部变量 anInt 在 block 内部重新赋值时，编译器报错“variable is not assignable”。所以， block 内不能给在它外部声明的局部变量（没有使用__block修饰的情况下）重新赋值。</p>
+<p>2、全局变量、静态变量、静态全局变量在初始化时都有默认值，block 内重新赋值后，最终打印出的都是重新修改之后的值。而局部变量 anInt 初始化时 = 0，在调用 block 之前重新赋值为1；调用 block 之后，打印所得信息显示 block 内 anInt 的值仍为赋值前的0。这说明 block 内保留的局部变量是 blok 声明之前的那个值。</p>
+<p>3、局部变量 array 赋值时报错“variable is not assignable”，而执行 addObject 操作却不会报错。所以，block 中使用到的局部变量可以执行操作而不能赋值。</p>
+<p>4、block 捕获外部变量仅仅只捕获 block 闭包里面会用到的值，其他用不到的变量，它并不会去捕获。</p>
+<h3 id="3-问题来了"><a href="#3-问题来了" class="headerlink" title="#3.问题来了"></a>#3.问题来了</h3><p><em>为啥全局变量、静态变量在 block 内能修改，而局部变量不能修改？</em><br>&emsp;<br>OC的内存区域分为：堆区、栈区、全局区(数据区)、代码区。</p>
 <p>其中全局变量、静态全局变量都存储在全局区，所以在 block 内可以直接被修改。</p>
 <p>其次，静态变量传递给 block 的是内存地址值，所以能在 block 里面直接改变值。</p>
 <p>最后，局部变量是以值传递方式传递到 block 的构造函数里面去的。由于只捕获了局部变量的值，并非内存地址，所以 block 内部不能改变自动变量的值。</p>
@@ -235,7 +259,7 @@
   <div class="toc-main">
     <strong class="toc-title">Catalog</strong>
     
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1、block-对变量的捕获"><span class="toc-nav-text">#1、block 对变量的捕获</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#1-1-可以捕获但不可以修改的变量"><span class="toc-nav-text">1.1.可以捕获但不可以修改的变量</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#1-2-可以捕获且可以修改的变量"><span class="toc-nav-text">1.2.可以捕获且可以修改的变量</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#二、问题来了"><span class="toc-nav-text">#二、问题来了</span></a></li></ol>
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1-Block："><span class="toc-nav-text">#1.Block：</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#1-1-Block语法"><span class="toc-nav-text">1.1.Block语法</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-block-对变量的捕获"><span class="toc-nav-text">#2.block 对变量的捕获</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-1-可以捕获但不可以修改的变量"><span class="toc-nav-text">2.1.可以捕获但不可以修改的变量</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-2-可以捕获且可以修改的变量"><span class="toc-nav-text">2.2.可以捕获且可以修改的变量</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-问题来了"><span class="toc-nav-text">#3.问题来了</span></a></li></ol>
     
   </div>
 </aside>
@@ -301,7 +325,7 @@
     var gitmentConfig = "";
     if (gitmentConfig !== 'undefined') {
       var gitment = new Gitment({
-        id: "block 捕获变量",
+        id: "block与变量捕获",
         owner: "",
         repo: "",
         oauth: {
