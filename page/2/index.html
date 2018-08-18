@@ -129,7 +129,7 @@
   
     <article class="article-card">
       <h2 class="article-head">
-        <a href="/2018/03/15/block.html">block与变量捕获</a>
+        <a href="/2018/03/15/block.html">block的实现原理与变量捕获</a>
       </h2>
       <p class="article-date">March 15, 2018</p>
       
@@ -141,16 +141,13 @@
       
       <div class="article-summary">
         
-          #1.Block：带有自动变量的匿名函数。
+          #1.Block：从本质上来说，Block是闭包在iOS中的实现，是带有自动变量的匿名函数。
 1.1.Block语法#Block表达式:
 
 ^ 返回值类型 (参数列表) {表达式}
 
 示例1：
-123^int(int a, int b) &#123;    return a * b;&#125;;
-#Block类型变量:
-
-返回值类型 (^ ...
+123^int(int a, int b) &#123;    return a * b;&#12 ...
         
       </div>
       <a class="more" href="/2018/03/15/block.html">Read more</a>
