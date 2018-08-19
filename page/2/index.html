@@ -304,6 +304,10 @@
       <p class="article-date">January 14, 2018</p>
       
         
+  <a href="/tags#block" >
+    <span class="tag-code">block</span>
+  </a>
+
   <a href="/tags#循环引用" >
     <span class="tag-code">循环引用</span>
   </a>
@@ -311,9 +315,9 @@
       
       <div class="article-summary">
         
-          1、循环引用循环引用可以简单理解为 A 引用了 B，而 B 又引用了 A，双方都同时保持对方的一个引用，导致任何时候引用计数都不为0，始终无法释放。
+          1、循环引用循环引用可以简单理解为 A 引用 B，B 又引用了 A，双方同时保持对方的一个引用，导致引用计数不为0，始终无法释放。&emsp;
 循环引用的影响？
-导致对象无法释放，造成内存泄露。如果是 ViewController 内出现循环引用，在反复 push &amp; pop  ...
+导致对象无法释放，造成内存泄露。如果是 ViewController 内出现循环引用，在反复 push &amp; pop 后，V ...
         
       </div>
       <a class="more" href="/2018/01/14/retain_circle.html">Read more</a>
