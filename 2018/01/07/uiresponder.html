@@ -143,7 +143,7 @@
 </ul>
 <h4 id="1-1-谁能接收和处理事件？"><a href="#1-1-谁能接收和处理事件？" class="headerlink" title="1.1.谁能接收和处理事件？"></a>1.1.谁能接收和处理事件？</h4><p>继承自 UIResponder 的类对象（如：UIView、UIViewController、UIApplication）才能接收和处理事件，它们被称为“响应者对象”。UIResponder.h中定义了如下处理方法：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">//处理触摸事件</span><br><span class="line">- (void)touchesBegan:(NSSet*)touches withEvent:(UIEvent*)event;</span><br><span class="line">- (void)touchesMoved:(NSSet*)touches withEvent:(UIEvent*)event;</span><br><span class="line">- (void)touchesEnded:(NSSet*)touches withEvent:(UIEvent*)event;</span><br><span class="line">- (void)touchesCancelled:(NSSet*)touches withEvent:(UIEvent*)ev</span><br><span class="line"></span><br><span class="line">//加速计事件</span><br><span class="line">- (void)motionBegan:(UIEventSubtype)motion withEvent:(UIEvent*)event;</span><br><span class="line">- (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent*)event;</span><br><span class="line">- (void)motionCancelled:(UIEventSubtype)motion withEvent:(UIEvent*)event;</span><br><span class="line"></span><br><span class="line">//远程控制事件</span><br><span class="line">- (void)remoteControlReceivedWithEvent:(UIEvent*)event;</span><br></pre></td></tr></table></figure>
-<h4 id="1-2-触摸事件的产生？"><a href="#1-2-触摸事件的产生？" class="headerlink" title="1.2.触摸事件的产生？"></a>1.2.触摸事件的产生？</h4><p>当用户在屏幕上做手指点击、缩放等操作时，就会触发触摸事件。此时 UIKit 会创建一个 UIEvent 事件对象，该对象会被添加到一个 FIFO 的队列中。后续会由 UIApplication 负责事件的分发和传递，直到找到一个合适的响应视图。</p>
+<h4 id="1-2-触摸事件的产生？"><a href="#1-2-触摸事件的产生？" class="headerlink" title="1.2.触摸事件的产生？"></a>1.2.触摸事件的产生？</h4><p>当用户在屏幕上做手指点击、缩放等操作时，就会触发触摸事件。此时 UIKit 会创建一个 UIEvent 事件对象，该对象会被添加到一个事件队列中。后续会由 UIApplication 负责事件的分发和传递，直到找到一个合适的响应视图。</p>
 <h3 id="2、触摸事件的传递？"><a href="#2、触摸事件的传递？" class="headerlink" title="2、触摸事件的传递？"></a>2、触摸事件的传递？</h3><p>事件的传递过程其实就是点击检测的过程，即查找事件触发者的过程。这个过程中，响应者对象需要做两个判断条件：自己是否能接收事件？触摸点是否在自己身上？</p>
 <p>按照响应者的先后顺序，如下传递：</p>
 <ol>
@@ -152,7 +152,7 @@
 <li>假如主窗口满足上面两个条件（即能接收事件且触摸点在自己身上），则按照从后往前的顺序遍历主窗口的子视图数组（…C、B、A）。对这些子视图逐一重复以上两个判断。</li>
 <li>假如子视图中没有符合条件的，则主窗口成为最合适的视图。</li>
 <li>假如主窗口的<code>子视图A</code>符合条件，则继续遍历 A 的子视图，并重复上面的两个判断。</li>
-<li>同样，假如A的子视图中没有符合条件的，则A成为最适合的视图。假如A的子视图中有符合条件的（D），则继续遍历D的子视图，直到找到最合适的视图。</li>
+<li>同样，假如A的子视图中没有符合条件的，则A成为最适合的视图。假如A的子视图中有符合条件的（X），则继续遍历X的子视图，直到找到最合适的视图。</li>
 </ol>
 <p>ps：触摸事件的传递是从父视图传递到子视图，如果父视图不能接受触摸事件，那么子视图就不可能接收到触摸事件。</p>
 <h4 id="2-1-哪些情况不能接收事件？"><a href="#2-1-哪些情况不能接收事件？" class="headerlink" title="2.1.哪些情况不能接收事件？"></a>2.1.哪些情况不能接收事件？</h4><ul>

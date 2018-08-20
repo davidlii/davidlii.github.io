@@ -129,6 +129,29 @@
   
     <article class="article-card">
       <h2 class="article-head">
+        <a href="/2017/11/24/memory.html">虚拟内存分配</a>
+      </h2>
+      <p class="article-date">November 24, 2017</p>
+      
+        
+  <a href="/tags#内存" >
+    <span class="tag-code">内存</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          分区及职责&emsp;1. 栈区(stack)：存放局部变量和方法实参。
+&emsp;2. 堆区(heap)：存放OC中使用new等方法创建的对象。
+&emsp;3. 全局（静态）区：包括以下两个分区：
+123.1. 数据段（Data segment）：初始化的全局变量和静态变量。3.2.  ...
+        
+      </div>
+      <a class="more" href="/2017/11/24/memory.html">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
         <a href="/2017/11/24/atomic.html">atomic一定线程安全吗？</a>
       </h2>
       <p class="article-date">November 24, 2017</p>
@@ -357,28 +380,6 @@ runtime是一套底层的C语言API，包含很多强大实用的C语言数据�
         
       </div>
       <a class="more" href="/2017/09/01/runtime_addClass.html">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2017/09/01/runtime_swizzle.html">Runtime：黑魔法：方法交换、数组对对象检测</a>
-      </h2>
-      <p class="article-date">September 1, 2017</p>
-      
-        
-  <a href="/tags#runtime" >
-    <span class="tag-code">runtime</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          方法交换（Method Swizzling）作用：动态交换两个方法的实现(即IMP指针)；
-原理：在类的数据结构体中有一个”方法列表”，它存放着 SEL 与 IMP 的映射关系。Method Swizzling 就是对这个列表进行的操作，通过改变这种映射关系，实现两个方法实现的交换；
-&em ...
-        
-      </div>
-      <a class="more" href="/2017/09/01/runtime_swizzle.html">Read more</a>
     </article>
   
 

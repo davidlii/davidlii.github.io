@@ -10,7 +10,7 @@
   
   <title>
     
-      ipa 重新签名 | Davidli
+      swift 中的 weak 与 unowned | Davidli
     
   </title>
   <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -126,8 +126,8 @@
 </header>
 
     <div id="article-banner">
-  <h2>ipa 重新签名</h2>
-  <p class="post-date">2018-08-02</p>
+  <h2>swift 中的 weak 与 unowned</h2>
+  <p class="post-date">2018-08-20</p>
   <div class="arrow-down">
     <a href="javascript:;"></a>
   </div>
@@ -135,77 +135,33 @@
 <main class="app-body flex-box">
   <!-- Article START -->
   <article class="post-article">
-    <section class="markdown-content"><h2 id="1、需求："><a href="#1、需求：" class="headerlink" title="1、需求："></a>1、需求：</h2><ul>
-<li>非企业证书签名的 <code>ipa</code> 想要在企业内分发。</li>
-<li>对商店中下载的应用砸壳并修改内容后，希望重新打包并安装到手机上；</li>
-</ul>
-<p>这些都需要对<code>ipa</code>重新签名~</p>
-<h2 id="2、原理"><a href="#2、原理" class="headerlink" title="2、原理"></a>2、原理</h2><p>移除原有签名，通过<code>codesign</code>工具对原 ipa 使用新证书重新签名并得到新的安装包。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ codesign</span><br><span class="line">Usage: codesign -s identity [-fv*] [-o flags] [-r reqs] [-i ident] path ... # sign</span><br><span class="line">       codesign -v [-v*] [-R=&lt;req string&gt;|-R &lt;req file path&gt;] path|[+]pid ... # verify</span><br><span class="line">       codesign -d [options] path ... # display contents</span><br><span class="line">       codesign -h pid ... # display hosting paths</span><br></pre></td></tr></table></figure>
-<h2 id="3、流程"><a href="#3、流程" class="headerlink" title="3、流程"></a>3、流程</h2><h3 id="3-1-准备工作："><a href="#3-1-准备工作：" class="headerlink" title="3.1.准备工作："></a>3.1.准备工作：</h3><ul>
-<li>解压ipa</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ unzip xx.ipa</span><br></pre></td></tr></table></figure>
-<ul>
-<li>找到开发者证书</li>
-</ul>
-<p>证书可以在钥匙串中查找，也可以通过下面的命令行来查找：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ security find-identity -p codesigning -v</span><br></pre></td></tr></table></figure>
-<ul>
-<li>找到开发环境配置文件并复制到<code>xx.app</code>文件夹下</li>
-</ul>
-<p>如果是自己的 ipa 那么这个<code>.mobileprovision</code>文件可以直接使用现成的，从<code>Xcode-&gt;账户</code>中找到，show in finder 后复制一份重命名为<code>embedded.mobileprovision</code>，拖到<code>.app</code>文件夹下即可<br>&emsp;</p>
-<p>也可以使用命令行操作：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cp xx.mobileprovision Payload/xx.app/embedded.mobileprovision</span><br></pre></td></tr></table></figure>
-<p>注意：复制到<code>xx.app</code>目录下的配置文件一定要命名为<code>embedded.mobileprovision</code>！</p>
-<ul>
-<li>修改包的 Bundle Identifier</li>
-</ul>
-<p>如果是别人的 ipa 那么就要需要修改原安装包的<code>info.plist</code>中的<code>Bundle identifier</code>，使其与配置文件中的<code>Bundle Identifier</code>保持一致：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ /usr/libexec/PlistBuddy -c &quot;Set :CFBundleIdentifier com.xx.xx&quot; Payload/xx.app/Info.plist</span><br></pre></td></tr></table></figure>
-<ul>
-<li>生成新的 entitlements.plist</li>
-</ul>
-<p><a href="https://developer.apple.com/library/archive/documentation/Miscellaneous/Reference/EntitlementKeyReference/Chapters/AboutEntitlements.html" target="_blank" rel="noopener">Entitlements</a> 是应用功能和授权相关的文件，涉及到iCloud、推送等功能的配置信息。可以通过开发环境配置文件重新生成一份，后面签名要用到：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ security cms -D -i xx.mobileprovision &gt; profile.plist</span><br></pre></td></tr></table></figure>
-<p>上面会生成一个完整的 plist，我们只需要里面的<code>Entitlements</code>字段，执行命令行：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ /usr/libexec/PlistBuddy -x -c &apos;Print :Entitlements&apos; profile.plist &gt; entitlements.plist</span><br></pre></td></tr></table></figure>
-<p>结果如下:</p>
-<p><img src="http://pc7lkjphf.bkt.clouddn.com/entitleplist.png" alt="plist"></p>
-<ul>
-<li>移除之前的签名文件夹：</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ rm -rf Payload/xx.app/_CodeSignature</span><br></pre></td></tr></table></figure>
-<h3 id="3-2-重新签名："><a href="#3-2-重新签名：" class="headerlink" title="3.2.重新签名："></a>3.2.重新签名：</h3><p>重新签名有顺序，先把<code>framework</code>和<code>dylib</code>签名，最后再签名<code>xx.app/xx</code>，顺序弄错了，就算签名成功也可能会安装失败!</p>
-<ul>
-<li>重新签名framework：</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ codesign -f -s &quot;iPhone Distribution: xxxx (xx)&quot; --entitlements entitlements.plist /Payload/xx.app/Frameworks/yy.framework</span><br></pre></td></tr></table></figure>
-<ul>
-<li>重新签名应用的执行文件</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ codesign -f -s &quot;iPhone Distribution: xxxx (xx)&quot; --entitlements entitlements.plist Payload/xx.app/xx</span><br></pre></td></tr></table></figure>
-<ul>
-<li>查看应用签名信息</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ codesign -vv -d Payload/xx.app</span><br></pre></td></tr></table></figure>
-<h3 id="3-3-调试"><a href="#3-3-调试" class="headerlink" title="3.3.调试"></a>3.3.调试</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ios-deploy -d -b Payload/xx.app</span><br></pre></td></tr></table></figure>
-<p>出现<code>success</code>字样，就说明成功了~<br>&emsp;</p>
-<p>如果遇到错误提示：“Error: There was an internal API error. AMDeviceSecureInstallApplication(0, device, url, options, install_callback, 0)”,就可能存在有 framework 或者 dylib 未签名的情况。这时就需要把 app 文件夹下的 framework 全都签名。<br>&emsp;</p>
-<p>重新打包，生成新的ipa</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ zip -r new.ipa Payload/</span><br></pre></td></tr></table></figure>
-<p>接下来就可以通过 iTunes 或第三方工具安装到手机了~</p>
+    <section class="markdown-content"><h3 id="原文："><a href="#原文：" class="headerlink" title="原文："></a>原文：</h3><h4 id="weak"><a href="#weak" class="headerlink" title="weak"></a>weak</h4><p>A weak reference is a reference that does not keep a strong hold on the instance it refers to, and so does not stop ARC from disposing of the referenced instance.<br>&emsp;</p>
+<p>Use a weak reference when the other instance has a shorter lifetime—that is, when the other instance can be deallocated first. </p>
+<h4 id="unowned"><a href="#unowned" class="headerlink" title="unowned"></a>unowned</h4><p>Like a weak reference, an unowned reference does not keep a strong hold on the instance it refers to. Unlike a weak reference, however, an unowned reference is used when the other instance has the same lifetime or a longer lifetime.<br>&emsp;</p>
+<p>Use an unowned reference only when you are sure that the reference always refers to an instance that has not been deallocated.<br>&emsp;</p>
+<p>If you try to access the value of an unowned reference after that instance has been deallocated, you’ll get a runtime error.</p>
+<h3 id="翻译："><a href="#翻译：" class="headerlink" title="翻译："></a>翻译：</h3><p>weak 与 unowned 的作用类似，都是用来解决循环引用问题。区别在于：</p>
+<h4 id="生命周期："><a href="#生命周期：" class="headerlink" title="生命周期："></a>生命周期：</h4><p><strong>weak</strong> 对象的生命周期一般 &lt; weak 对象所在的类的实例的生命周期，当访问该 weak 对象时它可能已经被释放了，比如 delegate、房子中的租客。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">class Person &#123;</span><br><span class="line">    let name: String</span><br><span class="line">    init(name: String) &#123; self.name = name &#125;</span><br><span class="line">    var apartment: Apartment?</span><br><span class="line">    deinit &#123; print(&quot;\(name) is being deinitialized&quot;) &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Apartment &#123;</span><br><span class="line">    let unit: String</span><br><span class="line">    init(unit: String) &#123; self.unit = unit &#125;</span><br><span class="line">    weak var tenant: Person?</span><br><span class="line">    deinit &#123; print(&quot;Apartment \(unit) is being deinitialized&quot;) &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>unowned</strong> 对象的生命周期一般 &gt;= unowned 对象所在的类的实例的生命周期。比如 Customer 与 CreditCard，人可能没有信用卡，但信用卡一定得有个主人，Customer的生命周期比 CreditCard 长。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">class Customer &#123;</span><br><span class="line">    let name: String</span><br><span class="line">    var card: CreditCard?</span><br><span class="line">    init(name: String) &#123;</span><br><span class="line">        self.name = name</span><br><span class="line">    &#125;</span><br><span class="line">    deinit &#123; print(&quot;\(name) is being deinitialized&quot;) &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class CreditCard &#123;</span><br><span class="line">    let number: UInt64</span><br><span class="line">    unowned let customer: Customer</span><br><span class="line">    init(number: UInt64, customer: Customer) &#123;</span><br><span class="line">        self.number = number</span><br><span class="line">        self.customer = customer</span><br><span class="line">    &#125;</span><br><span class="line">    deinit &#123; print(&quot;Card #\(number) is being deinitialized&quot;) &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="野指针问题"><a href="#野指针问题" class="headerlink" title="野指针问题"></a>野指针问题</h4><p><strong>weak</strong> 对象释放后弱引用也随即消失，继续访问该对象时程序会得到 nil，不会崩溃。<br>&emsp;</p>
+<p><strong>unowned</strong> 对象在释放后，依然有一个无效的引用指向对象，它不是 Optional 也不指向 nil。如果继续访问该对象，程序就会崩溃。</p>
 <hr>
 <p>相关参考：</p>
-<p>#<a href="https://www.jb51.net/article/132328.htm" target="_blank" rel="noopener">©传送门</a></p>
+<p>#<a href="https://docs.swift.org/swift-book/LanguageGuide/AutomaticReferenceCounting.html#ID52" target="_blank" rel="noopener">©swift:ARC</a></p>
 </section>
     <!-- Tags START -->
     
       <div class="tags">
         <span>Tags:</span>
         
-  <a href="/tags#签名" >
-    <span class="tag-code">签名</span>
+  <a href="/tags#循环引用" >
+    <span class="tag-code">循环引用</span>
+  </a>
+
+  <a href="/tags#swift" >
+    <span class="tag-code">swift</span>
   </a>
 
       </div>
@@ -216,20 +172,13 @@
   <div class="nav-container">
     <!-- reverse left and right to put prev and next in a more logic postition -->
     
-      <a class="nav-left" href="/2018/07/27/iosreverse.html">
+      <a class="nav-left" href="/2018/08/02/resign.html">
         <span class="nav-arrow">← </span>
         
-          iOS 应用逆向工程
+          ipa 重新签名
         
       </a>
     
-    
-      <a class="nav-right" href="/2018/08/20/swift-refcycle.html">
-        
-          swift 中的 weak 与 unowned
-        
-        <span class="nav-arrow"> →</span>
-      </a>
     
   </div>
 
@@ -268,7 +217,7 @@
   <div class="toc-main">
     <strong class="toc-title">Catalog</strong>
     
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1、需求："><span class="toc-nav-text">1、需求：</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2、原理"><span class="toc-nav-text">2、原理</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3、流程"><span class="toc-nav-text">3、流程</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-1-准备工作："><span class="toc-nav-text">3.1.准备工作：</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-2-重新签名："><span class="toc-nav-text">3.2.重新签名：</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-3-调试"><span class="toc-nav-text">3.3.调试</span></a></li></ol></li></ol>
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#原文："><span class="toc-nav-text">原文：</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#weak"><span class="toc-nav-text">weak</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#unowned"><span class="toc-nav-text">unowned</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#翻译："><span class="toc-nav-text">翻译：</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#生命周期："><span class="toc-nav-text">生命周期：</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#野指针问题"><span class="toc-nav-text">野指针问题</span></a></li></ol></li></ol>
     
   </div>
 </aside>
@@ -278,7 +227,7 @@
 
 <script>
   (function () {
-    var url = 'http://yoursite.com/2018/08/02/resign.html';
+    var url = 'http://yoursite.com/2018/08/20/swift-refcycle.html';
     var banner = ''
     if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
       $('#article-banner').css({
@@ -334,7 +283,7 @@
     var gitmentConfig = "";
     if (gitmentConfig !== 'undefined') {
       var gitment = new Gitment({
-        id: "ipa 重新签名",
+        id: "swift 中的 weak 与 unowned",
         owner: "",
         repo: "",
         oauth: {
