@@ -10,7 +10,7 @@
   
   <title>
     
-      swift 中的 weak 与 unowned | Davidli
+      swift 中闭包的变量捕获 &amp; 循环引用 | Davidli
     
   </title>
   <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -126,7 +126,7 @@
 </header>
 
     <div id="article-banner">
-  <h2>swift 中的 weak 与 unowned</h2>
+  <h2>swift 中闭包的变量捕获 & 循环引用</h2>
   <p class="post-date">2018-08-20</p>
   <div class="arrow-down">
     <a href="javascript:;"></a>
@@ -135,12 +135,24 @@
 <main class="app-body flex-box">
   <!-- Article START -->
   <article class="post-article">
-    <section class="markdown-content"><h3 id="原文："><a href="#原文：" class="headerlink" title="原文："></a>原文：</h3><h4 id="weak"><a href="#weak" class="headerlink" title="weak"></a>weak</h4><p>A weak reference is a reference that does not keep a strong hold on the instance it refers to, and so does not stop ARC from disposing of the referenced instance.<br>&emsp;</p>
+    <section class="markdown-content"><h3 id="闭包中的变量捕获"><a href="#闭包中的变量捕获" class="headerlink" title="闭包中的变量捕获"></a>闭包中的变量捕获</h3><p>A closure can capture constants and variables from the surrounding context in which it is defined. The closure can then refer to and modify the values of those constants and variables from within its body, even if the original scope that defined the constants and variables no longer exists.<br>&emsp;</p>
+<p>As an optimization, Swift may instead capture and store a copy of a value if that value is not mutated by a closure, and if the value is not mutated after the closure is created.<br>&emsp;</p>
+<p>Swift also handles all memory management involved in disposing of variables when they are no longer needed.<br>&emsp;</p>
+<p>都知道 OC 中 block 会捕获变量，默认捕获的是变量的值。<br>&emsp;</p>
+<p>swift 的闭包也会自动捕获其上下文中定义的变量，与 OC 中 block 不同的是，闭包默认截获的是<strong>变量的引用</strong>，这样就可以在闭包内修改它们的值。<br>&emsp;</p>
+<p>另外，swift 也会做一些优化，比如它会自动判断你是否在闭包内或闭包外修改了变量，如果没有则会直接持有一份该<strong>变量的拷贝</strong>，而非变量的引用。这可能是因为持有变量引用的开销比直接持有变量要大。</p>
+<h3 id="解决闭包的循环引用"><a href="#解决闭包的循环引用" class="headerlink" title="解决闭包的循环引用"></a>解决闭包的循环引用</h3><p>A strong reference cycle can also occur if you assign a closure to a property of a class instance, and the body of that closure captures the instance. This capture might occur because the closure’s body accesses a property of the instance, such as self.someProperty, or because the closure calls a method on the instance, such as self.someMethod(). In either case, these accesses cause the closure to “capture” self, creating a strong reference cycle.<br>&emsp;</p>
+<p>与 OC 中的 block 类似，闭包也会强引用被它捕获的对象。如果闭包是某个对象的属性，而闭包又捕获了对象本身或者对象的属性，就会引起循环引用问题。示例如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">class ViewController: UIViewController &#123;</span><br><span class="line"></span><br><span class="line">    var name :String? = &quot;s&quot;</span><br><span class="line">    var sBlock:(()-&gt;())? //定义闭包属性，VC强引用闭包</span><br><span class="line">    </span><br><span class="line">    override func viewDidLoad() &#123;</span><br><span class="line">        super.viewDidLoad()</span><br><span class="line">        sBlock = &#123;</span><br><span class="line">            //闭包访问VC的其他成员，闭包捕获并强引用self对象</span><br><span class="line">            self.name = &quot;x&quot; </span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    deinit&#123;</span><br><span class="line">        print(&quot;++ deinited !&quot;)//因为闭包的循环引用，这里析构并不会执行</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>You resolve a strong reference cycle between a closure and a class instance by defining a capture list as part of the closure’s definition.Each item in a capture list is a pairing of the weak or unowned keyword with a reference to a class instance (such as self) or a variable initialized with some value (such as delegate = self.delegate!).<br>&emsp;</p>
+<p>解决闭包循环引用的办法就是<strong>定义捕获列表</strong>，把被捕获的变量标记为<code>weak</code> 或 <code>unowned</code>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">class ViewController: UIViewController &#123;</span><br><span class="line"></span><br><span class="line">    var name :String? = &quot;s&quot;</span><br><span class="line">    var sBlock:(()-&gt;())?</span><br><span class="line">    </span><br><span class="line">    override func viewDidLoad() &#123;</span><br><span class="line">        super.viewDidLoad()</span><br><span class="line">        sBlock = &#123;</span><br><span class="line">            [unowned self] in //定义捕获列表</span><br><span class="line">            self.name = &quot;x&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    deinit&#123;</span><br><span class="line">        print(&quot;++ deinited !&quot;) //能正常析构</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="weak-与-unowned-的区别"><a href="#weak-与-unowned-的区别" class="headerlink" title="weak 与 unowned 的区别"></a>weak 与 unowned 的区别</h3><h4 id="weak"><a href="#weak" class="headerlink" title="weak"></a>weak</h4><p>A weak reference is a reference that does not keep a strong hold on the instance it refers to, and so does not stop ARC from disposing of the referenced instance.<br>&emsp;</p>
 <p>Use a weak reference when the other instance has a shorter lifetime—that is, when the other instance can be deallocated first. </p>
 <h4 id="unowned"><a href="#unowned" class="headerlink" title="unowned"></a>unowned</h4><p>Like a weak reference, an unowned reference does not keep a strong hold on the instance it refers to. Unlike a weak reference, however, an unowned reference is used when the other instance has the same lifetime or a longer lifetime.<br>&emsp;</p>
 <p>Use an unowned reference only when you are sure that the reference always refers to an instance that has not been deallocated.<br>&emsp;</p>
-<p>If you try to access the value of an unowned reference after that instance has been deallocated, you’ll get a runtime error.</p>
-<h3 id="翻译："><a href="#翻译：" class="headerlink" title="翻译："></a>翻译：</h3><p>weak 与 unowned 的作用类似，都是用来解决循环引用问题。区别在于：</p>
+<p>If you try to access the value of an unowned reference after that instance has been deallocated, you’ll get a runtime error.<br>&emsp;</p>
+<p>weak 与 unowned 的作用类似，都是用来解决循环引用问题。区别在于：</p>
 <h4 id="生命周期："><a href="#生命周期：" class="headerlink" title="生命周期："></a>生命周期：</h4><p><strong>weak</strong> 对象的生命周期一般 &lt; weak 对象所在的类的实例的生命周期，当访问该 weak 对象时它可能已经被释放了，比如 delegate、房子中的租客。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">class Person &#123;</span><br><span class="line">    let name: String</span><br><span class="line">    init(name: String) &#123; self.name = name &#125;</span><br><span class="line">    var apartment: Apartment?</span><br><span class="line">    deinit &#123; print(&quot;\(name) is being deinitialized&quot;) &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Apartment &#123;</span><br><span class="line">    let unit: String</span><br><span class="line">    init(unit: String) &#123; self.unit = unit &#125;</span><br><span class="line">    weak var tenant: Person?</span><br><span class="line">    deinit &#123; print(&quot;Apartment \(unit) is being deinitialized&quot;) &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p><strong>unowned</strong> 对象的生命周期一般 &gt;= unowned 对象所在的类的实例的生命周期。比如 Customer 与 CreditCard，人可能没有信用卡，但信用卡一定得有个主人，Customer的生命周期比 CreditCard 长。</p>
@@ -217,7 +229,7 @@
   <div class="toc-main">
     <strong class="toc-title">Catalog</strong>
     
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#原文："><span class="toc-nav-text">原文：</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#weak"><span class="toc-nav-text">weak</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#unowned"><span class="toc-nav-text">unowned</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#翻译："><span class="toc-nav-text">翻译：</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#生命周期："><span class="toc-nav-text">生命周期：</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#野指针问题"><span class="toc-nav-text">野指针问题</span></a></li></ol></li></ol>
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#闭包中的变量捕获"><span class="toc-nav-text">闭包中的变量捕获</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#解决闭包的循环引用"><span class="toc-nav-text">解决闭包的循环引用</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#weak-与-unowned-的区别"><span class="toc-nav-text">weak 与 unowned 的区别</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#weak"><span class="toc-nav-text">weak</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#unowned"><span class="toc-nav-text">unowned</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#生命周期："><span class="toc-nav-text">生命周期：</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#野指针问题"><span class="toc-nav-text">野指针问题</span></a></li></ol></li></ol>
     
   </div>
 </aside>
@@ -283,7 +295,7 @@
     var gitmentConfig = "";
     if (gitmentConfig !== 'undefined') {
       var gitment = new Gitment({
-        id: "swift 中的 weak 与 unowned",
+        id: "swift 中闭包的变量捕获 & 循环引用",
         owner: "",
         repo: "",
         oauth: {
