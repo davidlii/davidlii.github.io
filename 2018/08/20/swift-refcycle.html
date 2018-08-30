@@ -139,7 +139,7 @@
 <p>As an optimization, Swift may instead capture and store a copy of a value if that value is not mutated by a closure, and if the value is not mutated after the closure is created.<br>&emsp;</p>
 <p>Swift also handles all memory management involved in disposing of variables when they are no longer needed.<br>&emsp;</p>
 <p>都知道 OC 中 block 会捕获变量，默认捕获的是变量的值。<br>&emsp;</p>
-<p>swift 的闭包也会自动捕获其上下文中定义的变量，与 OC 中 block 不同的是，闭包默认截获的是<strong>变量的引用</strong>，这样就可以在闭包内修改它们的值。<br>&emsp;</p>
+<p>swift 的闭包也会自动捕获其上下文中定义的变量，与 OC 中 block 不同的是，闭包默认截获的是<strong>变量的引用</strong>，这样就可以在闭包内修改它们的值。换句话说，Swift 闭包中变量的默认行为与 OC 中<code>__block</code> 变量一致。<br>&emsp;</p>
 <p>另外，swift 也会做一些优化，比如它会自动判断你是否在闭包内或闭包外修改了变量，如果没有则会直接持有一份该<strong>变量的拷贝</strong>，而非变量的引用。这可能是因为持有变量引用的开销比直接持有变量要大。</p>
 <h3 id="解决闭包的循环引用"><a href="#解决闭包的循环引用" class="headerlink" title="解决闭包的循环引用"></a>解决闭包的循环引用</h3><p>A strong reference cycle can also occur if you assign a closure to a property of a class instance, and the body of that closure captures the instance. This capture might occur because the closure’s body accesses a property of the instance, such as self.someProperty, or because the closure calls a method on the instance, such as self.someMethod(). In either case, these accesses cause the closure to “capture” self, creating a strong reference cycle.<br>&emsp;</p>
 <p>与 OC 中的 block 类似，闭包也会强引用被它捕获的对象。如果闭包是某个对象的属性，而闭包又捕获了对象本身或者对象的属性，就会引起循环引用问题。#示例1：</p>
@@ -200,6 +200,13 @@
         
       </a>
     
+    
+      <a class="nav-right" href="/2018/08/31/swift-kvo-observer.html">
+        
+          swift 中监听属性变化
+        
+        <span class="nav-arrow"> →</span>
+      </a>
     
   </div>
 
