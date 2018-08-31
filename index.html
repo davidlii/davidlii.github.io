@@ -145,11 +145,7 @@
       
       <div class="article-summary">
         
-          要求根据官方文档的描述，想在 swift 中使用KVO，须满足以下条件：
-
-观察者和被观察者要继承自NSObject
-
-KVO 是 OC 中的特性，根据Apple文档的描述，KVO 是基于 runtime 和 KVC 的，通过 key 来监听 value 的值。而 NSObject 默认实现 ...
+          1、属性观察器Swift 提供了属性观察器来监听自身存储属性的变化。观察器只能用于监听非lazy存储属性。对于计算属性，它已经内含了get{}和set{}，闭包内已经知道属性的变化，不需要再提供观察器。对于从父类继承下来的存储属性或计算属性，我们可以在子类中重写属性的getter和sette ...
         
       </div>
       <a class="more" href="/2018/08/31/swift-kvo-observer.html">Read more</a>
