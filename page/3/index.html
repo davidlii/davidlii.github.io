@@ -129,6 +129,32 @@
   
     <article class="article-card">
       <h2 class="article-head">
+        <a href="/2018/01/14/retain_circle.html">循环引用问题</a>
+      </h2>
+      <p class="article-date">January 14, 2018</p>
+      
+        
+  <a href="/tags#block" >
+    <span class="tag-code">block</span>
+  </a>
+
+  <a href="/tags#循环引用" >
+    <span class="tag-code">循环引用</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          1、循环引用循环引用可以简单理解为 A 引用 B，B 又引用了 A，双方同时保持对方的一个引用，导致引用计数不为0，始终无法释放。&emsp;
+循环引用的影响？
+导致对象无法释放，造成内存泄露。如果是 ViewController 内出现循环引用，在反复 push &amp; pop 后，V ...
+        
+      </div>
+      <a class="more" href="/2018/01/14/retain_circle.html">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
         <a href="/2018/01/09/framework.html">静态库 & 动态库、.a & .framework、制作库</a>
       </h2>
       <p class="article-date">January 9, 2018</p>
@@ -342,28 +368,6 @@ iOS程序默认情况下只能访问程序自己的目录，这个目录被称�
         
       </div>
       <a class="more" href="/2017/11/25/sandbox.html">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2017/11/25/udid_idfa.html">iOS 设备唯一标识符</a>
-      </h2>
-      <p class="article-date">November 25, 2017</p>
-      
-        
-  <a href="/tags#设备" >
-    <span class="tag-code">设备</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          1、UDIDUDID（Unique Device Identifier），iOS 设备的唯一识别码，是一个40位十六进制序列。
-1[[UIDevice cuurrent] uniqueIdenfier];
-移动广告商等往往需要通过UDID用来识别玩家用户，并对用户活动进行跟踪。这会泄露用户的 ...
-        
-      </div>
-      <a class="more" href="/2017/11/25/udid_idfa.html">Read more</a>
     </article>
   
 
