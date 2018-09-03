@@ -135,11 +135,9 @@
 <main class="app-body flex-box">
   <!-- Article START -->
   <article class="post-article">
-    <section class="markdown-content"><h2 id="混编的两种情况："><a href="#混编的两种情况：" class="headerlink" title="混编的两种情况："></a>混编的两种情况：</h2><ul>
-<li>Swift 工程中使用 Objective-C 文件；</li>
-<li>Objective-C 工程中使用 Swift 文件。</li>
-</ul>
-<p>（本文所用 Xcode 版本：9.4.1）</p>
+    <section class="markdown-content"><h2 id="混编的两种情况："><a href="#混编的两种情况：" class="headerlink" title="混编的两种情况："></a>混编的两种情况：</h2><p>①Swift 工程中使用 Objective-C 文件；<br>&emsp;</p>
+<p>②Objective-C 工程中使用 Swift 文件。<br>&emsp;</p>
+<p>本文所用 Xcode 版本：9.4.1</p>
 <h3 id="1-Swift-中混编-OC"><a href="#1-Swift-中混编-OC" class="headerlink" title="1.Swift 中混编 OC"></a>1.Swift 中混编 OC</h3><p>Swift 工程中使用 OC 文件时需要依赖 <code>桥接头文件</code> 将 OC 中的属性、接口等暴露给 Swift。默认情况下，在 Swift 工程中首次创建 OC 文件时，Xcode 会自动提示你是否创建桥接头文件：</p>
 <p><img src="http://pc7lkjphf.bkt.clouddn.com/pic/swift-OC-Header.png" alt="桥接头文件"></p>
 <p>选择创建后，工程目录下会多出一个以 “工程名-Bridging-Header.h” 命名的头文件:</p>
@@ -160,7 +158,7 @@
 <p>如果是首次创建 Swift 文件，Xcode 同样会提示新建桥接头文件，这里可以不创建。之后 Xcode 会自动帮我们设置好 “Objective-C Generated Interface Header Name” 选项，我们不用做什么修改：</p>
 <p><img src="http://pc7lkjphf.bkt.clouddn.com/pic/mix-match.png" alt="OC中使用swift文件"></p>
 <p>自定义你的 Swift 类：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">import Foundation</span><br><span class="line"></span><br><span class="line">class SwiftFile : NSObject &#123;</span><br><span class="line">    @objc var name : String?</span><br><span class="line">    @objc let nick : String</span><br><span class="line">    </span><br><span class="line">    @objc init(name:String,nick:String) &#123;</span><br><span class="line">        self.name = name</span><br><span class="line">        self.nick = nick</span><br><span class="line">        super.init()</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    @objc func swiftInstanceMethod(name:String) -&gt; String &#123;</span><br><span class="line">        self.name = name</span><br><span class="line">        print(&quot;name is:\(name)&quot;)</span><br><span class="line">        return name;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    @objc private class func swiftClassMethod(nick:String) -&gt; String &#123;</span><br><span class="line">        print(&quot;nick is:\(nick)&quot;)</span><br><span class="line">        return nick</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">import Foundation</span><br><span class="line"></span><br><span class="line">class SwiftFile : NSObject &#123;</span><br><span class="line">    @objc var name : String?</span><br><span class="line">    @objc let nick : String</span><br><span class="line">    </span><br><span class="line">    @objc init(name:String,nick:String) &#123;</span><br><span class="line">        self.name = name</span><br><span class="line">        self.nick = nick</span><br><span class="line">        super.init()</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    @objc func swiftInstanceMethod(name:String) -&gt; String &#123;</span><br><span class="line">        self.name = name</span><br><span class="line">        print(&quot;name is:\(name)&quot;)</span><br><span class="line">        return name;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    @objc class func swiftClassMethod(nick:String) -&gt; String &#123;</span><br><span class="line">        print(&quot;nick is:\(nick)&quot;)</span><br><span class="line">        return nick</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>在用到此 Swift 文件的地方导入 “工程名-swift.h” 头文件即可：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">#import &quot;AppDelegate.h&quot;</span><br><span class="line">#import &quot;ASDF-Swift.h&quot; //导入 swift 文件对应的 OC 版头文件</span><br><span class="line"></span><br><span class="line">@implementation AppDelegate</span><br><span class="line"></span><br><span class="line">- (BOOL)application:(UIApplication *)application</span><br><span class="line">didFinishLaunchingWithOptions:(NSDictionary *)launchOptions</span><br><span class="line">&#123;</span><br><span class="line">    SwiftFile *sf = [[SwiftFile alloc] initWithName:@&quot;swift&quot; nick:@&quot;sf&quot;];</span><br><span class="line">    sf.name = @&quot;Swift4.1&quot;;</span><br><span class="line">    [sf swiftInstanceMethodWithName:@&quot;Hello&quot;];</span><br><span class="line">    [SwiftFile swiftClassMethodWithNick:@&quot;newNick&quot;];</span><br><span class="line">    </span><br><span class="line">    return YES;</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
 <p>command + B 编译之后，command + 点击这个<code>ASDF-Swift.h</code>就能看到其中的内容了。里面是 Xcode 帮我们生成的 <code>SwiftFile.swift</code> 的 OC 版头文件，内容很长，重要内容摘录如下：</p>
@@ -172,17 +170,17 @@
 <ul>
 <li><strong>版本变更</strong></li>
 </ul>
-<p>Swift 3.3 中暴露给 OC 的属性和接口等不需要标注为<code>@objc</code>，但 Swift 4.1 中就需要标注了，不然编译时会报错。</p>
+<p>Swift 3.x 中类只要继承了 NSObject，编译器会隐式地为所有<code>public</code>的属性或方法添加<code>@objc</code>标注，这样就能把 Swift 的属性、函数等暴露给 OC；但 Swift 4.x 中继承自 NSObject 的类不再隐式添加<code>@objc</code>，需要手动标注。</p>
 <ul>
-<li>继承问题</li>
+<li><strong>继承问题</strong></li>
 </ul>
 <p>Swift 类可以继承自 OC 类，但反过来 OC 类不能继承 Swift 类。</p>
 <ul>
-<li>宏定义</li>
+<li><strong>宏定义</strong></li>
 </ul>
 <p>Swift 中使用 OC 中的<code>宏</code>时，可以将简单的宏定义成全局常量，对于复杂的宏可以将其定义成函数。</p>
 <ul>
-<li>Swift 中独有的特性</li>
+<li><strong>Swift 中独有的特性</strong></li>
 </ul>
 <p>将 Swift 代码导入 OC 后，你可以访问在 Swift 类或协议中使用<code>@objc</code>标记的任何对象，只要该对象与 OC 兼容。需要注意的是部分 Swift 独有的特性不能在 OC 中使用，包括：泛型、元组、非Int类型的枚举、可变参数、函数嵌套等。</p>
 <hr>
@@ -213,7 +211,7 @@
       <a class="nav-left" href="/2018/08/31/swift-kvo-observer.html">
         <span class="nav-arrow">← </span>
         
-          swift 中监听属性变化
+          Swift 中监听属性变化
         
       </a>
     
