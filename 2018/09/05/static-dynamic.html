@@ -10,7 +10,7 @@
   
   <title>
     
-      动态/静态(语言、类型、派发机制) | Davidli
+      消息的动态/静态派发机制 | Davidli
     
   </title>
   <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -126,7 +126,7 @@
 </header>
 
     <div id="article-banner">
-  <h2>动态/静态(语言、类型、派发机制)</h2>
+  <h2>消息的动态/静态派发机制</h2>
   <p class="post-date">2018-09-05</p>
   <div class="arrow-down">
     <a href="javascript:;"></a>
@@ -135,37 +135,116 @@
 <main class="app-body flex-box">
   <!-- Article START -->
   <article class="post-article">
-    <section class="markdown-content"><h3 id="一、动态-静态语言"><a href="#一、动态-静态语言" class="headerlink" title="一、动态/静态语言"></a>一、动态/静态语言</h3><p>动态/静态语言一般是指动态/静态编程语言，强调的是“程序在运行期是否可扩展”。</p>
-<h4 id="1-1-动态语言"><a href="#1-1-动态语言" class="headerlink" title="1.1.动态语言"></a>1.1.动态语言</h4><blockquote>
-<p>Dynamic programming language, in computer science, is a class of high-level programming languages which, at runtime, execute many common programming behaviors that static programming languages perform during compilation. These behaviors could include extension of the program, by adding new code, by extending objects and definitions, or by modifying the type system. </p>
-</blockquote>
-<p>动态语言是程序在运行期可以扩展的一类语言，具体的扩展方式包括：添加新代码、扩展对象或定义、修改类型系统。常见的动态语言有：<code>JavaScript</code>、<code>Python</code>、<code>Ruby</code>、<code>PHP</code>以及我们最熟悉的<code>Objective-C</code>。</p>
-<h4 id="1-2-静态语言"><a href="#1-2-静态语言" class="headerlink" title="1.2.静态语言"></a>1.2.静态语言</h4><p>静态语言是与动态语言相对应，运行期程序不可扩展。常见的静态语言有：<code>Java</code>、<code>C</code>、<code>C++</code>。</p>
-<h3 id="二、动态-静态类型语言"><a href="#二、动态-静态类型语言" class="headerlink" title="二、动态/静态类型语言"></a>二、动态/静态类型语言</h3><p>动态/静态类型语言强调的是“数据类型”在何时确定。</p>
-<h4 id="2-1-动态类型语言"><a href="#2-1-动态类型语言" class="headerlink" title="2.1.动态类型语言"></a>2.1.动态类型语言</h4><p>动态类型语言，是在运行期间才去做数据类型检查的语言。一般变量在使用之前不需要明确声明类型，被赋值时才知道数据具体的类型。代表语言有：<code>Python</code>、<code>Ruby</code>以及一些脚本语言如<code>JavaScript</code>。</p>
-<h4 id="2-2-静态类型语言"><a href="#2-2-静态类型语言" class="headerlink" title="2.2.静态类型语言"></a>2.2.静态类型语言</h4><p>静态类型语言，是数据类型在编译期就确定下来的语言，一般在使用变量之前要明确声明变量的类型。代表语言有：<code>C</code>、<code>C++</code>、<code>C#</code>、<code>Java</code>、<code>Delphi</code>以及我们的<code>Objective-C</code>。</p>
-<h3 id="三、函数派发机制"><a href="#三、函数派发机制" class="headerlink" title="三、函数派发机制"></a>三、函数派发机制</h3><p>函数把某些具体的代码封装到一处，这极大的提高了代码的复用性。根据函数名找到具体的函数实现，这就是函数派发的过程。函数派发的机制分两种：动态派发和静态派发。</p>
-<h4 id="3-1-动态派发"><a href="#3-1-动态派发" class="headerlink" title="3.1.动态派发"></a>3.1.动态派发</h4><blockquote>
-<p>Dynamic dispatch is the process of selecting which implementation of a polymorphic operation (method or function) to call at run time. </p>
-</blockquote>
-<p><strong>动态派发</strong>是指“在运行时决定方法调用哪个实现”的过程。动态派发机制产生的原因是面向对象语言的多态性。动态派发机制下，编译器在编译期还不知道函数的具体实现是哪个；在执行函数时<code>runtime</code>才会根据函数名去函数表中查找具体的实现并执行它。这种机制的缺点是执行效率相对低一些。</p>
-<h4 id="3-2-静态派发"><a href="#3-2-静态派发" class="headerlink" title="3.2.静态派发"></a>3.2.静态派发</h4><blockquote>
+    <section class="markdown-content"><h2 id="1-函数的派发机制"><a href="#1-函数的派发机制" class="headerlink" title="1.函数的派发机制"></a>1.函数的派发机制</h2><p>函数把某些具体的代码封装到一处，这极大的提高了代码的复用性。根据函数名找到具体的函数实现，这就是函数派发的过程。函数派发的机制分两种：静态派发和动态派发。</p>
+<h3 id="1-1-静态派发机制"><a href="#1-1-静态派发机制" class="headerlink" title="1.1.静态派发机制"></a>1.1.静态派发机制</h3><blockquote>
 <p>static dispatch is a form of polymorphism fully resolved during compile time. It is a form of method dispatch, which describes how a language or environment will select which implementation of a method or function to use.</p>
 </blockquote>
 <blockquote>
-<p>Dynamic dispatch contrasts with static dispatch, in which the implementation of a polymorphic operation is selected at compile-time.<br>&emsp;</p>
+<p>Dynamic dispatch contrasts with static dispatch, in which the implementation of a polymorphic operation is selected at compile-time. </p>
 </blockquote>
-<p><strong>静态派发</strong>机制下“方法的实现在编译期就已确定”。调用函数时，会直接跳转到函数的内存地址执行操作。静态派发的优点是执行快、性能好、编译器能进行内联等优化。缺点也很明显，缺乏动态性，函数实现在运行期不能修改，无法满足某些特定的需求，比如在运行时替换某个方法。</p>
-<h4 id="3-3-OC-与-Swift的派发机制"><a href="#3-3-OC-与-Swift的派发机制" class="headerlink" title="3.3.OC 与 Swift的派发机制"></a>3.3.OC 与 Swift的派发机制</h4><p>Objective-C 使用的就是动态派发机制，方法的调用会被转化为消息发送，即<code>objc_msgSend()</code>。方法的调用者会通过<code>isa</code>指针来找到其所属的类。在类中有一块最近调用过的方法指针的缓存<code>cache</code>，出于性能考虑，runtime 系统会先去<code>cache</code>中查找对应的方法，若<code>cache</code>中没有找到则去函数表<code>methodLists</code>中查找。找到后通过函数指针跳转到对应的实现中执行它，并将方法加入到<code>cache</code>中。如果没找到，则继续顺着继承关系到父类中查找。如果直到根类 NSObject 都还没找到则会尝试<code>动态方法决议</code>或<code>消息转发</code>机制。如果没有实现这两种机制，则方法找不到对应的实现，最终会报运行时错误“unrecognized selector”。<br>&emsp;</p>
-<p>Swift 中的函数可以定义在多出地方，如类、枚举、结构体中，<code>Protocol</code>和<code>Extensions</code>中。其中不能被重写、不具有多态性的函数使用的就是静态派发，比如：</p>
+<p>静态派发机制下，“方法的实现在编译期就已确定”，即编译器在编译期就已经能确定函数具体实现的位置在哪。调用函数时，runtime 会直接跳转到函数的内存地址上执行具体的实现。静态派发的优点是执行快、性能好、编译器能进行内联等优化。缺点也很明显，缺乏动态性，函数实现在运行期不能修改，无法满足某些特定的需求，比如在运行时替换某个方法。</p>
+<h3 id="1-2-动态派发机制"><a href="#1-2-动态派发机制" class="headerlink" title="1.2.动态派发机制"></a>1.2.动态派发机制</h3><blockquote>
+<p>Dynamic dispatch is the process of selecting which implementation of a polymorphic operation (method or function) to call at run time. </p>
+</blockquote>
+<p>动态派发，是指“在运行时决定方法调用哪个实现”的过程。动态派发机制产生的原因是面向对象语言的多态性。动态派发机制下，编译器在编译期还不知道函数的具体实现是哪个；在执行函数时<code>runtime</code>才会根据函数名去函数表中查找并执行具体的实现。这种机制的缺点是需要查表，执行效率相对低一些。<br>&emsp;</p>
+<p>每种语言都有自己的机制来支持动态派发。 Swift 中的动态派发有两种：<code>Table dispatch</code>-函数表派发、<code>Message dispatch</code>-消息派发。</p>
+<h4 id="函数表派发机制"><a href="#函数表派发机制" class="headerlink" title="函数表派发机制"></a>函数表派发机制</h4><p>这是<code>编译型语言</code>最常采用的函数派发机制。在编译期，编译器会为每个类创建一个与之相关联的函数表<code>virtual table</code>，即<code>vtable</code>。它是一个由函数指针组成的数组，其中的指针指向的正是函数的具体实现。<br>&emsp;</p>
+<p>这里有个关于函数表中函数指针的细节：子类在创建<code>vtable</code>时，如果其内部的某个函数是对父类中函数的重写，那么子类<code>vtable</code>中会创建一个新的函数指针；如果父类中有而子类没有重写，那么子类<code>vtable</code>中保存的就还是父类中的函数指针。<br>&emsp;</p>
+<p>#示例，<a href="https://www.raizlabs.com/dev/2016/12/swift-method-dispatch/?utm_campaign=This+Week+in+Swift" target="_blank" rel="noopener">传送门</a>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">class ParentClass &#123;</span><br><span class="line">    func method1() &#123;&#125;</span><br><span class="line">    func method2() &#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line">class ChildClass: ParentClass &#123;</span><br><span class="line">    override func method2() &#123;&#125;</span><br><span class="line">    func method3() &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>编译器会创建两个 dispatch table：</p>
+<p><img src="http://pc7lkjphf.bkt.clouddn.com/pic/virtual-dispatch.png" alt="table dispatch"></p>
+<p>调用某个方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">let obj = ChildClass()</span><br><span class="line">obj.method2()</span><br></pre></td></tr></table></figure>
+<p>具体的函数派发流程：</p>
 <ol>
-<li><code>static</code>或<code>final</code> 标注的函数不能被重写，所以不具有多态性，使用静态分发；</li>
-<li>Enum、Struct 不能继承别的类型也就没有重写一说，其内部函数总是使用静态派发；</li>
+<li>runtime 会先去读取 <code>函数表</code> 0xB00；</li>
+<li>再根据函数的索引去读取函数指针：function2 索引值是 1，所以去读取 0xB00 + 1；</li>
+<li>最后跳转到函数对应的内存地址 0x222 上执行具体的实现。</li>
+</ol>
+<p>上面一次函数调用，共需“两次读取”和“一次跳转”三个指令。同时，编译器对派发的函数无法进行优化，所以整体执行效率要低于静态派发。</p>
+<h4 id="消息派发机制"><a href="#消息派发机制" class="headerlink" title="消息派发机制"></a>消息派发机制</h4><p> 这是 Objective-C 最先使用的一种派发机制，而 Swift 也用到了 Objective-C 的 <code>runtime library</code>。消息派发机制是这三种派发机制中最具动态性的，通过它你可以用<code>swizzling</code>来修改函数的实现，也就是我们常说的黑魔法；也可以使用<code>isa-swizzling</code>来修改对象本身，如 KVO 的 <a href="https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/KeyValueObserving/Articles/KVOImplementation.html#//apple_ref/doc/uid/20002307-BAJEAIEE" target="_blank" rel="noopener">底层实现</a>。</p>
+<hr>
+<h2 id="2-OC-的消息派发机制"><a href="#2-OC-的消息派发机制" class="headerlink" title="2.OC 的消息派发机制"></a>2.OC 的消息派发机制</h2><p>Objective-C 中方法的调用会被转化为<code>消息发送</code>，即<code>objc_msgSend()</code>。</p>
+<ol>
+<li>方法的调用者会通过<code>isa</code>指针找到其所属的类。</li>
+<li>在类中有一块最近调用过的方法指针的缓存（<code>cache</code>），出于性能考虑，runtime 会先去 <code>cache</code> 中查找对应的方法；</li>
+<li>若 <code>cache</code> 中没有找到则去函数表 <code>methodLists</code> 中查找。</li>
+<li>找到后通过函数指针跳转到对应的实现中执行具体的实现，并将方法加入到 <code>cache</code> 中以便下次查找；</li>
+<li>如果 <code>methodLists</code> 中也没找到，则继续顺着继承关系到父类中查找；</li>
+<li>如果直到根类 NSObject 都还没找到则会尝试<code>动态方法决议</code>或<code>消息转发</code>机制；</li>
+<li>如果没有实现这两种机制，则方法最终会因找不到对应的实现而报运行时错误“unrecognized selector”。</li>
+</ol>
+<hr>
+<h2 id="3-Swift-的消息派发机制"><a href="#3-Swift-的消息派发机制" class="headerlink" title="3.Swift 的消息派发机制"></a>3.Swift 的消息派发机制</h2><p>Swift 的函数派发机制因函数定义的位置、特别声明等而异：<br>&emsp;</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">设定</th>
+<th style="text-align:center">静态派发</th>
+<th style="text-align:center">函数表派发</th>
+<th style="text-align:center">消息派发</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">特别声明</td>
+<td style="text-align:center">static / final</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">dynamic</td>
+</tr>
+<tr>
+<td style="text-align:center">class</td>
+<td style="text-align:center">extensions</td>
+<td style="text-align:center">初始声明</td>
+<td style="text-align:center">标注为@objc的extensions</td>
+</tr>
+<tr>
+<td style="text-align:center">protocol</td>
+<td style="text-align:center">extensions</td>
+<td style="text-align:center">初始声明</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td style="text-align:center">value type</td>
+<td style="text-align:center">all func</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+</tr>
+</tbody>
+</table>
+<p>&emsp;</p>
+<p><strong>静态派发的情况：</strong></p>
+<ol>
+<li><code>static</code> 或<code>final</code> 标注的函数不能被重写，所以不具有多态性，使用静态派发；</li>
+<li><code>final</code> 标注的类会失去所有动态的能力，其中的函数也是使用静态派发；</li>
+<li>Enum、Struct 是值类型，不能继承别的类型也就没有重写一说，其函数总是静态派发；</li>
 <li>协议的扩展中定义的函数是静态派发；</li>
-<li>类的扩展中定义的函数，除了标记为@objc的外，其他都是静态派发。</li>
+<li>类的扩展中中定义的函数，除了标记为<code>@objc</code>的外，其他都是静态派发。</li>
+</ol>
+<p><strong>动态派发的情况：</strong></p>
+<ol>
+<li>类或协议中初始声明的函数，使用的是函数派发；</li>
+<li>由 <code>dynamic</code> 标记的函数使用的是消息派发；</li>
+<li>Extensions 中标记为<code>@objc</code>的函数使用的是消息派发。</li>
+</ol>
+<p>情况归纳：</p>
+<ol>
+<li><code>final</code>标注的类不能被继承；<code>final</code>和<code>static</code>标注的函数不能被重写；它们都不具有多态特性，所以使用的都是静态派发；</li>
+<li>被标注为 <code>dynamic</code> 的函数被赋予了动态的能力，使用的是消息派发。它也让函数可以暴露给 OC 运行时，不过需要配合<code>Foundation</code>框架下的<code>NSObject</code>。</li>
 </ol>
 <p>#示例：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">protocol Eat &#123;</span><br><span class="line">    func eat()  //动态派发</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">extension Eat &#123;</span><br><span class="line">    func eat() &#123;//动态派发</span><br><span class="line">        print(&quot;eat()协议方法的默认实现&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">    func drink() &#123;//静态派发</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Sheep: Eat &#123;</span><br><span class="line">    func eat() &#123;//动态派发</span><br><span class="line">        print(&quot;eat的实现&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">    func drink() &#123;//动态派发</span><br><span class="line">        print(&quot;dink的实现&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">    @objc func run() &#123;&#125; //动态派发</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">extension Sheep &#123;</span><br><span class="line">    func jump() &#123;&#125; //静态派发</span><br><span class="line">    @objc func sleep() &#123;&#125; //动态派发</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">enum DiceNumber : Int &#123;</span><br><span class="line">    case one = 1</span><br><span class="line">    case two</span><br><span class="line">    case three</span><br><span class="line">    case four</span><br><span class="line">    case five</span><br><span class="line">    case six</span><br><span class="line">    </span><br><span class="line">    mutating func updateDirection(num:DiceNumber) &#123;//静态派发</span><br><span class="line">        self = num</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">struct Dice &#123;</span><br><span class="line">    var slides = 6</span><br><span class="line">    func random(dice: DiceNumber) -&gt; Int &#123;//静态派发</span><br><span class="line">        return dice.rawValue</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">protocol Eat &#123;</span><br><span class="line">    func eat()  //函数表派发</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">extension Eat &#123;</span><br><span class="line">    func eat() &#123;//函数表派发</span><br><span class="line">        print(&quot;eat()协议方法的默认实现&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">    func drink() &#123;//静态派发</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Sheep: Eat &#123;</span><br><span class="line">    func eat() &#123;//函数表派发</span><br><span class="line">        print(&quot;eat的实现&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">    func drink() &#123;//函数表派发</span><br><span class="line">        print(&quot;dink的实现&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">    @objc func run() &#123;&#125; //函数表派发</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">extension Sheep &#123;</span><br><span class="line">    func jump() &#123;&#125; //静态派发</span><br><span class="line">    @objc func sleep() &#123;&#125; //消息派发</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">enum DiceNumber : Int &#123;</span><br><span class="line">    case one = 1</span><br><span class="line">    case two</span><br><span class="line">    case three</span><br><span class="line">    case four</span><br><span class="line">    case five</span><br><span class="line">    case six</span><br><span class="line">    </span><br><span class="line">    mutating func updateDirection(num:DiceNumber) &#123;//静态派发</span><br><span class="line">        self = num</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">struct Dice &#123;</span><br><span class="line">    var slides = 6</span><br><span class="line">    func random(dice: DiceNumber) -&gt; Int &#123;//静态派发</span><br><span class="line">        return dice.rawValue</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="4-知识拓展"><a href="#4-知识拓展" class="headerlink" title="4.知识拓展"></a>4.知识拓展</h2><h3 id="动态-静态语言"><a href="#动态-静态语言" class="headerlink" title="动态/静态语言"></a>动态/静态语言</h3><p>动态/静态语言一般是指动态/静态编程语言，强调的是“程序在运行期是否可扩展”。</p>
+<h4 id="1-动态语言"><a href="#1-动态语言" class="headerlink" title="1.动态语言"></a>1.动态语言</h4><blockquote>
+<p>Dynamic programming language, in computer science, is a class of high-level programming languages which, at runtime, execute many common programming behaviors that static programming languages perform during compilation. These behaviors could include extension of the program, by adding new code, by extending objects and definitions, or by modifying the type system. </p>
+</blockquote>
+<p>动态语言是程序在运行期可以扩展的一类语言，具体的扩展方式包括：添加新代码、扩展对象或定义、修改类型系统。常见的动态语言有：<code>JavaScript</code>、<code>Python</code>、<code>Ruby</code>、<code>PHP</code>以及我们最熟悉的<code>Objective-C</code>。</p>
+<h4 id="2-静态语言"><a href="#2-静态语言" class="headerlink" title="2.静态语言"></a>2.静态语言</h4><p>静态语言是与动态语言相对应，运行期程序不可扩展。常见的静态语言有：<code>Java</code>、<code>C</code>、<code>C++</code>。</p>
+<h3 id="静态-动态类型语言"><a href="#静态-动态类型语言" class="headerlink" title="静态/动态类型语言"></a>静态/动态类型语言</h3><p>静态/动态类型语言强调的是“数据类型”在何时确定。</p>
+<h4 id="1-静态类型语言"><a href="#1-静态类型语言" class="headerlink" title="1.静态类型语言"></a>1.静态类型语言</h4><p>静态类型语言，是数据类型在编译期就确定下来的语言，一般在使用变量之前要明确声明变量的类型。代表语言有：<code>C</code>、<code>C++</code>、<code>C#</code>、<code>Java</code>、<code>Delphi</code>以及我们的<code>Objective-C</code>。</p>
+<h4 id="2-动态类型语言"><a href="#2-动态类型语言" class="headerlink" title="2.动态类型语言"></a>2.动态类型语言</h4><p>动态类型语言，是在运行期间才去做数据类型检查的语言。一般变量在使用之前不需要明确声明类型，被赋值时才知道数据具体的类型。代表语言有：<code>Python</code>、<code>Ruby</code>以及一些脚本语言如<code>JavaScript</code>。</p>
 <hr>
 <p>相关参考：</p>
 <p>#<a href="https://blog.csdn.net/lvxiangan/article/details/78391281" target="_blank" rel="noopener">©CSDN</a></p>
@@ -173,7 +252,9 @@
 <p>#<a href="https://en.wikipedia.org/wiki/Type_system" target="_blank" rel="noopener">©维基百科-Type_system</a></p>
 <p>#<a href="https://en.wikipedia.org/wiki/Dynamic_dispatch" target="_blank" rel="noopener">©维基百科-Dynamic dispatch</a></p>
 <p>#<a href="https://en.wikipedia.org/wiki/Static_dispatch" target="_blank" rel="noopener">©维基百科-Static dispatch</a></p>
-<p>#<a href="https://www.jianshu.com/p/7272e46d47f4" target="_blank" rel="noopener">©简书-alvin_wang</a></p>
+<p>#<a href="https://trinhngocthuyen.github.io/2017-09-25-method-dispatch-in-swift.html" target="_blank" rel="noopener">©Method dispatch in Swift</a></p>
+<p>#<a href="https://www.jianshu.com/p/7272e46d47f4" target="_blank" rel="noopener">简书-alvin_wang</a></p>
+<p>#<a href="https://www.raizlabs.com/dev/2016/12/swift-method-dispatch/?utm_campaign=This+Week+in+Swift" target="_blank" rel="noopener">©BRIAN KING</a></p>
 </section>
     <!-- Tags START -->
     
@@ -245,7 +326,7 @@
   <div class="toc-main">
     <strong class="toc-title">Catalog</strong>
     
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#一、动态-静态语言"><span class="toc-nav-text">一、动态/静态语言</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#1-1-动态语言"><span class="toc-nav-text">1.1.动态语言</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#1-2-静态语言"><span class="toc-nav-text">1.2.静态语言</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#二、动态-静态类型语言"><span class="toc-nav-text">二、动态/静态类型语言</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-1-动态类型语言"><span class="toc-nav-text">2.1.动态类型语言</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-2-静态类型语言"><span class="toc-nav-text">2.2.静态类型语言</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#三、函数派发机制"><span class="toc-nav-text">三、函数派发机制</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3-1-动态派发"><span class="toc-nav-text">3.1.动态派发</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3-2-静态派发"><span class="toc-nav-text">3.2.静态派发</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3-3-OC-与-Swift的派发机制"><span class="toc-nav-text">3.3.OC 与 Swift的派发机制</span></a></li></ol></li></ol>
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-函数的派发机制"><span class="toc-nav-text">1.函数的派发机制</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1-1-静态派发机制"><span class="toc-nav-text">1.1.静态派发机制</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1-2-动态派发机制"><span class="toc-nav-text">1.2.动态派发机制</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#函数表派发机制"><span class="toc-nav-text">函数表派发机制</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#消息派发机制"><span class="toc-nav-text">消息派发机制</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-OC-的消息派发机制"><span class="toc-nav-text">2.OC 的消息派发机制</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-Swift-的消息派发机制"><span class="toc-nav-text">3.Swift 的消息派发机制</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-知识拓展"><span class="toc-nav-text">4.知识拓展</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#动态-静态语言"><span class="toc-nav-text">动态/静态语言</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#1-动态语言"><span class="toc-nav-text">1.动态语言</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-静态语言"><span class="toc-nav-text">2.静态语言</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#静态-动态类型语言"><span class="toc-nav-text">静态/动态类型语言</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#1-静态类型语言"><span class="toc-nav-text">1.静态类型语言</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-动态类型语言"><span class="toc-nav-text">2.动态类型语言</span></a></li></ol></li></ol></li></ol>
     
   </div>
 </aside>
@@ -311,7 +392,7 @@
     var gitmentConfig = "";
     if (gitmentConfig !== 'undefined') {
       var gitment = new Gitment({
-        id: "动态/静态(语言、类型、派发机制)",
+        id: "消息的动态/静态派发机制",
         owner: "",
         repo: "",
         oauth: {
