@@ -150,7 +150,7 @@
 <p>每种语言都有自己的机制来支持动态派发。 Swift 中的动态派发有两种：<code>Table dispatch</code>-函数表派发、<code>Message dispatch</code>-消息派发。</p>
 <h4 id="函数表派发机制"><a href="#函数表派发机制" class="headerlink" title="函数表派发机制"></a>函数表派发机制</h4><p>这是<code>编译型语言</code>最常采用的函数派发机制。在编译期，编译器会为每个类创建一个与之相关联的函数表<code>virtual table</code>，即<code>vtable</code>。它是一个由函数指针组成的数组，其中的指针指向的正是函数的具体实现。<br>&emsp;</p>
 <p>这里有个关于函数表中函数指针的细节：子类在创建<code>vtable</code>时，如果其内部的某个函数是对父类中函数的重写，那么子类<code>vtable</code>中会创建一个新的函数指针；如果父类中有而子类没有重写，那么子类<code>vtable</code>中保存的就还是父类中的函数指针。<br>&emsp;</p>
-<p>#示例，<a href="https://www.raizlabs.com/dev/2016/12/swift-method-dispatch/?utm_campaign=This+Week+in+Swift" target="_blank" rel="noopener">传送门</a>：</p>
+<p>#示例1，<a href="https://www.raizlabs.com/dev/2016/12/swift-method-dispatch/?utm_campaign=This+Week+in+Swift" target="_blank" rel="noopener">传送门</a>：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">class ParentClass &#123;</span><br><span class="line">    func method1() &#123;&#125;</span><br><span class="line">    func method2() &#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line">class ChildClass: ParentClass &#123;</span><br><span class="line">    override func method2() &#123;&#125;</span><br><span class="line">    func method3() &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>编译器会创建两个 dispatch table：</p>
 <p><img src="http://pc7lkjphf.bkt.clouddn.com/pic/virtual-dispatch.png" alt="table dispatch"></p>
@@ -196,13 +196,13 @@
 <tr>
 <td style="text-align:center">class</td>
 <td style="text-align:center">extensions</td>
-<td style="text-align:center">初始声明</td>
+<td style="text-align:center">initial declaration</td>
 <td style="text-align:center">标注为@objc的extensions</td>
 </tr>
 <tr>
 <td style="text-align:center">protocol</td>
 <td style="text-align:center">extensions</td>
-<td style="text-align:center">初始声明</td>
+<td style="text-align:center">initial declaration</td>
 <td style="text-align:center">-</td>
 </tr>
 <tr>
@@ -216,11 +216,11 @@
 <p>&emsp;</p>
 <p><strong>静态派发的情况：</strong></p>
 <ol>
-<li><code>static</code> 或<code>final</code> 标注的函数不能被重写，所以不具有多态性，使用静态派发；</li>
+<li><code>static</code> 或 <code>final</code> 标注的函数不能被重写，所以不具有多态性，使用静态派发；</li>
 <li><code>final</code> 标注的类会失去所有动态的能力，其中的函数也是使用静态派发；</li>
 <li>Enum、Struct 是值类型，不能继承别的类型也就没有重写一说，其函数总是静态派发；</li>
 <li>协议的扩展中定义的函数是静态派发；</li>
-<li>类的扩展中中定义的函数，除了标记为<code>@objc</code>的外，其他都是静态派发。</li>
+<li>类的扩展中定义的函数，除了标记为<code>@objc</code>的外，其他都是静态派发。</li>
 </ol>
 <p><strong>动态派发的情况：</strong></p>
 <ol>
@@ -230,10 +230,11 @@
 </ol>
 <p>情况归纳：</p>
 <ol>
-<li><code>final</code>标注的类不能被继承；<code>final</code>和<code>static</code>标注的函数不能被重写；它们都不具有多态特性，所以使用的都是静态派发；</li>
-<li>被标注为 <code>dynamic</code> 的函数被赋予了动态的能力，使用的是消息派发。它也让函数可以暴露给 OC 运行时，不过需要配合<code>Foundation</code>框架下的<code>NSObject</code>。</li>
+<li><code>final</code>标注的对象会失去动态的能力：<code>final</code> 类不能被继承；<code>final</code>和<code>static</code>函数不能被重写；它们都不再具有多态特性，所以使用的都是静态派发；</li>
+<li>被标注为 <code>dynamic</code> 的函数被赋予了动态的能力，使用的是消息派发。Swift 4 之前 <code>dynamic</code> 标注的函数会隐式地对 OC 可见，但 Swift 4 之后需要显式的标注为 <code>@objc</code>。</li>
+<li><code>@objc</code> 用来将其修饰的 Swift 类、属性、函数等显式地暴露给 OC，使 OC 运行时能捕获它们。</li>
 </ol>
-<p>#示例：</p>
+<p>#示例2：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">protocol Eat &#123;</span><br><span class="line">    func eat()  //函数表派发</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">extension Eat &#123;</span><br><span class="line">    func eat() &#123;//函数表派发</span><br><span class="line">        print(&quot;eat()协议方法的默认实现&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">    func drink() &#123;//静态派发</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Sheep: Eat &#123;</span><br><span class="line">    func eat() &#123;//函数表派发</span><br><span class="line">        print(&quot;eat的实现&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">    func drink() &#123;//函数表派发</span><br><span class="line">        print(&quot;dink的实现&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">    @objc func run() &#123;&#125; //函数表派发</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">extension Sheep &#123;</span><br><span class="line">    func jump() &#123;&#125; //静态派发</span><br><span class="line">    @objc func sleep() &#123;&#125; //消息派发</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">enum DiceNumber : Int &#123;</span><br><span class="line">    case one = 1</span><br><span class="line">    case two</span><br><span class="line">    case three</span><br><span class="line">    case four</span><br><span class="line">    case five</span><br><span class="line">    case six</span><br><span class="line">    </span><br><span class="line">    mutating func updateDirection(num:DiceNumber) &#123;//静态派发</span><br><span class="line">        self = num</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">struct Dice &#123;</span><br><span class="line">    var slides = 6</span><br><span class="line">    func random(dice: DiceNumber) -&gt; Int &#123;//静态派发</span><br><span class="line">        return dice.rawValue</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <hr>
 <h2 id="4-知识拓展"><a href="#4-知识拓展" class="headerlink" title="4.知识拓展"></a>4.知识拓展</h2><h3 id="动态-静态语言"><a href="#动态-静态语言" class="headerlink" title="动态/静态语言"></a>动态/静态语言</h3><p>动态/静态语言一般是指动态/静态编程语言，强调的是“程序在运行期是否可扩展”。</p>
@@ -241,7 +242,8 @@
 <p>Dynamic programming language, in computer science, is a class of high-level programming languages which, at runtime, execute many common programming behaviors that static programming languages perform during compilation. These behaviors could include extension of the program, by adding new code, by extending objects and definitions, or by modifying the type system. </p>
 </blockquote>
 <p>动态语言是程序在运行期可以扩展的一类语言，具体的扩展方式包括：添加新代码、扩展对象或定义、修改类型系统。常见的动态语言有：<code>JavaScript</code>、<code>Python</code>、<code>Ruby</code>、<code>PHP</code>以及我们最熟悉的<code>Objective-C</code>。</p>
-<h4 id="2-静态语言"><a href="#2-静态语言" class="headerlink" title="2.静态语言"></a>2.静态语言</h4><p>静态语言是与动态语言相对应，运行期程序不可扩展。常见的静态语言有：<code>Java</code>、<code>C</code>、<code>C++</code>。</p>
+<h4 id="2-静态语言"><a href="#2-静态语言" class="headerlink" title="2.静态语言"></a>2.静态语言</h4><p>静态语言是与动态语言相对应，运行期程序不可扩展。常见的静态语言有：<code>Java</code>、<code>C</code>、<code>C++</code>。<br>&emsp;</p>
+<p>Swift 也是静态语言，Swift 中声明的方法、属性在编译期就已经确定。同时 Swift 也支持动态绑定和派发，只不过需要将类中的属性、方法标注为 <code>@objc</code>和<code>dynamic</code>，这样 Swift 的动态特性就可以使用 OC 的运行时机制来实现。</p>
 <h3 id="静态-动态类型语言"><a href="#静态-动态类型语言" class="headerlink" title="静态/动态类型语言"></a>静态/动态类型语言</h3><p>静态/动态类型语言强调的是“数据类型”在何时确定。</p>
 <h4 id="1-静态类型语言"><a href="#1-静态类型语言" class="headerlink" title="1.静态类型语言"></a>1.静态类型语言</h4><p>静态类型语言，是数据类型在编译期就确定下来的语言，一般在使用变量之前要明确声明变量的类型。代表语言有：<code>C</code>、<code>C++</code>、<code>C#</code>、<code>Java</code>、<code>Delphi</code>以及我们的<code>Objective-C</code>。</p>
 <h4 id="2-动态类型语言"><a href="#2-动态类型语言" class="headerlink" title="2.动态类型语言"></a>2.动态类型语言</h4><p>动态类型语言，是在运行期间才去做数据类型检查的语言。一般变量在使用之前不需要明确声明类型，被赋值时才知道数据具体的类型。代表语言有：<code>Python</code>、<code>Ruby</code>以及一些脚本语言如<code>JavaScript</code>。</p>
@@ -253,8 +255,9 @@
 <p>#<a href="https://en.wikipedia.org/wiki/Dynamic_dispatch" target="_blank" rel="noopener">©维基百科-Dynamic dispatch</a></p>
 <p>#<a href="https://en.wikipedia.org/wiki/Static_dispatch" target="_blank" rel="noopener">©维基百科-Static dispatch</a></p>
 <p>#<a href="https://trinhngocthuyen.github.io/2017-09-25-method-dispatch-in-swift.html" target="_blank" rel="noopener">©Method dispatch in Swift</a></p>
-<p>#<a href="https://www.jianshu.com/p/7272e46d47f4" target="_blank" rel="noopener">简书-alvin_wang</a></p>
+<p>#<a href="https://www.jianshu.com/p/7272e46d47f4" target="_blank" rel="noopener">©简书-alvin_wang</a></p>
 <p>#<a href="https://www.raizlabs.com/dev/2016/12/swift-method-dispatch/?utm_campaign=This+Week+in+Swift" target="_blank" rel="noopener">©BRIAN KING</a></p>
+<p>#<a href="https://github.com/devedbox/SwiftWT/wiki/Dynamic-Swift" target="_blank" rel="noopener">©devedbox-Dynamic Swift</a></p>
 </section>
     <!-- Tags START -->
     
