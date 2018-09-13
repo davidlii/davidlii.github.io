@@ -129,6 +129,29 @@
   
     <article class="article-card">
       <h2 class="article-head">
+        <a href="/2017/11/27/weak.html">weak 的实现原理</a>
+      </h2>
+      <p class="article-date">November 27, 2017</p>
+      
+        
+  <a href="/tags#weak" >
+    <span class="tag-code">weak</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          
+weak 表示的是一个弱引用，不会增加对象的引用计数，并且在所指向的对象被释放之后，weak 指针会被置为nil。weak 引用通常是用于处理循环引用的问题。
+
+1、weak 的实现原理：（1） 初始化：Runtime 调用objc_initWeak函数，初始化一个新的 weak 指针指向 ...
+        
+      </div>
+      <a class="more" href="/2017/11/27/weak.html">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
         <a href="/2017/11/25/sandbox.html">沙盒 & 本地持久化方案</a>
       </h2>
       <p class="article-date">November 25, 2017</p>
@@ -343,29 +366,6 @@ iOS2.0时 MacOX 与 iOS 的程序都普遍采用 NSOperation 来编写线程代�
         
       </div>
       <a class="more" href="/2017/11/17/nsoperation.html">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2017/11/08/gcd.html">多线程：GCD</a>
-      </h2>
-      <p class="article-date">November 8, 2017</p>
-      
-        
-  <a href="/tags#多线程" >
-    <span class="tag-code">多线程</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          1、GCD
-&emsp;GCD 是Apple开发的一套多核编程的较新的解决方案。它是一个在线程池模式基础上执行的并行任务，CPU根据可用的处理资源，安排这些任务在可用的处理器核心上执行。在OS X 10.6雪豹中首次推出，iOS中4.0版本后可用。
-
-1.1.GCD的优点：&emsp;1、G ...
-        
-      </div>
-      <a class="more" href="/2017/11/08/gcd.html">Read more</a>
     </article>
   
 

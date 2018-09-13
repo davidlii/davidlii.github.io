@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="This is Davidli&#39;s blog ~">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" type="image/ico" href="/image/logo.png"/> 
+  
+  <title>
+    
+      Swift 中的常见问题 | Davidli
+    
+  </title>
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+  <script src="/js/qrious.js"></script>
+<script src="/js/gitment.js"></script>
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+</head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>Davidli</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>Swift 中的常见问题</h2>
+  <p class="post-date">2018-09-13</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h3 id="1、Struct-与-class"><a href="#1、Struct-与-class" class="headerlink" title="1、Struct 与 class"></a>1、Struct 与 class</h3><h4 id="相同："><a href="#相同：" class="headerlink" title="相同："></a>相同：</h4><ul>
+<li>定义属性和方法；</li>
+<li>使用下标语法<code>subscript syntax</code>；</li>
+<li>定义初始化器设置初始状态；</li>
+<li>添加扩展、实现协议；</li>
+</ul>
+<h4 id="class-独有的特性："><a href="#class-独有的特性：" class="headerlink" title="class 独有的特性："></a>class 独有的特性：</h4><ul>
+<li>继承</li>
+<li>类型转换<code>Type casting</code></li>
+<li>析构</li>
+<li>class 的实例可被多个对象引用</li>
+</ul>
+<p>最大的不同：struct 是值类型，class 是引用类型。</p>
+<hr>
+<h3 id="2、比较：-与"><a href="#2、比较：-与" class="headerlink" title="2、比较：==与==="></a>2、比较：<code>==</code>与<code>===</code></h3><blockquote>
+<p>Note that identical to (represented by three equals signs, or ===) doesn’t mean the same thing as equal to (represented by two equals signs, or ==). Identical to means that two constants or variables of class type refer to exactly the same class instance. Equal to means that two instances are considered equal or equivalent in value, for some appropriate meaning of equal, as defined by the type’s designer.</p>
+</blockquote>
+<ul>
+<li><code>==</code> 表示两个操作数的值“相同”或“相等”，强调“值”相同；</li>
+<li><code>===</code>表示两个两个操作数引用了相同的实例对象，强调“引用”相同；</li>
+</ul>
+<p>2.1、自定义类时，可以通过实现<code>Equatable</code>协议并重写全局操作符<code>==</code>来决定两个操作数是否相等。<br>&emsp;</p>
+<p>#示例1</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">class Cat:Equatable &#123;</span><br><span class="line">    </span><br><span class="line">    var name: String?</span><br><span class="line">    </span><br><span class="line">    static func ==(lhs:Cat, rhs:Cat) -&gt; Bool &#123;</span><br><span class="line">        if lhs.name == rhs.name&#123;</span><br><span class="line">            return true</span><br><span class="line">        &#125;else&#123;</span><br><span class="line">            return false</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>调用并打印结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">let cat1 = Cat()</span><br><span class="line">let cat2 = Cat()</span><br><span class="line">cat1.name = &quot;Miao&quot;</span><br><span class="line">cat2.name = &quot;Miao&quot;</span><br><span class="line"></span><br><span class="line">print(cat1 == cat2) //true</span><br></pre></td></tr></table></figure>
+<p>2.2、注意，<code>===</code>的左右两个操作数必须是类的实例，对枚举或结构体及其变种（String、Array、Dictionary）等使用时会报错。</p>
+<hr>
+<h3 id="3、Swift-中属性的修饰符"><a href="#3、Swift-中属性的修饰符" class="headerlink" title="3、Swift 中属性的修饰符"></a>3、Swift 中属性的修饰符</h3><h4 id="3-1-强弱"><a href="#3-1-强弱" class="headerlink" title="3.1.强弱"></a>3.1.强弱</h4><p>Swift 里属性默认是强类型的，OC 中<code>strong</code>属性在 Swift 中会转换为存储属性。Swift 中的<code>weak</code> 对应 OC 中的<code>weak</code>，该关键字仅能修饰引用类型的属性，不能用于 Swift 中的 <code>String</code> 等值类型属性（它们实质上是结构体），且该属性须是 optional 对象类型。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">weak var ani:Animal?</span><br></pre></td></tr></table></figure>
+<h4 id="3-2-读写"><a href="#3-2-读写" class="headerlink" title="3.2.读写"></a>3.2.读写</h4><p>在 Swift 中，没有<code>readwrite</code>和<code>readonly</code>特性。当声明一个存储型属性时，使用<code>let</code>修饰其为只读；使用<code>var</code>修饰其为可读／写。当声明一个计算型属性时，为其提供一个 getter 方法，使其成为只读的；提供 getter 方法和 setter 方法，使其成为可读／写的。</p>
+<h4 id="3-3-原子性"><a href="#3-3-原子性" class="headerlink" title="3.3.原子性"></a>3.3.原子性</h4><p>OC 中的<code>atomic</code>和<code>nonatomic</code>在 Swift 中没有对应的修饰符，Swift 中属性默认是<code>nonatomic</code>的，可以通过 OC 中类似的锁机制来保证属性对象的线程安全。</p>
+<h4 id="3-4-拷贝"><a href="#3-4-拷贝" class="headerlink" title="3.4.拷贝"></a>3.4.拷贝</h4><p>在 Swift 中，Objective-C 的<code>copy</code>特性被转换为<code>@NSCopying</code>属性。这一类的属性必须遵守 <code>NSCopying</code>协议。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">class Book: NSCopying &#123;</span><br><span class="line">    var name: String?</span><br><span class="line">    func copy(with zone: NSZone? = nil) -&gt; Any &#123;</span><br><span class="line">        let copy = Book()</span><br><span class="line">        copy.name = name</span><br><span class="line">        return copy</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class BooksShelf &#123;</span><br><span class="line">    @NSCopying var book: Book?</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//调用及日志</span><br><span class="line">let book1 = Book()</span><br><span class="line">book1.name = &quot;swift&quot;</span><br><span class="line">let bookShelf = BooksShelf()</span><br><span class="line">bookShelf.book = book1</span><br><span class="line">print(bookShelf.book === book1)//false</span><br></pre></td></tr></table></figure>
+<hr>
+<p>相关参考：</p>
+<p>#<a href="https://github.com/CocoaChina-editors/Welcome-to-Swift/blob/master/UsingSwiftwithCocoaandObjective-C中文手册.md" target="_blank" rel="noopener">©Swift翻译组</a></p>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#FAQ" >
+    <span class="tag-code">FAQ</span>
+  </a>
+
+  <a href="/tags#Swift" >
+    <span class="tag-code">Swift</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2018/09/05/static-dynamic.html">
+        <span class="nav-arrow">← </span>
+        
+          消息的动态/静态派发机制
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1、Struct-与-class"><span class="toc-nav-text">1、Struct 与 class</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#相同："><span class="toc-nav-text">相同：</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#class-独有的特性："><span class="toc-nav-text">class 独有的特性：</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2、比较：-与"><span class="toc-nav-text">2、比较：==与===</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3、Swift-中属性的修饰符"><span class="toc-nav-text">3、Swift 中属性的修饰符</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3-1-强弱"><span class="toc-nav-text">3.1.强弱</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3-2-读写"><span class="toc-nav-text">3.2.读写</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3-3-原子性"><span class="toc-nav-text">3.3.原子性</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3-4-拷贝"><span class="toc-nav-text">3.4.拷贝</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'http://yoursite.com/2018/09/13/swift-faq.html';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+     // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+        
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+
+    // qrcode
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+
+    // gitment
+    var gitmentConfig = "";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "Swift 中的常见问题",
+        owner: "",
+        repo: "",
+        oauth: {
+          client_id: "",
+          client_secret: ""
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  })();
+</script>
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2018 | <a href="https://github.com/davidlii" target="_blank">Davidli</a>
+    <br>
+    <a href="https://hexo.io" target="_blank">Hexo</a> | Theme-<a href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+<script src="/js/script.js"></script>
+  </body>
+</html>
