@@ -138,13 +138,21 @@
     <span class="tag-code">weak</span>
   </a>
 
+  <a href="/tags#dealloc" >
+    <span class="tag-code">dealloc</span>
+  </a>
+
       
       <div class="article-summary">
         
           
 weak 表示的是一个弱引用，不会增加对象的引用计数，并且在所指向的对象被释放之后，weak 指针会被置为nil。weak 引用通常是用于处理循环引用的问题。
 
-1、weak 的实现原理：（1） 初始化：Runtime 调用objc_initWeak函数，初始化一个新的 weak 指针指向 ...
+实现原理：
+初始化：
+
+runtime 调用 objc_initWeak 函数，初始化一个新的 weak 指针指向对象的地址。
+ ...
         
       </div>
       <a class="more" href="/2017/11/27/weak.html">Read more</a>
