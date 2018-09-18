@@ -135,33 +135,35 @@
 <main class="app-body flex-box">
   <!-- Article START -->
   <article class="post-article">
-    <section class="markdown-content"><p>Autorelease 机制是 iOS 开发者管理对象内存的好伙伴。MRC中，调用[obj autorelease]来延迟内存的释放是一件简单自然的事，ARC下，我们甚至可以完全不知道 Autorelease 就能管理好内存。而在这背后，objc和编译器都帮我们做了哪些事呢？它们是如何协作来正确管理内存的呢？</p>
-<h3 id="Autorelease-对象什么时候释放？"><a href="#Autorelease-对象什么时候释放？" class="headerlink" title="Autorelease 对象什么时候释放？"></a>Autorelease 对象什么时候释放？</h3><p>“当前作用域大括号结束时释放”？显然这个回答是不正确的。<br>&emsp;<br>正解：每个线程都会拥有一个 NSRunLoop 对象，Event loop 开始前，系统会自动创建一个 autoreleasepool ，并在 Event loop 结束时 drain。 在没有手加 Autorelease Pool 的情况下，被标记为 Autorelease 的对象是在当前 runloop 迭代结束时释放的。</p>
-<h3 id="AutoreleasePoolPage"><a href="#AutoreleasePoolPage" class="headerlink" title="AutoreleasePoolPage?"></a>AutoreleasePoolPage?</h3><p>ARC下我们使用 @autoreleasepool{}来使用一个AutoreleasePool，随后编译器将其改成如下样子：</p>
+    <section class="markdown-content"><blockquote>
+<p>转自<a href="http://blog.sunnyxx.com/2014/10/15/behind-autorelease/" target="_blank" rel="noopener">©sunnyxx</a></p>
+</blockquote>
+<p>Autorelease 机制是 iOS 开发者管理对象内存的好伙伴。MRC中，调用[obj autorelease]来延迟内存的释放是一件简单自然的事，ARC下，我们甚至可以完全不知道 Autorelease 就能管理好内存。而在这背后，objc和编译器都帮我们做了哪些事呢？它们是如何协作来正确管理内存的呢？</p>
+<h3 id="Autorelease-对象什么时候释放？"><a href="#Autorelease-对象什么时候释放？" class="headerlink" title="Autorelease 对象什么时候释放？"></a>Autorelease 对象什么时候释放？</h3><p>“当前作用域大括号结束时释放”？显然这个回答是不正确的。<br>&emsp;</p>
+<p>正解：每个线程都有一个对应的 NSRunLoop 对象，在没有手加<code>Autorelease Pool</code>的情况下，被标记为<code>Autorelease</code>的对象是在当前<code>runloop</code>迭代结束时释放的。</p>
+<h3 id="AutoreleasePoolPage"><a href="#AutoreleasePoolPage" class="headerlink" title="AutoreleasePoolPage?"></a>AutoreleasePoolPage?</h3><p>ARC下我们使用 <code>@autoreleasepool{}</code>来使用一个 <code>AutoreleasePool</code>，编译后的结果：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">void *context = objc_autoreleasePoolPush();</span><br><span class="line">//用户代码，所有接收到 autorelease 消息的对象都被加到此autoreleasepool中</span><br><span class="line">objc_autoreleasePoolPop(context);</span><br></pre></td></tr></table></figure>
-<p>autoreleasepool 其实就是一个指针的堆栈，其中的指针代表的是需要 release 的对象或哨兵对象。而它能够释放的原因是系统在每个 runloop 迭代中都加入了autoreleasePoolPush 和 Pop。</p>
+<p>autoreleasepool 其实是一个保存着指针的栈，其中指针指向的是需要 release 的对象或哨兵对象。而它能够释放的原因是系统在每个 runloop 迭代中都加入了autoreleasePoolPush 和 Pop。</p>
 <p>这两个函数都是对 AutoreleasePoolPage 的简单封装，AutoreleasePoolPage 是一个C++实现的类：</p>
 <p><img src="http://ww2.sinaimg.cn/mw690/51530583gw1elj2ugt21wj20f109m3zl.jpg" alt="image"></p>
 <ul>
-<li>AutoreleasePool 并没有单独的结构，而是由若干个 AutoreleasePoolPage 以双向链表的形式组合而成。</li>
-<li>AutoreleasePool 是按线程一 一对应的（结构中的thread指针指向当前线程）</li>
-<li>AutoreleasePoolPage 每个对象会开辟4096字节内存，除了上面的实例变量所占空间，剩下的空间全部用来储存 autorelease 对象的地址。</li>
-<li>上面的id *next指针作为游标指向栈顶最新 add 进来的 autorelease 对象的下一个位置。</li>
-<li>一个 AutoreleasePoolPage 的空间被占满时，会新建一个 AutoreleasePoolPage 对象，连接链表，后来的 autorelease 对象在新的 page 加入。</li>
+<li>thread 指针指向当前线程，AutoreleasePool 是按线程一一对应的；</li>
+<li>id *next 指针作为游标指向栈顶最新 add 进来的 autorelease 对象的下一个位置。</li>
 </ul>
-<p>所以，若当前线程中只有一个 AutoreleasePoolPage 对象并记录了很多 autorelease 对象地址时，其内存如下：</p>
+<p><code>AutoreleasePool</code> 并没有单独的结构，而是由若干个 <code>AutoreleasePoolPage</code> 以双向链表的形式组合而成。当一个 <code>AutoreleasePoolPage</code> 的空间被占满时，会新建一个 <code>AutoreleasePoolPage</code> 对象连接链表，后面的 <code>autorelease</code> 对象会 add 到新的 <code>page</code> 中。<br>&emsp;</p>
+<p>线程中只有一个<code>AutoreleasePoolPage</code>对象并记录了多个<code>autorelease</code>对象时，其内存如下：</p>
 <p><img src="http://ww2.sinaimg.cn/mw690/51530583gw1elj5gvphtqj20dy0cx756.jpg" alt="image"></p>
-<p>图中的情况，这一页再加入一个 autorelease 对象就要满了（也就是next指针马上指向栈顶），这时就要执行上面说的操作，建立下一页page对象，与这一页链表连接完成后，新page的next指针被初始化在栈底（begin的位置），然后继续向栈顶添加新对象。</p>
-<p>所以，向一个对象发送 -autorelease 消息，就是将这个对象加入到当前 AutoreleasePoolPage 的栈顶next指针指向的位置。</p>
-<h3 id="释放的原理"><a href="#释放的原理" class="headerlink" title="释放的原理"></a>释放的原理</h3><p>每当进行一次 objc_autoreleasePoolPush 调用时，runtime向当前的 AutoreleasePoolPage 中 add 进一个哨兵对象，值为0（也就是个nil），那么这一个page就变成了下面的样子：</p>
+<p>图中的情况，这一页再加入一个<code>autorelease</code>对象就要满了（也就是<code>next</code>指针马上指向栈顶），这时就要执行上面说的操作，建立下一页<code>page</code>对象，与这一页链表连接完成后，新<code>page</code>的<code>next</code>指针被初始化在栈底（<code>begin</code>的位置），然后继续向栈顶添加新对象。<br>&emsp;</p>
+<p>向一个对象发送<code>-autorelease</code>消息，就是将这个对象加入到当前<code>AutoreleasePoolPage</code>的栈中<code>next</code>指针指向的位置。</p>
+<h3 id="释放的原理"><a href="#释放的原理" class="headerlink" title="释放的原理"></a>释放的原理</h3><p>每次调用<code>objc_autoreleasePoolPush</code>时，runtime 都会向当前<code>AutoreleasePoolPage</code>中插入一个哨兵对象，值为0（空对象）。<code>objc_autoreleasePoolPush</code> 的返回值正是这个哨兵对象的地址，被 <code>objc_autoreleasePoolPop</code>(哨兵对象) 作为入参：</p>
 <p><img src="http://ww2.sinaimg.cn/large/51530583gw1elj5z7hawej20ji0dewff.jpg" alt="image"></p>
-<p>objc_autoreleasePoolPush 的返回值正是这个哨兵对象的地址，被 objc_autoreleasePoolPop(哨兵对象) 作为入参，接下来的流程是：</p>
-<ul>
+<p>释放的流程：</p>
+<ol>
 <li>根据传入的哨兵对象地址找到哨兵对象所处的 page。</li>
-<li>在当前 page中向晚于哨兵对象插入的所有 autorelease 对象发送- release 消息。</li>
-<li>向回移动 next 指针到正确位置。</li>
+<li>向当前 page 中晚于哨兵对象插入的所有 autorelease 对象发送 -release 消息。</li>
+<li>回头移动 next 指针到正确位置。</li>
 <li>从最新加入的对象一直向前清理，可以向前跨越若干个page，直到哨兵所在的page。</li>
-</ul>
+</ol>
 <p>objc_autoreleasePoolPop 执行后，最终变成了下面的样子：</p>
 <p><img src="http://ww3.sinaimg.cn/mw690/51530583gw1elj6u2i3fyj20dz0bqdgi.jpg" alt="image"></p>
 <h3 id="嵌套的AutoreleasePool"><a href="#嵌套的AutoreleasePool" class="headerlink" title="嵌套的AutoreleasePool"></a>嵌套的AutoreleasePool</h3><p>知道了上面的原理，嵌套的 AutoreleasePool 就非常简单了，pop的时候总会释放到上次push的位置为止，多层的pool就是多个哨兵对象而已，就像剥洋葱一样，每次一层，互不影响。</p>
