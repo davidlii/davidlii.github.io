@@ -141,9 +141,7 @@
       
       <div class="article-summary">
         
-          常见用法&emsp;当数据项比较多时，Tableview 不可能给每一项都创建一个 cell 来显示。想象一下1千个 cell 时内存会是什么量级。Apple 推出的 Cell 的重用机制就解决了上面的问题。另外，这个机制还促进显示与数据的分离。
-&emsp;先看下面这段代码：
-123456 ...
+          1.常见用法123456789101112- (UITableViewCell *)tableView:(UITableView *)tableViewcellForRowAtIndexPath:(NSIndexPath *)indexPath &#123;  static NSString ...
         
       </div>
       <a class="more" href="/2018/01/20/reuse_cell.html">Read more</a>

@@ -155,14 +155,13 @@
 <p>简而言之，苹果使用了一种 isa 交换的技术。当一个类的属性被观察时，系统会通过 Runtime 动态的创建一个该类的派生类，并且会在这个类中重写基类被观察的属性的 setter 方法，而且系统将这个类的 isa 指针指向了派生类，从而实现了给监听的属性赋值时调用的是派生类的 setter 方法。重写的 setter 方法会调用 [super setValue:newName forKey:@”name”] 并在此方法前后分别插入 [self willChangeValueForKey:@“name”] 和 [self didChangeValueForKey:@”name”]，以通知观察对象值的改变。<br>&emsp;</p>
 <p>以上面案例中的 Model 为例，当 name 属性被观察后，aModel 对象的 isa 指针被指向了一个新建的 Model 的子类 NSKVONotifying_Model，这个子类重写了被观察值的 setter 方法和 class 方法、dealloc 及 _isKVO 方法，然后使 aModel 对象的 isa 指针指向这个新建的类。所以事实上 aModel 变为了 NSKVONotifying_Model 的实例对象，执行方法要从这个类的方法列表里找。<br>&emsp;</p>
 <p>苹果警告我们，通过 isa 获取类的类型是不可靠的，通过 class 方法才能得到正确的类。</p>
-<h3 id="主动触发KVO"><a href="#主动触发KVO" class="headerlink" title="#主动触发KVO"></a>#主动触发KVO</h3><p>原理：<br>&emsp;</p>
-<p>编译器主动为我们声明的属性提供了存取访问器，当属性发生变化时能收到通知，是因为编译器在属性 <code>setter</code> 的赋值语句前后主动调用了下面两个方法： </p>
+<h3 id="主动触发KVO"><a href="#主动触发KVO" class="headerlink" title="#主动触发KVO"></a>#主动触发KVO</h3><p>如上所述，当属性发生变化时能收到通知，是因为 Runtime 使用 <code>isa-swizzling</code> 技术在派生类中属性的 <code>setter</code> 赋值语句前后主动调用了下面两个方法： </p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">- (void)willChangeValueForKey:(NSString *)key;</span><br><span class="line">- (void)didChangeValueForKey:(NSString *)key;</span><br></pre></td></tr></table></figure>
 <p>所以，当我们需要属性值的改变在符合某个条件时才触发 KVO 时，我们需要做以下几件事：</p>
 <ul>
+<li>重写类方法 +automaticallyNotifiesObserversForKey，禁用目标属性的系统 KVO 通知；</li>
 <li>定义属性并声明合成语句；</li>
 <li>提供属性的 getter、setter 函数并在 setter 中成员变量赋值前后加入上面两个方法；</li>
-<li>重写类方法 +automaticallyNotifiesObserversForKey，禁用目标属性的系统 KVO 通知；</li>
 <li>注册监听事件并重写回调函数；</li>
 </ul>
 <p>#完整示例：</p>
