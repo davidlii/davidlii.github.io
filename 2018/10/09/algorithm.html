@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="This is Davidli&#39;s blog ~">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" type="image/ico" href="/image/logo.png"/> 
+  
+  <title>
+    
+      常用排序算法 | Davidli
+    
+  </title>
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+  <script src="/js/qrious.js"></script>
+<script src="/js/gitment.js"></script>
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+</head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>Davidli</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>常用排序算法</h2>
+  <p class="post-date">2018-10-09</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h3 id="冒泡排序"><a href="#冒泡排序" class="headerlink" title="冒泡排序"></a>冒泡排序</h3><blockquote>
+<p>它重复地走访过要排序的元素列，依次比较两个相邻的元素，如果他们的顺序（如从大到小、首字母从A到Z）错误就把他们交换过来。走访元素的工作是重复地进行直到没有相邻元素需要交换，也就是说该元素已经排序完成。</p>
+</blockquote>
+<p>这个算法的名字由来是因为越大的元素会经由交换慢慢“浮”到数列的顶端（升序或降序排列），就如同碳酸饮料中二氧化碳的气泡最终会上浮到顶端一样，故名“冒泡排序”。<br>&emsp;</p>
+<p>#冒泡排序的Swift示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">func bubbleSort(_ nums: inout [Int]) &#123;</span><br><span class="line">    let n = nums.count</span><br><span class="line">    for i in 0 ..&lt; n-1 &#123;//循环n-1次</span><br><span class="line">        for j in 0 ..&lt; (n - 1 - i) &#123;</span><br><span class="line">            if nums[j] &gt; nums[j + 1] &#123;</span><br><span class="line">                nums.swapAt(j, j + 1)//升序排列</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    print(nums)//打印结果</span><br><span class="line">&#125;</span><br><span class="line">//调用示例 </span><br><span class="line">var nums = [5,8,1,4,2,7,6,3]</span><br><span class="line">bubbleSort(&amp;nums)</span><br></pre></td></tr></table></figure>
+<h3 id="鸡尾酒排序"><a href="#鸡尾酒排序" class="headerlink" title="鸡尾酒排序"></a>鸡尾酒排序</h3><blockquote>
+<p>鸡尾酒排序也就是定向冒泡排序，是冒泡排序的一种变形。此演算法与冒泡排序的不同处在于排序时是以双向在序列中进行排序。</p>
+</blockquote>
+<ol>
+<li>前半轮，从前往后比较相邻两个元素，将最大元素移到最后;</li>
+<li>后半轮，从已排好序元素的前一位向前，比较相邻元素，将最小元素移到最前;</li>
+<li>反复执行1.2两步，直到所有元素都排序完。</li>
+</ol>
+<p>#鸡尾酒排序的Swift语言示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">func cocktailSort(sourceArr array: inout [Int]) -&gt; Void</span><br><span class="line">&#123;</span><br><span class="line">    let n = array.count</span><br><span class="line">    var left = 0</span><br><span class="line">    var right = n - 1</span><br><span class="line">    </span><br><span class="line">    while left &lt; right &#123;</span><br><span class="line">        </span><br><span class="line">        //前半轮 将最大元素移到最后</span><br><span class="line">        for i in left ..&lt; right &#123;</span><br><span class="line">            if array[i] &gt; array[i+1]&#123;</span><br><span class="line">                array.swapAt(i, i+1)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        right -= 1</span><br><span class="line">        </span><br><span class="line">        //后半轮 将最小元素移到最前</span><br><span class="line">        if left &lt; right &#123;</span><br><span class="line">            for i in (left+1 ... right).reversed() &#123;//从后向前遍历</span><br><span class="line">                if array[i-1] &gt; array[i]&#123;</span><br><span class="line">                    array.swapAt(i-1, i)</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            left += 1</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="选择排序"><a href="#选择排序" class="headerlink" title="选择排序"></a>选择排序</h3><blockquote>
+<p>选择排序也是一种简单直观的排序算法。它的工作原理是在序列中找到最小（大）元素，放到序列的起始位置作为已排序序列；然后，再从剩余未排序元素中继续寻找最小（大）元素，放到已排序序列的末尾。以此类推，直到所有元素均排序完毕。</p>
+</blockquote>
+<p>#选择排序的Swift语言示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">func selectSort(sourceArr array: inout [Int]) -&gt; Void</span><br><span class="line">&#123;</span><br><span class="line">    let n = array.count</span><br><span class="line">    </span><br><span class="line">    for i in 0 ..&lt; n-1 &#123;// i为已排序序列的末尾</span><br><span class="line">        var min = i</span><br><span class="line">        for j in i+1 ..&lt; n &#123;// 未排序序列</span><br><span class="line">            if array[j] &lt; array[min] &#123;// 找出未排序序列中的最小值</span><br><span class="line">                min = j</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        if min != i &#123;</span><br><span class="line">            array.swapAt(min, i)// 放到已排序序列的末尾，该操作很有可能把稳定性打乱，所以选择排序是不稳定的排序算法</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="插入排序"><a href="#插入排序" class="headerlink" title="插入排序"></a>插入排序</h3><blockquote>
+<p>插入排序是一种简单直观的排序算法。它的工作原理非常类似于抓扑克牌，对于未排序数据(右手抓到的牌)，在已排序序列(左手已经排好序的手牌)中从后向前扫描，找到相应位置并插入。</p>
+</blockquote>
+<p>插入排序在实现上，通常采用in-place排序（即只需用到O(1)的额外空间的排序），因而在从后向前扫描过程中，需要反复把已排序元素逐步向后挪位，为最新元素提供插入空间。</p>
+<ol>
+<li>从第一个元素开始，该元素可以认为已经被排序</li>
+<li>取出下一个元素，在已经排序的元素序列中从后向前扫描</li>
+<li>如果该元素（已排序）大于新元素，将该元素移到下一位置</li>
+<li>重复步骤3，直到找到已排序的元素小于或者等于新元素的位置</li>
+<li>将新元素插入到该位置后</li>
+<li>重复步骤2~5</li>
+</ol>
+<p>#插入排序的C语言示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">void InsertionSort(int A[], int n)</span><br><span class="line">&#123;</span><br><span class="line">    for (int i = 1; i &lt; n; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        int get = A[i]; // 右手抓到一张扑克牌</span><br><span class="line">        int j = i - 1;  // 拿在左手上的牌总是排序好的</span><br><span class="line">        while (j &gt;= 0 &amp;&amp; A[j] &gt; get) //将右手抓到的牌与左手手牌从右向左进行比较</span><br><span class="line">        &#123;</span><br><span class="line">            A[j + 1] = A[j]; //如果该左手手牌比右手抓到的牌大，就将其右移</span><br><span class="line">            j--;</span><br><span class="line">        &#125;</span><br><span class="line">        A[j + 1] = get; //直到该手牌比右手抓到的牌小(或相等)，将右手抓到的牌插入到该手牌右边</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    int A[] = &#123; 6, 5, 3, 1, 8, 7, 2, 4 &#125;;// 从小到大插入排序</span><br><span class="line">    int n = sizeof(A) / sizeof(int);</span><br><span class="line">    InsertionSort(A, n);</span><br><span class="line">    </span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="快速排序算法"><a href="#快速排序算法" class="headerlink" title="快速排序算法"></a>快速排序算法</h3><blockquote>
+<p>通过一趟排序将要排序的数据分割成独立的两部分，其中一部分的所有数据都比另外一部分的所有数据都要小，然后再按此方法对这两部分数据分别进行快速排序，整个排序过程可以递归进行，以此达到整个数据变成有序序列。</p>
+</blockquote>
+<p>设要排序的数组是A[0]……A[N-1]，首先任意选取一个数据（通常选用数组的第一个数）作为关键数据，然后将所有比它小的数都放到它前面，所有比它大的数都放到它后面，这个过程称为一趟快速排序。<br>&emsp;</p>
+<p>一趟快速排序的算法是：</p>
+<ol>
+<li>设置两个变量i、j，排序开始的时候：i=0，j=N-1；</li>
+<li>以第一个数组元素作为关键数据，赋值给key，即key=A[0]；</li>
+<li>从j开始向前搜索，即由后开始向前搜索(j–)，找到第一个小于key的值A[j]，将A[j]和A[i]互换；</li>
+<li>从i开始向后搜索，即由前开始向后搜索(i++)，找到第一个大于key的A[i]，将A[i]和A[j]互换；</li>
+<li>重复第3、4步，直到i=j； </li>
+<li>然后，对key两边的数据，再分组分别进行上述的过程，直到不能再分组为止。</li>
+</ol>
+<p>#快速排序的C语言示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">void sort(int *a, int left, int right)</span><br><span class="line">&#123;</span><br><span class="line">    if(left &gt;= right)&#123; //如果左边索引大于或者等于右边的索引就代表已经整理完成一个组了</span><br><span class="line">        return ;</span><br><span class="line">    &#125;</span><br><span class="line">    int i = left;</span><br><span class="line">    int j = right;</span><br><span class="line">    int key = a[left];//1\2.默认取最前边的值</span><br><span class="line">     </span><br><span class="line">    while(i &lt; j) //5.在当组内寻找</span><br><span class="line">    &#123;</span><br><span class="line">        //3.从后向前找第一个小于key的数</span><br><span class="line">        while(i &lt; j &amp;&amp; a[j] &gt;= key)</span><br><span class="line">        &#123;</span><br><span class="line">            j--;//向前寻找</span><br><span class="line">        &#125;</span><br><span class="line">        a[i] = a[j];//找到一个这样的数后就把它赋给前面的被拿走的i的值</span><br><span class="line">        </span><br><span class="line">        //4.从前向后找第一个大于key的数 </span><br><span class="line">        while(i &lt; j &amp;&amp; a[i] &lt;= key)</span><br><span class="line">        &#123;</span><br><span class="line">            i++;//向后寻找</span><br><span class="line">        &#125;</span><br><span class="line">        a[j] = a[i];</span><br><span class="line">    &#125;</span><br><span class="line">    a[i] = key;//当在当组内找完一遍以后就把中间数key回归</span><br><span class="line">    </span><br><span class="line">    //最后用同样的方式对分出来的左边的小组进行同上的做法</span><br><span class="line">    sort(a, left, i - 1);</span><br><span class="line">    //用同样的方式对分出来的右边的小组进行同上的做法</span><br><span class="line">    sort(a, i + 1, right);</span><br><span class="line">    //最后可能会出现很多分左右，直到每一组的 i = j 为止。</span><br></pre></td></tr></table></figure>
+<p>按照上面的方法，对数组 {49，38，65，97，76，13，27} 进行快速排序：</p>
+<ul>
+<li>进行一次快速排序之后，数组被划分为 {27，38，13} 49 {76，97，65}前后两部分。49之前的所有数都比它小，49之后的所有数都比它大；</li>
+<li>分别对前后两部分进行快速排序：{27，38，13} 经第三步和第四步交换后变成 {13，27，38} 完成排序。</li>
+<li>{76，97，65} 经第三步和第四步交换后变成 {65，76，97} 完成排序。</li>
+<li>最终排序结果为：{13，27，38，65，76，97}。</li>
+</ul>
+<hr>
+<p>相关参考：</p>
+<p>#<a href="http://www.cnblogs.com/eniac12/p/5329396.html" target="_blank" rel="noopener">©SteveWang-常用排序算法总结(一)</a></p>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#算法" >
+    <span class="tag-code">算法</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2018/09/13/swift-faq.html">
+        <span class="nav-arrow">← </span>
+        
+          Swift 中的常见问题
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#冒泡排序"><span class="toc-nav-text">冒泡排序</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#鸡尾酒排序"><span class="toc-nav-text">鸡尾酒排序</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#选择排序"><span class="toc-nav-text">选择排序</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#插入排序"><span class="toc-nav-text">插入排序</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#快速排序算法"><span class="toc-nav-text">快速排序算法</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'http://yoursite.com/2018/10/09/algorithm.html';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+     // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+        
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+
+    // qrcode
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+
+    // gitment
+    var gitmentConfig = "";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "常用排序算法",
+        owner: "",
+        repo: "",
+        oauth: {
+          client_id: "",
+          client_secret: ""
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  })();
+</script>
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2018 | <a href="https://github.com/davidlii" target="_blank">Davidli</a>
+    <br>
+    <a href="https://hexo.io" target="_blank">Hexo</a> | Theme-<a href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+<script src="/js/script.js"></script>
+  </body>
+</html>

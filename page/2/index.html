@@ -129,6 +129,30 @@
   
     <article class="article-card">
       <h2 class="article-head">
+        <a href="/2018/07/11/dsym.html">结合dSYM文件分析crash日志</a>
+      </h2>
+      <p class="article-date">July 11, 2018</p>
+      
+        
+  <a href="/tags#异常" >
+    <span class="tag-code">异常</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          
+本文主要整理自 王中周的博客
+
+一、dSYM1.1.dSYM.dSYM 调试符号表，是苹果为了方便调试和定位问题而使用的一种调试方案，它实际上是从 Mach-O 文件中抽取调试信息而得到的文件目录。它使用的是 DWARF 结构，在 .xcarchive 目录中其层次结构如下：
+123456 ...
+        
+      </div>
+      <a class="more" href="/2018/07/11/dsym.html">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
         <a href="/2018/07/07/mach_o.html">Mach-O</a>
       </h2>
       <p class="article-date">July 7, 2018</p>
@@ -346,29 +370,6 @@ Copying an object creates a new object with the same class and properties as the
         
       </div>
       <a class="more" href="/2018/01/27/compile.html">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2018/01/21/autoreleasepool.html">autoreleasepool</a>
-      </h2>
-      <p class="article-date">January 21, 2018</p>
-      
-        
-  <a href="/tags#机制" >
-    <span class="tag-code">机制</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          
-转自©sunnyxx
-
-Autorelease 机制是 iOS 开发者管理对象内存的好伙伴。MRC中，调用[obj autorelease]来延迟内存的释放是一件简单自然的事，ARC下，我们甚至可以完全不知道 Autorelease 就能管理好内存。而在这背后，objc和编译器都帮我们做了 ...
-        
-      </div>
-      <a class="more" href="/2018/01/21/autoreleasepool.html">Read more</a>
     </article>
   
 
