@@ -129,6 +129,31 @@
   
     <article class="article-card">
       <h2 class="article-head">
+        <a href="/2017/11/21/lock.html">iOS中的八大锁</a>
+      </h2>
+      <p class="article-date">November 21, 2017</p>
+      
+        
+  <a href="/tags#锁" >
+    <span class="tag-code">锁</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          1、锁防止在多线程(多任务)的情况下对共享资源(临界资源)的脏读或者脏写。也可以理解为：执行多线程时用于强行限制资源访问的同步机制，即并发控制中保证互斥的要求。
+1.1.锁的机制
+Mutex 互斥锁
+Spin lock 自旋锁
+Condition Variable 条件变量
+Read/Wri ...
+        
+      </div>
+      <a class="more" href="/2017/11/21/lock.html">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
         <a href="/2017/11/17/nsoperation.html">多线程：NSOperation</a>
       </h2>
       <p class="article-date">November 17, 2017</p>
@@ -349,29 +374,6 @@ OC允许给分类增加属性，但不会自动生成getter、setter函数，因
         
       </div>
       <a class="more" href="/2017/08/23/runtime_message.html">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2017/08/22/runtime_metaclass.html">Runtime：元类</a>
-      </h2>
-      <p class="article-date">August 22, 2017</p>
-      
-        
-  <a href="/tags#runtime" >
-    <span class="tag-code">runtime</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          1、对象
-OC中，含有isa指针且该指针可以正确指向类的数据结构，都可以视为对象。
-
-123456789101112#if !OBJC_TYPES_DEFINED/// An opaque type that represents an Objective-C class.typedef s ...
-        
-      </div>
-      <a class="more" href="/2017/08/22/runtime_metaclass.html">Read more</a>
     </article>
   
 
