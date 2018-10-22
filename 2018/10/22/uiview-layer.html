@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="This is Davidli&#39;s blog ~">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" type="image/ico" href="/image/logo.png"/> 
+  
+  <title>
+    
+      CALayer与UIView的绘图 | Davidli
+    
+  </title>
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+  <script src="/js/qrious.js"></script>
+<script src="/js/gitment.js"></script>
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+</head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>Davidli</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>CALayer与UIView的绘图</h2>
+  <p class="post-date">2018-10-22</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h3 id="1-CALayer的绘制"><a href="#1-CALayer的绘制" class="headerlink" title="1.CALayer的绘制"></a>1.CALayer的绘制</h3><p>图层的绘制有两种方案：自己绘制、交给代理对象绘制。</p>
+<h4 id="1-1-重写-drawInContext"><a href="#1-1-重写-drawInContext" class="headerlink" title="1.1.重写 drawInContext"></a>1.1.重写 drawInContext</h4><ul>
+<li>调用 CALayer 对象的 setNeedsDisplay 方法触发重绘；</li>
+<li>重写 drawInContext: 方法绘制新内容。</li>
+</ul>
+<p>#示例1：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">#import &quot;CustomLayer.h&quot;</span><br><span class="line"></span><br><span class="line">@implementation CustomLayer</span><br><span class="line"></span><br><span class="line">//重写drawInContext</span><br><span class="line">- (void)drawInContext:(CGContextRef)ctx</span><br><span class="line">&#123;</span><br><span class="line">    CGContextAddEllipseInRect(ctx, CGRectMake(0, 0, 50, 50));</span><br><span class="line">    CGContextSetRGBFillColor(ctx, 1, 0, 1, 1);</span><br><span class="line">    CGContextDrawPath(ctx, kCGPathFillStroke);</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<p>将自定义 CustomLayer 添加到视图上，调用-setNeedsDisplay触发重绘：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">#import &quot;CustomLayer.h&quot;</span><br><span class="line">@implementation ViewController</span><br><span class="line"></span><br><span class="line">- (void)viewDidAppear:(BOOL)animated</span><br><span class="line">&#123;</span><br><span class="line">    [super viewDidAppear:animated];</span><br><span class="line"></span><br><span class="line">    CustomLayer *layer = [[CustomLayer alloc] init];</span><br><span class="line">    layer.backgroundColor = [UIColor whiteColor].CGColor;</span><br><span class="line">    layer.frame = CGRectMake(100, 300, 100, 100);</span><br><span class="line">    [self.view.layer addSublayer:layer];</span><br><span class="line">    [layer setNeedsDisplay];//调用此方法触发重绘</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<h4 id="1-2-实现-CALayerDelegate"><a href="#1-2-实现-CALayerDelegate" class="headerlink" title="1.2.实现 CALayerDelegate"></a>1.2.实现 CALayerDelegate</h4><ul>
+<li>设置 CALayer 的 CALayerDelegate；</li>
+<li>调用 CALayer 的-setNeedsDisplay；</li>
+<li>在 CALayerDelegate 的代理方法-drawLayer:inContext:的实现中绘制内容。</li>
+</ul>
+<p>#示例2：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#import &quot;CustomLayer.h&quot;</span><br><span class="line"></span><br><span class="line">@implementation CustomLayer</span><br><span class="line">//这里不重写-drawInContext:方法</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<p>将自定义CALayer添加到视图上，设置代理并调用-setNeedsDisplay触发重绘：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">#import &quot;CustomLayer.h&quot;</span><br><span class="line">@interface ViewController ()&lt;CALayerDelegate&gt;</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation ViewController</span><br><span class="line"></span><br><span class="line">- (void)viewDidAppear:(BOOL)animated</span><br><span class="line">&#123;</span><br><span class="line">    [super viewDidAppear:animated];</span><br><span class="line"></span><br><span class="line">    CustomLayer *layer = [[CustomLayer alloc] init];</span><br><span class="line">    layer.backgroundColor = [UIColor whiteColor].CGColor;</span><br><span class="line">    layer.frame = CGRectMake(100, 300, 100, 100);</span><br><span class="line">    layer.delegate = self;</span><br><span class="line">    [self.view.layer addSublayer:layer];</span><br><span class="line">    [layer setNeedsDisplay];//调用此方法触发重绘</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//CALayerDelegate</span><br><span class="line">-(void)drawLayer:(CALayer *)layer inContext:(CGContextRef)ctx</span><br><span class="line">&#123;</span><br><span class="line">    CGContextAddEllipseInRect(ctx, CGRectMake(0, 0, 50, 50));</span><br><span class="line">    CGContextSetRGBFillColor(ctx, 1, 0, 1, 1);</span><br><span class="line">    CGContextDrawPath(ctx, kCGPathFillStroke);</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<p>注意：如果既重写了 CustomLayer 中的-drawInContext:，又实现了 CALayerDelegate，那么最终只会在-drawInContext中进行重绘。</p>
+<h3 id="2-UIView的绘制"><a href="#2-UIView的绘制" class="headerlink" title="2.UIView的绘制"></a>2.UIView的绘制</h3><h4 id="2-1-视图内容的显示原理"><a href="#2-1-视图内容的显示原理" class="headerlink" title="2.1.视图内容的显示原理"></a>2.1.视图内容的显示原理</h4><p>视图实际上并不负责内容的显示。它继承自 UIResponder，主要作用是处理用户交互，显示的工作是由其内部的 CALayer 对象来完成的。UIView 中的 frame 等属性，本质上都是从 layer 映射而来。当设置好这些属性时，<code>layer</code>会将这些设置转化为bitmap，交给<code>GPU</code>进行合成、转换和渲染；之后GPU将渲染结果放入<code>帧缓冲区</code>；<code>视频控制器</code>会按照 VSync 信号逐行读取帧缓冲区的数据，经过可能的数模转换传递给<code>显示器</code>显示。</p>
+<h4 id="2-2-视图重绘示例"><a href="#2-2-视图重绘示例" class="headerlink" title="2.2.视图重绘示例"></a>2.2.视图重绘示例</h4><p>一般是自定义一个视图，重写其-drawRect:方法。<br>&emsp;</p>
+<p>#示例3:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">#import &quot;CustomView.h&quot;</span><br><span class="line"></span><br><span class="line">@implementation CustomView</span><br><span class="line">//自定义视图并重写drawRect</span><br><span class="line">- (void)drawRect:(CGRect)rect</span><br><span class="line">&#123;</span><br><span class="line">    CGContextRef ctx = UIGraphicsGetCurrentContext();</span><br><span class="line">    CGContextAddEllipseInRect(ctx, CGRectMake(0, 0, 50, 50));</span><br><span class="line">    CGContextSetRGBFillColor(ctx, 1, 0, 1, 1);</span><br><span class="line">    CGContextDrawPath(ctx, kCGPathFillStroke);</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<p>添加视图：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">#import &quot;CustomView.h&quot;</span><br><span class="line">@implementation ViewController</span><br><span class="line">- (void)viewDidAppear:(BOOL)animated</span><br><span class="line">&#123;</span><br><span class="line">    [super viewDidAppear:animated];</span><br><span class="line">    </span><br><span class="line">    CustomView *view = [[CustomView alloc] init];</span><br><span class="line">    view.backgroundColor = [UIColor whiteColor];</span><br><span class="line">    view.frame = CGRectMake(100, 300, 100, 100);</span><br><span class="line">    [self.view addSubview:view];</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<h4 id="2-3-追溯drawRect的调用流程"><a href="#2-3-追溯drawRect的调用流程" class="headerlink" title="2.3.追溯drawRect的调用流程"></a>2.3.追溯drawRect的调用流程</h4><p><img src="http://pc7lkjphf.bkt.clouddn.com/pic/drawrect.png" alt="视图重绘"></p>
+<p>这是调用-drawRect时的堆栈图，可以看到，设置好视图的内容，将自视图添加到界面上之后，系统会自动调用视图对象中 CALayer 的<code>-display</code>方法。下面是 CALayer 中此方法的描述：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">/* Reload the content of this layer. Calls the -drawInContext: method</span><br><span class="line"> * then updates the `contents&apos; property of the layer. Typically this is</span><br><span class="line"> * not called directly. */</span><br><span class="line"></span><br><span class="line">- (void)display;</span><br></pre></td></tr></table></figure>
+<p><code>-display</code>用来更新layer的内容，其内部会继续调用<code>-drawInContext:</code>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">/* If defined, called by the default implementation of -drawInContext: */</span><br><span class="line"></span><br><span class="line">- (void)drawLayer:(CALayer *)layer inContext:(CGContextRef)ctx;</span><br></pre></td></tr></table></figure>
+<p><code>-drawInContext:</code>是layer内真正绘制内容的地方。因为我们没有重写此方法，所以layer默认会调用 CALayerDelegate 的 -drawLayer:inContext:方法，将绘制任务交给其代理对象。默认情况下，UIView 中根layer的代理是UIView对象本身，所以绘制任务会通过代理转交给 UIView。<br>&emsp;</p>
+<p>从堆栈图上来看，-drawLayer:inContext:代理方法内自动调用了 UIView 的 -drawRect 方法并执行绘制任务。<br>&emsp;</p>
+<p>调用流程整理如下：</p>
+<ol>
+<li>将视图添加到界面或者调用视图对象的-setNeedsDisplay方法，触发重绘；</li>
+<li>视图将绘制任务交给内部的.layer处理；</li>
+<li>layer 调用 -display 方法；</li>
+<li>-display 继续调用-drawInContext绘制内容；</li>
+<li>因为没有重写-drawInContext，CALayer将绘制任务通过代理交给layer所属的视图；</li>
+<li>视图实现-drawLayer:inContext:代理方法，并调用自己的-drarRect:绘制内容；</li>
+</ol>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#FAQ" >
+    <span class="tag-code">FAQ</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2018/10/14/shell-ipa.html">
+        <span class="nav-arrow">← </span>
+        
+          shell脚本打包与上传
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1-CALayer的绘制"><span class="toc-nav-text">1.CALayer的绘制</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#1-1-重写-drawInContext"><span class="toc-nav-text">1.1.重写 drawInContext</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#1-2-实现-CALayerDelegate"><span class="toc-nav-text">1.2.实现 CALayerDelegate</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-UIView的绘制"><span class="toc-nav-text">2.UIView的绘制</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-1-视图内容的显示原理"><span class="toc-nav-text">2.1.视图内容的显示原理</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-2-视图重绘示例"><span class="toc-nav-text">2.2.视图重绘示例</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-3-追溯drawRect的调用流程"><span class="toc-nav-text">2.3.追溯drawRect的调用流程</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'http://yoursite.com/2018/10/22/uiview-layer.html';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+     // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+        
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+
+    // qrcode
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+
+    // gitment
+    var gitmentConfig = "";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "CALayer与UIView的绘图",
+        owner: "",
+        repo: "",
+        oauth: {
+          client_id: "",
+          client_secret: ""
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  })();
+</script>
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2018 | <a href="https://github.com/davidlii" target="_blank">Davidli</a>
+    <br>
+    <a href="https://hexo.io" target="_blank">Hexo</a> | Theme-<a href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+<script src="/js/script.js"></script>
+  </body>
+</html>
