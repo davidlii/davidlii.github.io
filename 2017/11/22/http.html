@@ -224,14 +224,18 @@
 <li>GET一般用于查询资源信息，POST一般用于提交数据、更新资源信息。</li>
 </ul>
 <h4 id="参数与数据："><a href="#参数与数据：" class="headerlink" title="参数与数据："></a>参数与数据：</h4><ul>
-<li>GET 请求的数据会附在 URL 之后，以?分割 URL 和传输数据，参数之间以&amp;分割。</li>
-<li>POST 请求的数据被放在 HTTP 包的 body 中。</li>
-<li>GET 比 POST 更不安全，因为参数直接暴露在 URL 上，不能用来传递敏感信息。</li>
+<li>GET 请求的数据会附在 URL 之后，以?分割 URL 和传输数据；</li>
+<li>POST 请求的数据被放在 HTTP 包的 body 中；</li>
+<li>GET 比 POST 更不安全，因为参数直接暴露在 URL 上，不能用来传递敏感信息；</li>
+<li>GET 请求的URL可以设置成书签，POST不可以；</li>
+<li>GET 请求的参数会被完整的保留在浏览历史记录中，POST 请求不会；</li>
+<li>GET 请求 URL 中的参数有长度限制，POST 没有；</li>
 </ul>
 <h4 id="浏览器发送请求："><a href="#浏览器发送请求：" class="headerlink" title="浏览器发送请求："></a>浏览器发送请求：</h4><ul>
-<li>GET 请求只产生一个TCP数据包，浏览器会把 HttpHeader 和 data 一并发送出去，服务器响应200；</li>
-<li>POST 请求产生两个 TCP 数据包，浏览器先发送 Header，服务器响应100 continue，浏览器再发送data，服务器响应200。</li>
+<li>GET 请求只产生一个 TCP 数据包，浏览器会把 Header 和 data 一并发送出去，服务器响应200；</li>
+<li>POST 请求产生两个 TCP 数据包，浏览器先发送 Header，服务器响应 100 continue；浏览器再发送data，服务器响应 200。</li>
 </ul>
+<p><strong>注：</strong> 从本质上来说，GET 与 POST 都是 Http 协议中发送请求的方法，底层都是基于 TCP 的链接。技术上来讲如果你想，你可以给 GET 请求加上 request body，也可以给 POST 请求的URL加上参数。但一般我们不会这样做，因为上面所说的这些都是 Http 协议已经约定俗成的规则。</p>
 <h3 id="9-Http-与-Https-的比较"><a href="#9-Http-与-Https-的比较" class="headerlink" title="#9.Http 与 Https 的比较"></a>#9.Http 与 Https 的比较</h3><blockquote>
 <p><strong>Http</strong>（超文本传输协议），属于应用层的一种协议。</p>
 </blockquote>
@@ -292,6 +296,7 @@
 <p>#<a href="https://www.jianshu.com/p/1d468ec8162f" target="_blank" rel="noopener">©软件iOS开发-iOS网络层详解和优化</a></p>
 <p>#<a href="http://www.php230.com/weixin1457310207.html" target="_blank" rel="noopener">©偷师饿了么:怎样用HTTP/2优化iOS APP网络层次架构</a></p>
 <p>#<a href="https://www.cnblogs.com/huhuuu/p/3572485.html" target="_blank" rel="noopener">©网络TCP建立连接为什么需要三次握手而结束要四次</a></p>
+<p>#<a href="http://www.techweb.com.cn/network/system/2016-10-11/2407736.shtml" target="_blank" rel="noopener">©51cto-GET与POST的区别</a></p>
 </section>
     <!-- Tags START -->
     
