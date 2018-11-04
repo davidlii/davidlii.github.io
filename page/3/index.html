@@ -182,7 +182,7 @@
   
     <article class="article-card">
       <h2 class="article-head">
-        <a href="/2018/01/21/autoreleasepool.html">autoreleasepool</a>
+        <a href="/2018/01/21/autoreleasepool.html">OC中的内存管理</a>
       </h2>
       <p class="article-date">January 21, 2018</p>
       
@@ -194,10 +194,7 @@
       
       <div class="article-summary">
         
-          
-转自©sunnyxx
-
-Autorelease 机制是 iOS 开发者管理对象内存的好伙伴。MRC中，调用[obj autorelease]来延迟内存的释放是一件简单自然的事，ARC下，我们甚至可以完全不知道 Autorelease 就能管理好内存。而在这背后，objc和编译器都帮我们做了 ...
+          1.MRC1.1.retain/release123456789@protocol NSObject//...- (instancetype)retain OBJC_ARC_UNAVAILABLE;- (oneway void)release OBJC_ARC_UNAVAILABLE;- ( ...
         
       </div>
       <a class="more" href="/2018/01/21/autoreleasepool.html">Read more</a>
