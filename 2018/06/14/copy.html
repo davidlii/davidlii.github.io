@@ -135,7 +135,59 @@
 <main class="app-body flex-box">
   <!-- Article START -->
   <article class="post-article">
-    <section class="markdown-content"><h2 id="1、概念理解"><a href="#1、概念理解" class="headerlink" title="#1、概念理解"></a>#1、概念理解</h2><p>&emsp;<a href="https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/Collections/Articles/Copying.html" target="_blank" rel="noopener">(Apple文档)：</a></p>
+    <section class="markdown-content"><h2 id="1-拷贝-初探"><a href="#1-拷贝-初探" class="headerlink" title="1.拷贝-初探"></a>1.拷贝-初探</h2><p><a href="https://developer.apple.com/library/archive/documentation/LegacyTechnologies/WebObjects/WebObjects_3.5/Reference/Frameworks/ObjC/Foundation/Protocols/NSCopying/Description.html#//apple_ref/occ/intf/NSCopying" target="_blank" rel="noopener">文档摘要：</a></p>
+<blockquote>
+<p>The exact meaning of “copy” can vary from class to class, but a copy must be a functionally independent object with values identical to the original at the time the copy was made.</p>
+</blockquote>
+<p>上面的摘要描述了<code>拷贝</code>的三个基本特征：</p>
+<ul>
+<li>在不同的类中有不同的的具体含义；</li>
+</ul>
+<p>拷贝可以作用于不同的对象上，比如值类型和指针类型、字符串和集合、可变对象和不可变对象等。对于不同的对象，拷贝有着不同的意义和效果，后面会继续介绍。</p>
+<ul>
+<li>每一份拷贝都是一个独立的对象；</li>
+</ul>
+<p>一个值类型对象被作为方法的参数传递或者作为返回值时，我们通常使用的是它的拷贝，而不是它本身。比如下面的方法中，我们将一个字符串赋值给对象的<code>name</code>实例变量：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">- (void)setName:(NSString *)aName</span><br><span class="line">&#123;</span><br><span class="line">    [name autorelease];</span><br><span class="line">    name = [aName copy];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>保存<code>aName</code>的拷贝产生的效果就是：产生了一个独立的对象，对象的值与原对象一致。后续对原对象的操作不会影响到新对象，对新对象的操作也不会影响到原对象。再比如，我们通常会在一个方法中返回某个对象的拷贝，而不是对象本身：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- (NSString *)name</span><br><span class="line">&#123;</span><br><span class="line">    return [[name copy] autorelease];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里<code>name</code>的 getter 返回的就是<code>name</code>的一份拷贝~</p>
+<ul>
+<li>拷贝的值与发生拷贝时的原对象的值保持一致。</li>
+</ul>
+<p>上面说了，拷贝之后，原对象与新对象相互独立，互不影响。新对象的值与发生拷贝时原对象的值保持一致，后续原对象的值怎么变化，并不影响新对象的值。</p>
+<h2 id="2-OC中的拷贝与协议"><a href="#2-OC中的拷贝与协议" class="headerlink" title="2.OC中的拷贝与协议"></a>2.OC中的拷贝与协议</h2><h3 id="2-1-拷贝协议"><a href="#2-1-拷贝协议" class="headerlink" title="2.1.拷贝协议"></a>2.1.拷贝协议</h3><p><code>NSObject.h</code>中定义了两个关于拷贝的实例方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (id)copy;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>The copy method is defined for all NSObjects and simply invokes copyWithZone: with the default zone.</p>
+</blockquote>
+<p><code>copy</code>方法是一个便利方法，用来调用<code>copyWithZone:</code>方法，返回一个不可变对象。后者是<code>NSCopying</code>协议的协议方法。如果一个继承自 NSObject 的类的实例对象要调用<code>copy</code>时，那么该类就必须实现此协议，否则会报异常。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (id)mutableCopy;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Convenience method for classes that adopt the NSMutableCopying protocol. This method just calls the NSMutableCopying protocol method mutableCopyWithZone: with the zone as NULL. An exception is raised if there is no implementation for mutableCopyWithZone:.</p>
+</blockquote>
+<p>与<code>copy</code>一样，<code>mutableCopy</code>也是一个便利方法，用来调用<code>NSMutableCopying</code>协议的协议方法<code>mutableCopyWithZone:</code>。此方法主要用来返回一个可变对象。同样的，对象需要调用<code>mutableCopy</code>时，其所属类必须实现此协议，并在协议方法中返回一个可变对象。只有那些有可变和不可变之分的类才需要实现此协议，否则应该实现<code>NSCopying</code>协议。如果某个类既有可变版本又有不可变版本，那就需要同时实现这两个协议。</p>
+<h3 id="2-2-父类与拷贝协议"><a href="#2-2-父类与拷贝协议" class="headerlink" title="2.2.父类与拷贝协议"></a>2.2.父类与拷贝协议</h3><p>假设有<code>A</code>、<code>B</code>两个类，B 继承自 A，如果 A 中没有实现 NSCopying 或 NSMutableCopying 协议，而 B 实现了，那么在 B 类的协议方法中就既需要拷贝自己声明的属性，又需要拷贝从父类继承而来的属性：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">//父类</span><br><span class="line">@interface Model : NSObject</span><br><span class="line">@property (nonatomic, copy) NSString *name;</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation Model</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">//子类</span><br><span class="line">@interface SubModel : Model&lt;NSCopying&gt;</span><br><span class="line">@property (nonatomic, copy) NSString *subName;</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation SubModel</span><br><span class="line"></span><br><span class="line">-(id)copyWithZone:(NSZone *)zone</span><br><span class="line">&#123;</span><br><span class="line">    SubModel *newSubModel = [[[self class] alloc] init];</span><br><span class="line">    newSubModel.name = [self.name copy];//拷贝父类属性</span><br><span class="line">    newSubModel.subName = [self.subName copy];//拷贝子类属性</span><br><span class="line">    </span><br><span class="line">    return newSubModel;</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<p>如果 A 类中实现了拷贝协议，那么作为子类，B 会继承此协议，所以 B 只需在自己的类中重写协议方法，调用 super 实现父类属性的拷贝，并拷贝自己类中声明的属性：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">//父类</span><br><span class="line">@interface Model : NSObject&lt;NSCopying&gt;</span><br><span class="line">@property (nonatomic, copy) NSString *name;</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation Model</span><br><span class="line"></span><br><span class="line">-(id)copyWithZone:(NSZone *)zone</span><br><span class="line">&#123;</span><br><span class="line">    Model *newModel = [[[self class] allocWithZone:zone] init];</span><br><span class="line">    newModel.name = [self.name copy];</span><br><span class="line">    return newModel;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//子类</span><br><span class="line">@interface SubModel : Model</span><br><span class="line">@property (nonatomic, copy) NSString *subName;</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation SubModel</span><br><span class="line"></span><br><span class="line">-(id)copyWithZone:(NSZone *)zone</span><br><span class="line">&#123;</span><br><span class="line">    SubModel *newSubModel = [super copyWithZone:zone];//调用super</span><br><span class="line">    newSubModel.subName = [self.subName copy];//拷贝子类属性</span><br><span class="line">    </span><br><span class="line">    return newSubModel;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="2-3-可变-不可变对象"><a href="#2-3-可变-不可变对象" class="headerlink" title="2.3.可变\不可变对象"></a>2.3.可变\不可变对象</h3><p><code>copy</code>返回的是不可变对象，<code>mutableCopy</code>返回的是可变对象。按照 <a href="https://developer.apple.com/library/archive/documentation/General/Conceptual/CocoaEncyclopedia/ObjectMutability/ObjectMutability.html" target="_blank" rel="noopener">Apple文档</a> 的说法，对象默认是可变的。这很好理解，比如你自定义的<code>客户</code>实体，当客户的信息发生变化时，对应的实体对象应该能更新相关字段。大多数的对象都允许你通过 setter 函数修改它内部封装的数据，Foundation 框架也为我们提供了一些可变类型，如：</p>
+<ul>
+<li>NSMutableArray</li>
+<li>NSMutableDictionary</li>
+<li>NSMutableSet</li>
+<li>NSMutableIndexSet</li>
+<li>NSMutableCharacterSet</li>
+<li>NSMutableData</li>
+<li>NSMutableString</li>
+<li>NSMutableAttributedString</li>
+<li>NSMutableURLRequest</li>
+</ul>
+<p>既然对象默认是可变的，为什么还要有不可变对象呢？这是因为，不可变对象可以防止被多处引用时因一方的修改导致其他所有引用的地方都意外地发生变化的情况，比如你持有的 tableview 数据源数组是可变的，如果在别的地方被引用且其中的数据被清空了，那么你的列表就会出问题。另外，不可变对象在性能上更有优势，因为它们不需要像可变对象那样始终维持一份可变存储。<br>&emsp;</p>
+<p>我们通常会上面提到的集合类或者 NSString 和 block 等对象发送这两个消息，从而获得一个新的拷贝对象，这些操作的背后是框架帮我们处理了协议方法的实现及其返回值。<br>&emsp;</p>
+<p>对于我们自定义的类的实例，也可以调用这俩方法，但是，需要我们自己实现对应的协议方法，自己定义返回值。协议方法内的返回值可以是 self，也可以是一个属性值与 self 属性值一致的新对象，根据你的需求而定。<br>&emsp;</p>
+<p><strong>小结：</strong> 结合以上分析可以看出，这两个方法只是一种<code>便利方法</code>。当向对象发送这两个消息时，它们只是会在对象所属的类中查找并调用对应的协议方法，返回可变或不可变的新对象。这点类似于我们常用的<code>便利初始化函数</code>，最终调用指定初始化函数。从另一个角度来说，<code>copy</code>并不等价于浅拷贝，<code>mutableCopy</code>也并等价于深拷贝，尤其是当你在自定义的类中实现拷贝的协议方法时，深拷贝还是浅拷贝可根据你的需求而定。具体什么是深拷贝和浅拷贝，接下来继续介绍。</p>
+<h2 id="3-深-浅拷贝"><a href="#3-深-浅拷贝" class="headerlink" title="3.深\浅拷贝"></a>3.深\浅拷贝</h2><h3 id="3-1-概念"><a href="#3-1-概念" class="headerlink" title="3.1.概念"></a>3.1.概念</h3><p><a href="https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/Collections/Articles/Copying.html" target="_blank" rel="noopener">(Apple文档)：</a></p>
 <blockquote>
 <p>Copying an object creates a new object with the same class and properties as the original object. You copy an object when you want your own version of the data that the object contains. If you receive an object from elsewhere in an application but do not copy it, you share the object with its owner (and perhaps others), who might change the encapsulated contents. If you are creating a subclass, you might consider making it possible for others to copy instances of your class. Generally, an object should be “copyable” when it is a value object—an object whose main purpose is to encapsulate some data.</p>
 </blockquote>
@@ -143,131 +195,152 @@
 <blockquote>
 <p>Copies of objects can be shallow or deep. Both shallow- and deep-copy approaches directly duplicate scalar properties but differ on how they handle pointer references, particularly references to objects (for example, NSString *str). A deep copy duplicates the objects referenced while a shallow copy duplicates only the references to those objects. So if object A is shallow-copied to object B, object B refers to the same instance variable (or property) that object A refers to. Deep-copying objects is preferred to shallow-copying, especially with value objects.</p>
 </blockquote>
-<p>浅拷贝：指针拷贝，即将原始对象的指针值复制到副本中，原始对象和副本共享引用数据。</p>
-<p>&emsp;</p>
-<p>深拷贝：对象拷贝，即复制指针所引用的数据，并将其赋给副本的实例变量。因此副本和原始对象指向不同的地址，在副本上的修改不会对原对象造成影响。</p>
-<h2 id="2、集合-非集合类对象？"><a href="#2、集合-非集合类对象？" class="headerlink" title="#2、集合/非集合类对象？"></a>#2、集合/非集合类对象？</h2><p>&emsp;集合类对象是指像 NSArray、NSDictionary、NSSet 这类可以包含其他对象的类。非集合类对象则是指像 NSString、NSNumber 这些不能包含其他对象的类。</p>
-<h2 id="3、对不可变字符串的拷贝？"><a href="#3、对不可变字符串的拷贝？" class="headerlink" title="#3、对不可变字符串的拷贝？"></a>#3、对不可变字符串的拷贝？</h2><p>&emsp;#示例1：对不可变字符串的复制是深拷贝/浅拷贝？</p>
+<p>对象的拷贝可以分为<code>浅拷贝</code>和<code>深拷贝</code>两种情形，二者在处理简单的纯量属性（Int,float等）时，都是直接拷贝属性的值到新对象；不同点在于对指针类型的处理上：</p>
+<ul>
+<li><strong>浅拷贝</strong>：指针拷贝，即将原始对象的指针值复制到副本中，原始对象和副本共享引用数据。</li>
+<li><strong>深拷贝</strong>：对象拷贝，即复制指针所引用的数据，并将其赋给副本的实例变量。因此副本和原始对象指向不同的地址，在副本和原对象上的修改互不影响。</li>
+</ul>
+<h3 id="3-2-使用"><a href="#3-2-使用" class="headerlink" title="3.2.使用"></a>3.2.使用</h3><p>对象是深拷贝还是浅拷贝，可以通过其 setter 来反映。如果 setter 中拷贝了一份新的对象，那么此对象应该使用<code>深拷贝</code>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">- (void)setMyVariable:(id)newValue</span><br><span class="line">&#123;</span><br><span class="line">    [myVariable autorelease];</span><br><span class="line">    myVariable = [newValue copy];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果 setter 中只是<code>retain</code>了新值，则此对象应该使用<code>浅拷贝</code>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">- (void)setMyVariable:(id)newValue</span><br><span class="line">&#123;</span><br><span class="line">    [myVariable autorelease];</span><br><span class="line">    myVariable = [newValue retain];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果 setter 中只是简单的将新值赋值给原对象，则此对象应该使用<code>浅拷贝</code>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- (void)setMyVariable:(id)newValue</span><br><span class="line">&#123;</span><br><span class="line">    myVariable = newValue;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="3-3-拷贝深度"><a href="#3-3-拷贝深度" class="headerlink" title="3.3.拷贝深度"></a>3.3.拷贝深度</h3><p>开篇提到了拷贝对象的特点，其中之一就是新对象与原对象相互独立。为了保证新对象的完全独立性，整个对象的都需要深拷贝，包括其中的每个属性和实例变量。如果属性和实例变量又包括了子属性和实例变量，那么这些字属性和实例变量也需要深拷贝，以此类推。这就是单层深拷贝和完全深拷贝。比如一个<code>商铺</code>实体，其中包含了<code>客户</code>实体，而客户实体又包含了<code>账户</code>实体，如果拷贝<code>商铺</code>时只对<code>客户</code>进行了深拷贝（即：重写拷贝协议方法并返回客户对象的一份内容拷贝），那就是单层深拷贝；如果连<code>账户</code>也深拷贝，那就是完全深拷贝。<br>&emsp;</p>
+<p>有些情况下对象进行拷贝时，我们可以混着来，比如对于 int、float 这种纯量类型，直接拷贝其值；对于指针类型的变量，它指向某块数据，我们可以使用深拷贝，拷贝数据而非指针；对于 delegate 这种实例变量，可以使用浅拷贝，即拷贝指针；</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">@interface Product : NSObject &lt;NSCopying&gt;</span><br><span class="line">&#123;</span><br><span class="line">    NSString *productName;</span><br><span class="line">    float price;</span><br><span class="line">    id delegate;</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<p>如上，对<code>Product</code>对象进行拷贝时，我们可以对<code>productName</code>进行深拷贝，因为它表示一个数据的值；对与<code>delegate</code>，它在两个对象中所起到的作用是一样的，所以应该使用浅拷贝，即两个对象共享同一个指针。下面的表格代表了<code>Product</code>对象和其拷贝在内存中的分布：</p>
+<p><img src="http://pc7lkjphf.bkt.clouddn.com/pic/object_ori.png" alt="原对象"></p>
+<p><img src="http://pc7lkjphf.bkt.clouddn.com/pic/object_copy.png" alt="副本"></p>
+<p><code>productName</code>指针的值不同，表示原对象和拷贝对象有各自的 string 类型<code>productName</code>值。<code>delegate</code>的指针相同，表示它们共享一个代理。</p>
+<h2 id="4-不可变字符串的拷贝"><a href="#4-不可变字符串的拷贝" class="headerlink" title="4.不可变字符串的拷贝"></a>4.不可变字符串的拷贝</h2><p>#示例4.1：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">NSString *str1 = @&quot;hello&quot;;</span><br><span class="line">NSString *str2 = [str1 copy]; // 浅拷贝</span><br><span class="line">NSString *str3 = [str1 mutableCopy]; // 深拷贝</span><br><span class="line"></span><br><span class="line">NSLog(@&quot;str1 = %p&quot;,str1);</span><br><span class="line">NSLog(@&quot;str2 = %p&quot;,str2);</span><br><span class="line">NSLog(@&quot;str3 = %p&quot;,str3);</span><br></pre></td></tr></table></figure>
-<p>&emsp;输出日志如下：</p>
+<p>输出日志如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">str1 = 0x10ae55810</span><br><span class="line">str2 = 0x10ae55810</span><br><span class="line">str3 = 0x600000258ea0</span><br></pre></td></tr></table></figure>
-<p>&emsp;从打印出的内存地址分析：str1 与 str2 指向同一片内存区域，也就是说对不可变字符串的 copy 操作只是指针拷贝。而 str3 与 str1 指向了不同的内存区域，说明对不可变字符串的 mutableCopy 产生了新的对象，此对象的内存地址与 str1 指向的地址完全不同。由此可以得出以下结论：</p>
+<p>从打印出的内存地址分析：str1 与 str2 指向同一片内存区域，也就是说对不可变字符串的 copy 操作只是指针拷贝；而 str3 与 str1 指向了不同的内存区域，说明对不可变字符串的 mutableCopy 产生了新的对象，此对象的内存地址与 str1 指向的地址完全不同。</p>
 <blockquote>
 <p>结论1：对于不可变字符串的 copy 是浅拷贝，mutableCopy 是深拷贝。</p>
 </blockquote>
-<h2 id="4、对可变字符串的拷贝？"><a href="#4、对可变字符串的拷贝？" class="headerlink" title="#4、对可变字符串的拷贝？"></a>#4、对可变字符串的拷贝？</h2><p>&emsp;#示例2：对可变字符串的复制是深拷贝/浅拷贝？</p>
+<h2 id="5-可变字符串的拷贝"><a href="#5-可变字符串的拷贝" class="headerlink" title="5.可变字符串的拷贝"></a>5.可变字符串的拷贝</h2><p>#示例5.1：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">NSMutableString *str1 = [NSMutableString stringWithString:@&quot;hello&quot;];</span><br><span class="line">NSString *str2 = [str1 copy]; // 深拷贝</span><br><span class="line">NSString *str3 = [str1 mutableCopy]; // 深拷贝</span><br><span class="line"></span><br><span class="line">NSLog(@&quot;str1 = %p&quot;,str1);</span><br><span class="line">NSLog(@&quot;str2 = %p&quot;,str2);</span><br><span class="line">NSLog(@&quot;str3 = %p&quot;,str3);</span><br></pre></td></tr></table></figure>
-<p>&emsp;输出日志如下：</p>
+<p>输出日志如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">str1 = 0x604000451040</span><br><span class="line">str2 = 0xa00006f6c6c65685</span><br><span class="line">str3 = 0x604000450fe0</span><br></pre></td></tr></table></figure>
-<p>&emsp;可以看出，对可变字符串的两种复制（copy / mutablecopy）都产生了新的对象，三个对象的地址完全不同。</p>
+<p>对可变字符串的两种复制都产生了新的对象，三个对象的地址完全不同。</p>
 <blockquote>
 <p>结论2：对于可变字符串的复制，不论 copy 还是 mutableCopy 都是深拷贝。</p>
 </blockquote>
-<h2 id="5、拷贝对字符串可变性的影响？"><a href="#5、拷贝对字符串可变性的影响？" class="headerlink" title="#5、拷贝对字符串可变性的影响？"></a>#5、拷贝对字符串可变性的影响？</h2><p>&emsp;#示例3：字符串复制后返回的对象是否可变？</p>
+<h2 id="6-拷贝对字符串可变性的影响"><a href="#6-拷贝对字符串可变性的影响" class="headerlink" title="6.拷贝对字符串可变性的影响"></a>6.拷贝对字符串可变性的影响</h2><p>#示例6.1：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">NSString *str1 = @&quot;hi&quot;;</span><br><span class="line">NSMutableString *str2 = [str1 mutableCopy];</span><br><span class="line">[str2 appendString:@&quot;xx&quot;];</span><br><span class="line"></span><br><span class="line">NSMutableString *str3 = [NSMutableString stringWithString:@&quot;hello&quot;];</span><br><span class="line">NSMutableString *str4 = [str3 copy]; // 不可变</span><br><span class="line">NSMutableString *str5 = [str3 mutableCopy]; // 可变</span><br><span class="line"></span><br><span class="line">[str4 appendString:@&quot;world&quot;]; //报错</span><br><span class="line">[str5 appendString:@&quot;Kitty&quot;]; //正常</span><br></pre></td></tr></table></figure>
-<p>&emsp;示例在运行到 [str4 appendString:@”world”] 这一行时会报错“unrecognized selector sent to instance”，这就是说可变字符串在执行 copy 操作后返回的对象不再是可变字符串，因此对其执行 appendString 方法时出现了崩溃。注释掉这一行后，程序正常执行，因此可以得出：</p>
+<p>示例在运行到 [str4 appendString:@”world”] 这一行时会报错“unrecognized selector sent to instance”，这就是说可变字符串在执行 copy 操作后返回的对象不再是可变字符串，因此对其执行 appendString 方法时出现了崩溃。注释掉这一行后，程序正常执行。</p>
 <blockquote>
-<p>结论3：字符串（可变/不可变）执行 copy 后返回的对象是不可变的；mutableCopy 后返回的对象是可变的。</p>
+<p>结论3：字符串，不论是可变还是不可变，执行 copy 后返回的对象是不可变的；mutableCopy 后返回的对象是可变的。</p>
 </blockquote>
-<h2 id="6、对自定义类的拷贝？"><a href="#6、对自定义类的拷贝？" class="headerlink" title="#6、对自定义类的拷贝？"></a>#6、对自定义类的拷贝？</h2><p>&emsp;#示例4：对自定义类的拷贝是深/浅拷贝？</p>
+<h2 id="7-自定义类的拷贝"><a href="#7-自定义类的拷贝" class="headerlink" title="7.自定义类的拷贝"></a>7.自定义类的拷贝</h2><p>#示例7.1：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">@interface Model : NSObject</span><br><span class="line">&lt;NSCopying,</span><br><span class="line">NSMutableCopying&gt;</span><br><span class="line"></span><br><span class="line">@property (nonatomic, copy) NSString *name;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">#import &quot;Model.h&quot;</span><br><span class="line">@implementation Model</span><br><span class="line"></span><br><span class="line">- (id)copyWithZone:(NSZone *)zone</span><br><span class="line">&#123;</span><br><span class="line">    Model *newModel = [[[self class] allocWithZone:zone] init];</span><br><span class="line">    newModel.name = self.name;</span><br><span class="line">    NSLog(@&quot;++++copyWithZone newObject:%p&quot;,newModel);</span><br><span class="line">    return newModel;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (id)mutableCopyWithZone:(NSZone *)zone</span><br><span class="line">&#123;</span><br><span class="line">    Model *newModel = [[[self class] allocWithZone:zone] init];</span><br><span class="line">    newModel.name = self.name;</span><br><span class="line">    NSLog(@&quot;++++mutableCopyWithZone newObject:%p&quot;,newModel);</span><br><span class="line">    return newModel;</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
-<p>&emsp;以上是通常情况下我们自定义一个类及实现拷贝协议的方式，协议实现中我们返回的是一个属性值与元对象相同的副本。</p>
-<p>&emsp;调用示例：对自定义对象的copy与mutablecopy</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">#import &quot;Model.h&quot;</span><br><span class="line">@implementation Model</span><br><span class="line"></span><br><span class="line">- (id)copyWithZone:(NSZone *)zone</span><br><span class="line">&#123;</span><br><span class="line">    return self;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (id)mutableCopyWithZone:(NSZone *)zone</span><br><span class="line">&#123;</span><br><span class="line">    Model *newModel = [[[self class] allocWithZone:zone] init];</span><br><span class="line">    newModel.name = self.name;</span><br><span class="line"></span><br><span class="line">    return newModel;</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<p>在自定义的类中实现了可变和不可变拷贝的协议，返回的对象根据自己的需求而定。<br>&emsp;</p>
+<p>调用示例：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Model *model = [Model new];</span><br><span class="line">model.name = @&quot;sakura&quot;;</span><br><span class="line">NSLog(@&quot;++++model = %p;&quot;,model);</span><br><span class="line"></span><br><span class="line">Model *copymodel = [model copy]; // 深拷贝</span><br><span class="line">NSLog(@&quot;++++copymodel = %p&quot;,copymodel);</span><br><span class="line"></span><br><span class="line">Model *mutableCopymodel = [model mutableCopy]; // 深拷贝</span><br><span class="line">NSLog(@&quot;++++mutableCopymodel = %p&quot;,mutableCopymodel);</span><br></pre></td></tr></table></figure>
-<p>&emsp;输出日志：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">++++model = 0x600000015a70;</span><br><span class="line">++++copyWithZone newObject:0x600000015ac0</span><br><span class="line">++++copymodel = 0x600000015ac0</span><br><span class="line">++++mutableCopyWithZone newObject:0x600000015ad0</span><br><span class="line">++++mutableCopymodel = 0x600000015ad0</span><br></pre></td></tr></table></figure>
-<p>&emsp;可以看出，变量 copymodel 与 mutableCopymodel 对象的地址和原对象 model 的完全不同。且 copymodel 的地址与 copyWithZone：方法中返回的新对象的地址一致；mutableCopymodel 的地址与 mutableCopyWithZone：方法中返回的新对象的地址一致。也就是说两种拷贝最终返回的对象正是我们在协议的实现中新建的对象。</p>
+<p>输出日志：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">++++model = 0x60000263d150;</span><br><span class="line">++++copymodel = 0x60000263d150</span><br><span class="line">++++mutableCopymodel = 0x60000263c0a0</span><br></pre></td></tr></table></figure>
 <blockquote>
-<p>结论4：对于我们自定义的类，其 copy 与 mutableCopy 都是深拷贝，因为在我们实现 copyWithZone 与 mutableCopyWithZone 方法时，都是返回了一个新创建的副本。</p>
+<p>结论4：对于我们自定义的类，其 copy 与 mutableCopy 是深拷贝还是浅拷贝因我们自己的需求而定。</p>
 </blockquote>
-<h2 id="7、对集合类对象的拷贝？"><a href="#7、对集合类对象的拷贝？" class="headerlink" title="#7、对集合类对象的拷贝？"></a>#7、对集合类对象的拷贝？</h2><blockquote>
+<h2 id="8-集合类对象的拷贝"><a href="#8-集合类对象的拷贝" class="headerlink" title="8.集合类对象的拷贝"></a>8.集合类对象的拷贝</h2><p><a href="https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/Collections/Articles/Copying.html" target="_blank" rel="noopener">文档摘要</a></p>
+<blockquote>
 <p>There are two kinds of object copying: shallow copies and deep copies. The normal copy is a shallow copy that produces a new collection that shares ownership of the objects with the original. Deep copies create new objects from the originals and add those to the new collection. </p>
 </blockquote>
-<h3 id="7-1-集合对象的浅拷贝："><a href="#7-1-集合对象的浅拷贝：" class="headerlink" title="#7.1 集合对象的浅拷贝："></a>#7.1 集合对象的浅拷贝：</h3><p>&emsp;集合的浅拷贝会产生新的集合对象，新旧集合内的元素指针相同。当对一个集合进行浅拷贝时，原集合中的每个元素会收到一条 retain 消息，引用计数+1，它们的指针会被拷贝到新建的集合中。可以通过下面这些方法实现集合对象的浅拷贝： </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- copyWithZone: （如 [anArr copyWithZone:nil];）</span><br><span class="line">- mutableCopyWithZone:</span><br><span class="line">- initWithArray:copyItems:NO（第二个参数为NO）</span><br><span class="line">- initWithDictionary:copyItems:NO（第二个参数为NO）</span><br></pre></td></tr></table></figure>
-<p>&emsp;#示例5：集合对象的浅拷贝</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Model *model = [[Model alloc] init];</span><br><span class="line">NSArray *array = [NSArray arrayWithObject:model];</span><br><span class="line">NSLog(@&quot;++++model:%p&quot;,model);</span><br><span class="line">NSLog(@&quot;+++array:%p,+++array[0]:%p&quot;,array,array[0]);</span><br><span class="line"></span><br><span class="line">NSArray *shallowCopyArray = [array copyWithZone:nil];</span><br><span class="line">NSLog(@&quot;+++shallowCopyArray:%p,+++shallowCopyArray[0]:%p&quot;,</span><br><span class="line">        shallowCopyArray,shallowCopyArray[0]);</span><br></pre></td></tr></table></figure>
-<p>&emsp;输出日志：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">++++model:0x600000209e70</span><br><span class="line">+++array:0x600000257b80,+++array[0]:0x600000209e70</span><br><span class="line">+++shallowCopyArray:0x60400001f4c0,+++shallowCopyArray[0]:0x600000209e70</span><br></pre></td></tr></table></figure>
-<p>&emsp;日志显示通过 copyWithZone: 确实产生了新的集合对象 shallowCopyArray，且 shallowCopyArray[0] 与原数组 array 中的 model 对象指向同一片内存。</p>
-<h3 id="7-2-集合对象的深拷贝："><a href="#7-2-集合对象的深拷贝：" class="headerlink" title="#7.2 集合对象的深拷贝："></a>#7.2 集合对象的深拷贝：</h3><p>&emsp;集合的深拷贝会产生新的集合对象，新旧集合内的元素指针不相同，新集合中的元素是从原集合中的元素拷贝而来。</p>
-<p>&emsp;方案1：（通过集合类对象的实例方法）</p>
+<ul>
+<li>集合对象的浅拷贝：</li>
+</ul>
+<p>对OC中集合类对象的拷贝，默认是浅拷贝。集合的浅拷贝会产生新的集合对象，新旧集合内的元素指针相同。原集合中的每个元素会收到一条 retain 消息，引用计数+1，它们的指针会被拷贝到新建的集合中。系统为我们提供了一些方法，以实现集合对象的浅拷贝：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-copyWithZone:（如 [anArr copyWithZone:nil];）</span><br><span class="line">-mutableCopyWithZone:</span><br><span class="line">-initWithArray:copyItems:NO（第二个参数为NO）</span><br><span class="line">-initWithDictionary:copyItems:NO（第二个参数为NO）</span><br></pre></td></tr></table></figure>
+<ul>
+<li>集合对象的深拷贝：</li>
+</ul>
+<p>集合的深拷贝会产生新的集合对象，新旧集合内的元素指针不相同，新集合中的元素是从原集合中的元素拷贝而来。<br>&emsp;</p>
+<p>方案1：（通过集合类对象的实例方法）</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">- initWithArray:copyItems:YES（第二个参数为YES）</span><br><span class="line">- initWithDictionary:copyItems:YES（第二个参数为YES）</span><br></pre></td></tr></table></figure>
-<p>&emsp;copyItems 的参数 = YES，这种方式下集合中的每个对象都会调用一次 copyWithZone: 方法，如果这些对象实现了 NSCopying 协议，那么这些对象会被深拷贝到新集合中。如果没有实现 NSCopying 协议，则运行时会报错。</p>
-<p>&emsp;需要注意的是，这种拷贝方式下调用了 copyWithZone: 方法，它只能提供单层深拷贝（one-level-deep copy），而非真正的深拷贝！！！</p>
-<hr>
-<p>&emsp;这里区分一下浅拷贝、深拷贝、单层深拷的概念：</p>
-<blockquote>
-<p>浅拷贝(shallow copy)： 在浅拷贝操作时，对于被拷贝对象的每一层都是指针拷贝。</p>
-</blockquote>
-<blockquote>
-<p>深拷贝(one-level-deep copy)：在深拷贝操作时，对于被拷贝对象，至少有一层是深拷贝。</p>
-</blockquote>
-<blockquote>
-<p>完全拷贝(real-deep copy)：在完全拷贝操作时，对于被拷贝对象的每一层都是对象拷贝。</p>
-</blockquote>
-<p>&emsp;#示例6：集合对象的“单层深拷贝”</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Model *model = [[Model alloc] init];</span><br><span class="line">NSArray *array = [NSArray arrayWithObject:model];</span><br><span class="line">NSLog(@&quot;++++%p&quot;,model);</span><br><span class="line">NSLog(@&quot;+++%p,+++%p&quot;,array,array[0]);</span><br><span class="line"></span><br><span class="line">NSArray *deepCopyArray=[[NSArray alloc] initWithArray:array copyItems:YES];</span><br><span class="line">NSLog(@&quot;+++%p,+++%p&quot;,deepCopyArray,deepCopyArray[0]);</span><br></pre></td></tr></table></figure>
-<p>&emsp;输出日志</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">++++model:0x600000207310</span><br><span class="line">+++array:0x600000449540,+++array[0]:0x600000207310</span><br><span class="line">++++copyWithZone newObject:0x6000002072a0</span><br><span class="line">+++deepCopyArray:0x600000207290,+++deepCopyArray[0]:0x6000002072a0</span><br></pre></td></tr></table></figure>
-<p>&emsp;示例中 deepCopyArray 为新产生的集合副本，其中的元素 deepCopyArray[0] 的地址 与 array[0] 实际指向的 model 对象的地址不同。这说明了这种拷贝是深拷贝。</p>
-<p>&emsp;通过日志“++++copyWithZone newObject:0x6000002072a0”可以看出，在深拷贝 array 对象时，自动调用了一次 array 数组中 model 对象的 copyWithZone: 方法，返回的 Model 副本与 deepCopyArray[0] 地址相同。</p>
-<p>&emsp;方案2：（通过归档解档）</p>
+<p>copyItems 的参数 = YES，这种方式下集合中的每个对象都会调用一次 copyWithZone: 方法，如果这些对象实现了 NSCopying 协议，那么这些对象会被深拷贝到新集合中。如果没有实现 NSCopying 协议，则运行时会报错。<br>&emsp;</p>
+<p>方案2：（通过归档解档）</p>
 <blockquote>
 <p>If you need a true deep copy, such as when you have an array of arrays, you can archive and then unarchive the collection, provided the contents all conform to the NSCoding protocol. </p>
 </blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">NSArray* trueDeepCopyArray = [NSKeyedUnarchiver unarchiveObjectWithData:</span><br><span class="line">          [NSKeyedArchiver archivedDataWithRootObject:oldArray]];</span><br></pre></td></tr></table></figure>
-<p>&emsp;这是集合真正意义上的深拷贝，这种方式下集合中的所有对象都要实现 NSCoding 协议，不然也会出现崩溃。</p>
-<h2 id="8、拷贝对集合是否可变的影响"><a href="#8、拷贝对集合是否可变的影响" class="headerlink" title="#8、拷贝对集合是否可变的影响?"></a>#8、拷贝对集合是否可变的影响?</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- copyWithZone:</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">NSArray* trueDeepCopyArray = [NSKeyedUnarchiver unarchiveObjectWithData:[NSKeyedArchiver archivedDataWithRootObject:oldArray]];</span><br></pre></td></tr></table></figure>
+<p>这是集合真正意义上的深拷贝，这种方式下集合中的所有对象都要实现 NSCoding 协议，不然也会出现崩溃。<br>&emsp;</p>
+<p>#示例8.1：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">@interface Model : NSObject&lt;NSCopying,NSMutableCopying&gt;</span><br><span class="line">@property (nonatomic, copy) NSString *name;</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation Model</span><br><span class="line"></span><br><span class="line">- (id)copyWithZone:(NSZone *)zone</span><br><span class="line">&#123;</span><br><span class="line">    NSLog(@&quot;++++call Model copyWithZone~&quot;);</span><br><span class="line">    </span><br><span class="line">    Model *newModel = [[[self class] allocWithZone:zone] init];</span><br><span class="line">    newModel.name = self.name;</span><br><span class="line">    </span><br><span class="line">    return newModel;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (id)mutableCopyWithZone:(NSZone *)zone</span><br><span class="line">&#123;</span><br><span class="line">    NSLog(@&quot;++++call Model mutableCopyWithZone~&quot;);</span><br><span class="line">    </span><br><span class="line">    Model *newModel = [[[self class] allocWithZone:zone] init];</span><br><span class="line">    newModel.name = self.name;</span><br><span class="line"></span><br><span class="line">    return newModel;</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<p>调用示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Model *model = [[Model alloc] init];</span><br><span class="line">NSArray *array = [NSArray arrayWithObject:model];</span><br><span class="line">NSLog(@&quot;++++model:%p&quot;,model);</span><br><span class="line">NSLog(@&quot;+++array:%p,+++array[0]:%p&quot;,array,array[0]);</span><br><span class="line">    </span><br><span class="line">NSArray *zoneArray = [array copyWithZone:nil];</span><br><span class="line">NSLog(@&quot;+++zoneArray:%p,+++zoneArray[0]:%p&quot;,zoneArray,zoneArray[0]);</span><br><span class="line">    </span><br><span class="line">NSArray *noCopyArr = [[NSArray alloc] initWithArray:array copyItems:NO];</span><br><span class="line">NSLog(@&quot;+++noCopyArr:%p,+++noCopyArr[0]:%p&quot;,noCopyArr,noCopyArr[0]);</span><br><span class="line">    </span><br><span class="line">NSArray *copyArray = [[NSArray alloc] initWithArray:array copyItems:YES];</span><br><span class="line">NSLog(@&quot;+++copyArray:%p,+++copyArray[0]:%p&quot;,copyArray,copyArray[0]);</span><br></pre></td></tr></table></figure>
+<p>输出日志：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">++++model:0x600003124780</span><br><span class="line">+++array:0x6000031246f0,+++array[0]:0x600003124780</span><br><span class="line">+++zoneArray:0x6000031246f0,+++zoneArray[0]:0x600003124780</span><br><span class="line">+++noCopyArr:0x6000031246e0,+++noCopyArr[0]:0x600003124780</span><br><span class="line">++++call Model copyWithZone~</span><br><span class="line">+++copyArray:0x60000313f550,+++copyArray[0]:0x600003124440</span><br></pre></td></tr></table></figure>
+<p>日志信息显示：</p>
+<ul>
+<li>-copyWithZone:返回的的数组对象与原数组对象的指针相同，内部元素的指针也相同；</li>
+<li>-initWithArray:copyItems:NO 返回的数组对象与原数组对象的指针不同，内部元素的指针相同；</li>
+<li>-initWithArray:copyItems:YES 返回的数组对象与原数组对象的指针不同，内部元素的指针也不相同，且自动调用了元素的拷贝协议方法；</li>
+</ul>
+<p>这些都印证了上面关于集合对象深拷贝、浅拷贝时内部元素的不同。</p>
+<h2 id="9-拷贝与集合的可变性"><a href="#9-拷贝与集合的可变性" class="headerlink" title="9.拷贝与集合的可变性"></a>9.拷贝与集合的可变性</h2><ul>
+<li>-copyWithZone: </li>
+</ul>
 <blockquote>
 <p>makes the surface level immutable. All deeper levels have the mutability they previously had.</p>
 </blockquote>
-<p>&emsp;上层不可变，其他更深层对象的可变性与原对象相同。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- initWithArray:copyItems:NO:</span><br></pre></td></tr></table></figure>
+<p>上层不可变，其他更深层对象的可变性与原对象相同。</p>
+<ul>
+<li>-initWithArray:copyItems:NO:</li>
+</ul>
 <blockquote>
 <p>gives the surface level the mutability of the class it is allocated as. All deeper levels have the mutability they previously had.</p>
 </blockquote>
-<p>&emsp;上层可变性与其初始化时的类型保持一致，其他更深层的可变性与原对象相同。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- initWithArray:copyItems:YES:</span><br></pre></td></tr></table></figure>
+<p>上层可变性与其初始化时的类型保持一致，其他更深层的可变性与原对象相同。</p>
+<ul>
+<li>-initWithArray:copyItems:YES:</li>
+</ul>
 <blockquote>
 <p>gives the surface level the mutability of the class it is allocated as. The next level is immutable, and all deeper levels have the mutability they previously had.</p>
 </blockquote>
-<p>&emsp;上层可变性与其初始化时的类型保持一致，接下来的一层不可变，其他更深层的可变性与原对象相同。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- Archiving and unarchiving:</span><br></pre></td></tr></table></figure>
+<p>上层可变性与其初始化时的类型保持一致，接下来的一层不可变，其他更深层的可变性与原对象相同。</p>
+<ul>
+<li>Archiving and unarchiving:</li>
+</ul>
 <blockquote>
 <p>Archiving and unarchiving the collection leaves the mutability of all levels as it was before.</p>
 </blockquote>
-<p>&emsp;所有层的可变性与原对象完全相同。</p>
-<hr>
-<h2 id="9、集合类对象的copy与mutableCopy"><a href="#9、集合类对象的copy与mutableCopy" class="headerlink" title="#9、集合类对象的copy与mutableCopy"></a>#9、集合类对象的copy与mutableCopy</h2><p>&emsp;#示例7：对不可变集合类对象的拷贝？</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">NSArray *element = @[@(1)];</span><br><span class="line">NSArray *oriArray = @[element];</span><br><span class="line">NSMutableArray *copyArray = [oriArray copy];</span><br><span class="line">NSMutableArray *mutableCopyArray = [oriArray mutableCopy];</span><br><span class="line"></span><br><span class="line">NSLog(@&quot;+++oriArr:%p,element:%p&quot;,oriArray,element);</span><br><span class="line">NSLog(@&quot;++++copyArr:%p,indexAt0:%p&quot;,copyArray,copyArray[0]);</span><br><span class="line">NSLog(@&quot;++++mutableCopyArr:%p,indexAt0:%p&quot;,mutableCopyArray,mutableCopyArray[0]);</span><br></pre></td></tr></table></figure>
-<p>&emsp;输出日志：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">+++oriArr:0x60000000f6f0,element:0x60000000f630</span><br><span class="line">++++copyArr:0x60000000f6f0,indexAt0:0x60000000f630</span><br><span class="line">++++mutableCopyArr:0x600000450ef0,indexAt0:0x60000000f630</span><br></pre></td></tr></table></figure>
-<p>&emsp;不可变数组 oriArray 中包含了一个数组对象 element 。从日志可以看出，oriArray 与从其 copy 出来的数组 copyArray 指向同一片内存，而与从其 mutableCopy 出来的数组 mutableCopyArray 的内存则不同。这说明与不可变非集合类对象类似，对不可变数组的 copy 只是指针拷贝，不会产生新的集合对象；mutableCopy 是内容拷贝，会产生新的集合对象。</p>
+<p>所有层的可变性与原对象完全相同。</p>
+<h2 id="10-集合的copy与mutableCopy"><a href="#10-集合的copy与mutableCopy" class="headerlink" title="10.集合的copy与mutableCopy"></a>10.集合的copy与mutableCopy</h2><p>#示例10.1：对不可变集合类对象的拷贝</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Model *m = [[Model alloc] init];</span><br><span class="line">NSArray *element = @[m];</span><br><span class="line">NSArray *oriArray = @[element];</span><br><span class="line">NSMutableArray *copyArray = [oriArray copy];</span><br><span class="line">NSMutableArray *mutableCopyArray = [oriArray mutableCopy];</span><br><span class="line">    </span><br><span class="line">NSLog(@&quot;+++oriArr:%p,element:%p&quot;,oriArray,element);</span><br><span class="line">NSLog(@&quot;++++copyArr:%p,indexAt0:%p&quot;,copyArray,copyArray[0]);</span><br><span class="line">NSLog(@&quot;++++mutableCopyArr:%p,indexAt0:%p&quot;,mutableCopyArray,mutableCopyArray[0]);</span><br></pre></td></tr></table></figure>
+<p>输出日志：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">+++oriArr:0x6000039f0760,element:0x6000039f06b0</span><br><span class="line">++++copyArr:0x6000039f0760,indexAt0:0x6000039f06b0</span><br><span class="line">++++mutableCopyArr:0x6000035a59b0,indexAt0:0x6000039f06b0</span><br></pre></td></tr></table></figure>
+<p>不可变数组 oriArray 中包含了一个数组对象 element 。从日志可以看出，oriArray 与从其 copy 出来的数组 copyArray 指向同一片内存，而与从其 mutableCopy 出来的数组 mutableCopyArray 的内存不同。这与不可变非集合类对象类似，对不可变数组的 copy 只是指针拷贝，不会产生新的集合对象；mutableCopy 是内容拷贝，会产生新的集合对象。</p>
 <blockquote>
-<p>结论5：对于不可变集合类对象，copy 是指针拷贝，不产生新对象；mutableCopy 是内容拷贝，会产生新对象。</p>
+<p>结论5：对于不可变集合对象的 copy 是指针拷贝，不产生新对象；mutableCopy 是内容拷贝，会产生新对象。</p>
 </blockquote>
-<p>&emsp;#示例8：对可变集合类对象的拷贝？</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">NSArray *element = @[@(1)];</span><br><span class="line">NSMutableArray *oriArray = [NSMutableArray arrayWithObject:element];</span><br><span class="line">NSMutableArray *copyArray = [oriArray copy];</span><br><span class="line">NSMutableArray *mutableCopyArray = [oriArray mutableCopy];</span><br><span class="line"></span><br><span class="line">NSLog(@&quot;+++oriArr:%p,element:%p&quot;,oriArray,element);</span><br><span class="line">NSLog(@&quot;++++copyArr:%p,indexAt0:%p&quot;,copyArray,copyArray[0]);</span><br><span class="line">NSLog(@&quot;++++mutableCopyArr:%p,indexAt0:%p&quot;,mutableCopyArray,mutableCopyArray[0]);</span><br></pre></td></tr></table></figure>
-<p>&emsp;输出日志：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">+++oriArr:0x604000247d70,element:0x604000207590</span><br><span class="line">++++copyArr:0x604000207530,indexAt0:0x604000207590</span><br><span class="line">++++mutableCopyArr:0x604000247dd0,indexAt0:0x604000207590</span><br></pre></td></tr></table></figure>
-<p>&emsp;打印的日志显示，对可变数组 oriArray 的两种拷贝都是内容拷贝，都产生了新对象。</p>
+<p>#示例10.2：对可变集合类对象的拷贝</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Model *m = [[Model alloc] init];</span><br><span class="line">NSArray *element = @[m];</span><br><span class="line">NSMutableArray *oriArray = [NSMutableArray arrayWithObject:element];</span><br><span class="line">NSMutableArray *copyArray = [oriArray copy];</span><br><span class="line">NSMutableArray *mutableCopyArray = [oriArray mutableCopy];</span><br><span class="line">    </span><br><span class="line">NSLog(@&quot;+++oriArr:%p,element:%p&quot;,oriArray,element);</span><br><span class="line">NSLog(@&quot;++++copyArr:%p,indexAt0:%p&quot;,copyArray,copyArray[0]);</span><br><span class="line">NSLog(@&quot;++++mutableCopyArr:%p,indexAt0:%p&quot;,mutableCopyArray,mutableCopyArray[0]);</span><br></pre></td></tr></table></figure>
+<p>输出日志：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">+++oriArr:0x60000102dd10,element:0x600001c64c40</span><br><span class="line">++++copyArr:0x600001c73360,indexAt0:0x600001c64c40</span><br><span class="line">++++mutableCopyArr:0x600001033900,indexAt0:0x600001c64c40</span><br></pre></td></tr></table></figure>
+<p>对可变数组 oriArray 的两种拷贝都是内容拷贝，都产生了新的集合对象。</p>
 <blockquote>
-<p>结论6：对于可变集合类对象的拷贝，不论 copy 还是 mutableCopy 都是内容拷贝，会产生新的集合对象；</p>
+<p>结论6：对于可变集合对象的 copy 和 mutableCopy 都是内容拷贝，会产生新的集合对象；</p>
 </blockquote>
-<p>&emsp;另外需要注意的是：示例5与示例6中，元素 element 与 copyArray[0] 和 mutableCopyArray[0] 都是指向同一片内存。也就是说两种拷贝下，新旧集合内容部的元素都只是指针拷贝。</p>
+<p>另外需要注意的是：示例10.1与示例10.2中，元素 element 与 copyArray[0] 和 mutableCopyArray[0] 都是指向同一片内存。也就是说两种拷贝下，新旧集合内容部的元素都只是指针拷贝。</p>
 <blockquote>
-<p>结论7：对于集合类对象的拷贝，不论是可变还是不可变集合，其内部元素始终都是指针拷贝。</p>
+<p>结论7：对于可变和不可变集合对象的copy 和 mutableCopy，其内部元素始终都是指针拷贝。</p>
 </blockquote>
-<p>&emsp;#示例9：集合内元素的指针拷贝</p>
+<p>#示例10.3：集合内元素的指针拷贝</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">NSArray *elementArr = [NSMutableArray arrayWithObject:@1];</span><br><span class="line">NSMutableArray *oriArray = [NSMutableArray arrayWithObject:elementArr];</span><br><span class="line">NSMutableArray *mutableCopyArray = [oriArray mutableCopy];</span><br><span class="line">[mutableCopyArray[0] addObject:@2];</span><br><span class="line">NSLog(@&quot;++++objects in element:%p++++&quot;,elementArr);</span><br><span class="line">for (NSNumber *num in elementArr) &#123;</span><br><span class="line">    NSLog(@&quot;++++%d&quot;,[num intValue]);</span><br><span class="line">&#125;</span><br><span class="line">NSLog(@&quot;++++objects in mutableCopyArray[0]:%p++++&quot;,mutableCopyArray[0]);</span><br><span class="line">for (NSNumber *num in mutableCopyArray[0]) &#123;</span><br><span class="line">    NSLog(@&quot;++++%d&quot;,[num intValue]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>&emsp;输出日志：</p>
+<p>输出日志：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">++++objects in element:0x600000249450++++</span><br><span class="line">++++1</span><br><span class="line">++++2</span><br><span class="line">++++objects in mutableCopyArray[0]:0x600000249450++++</span><br><span class="line">++++1</span><br><span class="line">++++2</span><br></pre></td></tr></table></figure>
-<p>&emsp;示例显示，mutableCopyArray 内的元素与 oriArray 内的元素，都是指向同一片地址，也就是 element 的地址。因此，后续对 mutableCopyArray[0] 执行添加数据的操作时，element 数组也受到影响，跟着增加了相同的对象。因此实际开发过程中，需要留意这一点！</p>
+<p>示例显示，mutableCopyArray 内的元素与 oriArray 内的元素，都是指向同一片地址，也就是 element 的地址。因此，后续对 mutableCopyArray[0] 执行添加数据的操作时，element 数组也受到影响，跟着增加了相同的对象。因此实际开发过程中，需要留意这一点！</p>
 <hr>
 <p>相关参考：</p>
-<p>#<a href="https://www.cnblogs.com/gaoxiao228/archive/2012/04/21/2462561.html" target="_blank" rel="noopener">©传送门</a></p>
+<p>#<a href="https://developer.apple.com/library/archive/documentation/LegacyTechnologies/WebObjects/WebObjects_3.5/Reference/Frameworks/ObjC/Foundation/Protocols/NSCopying/Description.html#//apple_ref/occ/intf/NSCopying" target="_blank" rel="noopener">©Apple-Documentation-nscopying</a></p>
+<p>#<a href="https://developer.apple.com/documentation/foundation/nscopying?language=objc" target="_blank" rel="noopener">©Apple-Documentation-nscopying新</a></p>
+<p>#<a href="https://developer.apple.com/documentation/foundation/nsmutablecopying?language=objc" target="_blank" rel="noopener">©Apple-Documentation-nsmutablecopying</a></p>
+<p>#<a href="https://developer.apple.com/library/archive/documentation/General/Conceptual/CocoaEncyclopedia/ObjectMutability/ObjectMutability.html" target="_blank" rel="noopener">©Apple-Documentation-Object Mutability</a></p>
+<p>#<a href="https://www.cnblogs.com/gaoxiao228/archive/2012/04/21/2462561.html" target="_blank" rel="noopener">©gaoxiao228-深浅拷贝</a></p>
 </section>
     <!-- Tags START -->
     
@@ -338,7 +411,7 @@
   <div class="toc-main">
     <strong class="toc-title">Catalog</strong>
     
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1、概念理解"><span class="toc-nav-text">#1、概念理解</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2、集合-非集合类对象？"><span class="toc-nav-text">#2、集合/非集合类对象？</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3、对不可变字符串的拷贝？"><span class="toc-nav-text">#3、对不可变字符串的拷贝？</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4、对可变字符串的拷贝？"><span class="toc-nav-text">#4、对可变字符串的拷贝？</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#5、拷贝对字符串可变性的影响？"><span class="toc-nav-text">#5、拷贝对字符串可变性的影响？</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#6、对自定义类的拷贝？"><span class="toc-nav-text">#6、对自定义类的拷贝？</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#7、对集合类对象的拷贝？"><span class="toc-nav-text">#7、对集合类对象的拷贝？</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#7-1-集合对象的浅拷贝："><span class="toc-nav-text">#7.1 集合对象的浅拷贝：</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#7-2-集合对象的深拷贝："><span class="toc-nav-text">#7.2 集合对象的深拷贝：</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#8、拷贝对集合是否可变的影响"><span class="toc-nav-text">#8、拷贝对集合是否可变的影响?</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#9、集合类对象的copy与mutableCopy"><span class="toc-nav-text">#9、集合类对象的copy与mutableCopy</span></a></li></ol>
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-拷贝-初探"><span class="toc-nav-text">1.拷贝-初探</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-OC中的拷贝与协议"><span class="toc-nav-text">2.OC中的拷贝与协议</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-1-拷贝协议"><span class="toc-nav-text">2.1.拷贝协议</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-2-父类与拷贝协议"><span class="toc-nav-text">2.2.父类与拷贝协议</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-3-可变-不可变对象"><span class="toc-nav-text">2.3.可变\不可变对象</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-深-浅拷贝"><span class="toc-nav-text">3.深\浅拷贝</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-1-概念"><span class="toc-nav-text">3.1.概念</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-2-使用"><span class="toc-nav-text">3.2.使用</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-3-拷贝深度"><span class="toc-nav-text">3.3.拷贝深度</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-不可变字符串的拷贝"><span class="toc-nav-text">4.不可变字符串的拷贝</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#5-可变字符串的拷贝"><span class="toc-nav-text">5.可变字符串的拷贝</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#6-拷贝对字符串可变性的影响"><span class="toc-nav-text">6.拷贝对字符串可变性的影响</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#7-自定义类的拷贝"><span class="toc-nav-text">7.自定义类的拷贝</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#8-集合类对象的拷贝"><span class="toc-nav-text">8.集合类对象的拷贝</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#9-拷贝与集合的可变性"><span class="toc-nav-text">9.拷贝与集合的可变性</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#10-集合的copy与mutableCopy"><span class="toc-nav-text">10.集合的copy与mutableCopy</span></a></li></ol>
     
   </div>
 </aside>
