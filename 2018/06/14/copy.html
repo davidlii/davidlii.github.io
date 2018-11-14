@@ -317,7 +317,7 @@
 <p>inArrAt0Class:__NSArrayM，inArrAt0 为 arrAt0 中的第一个元素，对应着 inArr，且二者的指针相同，即：其他更深层的可变性与原对象相同。<br>&emsp;</p>
 <p>另外，mutArr2 是一个集合，算是最上层。arrAt0 作为 mutArr2 集合的第一层，对应着 mutArr1 中的 element，但 arrAt0 与 element 的指针不同，也就是说 initWithArray:copyItems:YES 产生的集合中，最上层是深拷贝；inArrAt0 作为 arrAt0 的元素，是 mutArr2 的第二层，它的指针与 inArr 的指针相同，且 [inArrAt0 addObject:@(3)] 之后 inArr.count 也随着变化，这说明从第二层开始就已经是指针拷贝，即浅拷贝了~</p>
 <blockquote>
-<p>结论8：集合的深拷贝，只是单层深拷贝，更深层开始元素就只是指针拷贝了~</p>
+<p>结论5：集合的深拷贝，只是单层深拷贝，更深层开始元素就只是指针拷贝了~</p>
 </blockquote>
 <ul>
 <li>Archiving and unarchiving:</li>
@@ -332,7 +332,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">+++oriArr:0x6000039f0760,element:0x6000039f06b0</span><br><span class="line">++++copyArr:0x6000039f0760,indexAt0:0x6000039f06b0</span><br><span class="line">++++mutableCopyArr:0x6000035a59b0,indexAt0:0x6000039f06b0</span><br></pre></td></tr></table></figure>
 <p>不可变数组 oriArray 中包含了一个数组对象 element 。从日志可以看出，oriArray 与从其 copy 出来的数组 copyArray 指向同一片内存，而与从其 mutableCopy 出来的数组 mutableCopyArray 的内存不同。这与不可变非集合类对象类似，对不可变数组的 copy 只是指针拷贝，不会产生新的集合对象；mutableCopy 是内容拷贝，会产生新的集合对象。</p>
 <blockquote>
-<p>结论5：对于不可变集合对象的 copy 是指针拷贝，不产生新对象；mutableCopy 是内容拷贝，会产生新对象；两种情况下集合内元素都是指针拷贝。</p>
+<p>结论6：对于不可变集合对象的 copy 是指针拷贝，不产生新对象；mutableCopy 是内容拷贝，会产生新对象；两种情况下集合内元素都是指针拷贝。</p>
 </blockquote>
 <p>#示例10.2：对可变集合类对象的拷贝</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Model *m = [[Model alloc] init];</span><br><span class="line">NSArray *element = @[m];</span><br><span class="line">NSMutableArray *oriArray = [NSMutableArray arrayWithObject:element];</span><br><span class="line">NSMutableArray *copyArray = [oriArray copy];</span><br><span class="line">NSMutableArray *mutableCopyArray = [oriArray mutableCopy];</span><br><span class="line">    </span><br><span class="line">NSLog(@&quot;+++oriArr:%p,element:%p&quot;,oriArray,element);</span><br><span class="line">NSLog(@&quot;++++copyArr:%p,indexAt0:%p&quot;,copyArray,copyArray[0]);</span><br><span class="line">NSLog(@&quot;++++mutableCopyArr:%p,indexAt0:%p&quot;,mutableCopyArray,mutableCopyArray[0]);</span><br></pre></td></tr></table></figure>
@@ -340,11 +340,11 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">+++oriArr:0x60000102dd10,element:0x600001c64c40</span><br><span class="line">++++copyArr:0x600001c73360,indexAt0:0x600001c64c40</span><br><span class="line">++++mutableCopyArr:0x600001033900,indexAt0:0x600001c64c40</span><br></pre></td></tr></table></figure>
 <p>对可变数组 oriArray 的两种拷贝都是内容拷贝，都产生了新的集合对象。</p>
 <blockquote>
-<p>结论6：对于可变集合对象的 copy 和 mutableCopy 都是内容拷贝，会产生新的集合对象；两种情况下集合内元素都是指针拷贝。</p>
+<p>结论7：对于可变集合对象的 copy 和 mutableCopy 都是内容拷贝，会产生新的集合对象；两种情况下集合内元素都是指针拷贝。</p>
 </blockquote>
 <p>示例10.1与示例10.2中，元素 element 与 copyArray[0] 和 mutableCopyArray[0] 都是指向同一片内存。也就是说两种拷贝下，新旧集合内容部的元素都只是指针拷贝。</p>
 <blockquote>
-<p>结论7：对于可变和不可变集合对象的copy 和 mutableCopy，其内部元素始终都是指针拷贝。</p>
+<p>结论8：对于可变和不可变集合对象的copy 和 mutableCopy，其内部元素始终都是指针拷贝。</p>
 </blockquote>
 <p>#示例10.3：集合内元素的指针拷贝</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">NSArray *elementArr = [NSMutableArray arrayWithObject:@1];</span><br><span class="line">NSMutableArray *oriArray = [NSMutableArray arrayWithObject:elementArr];</span><br><span class="line">NSMutableArray *mutableCopyArray = [oriArray mutableCopy];</span><br><span class="line">[mutableCopyArray[0] addObject:@2];</span><br><span class="line">NSLog(@&quot;++++objects in element:%p++++&quot;,elementArr);</span><br><span class="line">for (NSNumber *num in elementArr) &#123;</span><br><span class="line">    NSLog(@&quot;++++%d&quot;,[num intValue]);</span><br><span class="line">&#125;</span><br><span class="line">NSLog(@&quot;++++objects in mutableCopyArray[0]:%p++++&quot;,mutableCopyArray[0]);</span><br><span class="line">for (NSNumber *num in mutableCopyArray[0]) &#123;</span><br><span class="line">    NSLog(@&quot;++++%d&quot;,[num intValue]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
