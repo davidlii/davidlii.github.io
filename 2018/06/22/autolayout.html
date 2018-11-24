@@ -135,14 +135,16 @@
 <main class="app-body flex-box">
   <!-- Article START -->
   <article class="post-article">
-    <section class="markdown-content"><h2 id="1、布局相关的接口"><a href="#1、布局相关的接口" class="headerlink" title="#1、布局相关的接口"></a>#1、布局相关的接口</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (void)layoutSubviews;</span><br></pre></td></tr></table></figure>
+    <section class="markdown-content"><blockquote>
+<p>整理自#<a href="https://blog.csdn.net/zpz5789/article/details/50922469" target="_blank" rel="noopener">©zpz5789-Updating constraints、Layout</a></p>
+</blockquote>
+<h2 id="1、布局相关的接口"><a href="#1、布局相关的接口" class="headerlink" title="#1、布局相关的接口"></a>#1、布局相关的接口</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (void)layoutSubviews;</span><br></pre></td></tr></table></figure>
 <p>系统重写布局，若需要更精确控制子view，就需要重写该方法。此方法会在以下场景下触发：</p>
 <ul>
 <li>使用-init初始化时不会触发。</li>
 <li>用-initWithFrame 初始化且 rect 的值不为 CGRectZero 时会触发；</li>
 <li>调用 addSubview 时会触发；</li>
-<li>设置 view 的frame 且frame的值设置前后发生了变化时会触发；</li>
-<li>UIScrollView 发生滚动时会触发；</li>
+<li>设置 view 的 frame 且 frame 的值设置前后发生了变化时会触发；</li>
 <li>旋转屏幕会触发父 UIView 上的 layoutSubviews 事件；</li>
 <li>改变一个视图大小时也会触发父视图上的 layoutSubviews 事件。</li>
 </ul>
@@ -154,9 +156,9 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (void)drawRect:(CGRect)rect;</span><br></pre></td></tr></table></figure>
 <p>若需要在当前 view 上绘制自定义的内容，则需要重写此方法。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-  void)setNeedsDisplay;</span><br></pre></td></tr></table></figure>
-<p>标记整个视图的边界矩形需要重绘。</p>
+<p>将视图标记为需要重绘，实质上是 layer 的重绘，最终触发-drawRect:方法。</p>
 <h2 id="2、约束相关的属性-amp-接口"><a href="#2、约束相关的属性-amp-接口" class="headerlink" title="#2、约束相关的属性&amp;接口"></a>#2、约束相关的属性&amp;接口</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">/* By default, the autoresizing mask on a view gives rise to </span><br><span class="line">constraints that fully determine the view&apos;s position. </span><br><span class="line">This allows the auto layout system to track the frames of views </span><br><span class="line">whose layout is controlled manually (through -setFrame:, for example).</span><br><span class="line">When you elect to position the view using auto layout by </span><br><span class="line">adding your own constraints, you must set this property to NO. </span><br><span class="line">IB will do this for you.</span><br><span class="line"> */</span><br><span class="line">BOOL translatesAutoresizingMaskIntoConstraints; // Default YES</span><br></pre></td></tr></table></figure>
-<p>除了AutoLayout，Autoresizing 也是一种布局方式。默认情况下 translatesAutoresizingMaskIntoConstraints ＝ YES , 此时视图的 AutoresizingMask 会被转换成对应效果的约束。这样很可能就会和我们手动添加的其它约束有冲突。此属性设置成 NO 时，AutoresizingMask 就不会变成约束，也就是说当前视图的 AutoresizingMask 失效了。</p>
+<p>除了AutoLayout，Autoresizing 也是一种布局方式。默认情况下 translatesAutoresizingMaskIntoConstraints ＝ YES , 此时视图的 AutoresizingMask 会被转换成对应效果的约束。这样很可能就会和我们手动添加的其它约束有冲突。此属性设置成 NO 时，AutoresizingMask 就不会变成约束，也就是说当前视图的 AutoresizingMask 失效了。<br>&emsp;</p>
 <p>手写代码添加视图时，此属性的值默认为 YES，因为我们需要手动添加和修改约束，所以需要将此属性置为 NO。使用 IB 创建视图时，系统会自动将此属性置为 NO。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (BOOL)needsUpdateConstraints;</span><br></pre></td></tr></table></figure>
 <p>“Constraint-based layout system” 使用此返回值去决定是否需要调用 updateConstraints 作为正常布局过程的一部分。</p>
@@ -166,24 +168,36 @@
 <p>立即触发约束更新，自动更新布局。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (void)setNeedsUpdateConstraints;</span><br></pre></td></tr></table></figure>
 <p>当有约束需要更新时，调用此方法来标记这些约束需要在未来的某个点更新，系统之后调用 updateConstraints。</p>
-<h2 id="3、-Auto-Layout-自动布局的过程"><a href="#3、-Auto-Layout-自动布局的过程" class="headerlink" title="#3、(Auto Layout)自动布局的过程"></a>#3、(Auto Layout)自动布局的过程</h2><p>updating constraints -&gt; layout -&gt; display，每一个步骤都依赖于上一步。</p>
-<p>（1）updating constraints：从下向上（from subview to superview），为下一步layout准备信息。可以通过调用方法 setNeedUpdateConstraints 去触发此步。constraints 的改变也会自动的触发此步。但是当你自定义 view 时，如果一些改变可能会影响到布局时，需要自己去调用 updateConstraintsIfNeeded 以通知自动布局更新约束。</p>
-<p>（2）layout：从上向下（from superview to subview），此步主要应用上一步的信息去设置 view 的 center 和 bounds。可以通过调用 setNeedsLayout 去触发此步骤，此方法不会立即应用 layout。如果想要系统立即的更新 layout，可以调用 layoutIfNeeded。另外自定义 view 时可以重写 layoutSubViews 方法来得到更多的定制化效果。</p>
-<p>（3）display：从上向下（from superview to subview）。此步是把 view 渲染到屏幕上，它与你是否使用 Auto layout 无关，通过调用 setNeedsDisplay 触发，系统会调用 UIView 的 drawRect 方法。</p>
-<h2 id="4、UIViewController的布局过程"><a href="#4、UIViewController的布局过程" class="headerlink" title="#4、UIViewController的布局过程"></a>#4、UIViewController的布局过程</h2><p>viewDidLoad -&gt; viewWillAppear -&gt; updateViewConstraints -&gt; viewWillLayoutSubviews -&gt; viewDidLayoutSubviews -&gt; viewDidAppear -&gt; viewWillDisAppear -&gt; updateViewConstraints -&gt; viewDidDisAppear。</p>
+<h2 id="3、-Auto-Layout-自动布局的过程"><a href="#3、-Auto-Layout-自动布局的过程" class="headerlink" title="#3、(Auto Layout)自动布局的过程"></a>#3、(Auto Layout)自动布局的过程</h2><p>updating constraints -&gt; layout -&gt; display，每一个步骤都依赖于上一步。<br>&emsp;</p>
+<p>(1) updating constraints：从下向上（from subview to superview），为下一步layout准备信息。可以通过调用方法 setNeedUpdateConstraints 去触发此步。constraints 的改变也会自动的触发此步。但是当你自定义 view 时，如果一些改变可能会影响到布局时，需要自己去调用 updateConstraintsIfNeeded 以通知自动布局更新约束。<br>&emsp;</p>
+<p>(2) layout：从上向下（from superview to subview），此步主要应用上一步的信息去设置 view 的 center 和 bounds。可以通过调用 setNeedsLayout 去触发此步骤，此方法不会立即应用 layout。如果想要系统立即的更新 layout，可以调用 layoutIfNeeded。另外自定义 view 时可以重写 layoutSubViews 方法来得到更多的定制化效果。<br>&emsp;</p>
+<p>(3) display：从上向下（from superview to subview）。此步是把 view 渲染到屏幕上，它与你是否使用 Auto layout 无关，通过调用 setNeedsDisplay 触发，系统会调用 UIView 的 drawRect 方法。</p>
+<h2 id="4、UIViewController的布局过程"><a href="#4、UIViewController的布局过程" class="headerlink" title="#4、UIViewController的布局过程"></a>#4、UIViewController的布局过程</h2><ol>
+<li>viewDidLoad</li>
+<li>viewWillAppear</li>
+<li>updateViewConstraints</li>
+<li>viewWillLayoutSubviews</li>
+<li>viewDidLayoutSubviews</li>
+<li>viewDidAppear</li>
+<li>viewWillDisAppear</li>
+<li>updateViewConstraints</li>
+<li>viewWillLayoutSubviews</li>
+<li>viewDidLayoutSubviews</li>
+<li>viewDidDisAppear</li>
+</ol>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">/* Base implementation sends -updateConstraints to the view.</span><br><span class="line">When a view has a view controller, this message is sent </span><br><span class="line">to the view controller during the autolayout updateConstraints </span><br><span class="line">pass in lieu of sending updateConstraints directly to the view.</span><br><span class="line"></span><br><span class="line">You may override this method in a UIViewController subclass for </span><br><span class="line">updating custom constraints instead of subclassing your view </span><br><span class="line">and overriding -[UIView updateConstraints].</span><br><span class="line"></span><br><span class="line">Overrides must call super or send -updateConstraints to the view.</span><br><span class="line">*/</span><br><span class="line">- (void)updateViewConstraints;</span><br></pre></td></tr></table></figure>
-<p>注意，这是 UIViewController 中的 -(void)updateViewConstraints 方法，不是 UIView 中的 - (void)updateConstraints 方法。。“view 属于某个 VC”（比如 self.view），当此 view 需要执行 updateConstraints 时，会调用 VC 的 updateViewConstraints，这样就不用你再自定义此 view 并重写其 updateConstraints 方法了。方法的最后需要调用其 super 方法。这个方法的默认实现是调用其所有 subview 的 updateConstraints 方法，这样就自上而下的完成了布局。 </p>
+<p>注意，这个<code>-updateViewConstraints</code>方法是 UIViewController 中的，不是 UIView 中的<code>-updateConstraints</code>方法。。“view 属于某个 VC”（比如 self.view），当此 view 需要执行<code>updateConstraints</code>时，会调用 VC 的<code>updateViewConstraints</code>，这样就不用你再自定义此 view 并重写其<code>updateConstraints</code>方法了。方法中需要调用其 super 方法。这个方法的默认实现是调用其所有 subview 的 updateConstraints 方法，这样就自上而下的完成了布局。<br>&emsp;</p>
+<p>另外，updateViewConstraints、viewWillLayoutSubviews、viewDidLayoutSubviews 在当前 vc 布局过程中可能会被多次调用，这三个方法在离开当前控制器时也会被调用。</p>
 <h2 id="5、小结："><a href="#5、小结：" class="headerlink" title="#5、小结："></a>#5、小结：</h2><p>一个 view 的实际 frame 要在以下两个方法执行完之后才能确定：</p>
 <ul>
 <li>view 的 layoutSubViews;</li>
 <li>VC 的 viewDidLayoutSubviews;</li>
 </ul>
-<p>所以，当我们真的需要 frame 时要在这个两个时间点以后再去获取。 </p>
-<p>这也可以解释为什么 viewDidLoad 里通过 setFrame 的方式修改原先在 storyboard 里拖动的约束代码无效了。因为 updateViewConstraints 在 viewDidLoad 后执行，会覆盖掉之前的设置的frame，所以无效。</p>
+<p>所以，当我们真的需要 frame 时要在这个两个时间点以后再去获取。这也可以解释为什么 viewDidLoad 里通过 setFrame 的方式修改原先在 storyboard 里拖动的约束代码无效了。因为 updateViewConstraints 在 viewDidLoad 后执行，会覆盖掉之前的设置的frame，所以无效。<br>&emsp;</p>
 <p>另外需要注意一点：在使用 sb 或者 xib 加载 VC 时，viewDidLoad 中只有 self.view 的 frame 信息是准确的，其他所有的控件的 frame 都是它们在 sb 或 xib 中的原始尺寸，与当前设备可能不符。</p>
 <hr>
 <p>相关参考：</p>
-<p>#<a href="https://blog.csdn.net/zpz5789/article/details/50922469" target="_blank" rel="noopener">©传送门</a></p>
+<p>#<a href="https://blog.csdn.net/zpz5789/article/details/50922469" target="_blank" rel="noopener">©zpz5789-Updating constraints、Layout</a></p>
 </section>
     <!-- Tags START -->
     

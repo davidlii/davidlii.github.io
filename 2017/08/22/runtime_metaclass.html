@@ -135,34 +135,37 @@
 <main class="app-body flex-box">
   <!-- Article START -->
   <article class="post-article">
-    <section class="markdown-content"><h2 id="1、对象"><a href="#1、对象" class="headerlink" title="1、对象"></a>1、对象</h2><blockquote>
+    <section class="markdown-content"><h2 id="1-对象"><a href="#1-对象" class="headerlink" title="1.对象"></a>1.对象</h2><blockquote>
 <p>OC中，含有isa指针且该指针可以正确指向类的数据结构，都可以视为对象。</p>
 </blockquote>
+<p>下面是<code>objc.h</code>中的相关定义:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">#if !OBJC_TYPES_DEFINED</span><br><span class="line">/// An opaque type that represents an Objective-C class.</span><br><span class="line">typedef struct objc_class *Class;</span><br><span class="line"></span><br><span class="line">/// Represents an instance of a class.</span><br><span class="line">struct objc_object &#123;</span><br><span class="line">Class isa  OBJC_ISA_AVAILABILITY;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">/// A pointer to an instance of a class.</span><br><span class="line">typedef struct objc_object *id;</span><br><span class="line">#endif</span><br></pre></td></tr></table></figure>
-<p>以上代码是objc.h文件中的相关定义。<br>&emsp;<br>从第六行objc_object的定义可以看出：”任何带有以isa指针开始并指向类结构”的结构都可以被视作objc_object。</p>
-<h2 id="2、类"><a href="#2、类" class="headerlink" title="2、类"></a>2、类</h2><p><code>runtime.h</code>文件中对 <code>objc_class</code> 的定义：</p>
+<p>从<code>objc_object</code>结构体的定义可以看出：对象实质上是一个结构体，其结构体内含有<code>isa</code>指针，指向其所属的类。</p>
+<h2 id="2-类"><a href="#2-类" class="headerlink" title="2.类"></a>2.类</h2><p>下面是<code>runtime.h</code>中对<code>类</code>的定义：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">struct objc_class &#123;</span><br><span class="line">Class isa  OBJC_ISA_AVAILABILITY;       //指针</span><br><span class="line"></span><br><span class="line">#if !__OBJC2__</span><br><span class="line">Class super_class                       //父类;</span><br><span class="line">const char *name                        //类名;</span><br><span class="line">long version                                             //类的版本信息，默认为0;</span><br><span class="line">long info                               //位标识;</span><br><span class="line">long instance_size                      //类的实例变量大小;</span><br><span class="line">struct objc_ivar_list *ivars            //类的成员变量链表;</span><br><span class="line">struct objc_method_list **methodLists   //方法定义的链表;</span><br><span class="line">struct objc_cache *cache                //方法缓存;</span><br><span class="line">struct objc_protocol_list *protocols    //协议链表;</span><br><span class="line">#endif</span><br><span class="line"></span><br><span class="line">&#125; OBJC2_UNAVAILABLE;</span><br></pre></td></tr></table></figure>
-<p><code>objc_class</code>也是以isa开始并指向类的数据结构。OC作为运行时语言，类与元类在运行时都是<code>objc_class</code>类型。由此可以引出：类和元类也是一种对象。</p>
-<p>&emsp;<br>在OC中，任何的类都是对象。</p>
-<h2 id="3、实例对象、类对象、元类"><a href="#3、实例对象、类对象、元类" class="headerlink" title="3、实例对象、类对象、元类"></a>3、实例对象、类对象、元类</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">NSObject *obj = [NSObject alloc];</span><br></pre></td></tr></table></figure>
-<h3 id="3-1-实例对象：-Instance-object"><a href="#3-1-实例对象：-Instance-object" class="headerlink" title="3.1.实例对象：(Instance object)"></a>3.1.实例对象：(Instance object)</h3><p>一个类实例化来的对象叫实例对象；(示例中”obj”就是实例对象)</p>
-<h3 id="3-2-类对象：-Class-object"><a href="#3-2-类对象：-Class-object" class="headerlink" title="3.2.类对象：(Class object)"></a>3.2.类对象：(Class object)</h3><p>调用一个 “类方法” ，如 [NSObject alloc]，实质上是向它的类对象(NSObject)发送了一个消息。<br>&emsp;<br>类作为对象时，就称之为类对象；类对象是由编译器创建的，任何继承自NSObject的类，它的实例对象中都有一个isa指针，指向它的类对象。</p>
-<h3 id="3-3-元类：-Metaclass"><a href="#3-3-元类：-Metaclass" class="headerlink" title="3.3.元类：(Metaclass)"></a>3.3.元类：(Metaclass)</h3><p>一个类实例化来的对象叫实例对象；类作为对象（称之为类对象），又是什么类的对象？答案就是：元类（Metaclass）。<br>&emsp;<br>元类的定义：元类是类对象所属的类。</p>
-<p>&emsp;<br>区别：</p>
+<p>从结构体的定义来看，类也是以<code>isa</code>开始并指向类的数据结构。OC中类与元类在运行时都是<code>objc_class</code>类型，所以，<strong>类和元类也是一种对象</strong>。</p>
+<h2 id="3-实例对象-类对象-元类"><a href="#3-实例对象-类对象-元类" class="headerlink" title="3.实例对象\类对象\元类"></a>3.实例对象\类对象\元类</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">NSObject *obj = [NSObject alloc];</span><br></pre></td></tr></table></figure>
+<h4 id="3-1-实例对象"><a href="#3-1-实例对象" class="headerlink" title="3.1.实例对象"></a>3.1.实例对象</h4><p>实例对象，instance object，是指从某个类实例化而来的对象，如示例中的<code>obj</code>。</p>
+<h4 id="3-2-类对象"><a href="#3-2-类对象" class="headerlink" title="3.2.类对象"></a>3.2.类对象</h4><p>类对象，Class object，类作为对象时，就称之为类对象。调用一个 “类方法” ，如 [NSObject alloc]，实质上是向它的类对象(NSObject)发送了一个消息。类对象是由编译器创建的，任何继承自NSObject的类，它的实例对象中都有一个isa指针，指向它的类对象。</p>
+<h4 id="3-3-元类"><a href="#3-3-元类" class="headerlink" title="3.3.元类"></a>3.3.元类</h4><p>从一个类实例化而来的对象叫实例对象；类作为对象，又是什么类的实例呢？答案就是：元类（Metaclass），<strong>元类是类对象所属的类</strong>。<br>&emsp;</p>
+<p>注意区分类对象和元类：类对象中保存的是关于其实例对象的信息(变量，实例方法、遵守的协议等)；元类中保存的是关于类的信息(类方法，类的版本，名字等)；</p>
+<p><img src="http://pc7lkjphf.bkt.clouddn.com/pic/metaclass.png" alt="继承及元类示例图"></p>
+<p>上图中有一个封闭的循环：</p>
 <ul>
-<li>类对象：&emsp;保存的是关于实例对象的信息(变量，实例方法、遵守的协议等)；</li>
-<li>元类对象：保存的是关于类的信息(类的版本，名字，类方法等)；</li>
+<li>实例对象是类的实例；</li>
+<li>类作为对象又是元类(Metaclass)的实例;</li>
+<li>元类作为对象是根元类的实例；</li>
+<li>根元类是其自身的实例。</li>
 </ul>
-<p>封闭的循环：</p>
-<blockquote>
-<p>实例对象是类的实例；<br>类作为对象又是元类(Metaclass)的实例;<br>元类作为对象是根元类的实例；<br>根元类是其自身的实例。</p>
-</blockquote>
-<h2 id="4、相关函数："><a href="#4、相关函数：" class="headerlink" title="4、相关函数："></a>4、相关函数：</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-class</span><br></pre></td></tr></table></figure>
-<p>对于实例对象<code>instance</code>，返回的是其 isa 指针所指的类<code>class</code>；<br>&emsp;<br>对于类对象<code>class</code>，返回的是其本身<code>class</code>。</p>
+<h2 id="4-相关函数："><a href="#4-相关函数：" class="headerlink" title="4.相关函数："></a>4.相关函数：</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-class</span><br></pre></td></tr></table></figure>
+<p>对于实例对象，返回其 isa 指针指向的<code>类</code>；对于类对象，返回其<code>本身</code>。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">object_getClass(id obj)</span><br></pre></td></tr></table></figure>
-<p>返回isa指针指向的内容。<br>&emsp;<br>对于实例对象<code>instance</code>，返回的是其 isa 指向的类<code>class</code>；<br>&emsp;<br>对于类对象<code>class</code>，返回的是其对应的元类<code>metaclass</code>。</p>
+<p>返回isa指针指向的内容。对于实例对象，返回其 isa 指向的<code>类</code>；对于类对象，返回其对应的<code>元类</code>。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">objc_getMetaClass(const char *name)</span><br></pre></td></tr></table></figure>
 <p>返回此类对应的<code>元类</code>。</p>
+<hr>
+<p>相关参考：</p>
+<p>#<a href="https://blog.csdn.net/u010067452/article/details/54907681" target="_blank" rel="noopener">©xueliandiefei-对象与元类对象</a></p>
 </section>
     <!-- Tags START -->
     
@@ -233,7 +236,7 @@
   <div class="toc-main">
     <strong class="toc-title">Catalog</strong>
     
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1、对象"><span class="toc-nav-text">1、对象</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2、类"><span class="toc-nav-text">2、类</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3、实例对象、类对象、元类"><span class="toc-nav-text">3、实例对象、类对象、元类</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-1-实例对象：-Instance-object"><span class="toc-nav-text">3.1.实例对象：(Instance object)</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-2-类对象：-Class-object"><span class="toc-nav-text">3.2.类对象：(Class object)</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-3-元类：-Metaclass"><span class="toc-nav-text">3.3.元类：(Metaclass)</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4、相关函数："><span class="toc-nav-text">4、相关函数：</span></a></li></ol>
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-对象"><span class="toc-nav-text">1.对象</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-类"><span class="toc-nav-text">2.类</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-实例对象-类对象-元类"><span class="toc-nav-text">3.实例对象\类对象\元类</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3-1-实例对象"><span class="toc-nav-text">3.1.实例对象</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3-2-类对象"><span class="toc-nav-text">3.2.类对象</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3-3-元类"><span class="toc-nav-text">3.3.元类</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-相关函数："><span class="toc-nav-text">4.相关函数：</span></a></li></ol>
     
   </div>
 </aside>
