@@ -152,12 +152,12 @@
 <li>HTTP：应用层协议。</li>
 <li>SOCKET：是对TCP/IP协议的封装，它本身并不是协议，而是一套API。</li>
 </ul>
-<h3 id="3-TCP连接的三次握手"><a href="#3-TCP连接的三次握手" class="headerlink" title="#3.TCP连接的三次握手"></a>#3.TCP连接的三次握手</h3><p><img src="http://pc7lkjphf.bkt.clouddn.com/pic/tcp_connect.jpeg" alt="握手"></p>
+<h3 id="3-TCP连接的三次握手"><a href="#3-TCP连接的三次握手" class="headerlink" title="#3.TCP连接的三次握手"></a>#3.TCP连接的三次握手</h3><p><img src="https://davidlii.nos-eastchina1.126.net/pic_tcp_connect.jpeg" alt="握手"></p>
 <p><strong>第1次</strong>：<code>主机A</code> 发送<code>SYN包</code>到 <code>主机B</code>，并进入<code>SYN_SEND</code>状态，等待 <code>主机B</code> 确认；<br>&emsp;</p>
 <p><strong>第2次</strong>：<code>主机B</code> 收到<code>SYN包</code>，必须确认 <code>主机A</code> 的<code>SYN</code>，同时自己也发送一个<code>SYN包</code>，即<code>SYN+ACK包</code>，此时 <code>主机B</code> 进入<code>SYN_RECV状态</code>；<br>&emsp;</p>
 <p><strong>第3次</strong>：<code>主机A</code> 收到 <code>主机B</code> 的<code>SYN＋ACK</code>包，向 <code>主机B</code> 发送确认包<code>ACK</code>；<br>&emsp;</p>
 <p>第三个包发送完毕后 <code>主机A</code> 和 <code>主机B</code> 进入<code>ESTABLISHED</code>状态，完成三次握手。</p>
-<h3 id="4-TCP断连的四次挥手"><a href="#4-TCP断连的四次挥手" class="headerlink" title="#4.TCP断连的四次挥手"></a>#4.TCP断连的四次挥手</h3><p><img src="http://pc7lkjphf.bkt.clouddn.com/pic/tcp_disconnect.jpeg" alt="挥手"></p>
+<h3 id="4-TCP断连的四次挥手"><a href="#4-TCP断连的四次挥手" class="headerlink" title="#4.TCP断连的四次挥手"></a>#4.TCP断连的四次挥手</h3><p><img src="https://davidlii.nos-eastchina1.126.net/pic_tcp_disconnect.jpeg" alt="挥手"></p>
 <p><strong>第1次</strong>：<code>主机A</code> 确认发送完数据且知道 <code>主机B</code> 已经接受完了，想要关闭发送数据口，就会发 <code>FIN</code> 给 <code>主机B</code>；<br>&emsp;</p>
 <p><strong>第2次</strong>：<code>主机B</code> 收到 <code>主机A</code> 发送的<code>FIN</code>，表示收到了，就会发送 <code>ACK</code> 回复；<br>&emsp;</p>
 <p><strong>第3次</strong>：但这时 <code>主机B</code> 可能还在发送数据，不想关闭数据口，所以在发完<code>ACK</code>后继续把数据发送完了再发送<code>FIN</code>给 <code>主机A</code>。<br>&emsp;</p>

@@ -146,10 +146,10 @@
 <p><strong>#概念区分：设计模式</strong><br>&emsp;</p>
 <p>设计模式是一套被反复使用的、多数人知晓的、经过分类编目的、代码设计经验的总结。使用设计模式是为了重用代码、让代码更容易被他人理解、保证代码可靠性。设计模式一共有23种，常见的有工厂模式、单例模式、代理模式、观察者模式、策略模式等。<br>&emsp;</p>
 <p>一个构架往往用到多个设计模式，如<code>mvc</code>架构是观察者模式、策略模式和组合模式的演变。</p>
-<p><img src="http://pc7lkjphf.bkt.clouddn.com/pic/traditional_mvc.gif" alt="传统MVC"></p>
+<p><img src="https://davidlii.nos-eastchina1.126.net/pic_traditional_mvc.jpeg" alt="传统MVC"></p>
 <p>可以看到，MVC架构下，项目中的代码被整合为视图、模型、控制器三个角色。当用户操作一个视图时，会产生一个事件并交给控制器；控制器收到事件后会采用一种<code>策略</code>：要求模型更新数据的状态或者要求视图更新样式；模型中数据变化后则会<code>通知</code>视图更新界面。</p>
 <h3 id="1-Apple版的-MVC"><a href="#1-Apple版的-MVC" class="headerlink" title="1.Apple版的 MVC"></a>1.Apple版的 MVC</h3><p>上面是传统的MVC模式，可以看到，虽然也区分了三种角色，但是它们互相之间都有耦合，尤其是模型和视图支架。而实际上视图和模型往往是最需要复用的，所以，最合理的设计是保持二者的独立性。因此 Apple 设计了自己版本的MVC，通过控制器来实现视图与模型的解耦。</p>
-<h4 id="1-1-角色划分"><a href="#1-1-角色划分" class="headerlink" title="1.1.角色划分"></a>1.1.角色划分</h4><p><img src="http://pc7lkjphf.bkt.clouddn.com/pic/cocoa_mvc.gif" alt="cocoa mvc"></p>
+<h4 id="1-1-角色划分"><a href="#1-1-角色划分" class="headerlink" title="1.1.角色划分"></a>1.1.角色划分</h4><p>![<a href="https://davidlii.nos-eastchina1.126.net/pic_cocoa_mvc.jpeg" target="_blank" rel="noopener">https://davidlii.nos-eastchina1.126.net/pic_cocoa_mvc.jpeg</a>)</p>
 <p><strong>模型</strong><br>&emsp;</p>
 <p>持有数据、封装处理数据的业务逻辑，提供数据接口给 Controller。理想中，模型层不应与视图层有任何关联。<br>&emsp;</p>
 <p><strong>视图</strong><br>&emsp;</p>
@@ -161,8 +161,8 @@
 <p>理想中，视图与模型相互独立。但实际中，你可能会遇到这总情形：初始化<code>cell</code>时，经常会直接传入<code>Model</code>对象，形成视图与模型的耦合。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">- (UITableViewCell *)tableView:(UITableView *)tableView</span><br><span class="line">cellForRowAtIndexPath:(NSIndexPath *)indexPath</span><br><span class="line">&#123;</span><br><span class="line">    CustomTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@&quot;Goods&quot;];</span><br><span class="line">    cell.goods = self.dataSource[indexPath.row];</span><br><span class="line">    return cell;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>理想中，模型应该持有数据、封装处理数据的业务逻辑，提供数据接口，但有些实践中，模型被简单的设计为只有一些属性的类，数据相关的业务逻辑都被放在了控制器中。当需要修改数据的业务逻辑时，如更换网络通讯库、更新json解析时的某个字段，就需要在控制器中进行修改。<br>&emsp;</p>
-<p>理想中，上面的<code>cell</code>不引用模型对象，那么<code>cell</code>的设置就要放到控制器中，这会增加控制器中的代码量。另外，网络请求、工具方法等显然不适合放在视图和模型层里，而一旦放在控制器里，同样也会造成控制器的臃肿。这些就是<code>Massive View Controller</code>的由来，形象表示如下：<br><img src="http://pc7lkjphf.bkt.clouddn.com/pic/mass_controller.png" alt=""><br>当业务逻辑和展示逻辑都在控制器中时，就很难进行单元测试。</p>
-<h3 id="2-MVP架构模式"><a href="#2-MVP架构模式" class="headerlink" title="2.MVP架构模式"></a>2.MVP架构模式</h3><h4 id="2-1-角色划分"><a href="#2-1-角色划分" class="headerlink" title="2.1.角色划分"></a>2.1.角色划分</h4><p><img src="http://pc7lkjphf.bkt.clouddn.com/pic/arch_mvp.png" alt="iOS架构模式-MVP"></p>
+<p>理想中，上面的<code>cell</code>不引用模型对象，那么<code>cell</code>的设置就要放到控制器中，这会增加控制器中的代码量。另外，网络请求、工具方法等显然不适合放在视图和模型层里，而一旦放在控制器里，同样也会造成控制器的臃肿。这些就是<code>Massive View Controller</code>的由来，形象表示如下：<br><img src="https://davidlii.nos-eastchina1.126.net/pic_mass_controller.png" alt="mass"><br>当业务逻辑和展示逻辑都在控制器中时，就很难进行单元测试。</p>
+<h3 id="2-MVP架构模式"><a href="#2-MVP架构模式" class="headerlink" title="2.MVP架构模式"></a>2.MVP架构模式</h3><h4 id="2-1-角色划分"><a href="#2-1-角色划分" class="headerlink" title="2.1.角色划分"></a>2.1.角色划分</h4><p><img src="https://davidlii.nos-eastchina1.126.net/pic_arch_mvp.png" alt="iOS架构模式-MVP"></p>
 <p><strong>模型</strong><br>&emsp;</p>
 <p>与 MVC 中的模型类似。<br>&emsp;</p>
 <p><strong>视图</strong><br>&emsp;</p>
@@ -186,7 +186,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">//UserViewProtocol.h</span><br><span class="line">#import &lt;Foundation/Foundation.h&gt;</span><br><span class="line"></span><br><span class="line">@protocol UserViewProtocol &lt;NSObject&gt;</span><br><span class="line"></span><br><span class="line">-(void) userViewDataSource:(NSArray*)data;</span><br><span class="line">-(void) showIndicator;</span><br><span class="line">-(void) hideIndicator;</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
 <p>UserViewProtocol 是协议，其中定义了一些方法，这些方法就是<code>P层</code>对视图层发送的命令。示例中 ViewController 实现了此协议，在模型层拿到数据之后，<code>P层</code>会通过代理，告诉 ViewController 来更新UI。<br>&emsp;</p>
 <p>使用 MVP 会增加代码量，但是总体上减少了代码的复杂性。</p>
-<h3 id="3-MVVM架构模式"><a href="#3-MVVM架构模式" class="headerlink" title="3.MVVM架构模式"></a>3.MVVM架构模式</h3><h4 id="3-1-角色划分"><a href="#3-1-角色划分" class="headerlink" title="3.1.角色划分"></a>3.1.角色划分</h4><p><img src="http://pc7lkjphf.bkt.clouddn.com/pic/arch_mvvm.png" alt="image"></p>
+<h3 id="3-MVVM架构模式"><a href="#3-MVVM架构模式" class="headerlink" title="3.MVVM架构模式"></a>3.MVVM架构模式</h3><h4 id="3-1-角色划分"><a href="#3-1-角色划分" class="headerlink" title="3.1.角色划分"></a>3.1.角色划分</h4><p><img src="https://davidlii.nos-eastchina1.126.net/pic_arch_mvvm.png" alt="image"></p>
 <p><strong>模型</strong><br>&emsp;</p>
 <p>与 MVP 中的模型类似。<br>&emsp;</p>
 <p><strong>视图</strong><br>&emsp;</p>

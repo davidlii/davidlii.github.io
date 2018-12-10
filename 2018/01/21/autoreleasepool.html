@@ -184,9 +184,9 @@
 <p>#示例2：在一个模态弹出的界面的<code>viewDidLoad</code>方法中模拟一个循环体内大量创建临时变量的情况：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">- (void)viewDidLoad &#123;</span><br><span class="line">    [super viewDidLoad];</span><br><span class="line">    for (int i = 0; i &lt; 100000; i++) &#123;</span><br><span class="line">        @autoreleasepool &#123;</span><br><span class="line">            NSString *string = [NSString stringWithFormat:@&quot;ADFAFDSFNKFNASFSKJFNSFSDAFAOSJDSAFASFJDSJFIOWJFIOKALNFJASFASLKFLSAJFSLAFK&quot;];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>这是<strong>不使用</strong>自动释放池，反复弹出界面时的内存峰值状况图：</p>
-<p><img src="http://pc7lkjphf.bkt.clouddn.com/pic/WithoutPool.png" alt="不使用释放池"></p>
+<p><img src="https://davidlii.nos-eastchina1.126.net/pic_WithoutPool.png" alt="不使用释放池"></p>
 <p>这是<strong>使用</strong>自动释放池，反复弹出界面时的内存峰值状况图：</p>
-<p><img src="http://pc7lkjphf.bkt.clouddn.com/pic/WithPool.png" alt="使用释放池"></p>
+<p><img src="https://davidlii.nos-eastchina1.126.net/pic_WithPool.png" alt="使用释放池"></p>
 <p>通过对比，可以清楚的看到，使用自动释放池时，即使创建了大量的临时对象，对象都能及时释放，内存的峰值也几乎没变化~</p>
 <ul>
 <li>If you spawn a secondary thread.</li>
@@ -245,7 +245,7 @@
 <li>child，指向子 page；</li>
 </ul>
 <p>每个线程中都有一个自动释放池的栈，栈内可能有一个或多个<code>AutoreleasePoolPage</code>对象；当将对象标记为<code>autorelease</code>时，此对象会被 add 到栈顶的 page 内；如果此 page 已满，则会创建一个新的 page 作为 <code>child</code>，新 page 的<code>next</code>指针被初始化在栈底；标记为 autorelease 的对象会被 add 到这个新建的 page 内；文字不如图表，这里借用博主 <a href="http://blog.sunnyxx.com/2014/10/15/behind-autorelease/" target="_blank" rel="noopener">©sunnyxx</a> 的一张图能更清晰的看到添加 autorelease 对象后 page 的结构：</p>
-<p><img src="http://pc7lkjphf.bkt.clouddn.com/pic/add_autoreleaseObj.jpg" alt="image"></p>
+<p><img src="https://davidlii.nos-eastchina1.126.net/pic_add_autoreleaseObj.jpg" alt="image"></p>
 <h5 id="5-2-pool的创建"><a href="#5-2-pool的创建" class="headerlink" title="5.2.pool的创建"></a>5.2.pool的创建</h5><p>上面对 autorelease pool 的栈结构在原理上有了一个简单的描述，那么在代码层上 pool 是如何被创建的呢？<br>&emsp;</p>
 <p>#示例4：使用 @autoreleasepool{ } 来<code>手动</code>创建一个自动释放池</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line">int main(int argc, const char * argv[]) &#123;</span><br><span class="line">    @autoreleasepool &#123;</span><br><span class="line">        int count = 10;</span><br><span class="line">        void (^ blk)(void) = ^()&#123;</span><br><span class="line">            printf(&quot;varable in block:%d&quot;,count);</span><br><span class="line">        &#125;;</span><br><span class="line">        blk();</span><br><span class="line">    &#125;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
