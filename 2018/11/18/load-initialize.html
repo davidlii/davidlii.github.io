@@ -167,9 +167,9 @@
 <p>调用及日志：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">//调用</span><br><span class="line">SubInitializer *subInitial = [[SubInitializer alloc] init];</span><br><span class="line">//日志</span><br><span class="line">++++ category Initialized~</span><br><span class="line">+++ SubInitializer Initialized~</span><br></pre></td></tr></table></figure>
 <ul>
-<li>当原类和分类都实现此方法时，只有分类中的方法会触发，因为查询方法列表时先查到的是分类中的initialize；</li>
-<li>当只有超类实现此方法，子类没有实现此方法时，对于每个子类，第一次向其发送消息时，都会触发超类中的initialize；</li>
-<li>当子类和超类都实现此方法，且超类没有分类，或则有分类但分类中没有实现此方法时，只调用超类，则只会触发超类中的方法；只调用子类，则两个都会触发且子类晚于超类；子类超类都调用，则执行到超类时只触发超类的initialize，执行到子类时只触发子类的initialize；</li>
+<li>当原类和分类都实现此方法时，只有分类中的方法会触发，因为查询方法列表时先查到的是分类中的 initialize；</li>
+<li>当只有超类实现此方法，子类没有实现此方法时，对于每个子类，第一次向其发送消息时，都会触发超类中的 initialize；</li>
+<li>当子类和超类都实现此方法，且超类没有分类，或者有分类但分类中没有实现此方法时，首次向超类发送消息，则只会触发超类中的方法；首次向子类发送消息，则两个都会触发且子类晚于超类；先后向子类超类发送消息，则执行到超类时只触发超类的 initialize，执行到子类时只触发子类的 initialize，因为超类中的 initialize 已经触发过了；</li>
 </ul>
 <p>从上面的分析可以看到，超类中的<code>+initialize</code>可能被多次调用，如果你想在超类的<code>+initialize</code>中单独处理某些需求，则要做好判断：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">@implementation Initializer</span><br><span class="line"></span><br><span class="line">+(void)initialize</span><br><span class="line">&#123;</span><br><span class="line">    NSLog(@&quot;++++class \&quot;%@\&quot; initialized~&quot;,[self class]);</span><br><span class="line">    if (self == [Initializer self]) &#123;</span><br><span class="line">        // ... do the initialization ...</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>

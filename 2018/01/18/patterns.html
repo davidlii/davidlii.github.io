@@ -149,7 +149,7 @@
 <p><img src="https://davidlii.nos-eastchina1.126.net/pic_traditional_mvc.jpeg" alt="传统MVC"></p>
 <p>可以看到，MVC架构下，项目中的代码被整合为视图、模型、控制器三个角色。当用户操作一个视图时，会产生一个事件并交给控制器；控制器收到事件后会采用一种<code>策略</code>：要求模型更新数据的状态或者要求视图更新样式；模型中数据变化后则会<code>通知</code>视图更新界面。</p>
 <h3 id="1-Apple版的-MVC"><a href="#1-Apple版的-MVC" class="headerlink" title="1.Apple版的 MVC"></a>1.Apple版的 MVC</h3><p>上面是传统的MVC模式，可以看到，虽然也区分了三种角色，但是它们互相之间都有耦合，尤其是模型和视图支架。而实际上视图和模型往往是最需要复用的，所以，最合理的设计是保持二者的独立性。因此 Apple 设计了自己版本的MVC，通过控制器来实现视图与模型的解耦。</p>
-<h4 id="1-1-角色划分"><a href="#1-1-角色划分" class="headerlink" title="1.1.角色划分"></a>1.1.角色划分</h4><p>![<a href="https://davidlii.nos-eastchina1.126.net/pic_cocoa_mvc.jpeg" target="_blank" rel="noopener">https://davidlii.nos-eastchina1.126.net/pic_cocoa_mvc.jpeg</a>)</p>
+<h4 id="1-1-角色划分"><a href="#1-1-角色划分" class="headerlink" title="1.1.角色划分"></a>1.1.角色划分</h4><p><img src="https://davidlii.nos-eastchina1.126.net/pic_cocoa_mvc.jpeg" alt="cocoaMVC"></p>
 <p><strong>模型</strong><br>&emsp;</p>
 <p>持有数据、封装处理数据的业务逻辑，提供数据接口给 Controller。理想中，模型层不应与视图层有任何关联。<br>&emsp;</p>
 <p><strong>视图</strong><br>&emsp;</p>

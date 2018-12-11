@@ -135,21 +135,30 @@
 <main class="app-body flex-box">
   <!-- Article START -->
   <article class="post-article">
-    <section class="markdown-content"><h3 id="分区及职责"><a href="#分区及职责" class="headerlink" title="分区及职责"></a>分区及职责</h3><p>&emsp;1. 栈区(stack)：存放局部变量和方法实参。</p>
-<p>&emsp;2. 堆区(heap)：存放OC中使用new等方法创建的对象。</p>
-<p>&emsp;3. 全局（静态）区：包括以下两个分区：</p>
+    <section class="markdown-content"><h3 id="分区及职责"><a href="#分区及职责" class="headerlink" title="分区及职责"></a>分区及职责</h3><ol>
+<li><p>栈区(stack)：存放局部变量和方法实参。</p>
+</li>
+<li><p>堆区(heap)：存放OC中使用new等方法创建的对象。</p>
+</li>
+<li><p>全局（静态）区：包括以下两个分区：</p>
+</li>
+</ol>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">3.1. 数据段（Data segment）：初始化的全局变量和静态变量。</span><br><span class="line">3.2. BSS段：未初始化的全局变量和静态变量。</span><br></pre></td></tr></table></figure>
-<p>&emsp;4. 常量区(数据段)：const、@”x”常量字符串</p>
-<p>&emsp;5. 代码段(Text segment)：程序的代码（ELF）。</p>
+<ol start="4">
+<li><p>常量区(数据段)：const、@”x”常量字符串</p>
+</li>
+<li><p>代码段(Text segment)：程序的代码（ELF）。</p>
+</li>
+</ol>
 <h3 id="分配-amp-释放？"><a href="#分配-amp-释放？" class="headerlink" title="分配&amp;释放？"></a>分配&amp;释放？</h3><ul>
 <li>栈区：由编译器自动分配和释放。</li>
-<li>堆区：由程序员申请和释放，不释放会泄漏。系统使用“链表”来管理堆区中的内存分配情况。</li>
+<li>堆区：由程序员申请和释放，不释放会泄漏。</li>
 <li>BSS段\数据段\常量区\代码段：程序结束后由系统释放。</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">int age = 24;  //全局初始化区（数据段）</span><br><span class="line">NSString *name;//全局未初始化区（BSS段）</span><br><span class="line">static NSString *sName = @&quot;Dav&quot;;//全局（静态初始化）区</span><br><span class="line"></span><br><span class="line">@implementation AppDelegate</span><br><span class="line"></span><br><span class="line">-(BOOL)application:(UIApplication *)application</span><br><span class="line">willFinishLaunchingWithOptions:(NSDictionary *)launchOptions</span><br><span class="line">&#123;</span><br><span class="line">    int aInt;//栈</span><br><span class="line">    NSString *aName = @&quot;Dav&quot;; //Dav在常量区，aName在栈区。</span><br><span class="line">    //分配而来的8字节的区域在堆区，aArr在栈区，指向堆区的地址。</span><br><span class="line">    NSMutableArray *aArr = [NSMutableArray arrayWithCapacity:1]; </span><br><span class="line">    return YES;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (NSInteger)mathAddParam1:(NSInteger)num1 Param2:(NSInteger)num2</span><br><span class="line">&#123;</span><br><span class="line">    return num1 + num2; //num1和num2 在栈区</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">int age = 24;  //全局初始化区（数据段）</span><br><span class="line">NSString *name;//全局未初始化区（BSS段）</span><br><span class="line">static NSString *sName = @&quot;Dav&quot;;//全局（静态初始化）区</span><br><span class="line"></span><br><span class="line">@implementation AppDelegate</span><br><span class="line"></span><br><span class="line">-(BOOL)application:(UIApplication *)application</span><br><span class="line">willFinishLaunchingWithOptions:(NSDictionary *)launchOptions</span><br><span class="line">&#123;</span><br><span class="line">    int aInt;//栈</span><br><span class="line">    NSString *aName = @&quot;Dav&quot;; //Dav在常量区，对象aName的指针存储在栈区。</span><br><span class="line">    //对象aArr的指针在栈区，分配而来的8字节的区域在堆区，aArr的指针指向堆区的地址。</span><br><span class="line">    NSMutableArray *aArr = [NSMutableArray arrayWithCapacity:1]; </span><br><span class="line">    return YES;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (NSInteger)mathAddParam1:(NSInteger)num1 Param2:(NSInteger)num2</span><br><span class="line">&#123;</span><br><span class="line">    return num1 + num2; //num1和num2 在栈区</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
 <hr>
 <p>相关参考：</p>
-<p>#<a href="https://blog.csdn.net/wangxiaolong_china/article/details/6844325" target="_blank" rel="noopener">©传送门</a></p>
+<p>#<a href="https://blog.csdn.net/wangxiaolong_china/article/details/6844325" target="_blank" rel="noopener">©elite-地址空间分布</a></p>
 </section>
     <!-- Tags START -->
     
