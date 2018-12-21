@@ -334,7 +334,12 @@ iOS程序默认情况下只能访问程序自己的目录，这个目录被称�
       
       <div class="article-summary">
         
-          1、宏定义使用错误案例123456789101112#define MATH_MAX(a,b) a &gt; b ? a : b- (void)defineExmple&#123;    //case1    printf(&quot;result: %d\n&quot;,MATH_MAX( ...
+          1、VC的生命周期
+-initWithCoder: //VC初始化
+-initWithNibName:bundle:
+-loadView //从nib载入视图或返回一个自定义视图
+-viewDidLoad //视图载入完成并开始进一步的设置
+-viewWillAppear: //视图即将出现 ...
         
       </div>
       <a class="more" href="/2017/11/24/faq.html">Read more</a>
@@ -347,12 +352,12 @@ iOS程序默认情况下只能访问程序自己的目录，这个目录被称�
       <p class="article-date">November 24, 2017</p>
       
         
-  <a href="/tags#FQA" >
-    <span class="tag-code">FQA</span>
-  </a>
-
   <a href="/tags#内存管理" >
     <span class="tag-code">内存管理</span>
+  </a>
+
+  <a href="/tags#FQA" >
+    <span class="tag-code">FQA</span>
   </a>
 
       
