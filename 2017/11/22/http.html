@@ -144,14 +144,34 @@
 <li>数据链路层</li>
 <li>物理层</li>
 </ul>
-<h3 id="2-术语"><a href="#2-术语" class="headerlink" title="#2.术语"></a>#2.术语</h3><ul>
-<li>IP协议：网络层协议，解决网络路由和寻址问题。</li>
-<li>TCP：传输层协议，解决如何在IP层可靠、面向连接地传递数据包问题。</li>
-<li>UDP：传输层协议，无连接、没TCP可靠。</li>
-<li>TCP/IP：传输控制协议/网际协议，指的是一系列协议。</li>
-<li>HTTP：应用层协议。</li>
-<li>SOCKET：是对TCP/IP协议的封装，它本身并不是协议，而是一套API。</li>
+<h3 id="2-术语"><a href="#2-术语" class="headerlink" title="#2.术语"></a>#2.术语</h3><h4 id="2-1-TCP"><a href="#2-1-TCP" class="headerlink" title="2.1.TCP"></a>2.1.TCP</h4><ul>
+<li>传输控制协议：传输层协议之一；</li>
+<li>面向连接：传输数据前需要三次握手建立连接；</li>
+<li>稳定可靠：传输数据时有响应、重发、拥堵控制机制；</li>
+<li>时效性低：握手、响应、重发等机制会消耗大量时间，占用大量系统资源。</li>
 </ul>
+<p>主要用在需要可靠传输数据的地方，如~~文件传输协议：HTTP、HTTPS、FTP；邮件传输协议：POP、SMTP。</p>
+<h4 id="2-2-UDP"><a href="#2-2-UDP" class="headerlink" title="2.2.UDP"></a>2.2.UDP</h4><ul>
+<li>用户数据报协议：也是传输层协议之一；</li>
+<li>无连接：传输数据前不需事先建立连接，直接向目标主机发送报文；</li>
+<li>不可靠：不保证数据能收到或完整收到，只做报文完整性校验，不完整则丢弃；</li>
+<li>速度快：没有TCP那么复杂的机制，简单高效速度快；</li>
+</ul>
+<p>主要用在追求通信速度但对通信质量要求不高的地方，如~~QQ语音视频、游戏画面和语音。</p>
+<h4 id="2-3-HTTP"><a href="#2-3-HTTP" class="headerlink" title="2.3.HTTP"></a>2.3.HTTP</h4><p>超文本传输协议，属于应用层协议，基于<code>TCP</code>协议和<code>请求/响应</code>模型，用于在web服务器与客户端浏览器之间传输信息。客户端发送请求后需要服务器响应，请求结束后会主动释放连接，因此它属于短连接。</p>
+<h4 id="2-4-SOCKET"><a href="#2-4-SOCKET" class="headerlink" title="2.4.SOCKET"></a>2.4.SOCKET</h4><p>是位于<code>应用层</code>和<code>TCP/IP协议</code>族之间的一个中间抽象层，它本身并不是协议，而是对TCP/IP协议的封装，并对外提供一套接口以便开发者使用TCP/IP协议。</p>
+<blockquote>
+<p>应用层通过传输层进行数据通信时，TCP会遇到同时为多个应用程序提供并发服务的问题，多个TCP连接多个应用程序进程可能需要通过同一个TCP协议端口传输数据，为了区别不同的应用程序进程和连接，许多计算机操作系统为应用程序与TCP/IP协议交互提供了套接字（socket）接口，应用层可以和传输层通过socket接口区分来自于不同应用进程或网络连接的通信，实现数据传输的并发服务。</p>
+</blockquote>
+<p>SOCKET 通信需要两个端：客户端和服务端。</p>
+<ul>
+<li>服务端：监听网络状态，等待来自客户端的连接；</li>
+<li>客户端：指定 ip 与端口，向服务器请求连接；</li>
+<li>服务器：响应客户端的连接请求，建立一个新线程，把服务端套接字的描述发给客户端，客户端确认此描述后双方正式建立连接。</li>
+</ul>
+<p>理论上 SOCKET 是一种长连接，即客户端与服务端的连接建立之后，一般不会主动断掉。如果长时间没有通信则防火墙可能会断开此连接以释放资源，所以一般 SOCKET 在没有数据传输时需要发送心跳包以保持连接。</p>
+<h4 id="2-5-IP协议"><a href="#2-5-IP协议" class="headerlink" title="2.5.IP协议"></a>2.5.IP协议</h4><p>网络层协议，解决网络路由和寻址问题。</p>
+<h4 id="2-6-TCP-IP"><a href="#2-6-TCP-IP" class="headerlink" title="2.6.TCP/IP"></a>2.6.TCP/IP</h4><p>传输控制协议/网际协议，指的是一系列协议。</p>
 <h3 id="3-TCP连接的三次握手"><a href="#3-TCP连接的三次握手" class="headerlink" title="#3.TCP连接的三次握手"></a>#3.TCP连接的三次握手</h3><p><img src="https://davidlii.nos-eastchina1.126.net/pic_tcp_connect.jpeg" alt="握手"></p>
 <p><strong>第1次</strong>：<code>主机A</code> 发送<code>SYN包</code>到 <code>主机B</code>，并进入<code>SYN_SEND</code>状态，等待 <code>主机B</code> 确认；<br>&emsp;</p>
 <p><strong>第2次</strong>：<code>主机B</code> 收到<code>SYN包</code>，必须确认 <code>主机A</code> 的<code>SYN</code>，同时自己也发送一个<code>SYN包</code>，即<code>SYN+ACK包</code>，此时 <code>主机B</code> 进入<code>SYN_RECV状态</code>；<br>&emsp;</p>
@@ -293,6 +313,7 @@
 <p>#<a href="http://www.php230.com/weixin1457310207.html" target="_blank" rel="noopener">©偷师饿了么:怎样用HTTP/2优化iOS APP网络层次架构</a></p>
 <p>#<a href="https://www.cnblogs.com/huhuuu/p/3572485.html" target="_blank" rel="noopener">©网络TCP建立连接为什么需要三次握手而结束要四次</a></p>
 <p>#<a href="http://www.techweb.com.cn/network/system/2016-10-11/2407736.shtml" target="_blank" rel="noopener">©51cto-GET与POST的区别</a></p>
+<p>#<a href="https://blog.csdn.net/weixin_41648325/article/details/79412158" target="_blank" rel="noopener">©Socket和Http之间的区别和概述</a></p>
 </section>
     <!-- Tags START -->
     
@@ -363,7 +384,7 @@
   <div class="toc-main">
     <strong class="toc-title">Catalog</strong>
     
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1-网络分层"><span class="toc-nav-text">#1.网络分层</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-术语"><span class="toc-nav-text">#2.术语</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-TCP连接的三次握手"><span class="toc-nav-text">#3.TCP连接的三次握手</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#4-TCP断连的四次挥手"><span class="toc-nav-text">#4.TCP断连的四次挥手</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#5-HTTP协议是无状态的？"><span class="toc-nav-text">#5.HTTP协议是无状态的？</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#6-短连接、长连接"><span class="toc-nav-text">#6.短连接、长连接</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#优点和缺点"><span class="toc-nav-text">优点和缺点</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#如何判断数据已发送完"><span class="toc-nav-text">如何判断数据已发送完</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#7-HTTP头部"><span class="toc-nav-text">#7.HTTP头部</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#HTTP-请求消息头部实例："><span class="toc-nav-text">HTTP 请求消息头部实例：</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#HTTP-响应消息头部实例："><span class="toc-nav-text">HTTP 响应消息头部实例：</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Content-Type参数："><span class="toc-nav-text">Content-Type参数：</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#8-GET-与-POST-的区别"><span class="toc-nav-text">#8.GET 与 POST 的区别</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#用途："><span class="toc-nav-text">用途：</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#参数与数据："><span class="toc-nav-text">参数与数据：</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#浏览器发送请求："><span class="toc-nav-text">浏览器发送请求：</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#9-Http-与-Https"><span class="toc-nav-text">#9.Http 与 Https</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#SSL"><span class="toc-nav-text">SSL</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#TLS"><span class="toc-nav-text">TLS</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#密钥加密"><span class="toc-nav-text">密钥加密</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Https请求流程"><span class="toc-nav-text">Https请求流程</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#10-应用内网络优化"><span class="toc-nav-text">#10.应用内网络优化</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#优化DNS解析"><span class="toc-nav-text">优化DNS解析</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#网络质量检测"><span class="toc-nav-text">网络质量检测</span></a></li></ol></li></ol>
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1-网络分层"><span class="toc-nav-text">#1.网络分层</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-术语"><span class="toc-nav-text">#2.术语</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-1-TCP"><span class="toc-nav-text">2.1.TCP</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-2-UDP"><span class="toc-nav-text">2.2.UDP</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-3-HTTP"><span class="toc-nav-text">2.3.HTTP</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-4-SOCKET"><span class="toc-nav-text">2.4.SOCKET</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-5-IP协议"><span class="toc-nav-text">2.5.IP协议</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-6-TCP-IP"><span class="toc-nav-text">2.6.TCP/IP</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-TCP连接的三次握手"><span class="toc-nav-text">#3.TCP连接的三次握手</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#4-TCP断连的四次挥手"><span class="toc-nav-text">#4.TCP断连的四次挥手</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#5-HTTP协议是无状态的？"><span class="toc-nav-text">#5.HTTP协议是无状态的？</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#6-短连接、长连接"><span class="toc-nav-text">#6.短连接、长连接</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#优点和缺点"><span class="toc-nav-text">优点和缺点</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#如何判断数据已发送完"><span class="toc-nav-text">如何判断数据已发送完</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#7-HTTP头部"><span class="toc-nav-text">#7.HTTP头部</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#HTTP-请求消息头部实例："><span class="toc-nav-text">HTTP 请求消息头部实例：</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#HTTP-响应消息头部实例："><span class="toc-nav-text">HTTP 响应消息头部实例：</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Content-Type参数："><span class="toc-nav-text">Content-Type参数：</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#8-GET-与-POST-的区别"><span class="toc-nav-text">#8.GET 与 POST 的区别</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#用途："><span class="toc-nav-text">用途：</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#参数与数据："><span class="toc-nav-text">参数与数据：</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#浏览器发送请求："><span class="toc-nav-text">浏览器发送请求：</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#9-Http-与-Https"><span class="toc-nav-text">#9.Http 与 Https</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#SSL"><span class="toc-nav-text">SSL</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#TLS"><span class="toc-nav-text">TLS</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#密钥加密"><span class="toc-nav-text">密钥加密</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Https请求流程"><span class="toc-nav-text">Https请求流程</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#10-应用内网络优化"><span class="toc-nav-text">#10.应用内网络优化</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#优化DNS解析"><span class="toc-nav-text">优化DNS解析</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#网络质量检测"><span class="toc-nav-text">网络质量检测</span></a></li></ol></li></ol>
     
   </div>
 </aside>

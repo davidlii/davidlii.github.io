@@ -10,7 +10,7 @@
   
   <title>
     
-      autoreleasepool | Davidli
+      OC中的内存管理 | Davidli
     
   </title>
   <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -126,7 +126,7 @@
 </header>
 
     <div id="article-banner">
-  <h2>autoreleasepool</h2>
+  <h2>OC中的内存管理</h2>
   <p class="post-date">2018-01-21</p>
   <div class="arrow-down">
     <a href="javascript:;"></a>
@@ -310,8 +310,11 @@
 <blockquote>
 <p>ARC differs from tracing garbage collection in that there is no background process that deallocates the objects asynchronously at runtime.[3] Unlike garbage collection, ARC does not handle reference cycles automatically. This means that as long as there are “strong” references to an object, it will not be deallocated. Strong cross-references can accordingly create deadlocks and memory leaks. It is up to the developer to break cycles by using weak references.</p>
 </blockquote>
-<p>需要注意：ARC并不是垃圾回收机制，它只是 LLVM 3.0 编译器的新特性，在代码编译时帮我们将对象标记为 autorelease 和管理自动释放池。</p>
-<h4 id="2-变量修饰符"><a href="#2-变量修饰符" class="headerlink" title="2.变量修饰符"></a>2.变量修饰符</h4><p>ARC下的四个变量修饰符：</p>
+<h4 id="2-ARC与GC"><a href="#2-ARC与GC" class="headerlink" title="2.ARC与GC"></a>2.ARC与GC</h4><p><code>ARC</code> <strong>!=</strong> <code>垃圾回收机制</code>！<br>&emsp;</p>
+<p>ARC 发生在<code>编译阶段</code>，它是LLVM 3.0 编译器中的新特性。ARC 环境中，编译器在代码<code>编译时</code>帮我们将对象标记为 autorelease、retain、release，我们无须再写这些内存管理的代码，只需要用<code>strong</code>或者<code>weak</code>表示你对对象的所有权，或者注意像循环强引用这种问题即可。<br>&emsp;</p>
+<p>JAVA中的垃圾回收机制则是在<code>运行时</code>检查对象的依赖，如果没有指针指向某个对象，那么这个对象就是垃圾对象，到达一定量级后系统就会自动清除这些垃圾对象，或者由调用者主动调用GC清理~<br>&emsp;</p>
+<p>作为对比来说，OC中的<code>引用计数</code>更靠近垃圾回收机制一些，即当对象的引用计数=0时，就会自动调用对象的<code>dealloc</code>函数进行销毁。</p>
+<h4 id="3-变量修饰符"><a href="#3-变量修饰符" class="headerlink" title="3.变量修饰符"></a>3.变量修饰符</h4><p>ARC下的四个变量修饰符：</p>
 <ul>
 <li>__strong</li>
 </ul>
@@ -333,12 +336,13 @@
 <blockquote>
 <p>Methods in the alloc, copy, init, mutableCopy, and new families are implicitly marked <strong>attribute</strong>((ns_returns_retained)). This may be suppressed by explicitly marking the method <strong>attribute</strong>((ns_returns_not_retained)).</p>
 </blockquote>
-<p>与MRC一样，以 alloc/init/copy/mutableCopy/new 开头的方法返回的对象，会被隐式的标记为<code>ns_returns_retained</code>，其他情况下创建的对象则会被标记为 autorelease 并加入自动释放池中。</p>
-<h4 id="3-注意事项"><a href="#3-注意事项" class="headerlink" title="3.注意事项"></a>3.注意事项</h4><ul>
+<p>与MRC一样，以 <code>alloc</code>、<code>init</code>、<code>copy</code>、<code>mutableCopy</code>、<code>new</code>开头的方法返回的对象，会被隐式的标记为<code>ns_returns_retained</code>，其他情况下创建的对象则会被标记为 autorelease 并加入自动释放池中。</p>
+<h4 id="4-注意事项"><a href="#4-注意事项" class="headerlink" title="4.注意事项"></a>4.注意事项</h4><ul>
 <li>不能再手动向对象发送retain, release, autorelease、retainCount、dealloc消息；</li>
 <li>可以重写 dealloc 方法，但不能在其内部调用[super dealloc]；</li>
 <li>不能使用 NSAutoreleasePool 对象，而是使用 @autoreleasepool{}；</li>
 <li>属性修饰符 weak 相当于原来的 assign，strong 相当于原来的 retain；</li>
+<li>注意循环引用问题；</li>
 </ul>
 <p>在整个 XCode 中 开关 ARC，可以通过 Build Settings -&gt; Objective-C Automotic Reference Counting 选项来设置。设置单独的某个或某几个文件开关 ARC 时，可到 Build Phases -&gt; Compile Sources 中双击对应的文件，添加<code>-fobjc-arc</code>或<code>-fno-objc-arc</code>即可~</p>
 <hr>
@@ -350,6 +354,7 @@
 <p>#<a href="http://blog.sunnyxx.com/2014/10/15/behind-autorelease/" target="_blank" rel="noopener">©sunnyxx</a></p>
 <p>#<a href="https://www.2cto.com/kf/201804/739679.html" target="_blank" rel="noopener">©ZCMUCZX-自动释放池</a></p>
 <p>#<a href="http://www.cnblogs.com/flyFreeZn/p/4264220.html" target="_blank" rel="noopener">©不忘初“辛”-ARC技术要点</a></p>
+<p>#<a href="http://www.cocoachina.com/bbs/read.php?tid=1729516" target="_blank" rel="noopener">©CocoaChina论坛7楼-垃圾收集机制与ARC</a></p>
 </section>
     <!-- Tags START -->
     
@@ -358,10 +363,6 @@
         
   <a href="/tags#内存管理" >
     <span class="tag-code">内存管理</span>
-  </a>
-
-  <a href="/tags#机制" >
-    <span class="tag-code">机制</span>
   </a>
 
       </div>
@@ -424,7 +425,7 @@
   <div class="toc-main">
     <strong class="toc-title">Catalog</strong>
     
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#MRC"><span class="toc-nav-text">MRC</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#1-retain-release"><span class="toc-nav-text">1.retain/release</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-自动释放池"><span class="toc-nav-text">2.自动释放池</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3-pool的创建"><span class="toc-nav-text">3.pool的创建</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#3-1-自动"><span class="toc-nav-text">3.1.自动</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#3-2-手动"><span class="toc-nav-text">3.2.手动</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#4-pool的销毁"><span class="toc-nav-text">4.pool的销毁</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#5-结构与源码"><span class="toc-nav-text">5.结构与源码</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#5-1-栈与链表"><span class="toc-nav-text">5.1.栈与链表</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#5-2-pool的创建"><span class="toc-nav-text">5.2.pool的创建</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#5-3-对象入栈"><span class="toc-nav-text">5.3.对象入栈</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#5-4-对象释放"><span class="toc-nav-text">5.4.对象释放</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#ARC"><span class="toc-nav-text">ARC</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#1-作用"><span class="toc-nav-text">1.作用</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-变量修饰符"><span class="toc-nav-text">2.变量修饰符</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3-注意事项"><span class="toc-nav-text">3.注意事项</span></a></li></ol></li></ol>
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#MRC"><span class="toc-nav-text">MRC</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#1-retain-release"><span class="toc-nav-text">1.retain/release</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-自动释放池"><span class="toc-nav-text">2.自动释放池</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3-pool的创建"><span class="toc-nav-text">3.pool的创建</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#3-1-自动"><span class="toc-nav-text">3.1.自动</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#3-2-手动"><span class="toc-nav-text">3.2.手动</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#4-pool的销毁"><span class="toc-nav-text">4.pool的销毁</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#5-结构与源码"><span class="toc-nav-text">5.结构与源码</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#5-1-栈与链表"><span class="toc-nav-text">5.1.栈与链表</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#5-2-pool的创建"><span class="toc-nav-text">5.2.pool的创建</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#5-3-对象入栈"><span class="toc-nav-text">5.3.对象入栈</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#5-4-对象释放"><span class="toc-nav-text">5.4.对象释放</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#ARC"><span class="toc-nav-text">ARC</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#1-作用"><span class="toc-nav-text">1.作用</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-ARC与GC"><span class="toc-nav-text">2.ARC与GC</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3-变量修饰符"><span class="toc-nav-text">3.变量修饰符</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#4-注意事项"><span class="toc-nav-text">4.注意事项</span></a></li></ol></li></ol>
     
   </div>
 </aside>
@@ -490,7 +491,7 @@
     var gitmentConfig = "";
     if (gitmentConfig !== 'undefined') {
       var gitment = new Gitment({
-        id: "autoreleasepool",
+        id: "OC中的内存管理",
         owner: "",
         repo: "",
         oauth: {
