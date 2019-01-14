@@ -10,7 +10,7 @@
   
   <title>
     
-      KVC 的底层实现细节 | Davidli
+      KVC 的底层实现 | Davidli
     
   </title>
   <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -126,7 +126,7 @@
 </header>
 
     <div id="article-banner">
-  <h2>KVC 的底层实现细节</h2>
+  <h2>KVC 的底层实现</h2>
   <p class="post-date">2018-04-12</p>
   <div class="arrow-down">
     <a href="javascript:;"></a>
@@ -140,6 +140,7 @@
 <ul>
 <li><strong>常用方法?</strong></li>
 </ul>
+<p><code>NSKeyValueCoding.h</code>中有个 NSObject 的分类：<code>NSObject(NSKeyValueCoding)</code>，其中定义了以下方法：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- (id)valueForKey:(NSString *)key;</span><br><span class="line">- (id)valueForKeyPath:(NSString *)keyPath;</span><br><span class="line">- (void)setValue:(nullable id)value forKey:(NSString *)key;</span><br><span class="line">- (void)setValue:(nullable id)value forKeyPath:(NSString *)keyPath;</span><br></pre></td></tr></table></figure>
 <p>其中，-valueForKey: 与 -valueForKeyPath:在一般的属性访问时，效果是一样的。但要访问类似下面案例1中 Student.index 这种子属性时，就只能使用后者，使用前者编译时没问题但运行时会崩溃。<br>&emsp;</p>
 <p>#示例1：</p>
@@ -156,20 +157,19 @@
 <p>输出日志：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">++++执行 setter stringA</span><br><span class="line">++++执行 setter stringA</span><br><span class="line">++++apeo.stringA 值: _stringA KVC</span><br><span class="line">++++++++++++++++++++++++++++++</span><br><span class="line">++++执行 setter _modelString</span><br><span class="line">++++执行 setter modelString</span><br><span class="line">++++执行 setter noExist1</span><br><span class="line">++++apeo.modelA._modelString 值: __modelString kvc</span><br><span class="line">++++++++++++++++++++++++++++++</span><br><span class="line">++++s1:__modelString kvc s2:__modelString kvc s3:__modelString kvc</span><br></pre></td></tr></table></figure>
 <p>日志显示：①~⑨全部执行成功；其中①③④⑥ 执行了setter方法，⑦⑧执行了getter方法，②⑤⑨直接访问的实例变量。</p>
-<h3 id="3-底层的原理"><a href="#3-底层的原理" class="headerlink" title="3.底层的原理?"></a>3.底层的原理?</h3><h4 id="3-1-valueForKey-过程"><a href="#3-1-valueForKey-过程" class="headerlink" title="3.1.valueForKey: 过程"></a>3.1.valueForKey: 过程</h4><ol>
-<li>首先按照 getKey，key，isKey 的顺序查找 getter 方法，找到直接调用。如果是 BOOL，int 等内建值类型，会做 NSNumber 类型转化。</li>
-<li>上面的方法没有找到，查找 countOfKey、objectInKeyAtindex、KeyAtindexes 格式的方法。如果找到，那么就会返回一个可以响应 NSArray 所有方法的代理集合的 NSArray 消息方法。</li>
-<li>还没有找到的话，查找 enumeratorOfKey、memberOfKey 格式的方法。如果找到，就会返回一个可以响应 NSSet 所有方法的集合。</li>
-<li>还是没有找到的话，如果类方法 accessInstanceVariablesDirectly 返回为YES。那么依次搜索符合_key，_isKey，key，isKey 格式的成员变量，找到后返回它的值。</li>
-<li>再没找到的话，调用 valueForUnderfinedKey 并抛出 NSUndefinedKeyException 错误。</li>
+<h3 id="3-底层的原理"><a href="#3-底层的原理" class="headerlink" title="3.底层的原理?"></a>3.底层的原理?</h3><p>在<code>NSKeyValueCoding.h</code>对<code>KVC</code>的实现过程有详细的解释。</p>
+<h4 id="3-1-valueForKey"><a href="#3-1-valueForKey" class="headerlink" title="3.1.valueForKey:"></a>3.1.valueForKey:</h4><ol>
+<li>在方法接收者的类中先按照 getKey，key，isKey 的顺序查找 getter 方法，找到直接调用。如果是 BOOL，int 等内建值类型，会做 NSNumber 类型转化。</li>
+<li>没有找到的话，如果方法接收者的 accessInstanceVariablesDirectly 属性返回YES（默认返回YES），那么依次搜索符合_key，_isKey，key，isKey 格式的实例变量，找到后返回它的值。</li>
+<li>再没找到的话，会调用 -valueForUndefinedKey，在没被重写的情况下，此方法默认抛出 NSUndefinedKeyException 异常。</li>
 </ol>
-<h4 id="3-2-setValue-forKey-过程"><a href="#3-2-setValue-forKey-过程" class="headerlink" title="3.2.setValue:forKey: 过程"></a>3.2.setValue:forKey: 过程</h4><ol>
-<li>首先搜索 setKey:方法。</li>
-<li>第一步没有找到的话，如果类方法 accessInstanceVariablesDirectly 返回为YES（默认返回YES）。那么就去依次查询符合_key，_isKey，key，isKey 格式的成员变量，找到后给它赋值。</li>
-<li>如果还没有找到符合的成员变量，则调用setKey:forUnderfinedKey 并抛出 NSUndefinedKeyException 错误:</li>
+<h4 id="3-2-setValue-forKey"><a href="#3-2-setValue-forKey" class="headerlink" title="3.2.setValue:forKey:"></a>3.2.setValue:forKey:</h4><ol>
+<li>首先在方法接收者所属的类中搜索 setKey: 格式的方法并检测其参数类型。如果参数类型符合则直接调用该方法；如果参数不是对象指针类型但值为nil，则会调用 -setNilValueForKey: 并抛出异常；</li>
+<li>第一步中没有找到格式相符的方法的话，如果 accessInstanceVariablesDirectly 属性返回 YES。那么就去依次查询符合_key，_isKey，key，isKey 格式的成员变量，找到后给它赋值。</li>
+<li>如果仍没找到符合的成员变量，则调用 setKey:forUnderfinedKey: 并抛出 NSUndefinedKeyException 异常。</li>
 </ol>
-<h4 id="3-3-小结"><a href="#3-3-小结" class="headerlink" title="3.3.小结"></a>3.3.小结</h4><p>当我们使用 id objectA = objectB.value2; 时是否代表 objectB 有一个 value2 的属性呢？实际上不一定， “.”操作只是去寻找一个名称匹配参数匹配的方法， 我们习以为常的引用属性只是因为属性刚好有 getter，setter 符合要求而已。属性的实质为一个实例变量加存取方法(有些实例变量没有存取方法，而有些存取方法并没有对应的实例变量)… 例如 object.class，NSObject 中 并没有 class 属性，只有一个class方法。<br>&emsp;</p>
-<p>KVC是一种高效的取设值的方法，而无论这个键是否暴露出来。</p>
+<h4 id="3-3-小结"><a href="#3-3-小结" class="headerlink" title="3.3.小结"></a>3.3.小结</h4><p>当我们使用<code>id objectA = objectB.value2</code>时是否代表 objectB 有一个 value2<code>属性</code>呢？实际上不一定，例如<code>object.class</code>，NSObject 中 并没有<code>class</code>属性，只有一个<code>class</code>方法。<br>&emsp;</p>
+<p>OC的点语法中，<code>.</code>表示调用方法，即<code>.</code>操作只是去寻找一个名称匹配参数匹配的方法。我们习以为常的属性调用只是因为属性刚好有<code>getter</code>，<code>setter</code>方法符合要求而已。如果<code>.</code>表达式在<code>=</code>左边，则该属性的<code>setter</code>方法被调用；如果<code>.</code>表达式在<code>=</code>的右边，则属性的<code>getter</code>方法被调用。</p>
 <h3 id="KVC-与-Collection-Operators"><a href="#KVC-与-Collection-Operators" class="headerlink" title="#KVC 与 Collection Operators"></a>#KVC 与 Collection Operators</h3><p>多数情况下，<code>keyPath</code>被用来读取对象中子对象的某个属性，如示例1中的<code>[people valueForKeyPath:@&quot;student.index&quot;]</code>。除此之外，苹果还将此方法用在了集合中，用以实现某些常见的集合运算，如求最大值、最小值、求和等，这就是我们要介绍的<code>集合运算符</code>在<code>KVC</code>中的应用。</p>
 <blockquote>
 <p>When you send a key-value coding compliant object the valueForKeyPath: message, you can embed a collection operator in the key path. A collection operator is one of a small list of keywords preceded by an at sign (@) that specifies an operation that the getter should perform to manipulate the data in some way before returning it. The default implementation of valueForKeyPath: provided by NSObject implements this behavior.</p>
@@ -221,7 +221,7 @@
     
       <a class="nav-right" href="/2018/04/13/kvo.html">
         
-          KVO 的底层实现细节
+          KVO 的底层实现
         
         <span class="nav-arrow"> →</span>
       </a>
@@ -263,7 +263,7 @@
   <div class="toc-main">
     <strong class="toc-title">Catalog</strong>
     
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1-KVC是啥"><span class="toc-nav-text">1.KVC是啥?</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-啥用"><span class="toc-nav-text">2.啥用?</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-底层的原理"><span class="toc-nav-text">3.底层的原理?</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3-1-valueForKey-过程"><span class="toc-nav-text">3.1.valueForKey: 过程</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3-2-setValue-forKey-过程"><span class="toc-nav-text">3.2.setValue:forKey: 过程</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3-3-小结"><span class="toc-nav-text">3.3.小结</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#KVC-与-Collection-Operators"><span class="toc-nav-text">#KVC 与 Collection Operators</span></a></li></ol>
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1-KVC是啥"><span class="toc-nav-text">1.KVC是啥?</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-啥用"><span class="toc-nav-text">2.啥用?</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-底层的原理"><span class="toc-nav-text">3.底层的原理?</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3-1-valueForKey"><span class="toc-nav-text">3.1.valueForKey:</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3-2-setValue-forKey"><span class="toc-nav-text">3.2.setValue:forKey:</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3-3-小结"><span class="toc-nav-text">3.3.小结</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#KVC-与-Collection-Operators"><span class="toc-nav-text">#KVC 与 Collection Operators</span></a></li></ol>
     
   </div>
 </aside>
@@ -329,7 +329,7 @@
     var gitmentConfig = "";
     if (gitmentConfig !== 'undefined') {
       var gitment = new Gitment({
-        id: "KVC 的底层实现细节",
+        id: "KVC 的底层实现",
         owner: "",
         repo: "",
         oauth: {
