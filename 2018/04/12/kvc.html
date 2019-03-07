@@ -160,13 +160,13 @@
 <h3 id="3-底层的原理"><a href="#3-底层的原理" class="headerlink" title="3.底层的原理?"></a>3.底层的原理?</h3><p>在<code>NSKeyValueCoding.h</code>对<code>KVC</code>的实现过程有详细的解释。</p>
 <h4 id="3-1-valueForKey"><a href="#3-1-valueForKey" class="headerlink" title="3.1.valueForKey:"></a>3.1.valueForKey:</h4><ol>
 <li>在方法接收者的类中先按照 getKey，key，isKey 的顺序查找 getter 方法，找到直接调用。如果是 BOOL，int 等内建值类型，会做 NSNumber 类型转化。</li>
-<li>没有找到的话，如果方法接收者的 accessInstanceVariablesDirectly 属性返回YES（默认返回YES），那么依次搜索符合_key，_isKey，key，isKey 格式的实例变量，找到后返回它的值。</li>
+<li>没有找到的话，如果方法接收者的 accessInstanceVariablesDirectly 属性返回YES（默认返回YES），那么依次搜索符合_key，_isKey，key，isKey 格式的成员变量，找到后返回它的值。</li>
 <li>再没找到的话，会调用 -valueForUndefinedKey，在没被重写的情况下，此方法默认抛出 NSUndefinedKeyException 异常。</li>
 </ol>
 <h4 id="3-2-setValue-forKey"><a href="#3-2-setValue-forKey" class="headerlink" title="3.2.setValue:forKey:"></a>3.2.setValue:forKey:</h4><ol>
 <li>首先在方法接收者所属的类中搜索 setKey: 格式的方法并检测其参数类型。如果参数类型符合则直接调用该方法；如果参数不是对象指针类型但值为nil，则会调用 -setNilValueForKey: 并抛出异常；</li>
 <li>第一步中没有找到格式相符的方法的话，如果 accessInstanceVariablesDirectly 属性返回 YES。那么就去依次查询符合_key，_isKey，key，isKey 格式的成员变量，找到后给它赋值。</li>
-<li>如果仍没找到符合的成员变量，则调用 setKey:forUnderfinedKey: 并抛出 NSUndefinedKeyException 异常。</li>
+<li>如果仍没找到符合的成员变量，则调用 setValue:forUnderfinedKey: 并抛出 NSUndefinedKeyException 异常。</li>
 </ol>
 <h4 id="3-3-小结"><a href="#3-3-小结" class="headerlink" title="3.3.小结"></a>3.3.小结</h4><p>当我们使用<code>id objectA = objectB.value2</code>时是否代表 objectB 有一个 value2<code>属性</code>呢？实际上不一定，例如<code>object.class</code>，NSObject 中 并没有<code>class</code>属性，只有一个<code>class</code>方法。<br>&emsp;</p>
 <p>OC的点语法中，<code>.</code>表示调用方法，即<code>.</code>操作只是去寻找一个名称匹配参数匹配的方法。我们习以为常的属性调用只是因为属性刚好有<code>getter</code>，<code>setter</code>方法符合要求而已。如果<code>.</code>表达式在<code>=</code>左边，则该属性的<code>setter</code>方法被调用；如果<code>.</code>表达式在<code>=</code>的右边，则属性的<code>getter</code>方法被调用。</p>
