@@ -129,6 +129,73 @@
   
     <article class="article-card">
       <h2 class="article-head">
+        <a href="/2018/09/02/swift-mixmatch.html">Swift 与 OC 的混编</a>
+      </h2>
+      <p class="article-date">September 2, 2018</p>
+      
+        
+  <a href="/tags#Swift" >
+    <span class="tag-code">Swift</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          混编的两种情况：①Swift 工程中使用 Objective-C 文件；&emsp;
+②Objective-C 工程中使用 Swift 文件。&emsp;
+本文所用 Xcode 版本：9.4.1
+1.Swift 中混编 OCSwift 工程中使用 OC 文件时需要依赖 桥接头文件 将 OC  ...
+        
+      </div>
+      <a class="more" href="/2018/09/02/swift-mixmatch.html">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2018/08/31/swift-kvo-observer.html">Swift 中监听属性变化</a>
+      </h2>
+      <p class="article-date">August 31, 2018</p>
+      
+        
+  <a href="/tags#Swift" >
+    <span class="tag-code">Swift</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          1、属性观察器Swift 提供了属性观察器来监听自身存储属性的变化。观察器只能用于监听非lazy存储属性。对于计算属性，它已经内含了get{}和set{}，闭包内已经知道属性的变化，不需要再提供观察器。对于从父类继承下来的存储属性或计算属性，我们可以在子类中重写属性的getter和sette ...
+        
+      </div>
+      <a class="more" href="/2018/08/31/swift-kvo-observer.html">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2018/08/20/swift-refcycle.html">Swift 中闭包的变量捕获 & 循环引用</a>
+      </h2>
+      <p class="article-date">August 20, 2018</p>
+      
+        
+  <a href="/tags#循环引用" >
+    <span class="tag-code">循环引用</span>
+  </a>
+
+  <a href="/tags#Swift" >
+    <span class="tag-code">Swift</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          闭包中的变量捕获A closure can capture constants and variables from the surrounding context in which it is defined. The closure can then refer to and modif ...
+        
+      </div>
+      <a class="more" href="/2018/08/20/swift-refcycle.html">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
         <a href="/2018/08/02/resign.html">ipa 重新签名</a>
       </h2>
       <p class="article-date">August 2, 2018</p>
@@ -300,76 +367,6 @@ t2：构建界面并完成渲染和展示：main函数到-applic ...
         
       </div>
       <a class="more" href="/2018/06/22/autolayout.html">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2018/06/14/copy.html">拷贝相关知识点</a>
-      </h2>
-      <p class="article-date">June 14, 2018</p>
-      
-        
-  <a href="/tags#FQA" >
-    <span class="tag-code">FQA</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          1.拷贝-初探文档摘要：
-
-The exact meaning of “copy” can vary from class to class, but a copy must be a functionally independent object with values identical ...
-        
-      </div>
-      <a class="more" href="/2018/06/14/copy.html">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2018/04/13/kvo.html">KVO 的底层实现</a>
-      </h2>
-      <p class="article-date">April 13, 2018</p>
-      
-        
-  <a href="/tags#机制" >
-    <span class="tag-code">机制</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          #是啥?KVO 是通过一个 key 来找到某个属性并监听其值的改变。其实这也是一种典型的观察者模式。
-#咋用?
-添加观察者
-在观察者中实现监听方法：-observeValueForKeyPath: ofObject: change: context:。
-移除观察者
-
-#示例：
-1234567 ...
-        
-      </div>
-      <a class="more" href="/2018/04/13/kvo.html">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2018/04/12/kvc.html">KVC 的底层实现</a>
-      </h2>
-      <p class="article-date">April 12, 2018</p>
-      
-        
-  <a href="/tags#机制" >
-    <span class="tag-code">机制</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          1.KVC是啥?键值编码（key value coding）是一种可以通过字符串的名字（key）来访问类属性的机制。区别于通过调用Setter、Getter来访问属性的方法。
-2.啥用?通常我们要访问一个类中属性的值时，可以使用点语法（如 people.name）。但当你想访问私有属性或成员 ...
-        
-      </div>
-      <a class="more" href="/2018/04/12/kvc.html">Read more</a>
     </article>
   
 

@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="This is Davidli&#39;s blog ~">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" type="image/ico" href="/image/logo.png"/> 
+  
+  <title>
+    
+      应用的安全 | Davidli
+    
+  </title>
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+  <script src="/js/qrious.js"></script>
+<script src="/js/gitment.js"></script>
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+</head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>Davidli</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>应用的安全</h2>
+  <p class="post-date">2019-04-02</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><p>这段时间 iOS12 越狱工具发布了，屁颠屁颠的去研究了一键砸壳，昨天忽然想起来之前公司的产品被人破解，拿到了关键信息进而薅羊毛的事。那时的解决方案是检测异常请求和独立出一个加密<code>framework</code>。现在想想，这些措施都太简单或者不够高效，还需要更进一步研究应用的安全问题。</p>
+<p><img src="https://davidlii.nos-eastchina1.126.net/pic_safe_app.png" alt="纲目"></p>
+<h3 id="1-被破解的危害"><a href="#1-被破解的危害" class="headerlink" title="1.被破解的危害"></a>1.被破解的危害</h3><ul>
+<li>被人逆向分析通信协议、API、核心算法等；</li>
+<li>篡改IPA、植入广告和木马；</li>
+<li>重打包并发布盗版应用；</li>
+<li>破解内购；</li>
+</ul>
+<h3 id="2-防范"><a href="#2-防范" class="headerlink" title="2.防范"></a>2.防范</h3><p>在这方面我是真没有经验，于是抱着学习的态度去查看了相关的论坛和资料，学学别人的经验，这里做一个简单的记录~</p>
+<h4 id="2-1-检测是否越狱（念茜）"><a href="#2-1-检测是否越狱（念茜）" class="headerlink" title="2.1.检测是否越狱（念茜）"></a>2.1.检测是否越狱（念茜）</h4><p>这是最常见的被动防御方法，比如当应用启动时，先检测设备是否已经越狱，如果已越狱则禁止应用启动；在用户发起内购支付时，如果发现设备已越狱，则直接拒绝内购请求并给出相应的提示。根据我的测试，<code>部落冲突</code>游戏就是通过闪退直接禁止越狱设备启动自己，而腾讯旗下的产品基本上都会在越狱设备发起支付时给出提示，<code>别踩音乐块儿</code>也是如此。<br>&emsp;</p>
+<p>以下摘自<a href="https://blog.csdn.net/yiyaaixuexi/article/details/20286929" target="_blank" rel="noopener">念茜</a>的博客：</p>
+<ul>
+<li>检测越狱文件或目录</li>
+</ul>
+<p>越狱后的设备中会有相关的文件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">/Applications/Cydia.app</span><br><span class="line">/Library/MobileSubstrate/MobileSubstrate.dylib</span><br><span class="line">/bin/bash</span><br><span class="line">/usr/sbin/sshd</span><br><span class="line">/etc/apt</span><br></pre></td></tr></table></figure>
+<p>检测方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">+(BOOL)isJailbroken&#123;</span><br><span class="line">if ([[NSFileManager defaultManager] fileExistsAtPath:@&quot;/Applications/Cydia.app&quot;])&#123;</span><br><span class="line">      return YES;</span><br><span class="line">  &#125;</span><br><span class="line">  // ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>检测 Cydia 的 URL scheme</li>
+</ul>
+<p>越狱后的设备一般都会安装 Cydia，这里可以通过检测其 URL Scheme 来反推设备是否越狱。这个方法在 iOS9 之后会因为权限问题而出现问题，所以你需要配置好<code>LSApplicationQueriesSchemes</code>白名单。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@&quot;cydia://package/com.example.package&quot;]])&#123;</span><br><span class="line">     NSLog(@&quot;Device is jailbroken&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>读取应用列表，看有无权限:</li>
+</ul>
+<p>在未越狱的情况下，用户是没有权限查看设备上的某些目录的，也就无法知晓有哪些已安装的应用，除非你像某些三方市场一样用苹果的私有API，但这会导致上架被拒。所以，我们可以利用这一特性来检测设备是否越狱：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">if ([[NSFileManager defaultManager] fileExistsAtPath:@&quot;/User/Applications/&quot;])&#123;</span><br><span class="line">    NSLog(@&quot;Device is jailbroken&quot;);</span><br><span class="line">    NSArray *applist = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:@&quot;/User/Applications/&quot;</span><br><span class="line">                                            error:nil];</span><br><span class="line">    NSLog(@&quot;applist = %@&quot;,applist);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>用 stat 系列函数检测 Cydia 等工具：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">#import &lt;sys/stat.h&gt;  </span><br><span class="line">     </span><br><span class="line">  void checkCydia(void)  </span><br><span class="line">  &#123;  </span><br><span class="line">      struct stat stat_info;  </span><br><span class="line">      if (0 == stat(&quot;/Applications/Cydia.app&quot;, &amp;stat_info)) &#123;  </span><br><span class="line">          NSLog(@&quot;Device is jailbroken&quot;);  </span><br><span class="line">      &#125;  </span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>检测 DYLD_INSERT_LIBRARIES 环境变量</li>
+</ul>
+<p><code>DYLD_INSERT_LIBRARIES</code>是一个环境变量，<code>dyld</code>动态链接器在加载二进制文件时会检测这个变量，如果有配置过则会加载其指向的动态库，从而实现动态注入并将程序的内存dump出来，这正是越狱设备中调试时常用的方法。所以我们可以检测此环境变量来确定设备是否越狱：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">void printEnv(void)</span><br><span class="line">&#123;</span><br><span class="line">  char *env = getenv(&quot;DYLD_INSERT_LIBRARIES&quot;);</span><br><span class="line">  NSLog(@&quot;%s&quot;, env);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>未越狱设备返回结果是null，已越狱设备返回自己的配置。</p>
+<h4 id="2-2-代码-amp-逻辑混淆"><a href="#2-2-代码-amp-逻辑混淆" class="headerlink" title="2.2.代码 &amp; 逻辑混淆"></a>2.2.代码 &amp; 逻辑混淆</h4><ul>
+<li>关键字：类名、属性、方法名等；</li>
+<li>常量：URL、字符串；</li>
+<li>将原逻辑拆分成各种怪癖语法；</li>
+</ul>
+<p>代码混淆和逻辑混淆，其本质上只是在应用编译时将指定的字符串或逻辑进行混淆替换，从而增加应用破解后阅读源码的难度。具体的混淆方法，我之前的文章中也已经介绍过，这里不再赘述~</p>
+<h4 id="2-3-RESTRICT反动态库注入"><a href="#2-3-RESTRICT反动态库注入" class="headerlink" title="2.3.__RESTRICT反动态库注入"></a>2.3.__RESTRICT反动态库注入</h4><p>通过在 Xcode 里的 Other Linker Flags 设置参数，可以防止应用的二进制文件被注入 dylib（仅限于iOS 10 以下系统）。dylib 无法注入，也就意味着没办法用<code>cycript</code>动态调试进程</p>
+<ul>
+<li>Other Linker Flags 参数：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-Wl,-sectcreate,__RESTRICT,__restrict,/dev/null</span><br></pre></td></tr></table></figure>
+<p>参考博文：</p>
+<ul>
+<li><a href="https://www.cnblogs.com/ciml/p/7551193.html" target="_blank" rel="noopener">反注入</a></li>
+<li><a href="http://bbs.iosre.com/t/tweak-app-app-tweak/438" target="_blank" rel="noopener">iosre论坛snakeninny</a></li>
+<li><a href="https://pewpewthespells.com/blog/blocking_code_injection_on_ios_and_os_x.html" target="_blank" rel="noopener">pewpewthespells-blocking_code_injection</a></li>
+</ul>
+<h4 id="2-4-反ptrace调试"><a href="#2-4-反ptrace调试" class="headerlink" title="2.4.反ptrace调试"></a>2.4.反ptrace调试</h4><p><code>ptrace</code>是系统函数，此函数提供一个进程去监听和控制另一个进程，并且可以检测被控制进程的内存和寄存器里面的数据。<code>ptrace</code>可以用来实现断点调试和系统调用跟踪。<br>&emsp;</p>
+<p>参考博文：<a href="https://www.jianshu.com/p/ebdfb0a25c85" target="_blank" rel="noopener">https://www.jianshu.com/p/ebdfb0a25c85</a></p>
+<h4 id="2-5-第三方加固"><a href="#2-5-第三方加固" class="headerlink" title="2.5.第三方加固"></a>2.5.第三方加固</h4><p>缺点：</p>
+<ul>
+<li>安装包变大；</li>
+<li>运行速度变慢；</li>
+</ul>
+<p>第三方加固提供商：</p>
+<ul>
+<li>网易易盾</li>
+<li>百度加固</li>
+<li>腾讯乐固</li>
+<li>通付盾</li>
+</ul>
+<p>根据应用对安全等级的要求衡量成本~~</p>
+<hr>
+<p>相关参考：</p>
+<p>#<a href="https://blog.csdn.net/yiyaaixuexi/article/details/20286929" target="_blank" rel="noopener">©念茜</a></p>
+<p>#<a href="https://www.cnblogs.com/ciml/p/7551193.html" target="_blank" rel="noopener">©反注入</a></p>
+<p>#<a href="http://bbs.iosre.com/t/tweak-app-app-tweak/438" target="_blank" rel="noopener">©iosre论坛snakeninny</a>  </p>
+<p>#<a href="https://pewpewthespells.com/blog/blocking_code_injection_on_ios_and_os_x.html" target="_blank" rel="noopener">©pewpewthespells-blocking_code_injection</a></p>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#逆向工程" >
+    <span class="tag-code">逆向工程</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2019/03/31/frida.html">
+        <span class="nav-arrow">← </span>
+        
+          frida一键砸壳
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1-被破解的危害"><span class="toc-nav-text">1.被破解的危害</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-防范"><span class="toc-nav-text">2.防范</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-1-检测是否越狱（念茜）"><span class="toc-nav-text">2.1.检测是否越狱（念茜）</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-2-代码-amp-逻辑混淆"><span class="toc-nav-text">2.2.代码 &amp; 逻辑混淆</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-3-RESTRICT反动态库注入"><span class="toc-nav-text">2.3.__RESTRICT反动态库注入</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-4-反ptrace调试"><span class="toc-nav-text">2.4.反ptrace调试</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-5-第三方加固"><span class="toc-nav-text">2.5.第三方加固</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'http://yoursite.com/2019/04/02/safeapp.html';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+     // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+        
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+
+    // qrcode
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+
+    // gitment
+    var gitmentConfig = "";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "应用的安全",
+        owner: "",
+        repo: "",
+        oauth: {
+          client_id: "",
+          client_secret: ""
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  })();
+</script>
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2019 | <a href="https://github.com/davidlii" target="_blank">Davidli</a>
+    <br>
+    <a href="https://hexo.io" target="_blank">Hexo</a> | Theme-<a href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+<script src="/js/script.js"></script>
+  </body>
+</html>

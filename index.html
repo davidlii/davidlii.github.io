@@ -129,6 +129,72 @@
   
     <article class="article-card">
       <h2 class="article-head">
+        <a href="/2019/04/02/safeapp.html">应用的安全</a>
+      </h2>
+      <p class="article-date">April 2, 2019</p>
+      
+        
+  <a href="/tags#逆向工程" >
+    <span class="tag-code">逆向工程</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          这段时间 iOS12 越狱工具发布了，屁颠屁颠的去研究了一键砸壳，昨天忽然想起来之前公司的产品被人破解，拿到了关键信息进而薅羊毛的事。那时的解决方案是检测异常请求和独立出一个加密framework。现在想想，这些措施都太简单或者不够高效，还需要更进一步研究应用的安全问题。
+
+1.被破解的危害 ...
+        
+      </div>
+      <a class="more" href="/2019/04/02/safeapp.html">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2019/03/31/frida.html">frida一键砸壳</a>
+      </h2>
+      <p class="article-date">March 31, 2019</p>
+      
+        
+  <a href="/tags#逆向工程" >
+    <span class="tag-code">逆向工程</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          前两天重新给我的 iOS12 设备越狱，然后砸壳和反编译一个应用，结果又是ps命令出错、又是cycript命令出错，到处查资料，折腾了好久。后来发现竟然有一键砸壳的工具frida，这里含泪记录下来整个砸壳的流程~
+
+frida官网：https://www.frida.re/docs/home ...
+        
+      </div>
+      <a class="more" href="/2019/03/31/frida.html">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2019/03/28/jailbreak-ios12.html">iOS12越狱填坑</a>
+      </h2>
+      <p class="article-date">March 28, 2019</p>
+      
+        
+  <a href="/tags#逆向工程" >
+    <span class="tag-code">逆向工程</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          最近看到有新版的iOS12越狱工具发布，一时手痒，于是将手里的设备进行了越狱。这中间又出了各种问题，在这里记录下来，顺便给后面踩坑的同学做个参考~
+
+1.越狱工具unc0verjailbreak for iOS 11.0-12.1.2，版本号为 v3.0.0~b48，手机 Safari 中打 ...
+        
+      </div>
+      <a class="more" href="/2019/03/28/jailbreak-ios12.html">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
         <a href="/2018/12/07/str-modifier.html">字符串属性的修饰符</a>
       </h2>
       <p class="article-date">December 7, 2018</p>
@@ -299,73 +365,6 @@ static dispatch is a form of polymorphism fully  ...
         
       </div>
       <a class="more" href="/2018/09/05/static-dynamic.html">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2018/09/02/swift-mixmatch.html">Swift 与 OC 的混编</a>
-      </h2>
-      <p class="article-date">September 2, 2018</p>
-      
-        
-  <a href="/tags#Swift" >
-    <span class="tag-code">Swift</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          混编的两种情况：①Swift 工程中使用 Objective-C 文件；&emsp;
-②Objective-C 工程中使用 Swift 文件。&emsp;
-本文所用 Xcode 版本：9.4.1
-1.Swift 中混编 OCSwift 工程中使用 OC 文件时需要依赖 桥接头文件 将 OC  ...
-        
-      </div>
-      <a class="more" href="/2018/09/02/swift-mixmatch.html">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2018/08/31/swift-kvo-observer.html">Swift 中监听属性变化</a>
-      </h2>
-      <p class="article-date">August 31, 2018</p>
-      
-        
-  <a href="/tags#Swift" >
-    <span class="tag-code">Swift</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          1、属性观察器Swift 提供了属性观察器来监听自身存储属性的变化。观察器只能用于监听非lazy存储属性。对于计算属性，它已经内含了get{}和set{}，闭包内已经知道属性的变化，不需要再提供观察器。对于从父类继承下来的存储属性或计算属性，我们可以在子类中重写属性的getter和sette ...
-        
-      </div>
-      <a class="more" href="/2018/08/31/swift-kvo-observer.html">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2018/08/20/swift-refcycle.html">Swift 中闭包的变量捕获 & 循环引用</a>
-      </h2>
-      <p class="article-date">August 20, 2018</p>
-      
-        
-  <a href="/tags#循环引用" >
-    <span class="tag-code">循环引用</span>
-  </a>
-
-  <a href="/tags#Swift" >
-    <span class="tag-code">Swift</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          闭包中的变量捕获A closure can capture constants and variables from the surrounding context in which it is defined. The closure can then refer to and modif ...
-        
-      </div>
-      <a class="more" href="/2018/08/20/swift-refcycle.html">Read more</a>
     </article>
   
 

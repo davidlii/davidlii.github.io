@@ -129,6 +129,87 @@
   
     <article class="article-card">
       <h2 class="article-head">
+        <a href="/2017/11/25/udid_idfa.html">iOS 设备唯一标识符</a>
+      </h2>
+      <p class="article-date">November 25, 2017</p>
+      
+        
+  <a href="/tags#FQA" >
+    <span class="tag-code">FQA</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          1、UDIDUDID（Unique Device Identifier），iOS 设备的唯一识别码，是一个40位十六进制序列。
+1[[UIDevice cuurrent] uniqueIdenfier];
+移动广告商等往往需要通过UDID用来识别玩家用户，并对用户活动进行跟踪。这会泄露用户的 ...
+        
+      </div>
+      <a class="more" href="/2017/11/25/udid_idfa.html">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2017/11/24/faq.html">常见问题汇总</a>
+      </h2>
+      <p class="article-date">November 24, 2017</p>
+      
+        
+  <a href="/tags#FQA" >
+    <span class="tag-code">FQA</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          1、VC的生命周期
+-initWithCoder: //VC初始化
+-initWithNibName:bundle:
+-loadView //从nib载入视图或返回一个自定义视图
+-viewDidLoad //视图载入完成并开始进一步的设置
+-viewWillAppear: //视图即将出现 ...
+        
+      </div>
+      <a class="more" href="/2017/11/24/faq.html">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2017/11/24/memory.html">虚拟内存分配</a>
+      </h2>
+      <p class="article-date">November 24, 2017</p>
+      
+        
+  <a href="/tags#FQA" >
+    <span class="tag-code">FQA</span>
+  </a>
+
+  <a href="/tags#内存管理" >
+    <span class="tag-code">内存管理</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          分区及职责
+栈区(stack)：存放局部变量和方法实参。
+
+堆区(heap)：存放OC中使用new等方法创建的对象。
+
+全局（静态）区：包括以下两个分区：
+
+
+123.1. 数据段（Data segment）：初始化的全局变量和静态变量。3.2. BSS段：未初始化的全局变量和静态变量。
+
+ ...
+        
+      </div>
+      <a class="more" href="/2017/11/24/memory.html">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
         <a href="/2017/11/24/atomic.html">atomic一定线程安全吗？</a>
       </h2>
       <p class="article-date">November 24, 2017</p>
@@ -305,78 +386,6 @@ iOS2 时 OS X 与 iOS 的程序都普遍采用 NSOperation 来编写线程代码
         
       </div>
       <a class="more" href="/2017/11/07/nsthread.html">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2017/09/09/runloop.html">Runloop</a>
-      </h2>
-      <p class="article-date">September 9, 2017</p>
-      
-        
-  <a href="/tags#runloop" >
-    <span class="tag-code">runloop</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          1.Runloop
-Run loops are part of the fundamental infrastructure associated with threads.A run loop is an event processing loop that you use to sche ...
-        
-      </div>
-      <a class="more" href="/2017/09/09/runloop.html">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2017/09/01/runtime_addClass.html">Runtime：动态增加新类、方法、属性</a>
-      </h2>
-      <p class="article-date">September 1, 2017</p>
-      
-        
-  <a href="/tags#runtime" >
-    <span class="tag-code">runtime</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          
-runtime是一套底层的C语言API，包含很多强大实用的C语言数据类型和C语言函数，平时我们编写的OC代码，底层都是基于runtime实现的。
-
-1.常用场景：
-消息机制；
-获取成员变量及其信息；
-获取函数列表及其信息；
-动态为某个类增加属性；
-动态为某个类添加方法、交换方法；
-动态创建 ...
-        
-      </div>
-      <a class="more" href="/2017/09/01/runtime_addClass.html">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2017/09/01/runtime_swizzle.html">Runtime：黑魔法：方法交换、数组对对象检测</a>
-      </h2>
-      <p class="article-date">September 1, 2017</p>
-      
-        
-  <a href="/tags#runtime" >
-    <span class="tag-code">runtime</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          方法交换（Method Swizzling）作用：动态交换两个方法的实现(即IMP指针)；
-原理：在类的数据结构体中有一个”方法列表”，它存放着 SEL 与 IMP 的映射关系。Method Swizzling 就是对这个列表进行的操作，通过改变这种映射关系，实现两个方法实现的交换；
-&em ...
-        
-      </div>
-      <a class="more" href="/2017/09/01/runtime_swizzle.html">Read more</a>
     </article>
   
 

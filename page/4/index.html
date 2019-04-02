@@ -129,6 +129,90 @@
   
     <article class="article-card">
       <h2 class="article-head">
+        <a href="/2018/01/14/retain_circle.html">循环引用问题</a>
+      </h2>
+      <p class="article-date">January 14, 2018</p>
+      
+        
+  <a href="/tags#内存管理" >
+    <span class="tag-code">内存管理</span>
+  </a>
+
+  <a href="/tags#循环引用" >
+    <span class="tag-code">循环引用</span>
+  </a>
+
+  <a href="/tags#block" >
+    <span class="tag-code">block</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          1.概念循环引用可以简单理解为 A 强引用 B，B 又强引用了 A，双方同时保持对方的一个引用，导致引用计数不为0，始终无法释放。&emsp;
+影响？&emsp;
+导致对象无法释放，造成内存泄露。如果是 ViewController 内出现循环引用，在反复 push &amp; pop 后， ...
+        
+      </div>
+      <a class="more" href="/2018/01/14/retain_circle.html">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2018/01/09/framework.html">静态库 & 动态库、.a & .framework、制作库</a>
+      </h2>
+      <p class="article-date">January 9, 2018</p>
+      
+        
+  <a href="/tags#FQA" >
+    <span class="tag-code">FQA</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          库？&emsp;库是代码的集合、共享代码的一种方式。分为：
+
+开源库：源代码公开，能看到具体的实现。（如SD、AF）
+闭源库：源码不公开，是经过编译后的二进制文件，看不到具体实现。
+
+&emsp;其中，闭源库有两种形式：
+
+静态库：.a 和 .framework
+动态库：.dylib 和 . ...
+        
+      </div>
+      <a class="more" href="/2018/01/09/framework.html">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2018/01/07/uiresponder.html">事件传递 & 事件响应、hitTest</a>
+      </h2>
+      <p class="article-date">January 7, 2018</p>
+      
+        
+  <a href="/tags#FQA" >
+    <span class="tag-code">FQA</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          1、UIResponder此类用来响应用户的操作并处理各种事件：
+
+触摸事件
+加速计事件
+远程控制事件
+
+1.1.谁能接收和处理事件？继承自UIResponder的类对象，如UIView、UIViewController、UIApplication，才能接收和处理事件，它们被称为“响应者对象 ...
+        
+      </div>
+      <a class="more" href="/2018/01/07/uiresponder.html">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
         <a href="/2017/12/29/code_confusion.html">代码混淆、shell 脚本自动替换</a>
       </h2>
       <p class="article-date">December 29, 2017</p>
@@ -296,87 +380,6 @@ iOS程序默认情况下只能访问程序自己的目录，这个目录被称�
         
       </div>
       <a class="more" href="/2017/11/25/sandbox.html">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2017/11/25/udid_idfa.html">iOS 设备唯一标识符</a>
-      </h2>
-      <p class="article-date">November 25, 2017</p>
-      
-        
-  <a href="/tags#FQA" >
-    <span class="tag-code">FQA</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          1、UDIDUDID（Unique Device Identifier），iOS 设备的唯一识别码，是一个40位十六进制序列。
-1[[UIDevice cuurrent] uniqueIdenfier];
-移动广告商等往往需要通过UDID用来识别玩家用户，并对用户活动进行跟踪。这会泄露用户的 ...
-        
-      </div>
-      <a class="more" href="/2017/11/25/udid_idfa.html">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2017/11/24/faq.html">常见问题汇总</a>
-      </h2>
-      <p class="article-date">November 24, 2017</p>
-      
-        
-  <a href="/tags#FQA" >
-    <span class="tag-code">FQA</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          1、VC的生命周期
--initWithCoder: //VC初始化
--initWithNibName:bundle:
--loadView //从nib载入视图或返回一个自定义视图
--viewDidLoad //视图载入完成并开始进一步的设置
--viewWillAppear: //视图即将出现 ...
-        
-      </div>
-      <a class="more" href="/2017/11/24/faq.html">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2017/11/24/memory.html">虚拟内存分配</a>
-      </h2>
-      <p class="article-date">November 24, 2017</p>
-      
-        
-  <a href="/tags#内存管理" >
-    <span class="tag-code">内存管理</span>
-  </a>
-
-  <a href="/tags#FQA" >
-    <span class="tag-code">FQA</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          分区及职责
-栈区(stack)：存放局部变量和方法实参。
-
-堆区(heap)：存放OC中使用new等方法创建的对象。
-
-全局（静态）区：包括以下两个分区：
-
-
-123.1. 数据段（Data segment）：初始化的全局变量和静态变量。3.2. BSS段：未初始化的全局变量和静态变量。
-
- ...
-        
-      </div>
-      <a class="more" href="/2017/11/24/memory.html">Read more</a>
     </article>
   
 
