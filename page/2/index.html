@@ -315,8 +315,7 @@ t2：构建界面并完成渲染和展示：main函数到-applic ...
           
 本文主要整理自 王中周的博客
 
-一、dSYM1.1.dSYM.dSYM 调试符号表，是苹果为了方便调试和定位问题而使用的一种调试方案，它实际上是从 Mach-O 文件中抽取调试信息而得到的文件目录。它使用的是 DWARF 结构，在 .xcarchive 目录中其层次结构如下：
-123456 ...
+一、dSYM1.1.dSYM调试符号表，是苹果为调试和定位问题而使用的一种调试文件。调试符号信息在构建应用时就保存在Mach-O文件中了，而.dSYM就是从Mach-O文件中抽取调试信息而得到的一个单独的文件目录。它使用的是 DWARF 结构，在 .xcar ...
         
       </div>
       <a class="more" href="/2018/07/11/dsym.html">Read more</a>
@@ -344,7 +343,7 @@ t2：构建界面并完成渲染和展示：main函数到-applic ...
   
     <article class="article-card">
       <h2 class="article-head">
-        <a href="/2018/06/22/autolayout.html">布局与约束相关知识点</a>
+        <a href="/2018/06/22/autolayout.html">布局与约束</a>
       </h2>
       <p class="article-date">June 22, 2018</p>
       
@@ -356,14 +355,7 @@ t2：构建界面并完成渲染和展示：main函数到-applic ...
       
       <div class="article-summary">
         
-          
-整理自#©zpz5789-Updating constraints、Layout
-
-#1、布局相关的接口1- (void)layoutSubviews;
-系统重写布局，若需要更精确控制子view，就需要重写该方法。此方法会在以下场景下触发：
-
-使用-init初始化时不会触发。
-用-init ...
+          #1.AutoresizingAutoresizing是苹果早期的界面适配方案，那时苹果的设备还不算多，iPhone 只有 4s 及其之前的产品，都是3.5英寸屏幕；iPad 也只有 iPad1、iPad2，都是9.7英寸。并且当时 iOS 上的应用很少需要适配横屏，所以Autoresizi ...
         
       </div>
       <a class="more" href="/2018/06/22/autolayout.html">Read more</a>
