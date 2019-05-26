@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
-  <head>
+  <head><meta name="generator" content="Hexo 3.8.0">
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
   <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
   <meta name="description" content="This is Davidli&#39;s blog ~">
   <meta name="keyword" content="hexo-theme, vuejs">
   
-    <link rel="shortcut icon" type="image/ico" href="/image/logo.png"/> 
+    <link rel="shortcut icon" type="image/ico" href="/image/logo.png"> 
   
   <title>
     
@@ -51,7 +51,7 @@
 
 </head>
 <div class="wechat-share">
-  <img src="/css/images/logo.png" />
+  <img src="/css/images/logo.png">
 </div>
 
   <body>
@@ -129,12 +129,64 @@
   
     <article class="article-card">
       <h2 class="article-head">
+        <a href="/2017/11/27/bad_access.html">内存错误调试</a>
+      </h2>
+      <p class="article-date">November 27, 2017</p>
+      
+        
+  <a href="/tags#异常">
+    <span class="tag-code">异常</span>
+  </a>
+
+  <a href="/tags#内存管理">
+    <span class="tag-code">内存管理</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          1、内存错误是啥&emsp;在C和OC中，你一直在处理指针。指针是存储另一个变量的内存地址的变量。当向一个对象发送消息时，指向该对象的指针将会被引用。这意味着，你获取了指针所指的内存地址，并访问该存储区域的值。
+&emsp;当该存储器区域不再映射到你的应用时，或者换句话说，该内存区域在你认为 ...
+        
+      </div>
+      <a class="more" href="/2017/11/27/bad_access.html">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2017/11/27/weak.html">weak 的实现原理</a>
+      </h2>
+      <p class="article-date">November 27, 2017</p>
+      
+        
+  <a href="/tags#机制">
+    <span class="tag-code">机制</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          
+weak 表示的是一个弱引用，不会增加对象的引用计数，并且在所指向的对象被释放之后，weak 指针会被置为nil。weak 引用通常是用于处理循环引用的问题。
+
+实现原理：
+初始化：
+
+runtime 调用 objc_initWeak 函数，初始化一个新的 weak 指针指向对象的地址。
+ ...
+        
+      </div>
+      <a class="more" href="/2017/11/27/weak.html">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
         <a href="/2017/11/25/sandbox.html">沙盒 & 本地持久化方案</a>
       </h2>
       <p class="article-date">November 25, 2017</p>
       
         
-  <a href="/tags#FQA" >
+  <a href="/tags#FQA">
     <span class="tag-code">FQA</span>
   </a>
 
@@ -159,7 +211,7 @@ iOS程序默认情况下只能访问程序自己的目录，这个目录被称�
       <p class="article-date">November 25, 2017</p>
       
         
-  <a href="/tags#FQA" >
+  <a href="/tags#FQA">
     <span class="tag-code">FQA</span>
   </a>
 
@@ -181,7 +233,7 @@ iOS程序默认情况下只能访问程序自己的目录，这个目录被称�
       <p class="article-date">November 24, 2017</p>
       
         
-  <a href="/tags#FQA" >
+  <a href="/tags#FQA">
     <span class="tag-code">FQA</span>
   </a>
 
@@ -206,11 +258,11 @@ iOS程序默认情况下只能访问程序自己的目录，这个目录被称�
       <p class="article-date">November 24, 2017</p>
       
         
-  <a href="/tags#内存管理" >
+  <a href="/tags#内存管理">
     <span class="tag-code">内存管理</span>
   </a>
 
-  <a href="/tags#FQA" >
+  <a href="/tags#FQA">
     <span class="tag-code">FQA</span>
   </a>
 
@@ -240,7 +292,7 @@ iOS程序默认情况下只能访问程序自己的目录，这个目录被称�
       <p class="article-date">November 24, 2017</p>
       
         
-  <a href="/tags#多线程" >
+  <a href="/tags#多线程">
     <span class="tag-code">多线程</span>
   </a>
 
@@ -263,7 +315,7 @@ iOS程序默认情况下只能访问程序自己的目录，这个目录被称�
       <p class="article-date">November 24, 2017</p>
       
         
-  <a href="/tags#FQA" >
+  <a href="/tags#FQA">
     <span class="tag-code">FQA</span>
   </a>
 
@@ -284,7 +336,7 @@ iOS程序默认情况下只能访问程序自己的目录，这个目录被称�
       <p class="article-date">November 22, 2017</p>
       
         
-  <a href="/tags#网络" >
+  <a href="/tags#网络">
     <span class="tag-code">网络</span>
   </a>
 
@@ -317,7 +369,7 @@ iOS程序默认情况下只能访问程序自己的目录，这个目录被称�
       <p class="article-date">November 21, 2017</p>
       
         
-  <a href="/tags#锁" >
+  <a href="/tags#锁">
     <span class="tag-code">锁</span>
   </a>
 
@@ -333,53 +385,6 @@ Read/Wri ...
         
       </div>
       <a class="more" href="/2017/11/21/lock.html">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2017/11/17/nsoperation.html">多线程：NSOperation</a>
-      </h2>
-      <p class="article-date">November 17, 2017</p>
-      
-        
-  <a href="/tags#多线程" >
-    <span class="tag-code">多线程</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          
-iOS2 时 OS X 与 iOS 的程序都普遍采用 NSOperation 来编写线程代码，而之后出现的 GCD 技术大体是依照前者的原则来实现的。随着 GCD 的普及，在iOS4 与 OS X 10.6 以后，OperationQueue 的底层都是用 GCD 来实现的。
-
-1、与 G ...
-        
-      </div>
-      <a class="more" href="/2017/11/17/nsoperation.html">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2017/11/08/gcd.html">多线程：GCD</a>
-      </h2>
-      <p class="article-date">November 8, 2017</p>
-      
-        
-  <a href="/tags#多线程" >
-    <span class="tag-code">多线程</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          1.简介GCD是苹果公司在线程池模式基础上开发的一套多核编程的较新的解决方案。它的优点有：
-
-底层是由C语言实现，API使用时简洁明了；
-为多核处理器而设计，会自动利用更多的CPU内核进行运算，执行效率高；
-会自动管理线程的生命周期，不需要我们写任何线程管理的代码，只需告诉它我们想要执行的任 ...
-        
-      </div>
-      <a class="more" href="/2017/11/08/gcd.html">Read more</a>
     </article>
   
 

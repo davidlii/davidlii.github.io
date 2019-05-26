@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
-  <head>
+  <head><meta name="generator" content="Hexo 3.8.0">
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
   <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
   <meta name="description" content="This is Davidli&#39;s blog ~">
   <meta name="keyword" content="hexo-theme, vuejs">
   
-    <link rel="shortcut icon" type="image/ico" href="/image/logo.png"/> 
+    <link rel="shortcut icon" type="image/ico" href="/image/logo.png"> 
   
   <title>
     
@@ -51,7 +51,7 @@
 
 </head>
 <div class="wechat-share">
-  <img src="/css/images/logo.png" />
+  <img src="/css/images/logo.png">
 </div>
 
   <body>
@@ -129,13 +129,54 @@
   
     <article class="article-card">
       <h2 class="article-head">
+        <a href="/2018/01/21/autoreleasepool.html">OC中的内存管理</a>
+      </h2>
+      <p class="article-date">January 21, 2018</p>
+      
+        
+  <a href="/tags#内存管理">
+    <span class="tag-code">内存管理</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          MRC1.retain/release123456789@protocol NSObject//...- (instancetype)retain OBJC_ARC_UNAVAILABLE;- (oneway void)release OBJC_ARC_UNAVAILABLE;- (inst ...
+        
+      </div>
+      <a class="more" href="/2018/01/21/autoreleasepool.html">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2018/01/20/reuse_cell.html">UITableViewCell 的重用、卡顿与离屏渲染</a>
+      </h2>
+      <p class="article-date">January 20, 2018</p>
+      
+        
+  <a href="/tags#机制">
+    <span class="tag-code">机制</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          1、Cell 的重用#示例1：常见用法
+123456789101112- (UITableViewCell *)tableView:(UITableView *)tableViewcellForRowAtIndexPath:(NSIndexPath *)indexPath &#123;  s ...
+        
+      </div>
+      <a class="more" href="/2018/01/20/reuse_cell.html">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
         <a href="/2018/01/18/patterns.html">常用架构模式</a>
       </h2>
       <p class="article-date">January 18, 2018</p>
       
         
-  <a href="/tags#架构模式" >
-    <span class="tag-code">架构模式</span>
+  <a href="/tags#架构">
+    <span class="tag-code">架构</span>
   </a>
 
       
@@ -158,16 +199,16 @@
       <p class="article-date">January 14, 2018</p>
       
         
-  <a href="/tags#内存管理" >
+  <a href="/tags#内存管理">
     <span class="tag-code">内存管理</span>
   </a>
 
-  <a href="/tags#循环引用" >
-    <span class="tag-code">循环引用</span>
+  <a href="/tags#block">
+    <span class="tag-code">block</span>
   </a>
 
-  <a href="/tags#block" >
-    <span class="tag-code">block</span>
+  <a href="/tags#循环引用">
+    <span class="tag-code">循环引用</span>
   </a>
 
       
@@ -188,7 +229,7 @@
       <p class="article-date">January 9, 2018</p>
       
         
-  <a href="/tags#FQA" >
+  <a href="/tags#FQA">
     <span class="tag-code">FQA</span>
   </a>
 
@@ -216,7 +257,7 @@
       <p class="article-date">January 7, 2018</p>
       
         
-  <a href="/tags#FQA" >
+  <a href="/tags#FQA">
     <span class="tag-code">FQA</span>
   </a>
 
@@ -242,7 +283,7 @@
       <p class="article-date">December 29, 2017</p>
       
         
-  <a href="/tags#逆向工程" >
+  <a href="/tags#逆向工程">
     <span class="tag-code">逆向工程</span>
   </a>
 
@@ -268,7 +309,7 @@
       <p class="article-date">December 24, 2017</p>
       
         
-  <a href="/tags#FQA" >
+  <a href="/tags#FQA">
     <span class="tag-code">FQA</span>
   </a>
 
@@ -289,7 +330,7 @@
       <p class="article-date">December 22, 2017</p>
       
         
-  <a href="/tags#网络" >
+  <a href="/tags#网络">
     <span class="tag-code">网络</span>
   </a>
 
@@ -311,7 +352,7 @@
       <p class="article-date">November 28, 2017</p>
       
         
-  <a href="/tags#异常" >
+  <a href="/tags#异常">
     <span class="tag-code">异常</span>
   </a>
 
@@ -327,58 +368,6 @@
         
       </div>
       <a class="more" href="/2017/11/28/crash.html">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2017/11/27/bad_access.html">内存错误调试</a>
-      </h2>
-      <p class="article-date">November 27, 2017</p>
-      
-        
-  <a href="/tags#异常" >
-    <span class="tag-code">异常</span>
-  </a>
-
-  <a href="/tags#内存管理" >
-    <span class="tag-code">内存管理</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          1、内存错误是啥&emsp;在C和OC中，你一直在处理指针。指针是存储另一个变量的内存地址的变量。当向一个对象发送消息时，指向该对象的指针将会被引用。这意味着，你获取了指针所指的内存地址，并访问该存储区域的值。
-&emsp;当该存储器区域不再映射到你的应用时，或者换句话说，该内存区域在你认为 ...
-        
-      </div>
-      <a class="more" href="/2017/11/27/bad_access.html">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2017/11/27/weak.html">weak 的实现原理</a>
-      </h2>
-      <p class="article-date">November 27, 2017</p>
-      
-        
-  <a href="/tags#机制" >
-    <span class="tag-code">机制</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          
-weak 表示的是一个弱引用，不会增加对象的引用计数，并且在所指向的对象被释放之后，weak 指针会被置为nil。weak 引用通常是用于处理循环引用的问题。
-
-实现原理：
-初始化：
-
-runtime 调用 objc_initWeak 函数，初始化一个新的 weak 指针指向对象的地址。
- ...
-        
-      </div>
-      <a class="more" href="/2017/11/27/weak.html">Read more</a>
     </article>
   
 

@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
-  <head>
+  <head><meta name="generator" content="Hexo 3.8.0">
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
   <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
   <meta name="description" content="This is Davidli&#39;s blog ~">
   <meta name="keyword" content="hexo-theme, vuejs">
   
-    <link rel="shortcut icon" type="image/ico" href="/image/logo.png"/> 
+    <link rel="shortcut icon" type="image/ico" href="/image/logo.png"> 
   
   <title>
     
@@ -51,7 +51,7 @@
 
 </head>
 <div class="wechat-share">
-  <img src="/css/images/logo.png" />
+  <img src="/css/images/logo.png">
 </div>
 
   <body>
@@ -192,12 +192,12 @@
 <p><strong>视图</strong><br>&emsp;</p>
 <p>由 View 和 Controller 组成，负责显示 UI。绑定 ViewModel 中的属性，触发 ViewModel 中的命令。<br>&emsp;</p>
 <p><strong>视图模型VM</strong><br>&emsp;</p>
-<p>负责用户输入验证逻辑，视图显示逻辑，发起网络请求、从 Model 中获取<code>V层</code>所需的数据，转换成<code>V层</code>可以展示的数据，并暴露公开的属性和命令供<code>V层</code>进行绑定。<br>&emsp;</p>
+<p>负责用户输入内容的验证逻辑（如用户名、密码的合法性）；视图显示逻辑；发起网络请求；从 Model 中获取<code>V层</code>所需的数据，转换成<code>V层</code>可以展示的数据（如TableView 的 DataSource）；暴露公开的属性和命令供<code>V层</code>进行绑定。<br>&emsp;</p>
 <p><strong>Binder</strong><br>&emsp;</p>
 <p>在 MVVM 中，声明式的数据和命令绑定是一个隐含的约定，它可以让开发者非常方便地实现<code>视图层</code>和<code>ViewModel</code>的同步，避免编写大量繁杂的样板化代码。（ReactiveCocoa）<br>&emsp;</p>
 <p>MVVM 是微软提出来的，它其实就是在 MVP 的基础上发展起来的。因此，MVVM 各层的职责基本上与 MVP 的类似，其中<code>VM</code>对应<code>P层</code>。MVVM 相对于 MVP 改良了什么呢？答案就是 <code>数据绑定</code>。<br>&emsp;</p>
 <p>在 MVP 中，从用户点击开始，一个完整的响应流程是：<code>视图</code>调用<code>P层</code>处理业务逻辑，<code>P层</code>调用<code>模型</code>处理数据，处理完成后 <code>P层</code>再通过代理回调<code>视图</code>。这里要反复同步<code>P层</code>的状态，当事件多起来时这样写就有点麻烦。<br>&emsp;</p>
-<p>而在 MVVM 中， <code>View</code>与<code>VM层</code>之间多了数据绑定的操作，这意味着当你更新<code>VM层</code>的数据的时候，<code>V层</code>会相应的变动 UI，自动实现状态的同步。可参考<a href="https://www.jianshu.com/p/2ad25e2769b5" target="_blank" rel="noopener">此文</a>中的代码来帮助理解。<br>&emsp;</p>
+<p>而在 MVVM 中， <code>View</code>与<code>VM层</code>之间多了数据绑定的操作，这意味着当<code>VM层</code>的数据变化时，你只需要更新<code>VM层</code>的某个属性，那么绑定了该属性的<code>V层</code>会相应的变动 UI，自动实现状态的同步。可参考<a href="https://www.jianshu.com/p/2ad25e2769b5" target="_blank" rel="noopener">此文</a>中的代码来帮助理解。<br>&emsp;</p>
 <p>MVVM 模式中，<code>ViewModel</code>存在的目的在于抽离<code>Controller</code>中的展示业务逻辑，而不是代替<code>Controller</code>本身。所以它不负责视图的操作，也就不需要持有任何的视图对象，更不能包含视图的<code>push/present</code>等跳转逻辑。这里，Controller 要做的仅是将<code>视图</code>和<code>ViewModel</code>进行绑定，同时管理各个<code>视图</code>。所以实际上我们的 MVVM 也可以看成<code>M-VM-C-V</code>。</p>
 <h4 id="3-2-注意事项："><a href="#3-2-注意事项：" class="headerlink" title="3.2.注意事项："></a>3.2.注意事项：</h4><ul>
 <li>MMVM 中<code>ViewModel</code>绑定了<code>Model</code>，反过来不行；</li>
@@ -210,6 +210,7 @@
 <hr>
 <p>相关参考：</p>
 <p>#<a href="https://developer.apple.com/library/archive/documentation/General/Conceptual/CocoaEncyclopedia/Model-View-Controller/Model-View-Controller.html" target="_blank" rel="noopener">AppleDoc-MVC</a></p>
+<p>#<a href="http://blog.sunnyxx.com/tags/Reactive-Cocoa-Tutorial/" target="_blank" rel="noopener">©sunnyxx-RAC</a></p>
 <p>#<a href="http://www.maiziedu.com/article/13003/" target="_blank" rel="noopener">©每日分享</a></p>
 <p>#<a href="http://www.cocoachina.com/ios/20170612/19500.html" target="_blank" rel="noopener">©CoderMikeHe</a></p>
 <p>#<a href="http://www.cocoachina.com/ios/20160108/14916.html" target="_blank" rel="noopener">©CocoaChina翻译活动</a></p>
@@ -222,8 +223,8 @@
       <div class="tags">
         <span>Tags:</span>
         
-  <a href="/tags#架构模式" >
-    <span class="tag-code">架构模式</span>
+  <a href="/tags#架构">
+    <span class="tag-code">架构</span>
   </a>
 
       </div>

@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
-  <head>
+  <head><meta name="generator" content="Hexo 3.8.0">
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
   <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
   <meta name="description" content="This is Davidli&#39;s blog ~">
   <meta name="keyword" content="hexo-theme, vuejs">
   
-    <link rel="shortcut icon" type="image/ico" href="/image/logo.png"/> 
+    <link rel="shortcut icon" type="image/ico" href="/image/logo.png"> 
   
   <title>
     
@@ -51,7 +51,7 @@
 
 </head>
 <div class="wechat-share">
-  <img src="/css/images/logo.png" />
+  <img src="/css/images/logo.png">
 </div>
 
   <body>
@@ -152,9 +152,12 @@
 <h3 id="2、比较：-与"><a href="#2、比较：-与" class="headerlink" title="2、比较：==与==="></a>2、比较：<code>==</code>与<code>===</code></h3><blockquote>
 <p>Note that identical to (represented by three equals signs, or ===) doesn’t mean the same thing as equal to (represented by two equals signs, or ==). Identical to means that two constants or variables of class type refer to exactly the same class instance. Equal to means that two instances are considered equal or equivalent in value, for some appropriate meaning of equal, as defined by the type’s designer.</p>
 </blockquote>
+<blockquote>
+<p>When you define your own custom structures and classes, it’s your responsibility to decide what qualifies as two instances being equal. </p>
+</blockquote>
 <ul>
-<li><code>==</code> 表示两个操作数的值“相同”或“相等”，强调“值”相同；</li>
-<li><code>===</code>表示两个两个操作数引用了相同的实例对象，强调“引用”相同；</li>
+<li><code>===</code>表示两个实例引用了相同的对象，强调“引用”相同；</li>
+<li><code>==</code> 表示两个实例中的值“相等”，至于哪些值相等，需要自己在类中定义；</li>
 </ul>
 <p>2.1、自定义类时，可以通过实现<code>Equatable</code>协议并重写全局操作符<code>==</code>来决定两个操作数是否相等。<br>&emsp;</p>
 <p>#示例1</p>
@@ -178,7 +181,7 @@
       <div class="tags">
         <span>Tags:</span>
         
-  <a href="/tags#Swift" >
+  <a href="/tags#Swift">
     <span class="tag-code">Swift</span>
   </a>
 
