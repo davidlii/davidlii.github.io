@@ -129,13 +129,39 @@
   
     <article class="article-card">
       <h2 class="article-head">
+        <a href="/2019/06/01/RAC-sig-order.html">RAC-信号的组合</a>
+      </h2>
+      <p class="article-date">June 1, 2019</p>
+      
+        
+  <a href="/tags#RAC">
+    <span class="tag-code">RAC</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          前言项目中往往有多个信号在执行任务，而这些信号之间通常要按照一定的方式或顺序进行组合。比如：
+
+先要用户登录成功才能加载通讯录；
+请求头像和用户信息都完成后才刷新详情页。
+
+RAC 针对诸如这些场景，设计了一套实用的API供我们组合信号：
+concat12/// Subscribes to  ...
+        
+      </div>
+      <a class="more" href="/2019/06/01/RAC-sig-order.html">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
         <a href="/2019/05/25/RAC-async.html">RAC-异步行为</a>
       </h2>
       <p class="article-date">May 25, 2019</p>
       
         
-  <a href="/tags#架构">
-    <span class="tag-code">架构</span>
+  <a href="/tags#RAC">
+    <span class="tag-code">RAC</span>
   </a>
 
       
@@ -169,8 +195,8 @@ target-action机制
       <p class="article-date">May 25, 2019</p>
       
         
-  <a href="/tags#架构">
-    <span class="tag-code">架构</span>
+  <a href="/tags#RAC">
+    <span class="tag-code">RAC</span>
   </a>
 
       
@@ -349,31 +375,6 @@ frida官网：https://www.frida.re/docs/home ...
         
       </div>
       <a class="more" href="/2018/10/22/draw.html">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2018/10/14/shell-ipa.html">Shell脚本打包与上传</a>
-      </h2>
-      <p class="article-date">October 14, 2018</p>
-      
-        
-  <a href="/tags#效率">
-    <span class="tag-code">效率</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          打包流程：
-编译.xcarchive包；
-生成.ipa文件；
-上传到苹果商店或第三方平台。
-
-自动化：这里所说的自动化，主要是通过shell脚本，利用 Command Line Tools 提供的 xcodebuild 命令来编译和导出 ipa，再通过 Application Loader  ...
-        
-      </div>
-      <a class="more" href="/2018/10/14/shell-ipa.html">Read more</a>
     </article>
   
 
