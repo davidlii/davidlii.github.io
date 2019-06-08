@@ -285,7 +285,8 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- (__kindof RACStream *)bind:(RACStreamBindBlock (^)(void))block &#123;</span><br><span class="line">	NSString *reason = [NSString stringWithFormat:@&quot;%@ must be overridden by subclasses&quot;, NSStringFromSelector(_cmd)];</span><br><span class="line">	@throw [NSException exceptionWithName:NSInternalInconsistencyException reason:reason userInfo:nil];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>这只是一个抽象的实现，具体的实现方式交给了它的各个子类：</p>
 <p><img src="https://davidlii.nos-eastchina1.126.net/pic_rac_cluster.png" alt="RAC类簇"></p>
-<p>这很好的体现了<code>类簇</code>的思想，值得学习借鉴~</p>
+<p>这很好的体现了<code>类簇</code>的思想，值得学习借鉴~<br>&emsp;</p>
+<p>另外，你可能也发现了，第5、6、7、9种方法其实在 Swift 中都有与之对应的同名方法，这似乎也暗示了 RAC 在一定程度上借鉴了<code>Swift</code>或者<code>RX</code>的一些理念。关于<code>RX</code>目前我还不甚了解，等有机会一定去好好研究一下。</p>
 <hr>
 <p>相关参考：</p>
 <p>#<a href="https://github.com/ReactiveCocoa/ReactiveObjC" target="_blank" rel="noopener">©RAC-Github</a></p>

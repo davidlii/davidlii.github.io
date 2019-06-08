@@ -157,7 +157,7 @@
 <blockquote>
 <p>One of the major advantages of RAC is that it provides a single, unified approach to dealing with asynchronous behaviors, including delegate methods, callback blocks, target-action mechanisms, notifications, and KVO.</p>
 </blockquote>
-<p>RAC处理这些问题的核心在于<code>信号</code>：<br>&emsp;</p>
+<p>RAC 借鉴了<a href="https://github.com/ReactiveX" target="_blank" rel="noopener">RX</a>的思想，它处理这些问题的核心在于<code>信号</code>：<br>&emsp;</p>
 <p>针对内聚问题，RAC将异步行为的实现封装在信号的<code>didSubscribe</code>block 中，从而能对外提供统一的接口。我们只需要在创建完信号后订阅信号，即可在异步行为触发时收到回调，这样创建、监听、业务逻辑聚合到了一起；<br>&emsp;</p>
 <p>针对第二点，信号的 block 内向订阅者发送了<code>sendNext:</code>事件后，会自动清理资源和引用，从而解决了循环引用问题。</p>
 <p>&emsp;</p>

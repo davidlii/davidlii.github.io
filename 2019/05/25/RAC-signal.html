@@ -135,7 +135,7 @@
 <main class="app-body flex-box">
   <!-- Article START -->
   <article class="post-article">
-    <section class="markdown-content"><h3 id="信号与订阅者"><a href="#信号与订阅者" class="headerlink" title="信号与订阅者"></a>信号与订阅者</h3><h4 id="1-信号"><a href="#1-信号" class="headerlink" title="1.信号"></a>1.信号</h4><p><a href="https://github.com/ReactiveCocoa/ReactiveObjC/blob/master/Documentation/FrameworkOverview.md" target="_blank" rel="noopener">RAC文档</a> 中关于<code>RACSignal</code>的描述:</p>
+    <section class="markdown-content"><h3 id="一-信号"><a href="#一-信号" class="headerlink" title="一.信号"></a>一.信号</h3><h4 id="1-信号是啥"><a href="#1-信号是啥" class="headerlink" title="1.信号是啥"></a>1.信号是啥</h4><p><a href="https://github.com/ReactiveCocoa/ReactiveObjC/blob/master/Documentation/FrameworkOverview.md" target="_blank" rel="noopener">RAC文档</a> 中关于<code>RACSignal</code>的描述:</p>
 <blockquote>
 <p>A signal, represented by the RACSignal class, is a push-driven stream.<br>Signals generally represent data that will be delivered in the future. As work is performed or data is received, values are sent on the signal, which pushes them out to any subscribers. Users must subscribe to a signal in order to access its values.</p>
 </blockquote>
@@ -144,7 +144,27 @@
 <li>信号代表着将来要传输的数据，值通过信号传递给订阅者；</li>
 <li>用户须订阅信号才能接收到这些值。</li>
 </ul>
-<h4 id="2-订阅者"><a href="#2-订阅者" class="headerlink" title="2.订阅者"></a>2.订阅者</h4><p>关于<code>RACSubscriber</code>的描述:</p>
+<h4 id="2-冷热信号"><a href="#2-冷热信号" class="headerlink" title="2.冷热信号"></a>2.冷热信号</h4><p>信号分为<code>冷信号</code>和<code>热信号</code>两种：</p>
+<ul>
+<li>冷信号是被动的，被订阅之后才能发送消息；</li>
+<li>热信号是主动的，即使未被订阅也能不断推送新消息；</li>
+<li>冷信号只能1-1，对应一个订阅者，当有新订阅者时消息会重新发送一遍；</li>
+<li>热信号可以1-N，可以有多个订阅者，信号可与多个订阅者共享信息；</li>
+</ul>
+<h5 id="2-1-冷信号"><a href="#2-1-冷信号" class="headerlink" title="#2.1.冷信号"></a>#2.1.冷信号</h5><ul>
+<li>RACDynamicSignal</li>
+<li>RACEmptySignal</li>
+<li>RACErrorSignal</li>
+<li>RACReturnSignal</li>
+<li>RACChannelTerminal</li>
+</ul>
+<h5 id="2-2-热信号"><a href="#2-2-热信号" class="headerlink" title="#2.2.热信号"></a>#2.2.热信号</h5><ul>
+<li>RACSubject</li>
+<li>RACBehaviorSubject</li>
+<li>RACGroupedSignal</li>
+<li>RACReplaySubject</li>
+</ul>
+<h3 id="二-订阅者"><a href="#二-订阅者" class="headerlink" title="二.订阅者"></a>二.订阅者</h3><p>关于<code>RACSubscriber</code>的描述:</p>
 <blockquote>
 <p>A subscriber is anything that is waiting or capable of waiting for events from a signal. Within RAC, a subscriber is represented as any object that conforms to the RACSubscriber protocol.</p>
 </blockquote>
@@ -164,11 +184,9 @@
 <li>iOS设备接收到消息并处理自己的业务（响应）。</li>
 </ul>
 <p>这里，iOS设备就是订阅者，苹果的 APNs 服务作为一个整体而被视为信号流。二者是 N 对 1 的关系。</p>
-<h3 id="信号的使用"><a href="#信号的使用" class="headerlink" title="信号的使用"></a>信号的使用</h3><p>信号分为<code>冷</code>和<code>热</code>信号两种。下面将结合示例中信号的创建订阅过程谈一下个人对<code>冷热信号</code>的理解。</p>
-<p>&emsp;</p>
-<p>#示例：</p>
+<h3 id="三-RACSignal的使用"><a href="#三-RACSignal的使用" class="headerlink" title="三.RACSignal的使用"></a>三.RACSignal的使用</h3><p>#示例：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">- (void)subscribe &#123;</span><br><span class="line">    //1.创建信号</span><br><span class="line">    RACSignal *s1 = [RACSignal createSignal:^RACDisposable *(id&lt;RACSubscriber&gt; subscriber) &#123;</span><br><span class="line">        //^didSubscribe中执行任务</span><br><span class="line">        return [RACDisposable disposableWithBlock:^&#123;</span><br><span class="line">            //清理资源</span><br><span class="line">        &#125;];</span><br><span class="line">    &#125;];</span><br><span class="line">    //2.订阅信号</span><br><span class="line">    [s1 subscribeNext:^(id x) &#123;</span><br><span class="line">        //3.接收数据</span><br><span class="line">        NSLog(@&quot;+++received value:%@&quot;,x);</span><br><span class="line">    &#125;];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="1-创建信号（冷信号）"><a href="#1-创建信号（冷信号）" class="headerlink" title="1.创建信号（冷信号）"></a>1.创建信号（冷信号）</h4><p>#1.1.类方法:</p>
+<h4 id="1-创建信号"><a href="#1-创建信号" class="headerlink" title="1.创建信号"></a>1.创建信号</h4><p>#1.1.类方法:</p>
 <p>&emsp;</p>
 <p>调用<code>RACSignal</code>的类方法创建一个信号：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">RACSignal *s1 = [RACSignal createSignal:^RACDisposable *(id&lt;RACSubscriber&gt; subscriber) &#123;</span><br><span class="line">        //^didSubscribe中执行任务</span><br><span class="line">        return [RACDisposable disposableWithBlock:^&#123;</span><br><span class="line">            //清理资源</span><br><span class="line">        &#125;];</span><br><span class="line">    &#125;];</span><br></pre></td></tr></table></figure>
@@ -186,7 +204,7 @@
 <p>发送数据需要用到<code>sendNext</code>方法；<br>&emsp;</p>
 <p><code>sendNext</code>方法的调用者为<code>subscriber</code>，即订阅者；<br>&emsp;</p>
 <p>所以，我们还缺少一个订阅者，这就是所谓的<strong>冷信号需要被订阅之后才能发送数据</strong>。</p>
-<h4 id="2-订阅信号（热信号）"><a href="#2-订阅信号（热信号）" class="headerlink" title="2.订阅信号（热信号）"></a>2.订阅信号（热信号）</h4><p>订阅信号的语句为：</p>
+<h4 id="2-订阅信号"><a href="#2-订阅信号" class="headerlink" title="2.订阅信号"></a>2.订阅信号</h4><p>订阅信号的语句为：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">//2.订阅信号</span><br><span class="line">[s1 subscribeNext:^(id x) &#123;</span><br><span class="line">    NSLog(@&quot;+++received value:%@&quot;,x);</span><br><span class="line">&#125;];</span><br></pre></td></tr></table></figure>
 <p>其中<code>subscribeNext:</code>方法的实现为：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">- (RACDisposable *)subscribeNext:(void (^)(id x))nextBlock &#123;</span><br><span class="line">	NSCParameterAssert(nextBlock != NULL);</span><br><span class="line">	// 1.创建订阅者</span><br><span class="line">	RACSubscriber *o = [RACSubscriber subscriberWithNext:nextBlock error:NULL completed:NULL];</span><br><span class="line">	// 2.调用 ^didSubscribe</span><br><span class="line">	return [self subscribe:o];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -200,18 +218,18 @@
 <li>completed 表示信号已完成。</li>
 </ul>
 <p>调用完<code>subscribeNext:</code>方法后，就成功创建了订阅者对象，也就是之前的<code>didSubscribe</code> block 所缺少的那个参数。<br>&emsp;</p>
-<p>至此，信号具备了发送数据的完整前提条件，信号成为<code>热</code>信号!<br>&emsp;</p>
+<p>至此，信号具备了发送数据的完整前提条件!<br>&emsp;</p>
 <p>#2.2.调用didSubscribe block<br>&emsp;</p>
 <p>订阅者创建完成后，方法内部会继续调用 self.didSubscribe(subscriber)，传入刚才的订阅者作为参数。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">- (RACDisposable *)subscribe:(id&lt;RACSubscriber&gt;)subscriber &#123;</span><br><span class="line">	...</span><br><span class="line"></span><br><span class="line">	if (self.didSubscribe != NULL) &#123;</span><br><span class="line">            RACDisposable *schedulingDisposable = [RACScheduler.subscriptionScheduler schedule:^&#123;</span><br><span class="line">                //调用之前创建和保存起来的*didSubscribe* block，传入订阅者参数</span><br><span class="line">                RACDisposable *innerDisposable = self.didSubscribe(subscriber);</span><br><span class="line">                [disposable addDisposable:innerDisposable];</span><br><span class="line">            &#125;];</span><br><span class="line">		[disposable addDisposable:schedulingDisposable];</span><br><span class="line">	&#125;</span><br><span class="line">	return disposable;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>这里 self.didSubscribe 属性指向的正是之前在创建信号时我们自定义的<code>didSubscribe</code>，所以 self.didSubscribe(subscriber) 就是调用我们自己的<code>didSubscribe</code> block。即<strong>订阅信号后，信号的<code>didSubscribe</code>会自动调用一次</strong>。</p>
-<h4 id="3-发送信号（事件）"><a href="#3-发送信号（事件）" class="headerlink" title="3.发送信号（事件）"></a>3.发送信号（事件）</h4><p>订阅完成后自动创建了订阅者，接下来就可以向订阅者发送<code>事件</code>和<code>数据</code>了。上面说过信号内有三种事件：</p>
+<h4 id="3-发送消息"><a href="#3-发送消息" class="headerlink" title="3.发送消息"></a>3.发送消息</h4><p>订阅完成后自动创建了订阅者，接下来就可以向订阅者发送<code>事件</code>和<code>数据</code>了。上面说过信号内有三种消息：</p>
 <ul>
 <li>next</li>
 <li>error</li>
 <li>completed</li>
 </ul>
-<p>三种事件对应的接口分别为：</p>
+<p>三种消息对应的接口分别为：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">/// Sends the next value to subscribers.</span><br><span class="line">///</span><br><span class="line">/// value - The value to send. This can be `nil`.</span><br><span class="line">- (void)sendNext:(nullable id)value;</span><br><span class="line"></span><br><span class="line">/// Sends the error to subscribers.</span><br><span class="line">///</span><br><span class="line">/// error - The error to send. This can be `nil`.</span><br><span class="line">///</span><br><span class="line">/// This terminates the subscription, and invalidates the subscriber (such that</span><br><span class="line">/// it cannot subscribe to anything else in the future).</span><br><span class="line">- (void)sendError:(nullable NSError *)error;</span><br><span class="line"></span><br><span class="line">/// Sends completed to subscribers.</span><br><span class="line">///</span><br><span class="line">/// This terminates the subscription, and invalidates the subscriber (such that</span><br><span class="line">/// it cannot subscribe to anything else in the future).</span><br><span class="line">- (void)sendCompleted;</span><br></pre></td></tr></table></figure>
 <p><strong>注意</strong>：信号向订阅者发送了<code>error</code>或者<code>completed</code>后，订阅关系随即结束，订阅者后续不会再收到任何事件和数据。<br>&emsp;</p>
 <p>#信号使用示例:</p>
@@ -223,7 +241,7 @@
 <p>2.订阅者调用 [subscriber sendNext:] 后订阅者的<code>subscribeNext</code> block 会立刻执行。同理调用 [subscriber sendError:] 或者 [subscriber sendCompleted] 后，对应的<code>error</code>和<code>completed</code>回调也会立刻执行。<br>&emsp;</p>
 <p>3.block 内调用 [subscriber sendError:] 或者 [subscriber sendCompleted] 之后，信号<code>s1</code>会立刻调用其<code>RACDisposable</code>的 block 清理资源。<br>&emsp;</p>
 <p>4.一旦信号调用<code>RACDisposable</code>之后，它后续将不能再接收任何事件。比如示例中第二个订阅者调用了 <code>sendError</code> 之后，s1 自动调用了<code>RACDisposable</code>，后续调用 <code>setCompleted</code> 时<code>completed</code>回调不再执行，并且后面的 [_subscriber sendNext:] 也不会有任何响应或日志输出。</p>
-<h3 id="组播"><a href="#组播" class="headerlink" title="组播"></a>组播</h3><blockquote>
+<h3 id="四-组播"><a href="#四-组播" class="headerlink" title="四.组播"></a>四.组播</h3><blockquote>
 <p>Signals are cold by default, meaning that they start doing work each time a new subscription is added. This behavior is usually desirable, because it means that data will be freshly recalculated for each subscriber, but it can be problematic if the signal has side effects or the work is expensive (for example, sending a network request).</p>
 </blockquote>
 <p>信号有多个订阅者时，每被订阅一次其<code>block</code>都自动触发一次，这种情况有时会有副作用。比如<code>block</code>内封装了耗时操作，每次订阅都单独触发一遍显然浪费性能。理想的情况是多个订阅者都订阅完成后，<code>block</code>只触发一次而所有订阅者都收到回调。这种场景RAC考虑到了，此时<code>RACMulticastConnection</code>就派上用场了。</p>
@@ -236,7 +254,7 @@
 <p>输出日志：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">~~第1个订阅消息：Hello from s2~</span><br><span class="line">~~第2个订阅消息：Hello from s2~</span><br><span class="line">~~第3个订阅消息：Hello from s2~</span><br><span class="line">++s2 Disposed~</span><br></pre></td></tr></table></figure>
 <p>如果在订阅者的回调中打断点你就会发现，调用<code>[cnn connect]</code>后三个 block 都触发了且依次触发。</p>
-<h3 id="结束语"><a href="#结束语" class="headerlink" title="结束语"></a>结束语</h3><p>以上就是关于RAC中<code>信号</code>和<code>订阅者</code>的分析和简单使用。实践中可以结合RAC其他功能一起使用，后续文章中会继续研究~</p>
+<h3 id="五-结束语"><a href="#五-结束语" class="headerlink" title="五.结束语"></a>五.结束语</h3><p>以上就是关于RAC中<code>信号</code>和<code>订阅者</code>的分析和简单使用。实践中可以结合RAC其他功能一起使用，后续文章中会继续研究~</p>
 <hr>
 <p>相关参考：</p>
 <p>#<a href="https://github.com/ReactiveCocoa/ReactiveObjC/blob/master/Documentation/FrameworkOverview.md" target="_blank" rel="noopener">©RAC-Github</a></p>
@@ -314,7 +332,7 @@
   <div class="toc-main">
     <strong class="toc-title">Catalog</strong>
     
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#信号与订阅者"><span class="toc-nav-text">信号与订阅者</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#1-信号"><span class="toc-nav-text">1.信号</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-订阅者"><span class="toc-nav-text">2.订阅者</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#信号的使用"><span class="toc-nav-text">信号的使用</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#1-创建信号（冷信号）"><span class="toc-nav-text">1.创建信号（冷信号）</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-订阅信号（热信号）"><span class="toc-nav-text">2.订阅信号（热信号）</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3-发送信号（事件）"><span class="toc-nav-text">3.发送信号（事件）</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#组播"><span class="toc-nav-text">组播</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#结束语"><span class="toc-nav-text">结束语</span></a></li></ol>
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#一-信号"><span class="toc-nav-text">一.信号</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#1-信号是啥"><span class="toc-nav-text">1.信号是啥</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-冷热信号"><span class="toc-nav-text">2.冷热信号</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#2-1-冷信号"><span class="toc-nav-text">#2.1.冷信号</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#2-2-热信号"><span class="toc-nav-text">#2.2.热信号</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#二-订阅者"><span class="toc-nav-text">二.订阅者</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#三-RACSignal的使用"><span class="toc-nav-text">三.RACSignal的使用</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#1-创建信号"><span class="toc-nav-text">1.创建信号</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-订阅信号"><span class="toc-nav-text">2.订阅信号</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3-发送消息"><span class="toc-nav-text">3.发送消息</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#四-组播"><span class="toc-nav-text">四.组播</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#五-结束语"><span class="toc-nav-text">五.结束语</span></a></li></ol>
     
   </div>
 </aside>
