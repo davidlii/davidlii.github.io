@@ -10,7 +10,7 @@
   
   <title>
     
-      RAC-过滤信号返回的数据 | Davidli
+      RAC-数据的过滤与转换 | Davidli
     
   </title>
   <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -126,7 +126,7 @@
 </header>
 
     <div id="article-banner">
-  <h2>RAC-过滤信号返回的数据</h2>
+  <h2>RAC-数据的过滤与转换</h2>
   <p class="post-date">2019-06-06</p>
   <div class="arrow-down">
     <a href="javascript:;"></a>
@@ -138,7 +138,7 @@
     <section class="markdown-content"><h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>信号在订阅后就可以接收回调的数据了，有时候我们需要对收到的数据进行过滤或者转换后才能继续使用。<br>&emsp;</p>
 <p>例如发送按钮的<code>userInteractionEnabled</code>状态需要依请求的<code>isFnished</code>状态而定：请求发送后未完成则按钮不可点击，请求成功返回后按钮可点击。这种场景下我们只需要创建一个信号监听请求的<code>isFnished</code>属性，并对信号返回的结果进行取反即可。<br>&emsp;</p>
 <p>再比如修改昵称时一般不能前后输入一样的昵称，这时候我们可以通过信号监听文本框的内容，遇到前后一致的文本时自动过滤掉即可。<br>&emsp;</p>
-<p>这样需要对信号返回的结果进行过滤或修改的场景还有很多，为了处理这些常见的使用场景，RAC同样也提供了对应的接口。本文将对这些接口进行调用展示和实现分析：</p>
+<p>这样需要对信号返回的结果进行过滤或转换的场景还有很多，为了处理这些常见的使用场景，RAC同样也提供了对应的接口。本文将对这些接口进行调用展示和实现分析：</p>
 <h3 id="1-bind"><a href="#1-bind" class="headerlink" title="1.bind"></a>1.bind</h3><p>信号的绑定，先讲这个方法是因为其他接口的底层都是通过它来实现的，理清它的实现有助于更好的理解接下来的其他接口。<br>&emsp;</p>
 <p>这个方法定义在<code>RACStream.h</code>中，被多个子类重写，这里就看看<code>RACSignal.h</code>中的接口定义：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">//1 bind方法的定义</span><br><span class="line">/// Lazily binds a block to the values in the receiver.</span><br><span class="line">///</span><br><span class="line">/// This should only be used if you need to terminate the bind early, or close</span><br><span class="line">/// over some state. -flattenMap: is more appropriate for all other cases.</span><br><span class="line">///</span><br><span class="line">/// block - A block returning a RACSignalBindBlock. This block will be invoked</span><br><span class="line">///         each time the bound signal is re-evaluated. This block must not be</span><br><span class="line">///         nil or return nil.</span><br><span class="line">///</span><br><span class="line">/// Returns a new signal which represents the combined result of all lazy</span><br><span class="line">/// applications of `block`.</span><br><span class="line">- (RACSignal *)bind:(RACSignalBindBlock (^)(void))block RAC_WARN_UNUSED_RESULT;</span><br><span class="line"></span><br><span class="line">//2.block的返回值BindBlock的定义</span><br><span class="line">/// A block which accepts a value from a RACSignal and returns a new signal.</span><br><span class="line">///</span><br><span class="line">/// Setting `stop` to `YES` will cause the bind to terminate after the returned</span><br><span class="line">/// value. Returning `nil` will result in immediate termination.</span><br><span class="line">typedef RACSignal * _Nullable (^RACSignalBindBlock)(ValueType _Nullable value, BOOL *stop);</span><br></pre></td></tr></table></figure>
@@ -233,7 +233,7 @@
 <p>3.此信号的参数通过<code>block(value)</code>获取，即我们在示例的<code>map</code>方法中定义的取反的那个<code>mapBlock</code>，返回修改后的数据。<br>&emsp;</p>
 <p>4.<code>bind</code>方法的<code>BindBlock</code>获取到<code>RACReturnSignal</code>信号后随即订阅它；<br>&emsp;</p>
 <p>5.<code>RACReturnSignal</code>被订阅后立刻向<code>mEnableSignal</code>的订阅者发送了修改后的数据。<br>&emsp;</p>
-<p><strong>小结</strong>：<code>map</code>的主要作用就是对源信号发送的数据进行过滤，从而返回一个新的<code>数据</code>。</p>
+<p><strong>小结</strong>：<code>map</code>的主要作用就是对源信号发送的数据进行转换，从而返回一个新的<code>数据</code>。</p>
 <hr>
 <p>区分 map 与 flattenMap：</p>
 <ul>
@@ -277,10 +277,10 @@
 <p>日志：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">+++call signal1 block</span><br><span class="line">+++call signal2 block</span><br><span class="line">+++++received data:1+2.1</span><br><span class="line">+++++received data:1+2.2</span><br></pre></td></tr></table></figure>
 <p>1.<code>combineLatest</code>将<code>信号1</code>和<code>信号2</code>进行了整合，当二者都发送数据后，这俩数据被整合进一个元组中；<br>&emsp;</p>
-<p>2.<code>reduce</code>将元组中的数据聚合到了它的<code>reduceBlock</code>中，这样我们便有机会对这些数据做进一步的过滤和处理。<br>&emsp;</p>
+<p>2.<code>reduce</code>将元组中的数据聚合到了它的<code>reduceBlock</code>中，这样我们便有机会对这些数据做进一步的过滤和转换。<br>&emsp;</p>
 <p>3.处理完的新数据会回调给<code>信号3</code>的订阅者。<br>&emsp;</p>
 <p><strong>小结</strong>：信号虽无独立的<code>reduce</code>方法，但它与信号的组合结合时，便给了我们修改数据的机会，这就是我把它列入本章节的原因。</p>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>对使用者来说，RAC的这些过滤方法可说是很简单了，而这全仰仗<code>bind</code>方法，所以理解<code>bind</code>很关键。<br>&emsp;</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>对使用者来说，RAC的这些方法可说是很简单了，而这全仰仗<code>bind</code>方法，所以理解<code>bind</code>很关键。<br>&emsp;</p>
 <p>最底层的<code>bidn</code>方法定义在<code>RACStream</code>中，这是一个基类，其内部对<code>bind</code>方法的实现如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- (__kindof RACStream *)bind:(RACStreamBindBlock (^)(void))block &#123;</span><br><span class="line">	NSString *reason = [NSString stringWithFormat:@&quot;%@ must be overridden by subclasses&quot;, NSStringFromSelector(_cmd)];</span><br><span class="line">	@throw [NSException exceptionWithName:NSInternalInconsistencyException reason:reason userInfo:nil];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>这只是一个抽象的实现，具体的实现方式交给了它的各个子类：</p>
@@ -423,7 +423,7 @@
     var gitmentConfig = "";
     if (gitmentConfig !== 'undefined') {
       var gitment = new Gitment({
-        id: "RAC-过滤信号返回的数据",
+        id: "RAC-数据的过滤与转换",
         owner: "",
         repo: "",
         oauth: {
