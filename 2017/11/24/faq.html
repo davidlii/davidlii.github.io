@@ -176,7 +176,25 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">++a的值:68 </span><br><span class="line">++&amp;a:0x7ffee43cec64 </span><br><span class="line">++p保存的指针:0x7ffee43cec64 </span><br><span class="line">++*p的值:68 </span><br><span class="line">++变量p的地址:0x7ffee43cec58</span><br></pre></td></tr></table></figure>
 <p><code>*</code>是指针的标识，表示接下来的变量是一个<code>指针变量</code>；<code>&amp;</code>用来取变量的地址。<br>&emsp;</p>
 <p>上面的示例中，<code>a</code>是一般变量，保存数值<code>68</code>；而<code>a</code>作为变量，系统会为其分配一个地址<code>0x7ffee43cec64</code>；<code>p</code>是初始值为空的指针变量，随后指向<code>&amp;a</code>，即变量<code>p</code>保存的是变量<code>a</code>的地址（<code>0x7ffee43cec64</code>）；<code>p</code>作为指针变量，其保存的指针所指向的值为 68，变量<code>p</code>自己的内存地址为<code>0x7ffee43cec58</code>。</p>
-<h3 id="5、对象的比较"><a href="#5、对象的比较" class="headerlink" title="5、对象的比较"></a>5、对象的比较</h3><ul>
+<h3 id="5、NULL、nil、Nil、NSNull"><a href="#5、NULL、nil、Nil、NSNull" class="headerlink" title="5、NULL、nil、Nil、NSNull"></a>5、NULL、nil、Nil、NSNull</h3><p>1、前三者<code>NULL</code>、<code>nil</code>、<code>Nil</code>从本质上来讲都是<code>(void *)0</code>：</p>
+<ul>
+<li>NULL，表示C类型的指针为空；</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">long *p = NULL;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>nil，表示OC中对象的指针为空；</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">NSObject *obj = nil;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>Nil，表示OC中类类型变量的值为空；</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Class class = Nil;</span><br></pre></td></tr></table></figure>
+<p>2、<code>NSNull</code>与以上三者不同，它是一个OC类，用于创建空对象：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">NSNull *nsnullObj = [NSNull null]; // 1</span><br><span class="line">NSArray *aArr = @[@(1),nsnullObj];</span><br><span class="line">for (NSObject *item in aArr) &#123;</span><br><span class="line">    if ([item isEqual:[NSNull null]]) &#123; // 2</span><br><span class="line">        nsnullObj = nil; // 3</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>示例中1处即为刚创建的空对象<code>nsnullObj</code>,它的内存地址如下：<br><img src="https://davidlii.nos-eastchina1.126.net/pic_nsnullObj.png" alt="nsnullObj"></p>
+<p>示例中3处将空对象置为nil后，其内存地址如下：<br><img src="https://davidlii.nos-eastchina1.126.net/pic_po_nsnullObj_nil.png" alt="pic_nsnullObj_nil"></p>
+<p>所以可以看出<code>NSNull</code>仍然是一个对象，只是此对象中什么都没有而已~</p>
+<h3 id="6、对象的比较"><a href="#6、对象的比较" class="headerlink" title="6、对象的比较"></a>6、对象的比较</h3><ul>
 <li>==</li>
 </ul>
 <p>比较的是<code>值</code>。<br>&emsp;</p>
@@ -199,7 +217,7 @@
 <p>If two objects are equal, they must have the same hash value. This last point is particularly important if you define isEqual: in a subclass and intend to put instances of that subclass into a collection. Make sure you also define hash in your subclass.</p>
 </blockquote>
 <p>两个对象相等时，它们的<code>hash</code>值一定相等，所以你往往也需要重写<code>hash</code>方法~</p>
-<h3 id="6、集合与对象的引用关系"><a href="#6、集合与对象的引用关系" class="headerlink" title="6、集合与对象的引用关系"></a>6、集合与对象的引用关系</h3><p>常用的集合容器<code>NSArray</code>、<code>NSDictionary</code>、<code>NSSet</code>都是<code>强引用容器</code>，这些容器会强引用其内部的对象。</p>
+<h3 id="7、集合与对象的引用关系"><a href="#7、集合与对象的引用关系" class="headerlink" title="7、集合与对象的引用关系"></a>7、集合与对象的引用关系</h3><p>常用的集合容器<code>NSArray</code>、<code>NSDictionary</code>、<code>NSSet</code>都是<code>强引用容器</code>，这些容器会强引用其内部的对象。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">//Xcode中禁用ARC以便使用引用计数</span><br><span class="line">- (BOOL)application:(UIApplication *)application</span><br><span class="line">didFinishLaunchingWithOptions:(NSDictionary *)launchOptions</span><br><span class="line">&#123;</span><br><span class="line">    @autoreleasepool &#123;</span><br><span class="line">        NSObject *obj = [[[NSObject alloc] init] autorelease];</span><br><span class="line">        NSLog(@&quot;++1.obj:%p ++&amp;obj:%p ++obj.rc:%lu&quot;,obj,&amp;obj,obj.retainCount);</span><br><span class="line">        </span><br><span class="line">        NSMutableArray *array = [NSMutableArray arrayWithCapacity:1];</span><br><span class="line">        [array addObject:obj];</span><br><span class="line">        NSLog(@&quot;++++2.obj.rc:%lu&quot;,obj.retainCount);</span><br><span class="line">        </span><br><span class="line">        [array removeAllObjects];</span><br><span class="line">        NSLog(@&quot;++++3.obj.rc:%lu&quot;,obj.retainCount);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return YES;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>输出日志：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">++1.obj:0x600002449230 ++&amp;obj:0x7ffee57fac60 ++obj.rc:1</span><br><span class="line">++++2.obj.rc:2</span><br><span class="line">++++3.obj.rc:1</span><br></pre></td></tr></table></figure>
@@ -214,7 +232,7 @@
 <p>输出日志：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">++1.obj:0x60000323c9c0 ++&amp;obj:0x7ffeeb5fec60 ++obj.rc:1</span><br><span class="line">++++2.obj.rc:1</span><br><span class="line">++3.objN:0x60000323c9c0 ++&amp;objN:0x7ffeeb5fec00 ++objN.rc:1</span><br><span class="line">++4.objN:0x60000323c9c0 ++&amp;objN:0x7ffeeb5febb0 ++objN.rc:1</span><br><span class="line">++5.obj:(null) ++&amp;obj:0x7ffeeb5fec60 ++obj.rc:0</span><br><span class="line">++++PERSON IS DEALLOCED~</span><br></pre></td></tr></table></figure>
 <p>通过<code>NSValue</code>包装<code>obj</code>之后，即使添加到数组，<code>obj</code>的引用计数也不会增加，且当在数组外部将<code>obj</code>置为 nil 之后，<code>obj</code>对象会自动销毁。</p>
-<h3 id="7、静态变量、静态常量"><a href="#7、静态变量、静态常量" class="headerlink" title="7、静态变量、静态常量"></a>7、静态变量、静态常量</h3><ul>
+<h3 id="8、静态变量、静态常量"><a href="#8、静态变量、静态常量" class="headerlink" title="8、静态变量、静态常量"></a>8、静态变量、静态常量</h3><ul>
 <li><strong>static</strong></li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">static NSString *aStaticString;</span><br></pre></td></tr></table></figure>
@@ -232,7 +250,7 @@
 <p><code>指针常量</code>，A constant pointer (not modifiable) to an NSString object (its value can be modified)。这里的<code>s1</code>是一个字符串对象的指针，因此 const 修饰的是指针，即指针为常量不能修改，但指针指向的值是可以修改的。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">static const NSString * s2;</span><br></pre></td></tr></table></figure>
 <p><code>常量指针</code>，A modifiable pointer to a constant NSString object (its value can’t be modified)。这里<code>s2</code>和<code>s3</code>是指针，<code>*s2</code>和<code>*s3</code>是指针指向的值，const 修饰的是值，即值不可变，但字符串对象可以修改其指针，重新取别的值。</p>
-<h3 id="8、分类与扩展"><a href="#8、分类与扩展" class="headerlink" title="8、分类与扩展"></a>8、分类与扩展</h3><p><strong>代码组织形式上</strong>：<br>&emsp;</p>
+<h3 id="9、分类与扩展"><a href="#9、分类与扩展" class="headerlink" title="9、分类与扩展"></a>9、分类与扩展</h3><p><strong>代码组织形式上</strong>：<br>&emsp;</p>
 <p>扩展通常是定义在原类的<code>m</code>文件中；而分类既可以定义在原类的<code>h</code>和<code>m</code>文件中，又可以存在于单独的<code>h</code>和<code>m</code>文件中，分类组织的方式不同导入的方式也会不同。从命名上来看，扩展相当于未命名的分类。<br>&emsp;</p>
 <p><strong>方法定义上</strong>：<br>&emsp;</p>
 <p>分类和扩展中都可以定义方法以达到扩展现有类的方法列表之目的，不同的是扩展中定义的方法必须在原类的<code>m</code>文件中提供实现；分类中定义的方法则不依赖于原类的实现文件，而是在自己的<code>@implementation</code>中提供实现，也就是说分类可以在不知道原类具体实现的情况下对原类进行扩展。另外，分类中可以重写原类的方法，重写后实例就不能访问原来的方法了。<br>&emsp;</p>
@@ -240,7 +258,7 @@
 <p>扩展中可以定义成员变量，并且这些变量只对本类可见；分类中则不能定义成员变量，因为分类与原类的内存空间相互独立，原类初始化后实例大小已确定，不能再添加成员变量。<br>&emsp;</p>
 <p><strong>属性定义上</strong>：<br>&emsp;</p>
 <p>分类和扩展都可以定义属性，不同的是扩展中的属性会由编译器自动提供存取器；而分类中虽然定义了属性，编译器却不会为其提供存取器，需要我们自己通过<code>对象绑定机制</code>主动实现。</p>
-<h3 id="9、URL缓存策略"><a href="#9、URL缓存策略" class="headerlink" title="9、URL缓存策略"></a>9、URL缓存策略</h3><p>NSURLRequestCachePolicy 用来指定网络请求的缓存策略，具体的枚举和作用如下：</p>
+<h3 id="10、URL缓存策略"><a href="#10、URL缓存策略" class="headerlink" title="10、URL缓存策略"></a>10、URL缓存策略</h3><p>NSURLRequestCachePolicy 用来指定网络请求的缓存策略，具体的枚举和作用如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">NSURLRequestUseProtocolCachePolicy = 0</span><br></pre></td></tr></table></figure>
 <p>默认缓存策略，当客户端发起一个请求时，首先检查本地是否有缓存(NSCachedURLResponse)。如果没有缓存，则直接从服务器处获取；如果有缓存，则继续检查缓存是否过期（通过Cache-Control:max-age或者Expires）。如果没有过期，则直接使用缓存数据；如果缓存过期了，则向服务器发起一个请求，服务器会对比它保存的资源的 Last-Modified 或者 Etags 字段(二者都存在的情况下下如果有一个不同则认为缓存已过期)，如果不同则返回新数据，否则返回 304 Not Modified 并继续使用缓存数据（客户端可以再使用”max-age”秒缓存数据）。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">NSURLRequestReloadIgnoringLocalCacheData = NSURLRequestReloadIgnoringCacheData = 1</span><br></pre></td></tr></table></figure>
@@ -327,7 +345,7 @@
   <div class="toc-main">
     <strong class="toc-title">Catalog</strong>
     
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1、VC的生命周期"><span class="toc-nav-text">1、VC的生命周期</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2、VC跳转时生命周期调用顺序"><span class="toc-nav-text">2、VC跳转时生命周期调用顺序</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3、宏定义使用错误案例"><span class="toc-nav-text">3、宏定义使用错误案例</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#4、指针-地址"><span class="toc-nav-text">4、指针\地址</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#5、对象的比较"><span class="toc-nav-text">5、对象的比较</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#6、集合与对象的引用关系"><span class="toc-nav-text">6、集合与对象的引用关系</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#7、静态变量、静态常量"><span class="toc-nav-text">7、静态变量、静态常量</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#8、分类与扩展"><span class="toc-nav-text">8、分类与扩展</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#9、URL缓存策略"><span class="toc-nav-text">9、URL缓存策略</span></a></li></ol>
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1、VC的生命周期"><span class="toc-nav-text">1、VC的生命周期</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2、VC跳转时生命周期调用顺序"><span class="toc-nav-text">2、VC跳转时生命周期调用顺序</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3、宏定义使用错误案例"><span class="toc-nav-text">3、宏定义使用错误案例</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#4、指针-地址"><span class="toc-nav-text">4、指针\地址</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#5、NULL、nil、Nil、NSNull"><span class="toc-nav-text">5、NULL、nil、Nil、NSNull</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#6、对象的比较"><span class="toc-nav-text">6、对象的比较</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#7、集合与对象的引用关系"><span class="toc-nav-text">7、集合与对象的引用关系</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#8、静态变量、静态常量"><span class="toc-nav-text">8、静态变量、静态常量</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#9、分类与扩展"><span class="toc-nav-text">9、分类与扩展</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#10、URL缓存策略"><span class="toc-nav-text">10、URL缓存策略</span></a></li></ol>
     
   </div>
 </aside>
