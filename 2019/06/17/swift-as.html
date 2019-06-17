@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html>
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="This is Davidli&#39;s blog ~">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" type="image/ico" href="/image/logo.png"> 
+  
+  <title>
+    
+      Swift类型协议检查 | Davidli
+    
+  </title>
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+  <script src="/js/qrious.js"></script>
+<script src="/js/gitment.js"></script>
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+</head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png">
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>Davidli</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>Swift类型协议检查</h2>
+  <p class="post-date">2019-06-17</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><blockquote>
+<p>Type casting is a way to check the type of an instance, or to treat that instance as a different superclass or subclass from somewhere else in its own class hierarchy.<br>Type casting in Swift is implemented with the is and as operators. These two operators provide a simple and expressive way to check the type of a value or cast a value to a different type.<br>You can also use type casting to check whether a type conforms to a protocol, as described in Checking for Protocol Conformance.</p>
+</blockquote>
+<p><code>is</code>和<code>as</code>操作符的作用：</p>
+<ul>
+<li>描述实例的类型；</li>
+<li>检查类型是否实现了某个协议。</li>
+</ul>
+<p>先定义两个类，方便接下来的讨论：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">protocol MakeNoise &#123;</span><br><span class="line">    func scream()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Animal: MakeNoise &#123;</span><br><span class="line">    func scream() &#123;</span><br><span class="line">        print(&quot;++\(self)++xxxxx~&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Cat: Animal &#123;</span><br><span class="line">    override func scream() &#123;</span><br><span class="line">        print(&quot;++\(self):++Miao~&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="is类型检查"><a href="#is类型检查" class="headerlink" title="is类型检查"></a>is类型检查</h3><blockquote>
+<p>Use the type check operator (is) to check whether an instance is of a certain subclass type. The type check operator returns true if the instance is of that subclass type and false if it is not.</p>
+</blockquote>
+<p><code>is</code>用来检查实例是否属于某个类或子类。<br>&emsp;</p>
+<p>#示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">func checkType() &#123;</span><br><span class="line">    let animal = Animal()</span><br><span class="line">    let cat = Cat()</span><br><span class="line">    let aniCat : Animal = Cat() //父类指针指向子类</span><br><span class="line">        </span><br><span class="line">    // is 类型检查</span><br><span class="line">    if animal is Cat &#123;</span><br><span class="line">        print(&quot;+++animal is Cat~&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">    if cat is Animal &#123;</span><br><span class="line">        print(&quot;+++cat is Animal~&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">    if aniCat is Animal &#123;</span><br><span class="line">        print(&quot;+++aniCat is Animal~&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">    if aniCat is Cat &#123;</span><br><span class="line">        print(&quot;+++aniCat is Cat~&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>日志：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">+++cat is Animal~</span><br><span class="line">+++aniCat is Animal~</span><br><span class="line">+++aniCat is Cat~</span><br></pre></td></tr></table></figure>
+<p>日志信息显示：<code>is</code>不仅可检测出实例直属的类，也可以检测其所属的父类~</p>
+<h3 id="as类型转换"><a href="#as类型转换" class="headerlink" title="as类型转换"></a>as类型转换</h3><p>类型转换可分为两种，<code>向上转型</code>和<code>向下转型</code>。</p>
+<h4 id="as向上转型"><a href="#as向上转型" class="headerlink" title="as向上转型"></a>as向上转型</h4><p>向上转型：将从子类转成父类或基类。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">func upCast() &#123;</span><br><span class="line">    let animal = Animal()</span><br><span class="line">    let cat = Cat()</span><br><span class="line">    let aniCat : Animal = Cat() //父类指针指向子类</span><br><span class="line">    // as 向上转型</span><br><span class="line">    let catAsAnimal = (cat as Animal)</span><br><span class="line">        </span><br><span class="line">    // animal as Cat // 这里会报错</span><br><span class="line">    aniCat as Animal</span><br><span class="line">    // aniCat as Cat // 这里会报错</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注意，<code>as</code>不能用于父类转子类，因为这本身就不符合面向对象中<code>多态</code>的特性。</p>
+<h4 id="as-as-向下转型"><a href="#as-as-向下转型" class="headerlink" title="as?\as!向下转型"></a>as?\as!向下转型</h4><blockquote>
+<p>A constant or variable of a certain class type may actually refer to an instance of a subclass behind the scenes. Where you believe this is the case, you can try to downcast to the subclass type with a type cast operator (as? or as!).</p>
+</blockquote>
+<p>一个父类类型的变量，实际上指向的可能是子类的实例，即”父类指针指向子类对象“。这种情况下可使用<code>as?</code>和<code>as!</code>将此对象转型为子类的实例。</p>
+<ul>
+<li>as?，用于向下转型未必成功时，返回可选类型，用可选绑定查看是否转型成功；</li>
+<li>as!，用于向下转型一定成功时，如果转型失败则会抛出运行时异常。</li>
+</ul>
+<p>#示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">func downCast() &#123;</span><br><span class="line">    let animal = Animal()</span><br><span class="line">    let cat = Cat()</span><br><span class="line">    let aniCat : Animal = Cat() //父类指针指向子类</span><br><span class="line">        </span><br><span class="line">    // as?\as! 向下转型</span><br><span class="line">    if let _ = aniCat as? Animal &#123;</span><br><span class="line">        print(&quot;+++aniCat as? Animal~&quot;) // 成立</span><br><span class="line">    &#125;</span><br><span class="line">    if let _ = aniCat as? Cat &#123;</span><br><span class="line">        print(&quot;+++aniCat as? Cat~&quot;) // 成立</span><br><span class="line">    &#125;</span><br><span class="line">        </span><br><span class="line">    if let _ = animal as? Animal &#123;</span><br><span class="line">        print(&quot;+++animal as? Animal~&quot;) // 成立</span><br><span class="line">    &#125;</span><br><span class="line">    if let _ = animal as? Cat &#123;</span><br><span class="line">        print(&quot;+++animal as? Cat~&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">        </span><br><span class="line">    if let _ = cat as? Animal &#123;</span><br><span class="line">        print(&quot;+++cat as? Animal~&quot;) // 成立</span><br><span class="line">    &#125;</span><br><span class="line">    if let _ = cat as? Cat &#123;</span><br><span class="line">        print(&quot;+++cat as? Cat~&quot;) // 成立</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    cat as! Animal // 运行正常</span><br><span class="line">    animal as! Cat // 运行时错误</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>日志：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">+++aniCat as? Animal~</span><br><span class="line">+++aniCat as? Cat~</span><br><span class="line">+++animal as? Animal~</span><br><span class="line">+++cat as? Animal~</span><br><span class="line">+++cat as? Cat~</span><br></pre></td></tr></table></figure>
+<p>示例和结果显示：</p>
+<ul>
+<li>as?不仅能用于父类指针指向子类对象的情况，也能用于正常的子类和父类之间；</li>
+<li>as?不仅能用于向下转型，也能用于向上转型，从而判断对象的继承关系；</li>
+<li>as!会强制进行类型转换，如果转换失败就会报运行时异常，慎用~</li>
+</ul>
+<h3 id="检测协议"><a href="#检测协议" class="headerlink" title="检测协议"></a>检测协议</h3><p><code>is</code>和<code>as</code>操作符除了可以检测继承关系，还可以用来检测是否实现了某种协议：</p>
+<blockquote>
+<p>You can use the is and as operators described in Type Casting to check for protocol conformance, and to cast to a specific protocol. Checking for and casting to a protocol follows exactly the same syntax as checking for and casting to a type:</p>
+</blockquote>
+<blockquote>
+<p>The is operator returns true if an instance conforms to a protocol and returns false if it doesn’t.</p>
+</blockquote>
+<blockquote>
+<p>The as? version of the downcast operator returns an optional value of the protocol’s type, and this value is nil if the instance doesn’t conform to that protocol.</p>
+</blockquote>
+<blockquote>
+<p>The as! version of the downcast operator forces the downcast to the protocol type and triggers a runtime error if the downcast doesn’t succeed.</p>
+</blockquote>
+<ul>
+<li>变量实现了协议时<code>is</code>会返回真；否则返回后假；</li>
+<li>as?返回一个实现了指定协议的可选值，如果实例未实现协议则可选值为nil；</li>
+<li>as!将实例强制转型成实现指定协议的对象，如果转型失败则抛出运行时异常。</li>
+</ul>
+<p>#示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">func conformsTo() &#123;</span><br><span class="line">    let animal = Animal()</span><br><span class="line">    let cat = Cat()</span><br><span class="line">    let aniCat : Animal = Cat() //父类指针指向子类</span><br><span class="line">        </span><br><span class="line">    if animal is MakeNoise &#123;</span><br><span class="line">        print(&quot;+++animal conforms to MakeNoise~&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">    if cat is MakeNoise &#123;</span><br><span class="line">        print(&quot;+++cat conforms to MakeNoise~&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">    if aniCat is MakeNoise &#123;</span><br><span class="line">        print(&quot;+++aniCat conforms to MakeNoise~&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">        </span><br><span class="line">    animal as? MakeNoise // 运行正常</span><br><span class="line">    cat as! MakeNoise // 运行正常</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>日志：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">+++animal conforms to MakeNoise~</span><br><span class="line">+++cat conforms to MakeNoise~</span><br><span class="line">+++aniCat conforms to MakeNoise~</span><br></pre></td></tr></table></figure>
+<hr>
+<p>相关参考：</p>
+<p>#<a href="https://docs.swift.org/swift-book/LanguageGuide/TypeCasting.html" target="_blank" rel="noopener">©doc.swift</a></p>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#Swift">
+    <span class="tag-code">Swift</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2019/06/06/RAC-sig-filter.html">
+        <span class="nav-arrow">← </span>
+        
+          RAC-数据的过滤与转换
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#is类型检查"><span class="toc-nav-text">is类型检查</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#as类型转换"><span class="toc-nav-text">as类型转换</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#as向上转型"><span class="toc-nav-text">as向上转型</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#as-as-向下转型"><span class="toc-nav-text">as?\as!向下转型</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#检测协议"><span class="toc-nav-text">检测协议</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'http://yoursite.com/2019/06/17/swift-as.html';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+     // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+        
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+
+    // qrcode
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+
+    // gitment
+    var gitmentConfig = "";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "Swift类型协议检查",
+        owner: "",
+        repo: "",
+        oauth: {
+          client_id: "",
+          client_secret: ""
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  })();
+</script>
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2019 | <a href="https://github.com/davidlii" target="_blank">Davidli</a>
+    <br>
+    <a href="https://hexo.io" target="_blank">Hexo</a> | Theme-<a href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+<script src="/js/script.js"></script>
+  </body>
+</html>
