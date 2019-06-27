@@ -163,9 +163,11 @@
       
       <div class="article-summary">
         
-          有时，我们需要在应用启动阶段，或者某个类初始化之前处理一些特殊的需求，比如初始化全局变量等。OC 在NSObject 中有如下两个类方法：
+          有时，我们需要在应用启动阶段，或者类初始化之前处理一些指定的需求，这时你可能需要这俩方法：
 12+ (void)load;+ (void)initialize;
-+load与+initialize的共同点是，这俩方法在应用的整个生命周期内只会自 ...
+通常来说，这俩方法在应用的整个生命周期内会自动调用且只调用一次，你可以将任务定义在这俩方法中。
+1.load
+Invoked wh ...
         
       </div>
       <a class="more" href="/2018/11/18/load-initialize.html">Read more</a>
