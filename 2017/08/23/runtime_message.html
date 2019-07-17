@@ -169,7 +169,7 @@
 <p>结合以上背景，回到消息机制中来，先看如下代码：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">NSObject *obj = [NSObject alloc];</span><br></pre></td></tr></table></figure>
 <p>上面的示例代码中，<code>[NSObject alloc]</code> 实际上就是向 NSObject 这个类对象发送了一条<code>alloc</code>消息。 </p>
-<h3 id="8-方法调用的过程"><a href="#8-方法调用的过程" class="headerlink" title="8.方法调用的过程"></a>8.方法调用的过程</h3><p>1、调用方法时，runtime 会把方法的调用转化为<code>消息发送</code>，并把方法的调用者和方法选择器当作参数传递过去；即 <code>objc_msgSend(id, SEL)</code>；<br>&emsp;</p>
+<h3 id="8-方法调用的过程"><a href="#8-方法调用的过程" class="headerlink" title="8.方法调用的过程"></a>8.方法调用的过程</h3><p>1、调用方法时，runtime 会把方法的调用转化为<code>消息发送</code>，并把方法的调用者和方法选择器当作参数传递过去；即 <code>objc_msgSend(id self, SEL op, ...)</code>；<br>&emsp;</p>
 <p>2、方法的调用者会通过 <code>isa</code> 指针找到其所属的类。在类中有一块最近调用的方法的指针缓存（即cache，参见上面类的定义），出于性能考虑 runtime 会先去 <code>cache</code> 查找对应的方法;<br>&emsp;</p>
 <p>3、若 <code>cache</code> 中没有找到，则去 <code>methodLists</code> 中查找。找到后通过函数指针跳转到对应的实现中，之后将方法加入到 <code>cache</code> 中；<br>&emsp;</p>
 <p>4、若未找到该方法，则通过 <code>super_class</code>往上一级父类查找。<br>&emsp;</p>
