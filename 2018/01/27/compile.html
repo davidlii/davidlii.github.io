@@ -180,16 +180,18 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">Build target CodeMix of project CodeMix with configuration Debug</span><br><span class="line"></span><br><span class="line">CompileC /Users/../XXViewController.o CodeMix/XXViewController.m </span><br><span class="line">normal x86_64 objective-c com.apple.compilers.llvm.clang.1_0.compiler</span><br><span class="line">    cd /Users/../CodeMix</span><br><span class="line">    export LANG=en_US.US-ASCII</span><br><span class="line">    export PATH=“../XXViewController.o</span><br><span class="line"></span><br><span class="line">Ld /Users/../Debug-iphonesimulator/CodeMix.app/CodeMix normal x86_64</span><br><span class="line">    cd /Users/../CodeMix</span><br><span class="line">    export IPHONES_DEPLOYMENT_TARGET=11.2</span><br><span class="line">    ..</span><br><span class="line"></span><br><span class="line">PhaseScriptExecution Run\ Script /Users/../Script-0AC86E9E1FF6721A00098A24.sh</span><br><span class="line">    cd /Users/Macmafia/Desktop/CodeMix</span><br><span class="line">    export ACTION=build</span><br><span class="line">    export AD_HOC_CODE_SIGNING_ALLOWED=YES</span><br><span class="line">    export ALTERNATE_GROUP=staff</span><br><span class="line"></span><br><span class="line">    /bin/sh -c /Users/../Script-0AC86E9E1FF6721A00098A24.sh</span><br><span class="line"></span><br><span class="line">PRAGMA foreign_keys=OFF;</span><br><span class="line">BEGIN TRANSACTION;</span><br><span class="line">CREATE TABLE symbols(src text, des text);</span><br><span class="line">COMMIT;</span><br><span class="line"></span><br><span class="line">Touch /Users/../Build/Products/Debug-iphonesimulator/CodeMix.app</span><br><span class="line">    cd /Users/../CodeMix</span><br><span class="line">    export PATH=&quot;/Applications/Xcode.app/../Debug-iphonesimulator/CodeMix.app</span><br><span class="line"></span><br><span class="line">CodeSign /Users/../Debug-iphonesimulator/CodeMix.app</span><br><span class="line">    cd /Users/../CodeMix</span><br><span class="line">    export CODESIGN_ALLOCATE=/Applications/Xcode.app/../codesign_allocate</span><br><span class="line">    </span><br><span class="line">Signing Identity:     &quot;-&quot;</span><br><span class="line">    ..</span><br><span class="line">Build succeeded    2018/1/26 下午9:35</span><br></pre></td></tr></table></figure>
 <p>从上面日志可以看到，大致的过程是：</p>
 <ul>
-<li>compile各个.m文件</li>
-<li>copy静态资源，包括img，string，font。</li>
+<li>compile swift文件</li>
+<li>compile各个.m文件（按名字升序）</li>
 <li>compile xib</li>
 <li>compile storyboard</li>
-<li>compile asset catalogs</li>
-<li>process info.plist</li>
 <li>link storyboards</li>
-<li>run custom script</li>
-<li>touch app</li>
-<li>sign app</li>
+<li>copy静态资源，包括img，string，font</li>
+<li>compile asset catalogs</li>
+<li>run custom shell script</li>
+<li>process info.plist</li>
+<li>copy Swift standard libraries into xx.app（拷贝swift标准库）</li>
+<li>sign app（代码签名）</li>
+<li>touch app（生成.app文件）</li>
 <li>validate app(真机build有)</li>
 </ul>
 <hr>
