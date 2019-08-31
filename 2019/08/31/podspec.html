@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html>
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="This is Davidli&#39;s blog ~">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" type="image/ico" href="/image/logo.png"> 
+  
+  <title>
+    
+      搭建自己的pod库 | Davidli
+    
+  </title>
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+  <script src="/js/qrious.js"></script>
+<script src="/js/gitment.js"></script>
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+</head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png">
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>Davidli</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>搭建自己的pod库</h2>
+  <p class="post-date">2019-08-31</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>使用三方库时基本的语法是：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pod &apos;pod-Name&apos;</span><br></pre></td></tr></table></figure>
+<p>之后通过以下命令导入此库:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pod install</span><br></pre></td></tr></table></figure>
+<p>pod会从官方索引库中查找并导入此三方库。有时我们不希望自己的库对外公开，如只在公司范围内使用，这时就可以在代码托管平台发布一个私有库，导入库时通过<code>:source =&gt;</code>指定私有库的远程索引库地址即可。<br>&emsp;</p>
+<p>本篇文章将记录下从私有库到公开库的完整发布流程~</p>
+<h3 id="1、远程索引仓库"><a href="#1、远程索引仓库" class="headerlink" title="1、远程索引仓库"></a>1、远程索引仓库</h3><p><code>GitHub</code>-&gt;&gt;<code>New repository</code>，创建新的索引仓库~</p>
+<h3 id="2、本地索引仓库"><a href="#2、本地索引仓库" class="headerlink" title="2、本地索引仓库"></a>2、本地索引仓库</h3><h4 id="2-1-查看本地仓库"><a href="#2-1-查看本地仓库" class="headerlink" title="2.1.查看本地仓库"></a>2.1.查看本地仓库</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pod repo</span><br></pre></td></tr></table></figure>
+<p><code>/Users/Macmafia/.cocoapods</code>的目录结构如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">└── repos</span><br><span class="line">    └── master</span><br><span class="line">        ├── CocoaPods-version.yml</span><br><span class="line">        ├── README.md</span><br><span class="line">        └── Specs</span><br></pre></td></tr></table></figure>
+<h4 id="2-2-本地索引仓库"><a href="#2-2-本地索引仓库" class="headerlink" title="2.2.本地索引仓库"></a>2.2.本地索引仓库</h4><p>创建本地索引仓库，并与远程仓库关联：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pod repo add davidlii https://github.com/davidli-/davidlii.git</span><br></pre></td></tr></table></figure>
+<h4 id="2-3-确认"><a href="#2-3-确认" class="headerlink" title="2.3.确认"></a>2.3.确认</h4><p>确认本地索引仓库是否创建成功：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pod repo</span><br></pre></td></tr></table></figure>
+<p>现在，<code>/Users/Macmafia/.cocoapods</code>目录中结构如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">└── repos</span><br><span class="line">    ├── davidlii</span><br><span class="line">    │   └── README.md</span><br><span class="line">    └── master</span><br><span class="line">        ├── CocoaPods-version.yml</span><br><span class="line">        ├── README.md</span><br><span class="line">        └── Specs</span><br></pre></td></tr></table></figure>
+<p>其中<code>davidlii</code>目录即为刚创建的本地仓库。</p>
+<h3 id="3、远程代码库"><a href="#3、远程代码库" class="headerlink" title="3、远程代码库"></a>3、远程代码库</h3><p>上面创建的是”索引”仓库，存放的是”.podspec”索引文件。这一步将要创建的是”代码”仓库，存放的是自制库的相关代码。步骤同#1章节，另取新名DaKit~</p>
+<h3 id="4、本地代码库"><a href="#4、本地代码库" class="headerlink" title="4、本地代码库"></a>4、本地代码库</h3><p>创建本地代码库：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd 代码库的目录 (我的是/Documents/)</span><br><span class="line">pod lib create DaKit</span><br></pre></td></tr></table></figure>
+<p>这一步会让你做一些选择，根据自己的情况在终端中输入即可，我的选择按顺序分别为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">1.iOS</span><br><span class="line">2.ObjC</span><br><span class="line">3.Yes</span><br><span class="line">4.None</span><br><span class="line">5.No</span><br><span class="line">6.Da</span><br></pre></td></tr></table></figure>
+<p>选择完成后，开始生成本地代码库，之后会自动打开自制库的示例工程，其物理目录结构如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br></pre></td><td class="code"><pre><span class="line">/Users/Macmafia/Documents/DaKit/</span><br><span class="line">.</span><br><span class="line">├── DaKit</span><br><span class="line">│   ├── Assets</span><br><span class="line">│   └── Classes</span><br><span class="line">├── DaKit.podspec</span><br><span class="line">├── Example</span><br><span class="line">│   ├── DaKit</span><br><span class="line">│   │   ├── Base.lproj</span><br><span class="line">│   │   │   ├── LaunchScreen.storyboard</span><br><span class="line">│   │   │   └── Main.storyboard</span><br><span class="line">│   │   ├── DaAppDelegate.h</span><br><span class="line">│   │   ├── DaAppDelegate.m</span><br><span class="line">│   │   ├── DaKit-Info.plist</span><br><span class="line">│   │   ├── DaKit-Prefix.pch</span><br><span class="line">│   │   ├── DaViewController.h</span><br><span class="line">│   │   ├── DaViewController.m</span><br><span class="line">│   │   ├── Images.xcassets</span><br><span class="line">│   │   │   └── AppIcon.appiconset</span><br><span class="line">│   │   │       └── Contents.json</span><br><span class="line">│   │   ├── en.lproj</span><br><span class="line">│   │   │   └── InfoPlist.strings</span><br><span class="line">│   │   └── main.m</span><br><span class="line">│   ├── DaKit.xcodeproj</span><br><span class="line">│   │   ├── project.pbxproj</span><br><span class="line">│   │   ├── project.xcworkspace</span><br><span class="line">│   │   │   └── contents.xcworkspacedata</span><br><span class="line">│   │   └── xcshareddata</span><br><span class="line">│   │       └── xcschemes</span><br><span class="line">│   │           └── DaKit-Example.xcscheme</span><br><span class="line">│   ├── DaKit.xcworkspace</span><br><span class="line">│   │   ├── contents.xcworkspacedata</span><br><span class="line">│   │   ├── xcshareddata</span><br><span class="line">│   │   │   └── IDEWorkspaceChecks.plist</span><br><span class="line">│   │   └── xcuserdata</span><br><span class="line">│   │       └── Macmafia.xcuserdatad</span><br><span class="line">│   │           └── UserInterfaceState.xcuserstate</span><br><span class="line">│   ├── Podfile</span><br><span class="line">│   ├── Podfile.lock</span><br><span class="line">│   ├── Pods</span><br><span class="line">│   │   ├── Headers</span><br><span class="line">│   │   ├── Local\ Podspecs</span><br><span class="line">│   │   │   └── DaKit.podspec.json</span><br><span class="line">│   │   ├── Manifest.lock</span><br><span class="line">│   │   ├── Pods.xcodeproj</span><br><span class="line">│   │   │   ├── project.pbxproj</span><br><span class="line">│   │   │   └── xcuserdata</span><br><span class="line">│   │   │       └── Macmafia.xcuserdatad</span><br><span class="line">│   │   │           └── xcschemes</span><br><span class="line">│   │   │               ├── DaKit.xcscheme</span><br><span class="line">│   │   │               ├── Pods-DaKit_Example.xcscheme</span><br><span class="line">│   │   │               ├── Pods-DaKit_Tests.xcscheme</span><br><span class="line">│   │   │               └── xcschememanagement.plist</span><br><span class="line">│   │   └── Target\ Support\ Files</span><br><span class="line">│   │       ├── DaKit</span><br><span class="line">│   │       │   ├── DaKit-Info.plist</span><br><span class="line">│   │       │   ├── DaKit-dummy.m</span><br><span class="line">│   │       │   ├── DaKit-prefix.pch</span><br><span class="line">│   │       │   ├── DaKit-umbrella.h</span><br><span class="line">│   │       │   ├── DaKit.modulemap</span><br><span class="line">│   │       │   └── DaKit.xcconfig</span><br><span class="line">│   │       ├── Pods-DaKit_Example</span><br><span class="line">│   │       │   ├── Pods-DaKit_Example-Info.plist</span><br><span class="line">│   │       │   ├── Pods-DaKit_Example-acknowledgements.markdown</span><br><span class="line">│   │       │   ├── Pods-DaKit_Example-acknowledgements.plist</span><br><span class="line">│   │       │   ├── Pods-DaKit_Example-dummy.m</span><br><span class="line">│   │       │   ├── Pods-DaKit_Example-frameworks.sh</span><br><span class="line">│   │       │   ├── Pods-DaKit_Example-umbrella.h</span><br><span class="line">│   │       │   ├── Pods-DaKit_Example.debug.xcconfig</span><br><span class="line">│   │       │   ├── Pods-DaKit_Example.modulemap</span><br><span class="line">│   │       │   └── Pods-DaKit_Example.release.xcconfig</span><br><span class="line">│   │       └── Pods-DaKit_Tests</span><br><span class="line">│   │           ├── Pods-DaKit_Tests-Info.plist</span><br><span class="line">│   │           ├── Pods-DaKit_Tests-acknowledgements.markdown</span><br><span class="line">│   │           ├── Pods-DaKit_Tests-acknowledgements.plist</span><br><span class="line">│   │           ├── Pods-DaKit_Tests-dummy.m</span><br><span class="line">│   │           ├── Pods-DaKit_Tests-umbrella.h</span><br><span class="line">│   │           ├── Pods-DaKit_Tests.debug.xcconfig</span><br><span class="line">│   │           ├── Pods-DaKit_Tests.modulemap</span><br><span class="line">│   │           └── Pods-DaKit_Tests.release.xcconfig</span><br><span class="line">│   └── Tests</span><br><span class="line">│       ├── Tests-Info.plist</span><br><span class="line">│       ├── Tests-Prefix.pch</span><br><span class="line">│       ├── Tests.m</span><br><span class="line">│       └── en.lproj</span><br><span class="line">│           └── InfoPlist.strings</span><br><span class="line">├── LICENSE</span><br><span class="line">├── README.md</span><br><span class="line">└── _Pods.xcodeproj -&gt; Example/Pods/Pods.xcodeproj</span><br></pre></td></tr></table></figure>
+<h3 id="5、添加库文件"><a href="#5、添加库文件" class="headerlink" title="5、添加库文件"></a>5、添加库文件</h3><p>将自己的库文件拖入<code>/DaKit/DeKit/Classes</code>目录中：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── DaKit</span><br><span class="line">│   ├── Assets</span><br><span class="line">│   └── Classes</span><br><span class="line">│       └── Runtime</span><br><span class="line">│           ├── DaClassInfo.h</span><br><span class="line">│           ├── DaClassInfo.m</span><br><span class="line">│           ├── DaKakashi.h</span><br><span class="line">│           └── DaSerialize.h</span><br><span class="line">├── DaKit.podspec</span><br><span class="line">├── Example</span><br><span class="line">│   ├── DaKit</span><br></pre></td></tr></table></figure>
+<p>这里的<code>Runtime</code>即为我自己的库文件所在目录，下面是四个Da开头的库文件~</p>
+<h3 id="6、安装库文件"><a href="#6、安装库文件" class="headerlink" title="6、安装库文件"></a>6、安装库文件</h3><p>cd 到Example目录下，执行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pod install</span><br></pre></td></tr></table></figure>
+<p>这一步会将刚才拖入到 Classes 目录中的文件导入到示例工程中；<br>&emsp;</p>
+<p>导入后的库文件可在 DaKit.xcworkspace 的 Pods.xcodeproj 中查看。</p>
+<h3 id="7、修改-podspec文件"><a href="#7、修改-podspec文件" class="headerlink" title="7、修改.podspec文件"></a>7、修改.podspec文件</h3><p>DaKit工程根目录下.podspec文件的内容如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">Pod::Spec.new do |s|</span><br><span class="line">  s.name             = &apos;DaKit&apos;</span><br><span class="line">  s.version          = &apos;0.1.1&apos;</span><br><span class="line">  s.summary          = &apos;davidlii\&apos;s Kit for iOS developing~&apos;</span><br><span class="line"></span><br><span class="line"># This description is used to generate tags and improve search results.</span><br><span class="line">#   * Think: What does it do? Why did you write it? What is the focus?</span><br><span class="line">#   * Try to keep it short, snappy and to the point.</span><br><span class="line">#   * Write the description between the DESC delimiters below.</span><br><span class="line">#   * Finally, don&apos;t worry about the indent, CocoaPods strips it!</span><br><span class="line"></span><br><span class="line">  s.description      = &lt;&lt;-DESC</span><br><span class="line">                       Kit to simplify your developing process, I will continuously update this Kit.</span><br><span class="line">                       DESC</span><br><span class="line"></span><br><span class="line">  s.homepage         = &apos;https://github.com/davidli-/DaKit&apos;</span><br><span class="line">  s.screenshots      = &apos;https://davidlii.nos-eastchina1.126.net/pic_DaKit.png&apos;</span><br><span class="line">  s.license          = &#123; :type =&gt; &apos;MIT&apos;, :file =&gt; &apos;LICENSE&apos; &#125;</span><br><span class="line">  s.author           = &#123; &apos;davidlii&apos; =&gt; &apos;macmafia@sina.cn&apos; &#125;</span><br><span class="line">  s.source           = &#123; :git =&gt; &apos;https://github.com/davidli-/DaKit.git&apos;, :tag =&gt; s.version.to_s &#125;</span><br><span class="line">  s.social_media_url = &apos;https://davidlii.cn&apos;</span><br><span class="line"></span><br><span class="line">  s.ios.deployment_target = &apos;8.0&apos;</span><br><span class="line"></span><br><span class="line">  s.source_files = &apos;DaKit/Classes/**/*&apos;</span><br><span class="line">  </span><br><span class="line">  # s.resource_bundles = &#123;</span><br><span class="line">  #   &apos;DaKit&apos; =&gt; [&apos;DaKit/Assets/*.png&apos;]</span><br><span class="line">  # &#125;</span><br><span class="line"></span><br><span class="line">  # s.public_header_files = &apos;Pod/Classes/**/*.h&apos;</span><br><span class="line">  # s.frameworks = &apos;UIKit&apos;, &apos;MapKit&apos;</span><br><span class="line">  # s.dependency &apos;AFNetworking&apos;, &apos;~&gt; 2.3&apos;</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<p>根据需要，修改对应的选项，修改之后重新编译项目，测试是否能通过编译~</p>
+<h3 id="8、远程代码仓库"><a href="#8、远程代码仓库" class="headerlink" title="8、远程代码仓库"></a>8、远程代码仓库</h3><p>提交代码到远程代码仓库，大致过程如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git add .</span><br><span class="line">git commit -m “x”</span><br><span class="line">git remote add origin https://github.com/davidli-/DaKit.git(远程代码库的地址)</span><br><span class="line">git push origin master</span><br></pre></td></tr></table></figure>
+<p>设置标签：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git tag 版本号</span><br><span class="line">git push —tags (注意：一定要先将tag推送到远程仓库，否则后面验证仓库时无法通过验证)</span><br></pre></td></tr></table></figure>
+<p>CocoaPods 依赖于标签，标签的版本号须与.podspec文件中的版本号保持一致~</p>
+<h3 id="9、验证podspec文件"><a href="#9、验证podspec文件" class="headerlink" title="9、验证podspec文件"></a>9、验证podspec文件</h3><p>验证可分为两种，其过程都稍微费些时间。</p>
+<h4 id="9-1-只验证本地仓库"><a href="#9-1-只验证本地仓库" class="headerlink" title="9.1.只验证本地仓库"></a>9.1.只验证本地仓库</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pod lib lint 仓库名.podspec</span><br></pre></td></tr></table></figure>
+<h4 id="9-2-验证远程仓库"><a href="#9-2-验证远程仓库" class="headerlink" title="9.2.验证远程仓库"></a>9.2.验证远程仓库</h4><p>既验证本地仓库又验证远程仓库：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pod spec lint 仓库名.podspec --verbose --allow-warnings</span><br></pre></td></tr></table></figure>
+<p>如果验证通过，则会显示如下样式：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">** BUILD SUCCEEDED **</span><br><span class="line">    </span><br><span class="line">   Testing with `xcodebuild`. </span><br><span class="line"> -&gt; DaKit (0.1.1)</span><br><span class="line">    - NOTE  | xcodebuild:  note: Using new build system</span><br><span class="line">    - NOTE  | [iOS] xcodebuild:  note: Planning build</span><br><span class="line">    - NOTE  | [iOS] xcodebuild:  note: Constructing build description</span><br><span class="line"></span><br><span class="line">Analyzed 1 podspec.</span><br><span class="line"></span><br><span class="line">DaKit.podspec passed validation.</span><br></pre></td></tr></table></figure>
+<h3 id="10、推送索引文件"><a href="#10、推送索引文件" class="headerlink" title="10、推送索引文件"></a>10、推送索引文件</h3><p>将本地索引文件推送到远程索引库：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pod repo push 本地索引库 索引文件名 --verbose --allow-warnings</span><br></pre></td></tr></table></figure>
+<p>我的为：pod repo push davidlii DaKit.podspec –verbose –allow-warnings</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">. . . 日志</span><br><span class="line">Pushing the `davidlii&apos; repo</span><br><span class="line"></span><br><span class="line">  $ /usr/bin/git -C /Users/Macmafia/.cocoapods/repos/davidlii push origin master</span><br><span class="line">  To https://github.com/davidli-/davidlii.git</span><br><span class="line">     6f4b19f..ebd5059  master -&gt; master</span><br></pre></td></tr></table></figure>
+<p>看到这些即表示推送成功，此时查看本地索引库，其目录变成：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">/Users/Macmafia/.cocoapods</span><br><span class="line">.</span><br><span class="line">└── repos</span><br><span class="line">    ├── davidlii</span><br><span class="line">    │   └── DaKit</span><br><span class="line">    │       └── 0.1.1</span><br><span class="line">    └── master</span><br><span class="line">        └── Specs</span><br></pre></td></tr></table></figure>
+<p>davidlii 目录下多出了<code>DaKit</code>目录和刚提交的库文件标签<code>0.1.1</code>，即表示索引创建成功~</p>
+<h3 id="11、导入库私有库"><a href="#11、导入库私有库" class="headerlink" title="11、导入库私有库"></a>11、导入库私有库</h3><p>到目前为止我们发布的还只是私有库，尚无法通过<code>pod search</code>命令从官方<code>master</code>索引库中查找的到~<br>&emsp;</p>
+<p>此私有库可在自己的项目或公司范围内使用，只需在想要使用此库的工程中修改Podfile文件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">########</span><br><span class="line"></span><br><span class="line">use_frameworks!</span><br><span class="line"></span><br><span class="line"># 指定自制库DaKit的远程索引库地址</span><br><span class="line"># 方式1：source &apos;https://github.com/davidli-/davidlii.git&apos;</span><br><span class="line"></span><br><span class="line">target &apos;ASDF&apos; do</span><br><span class="line"># 方式2：</span><br><span class="line">    pod &apos;DaKit&apos;, :source =&gt; &apos;https://github.com/davidli-/davidlii.git&apos;</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">########</span><br></pre></td></tr></table></figure>
+<p>即使用<code>:source =&gt;</code>指定私有库的远程索引库地址即可~</p>
+<h3 id="12、发布公开库"><a href="#12、发布公开库" class="headerlink" title="12、发布公开库"></a>12、发布公开库</h3><ul>
+<li>注册pod trunk</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pod trunk register 邮箱 ‘名称’ --description=‘xxx’ --verbos</span><br></pre></td></tr></table></figure>
+<ul>
+<li>验证邮箱</li>
+</ul>
+<p>前往注册时的邮箱点击链接即可完成验证~</p>
+<ul>
+<li>确认注册信息</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pod trunk me</span><br></pre></td></tr></table></figure>
+<h3 id="13、提交-podspec文件"><a href="#13、提交-podspec文件" class="headerlink" title="13、提交.podspec文件"></a>13、提交.podspec文件</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">pod trunk push DaKit.podspec --allow-warnings</span><br><span class="line"></span><br><span class="line">// 日志</span><br><span class="line">Updating spec repo `master`</span><br><span class="line">Validating podspec</span><br><span class="line"> -&gt; DaKit (0.1.1)</span><br><span class="line">    - NOTE  | xcodebuild:  note: Using new build system</span><br><span class="line">    - NOTE  | [iOS] xcodebuild:  note: Planning build</span><br><span class="line">    - NOTE  | [iOS] xcodebuild:  note: Constructing build description</span><br><span class="line"></span><br><span class="line">Updating spec repo `master`</span><br><span class="line"></span><br><span class="line">--------------------------------------------------------------------------------</span><br><span class="line"> 🎉  Congrats</span><br><span class="line"></span><br><span class="line"> 🚀  DaKit (0.1.1) successfully published</span><br><span class="line"> 📅  August 31st, 08:23</span><br><span class="line"> 🌎  https://cocoapods.org/pods/DaKit</span><br><span class="line"> 👍  Tell your friends!</span><br><span class="line">--------------------------------------------------------------------------------</span><br></pre></td></tr></table></figure>
+<h3 id="14、搜索自己的库"><a href="#14、搜索自己的库" class="headerlink" title="14、搜索自己的库"></a>14、搜索自己的库</h3><ul>
+<li>查询trunk</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">pod trunk me</span><br><span class="line">  - Name:     davidlii</span><br><span class="line">  - Email:    macmafia@sina.cn</span><br><span class="line">  - Since:    August 31st, 04:20</span><br><span class="line">  - Pods:</span><br><span class="line">    - DaKit</span><br><span class="line">  - Sessions:</span><br><span class="line">    - August 31st, 04:20 - January 6th, 2020 09:14. IP: 183.156.110.234</span><br></pre></td></tr></table></figure>
+<p>可以看到<code>Pods:</code>目录下顺利出现了自制的库 DaKit。</p>
+<ul>
+<li>查询pod</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pod search DaKit</span><br></pre></td></tr></table></figure>
+<p>如果显示以下结果，则提交公开库成功：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">-&gt; DaKit (0.1.1)</span><br><span class="line">   davidlii&apos;s Kit for iOS developing~</span><br><span class="line">   pod &apos;DaKit&apos;, &apos;~&gt; 0.1.1&apos;</span><br><span class="line">   - Homepage: https://github.com/davidli-/DaKit</span><br><span class="line">   - Source:   https://github.com/davidli-/DaKit.git</span><br><span class="line">   - Versions: 0.1.1 [davidlii repo]</span><br></pre></td></tr></table></figure>
+<p>如果无法查到，则先更新索引库，再重新查找：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pod repo update</span><br><span class="line">pod search DaKit</span><br></pre></td></tr></table></figure>
+<h3 id="15、导入公开库"><a href="#15、导入公开库" class="headerlink" title="15、导入公开库"></a>15、导入公开库</h3><p>修改Podfile文件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">#######</span><br><span class="line"></span><br><span class="line">use_frameworks!</span><br><span class="line"></span><br><span class="line">target &apos;ASDF&apos; do</span><br><span class="line"># 使用公开库</span><br><span class="line">    pod &apos;DaKit&apos;</span><br><span class="line">end</span><br><span class="line">#######</span><br></pre></td></tr></table></figure>
+<p>导入库文件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pod install</span><br></pre></td></tr></table></figure>
+<h3 id="16、使用公开库"><a href="#16、使用公开库" class="headerlink" title="16、使用公开库"></a>16、使用公开库</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">// 实体类 ***********</span><br><span class="line">@interface Card : NSObject</span><br><span class="line">@property (nonatomic) int cardNumber; // 编号</span><br><span class="line">@property (nonatomic) float money;    // 余额</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">#import &quot;Card.h&quot;</span><br><span class="line"></span><br><span class="line">// 导入头文件</span><br><span class="line">#import &lt;DaKit/DaSerialize.h&gt;</span><br><span class="line">#import &lt;DaKit/DaKakashi.h&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">@implementation Card</span><br><span class="line"></span><br><span class="line">// 使用宏</span><br><span class="line">DaSerialize()</span><br><span class="line">DaKakashi()</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">// 测试 ***********</span><br><span class="line"></span><br><span class="line">#import &quot;Card.h&quot;</span><br><span class="line">#import &lt;DaKit/DaClassInfo.h&gt;</span><br><span class="line"></span><br><span class="line">- (void)example&#123;</span><br><span class="line">    Card *card = [[Card alloc] init];</span><br><span class="line">    card.cardNumber = 100;</span><br><span class="line">    card.money = 50000000;</span><br><span class="line"></span><br><span class="line">    // 序列化</span><br><span class="line">    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:card];</span><br><span class="line">    Card *card2 = [NSKeyedUnarchiver unarchiveObjectWithData:data];</span><br><span class="line">    </span><br><span class="line">    // 复制</span><br><span class="line">    Card *card3 = [card2 copy];</span><br><span class="line"></span><br><span class="line">    // 获取类的信息</span><br><span class="line">    NSArray *ivars = [DaClassInfo ivarListWithClass:[Card class]];</span><br><span class="line">    NSArray *props = [DaClassInfo propertyListWithClass:[Card class]];</span><br><span class="line">    NSArray *meths = [DaClassInfo methodListWithClass:[Card class]];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h3><p>至此，私有库和公有库的创建与使用均已完成，过程中还有一些ruby源和网络等问题，折腾了好一会儿，每个人的情况可能都不尽相同，这里就不一一罗列了。库已提交，以后就可以快乐的更新啦~</p>
+<p>&emsp;</p>
+<p>欢迎使用与指正~</p>
+<hr>
+<p>相关参考：</p>
+<p>#<a href="https://github.com/davidli-/DaKit" target="_blank" rel="noopener">©DaKit</a></p>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#pod">
+    <span class="tag-code">pod</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2019/06/20/swift-unwrap.html">
+        <span class="nav-arrow">← </span>
+        
+          可选拆包方法汇总
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#前言"><span class="toc-nav-text">前言</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1、远程索引仓库"><span class="toc-nav-text">1、远程索引仓库</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2、本地索引仓库"><span class="toc-nav-text">2、本地索引仓库</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-1-查看本地仓库"><span class="toc-nav-text">2.1.查看本地仓库</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-2-本地索引仓库"><span class="toc-nav-text">2.2.本地索引仓库</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-3-确认"><span class="toc-nav-text">2.3.确认</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3、远程代码库"><span class="toc-nav-text">3、远程代码库</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#4、本地代码库"><span class="toc-nav-text">4、本地代码库</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#5、添加库文件"><span class="toc-nav-text">5、添加库文件</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#6、安装库文件"><span class="toc-nav-text">6、安装库文件</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#7、修改-podspec文件"><span class="toc-nav-text">7、修改.podspec文件</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#8、远程代码仓库"><span class="toc-nav-text">8、远程代码仓库</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#9、验证podspec文件"><span class="toc-nav-text">9、验证podspec文件</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#9-1-只验证本地仓库"><span class="toc-nav-text">9.1.只验证本地仓库</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#9-2-验证远程仓库"><span class="toc-nav-text">9.2.验证远程仓库</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#10、推送索引文件"><span class="toc-nav-text">10、推送索引文件</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#11、导入库私有库"><span class="toc-nav-text">11、导入库私有库</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#12、发布公开库"><span class="toc-nav-text">12、发布公开库</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#13、提交-podspec文件"><span class="toc-nav-text">13、提交.podspec文件</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#14、搜索自己的库"><span class="toc-nav-text">14、搜索自己的库</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#15、导入公开库"><span class="toc-nav-text">15、导入公开库</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#16、使用公开库"><span class="toc-nav-text">16、使用公开库</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#后记"><span class="toc-nav-text">后记</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'http://yoursite.com/2019/08/31/podspec.html';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+     // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+        
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+
+    // qrcode
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+
+    // gitment
+    var gitmentConfig = "";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "搭建自己的pod库",
+        owner: "",
+        repo: "",
+        oauth: {
+          client_id: "",
+          client_secret: ""
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  })();
+</script>
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2019 | <a href="https://github.com/davidlii" target="_blank">Davidli</a>
+    <br>
+    <a href="https://hexo.io" target="_blank">Hexo</a> | Theme-<a href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+<script src="/js/script.js"></script>
+  </body>
+</html>
