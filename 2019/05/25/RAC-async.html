@@ -195,7 +195,7 @@
 <p>可以看到，RAC 的 KVC 内部只是调用了其 KVO 方法并返回元组的第一个值。这就不难理解上面的猜测了~</p>
 <h3 id="通知"><a href="#通知" class="headerlink" title="通知"></a>通知</h3><p>#示例：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[[[NSNotificationCenter defaultCenter] rac_addObserverForName:UIKeyboardWillShowNotification</span><br><span class="line">                                                       object:nil]</span><br><span class="line">subscribeNext:^(NSNotification *x) &#123;</span><br><span class="line">     NSLog(@&quot;++通知:%@&quot;,x);</span><br><span class="line">&#125;];</span><br></pre></td></tr></table></figure>
-<p>监听指定名称的通知并订阅其返回的信号，待键盘弹出或收回时即可触发订阅者的回调。其实内部实现如下：</p>
+<p>监听键盘通知并订阅其返回的信号，待键盘弹出或收回时即可触发订阅者的回调。其实内部实现如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">@implementation NSNotificationCenter (RACSupport)</span><br><span class="line"></span><br><span class="line">- (RACSignal *)rac_addObserverForName:(NSString *)notificationName object:(id)object &#123;</span><br><span class="line">	@unsafeify(object);</span><br><span class="line">	return [[RACSignal createSignal:^(id&lt;RACSubscriber&gt; subscriber) &#123;</span><br><span class="line">		@strongify(object);</span><br><span class="line">		id observer = [self addObserverForName:notificationName object:object queue:nil usingBlock:^(NSNotification *note) &#123;</span><br><span class="line">			[subscriber sendNext:note];</span><br><span class="line">		&#125;];</span><br><span class="line"></span><br><span class="line">		return [RACDisposable disposableWithBlock:^&#123;</span><br><span class="line">			[self removeObserver:observer];</span><br><span class="line">		&#125;];</span><br><span class="line">	&#125;] setNameWithFormat:@&quot;-rac_addObserverForName: %@ object: &lt;%@: %p&gt;&quot;, notificationName, [object class], object];</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
 <p>在RAC对 NSNotificationCenter 的扩展中，监听通知后实际上只是调用了OC原生的通知监听方法，在原生回调中向订阅者发送消息~</p>
 <h3 id="target-action"><a href="#target-action" class="headerlink" title="target-action"></a>target-action</h3><p>#示例:</p>
@@ -218,7 +218,7 @@
 <li>我们只须订阅此信号就能以一种统一的方式实现业务代码的内聚；</li>
 <li>信号向订阅者发送完事件之后随即清理资源和引用；</li>
 </ul>
-<p>这中高内聚的设计思想，非常符合良好的代码规范，值得学习和借鉴~</p>
+<p>RAC将这些异步行为的创建、监听、业务回调集中在一片代码区域或交由RAC内部实现，这符合高内聚的设计思想，值得学习和借鉴~</p>
 <hr>
 <p>相关参考：</p>
 <p>#<a href="https://github.com/ReactiveCocoa/ReactiveObjC/blob/master/Documentation/FrameworkOverview.md" target="_blank" rel="noopener">©RAC-Github</a></p>
