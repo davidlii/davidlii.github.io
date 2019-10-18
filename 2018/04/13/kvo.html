@@ -65,25 +65,25 @@
       
         <li class="list-item">
           
-            <a href="/" class="item-link">Home</a>
+            <a href="/" class="item-link">Davidli</a>
           
         </li>
       
         <li class="list-item">
           
-            <a href="/tags/" class="item-link">Tags</a>
+            <a href="/archives/" class="item-link">归档</a>
           
         </li>
       
         <li class="list-item">
           
-            <a href="/archives/" class="item-link">Archives</a>
+            <a href="/tags/" class="item-link">标签</a>
           
         </li>
       
         <li class="list-item">
           
-            <a href="/about/" class="item-link">About</a>
+            <a href="/about/" class="item-link">关于</a>
           
         </li>
       
@@ -98,25 +98,25 @@
         
           <li class="menu-item">
             
-              <a href="/" class="menu-link">Home</a>
+              <a href="/" class="menu-link">Davidli</a>
             
           </li>
         
           <li class="menu-item">
             
-              <a href="/tags/" class="menu-link">Tags</a>
+              <a href="/archives/" class="menu-link">归档</a>
             
           </li>
         
           <li class="menu-item">
             
-              <a href="/archives/" class="menu-link">Archives</a>
+              <a href="/tags/" class="menu-link">标签</a>
             
           </li>
         
           <li class="menu-item">
             
-              <a href="/about/" class="menu-link">About</a>
+              <a href="/about/" class="menu-link">关于</a>
             
           </li>
         
@@ -144,7 +144,7 @@
 <p>#示例：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">//Person.h</span><br><span class="line">#import &quot;Model.h&quot;</span><br><span class="line">@interface Person : NSObject &lt;NSCoding&gt;</span><br><span class="line"></span><br><span class="line">@property (nonatomic, copy) NSString *name;</span><br><span class="line">@property (nonatomic, assign) NSInteger age;</span><br><span class="line">@property (nonatomic, strong) NSMutableArray *nickArr;</span><br><span class="line">@property (nonatomic, strong) Model *model; // 包含了一个Model对象</span><br><span class="line"></span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">//Model.h</span><br><span class="line">@interface Model : NSObject</span><br><span class="line"></span><br><span class="line">@property (nonatomic, copy) NSString *name;</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
 <p>在监听者类中注册监听的属性：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">@interface AppDelegate()</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">static void *nickArrContext = &amp;nickArrContext;</span><br><span class="line"></span><br><span class="line">@implementation AppDelegate</span><br><span class="line"></span><br><span class="line">- (BOOL)application:(UIApplication *)application</span><br><span class="line">didFinishLaunchingWithOptions:(NSDictionary *)launchOptions</span><br><span class="line">&#123;</span><br><span class="line">    Person *p = [[Person alloc] init];</span><br><span class="line">    </span><br><span class="line">    //监听p.model.name字段的变化</span><br><span class="line">    [p addObserver:self forKeyPath:@&quot;model.name&quot;</span><br><span class="line">           options:NSKeyValueObservingOptionNew context:nil];</span><br><span class="line">    //赋值 触发观察者</span><br><span class="line">    p.model = [Model new];</span><br><span class="line">    p.model.name = @&quot;211&quot;;</span><br><span class="line">    </span><br><span class="line">    //监听数组属性的变化</span><br><span class="line">    [p addObserver:self forKeyPath:@&quot;nickArr&quot; options:NSKeyValueObservingOptionNew context:nickArrContext];</span><br><span class="line">    p.nickArr = [NSMutableArray arrayWithObject:@&quot;david1&quot;];//会触发回调</span><br><span class="line">    [p.nickArr addObject:@&quot;Davi1&quot;];//不会触发回调</span><br><span class="line">    </span><br><span class="line">    NSMutableArray *mutNickArr = [p mutableArrayValueForKey:@&quot;nickArr&quot;];</span><br><span class="line">    //mutNickArr = [NSMutableArray arrayWithObject:@&quot;david2&quot;];如果重新赋值后再调用 addObject将不会触发KVC回调</span><br><span class="line">    [mutNickArr addObject:@&quot;Davi2&quot;];</span><br><span class="line">    NSLog(@&quot;++++p.nickArr:%@&quot;,p.nickArr);</span><br><span class="line"></span><br><span class="line">    return YES;</span><br><span class="line">&#125;</span><br><span class="line">#pragma mark -监听回调</span><br><span class="line">-(void)observeValueForKeyPath:(NSString *)keyPath</span><br><span class="line">                     ofObject:(id)object</span><br><span class="line">                       change:(NSDictionary&lt;NSKeyValueChangeKey,id&gt; *)change</span><br><span class="line">                      context:(void *)context&#123;</span><br><span class="line">    id newValue = change[NSKeyValueChangeNewKey];</span><br><span class="line">    </span><br><span class="line">    if ([keyPath isEqualToString:@&quot;model.name&quot;]) &#123;</span><br><span class="line">        NSLog(@&quot;++++model.name newValue:%@&quot;,newValue);</span><br><span class="line">    &#125;else if ([keyPath isEqualToString:@&quot;nickArr&quot;])&#123;</span><br><span class="line">        NSLog(@&quot;++++nickArr newValue:%@&quot;,newValue);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">@interface AppDelegate()</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">static void *nickArrContext = &amp;nickArrContext;</span><br><span class="line"></span><br><span class="line">@implementation AppDelegate</span><br><span class="line"></span><br><span class="line">- (BOOL)application:(UIApplication *)application</span><br><span class="line">didFinishLaunchingWithOptions:(NSDictionary *)launchOptions</span><br><span class="line">&#123;</span><br><span class="line">    Person *p = [[Person alloc] init];</span><br><span class="line">    </span><br><span class="line">    //监听p.model.name字段的变化</span><br><span class="line">    [p addObserver:self forKeyPath:@&quot;model.name&quot;</span><br><span class="line">           options:NSKeyValueObservingOptionNew context:nil];</span><br><span class="line">    //赋值 触发观察者</span><br><span class="line">    p.model = [Model new];</span><br><span class="line">    p.model.name = @&quot;211&quot;;</span><br><span class="line">    </span><br><span class="line">    //监听数组属性的变化</span><br><span class="line">    [p addObserver:self forKeyPath:@&quot;nickArr&quot; options:NSKeyValueObservingOptionNew context:nickArrContext];</span><br><span class="line">    p.nickArr = [NSMutableArray arrayWithObject:@&quot;david1&quot;];//会触发回调</span><br><span class="line">    [p.nickArr addObject:@&quot;Davi1&quot;];//不会触发回调</span><br><span class="line">    </span><br><span class="line">    NSMutableArray *mutNickArr = [p mutableArrayValueForKey:@&quot;nickArr&quot;];</span><br><span class="line">    //mutNickArr = [NSMutableArray arrayWithObject:@&quot;david2&quot;];如果重新赋值后再调用 addObject将不会触发KVO回调</span><br><span class="line">    [mutNickArr addObject:@&quot;Davi2&quot;];</span><br><span class="line">    NSLog(@&quot;++++p.nickArr:%@&quot;,p.nickArr);</span><br><span class="line"></span><br><span class="line">    return YES;</span><br><span class="line">&#125;</span><br><span class="line">#pragma mark -监听回调</span><br><span class="line">-(void)observeValueForKeyPath:(NSString *)keyPath</span><br><span class="line">                     ofObject:(id)object</span><br><span class="line">                       change:(NSDictionary&lt;NSKeyValueChangeKey,id&gt; *)change</span><br><span class="line">                      context:(void *)context&#123;</span><br><span class="line">    id newValue = change[NSKeyValueChangeNewKey];</span><br><span class="line">    </span><br><span class="line">    if ([keyPath isEqualToString:@&quot;model.name&quot;]) &#123;</span><br><span class="line">        NSLog(@&quot;++++model.name newValue:%@&quot;,newValue);</span><br><span class="line">    &#125;else if ([keyPath isEqualToString:@&quot;nickArr&quot;])&#123;</span><br><span class="line">        NSLog(@&quot;++++nickArr newValue:%@&quot;,newValue);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>输出日志：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">++++model.name newValue:&lt;null&gt;</span><br><span class="line">++++model.name newValue:211</span><br><span class="line">++++nickArr newValue:(</span><br><span class="line">    david1</span><br><span class="line">)</span><br><span class="line">++++nickArr newValue:(</span><br><span class="line">    Davi2</span><br><span class="line">)</span><br><span class="line">++++p.nickArr:(</span><br><span class="line">    david1,</span><br><span class="line">    Davi1,</span><br><span class="line">    Davi2</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
 <p>最后不要忘记在合适的时机（如dealloc或者回调中）移除监听。</p>
@@ -156,15 +156,15 @@
 <blockquote>
 <p>The default implementation of this method recognizes the same simple accessor methods and array accessor methods as -valueForKey:’s, and follows the same direct instance variable access policies, but always returns a mutable collection proxy object instead of the immutable collection that -valueForKey: would return.</p>
 </blockquote>
-<h3 id="底层的原理"><a href="#底层的原理" class="headerlink" title="#底层的原理?"></a>#底层的原理?</h3><p><a href="https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/KeyValueObserving/Articles/KVOImplementation.html#//apple_ref/doc/uid/20002307-BAJEAIEE" target="_blank" rel="noopener">官方文档</a> 解释如下：<br>&emsp;</p>
+<h3 id="KVO底层原理"><a href="#KVO底层原理" class="headerlink" title="#KVO底层原理?"></a>#KVO底层原理?</h3><p><a href="https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/KeyValueObserving/Articles/KVOImplementation.html#//apple_ref/doc/uid/20002307-BAJEAIEE" target="_blank" rel="noopener">官方文档</a> 解释如下：<br>&emsp;</p>
 <p>Automatic key-value observing is implemented using a technique called isa-swizzling.<br>&emsp;</p>
 <p>The isa pointer, as the name suggests, points to the object’s class which maintains a dispatch table. This dispatch table essentially contains pointers to the methods the class implements, among other data.<br>&emsp;</p>
 <p>When an observer is registered for an attribute of an object the isa pointer of the observed object is modified, pointing to an intermediate class rather than at the true class. As a result the value of the isa pointer does not necessarily reflect the actual class of the instance.<br>&emsp;</p>
 <p>You should never rely on the isa pointer to determine class membership. Instead, you should use the class method to determine the class of an object instance.<br>&emsp;</p>
-<p>简而言之，苹果使用了一种 isa 交换的技术。当一个类的属性被观察时，系统会通过 Runtime 动态的创建一个该类的派生类，并且会在这个类中重写基类被观察的属性的 setter 方法，而且系统将这个类的 isa 指针指向了派生类，从而实现了给监听的属性赋值时调用的是派生类的 setter 方法。重写的 setter 方法会调用 [super setValue:newName forKey:@”name”] 并在此方法前后分别插入 [self willChangeValueForKey:@“name”] 和 [self didChangeValueForKey:@”name”]，以通知观察对象值的改变。<br>&emsp;</p>
-<p>以上面案例中的 Model 为例，当 name 属性被观察后，aModel 对象的 isa 指针被指向了一个新建的 Model 的子类 NSKVONotifying_Model，这个子类重写了被观察值的 setter 方法和 class 方法、dealloc 及 _isKVO 方法，然后使 aModel 对象的 isa 指针指向这个新建的类。所以事实上 aModel 变为了 NSKVONotifying_Model 的实例对象，执行方法要从这个类的方法列表里找。<br>&emsp;</p>
+<p>简而言之，苹果使用了一种 isa 交换的技术。当一个类的属性被观察时，Runtime 会动态的创建一个中间类，将原类的 isa 指针指向此中间类。中间类中重写原类被观察属性的 setter 方法，这样给原类属性赋值时调用的实际上是中间类的 setter 方法。重写的 setter 方法会调用 [super setValue:newName forKey:@”name”] 并在此方法前后分别插入 [self willChangeValueForKey:@“name”] 和 [self didChangeValueForKey:@”name”]，以通知观察对象值的改变。<br>&emsp;</p>
+<p>以上面案例中的 Model 为例，当 name 属性被观察后，aModel 对象的 isa 指针被指向了一个新建的 Model 的中间类 NSKVONotifying_Model，这个中间类重写了被观察值的 setter 方法和 class 方法、dealloc 及 _isKVO 方法，然后使 aModel 对象的 isa 指针指向这个新建的类。所以事实上 aModel 变为了 NSKVONotifying_Model 的实例对象，执行方法要从这个类的方法列表里找。<br>&emsp;</p>
 <p>苹果警告我们，通过 isa 获取类的类型是不可靠的，通过 class 方法才能得到正确的类。</p>
-<h3 id="主动触发KVO"><a href="#主动触发KVO" class="headerlink" title="#主动触发KVO"></a>#主动触发KVO</h3><p>如上所述，当属性发生变化时能收到通知，是因为 Runtime 使用 <code>isa-swizzling</code> 技术在派生类中属性的 <code>setter</code> 赋值语句前后主动调用了下面两个方法： </p>
+<h3 id="主动触发KVO"><a href="#主动触发KVO" class="headerlink" title="#主动触发KVO"></a>#主动触发KVO</h3><p>如上所述，当属性发生变化时能收到通知，是因为 Runtime 使用 <code>isa-swizzling</code> 技术在中间类中属性的 <code>setter</code> 赋值语句前后主动调用了下面两个方法： </p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">- (void)willChangeValueForKey:(NSString *)key;</span><br><span class="line">- (void)didChangeValueForKey:(NSString *)key;</span><br></pre></td></tr></table></figure>
 <p>所以，当我们需要属性值的改变在符合某个条件时才触发 KVO 时，我们需要做以下几件事：</p>
 <ul>
@@ -246,7 +246,7 @@
   <div class="toc-main">
     <strong class="toc-title">Catalog</strong>
     
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#是啥"><span class="toc-nav-text">#是啥?</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#咋用"><span class="toc-nav-text">#咋用?</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#底层的原理"><span class="toc-nav-text">#底层的原理?</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#主动触发KVO"><span class="toc-nav-text">#主动触发KVO</span></a></li></ol>
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#是啥"><span class="toc-nav-text">#是啥?</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#咋用"><span class="toc-nav-text">#咋用?</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#KVO底层原理"><span class="toc-nav-text">#KVO底层原理?</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#主动触发KVO"><span class="toc-nav-text">#主动触发KVO</span></a></li></ol>
     
   </div>
 </aside>

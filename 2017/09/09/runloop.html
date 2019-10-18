@@ -65,25 +65,25 @@
       
         <li class="list-item">
           
-            <a href="/" class="item-link">Home</a>
+            <a href="/" class="item-link">Davidli</a>
           
         </li>
       
         <li class="list-item">
           
-            <a href="/tags/" class="item-link">Tags</a>
+            <a href="/archives/" class="item-link">归档</a>
           
         </li>
       
         <li class="list-item">
           
-            <a href="/archives/" class="item-link">Archives</a>
+            <a href="/tags/" class="item-link">标签</a>
           
         </li>
       
         <li class="list-item">
           
-            <a href="/about/" class="item-link">About</a>
+            <a href="/about/" class="item-link">关于</a>
           
         </li>
       
@@ -98,25 +98,25 @@
         
           <li class="menu-item">
             
-              <a href="/" class="menu-link">Home</a>
+              <a href="/" class="menu-link">Davidli</a>
             
           </li>
         
           <li class="menu-item">
             
-              <a href="/tags/" class="menu-link">Tags</a>
+              <a href="/archives/" class="menu-link">归档</a>
             
           </li>
         
           <li class="menu-item">
             
-              <a href="/archives/" class="menu-link">Archives</a>
+              <a href="/tags/" class="menu-link">标签</a>
             
           </li>
         
           <li class="menu-item">
             
-              <a href="/about/" class="menu-link">About</a>
+              <a href="/about/" class="menu-link">关于</a>
             
           </li>
         
@@ -160,15 +160,15 @@
 <p>输出日志：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">++++当前线程:&lt;ASDFThread: 0x600003575e80&gt;&#123;number = 3, name = (null)&#125;</span><br><span class="line">++++THREAD IS DEALLOCED~</span><br></pre></td></tr></table></figure>
 <p>可以看到，自定义的 ASDFThread 线程对象在执行完任务之后，自动销毁了。<br>&emsp;</p>
-<p>如果要线程执行完任务后，仍不销毁可以在当前线程中开启 Runloop：<br>&emsp;</p>
+<p>如果要线程执行完任务后，仍不销毁以便复用，则可以在当前线程中开启 Runloop：<br>&emsp;</p>
 <p>#示例2：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">- (void)onHandleEvent&#123;</span><br><span class="line">    NSLog(@&quot;++++当前线程:%@&quot;,[NSThread currentThread]);</span><br><span class="line">    </span><br><span class="line">    //开启runloop</span><br><span class="line">    CFRunLoopSourceContext context = &#123;0&#125;;</span><br><span class="line">    CFRunLoopSourceRef source = CFRunLoopSourceCreate(NULL, 0, &amp;context);</span><br><span class="line">    CFRunLoopAddSource(CFRunLoopGetCurrent(), source, kCFRunLoopCommonModes);</span><br><span class="line">    CFRunLoopRun();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>通过往子线程所在的runloop中加入一个<code>source</code>并调用<code>CFRunLoopRun()</code>，线程执行完任务后，就不会自动销毁。<br>&emsp;</p>
+<p>通过往子线程所在的runloop中加入一个<code>source</code>并启动此runloop，线程执行完任务后就不会自动销毁。<br>&emsp;</p>
 <p><strong>ps</strong>：线程刚创建时并没有RunLoop对象，只在我们第一次去获取时才会创建，RunLoop会在线程结束时销毁。</p>
 <h2 id="2-RunLoopMode"><a href="#2-RunLoopMode" class="headerlink" title="2.RunLoopMode"></a>2.RunLoopMode</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">struct __CFRunLoopMode &#123;</span><br><span class="line">CFStringRef _name;   //Mode的名字</span><br><span class="line"></span><br><span class="line">CFMutableSetRef _sources0;</span><br><span class="line">CFMutableSetRef _sources1;</span><br><span class="line"></span><br><span class="line">CFMutableArrayRef _observers;//观察者</span><br><span class="line">CFMutableArrayRef _timers;//计时器</span><br><span class="line">.....</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 <p>运行循环模式，本质上是个结构体，其中包含了与之对应的事件类型、观察者和计时器等。<br>&emsp;</p>
-<p>Runloop 对象可以和若干个 <code>mode</code> 关联起来。但同一时间 Runloop 只能运行在一种模式下；运行过程中，只有指定模式下的输入源才会被监听。同理也只有指定模式下的观察者才会被通知关于当前loop的进度。<br>&emsp;</p>
-<p>当需要切换 mode 时，必须先退出当前的 RunLoop，再重新启动一个新的。</p>
+<p>Runloop 对象可以和若干个 <code>mode</code> 关联起来。但同一时间 Runloop 只能运行在一种模式下；运行过程中，只有指定模式下的输入源才会被监听。同理也只有指定模式下的观察者才会被通知当前runloop的进度。<br>&emsp;</p>
+<p>当需要切换 mode 时，必须先退出当前的 RunLoop，再重新启动一个新的 RunLoop。</p>
 <h3 id="2-1-具体模式"><a href="#2-1-具体模式" class="headerlink" title="2.1.具体模式"></a>2.1.具体模式</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">NSDefaultRunLoopMode</span><br></pre></td></tr></table></figure>
 <p>系统默认模式，系统不做任何操作、空闲状态；</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">UITrackingRunLoopMode</span><br></pre></td></tr></table></figure>
@@ -183,13 +183,14 @@
 <p>思路：滑动操作发生在主线程，定时器所在的线程是子线程，所以两者互不影响。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">dispatch_async(dispatch_get_global_queue(0, 0), ^&#123;</span><br><span class="line">        [NSTimer scheduledTimerWithTimeInterval:1</span><br><span class="line">                                         target:self</span><br><span class="line">                                       selector:@selector(aSelector:)</span><br><span class="line">                                       userInfo:nil repeats:true];</span><br><span class="line">        [[NSRunLoop currentRunLoop] run];</span><br><span class="line">    &#125;);</span><br></pre></td></tr></table></figure>
 <p>需要注意的是，子线程中使用定时器，一定要主动开启子线程的runloop，否则定时器根本不会触发。</p>
-<h2 id="3-事件来源"><a href="#3-事件来源" class="headerlink" title="3.事件来源"></a>3.事件来源</h2><p><img src="https://davidlii.nos-eastchina1.126.net/pic_runloop.jpg" alt="image"></p>
+<h2 id="3-事件来源"><a href="#3-事件来源" class="headerlink" title="3.事件来源"></a>3.事件来源</h2><p>Runloop中有了事件源才会有事做，才不会退出循环。事件源分两大类：<code>输入源</code>和<code>定时源</code>。</p>
+<p><img src="https://davidlii.nos-eastchina1.126.net/pic_runloop.jpg" alt="image"></p>
 <h3 id="3-1-输入源"><a href="#3-1-输入源" class="headerlink" title="3.1.输入源"></a>3.1.输入源</h3><p>输入源事件分为<code>source0</code>和<code>source1</code>两种:</p>
 <ul>
 <li>source0：诸如UIEvent（触摸，滑动等），performSelector这种需要手动触发的事件。</li>
 <li>source1：基于端口的事件，处理系统内核的mach_msg事件。诸如唤醒RunLoop或者让RunLoop进入休眠等。</li>
 </ul>
-<h4 id="3-1-1-基于端口的输入源"><a href="#3-1-1-基于端口的输入源" class="headerlink" title="3.1.1.基于端口的输入源"></a>3.1.1.基于端口的输入源</h4><p><code>Source1</code>类型，能主动唤醒线程的 RunLoop。内核中进程间的通信通过在两个端口之间传递消息来实现，Source1 监听这些端口。<br>&emsp;</p>
+<h4 id="3-1-1-基于端口的输入源"><a href="#3-1-1-基于端口的输入源" class="headerlink" title="3.1.1.基于端口的输入源"></a>3.1.1.基于端口的输入源</h4><p><code>Source1</code>类型，能主动唤醒线程的 RunLoop。内核中进程间的通信通过在两个端口之间传递消息来实现，Source1 监听的正是这些端口。你也可以手动创建端口，以实现不同线程间的通信。<br>&emsp;</p>
 <p>#示例：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">- (void)runloopPortTest</span><br><span class="line">&#123;</span><br><span class="line">    //创建端口</span><br><span class="line">    NSPort *PORT1 = [NSMachPort new];</span><br><span class="line">    NSPort *PORT2 = [NSMachPort port];</span><br><span class="line"></span><br><span class="line">    NSLog(@&quot;\nPORT1:%@ \nPORT2:%@&quot;,PORT1, PORT2);</span><br><span class="line"></span><br><span class="line">    //设置端口的代理</span><br><span class="line">    PORT1.delegate = self;</span><br><span class="line">    PORT2.delegate = self;</span><br><span class="line"></span><br><span class="line">    //给主线程runloop加一个端口</span><br><span class="line">    [[NSRunLoop currentRunLoop] addPort:PORT1 forMode:NSDefaultRunLoopMode];</span><br><span class="line"></span><br><span class="line">    //给子线程添加端口并启动其runloop</span><br><span class="line">    dispatch_async(dispatch_get_global_queue(0, 0), ^&#123;</span><br><span class="line">        [[NSRunLoop currentRunLoop] addPort:PORT2 forMode:NSDefaultRunLoopMode];</span><br><span class="line">        [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    //component参数数组中只能包含两种类型的数据：一种是NSPort的子类，一种是NSData的子类；</span><br><span class="line">    NSString *STR = @&quot;III&quot;;</span><br><span class="line">    NSData   *data = [STR dataUsingEncoding:NSUTF8StringEncoding];</span><br><span class="line">    NSMutableArray *array = [NSMutableArray arrayWithArray:@[PORT1,data]];</span><br><span class="line"></span><br><span class="line">    //2秒后向PORT2发送消息</span><br><span class="line">    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), </span><br><span class="line">                                    dispatch_get_main_queue(), ^&#123;</span><br><span class="line">        [PORT2 sendBeforeDate:[NSDate date] msgid:101 components:array from:PORT1 reserved:0];</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#pragma mark -NSPortDelegate</span><br><span class="line">- (void)handlePortMessage:(NSMessagePort*)message&#123;</span><br><span class="line">    //1. 消息id</span><br><span class="line">    NSUInteger msgId = [[message valueForKeyPath:@&quot;msgid&quot;] integerValue];</span><br><span class="line">    //2. 当前主线程的port</span><br><span class="line">    NSPort *localPort = [message valueForKeyPath:@&quot;localPort&quot;];</span><br><span class="line">    //3. 接收到消息的port（来自其他线程）</span><br><span class="line">    NSPort *remotePort = [message valueForKeyPath:@&quot;remotePort&quot;];</span><br><span class="line"></span><br><span class="line">    NSLog(@&quot;\n执行端口代理回调：\n端口ID = %lu \nlocalPort:%@ </span><br><span class="line">    \nremotePort:%@&quot;,(unsigned long)msgId, localPort, remotePort);</span><br><span class="line"></span><br><span class="line">    if (101 == msgId)&#123;</span><br><span class="line">        //向子线的port发送消息</span><br><span class="line">        [remotePort sendBeforeDate:[NSDate date] msgid:102 components:nil from:localPort reserved:0];</span><br><span class="line">    &#125; else if (102 == msgId)&#123;</span><br><span class="line">    //....</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>输出日志：</p>
@@ -284,7 +285,7 @@
 <p>2、通知观察者 <code>Timers</code> 即将触发;</p>
 <p>3、通知观察者 将要处理 <code>Source0</code>;</p>
 <p>4、触发 <code>Source0</code> 回调;</p>
-<p>5、如果有 <code>Source1</code> 处于 <code>ready</code> 状态，直接处理该 <code>Source1</code> 并进入步骤9;</p>
+<p>5、如果有 <code>Source1</code> 处于 <code>ready</code> 状态，直接进入步骤9处理该 <code>Source1</code>事件;</p>
 <p>6、通知观察者 线程即将休眠;</p>
 <p>7、线程休眠 等待以下情形的唤醒：</p>
 <ul>

@@ -65,25 +65,25 @@
       
         <li class="list-item">
           
-            <a href="/" class="item-link">Home</a>
+            <a href="/" class="item-link">Davidli</a>
           
         </li>
       
         <li class="list-item">
           
-            <a href="/tags/" class="item-link">Tags</a>
+            <a href="/archives/" class="item-link">归档</a>
           
         </li>
       
         <li class="list-item">
           
-            <a href="/archives/" class="item-link">Archives</a>
+            <a href="/tags/" class="item-link">标签</a>
           
         </li>
       
         <li class="list-item">
           
-            <a href="/about/" class="item-link">About</a>
+            <a href="/about/" class="item-link">关于</a>
           
         </li>
       
@@ -98,25 +98,25 @@
         
           <li class="menu-item">
             
-              <a href="/" class="menu-link">Home</a>
+              <a href="/" class="menu-link">Davidli</a>
             
           </li>
         
           <li class="menu-item">
             
-              <a href="/tags/" class="menu-link">Tags</a>
+              <a href="/archives/" class="menu-link">归档</a>
             
           </li>
         
           <li class="menu-item">
             
-              <a href="/archives/" class="menu-link">Archives</a>
+              <a href="/tags/" class="menu-link">标签</a>
             
           </li>
         
           <li class="menu-item">
             
-              <a href="/about/" class="menu-link">About</a>
+              <a href="/about/" class="menu-link">关于</a>
             
           </li>
         
@@ -140,7 +140,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">@interface AppDelegate()</span><br><span class="line">@property (nonatomic, strong) NSString *aStrongStr;</span><br><span class="line">@property (nonatomic, copy) NSString *aCopyStr;</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">- (BOOL)application:(UIApplication *)application</span><br><span class="line">didFinishLaunchingWithOptions:(NSDictionary *)launchOptions</span><br><span class="line">&#123;</span><br><span class="line">    //用 NSString 赋值</span><br><span class="line">    NSString *oriStr = [NSString stringWithFormat:@&quot;A&quot;];</span><br><span class="line">    </span><br><span class="line">    self.aStrongStr = oriStr;</span><br><span class="line">    self.aCopyStr = oriStr;</span><br><span class="line"></span><br><span class="line">    NSLog(@&quot;++oriStr:  值地址:%p,  对象地址:%p,  值:%@&quot;,oriStr,&amp;oriStr,oriStr);</span><br><span class="line">    NSLog(@&quot;++Strong:  值地址:%p,  对象地址:%p,  值:%@&quot;,_aStrongStr,&amp;_aStrongStr,_aStrongStr);</span><br><span class="line">    NSLog(@&quot;++Copy:    值地址:%p,  对象地址:%p,  值:%@&quot;,_aCopyStr,&amp;_aCopyStr,_aCopyStr);</span><br><span class="line"></span><br><span class="line">    return YES;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>输出日志：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">++oriStr:  值地址:0xbe72b1df90af7acc,  对象地址:0x7ffeeadebd68,  值:A</span><br><span class="line">++Strong:  值地址:0xbe72b1df90af7acc,  对象地址:0x60000164bf48,  值:A</span><br><span class="line">++Copy:    值地址:0xbe72b1df90af7acc,  对象地址:0x60000164bf50,  值:A</span><br></pre></td></tr></table></figure>
-<p>当使用 NSString 类型的<code>oriStr</code>给<code>strong</code>和<code>copy</code>修饰的字符串对象赋值时，两个对象的指针都指向原字符串<code>oriStr</code>，三者值相同。这是因为，oriStr 作为 NSString 类型的字符串，它的值是不可变的，所以无论是<code>strong</code>还是<code>copy</code>类型的字符串对象指向 oriStr，都只能是指针拷贝，三者值相同。</p>
+<p>当使用 NSString 类型的<code>oriStr</code>给<code>strong</code>和<code>copy</code>修饰的字符串对象赋值时，两个对象的指针都指向原字符串<code>oriStr</code>，三者值相同。这是因为，oriStr 作为 NSString 类型的字符串，它的值是不可变的，所以也就不存在 oriStr 变化引起指向它的对象跟着变化一说。无论是<code>strong</code>还是<code>copy</code>类型的字符串对象指向 oriStr，都只能是指针拷贝，三者值相同。</p>
 <h4 id="2-可变源字符串"><a href="#2-可变源字符串" class="headerlink" title="2.可变源字符串"></a>2.可变源字符串</h4><p>#示例2：用 NSMutableString 赋值</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">@interface AppDelegate()</span><br><span class="line">@property (nonatomic, strong) NSString *aStrongStr;</span><br><span class="line">@property (nonatomic, copy) NSString *aCopyStr;</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">- (BOOL)application:(UIApplication *)application</span><br><span class="line">didFinishLaunchingWithOptions:(NSDictionary *)launchOptions</span><br><span class="line">&#123;</span><br><span class="line">    //用 NSMutableString 赋值</span><br><span class="line">    NSMutableString *oriStr = [NSMutableString stringWithFormat:@&quot;A&quot;];</span><br><span class="line">    </span><br><span class="line">    self.aStrongStr = oriStr;</span><br><span class="line">    self.aCopyStr = oriStr;</span><br><span class="line">    [oriStr setString:@&quot;B&quot;];</span><br><span class="line">    </span><br><span class="line">    NSLog(@&quot;++oriStr:  值地址:%p,  对象地址:%p,  值:%@&quot;,oriStr,&amp;oriStr,oriStr);</span><br><span class="line">    NSLog(@&quot;++Strong:  值地址:%p,  对象地址:%p,  值:%@&quot;,_aStrongStr,&amp;_aStrongStr,_aStrongStr);</span><br><span class="line">    NSLog(@&quot;++Copy:    值地址:%p,  对象地址:%p,  值:%@&quot;,_aCopyStr,&amp;_aCopyStr,_aCopyStr);</span><br><span class="line"></span><br><span class="line">    return YES;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>输出日志：</p>

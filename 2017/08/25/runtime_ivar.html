@@ -10,7 +10,7 @@
   
   <title>
     
-      Runtime：成员变量、属性、快速序列化、dic转Model | Davidli
+      Runtime：成员变量、属性及其应用 | Davidli
     
   </title>
   <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -65,25 +65,25 @@
       
         <li class="list-item">
           
-            <a href="/" class="item-link">Home</a>
+            <a href="/" class="item-link">Davidli</a>
           
         </li>
       
         <li class="list-item">
           
-            <a href="/tags/" class="item-link">Tags</a>
+            <a href="/archives/" class="item-link">归档</a>
           
         </li>
       
         <li class="list-item">
           
-            <a href="/archives/" class="item-link">Archives</a>
+            <a href="/tags/" class="item-link">标签</a>
           
         </li>
       
         <li class="list-item">
           
-            <a href="/about/" class="item-link">About</a>
+            <a href="/about/" class="item-link">关于</a>
           
         </li>
       
@@ -98,25 +98,25 @@
         
           <li class="menu-item">
             
-              <a href="/" class="menu-link">Home</a>
+              <a href="/" class="menu-link">Davidli</a>
             
           </li>
         
           <li class="menu-item">
             
-              <a href="/tags/" class="menu-link">Tags</a>
+              <a href="/archives/" class="menu-link">归档</a>
             
           </li>
         
           <li class="menu-item">
             
-              <a href="/archives/" class="menu-link">Archives</a>
+              <a href="/tags/" class="menu-link">标签</a>
             
           </li>
         
           <li class="menu-item">
             
-              <a href="/about/" class="menu-link">About</a>
+              <a href="/about/" class="menu-link">关于</a>
             
           </li>
         
@@ -126,7 +126,7 @@
 </header>
 
     <div id="article-banner">
-  <h2>Runtime：成员变量、属性、快速序列化、dic转Model</h2>
+  <h2>Runtime：成员变量、属性及其应用</h2>
   <p class="post-date">2017-08-25</p>
   <div class="arrow-down">
     <a href="javascript:;"></a>
@@ -197,7 +197,7 @@
 <p><code>.m</code>中默认为 @private；</p>
 <p>&emsp;</p>
 <p>#示例：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">- (BOOL)application:(UIApplication *)application</span><br><span class="line">didFinishLaunchingWithOptions:(NSDictionary *)launchOptions</span><br><span class="line">&#123;</span><br><span class="line">    IvarTool *tool = [[IvarTool alloc] init];</span><br><span class="line">   </span><br><span class="line">    //下面几个会报错 </span><br><span class="line">    tool -&gt; ivar_defaultDouble;</span><br><span class="line">    tool -&gt; ivar_protectedStr;</span><br><span class="line">    tool -&gt; ivar_privateDic;</span><br><span class="line">    tool -&gt; ivar_int;</span><br><span class="line">    tool -&gt; ivar_array;</span><br><span class="line">    </span><br><span class="line">    //下面的调用能正常使用</span><br><span class="line">    tool -&gt; ivar_packInt;</span><br><span class="line">    tool -&gt; ivar_publicFloat;</span><br><span class="line">    tool.property_string;</span><br><span class="line">    tool.property_dic;</span><br><span class="line">    </span><br><span class="line">    return YES;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">- (BOOL)application:(UIApplication *)application</span><br><span class="line">didFinishLaunchingWithOptions:(NSDictionary *)launchOptions</span><br><span class="line">&#123;</span><br><span class="line">    IvarTool *tool = [[IvarTool alloc] init];</span><br><span class="line">   </span><br><span class="line">    //下面几个会报错 </span><br><span class="line">    tool -&gt; ivar_defaultDouble;</span><br><span class="line">    tool -&gt; ivar_protectedStr;</span><br><span class="line">    tool -&gt; ivar_privateDic;</span><br><span class="line">    tool -&gt; ivar_int;</span><br><span class="line">    tool -&gt; ivar_array;</span><br><span class="line">    tool.property_dic;</span><br><span class="line">    </span><br><span class="line">    //下面的调用能正常使用</span><br><span class="line">    tool -&gt; ivar_packInt;</span><br><span class="line">    tool -&gt; ivar_publicFloat;</span><br><span class="line">    tool.property_string;</span><br><span class="line">    </span><br><span class="line">    return YES;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>若想实现成员变量支持外部访问，需要在头文件的声明中给该成员变量添加<code>@public</code>修饰符，同时在外部访问时使用<code>-&gt;</code>。m文件内即使成员变量添加<code>@public</code>修饰符，外部访问时仍会报错，因为它只对m文件内可见。</p>
 <h3 id="5-快速序列化"><a href="#5-快速序列化" class="headerlink" title="5.快速序列化"></a>5.快速序列化</h3><p>原理：利用<code>runtime</code>提供的函数，遍历<code>model</code>的属性，并对属性进行<code>decode</code>与<code>encode</code>。</p>
 <p>&emsp;</p>
@@ -355,7 +355,7 @@
     var gitmentConfig = "";
     if (gitmentConfig !== 'undefined') {
       var gitment = new Gitment({
-        id: "Runtime：成员变量、属性、快速序列化、dic转Model",
+        id: "Runtime：成员变量、属性及其应用",
         owner: "",
         repo: "",
         oauth: {

@@ -65,25 +65,25 @@
       
         <li class="list-item">
           
-            <a href="/" class="item-link">Home</a>
+            <a href="/" class="item-link">Davidli</a>
           
         </li>
       
         <li class="list-item">
           
-            <a href="/tags/" class="item-link">Tags</a>
+            <a href="/archives/" class="item-link">归档</a>
           
         </li>
       
         <li class="list-item">
           
-            <a href="/archives/" class="item-link">Archives</a>
+            <a href="/tags/" class="item-link">标签</a>
           
         </li>
       
         <li class="list-item">
           
-            <a href="/about/" class="item-link">About</a>
+            <a href="/about/" class="item-link">关于</a>
           
         </li>
       
@@ -98,25 +98,25 @@
         
           <li class="menu-item">
             
-              <a href="/" class="menu-link">Home</a>
+              <a href="/" class="menu-link">Davidli</a>
             
           </li>
         
           <li class="menu-item">
             
-              <a href="/tags/" class="menu-link">Tags</a>
+              <a href="/archives/" class="menu-link">归档</a>
             
           </li>
         
           <li class="menu-item">
             
-              <a href="/archives/" class="menu-link">Archives</a>
+              <a href="/tags/" class="menu-link">标签</a>
             
           </li>
         
           <li class="menu-item">
             
-              <a href="/about/" class="menu-link">About</a>
+              <a href="/about/" class="menu-link">关于</a>
             
           </li>
         
@@ -181,12 +181,18 @@
 <p>weak 与 unowned 的作用类似，都是用来解决循环引用问题。区别在于：<br>&emsp;</p>
 <p><strong>生命周期：</strong><br>&emsp;</p>
 <p><strong>weak</strong> 对象的生命周期一般 &lt; weak 对象所在的类的实例的生命周期，当访问该 weak 对象时它可能已经被释放了，比如 delegate、房子中的租客。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">class Person &#123;</span><br><span class="line">    let name: String</span><br><span class="line">    init(name: String) &#123; self.name = name &#125;</span><br><span class="line">    var apartment: Apartment?</span><br><span class="line">    deinit &#123; print(&quot;\(name) is being deinitialized&quot;) &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Apartment &#123;</span><br><span class="line">    let unit: String</span><br><span class="line">    init(unit: String) &#123; self.unit = unit &#125;</span><br><span class="line">    weak var tenant: Person?</span><br><span class="line">    deinit &#123; print(&quot;Apartment \(unit) is being deinitialized&quot;) &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">class Person &#123;</span><br><span class="line">    let name: String</span><br><span class="line">    init(name: String) &#123; self.name = name &#125;</span><br><span class="line">    var apartment: Apartment?</span><br><span class="line">    deinit &#123; print(&quot;\(name) is being deinitialized&quot;) &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Apartment &#123;</span><br><span class="line">    let unit: String</span><br><span class="line">    init(unit: String) &#123; self.unit = unit &#125;</span><br><span class="line">    weak var tenant: Person?</span><br><span class="line">    deinit &#123; print(&quot;Apartment \(unit) is being deinitialized&quot;) &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var john: Person?</span><br><span class="line">var unit4A: Apartment?</span><br><span class="line">john = Person(name: &quot;John Appleseed&quot;)</span><br><span class="line">unit4A = Apartment(unit: &quot;4A&quot;)</span><br><span class="line"></span><br><span class="line">// 相互持有</span><br><span class="line">john!.apartment = unit4A</span><br><span class="line">unit4A!.tenant = john</span><br><span class="line"></span><br><span class="line">// 看看是否能调用各自的析构函数</span><br><span class="line">john = nil</span><br><span class="line">unit4A = nil</span><br></pre></td></tr></table></figure>
+<p>日志：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">John Appleseed is being deinitialized</span><br><span class="line">Apartment 4A is being deinitialized</span><br></pre></td></tr></table></figure>
+<p>说明两个对象都已经顺利释放了~<br>&emsp;</p>
 <p><strong>unowned</strong> 对象的生命周期一般 &gt;= unowned 对象所在的类的实例的生命周期。比如 Customer 与 CreditCard，人可能没有信用卡，但信用卡一定得有个主人，Customer的生命周期比 CreditCard 长。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">class Customer &#123;</span><br><span class="line">    let name: String</span><br><span class="line">    var card: CreditCard?</span><br><span class="line">    init(name: String) &#123;</span><br><span class="line">        self.name = name</span><br><span class="line">    &#125;</span><br><span class="line">    deinit &#123; print(&quot;\(name) is being deinitialized&quot;) &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class CreditCard &#123;</span><br><span class="line">    let number: UInt64</span><br><span class="line">    unowned let customer: Customer</span><br><span class="line">    init(number: UInt64, customer: Customer) &#123;</span><br><span class="line">        self.number = number</span><br><span class="line">        self.customer = customer</span><br><span class="line">    &#125;</span><br><span class="line">    deinit &#123; print(&quot;Card #\(number) is being deinitialized&quot;) &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">class Customer &#123;</span><br><span class="line">    let name: String</span><br><span class="line">    var card: CreditCard?</span><br><span class="line">    init(name: String) &#123;</span><br><span class="line">        self.name = name</span><br><span class="line">    &#125;</span><br><span class="line">    deinit &#123; print(&quot;\(name) is being deinitialized&quot;) &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class CreditCard &#123;</span><br><span class="line">    let number: UInt64</span><br><span class="line">    unowned let customer: Customer</span><br><span class="line">    init(number: UInt64, customer: Customer) &#123;</span><br><span class="line">        self.number = number</span><br><span class="line">        self.customer = customer</span><br><span class="line">    &#125;</span><br><span class="line">    deinit &#123; print(&quot;Card #\(number) is being deinitialized&quot;) &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 相互持有</span><br><span class="line">var john: Customer? = Customer(name: &quot;John Appleseed&quot;)</span><br><span class="line">john!.card = CreditCard(number: 1234_5678_9012_3456, customer: john!)</span><br><span class="line">// 尝试看Customer和CreditCard对象是否能顺利析构</span><br><span class="line">john = nil</span><br></pre></td></tr></table></figure>
+<p>日志：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">John Appleseed is being deinitialized</span><br><span class="line">Card #1234567890123456 is being deinitialized</span><br></pre></td></tr></table></figure>
+<p>两个实例都顺利析构并释放内存~<br>&emsp;</p>
 <p><strong>野指针问题</strong><br>&emsp;</p>
 <p><strong>weak</strong> 对象释放后弱引用也随即消失，继续访问该对象时程序会得到 nil，不会崩溃。<br>&emsp;</p>
-<p><strong>unowned</strong> 对象在释放后，依然有一个无效的引用指向对象，它不是 Optional 也不指向 nil。如果继续访问该对象，程序就会崩溃。</p>
+<p><strong>unowned</strong> 对象在释放后，依然有一个无效的引用指向对象，它不是 Optional 也不指向 nil。如果继续访问该对象就会崩溃。</p>
 <h3 id="4-反思"><a href="#4-反思" class="headerlink" title="4.反思"></a>4.反思</h3><p>循环引用，从其命名来看实际上是两个问题：</p>
 <ul>
 <li>循环</li>
@@ -194,9 +200,9 @@
 </ul>
 <p>即对象之间出现了相互引用的怪圈。在解决此类问题时，我们的第一反应往往是使用<code>weak</code>或<code>unowned</code>来弱引用对象，从而打破这个环，这解决了第一个问题；<br>&emsp;</p>
 <p>其实我们也可以从第二个问题来入手：仔细回想一下，我们所见到的循环引用一般都是出现在两个或多个<code>引用</code>类型之间，比如<code>闭包</code>和<code>类</code>之间。所以换个角度来想，如果将引用类型改成值类型，那么也就不存在相互<code>引用</code>的情况了，比如可能的话，将某些<code>类</code>改成值类型的<code>结构体</code>来实现:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">struct Customer &#123; // 将此类改成由结构体来实现</span><br><span class="line">    let name: String</span><br><span class="line">    var card: CreditCard?</span><br><span class="line">    init(name: String) &#123;</span><br><span class="line">        self.name = name</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class CreditCard &#123;</span><br><span class="line">    let number: UInt64</span><br><span class="line">    let customer: Customer // 这里也不再需要 unowned 修饰了</span><br><span class="line">    init(number: UInt64, customer: Customer) &#123;</span><br><span class="line">        self.number = number</span><br><span class="line">        self.customer = customer</span><br><span class="line">    &#125;</span><br><span class="line">    deinit &#123;</span><br><span class="line">        print(&quot;Card #\(number) is being deinitialized&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>调用示例：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">var customer = Customer(name: &quot;XXX&quot;)</span><br><span class="line">let card = CreditCard(number: 10, customer: customer)</span><br><span class="line">customer.card = card;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">struct Customer &#123; // 将此类改成由结构体来实现</span><br><span class="line">    let name: String</span><br><span class="line">    var card: CreditCard?</span><br><span class="line">    init(name: String) &#123;</span><br><span class="line">        self.name = name</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class CreditCard &#123;</span><br><span class="line">    let number: UInt64</span><br><span class="line">    let customer: Customer // 这里也不再需要 unowned 修饰了</span><br><span class="line">    init(number: UInt64, customer: Customer) &#123;</span><br><span class="line">        self.number = number</span><br><span class="line">        self.customer = customer</span><br><span class="line">    &#125;</span><br><span class="line">    deinit &#123;</span><br><span class="line">        print(&quot;Card #\(number) is being deinitialized&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// playground中定义的方法</span><br><span class="line">func tryStruct()&#123;</span><br><span class="line">    var customer = Customer(name: &quot;XXX&quot;)</span><br><span class="line">    let card = CreditCard(number: 10, customer: customer)</span><br><span class="line">    customer.card = card;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>调用：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tryStruct()</span><br></pre></td></tr></table></figure>
 <p>日志：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Card #10 is being deinitialized</span><br></pre></td></tr></table></figure>
 <p>分析：</p>

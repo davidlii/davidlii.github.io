@@ -65,25 +65,25 @@
       
         <li class="list-item">
           
-            <a href="/" class="item-link active">Home</a>
+            <a href="/" class="item-link active">Davidli</a>
           
         </li>
       
         <li class="list-item">
           
-            <a href="/tags/" class="item-link">Tags</a>
+            <a href="/archives/" class="item-link">归档</a>
           
         </li>
       
         <li class="list-item">
           
-            <a href="/archives/" class="item-link">Archives</a>
+            <a href="/tags/" class="item-link">标签</a>
           
         </li>
       
         <li class="list-item">
           
-            <a href="/about/" class="item-link">About</a>
+            <a href="/about/" class="item-link">关于</a>
           
         </li>
       
@@ -98,25 +98,25 @@
         
           <li class="menu-item">
             
-              <a href="/" class="menu-link mobile-active">Home</a>
+              <a href="/" class="menu-link mobile-active">Davidli</a>
             
           </li>
         
           <li class="menu-item">
             
-              <a href="/tags/" class="menu-link">Tags</a>
+              <a href="/archives/" class="menu-link">归档</a>
             
           </li>
         
           <li class="menu-item">
             
-              <a href="/archives/" class="menu-link">Archives</a>
+              <a href="/tags/" class="menu-link">标签</a>
             
           </li>
         
           <li class="menu-item">
             
-              <a href="/about/" class="menu-link">About</a>
+              <a href="/about/" class="menu-link">关于</a>
             
           </li>
         
@@ -141,9 +141,9 @@
       
       <div class="article-summary">
         
-          方法交换（Method Swizzling）作用：动态交换两个方法的实现(即IMP指针)；
-原理：在类的数据结构体中有一个”方法列表”，它存放着 SEL 与 IMP 的映射关系。Method Swizzling 就是对这个列表进行的操作，通过改变这种映射关系，实现两个方法实现的交换；
-&em ...
+          方法交换Method Swizzling&emsp;
+作用：动态交换两个方法的实现(即IMP指针)；&emsp;
+原理：在类的数据结构体中有一个”方法列表”，它存放着 SEL 与 IMP 的映射关系。Method Swizzling 就是对这个列表进行的操作，通过改变这种映射关系，完成两个方 ...
         
       </div>
       <a class="more" href="/2017/09/01/runtime_swizzle.html">Read more</a>
@@ -169,7 +169,7 @@
 把某对象与特定对象相关联；
 OC允许给分类增加属性，但不会自动生成getter、setter函数，因此调用时会崩溃，使用关联可以解决此问题；
 
-1.1.创建关联创建关联，要使用到OC的一 ...
+1.1.创建关联1OBJC_EXPORT  ...
         
       </div>
       <a class="more" href="/2017/08/30/runtime_associate.html">Read more</a>
@@ -177,7 +177,7 @@ OC允许给分类增加属性，但不会自动生成getter、setter函数，因
   
     <article class="article-card">
       <h2 class="article-head">
-        <a href="/2017/08/25/runtime_ivar.html">Runtime：成员变量、属性、快速序列化、dic转Model</a>
+        <a href="/2017/08/25/runtime_ivar.html">Runtime：成员变量、属性及其应用</a>
       </h2>
       <p class="article-date">August 25, 2017</p>
       
@@ -210,14 +210,8 @@ OC允许给分类增加属性，但不会自动生成getter、setter函数，因
       
       <div class="article-summary">
         
-          1.运行时的常用场景
-发送消息；
-读取成员变量；
-动态为某个类增加属性；
-交换类中的方法、动态为某个类添加方法；
-动态创建、删除、修改一个类；
-
-2.消息在C语言中，函数的调用在编译时就已经决定了。而OC是一种动态语言。对于OC的函数，在编译时并不能决定真正调用哪个函数，只有在真正运行的时候 ...
+          1.id在objc/objc.h中，id的定义如下：
+12345678/// Represents an instance of a class.struct objc_object &#123;Class isa  OBJC_ISA_AVAILABILITY;&#125;;/// A po ...
         
       </div>
       <a class="more" href="/2017/08/23/runtime_message.html">Read more</a>
@@ -237,11 +231,12 @@ OC允许给分类增加属性，但不会自动生成getter、setter函数，因
       
       <div class="article-summary">
         
-          1.对象
-OC中，含有isa指针且该指针可以正确指向类的数据结构，都可以视为对象。
-
-下面是objc.h中的相关定义:
-123456789101112#if !OBJC_TYPES_DEFINED/// An opaque type that represents an Objective- ...
+          1.runtimeruntime，直译过来是运行时，它是一套底层的C语言API，包含很多强大实用的C语言数据类型和C语言函数。我们的OC代码在运行阶段都是基于runtime环境才能正常运行的。
+2.常用场景
+发送消息；
+读取成员变量；
+动态为某个类增加属性；
+交换类中的方法、动态为某个类添加 ...
         
       </div>
       <a class="more" href="/2017/08/22/runtime_metaclass.html">Read more</a>

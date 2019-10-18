@@ -65,25 +65,25 @@
       
         <li class="list-item">
           
-            <a href="/" class="item-link">Home</a>
+            <a href="/" class="item-link">Davidli</a>
           
         </li>
       
         <li class="list-item">
           
-            <a href="/tags/" class="item-link">Tags</a>
+            <a href="/archives/" class="item-link">归档</a>
           
         </li>
       
         <li class="list-item">
           
-            <a href="/archives/" class="item-link">Archives</a>
+            <a href="/tags/" class="item-link">标签</a>
           
         </li>
       
         <li class="list-item">
           
-            <a href="/about/" class="item-link">About</a>
+            <a href="/about/" class="item-link">关于</a>
           
         </li>
       
@@ -98,25 +98,25 @@
         
           <li class="menu-item">
             
-              <a href="/" class="menu-link">Home</a>
+              <a href="/" class="menu-link">Davidli</a>
             
           </li>
         
           <li class="menu-item">
             
-              <a href="/tags/" class="menu-link">Tags</a>
+              <a href="/archives/" class="menu-link">归档</a>
             
           </li>
         
           <li class="menu-item">
             
-              <a href="/archives/" class="menu-link">Archives</a>
+              <a href="/tags/" class="menu-link">标签</a>
             
           </li>
         
           <li class="menu-item">
             
-              <a href="/about/" class="menu-link">About</a>
+              <a href="/about/" class="menu-link">关于</a>
             
           </li>
         
@@ -144,7 +144,7 @@
 </blockquote>
 <p>强制拆包是指当确定可选有值时，在可选后标注一个<code>!</code>，表明“我确定可选有值，请给我值”。<br>&emsp;</p>
 <p>#示例：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">let possibleNumber = &quot;123&quot;</span><br><span class="line">let convertedNumber = Int(possibleNumber)</span><br><span class="line">// convertedNumber is inferred to be of type &quot;Int?&quot;, or &quot;optional Int&quot;</span><br><span class="line"></span><br><span class="line">if convertedNumber != nil &#123;</span><br><span class="line">    print(&quot;convertedNumber has an integer value of \(convertedNumber!).&quot;) // 这个convertedNumber!即为强制拆包</span><br><span class="line">&#125;</span><br><span class="line">// Prints &quot;convertedNumber has an integer value of 123.&quot;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">let possibleNumber = &quot;123&quot;</span><br><span class="line">let convertedNumber = Int(possibleNumber)</span><br><span class="line">// convertedNumber is inferred to be of type &quot;Int?&quot;, or &quot;optional Int&quot;</span><br><span class="line"></span><br><span class="line">print(&quot;convertedNumber has an integer value of \(convertedNumber!).&quot;) // 这个convertedNumber!即为强制拆包</span><br><span class="line"></span><br><span class="line">// Prints &quot;convertedNumber has an integer value of 123.&quot;</span><br></pre></td></tr></table></figure>
 <h3 id="2-可选绑定"><a href="#2-可选绑定" class="headerlink" title="2.可选绑定"></a>2.可选绑定</h3><blockquote>
 <p>You use optional binding to find out whether an optional contains a value, and if so, to make that value available as a temporary constant or variable. Optional binding can be used with if and while statements to check for a value inside an optional, and to extract that value into a constant or variable, as part of a single action.</p>
 </blockquote>

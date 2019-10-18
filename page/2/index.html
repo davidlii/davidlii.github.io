@@ -65,25 +65,25 @@
       
         <li class="list-item">
           
-            <a href="/" class="item-link active">Home</a>
+            <a href="/" class="item-link active">Davidli</a>
           
         </li>
       
         <li class="list-item">
           
-            <a href="/tags/" class="item-link">Tags</a>
+            <a href="/archives/" class="item-link">归档</a>
           
         </li>
       
         <li class="list-item">
           
-            <a href="/archives/" class="item-link">Archives</a>
+            <a href="/tags/" class="item-link">标签</a>
           
         </li>
       
         <li class="list-item">
           
-            <a href="/about/" class="item-link">About</a>
+            <a href="/about/" class="item-link">关于</a>
           
         </li>
       
@@ -98,25 +98,25 @@
         
           <li class="menu-item">
             
-              <a href="/" class="menu-link mobile-active">Home</a>
+              <a href="/" class="menu-link mobile-active">Davidli</a>
             
           </li>
         
           <li class="menu-item">
             
-              <a href="/tags/" class="menu-link">Tags</a>
+              <a href="/archives/" class="menu-link">归档</a>
             
           </li>
         
           <li class="menu-item">
             
-              <a href="/archives/" class="menu-link">Archives</a>
+              <a href="/tags/" class="menu-link">标签</a>
             
           </li>
         
           <li class="menu-item">
             
-              <a href="/about/" class="menu-link">About</a>
+              <a href="/about/" class="menu-link">关于</a>
             
           </li>
         
@@ -187,9 +187,8 @@
         
           有时，我们需要在应用启动阶段，或者类初始化之前处理一些指定的需求，这时你可能需要这俩方法：
 12+ (void)load;+ (void)initialize;
-通常来说，这俩方法在应用的整个生命周期内会自动调用且只调用一次，你可以将任务定义在这俩方法中。
 1.load
-Invoked wh ...
+Invoked whenever a class or category is added to the Objec ...
         
       </div>
       <a class="more" href="/2018/11/18/load-initialize.html">Read more</a>
@@ -255,8 +254,8 @@ Invoked wh ...
       <p class="article-date">October 9, 2018</p>
       
         
-  <a href="/tags#算法">
-    <span class="tag-code">算法</span>
+  <a href="/tags#FQA">
+    <span class="tag-code">FQA</span>
   </a>
 
       
@@ -305,21 +304,26 @@ class 的实例可被多个对象引用
   
     <article class="article-card">
       <h2 class="article-head">
-        <a href="/2018/09/05/static-dynamic.html">消息的派发机制</a>
+        <a href="/2018/09/05/static-dynamic.html">派发机制</a>
       </h2>
       <p class="article-date">September 5, 2018</p>
       
         
-  <a href="/tags#FQA">
-    <span class="tag-code">FQA</span>
+  <a href="/tags#runtime">
+    <span class="tag-code">runtime</span>
   </a>
 
       
       <div class="article-summary">
         
-          函数把某些具体的代码封装到一处，这极大的提高了代码的复用性。根据函数名找到具体的函数实现，这就是函数派发的过程。函数派发的机制分两种：静态派发和动态派发。
-1.静态派发机制
-static dispatch is a form of polymorphism fully resolved du ...
+          函数/方法把代码内聚到一处并对外暴露函数名，这提高了代码的复用性，也对外隐藏了具体的实现过程。根据函数名找到具体的函数实现，这就是函数派发的过程。函数派发的机制分两种：
+
+静态派发
+动态派发
+
+
+一、静态派发
+static dispatch is a form of polymorphism ...
         
       </div>
       <a class="more" href="/2018/09/05/static-dynamic.html">Read more</a>

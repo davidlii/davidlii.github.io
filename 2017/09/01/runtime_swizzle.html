@@ -65,25 +65,25 @@
       
         <li class="list-item">
           
-            <a href="/" class="item-link">Home</a>
+            <a href="/" class="item-link">Davidli</a>
           
         </li>
       
         <li class="list-item">
           
-            <a href="/tags/" class="item-link">Tags</a>
+            <a href="/archives/" class="item-link">归档</a>
           
         </li>
       
         <li class="list-item">
           
-            <a href="/archives/" class="item-link">Archives</a>
+            <a href="/tags/" class="item-link">标签</a>
           
         </li>
       
         <li class="list-item">
           
-            <a href="/about/" class="item-link">About</a>
+            <a href="/about/" class="item-link">关于</a>
           
         </li>
       
@@ -98,25 +98,25 @@
         
           <li class="menu-item">
             
-              <a href="/" class="menu-link">Home</a>
+              <a href="/" class="menu-link">Davidli</a>
             
           </li>
         
           <li class="menu-item">
             
-              <a href="/tags/" class="menu-link">Tags</a>
+              <a href="/archives/" class="menu-link">归档</a>
             
           </li>
         
           <li class="menu-item">
             
-              <a href="/archives/" class="menu-link">Archives</a>
+              <a href="/tags/" class="menu-link">标签</a>
             
           </li>
         
           <li class="menu-item">
             
-              <a href="/about/" class="menu-link">About</a>
+              <a href="/about/" class="menu-link">关于</a>
             
           </li>
         
@@ -135,8 +135,9 @@
 <main class="app-body flex-box">
   <!-- Article START -->
   <article class="post-article">
-    <section class="markdown-content"><h3 id="方法交换（Method-Swizzling）"><a href="#方法交换（Method-Swizzling）" class="headerlink" title="方法交换（Method Swizzling）"></a>方法交换（Method Swizzling）</h3><p>作用：动态交换两个方法的实现(即IMP指针)；</p>
-<p>原理：在类的数据结构体中有一个”方法列表”，它存放着 SEL 与 IMP 的映射关系。Method Swizzling 就是对这个列表进行的操作，通过改变这种映射关系，实现两个方法实现的交换；</p>
+    <section class="markdown-content"><h3 id="方法交换"><a href="#方法交换" class="headerlink" title="方法交换"></a>方法交换</h3><p>Method Swizzling<br>&emsp;</p>
+<p>作用：动态交换两个方法的实现(即IMP指针)；<br>&emsp;</p>
+<p>原理：在类的数据结构体中有一个”方法列表”，它存放着 SEL 与 IMP 的映射关系。Method Swizzling 就是对这个列表进行的操作，通过改变这种映射关系，完成两个方法IMP的交换；</p>
 <p>&emsp;<br>使用场景：</p>
 <ol>
 <li>类的某个原有方法无法满足新的需求，需要扩展并替换之。如数组新增对象时，检测对象是否为nil；</li>
@@ -144,7 +145,8 @@
 </ol>
 <p>其核心代码是runtime的下面两个C语言API：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">/** </span><br><span class="line"> * Exchanges the implementations of two methods.</span><br><span class="line"> * </span><br><span class="line"> * @param m1 Method to exchange with second method.</span><br><span class="line"> * @param m2 Method to exchange with first method.</span><br><span class="line"> * </span><br><span class="line"> * @note This is an atomic version of the following:</span><br><span class="line"> *  \code </span><br><span class="line"> *  IMP imp1 = method_getImplementation(m1);</span><br><span class="line"> *  IMP imp2 = method_getImplementation(m2);</span><br><span class="line"> *  method_setImplementation(m1, imp2);</span><br><span class="line"> *  method_setImplementation(m2, imp1);</span><br><span class="line"> *  \endcode</span><br><span class="line"> */</span><br><span class="line">OBJC_EXPORT void method_exchangeImplementations(Method m1, Method m2)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">/** </span><br><span class="line"> * Returns a specified instance method for a given class.</span><br><span class="line"> * </span><br><span class="line"> * @param cls The class you want to inspect.</span><br><span class="line"> * @param name The selector of the method you want to retrieve.</span><br><span class="line"> * </span><br><span class="line"> * @return The method that corresponds to the implementation of the selector specified by </span><br><span class="line"> *  \e name for the class specified by \e cls, or \c NULL if the specified class or its </span><br><span class="line"> *  superclasses do not contain an instance method with the specified selector.</span><br><span class="line"> *</span><br><span class="line"> * @note This function searches superclasses for implementations, whereas \c class_copyMethodList does not.</span><br><span class="line"> */</span><br><span class="line">OBJC_EXPORT Method class_getInstanceMethod(Class cls, SEL name)</span><br></pre></td></tr></table></figure>
-<h4 id="数组新增对象时检测nil对象"><a href="#数组新增对象时检测nil对象" class="headerlink" title="数组新增对象时检测nil对象"></a>数组新增对象时检测nil对象</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">#import &quot;NSMutableArray+Extension.h&quot;</span><br><span class="line">#import &lt;objc/runtime.h&gt;</span><br><span class="line"></span><br><span class="line">@implementation NSMutableArray (Extension)</span><br><span class="line"></span><br><span class="line">+(void)load&#123;</span><br><span class="line">    [self swizzle_install];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">+ (void)swizzle_install</span><br><span class="line">&#123;</span><br><span class="line">    Method method1 = class_getInstanceMethod(objc_getClass(&quot;__NSArrayM&quot;),</span><br><span class="line">    @selector(addObject:));</span><br><span class="line">    Method method2 = class_getInstanceMethod(objc_getClass(&quot;__NSArrayM&quot;),</span><br><span class="line">    @selector(swizzle_addObject:));</span><br><span class="line">    </span><br><span class="line">    method_exchangeImplementations(method1, method2);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">-(void)swizzle_addObject:(id)anObject</span><br><span class="line">&#123;</span><br><span class="line">    if (nil == anObject)</span><br><span class="line">    &#123;</span><br><span class="line">        @try &#123;</span><br><span class="line">            [self swizzle_addObject:anObject];</span><br><span class="line">        &#125; @catch (NSException *exception) &#123;</span><br><span class="line">            NSLog(@&quot;Crash reason:\n %@&quot;, [exception callStackSymbols]);</span><br><span class="line">        &#125; @finally &#123;&#125;</span><br><span class="line">    &#125;</span><br><span class="line">    else&#123;</span><br><span class="line">        [self swizzle_addObject:anObject];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<h3 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h3><p>数组新增对象时检测nil对象，防止闪退。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">#import &quot;NSMutableArray+Extension.h&quot;</span><br><span class="line">#import &lt;objc/runtime.h&gt;</span><br><span class="line"></span><br><span class="line">@implementation NSMutableArray (Extension)</span><br><span class="line"></span><br><span class="line">+(void)load&#123;</span><br><span class="line">    [self swizzle_install];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">+ (void)swizzle_install</span><br><span class="line">&#123;</span><br><span class="line">    Method method1 = class_getInstanceMethod(objc_getClass(&quot;__NSArrayM&quot;),</span><br><span class="line">    @selector(addObject:));</span><br><span class="line">    Method method2 = class_getInstanceMethod(objc_getClass(&quot;__NSArrayM&quot;),</span><br><span class="line">    @selector(swizzle_addObject:));</span><br><span class="line">    // 交换两个方法的实现函数</span><br><span class="line">    method_exchangeImplementations(method1, method2);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">-(void)swizzle_addObject:(id)anObject</span><br><span class="line">&#123;</span><br><span class="line">    // 发现空对象</span><br><span class="line">    if (nil == anObject)</span><br><span class="line">    &#123;</span><br><span class="line">        @try &#123;</span><br><span class="line">            // 注意：因为已经交换过方法了，所以这里调用的是数组的addObject:方法。</span><br><span class="line">            [self swizzle_addObject:anObject];</span><br><span class="line">        &#125; @catch (NSException *exception) &#123;</span><br><span class="line">            // 捕获异常，打印日志，避免闪退。</span><br><span class="line">            NSLog(@&quot;Crash reason:\n %@&quot;, [exception callStackSymbols]);</span><br><span class="line">        &#125; @finally &#123;&#125;</span><br><span class="line">    &#125;</span><br><span class="line">    // 如果对象不为空</span><br><span class="line">    else&#123;</span><br><span class="line">        // 正常调用数组原生的addObject:方法，不捕获异常。</span><br><span class="line">        [self swizzle_addObject:anObject];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
 <p>在APP启动后，运行时会先执行 NSMutableArray 分类中的 <code>+load</code> 函数，这里会调用<code>swizzle_install</code>，启动方法交换：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions</span><br><span class="line">&#123;</span><br><span class="line">    //添加对象</span><br><span class="line">    NSMutableArray *array = [NSMutableArray new];</span><br><span class="line">    [array addObject:nil];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>上面代码中，虽然向数组中加入nil对象，但因为已经对addObject方法做了交换并做了容错处理，所以只是会打印崩溃日志，应用并不会崩溃。</p>
@@ -218,7 +220,7 @@
   <div class="toc-main">
     <strong class="toc-title">Catalog</strong>
     
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#方法交换（Method-Swizzling）"><span class="toc-nav-text">方法交换（Method Swizzling）</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#数组新增对象时检测nil对象"><span class="toc-nav-text">数组新增对象时检测nil对象</span></a></li></ol></li></ol>
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#方法交换"><span class="toc-nav-text">方法交换</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#应用"><span class="toc-nav-text">应用</span></a></li></ol>
     
   </div>
 </aside>

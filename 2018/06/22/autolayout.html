@@ -10,7 +10,7 @@
   
   <title>
     
-      布局与约束 | Davidli
+      约束与布局 | Davidli
     
   </title>
   <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -65,25 +65,25 @@
       
         <li class="list-item">
           
-            <a href="/" class="item-link">Home</a>
+            <a href="/" class="item-link">Davidli</a>
           
         </li>
       
         <li class="list-item">
           
-            <a href="/tags/" class="item-link">Tags</a>
+            <a href="/archives/" class="item-link">归档</a>
           
         </li>
       
         <li class="list-item">
           
-            <a href="/archives/" class="item-link">Archives</a>
+            <a href="/tags/" class="item-link">标签</a>
           
         </li>
       
         <li class="list-item">
           
-            <a href="/about/" class="item-link">About</a>
+            <a href="/about/" class="item-link">关于</a>
           
         </li>
       
@@ -98,25 +98,25 @@
         
           <li class="menu-item">
             
-              <a href="/" class="menu-link">Home</a>
+              <a href="/" class="menu-link">Davidli</a>
             
           </li>
         
           <li class="menu-item">
             
-              <a href="/tags/" class="menu-link">Tags</a>
+              <a href="/archives/" class="menu-link">归档</a>
             
           </li>
         
           <li class="menu-item">
             
-              <a href="/archives/" class="menu-link">Archives</a>
+              <a href="/tags/" class="menu-link">标签</a>
             
           </li>
         
           <li class="menu-item">
             
-              <a href="/about/" class="menu-link">About</a>
+              <a href="/about/" class="menu-link">关于</a>
             
           </li>
         
@@ -126,7 +126,7 @@
 </header>
 
     <div id="article-banner">
-  <h2>布局与约束</h2>
+  <h2>约束与布局</h2>
   <p class="post-date">2018-06-22</p>
   <div class="arrow-down">
     <a href="javascript:;"></a>
@@ -186,7 +186,7 @@
 <p>（w<strong>R</strong> h<strong>C</strong>）表示横屏状态下的 plus 版iPhone：</p>
 <p><img src="https://davidlii.nos-eastchina1.126.net/pic_sizeclasses5.png" alt="sizeclass5"></p>
 <p>需要注意：<code>SizeClasses</code>只是对设备尺寸的抽象，真正的布局还需要依赖并开启<code>AutoLayout</code>。</p>
-<h2 id="4-布局相关的接口"><a href="#4-布局相关的接口" class="headerlink" title="#4.布局相关的接口"></a>#4.布局相关的接口</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (void)layoutSubviews;</span><br></pre></td></tr></table></figure>
+<h2 id="4-布局接口"><a href="#4-布局接口" class="headerlink" title="#4.布局接口"></a>#4.布局接口</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (void)layoutSubviews;</span><br></pre></td></tr></table></figure>
 <p>系统会在视图需要重新计算其<code>frame</code>时调用此方法，这些情况包括：</p>
 <ul>
 <li>改变了视图的 frame；</li>
@@ -204,7 +204,7 @@
 <p>若需要在当前视图上绘制自定义的内容，则重写此方法。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-  void)setNeedsDisplay;</span><br></pre></td></tr></table></figure>
 <p>将视图标记为需要重绘，其实质是 layer 的重绘，最终会触发-drawRect:方法。</p>
-<h2 id="5-约束相关的属性-amp-接口"><a href="#5-约束相关的属性-amp-接口" class="headerlink" title="#5.约束相关的属性&amp;接口"></a>#5.约束相关的属性&amp;接口</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">/* By default, the autoresizing mask on a view gives rise to </span><br><span class="line">constraints that fully determine the view&apos;s position. </span><br><span class="line">This allows the auto layout system to track the frames of views </span><br><span class="line">whose layout is controlled manually (through -setFrame:, for example).</span><br><span class="line">When you elect to position the view using auto layout by </span><br><span class="line">adding your own constraints, you must set this property to NO. </span><br><span class="line">IB will do this for you.</span><br><span class="line"> */</span><br><span class="line">BOOL translatesAutoresizingMaskIntoConstraints; // Default YES</span><br></pre></td></tr></table></figure>
+<h2 id="5-约束的属性-amp-接口"><a href="#5-约束的属性-amp-接口" class="headerlink" title="#5.约束的属性&amp;接口"></a>#5.约束的属性&amp;接口</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">/* By default, the autoresizing mask on a view gives rise to </span><br><span class="line">constraints that fully determine the view&apos;s position. </span><br><span class="line">This allows the auto layout system to track the frames of views </span><br><span class="line">whose layout is controlled manually (through -setFrame:, for example).</span><br><span class="line">When you elect to position the view using auto layout by </span><br><span class="line">adding your own constraints, you must set this property to NO. </span><br><span class="line">IB will do this for you.</span><br><span class="line"> */</span><br><span class="line">BOOL translatesAutoresizingMaskIntoConstraints; // Default YES</span><br></pre></td></tr></table></figure>
 <p>这是<code>Autoresizing</code>时代的产物，使用 IB 创建视图时，此属性默认为 NO；纯代码添加视图时，其默认值为 YES。当我们需要手动添加和修改约束时，需要将此属性置为 NO。因为视图的 AutoresizingMask 会被转换成对应效果的约束。这样很可能与我们手动添加的其它约束有冲突。此属性设置成 NO 时，AutoresizingMask 就不会变成约束，即当前视图的 AutoresizingMask 失效了。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (BOOL)needsUpdateConstraints;</span><br></pre></td></tr></table></figure>
 <p>“Constraint-based layout system” 使用此返回值去决定是否需要调用 updateConstraints 作为正常布局过程的一部分。</p>
@@ -214,7 +214,7 @@
 <p>立即触发约束更新，自动更新布局。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (void)setNeedsUpdateConstraints;</span><br></pre></td></tr></table></figure>
 <p>当有约束需要更新时，调用此方法来标记这些约束需要在未来的某个点更新，系统之后调用 updateConstraints。</p>
-<h2 id="6-自动布局的过程"><a href="#6-自动布局的过程" class="headerlink" title="#6.自动布局的过程"></a>#6.自动布局的过程</h2><p><code>updating constraints</code> -&gt; <code>layout</code> -&gt; <code>display</code>，每一个步骤都依赖于上一步。</p>
+<h2 id="6-自动布局过程"><a href="#6-自动布局过程" class="headerlink" title="#6.自动布局过程"></a>#6.自动布局过程</h2><p><code>updating constraints</code> -&gt; <code>layout</code> -&gt; <code>display</code>，每一个步骤都依赖于上一步。</p>
 <ul>
 <li>updating constraints</li>
 </ul>
@@ -246,7 +246,7 @@
 <li>view 的 layoutSubViews;</li>
 <li>VC 的 viewDidLayoutSubviews;</li>
 </ul>
-<p>所以，当我们真的需要 frame 时要在这个两个时间点以后再去获取。这也可以解释为什么 viewDidLoad 里通过<code>setFrame</code>的方式修改原先在xib里拖动的约束代码无效了。因为 updateViewConstraints 在 viewDidLoad 后执行，会覆盖掉之前的设置的frame，所以无效。<br>&emsp;</p>
+<p>所以，当我们真的需要 frame 时要在这个两个时间点以后再去获取。这就是 viewDidLoad 里通过<code>setFrame</code>的方式修改原先在xib里拖动的约束代码无效的症结所在。因为 updateViewConstraints 在 viewDidLoad 后执行，会覆盖掉之前的设置的frame，所以无效。<br>&emsp;</p>
 <p>另外需要注意一点：在使用 sb 或者 xib 加载 VC 时，viewDidLoad 中只有 self.view 的 frame 信息是准确的，其他所有的控件的 frame 都是它们在 sb 或 xib 中的原始尺寸，与当前设备可能不符。</p>
 <hr>
 <p>相关参考：</p>
@@ -321,7 +321,7 @@
   <div class="toc-main">
     <strong class="toc-title">Catalog</strong>
     
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-Autoresizing"><span class="toc-nav-text">#1.Autoresizing</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-AutoLayout"><span class="toc-nav-text">#2.AutoLayout</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-SizeClasses"><span class="toc-nav-text">#3.SizeClasses</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-布局相关的接口"><span class="toc-nav-text">#4.布局相关的接口</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#5-约束相关的属性-amp-接口"><span class="toc-nav-text">#5.约束相关的属性&amp;接口</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#6-自动布局的过程"><span class="toc-nav-text">#6.自动布局的过程</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#7-VC中视图的布局过程"><span class="toc-nav-text">#7.VC中视图的布局过程</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#8-小结"><span class="toc-nav-text">#8.小结</span></a></li></ol>
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-Autoresizing"><span class="toc-nav-text">#1.Autoresizing</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-AutoLayout"><span class="toc-nav-text">#2.AutoLayout</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-SizeClasses"><span class="toc-nav-text">#3.SizeClasses</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-布局接口"><span class="toc-nav-text">#4.布局接口</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#5-约束的属性-amp-接口"><span class="toc-nav-text">#5.约束的属性&amp;接口</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#6-自动布局过程"><span class="toc-nav-text">#6.自动布局过程</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#7-VC中视图的布局过程"><span class="toc-nav-text">#7.VC中视图的布局过程</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#8-小结"><span class="toc-nav-text">#8.小结</span></a></li></ol>
     
   </div>
 </aside>
@@ -387,7 +387,7 @@
     var gitmentConfig = "";
     if (gitmentConfig !== 'undefined') {
       var gitment = new Gitment({
-        id: "布局与约束",
+        id: "约束与布局",
         owner: "",
         repo: "",
         oauth: {

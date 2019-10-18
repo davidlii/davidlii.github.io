@@ -65,25 +65,25 @@
       
         <li class="list-item">
           
-            <a href="/" class="item-link">Home</a>
+            <a href="/" class="item-link">Davidli</a>
           
         </li>
       
         <li class="list-item">
           
-            <a href="/tags/" class="item-link">Tags</a>
+            <a href="/archives/" class="item-link">归档</a>
           
         </li>
       
         <li class="list-item">
           
-            <a href="/archives/" class="item-link">Archives</a>
+            <a href="/tags/" class="item-link">标签</a>
           
         </li>
       
         <li class="list-item">
           
-            <a href="/about/" class="item-link">About</a>
+            <a href="/about/" class="item-link">关于</a>
           
         </li>
       
@@ -98,25 +98,25 @@
         
           <li class="menu-item">
             
-              <a href="/" class="menu-link">Home</a>
+              <a href="/" class="menu-link">Davidli</a>
             
           </li>
         
           <li class="menu-item">
             
-              <a href="/tags/" class="menu-link">Tags</a>
+              <a href="/archives/" class="menu-link">归档</a>
             
           </li>
         
           <li class="menu-item">
             
-              <a href="/archives/" class="menu-link">Archives</a>
+              <a href="/tags/" class="menu-link">标签</a>
             
           </li>
         
           <li class="menu-item">
             
-              <a href="/about/" class="menu-link">About</a>
+              <a href="/about/" class="menu-link">关于</a>
             
           </li>
         
@@ -179,13 +179,22 @@
 <li>将原逻辑拆分成各种怪癖语法；</li>
 </ul>
 <p>代码混淆和逻辑混淆，其本质上只是在应用编译时将指定的字符串或逻辑进行混淆替换，从而增加应用破解后阅读源码的难度。具体的混淆方法，我之前的文章中也已经介绍过，这里不再赘述~</p>
-<h4 id="2-3-RESTRICT反动态库注入"><a href="#2-3-RESTRICT反动态库注入" class="headerlink" title="2.3.__RESTRICT反动态库注入"></a>2.3.__RESTRICT反动态库注入</h4><p>通过在 Xcode 里的 Other Linker Flags 设置参数，可以防止应用的二进制文件被注入 dylib（仅限于iOS 10 以下系统）。dylib 无法注入，也就意味着没办法用<code>cycript</code>动态调试进程</p>
+<h4 id="2-3-RESTRICT反动态库注入"><a href="#2-3-RESTRICT反动态库注入" class="headerlink" title="2.3.__RESTRICT反动态库注入"></a>2.3.__RESTRICT反动态库注入</h4><blockquote>
+<p>restrict，C语言中的一种类型限定符（Type Qualifiers），用于告诉编译器，对象已经被指针所引用，不能通过除该指针外所有其他直接或间接的方式修改该对象的内容。</p>
+</blockquote>
+<p>restrict是c99标准引入的，它只可以用于限定和约束指针，并表明指针是访问一个数据对象的唯一且初始的方式。即它告诉编译器，所有修改该指针所指向内存中内容的操作都必须通过该指针来修改，而不能通过其它途径(其它变量或指针)来修改；这样做的好处是，能帮助编译器进行更好的优化代码，生成更有效率的汇编代码。如 int *restrict ptr, ptr 指向的内存单元只能被 ptr 访问到，任何同样指向这个内存单元的其他指针都是未定义的，直白点就是无效指针。</p>
+<p>&emsp;</p>
+<p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">int ar[10];</span><br><span class="line">int * restrict restar=(int *)malloc(10*sizeof(int));</span><br><span class="line">int *par=ar;</span><br></pre></td></tr></table></figure>
+<p>这里说明restar是访问由malloc()分配的内存的唯一且初始的方式。par就不是了。<br>&emsp;</p>
+<p>通过在 Xcode 里的 Other Linker Flags 设置参数，可以防止应用的二进制文件被注入 dylib（仅限于iOS 10 以下系统）。dylib 无法注入，也就意味着没办法用<code>cycript</code>动态调试进程</p>
 <ul>
 <li>Other Linker Flags 参数：</li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-Wl,-sectcreate,__RESTRICT,__restrict,/dev/null</span><br></pre></td></tr></table></figure>
 <p>参考博文：</p>
 <ul>
+<li><a href="https://baike.baidu.com/item/restrict/7384270?fr=aladdin" target="_blank" rel="noopener">百科-restrict</a></li>
 <li><a href="https://www.cnblogs.com/ciml/p/7551193.html" target="_blank" rel="noopener">反注入</a></li>
 <li><a href="http://bbs.iosre.com/t/tweak-app-app-tweak/438" target="_blank" rel="noopener">iosre论坛snakeninny</a></li>
 <li><a href="https://pewpewthespells.com/blog/blocking_code_injection_on_ios_and_os_x.html" target="_blank" rel="noopener">pewpewthespells-blocking_code_injection</a></li>
