@@ -183,7 +183,9 @@
 <blockquote>
 <p>The execution priority of the operation in an operation queue.</p>
 </blockquote>
-<p>有三点需要说明：</p>
+<p>从这一点来说，Operation就比GCD的功能更丰富，因为GCD只能给队列设置优先级，队列中的任务之间没法单独设置优先级。并且GCD只能给<code>GlobalQueue</code>设置优先级，其他队列想要设置优先级，需要通过下面这种方式进行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">dispatch_queue_t serialQueue = dispatch_queue_create(&quot;com.xx.xx&quot;,DISPATCH_QUEUE_SERIAL);</span><br><span class="line"></span><br><span class="line">dispatch_queue_t globalQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND,0);</span><br><span class="line"></span><br><span class="line">//第一个参数是目标队列，第二个参数是参考队列（全局队列）；</span><br><span class="line">dispatch_set_target_queue(serialQueue, globalQueue);</span><br></pre></td></tr></table></figure>
+<p>对于<code>queuePriority</code>有三点需要说明：</p>
 <ul>
 <li>优先级决定了各 operation 之间的开始顺序；</li>
 <li>这种优先级只针对同一 OperationQueue 中的 operation，不同队列中的任务之间比较优先级无意义；</li>
@@ -203,50 +205,56 @@
 </blockquote>
 <p><a href="https://developer.apple.com/documentation/foundation/nsoperation/1412992-ready?language=objc" target="_blank" rel="noopener">官文</a>中说<code>ready</code>是根据当前任务“是否有依赖任务及该任务是否已完成”而定的。示例中的三个任务之间是并发且没有依赖关系的，所以按理它们被加入队列后，是否处在就绪状态是由队列或线程池状况来决定的，至于最终设置了优先级但失效了的问题，这不是我们能控制的了。</p>
 <p>&emsp;</p>
-<p>鉴于此，为了精确控制任务优先级，还是推荐使用接下来介绍的<code>qualityOfService</code>属性来指定任务优先级。</p>
-<h4 id="2-4-服务质量"><a href="#2-4-服务质量" class="headerlink" title="2.4.服务质量"></a>2.4.服务质量</h4><p>qualityOfService，这是在iOS 8后推出的新属性，通过设置服务质量来决定任务在队列中的优先级和执行顺序。</p>
+<p>鉴于此，为了更精确控制任务优先级，还是推荐使用接下来介绍的<code>qualityOfService</code>服务质量属性来指定任务优先级。这里只是说更精确的控制，不是说服务质量能完全保证任务按指定顺序执行，下面会具体介绍。</p>
+<h4 id="2-4-服务质量"><a href="#2-4-服务质量" class="headerlink" title="2.4.服务质量"></a>2.4.服务质量</h4><p><code>qualityOfService</code>，这是在iOS 8后推出的新属性，通过设置服务质量来决定任务在队列中的优先级，NSOperation和NSOperationQueue都有这个属性。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">typedef NS_ENUM(NSInteger, NSQualityOfService) &#123;</span><br><span class="line">    NSQualityOfServiceUserInteractive = 0x21,</span><br><span class="line">    NSQualityOfServiceUserInitiated = 0x19,</span><br><span class="line">    NSQualityOfServiceUtility = 0x11,</span><br><span class="line">    NSQualityOfServiceBackground = 0x09,</span><br><span class="line">    NSQualityOfServiceDefault = -1</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>这些优先级按照枚举的值，从高到低排列：</p>
 <ul>
 <li><strong>UserInteractive</strong></li>
 </ul>
 <blockquote>
 <p>Used for work directly involved in providing an interactive UI. For example, processing control events or drawing to the screen.</p>
 </blockquote>
-<p>最高，用于涉及到UI交互的场景，例如处理点击事件或绘制图片到屏幕上。</p>
+<p>用于涉及到UI交互的场景，例如处理点击事件或绘制图片到屏幕上。</p>
 <ul>
 <li><strong>UserInitiated</strong></li>
 </ul>
 <blockquote>
 <p>Used for performing work that has been explicitly requested by the user, and for which results must be immediately presented in order to allow for further user interaction. For example, loading an email after a user has selected it in a message list.</p>
 </blockquote>
-<p>次级，用于用户触发的、需要立刻返回结果的任务，例如用户点击邮件列表后立刻加载邮件内容。</p>
-<ul>
-<li><strong>Utility</strong></li>
-</ul>
-<blockquote>
-<p>Used for performing work which the user is unlikely to be immediately waiting for the results. This work may have been requested by the user or initiated automatically, and often operates at user-visible timescales using a non-modal progress indicator. For example, periodic content updates or bulk file operations, such as media import.</p>
-</blockquote>
-<p>更次级，用于不需要立刻返回结果的任务，比如周期性的更新内容，或者导入媒体文件。</p>
-<ul>
-<li><strong>Background</strong></li>
-</ul>
-<blockquote>
-<p>Used for work that is not user initiated or visible. In general, a user is unaware that this work is even happening. For example, pre-fetching content, search indexing, backups, or syncing of data with external systems.</p>
-</blockquote>
-<p>后台任务，用于非用户触发的、不可见的任务，比如发起的网络请求、检索结果、同步数据。</p>
+<p>用于用户触发的、需要立刻返回结果的任务，例如用户点击邮件列表后立刻加载邮件内容。</p>
 <ul>
 <li><strong>Default</strong></li>
 </ul>
 <blockquote>
 <p>Indicates no explicit quality of service information. Whenever possible, an appropriate quality of service is determined from available sources. Otherwise, some quality of service level between NSQualityOfServiceUserInteractive and NSQualityOfServiceUtility is used.</p>
 </blockquote>
-<p>默认值，介于<code>UserInteractive</code>和<code>Utility</code>之间，系统会根据当前可用资源的状况决定任务的执行顺序。</p>
+<p>默认值，表示未指明服务质量，系统会根据当前可用资源的状况，使用介于<code>UserInteractive</code>和<code>Utility</code>之间的某个优先级。</p>
+<ul>
+<li><strong>Utility</strong></li>
+</ul>
+<blockquote>
+<p>Used for performing work which the user is unlikely to be immediately waiting for the results. This work may have been requested by the user or initiated automatically, and often operates at user-visible timescales using a non-modal progress indicator. For example, periodic content updates or bulk file operations, such as media import.</p>
+</blockquote>
+<p>用于不需要立刻返回结果的任务，比如周期性的更新内容，或者导入媒体文件。</p>
+<ul>
+<li><strong>Background</strong></li>
+</ul>
+<blockquote>
+<p>Used for work that is not user initiated or visible. In general, a user is unaware that this work is even happening. For example, pre-fetching content, search indexing, backups, or syncing of data with external systems.</p>
+</blockquote>
+<p>后台任务，优先级最低，用于非用户触发的、不可见的任务，比如发起的网络请求、检索结果、同步数据。</p>
 <p>&emsp;</p>
+<p><strong>一般来说</strong>，服务质量对应的优先级排序是：UserInteractive &gt; UserInitiated &gt; Default &gt; Utility &gt; Background。<br>&emsp;</p>
 <p>#示例：服务质量决定优先级</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">- (void)operationServiceQuality&#123;</span><br><span class="line">    NSBlockOperation *op1 = [NSBlockOperation blockOperationWithBlock:^&#123;</span><br><span class="line">        NSLog(@&quot;+++1&quot;);</span><br><span class="line">    &#125;];</span><br><span class="line">    NSBlockOperation *op2 = [NSBlockOperation blockOperationWithBlock:^&#123;</span><br><span class="line">        NSLog(@&quot;+++2&quot;);</span><br><span class="line">    &#125;];</span><br><span class="line">    NSBlockOperation *op3 = [NSBlockOperation blockOperationWithBlock:^&#123;</span><br><span class="line">        NSLog(@&quot;+++3&quot;);</span><br><span class="line">    &#125;];</span><br><span class="line">    </span><br><span class="line">    op1.qualityOfService = NSQualityOfServiceUserInitiated;</span><br><span class="line">    op2.qualityOfService = NSQualityOfServiceDefault;</span><br><span class="line">    op3.qualityOfService = NSQualityOfServiceUserInteractive;</span><br><span class="line">    </span><br><span class="line">    NSOperationQueue *aQueue = [[NSOperationQueue alloc] init];</span><br><span class="line">    [aQueue addOperations:@[op1,op2,op3] waitUntilFinished:NO];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">- (BOOL)application:(UIApplication *)application</span><br><span class="line">didFinishLaunchingWithOptions:(NSDictionary *)launchOptions</span><br><span class="line">&#123;</span><br><span class="line">    [self operationServiceQuality];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)operationServiceQuality&#123;</span><br><span class="line">    NSBlockOperation *op1 = [NSBlockOperation blockOperationWithBlock:^&#123;</span><br><span class="line">        NSLog(@&quot;+++1&quot;);</span><br><span class="line">    &#125;];</span><br><span class="line">    NSBlockOperation *op2 = [NSBlockOperation blockOperationWithBlock:^&#123;</span><br><span class="line">        NSLog(@&quot;+++2&quot;);</span><br><span class="line">    &#125;];</span><br><span class="line">    NSBlockOperation *op3 = [NSBlockOperation blockOperationWithBlock:^&#123;</span><br><span class="line">        NSLog(@&quot;+++3&quot;);</span><br><span class="line">    &#125;];</span><br><span class="line">    NSBlockOperation *op4 = [NSBlockOperation blockOperationWithBlock:^&#123;</span><br><span class="line">        NSLog(@&quot;+++4&quot;);</span><br><span class="line">    &#125;];</span><br><span class="line">    NSBlockOperation *op5 = [NSBlockOperation blockOperationWithBlock:^&#123;</span><br><span class="line">        NSLog(@&quot;+++5&quot;);</span><br><span class="line">    &#125;];</span><br><span class="line">    </span><br><span class="line">    op1.qualityOfService = NSQualityOfServiceUserInitiated;</span><br><span class="line">    op2.qualityOfService = NSQualityOfServiceDefault;</span><br><span class="line">    op3.qualityOfService = NSQualityOfServiceUserInteractive;</span><br><span class="line">    op4.qualityOfService = NSQualityOfServiceUtility;</span><br><span class="line">    op5.qualityOfService = NSQualityOfServiceBackground;</span><br><span class="line">    </span><br><span class="line">    NSOperationQueue *aQueue = [[NSOperationQueue alloc] init];</span><br><span class="line">    [aQueue addOperations:@[op1,op2,op3,op4,op5] waitUntilFinished:NO];</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>日志：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">+++3</span><br><span class="line">+++1</span><br><span class="line">+++2</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">+++3</span><br><span class="line">+++1</span><br><span class="line">+++2</span><br><span class="line">+++4</span><br><span class="line">+++5</span><br></pre></td></tr></table></figure>
+<p><strong>但是</strong>，多次运行同样一段代码之后，会得到这样的日志：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">+++1</span><br><span class="line">+++3</span><br><span class="line">+++2</span><br><span class="line">+++4</span><br><span class="line">+++5</span><br></pre></td></tr></table></figure>
+<p>和这样的日志：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">+++3</span><br><span class="line">+++1</span><br><span class="line">+++5</span><br><span class="line">+++2</span><br><span class="line">+++4</span><br></pre></td></tr></table></figure>
+<p><strong>结论：</strong>服务质量也不能保证任务的执行顺序。</p>
+<p>&emsp;<br>那咋办呢？为了精确控制任务的顺序，还是建议使用依赖关系，或者将任务放到最大并发数=1的串行队列中。</p>
 <h3 id="3-NSOperationQueue"><a href="#3-NSOperationQueue" class="headerlink" title="3.NSOperationQueue"></a>3.NSOperationQueue</h3><p>NSOperation 单独使用时，不具备开启新线程的能力，只有配合 NSOperationQueue 才能另辟新线程执行任务。配合使用时，NSOperation 相当于GCD中的任务，而 NSOperationQueue 则相当于GCD中的队列。将任务加入到队列中后，系统会自动将 NSOperationQueue 中的 NSOperation 取出来，在新线程中执行操作，不需要再手动调用start。</p>
 <h4 id="3-1-两种队列"><a href="#3-1-两种队列" class="headerlink" title="3.1.两种队列"></a>3.1.两种队列</h4><ul>
 <li>主队列：（任务会在主线程执行）</li>

@@ -171,7 +171,7 @@
 <li>为图层设置遮罩（layer.mask）；</li>
 <li>将图层的 layer.masksToBounds 或 view.clipsToBounds 设置为YES；</li>
 <li>将图层 layer.allowsGroupOpacity 设置为YES 且 layer.opacity小于1.0；</li>
-<li>为图层设置阴影（layer.shadow *）；</li>
+<li>为图层设置阴影（layer.[shadowRadius\shadowOffset\shadowOpacity]）；</li>
 <li>为图层开启<a href="https://blog.csdn.net/bravegogo/article/details/80494455" target="_blank" rel="noopener">光栅化</a>：layer.shouldRasterize = YES；</li>
 <li>为图层设置圆角 layer.cornerRadius；</li>
 <li>为图层设置抗锯齿性：layer.allowsEdgeAntialiasing = YES；</li>
@@ -180,8 +180,9 @@
 </ul>
 <p><strong>#优化方案：</strong></p>
 <ul>
+<li>使用中间透明，四个角有背景色的图片代替圆角效果；</li>
 <li>使用 CAShapeLayer 配合 UIBezierPath 画圆角；</li>
-<li>使用 ShadowPath 指定 layer 的阴影效果路径；</li>
+<li>使用 ShadowPath 提前告诉CoreAnimation待渲染图层的形状(layer.shadowPath = [UIBezierPath bezierPathWithRect:layer.bounds])；</li>
 <li>设置 layer.opaque = YES，减少复杂图层合成；</li>
 <li>尽量使用不包含透明（alpha）通道的图片资源；</li>
 <li>尽量设置 layer 的大小值为整形值。</li>
@@ -193,6 +194,7 @@
 <p>#<a href="https://blog.ibireme.com/2015/11/12/smooth_user_interfaces_for_ios/" target="_blank" rel="noopener">©ibireme-保持界面流畅的技巧</a></p>
 <p>#<a href="https://blog.csdn.net/qq_29846663/article/details/68960512" target="_blank" rel="noopener">©于海明-离屏渲染</a></p>
 <p>#<a href="https://blog.csdn.net/bravegogo/article/details/80494455" target="_blank" rel="noopener">©CSDN.bravegogo-光栅化</a></p>
+<p>#<a href="http://texturegroup.org/docs/corner-rounding.html" target="_blank" rel="noopener">©Texture-Corner Rounding</a></p>
 </section>
     <!-- Tags START -->
     

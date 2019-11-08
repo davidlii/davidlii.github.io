@@ -190,7 +190,7 @@
 <li>在编译阶段，编译器会将所有方法名写入一张表中；</li>
 <li>在程序运行阶段，运行时使用SEL代表一个方法（method）；</li>
 <li>runtime 会将方法名与SEL进行映射；</li>
-<li>调用方法时，运行时系统根据SEL从相关类的方法列表中查找对应的方法；</li>
+<li>调用方法时，运行时系统根据SEL从相关类的方法列表(methodLists)中查找对应的方法；</li>
 <li>找到了方法即可调用其结构体中的IMP；</li>
 </ul>
 <h3 id="7-IMP"><a href="#7-IMP" class="headerlink" title="7.IMP"></a>7.IMP</h3><p>在<code>objc/objc.h</code>中，IMP的定义如下：</p>
