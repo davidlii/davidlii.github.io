@@ -129,6 +129,33 @@
   
     <article class="article-card">
       <h2 class="article-head">
+        <a href="/2018/04/13/kvo.html">KVO 的底层实现</a>
+      </h2>
+      <p class="article-date">April 13, 2018</p>
+      
+        
+  <a href="/tags#机制">
+    <span class="tag-code">机制</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          #是啥?KVO 是通过一个 key 来找到某个属性并监听其值的改变。其实这也是一种典型的观察者模式。
+#咋用?
+添加观察者
+在观察者中实现监听方法：-observeValueForKeyPath: ofObject: change: context:。
+移除观察者
+
+#示例：
+1234567 ...
+        
+      </div>
+      <a class="more" href="/2018/04/13/kvo.html">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
         <a href="/2018/04/12/kvc.html">KVC 的底层实现</a>
       </h2>
       <p class="article-date">April 12, 2018</p>
@@ -336,34 +363,6 @@
         
       </div>
       <a class="more" href="/2018/01/14/retain_circle.html">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2018/01/09/framework.html">静态库 & 动态库、.a & .framework、制作库</a>
-      </h2>
-      <p class="article-date">January 9, 2018</p>
-      
-        
-  <a href="/tags#FQA">
-    <span class="tag-code">FQA</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          库？&emsp;库是代码的集合、共享代码的一种方式。分为：
-
-开源库：源代码公开，能看到具体的实现。（如SD、AF）
-闭源库：源码不公开，是经过编译后的二进制文件，看不到具体实现。
-
-&emsp;其中，闭源库有两种形式：
-
-静态库：.a 和 .framework
-动态库：.dylib 和 . ...
-        
-      </div>
-      <a class="more" href="/2018/01/09/framework.html">Read more</a>
     </article>
   
 

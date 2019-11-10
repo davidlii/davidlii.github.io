@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html>
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="This is Davidli&#39;s blog ~">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" type="image/ico" href="/image/logo.png"> 
+  
+  <title>
+    
+      组件化学习之路-反射方案 | Davidli
+    
+  </title>
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+  <script src="/js/qrious.js"></script>
+<script src="/js/gitment.js"></script>
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+</head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png">
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>Davidli</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Davidli</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Davidli</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>组件化学习之路-反射方案</h2>
+  <p class="post-date">2019-09-03</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h3 id="一、组件化"><a href="#一、组件化" class="headerlink" title="一、组件化"></a>一、组件化</h3><h4 id="1-目的"><a href="#1-目的" class="headerlink" title="1.目的"></a>1.目的</h4><p>为了解耦：把复杂系统拆分成多个组件，分离组件边界和责任，便于独立升级和维护。</p>
+<h4 id="2-好处"><a href="#2-好处" class="headerlink" title="2.好处"></a>2.好处</h4><ul>
+<li>明确组件职责</li>
+</ul>
+<p>按合理的粒度将系统拆分成多个组件，确保组件各司其职，以便于复用。</p>
+<ul>
+<li>减少组件间的依赖</li>
+</ul>
+<p><code>通信层</code>实现了组件间的通信，而不用在组件间跳转、调用服务时引用其他组件的文件。</p>
+<ul>
+<li>提升开发/编译/测试效率</li>
+</ul>
+<p>开发人员只须关注自己的组件，不再需要导入或编译其他组件，从而提升开发和编译速度。</p>
+<h4 id="3-方案"><a href="#3-方案" class="headerlink" title="3.方案"></a>3.方案</h4><p>目前 iOS 组件化的实践中，比较流行的解决方案可归纳为以下三种：<br>&emsp;</p>
+<p>1.基于<code>反射</code>原理的方案；<br>&emsp;</p>
+<p>2.基于<code>URL</code>+<code>Block</code>的路由方案；<br>&emsp;</p>
+<p>3.面向<code>协议</code>的服务注册方案；</p>
+<blockquote>
+<p>“没有最优的方案，只有最适合自己的方案”。</p>
+</blockquote>
+<p>三种方案各有优缺点。你可只选其一，也可将它们组合起来使用。前提是你要理解所选方案的特点，同时结合项目的实际需求进行取舍。<br>&emsp;</p>
+<p>接下来的文章中，将陆续对这三种方案进行分析和梳理~</p>
+<h3 id="二、反射机制"><a href="#二、反射机制" class="headerlink" title="二、反射机制"></a>二、反射机制</h3><h4 id="1-场景"><a href="#1-场景" class="headerlink" title="1.场景"></a>1.场景</h4><p>从<code>主页</code>跳转到<code>详情</code>，传入详情页所需的头像；在详情中简单的修改信息之后，返回主页时更新主页的标题。</p>
+<h4 id="2-思路"><a href="#2-思路" class="headerlink" title="2.思路"></a>2.思路</h4><p>在组件化之前，我们最常见的处理可能是：</p>
+<ul>
+<li>在主页中引用详情的<code>.h</code>头文件；</li>
+<li>创建详情的<code>实例</code>；</li>
+<li>通过详情提供的接口传入图片；</li>
+<li>将主页设置为详情的代理；</li>
+<li><code>push</code>到详情页。</li>
+</ul>
+<p>这种处理的问题在于：主页中依赖了详情的头文件，且直接持有了详情的实例；详情的delegate反过来持有了主页的实例，这样两个模块间就产生了依赖和耦合。这还只是主页到详情的一种情况，如果有其他模块同样需要跳转详情，则这些模块同样也会与详情之间产生耦合。<br>&emsp;</p>
+<p>组件化的实践中，按照合理的粒度将系统划分为多个组件之后，主要的挑战就变成了如何实现各组件之间的通信，同时减少组件间的耦合。<br>&emsp;</p>
+<p>反射方案的实现思路和原理如下：<br>&emsp;</p>
+<h5 id="2-1-反射类名"><a href="#2-1-反射类名" class="headerlink" title="2.1.反射类名"></a>2.1.反射类名</h5><p>利用运行时接口将类名反射成类，如目标组件的类名：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Class NSClassFromString(NSString *aClassName);</span><br></pre></td></tr></table></figure>
+<h5 id="2-2-反射方法名"><a href="#2-2-反射方法名" class="headerlink" title="2.2.反射方法名"></a>2.2.反射方法名</h5><p>将方法名反射成SEL，如目标组件提供的接口：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SEL NSSelectorFromString(NSString *aSelectorName);</span><br></pre></td></tr></table></figure>
+<h5 id="2-3-调用"><a href="#2-3-调用" class="headerlink" title="2.3.调用"></a>2.3.调用</h5><p>通过 [obj performSelector:SEL withObject:params] 实现目标组件间的通信：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (id)performSelector:(SEL)aSelector withObject:(id)object;</span><br></pre></td></tr></table></figure>
+<h5 id="2-4-优化"><a href="#2-4-优化" class="headerlink" title="2.4.优化"></a>2.4.优化</h5><p>由于 performSelector 传递的参数个数有限，且返回值只能为id类型，所以可使用 NSInvocation 作为备用方案：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">+ (NSInvocation *)invocationWithMethodSignature:(NSMethodSignature *)sig; // 创建实例</span><br><span class="line"></span><br><span class="line">@property (nullable, assign) id target; //设置目标</span><br><span class="line">@property SEL selector; // 设置目标函数</span><br><span class="line"></span><br><span class="line">- (void)setArgument:(void *)argumentLocation atIndex:(NSInteger)idx; //设置参数</span><br><span class="line">- (void)invoke; // 发起调用</span><br><span class="line">- (void)getReturnValue:(void *)retLoc; // 获取返回值</span><br></pre></td></tr></table></figure>
+<h4 id="3-CTMediator"><a href="#3-CTMediator" class="headerlink" title="3.CTMediator"></a>3.CTMediator</h4><p>反射方案利用了运行时的一些接口，如果你熟悉的话完全可以自己去尝试调用这些接口，实现组件间的通信。这里我想介绍的是一个用于实现组件间通信的三方库<a href="https://github.com/casatwy/CTMediator" target="_blank" rel="noopener">CTMediator</a>，它正是基于OC的反射机制，帮我们封装了 Target-action 和 NSInvocation 操作。它提供了两种调用组件的方式：本地调用和远程调用，同时提供了其他副产品。这个库对实践基于反射原理的组件化解耦方案提供了很好的帮助，至少你可以拿来做个参考。</p>
+<h5 id="1-代码"><a href="#1-代码" class="headerlink" title="1.代码"></a>1.代码</h5><p>这个库很精炼，只有两个文件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">// CTMediator.h</span><br><span class="line"></span><br><span class="line">@interface CTMediator : NSObject</span><br><span class="line"></span><br><span class="line">+ (instancetype)sharedInstance;</span><br><span class="line"></span><br><span class="line">// 远程App调用入口</span><br><span class="line">- (id)performActionWithUrl:(NSURL *)url</span><br><span class="line">                completion:(void(^)(NSDictionary *info))completion;</span><br><span class="line"></span><br><span class="line">// 本地组件调用入口</span><br><span class="line">- (id)performTarget:(NSString *)targetName</span><br><span class="line">             action:(NSString *)actionName</span><br><span class="line">             params:(NSDictionary *)params</span><br><span class="line">  shouldCacheTarget:(BOOL)shouldCacheTarget;</span><br><span class="line"></span><br><span class="line">- (void)releaseCachedTargetWithTargetName:(NSString *)targetName;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br></pre></td><td class="code"><pre><span class="line">// CTMediator.m</span><br><span class="line"></span><br><span class="line">@implementation CTMediator</span><br><span class="line"></span><br><span class="line">/* 远程APP调用入口</span><br><span class="line"> scheme://[target]/[action]?[params]</span><br><span class="line"> url sample:</span><br><span class="line"> aaa://targetA/actionB?id=1234</span><br><span class="line"> */</span><br><span class="line"></span><br><span class="line">- (id)performActionWithUrl:(NSURL *)url</span><br><span class="line">                completion:(void (^)(NSDictionary *))completion</span><br><span class="line">&#123;</span><br><span class="line">    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];</span><br><span class="line">    NSString *urlString = [url query];</span><br><span class="line">    for (NSString *param in [urlString componentsSeparatedByString:@&quot;&amp;&quot;]) &#123;</span><br><span class="line">        NSArray *elts = [param componentsSeparatedByString:@&quot;=&quot;];</span><br><span class="line">        if([elts count] &lt; 2) continue;</span><br><span class="line">        [params setObject:[elts lastObject] forKey:[elts firstObject]];</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    /* 这里这么写主要是出于安全考虑，防止黑客通过远程方式调用本地模块。</span><br><span class="line">    这里的做法足以应对绝大多数场景，如果要求更加严苛，也可以做更加复杂的安全逻辑。*/</span><br><span class="line">    NSString *actionName = [url.path stringByReplacingOccurrencesOfString:@&quot;/&quot; withString:@&quot;&quot;];</span><br><span class="line">    if ([actionName hasPrefix:@&quot;native&quot;]) &#123;</span><br><span class="line">        return @(NO);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    /* 这个demo针对URL的路由处理非常简单，就只是取对应的target名字和method名字，</span><br><span class="line">    但这已经足以应对绝大部份需求。如果需要拓展，可以在这个方法调用之前加入完整的路由逻辑</span><br><span class="line">    */</span><br><span class="line">    id result = [self performTarget:url.host</span><br><span class="line">                             action:actionName</span><br><span class="line">                             params:params</span><br><span class="line">                  shouldCacheTarget:NO];</span><br><span class="line">    if (completion) &#123;</span><br><span class="line">        if (result) &#123;</span><br><span class="line">            completion(@&#123;@&quot;result&quot;:result&#125;);</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            completion(nil);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return result;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// ME:本地组件调用入口</span><br><span class="line">- (id)performTarget:(NSString *)targetName</span><br><span class="line">             action:(NSString *)actionName</span><br><span class="line">             params:(NSDictionary *)params</span><br><span class="line">  shouldCacheTarget:(BOOL)shouldCacheTarget</span><br><span class="line">&#123;</span><br><span class="line">    NSString *swiftModuleName = params[kCTMediatorParamsKeySwiftTargetModuleName];</span><br><span class="line">    </span><br><span class="line">    // 反射target</span><br><span class="line">    NSString *targetClassString = nil;</span><br><span class="line">    if (swiftModuleName.length &gt; 0) &#123;</span><br><span class="line">        targetClassString = [NSString stringWithFormat:@&quot;%@.Target_%@&quot;, swiftModuleName, targetName];</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        // NOTICE: 就是这里给类名加了前缀!!!</span><br><span class="line">        targetClassString = [NSString stringWithFormat:@&quot;Target_%@&quot;, targetName];</span><br><span class="line">    &#125;</span><br><span class="line">    NSObject *target = self.cachedTarget[targetClassString];</span><br><span class="line">    if (target == nil) &#123;</span><br><span class="line">        Class targetClass = NSClassFromString(targetClassString);</span><br><span class="line">        target = [[targetClass alloc] init];</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    // 反射action</span><br><span class="line">    NSString *actionString = [NSString stringWithFormat:@&quot;Action_%@:&quot;, actionName];</span><br><span class="line">    SEL action = NSSelectorFromString(actionString);</span><br><span class="line">    </span><br><span class="line">    if (target == nil) &#123;</span><br><span class="line">        /*这里是处理无响应请求的地方之一，这个demo做得比较简单，如果没有可以响应的target，就直接return了。</span><br><span class="line">        实际开发过程中是可以事先给一个固定的target专门用于在这个时候顶上，然后处理这种请求的</span><br><span class="line">         */</span><br><span class="line">        [self NoTargetActionResponseWithTargetString:targetClassString</span><br><span class="line">                                      selectorString:actionString</span><br><span class="line">                                        originParams:params];</span><br><span class="line">        return nil;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    if (shouldCacheTarget) &#123;</span><br><span class="line">        self.cachedTarget[targetClassString] = target;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    if ([target respondsToSelector:action]) &#123;</span><br><span class="line">        // NOTICE: 调用 NSInvocation 进行通信</span><br><span class="line">        return [self safePerformAction:action target:target params:params];</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        // 这里是处理无响应请求的地方，如果无响应，则尝试调用对应target的notFound方法统一处理</span><br><span class="line">        SEL action = NSSelectorFromString(@&quot;notFound:&quot;);</span><br><span class="line">        if ([target respondsToSelector:action]) &#123;</span><br><span class="line">            return [self safePerformAction:action target:target params:params];</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            /* 这里也是处理无响应请求的地方，在notFound都没有的时候，这个demo是直接return了。</span><br><span class="line">            实际开发过程中，可以用前面提到的固定的target顶上的。</span><br><span class="line">             */</span><br><span class="line">            [self NoTargetActionResponseWithTargetString:targetClassString</span><br><span class="line">                                          selectorString:actionString</span><br><span class="line">                                            originParams:params];</span><br><span class="line">            [self.cachedTarget removeObjectForKey:targetClassString];</span><br><span class="line">            return nil;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (id)safePerformAction:(SEL)action</span><br><span class="line">                 target:(NSObject *)target</span><br><span class="line">                 params:(NSDictionary *)params</span><br><span class="line">&#123;</span><br><span class="line">    NSMethodSignature* methodSig = [target methodSignatureForSelector:action];</span><br><span class="line">    const char* retType = [methodSig methodReturnType];</span><br><span class="line">    </span><br><span class="line">    //...</span><br><span class="line">    // ME: 对目标组件返回值为非对象类型的情况进行特殊处理</span><br><span class="line"></span><br><span class="line">    if (strcmp(retType, @encode(NSUInteger)) == 0) &#123;</span><br><span class="line">        NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:methodSig];</span><br><span class="line">        [invocation setArgument:&amp;params atIndex:2];</span><br><span class="line">        [invocation setSelector:action];</span><br><span class="line">        [invocation setTarget:target];</span><br><span class="line">        [invocation invoke];</span><br><span class="line">        NSUInteger result = 0;</span><br><span class="line">        [invocation getReturnValue:&amp;result];</span><br><span class="line">        return @(result);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // ME: 返回值是对象类型则直接走此方法</span><br><span class="line">    return [target performSelector:action withObject:params];</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<p>ps：库的作者提供了详细的注释，<code>// ME:</code>标注的注释是我添加，用来说明其中的业务逻辑。</p>
+<h5 id="2-本地调用"><a href="#2-本地调用" class="headerlink" title="2.本地调用"></a>2.本地调用</h5><p>CTMediator主要实现了本地调用功能，就是我们的应用内部组件之间的服务调用，比如主页组件调用详情组件的跳转服务，组件间主要是通过<code>performSelector</code>的方式进行通信，对于返回值为非对象类型的情况则使用<code>NSInvocation</code>进行通信。<br>&emsp;</p>
+<p><code>[target performSelector:action withObject:params]</code>需要三个主要参数：</p>
+<ul>
+<li>当前对象</li>
+</ul>
+<p>即示例中的<code>target</code>，在组件化实践中则对应着目标组件服务类的一个实例。它是通过<code>NSClassFromString(@“targetClassString”)</code>接口将字符串类型的类名反射成真实的类，再调用实例化方法创建实例。</p>
+<ul>
+<li>SEL</li>
+</ul>
+<p>即示例中的<code>action</code>，对应的是目标组件服务类对外暴露的服务接口。它是通过<code>NSSelectorFromString(actionString)</code>接口将字符串类型的接口名反射成SEL，供运行时调用。</p>
+<ul>
+<li>方法参数</li>
+</ul>
+<p>即示例中的<code>params</code>，对应的是目标组件服务类接口中的参数。由于<code>performSelector</code>能传递的参数有限，所以此库要求外部调用者将多个参数包装在一个字典容器中，再由库内部将此参数传递给SEL。</p>
+<h5 id="3-远程调用"><a href="#3-远程调用" class="headerlink" title="3.远程调用"></a>3.远程调用</h5><p>CTMediator还提供了远程调用接口，就是别的应用向我们的应用发起的服务调用，大致过程如下：</p>
+<ul>
+<li>A应用通过<code>[[UIApplication sharedApplication] openURL:xxx]</code>传递一个指定格式的URL到B应用；</li>
+<li>B应用在<code>-application:openURL:</code>回调中接收URL，随后调用<code>performActionWithUrl</code>开始处理此URL；</li>
+<li><code>performActionWithUrl</code>中对URL中的参数进行解析之后，再通过<code>performTarget</code>调用本地组件提供服务。</li>
+</ul>
+<p>远程调用时传递的URL一定要按照约定的格式拼接，开发者应按照自己的规范自定义库文件中远程调用的相关逻辑；<br>&emsp;</p>
+<p>基于URL的远程调用有个缺点，即URL中参数的类型将会受到限制，如传递图片、数据、block等类型时将很不方便。</p>
+<h4 id="4-实战"><a href="#4-实战" class="headerlink" title="4.实战"></a>4.实战</h4><p>着手实现章节开始时提出的场景需求：从<code>主页</code>组件跳转到<code>详情</code>组件；返回时更新主页组件的标题。</p>
+<h5 id="1-目标组件"><a href="#1-目标组件" class="headerlink" title="1.目标组件"></a>1.目标组件</h5><p><code>详情</code>组件视图控制器：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">@interface DetailViewController : UIViewController</span><br><span class="line">@property (nonatomic, strong) NSDictionary *params;  // 接收外部组件传进来的参数</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">#import &quot;DetailViewController.h&quot;</span><br><span class="line"></span><br><span class="line">@interface DetailViewController ()</span><br><span class="line">@property (weak, nonatomic) IBOutlet UIImageView *mIconImv;</span><br><span class="line">@property (nonatomic, strong) UIImage *image;</span><br><span class="line">@property (nonatomic, copy) DetailCallback callBack; // 回调block</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation DetailViewController</span><br><span class="line"></span><br><span class="line">- (void)viewDidLoad &#123;</span><br><span class="line">    [super viewDidLoad];</span><br><span class="line">    </span><br><span class="line">    // 获取参数</span><br><span class="line">    self.mIconImv.image = self.params[k_Key_Image];</span><br><span class="line">    self.callBack = self.params[k_Key_Block];</span><br><span class="line">    </span><br><span class="line">    UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];</span><br><span class="line">    [btn setTitle:@&quot;返回&quot; forState:UIControlStateNormal];</span><br><span class="line">    [btn addTarget:self action:@selector(onBackWithBlock) forControlEvents:UIControlEventTouchUpInside];</span><br><span class="line">    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:btn];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)onBackWithBlock&#123;</span><br><span class="line">    self.callBack(); //回传信息</span><br><span class="line">    [self.navigationController popViewControllerAnimated:YES];</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<p>这是详情所在的视图控制器，其中定义了用于接收外部图片的属性<code>image</code>和处理回调的<code>callBack</code>闭包。视图加载时显示外部传进来的图片；退出详情页时回调<code>callBack</code>闭包以通知上层调用者处理自己的业务。</p>
+<h5 id="2-暴露接口"><a href="#2-暴露接口" class="headerlink" title="2.暴露接口"></a>2.暴露接口</h5><p>详情组件<code>对外提供服务的类</code>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">@interface Target_DetailViewController : NSObject</span><br><span class="line">- (UIViewController*)Action_showDetail:(NSDictionary*)paramDic;</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">#import &quot;Target_DetailViewController.h&quot;</span><br><span class="line">// 导入详情原类</span><br><span class="line">#import &quot;DetailViewController.h&quot; // 服务类可依赖组件原类</span><br><span class="line"></span><br><span class="line">@implementation Target_DetailViewController</span><br><span class="line"></span><br><span class="line">- (UIViewController *)Action_showDetail:(NSDictionary *)paramDic&#123;</span><br><span class="line"></span><br><span class="line">    // 当前为业务实现层 属于组件的一部分，可以引用目标VC</span><br><span class="line">    DetailViewController *controller = [[UIStoryboard storyboardWithName:@&quot;Main&quot; bundle:nil]</span><br><span class="line">                                          instantiateViewControllerWithIdentifier:@&quot;DaDetailViewController&quot;];</span><br><span class="line">    // 给目标传值</span><br><span class="line">    controller.params = paramDic;</span><br><span class="line">    </span><br><span class="line">    return controller;</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<p>一些细节：</p>
+<ul>
+<li>详情组件对外提供的所有服务，都在这里定义和实现；</li>
+<li>在此服务类的头文件中将服务接口暴露给外界；</li>
+<li>此类是详情组件的一部分，可以导入和依赖详情原类；</li>
+<li>注意上面的命名方式，类名前缀为<code>Target_</code>，而方法名前缀为<code>Action_</code>；</li>
+</ul>
+<p>关于最后一条，这是因为接下来使用到的通信类三方库<code>CTMediator</code>中做了特殊处理，所以我们需要按照通信层的要求进行命名，当然，你也可以按照自己的规范在原库中将<code>Target_</code>he和<code>Action_</code>修改为你自己喜欢的前缀。</p>
+<h5 id="3-通信类"><a href="#3-通信类" class="headerlink" title="3.通信类"></a>3.通信类</h5><p><code>中间通信层</code>，这是三方库<code>CTMediator</code>的一个分类：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">#import &quot;CTMediator.h&quot;</span><br><span class="line"></span><br><span class="line">@interface CTMediator (Detail)</span><br><span class="line">/**</span><br><span class="line"> 详情中间通信类对外提供的接口</span><br><span class="line"> @param paramDic 参数</span><br><span class="line"> @return 返回值</span><br><span class="line"> */</span><br><span class="line">- (UIViewController*)CTDetail:(NSDictionary*)paramDic;</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">#import &quot;CTMediator+Detail.h&quot;</span><br><span class="line"></span><br><span class="line">@implementation CTMediator (Detail)</span><br><span class="line"></span><br><span class="line">- (UIViewController *)CTDetail:(NSDictionary *)paramDic&#123;</span><br><span class="line">    </span><br><span class="line">    /* 调用CTMediator库的“performTarget”方法;</span><br><span class="line">    使用字符串，结合反射机制，从而避免直接引用目标类，减少依赖</span><br><span class="line">    */</span><br><span class="line">    return [self performTarget:@&quot;DetailViewController&quot;</span><br><span class="line">                        action:@&quot;showDetail&quot;</span><br><span class="line">                        params:paramDic</span><br><span class="line">             shouldCacheTarget:NO];</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<p><code>-CTDetail:</code>即是详情中间通信类对外暴露的一个接口，其他组件想调用详情组件的服务时从这里找即可~<br>&emsp;</p>
+<p>单独提供这么一层，而非在调用详情组件服务的地方直接执行<code>perform</code>方法，主要是因为这里的类名和方法名都是明文，在没有代码补全功能的情况下，让别的组件的开发者每次调用时都自己写一遍极有可能会出错，也很不方便。这一层对这些操作进行了封装，这样外部调用者就不用再为此挠头。<br>&emsp;</p>
+<p>另外需要注意：这里的明文类名和方法名并没带上一小节提到的前缀，这些是在三方库<code>CTMediator</code>中自动追加的。</p>
+<h5 id="4-调用服务"><a href="#4-调用服务" class="headerlink" title="4.调用服务"></a>4.调用服务</h5><p>在主页组件中<code>调用</code>详情组件的服务：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">#import &quot;CTMediator+Detail.h&quot;</span><br><span class="line"></span><br><span class="line">@implementation HomeViewController</span><br><span class="line"></span><br><span class="line">- (IBAction)onShowDetail:(id)sender &#123;</span><br><span class="line">    UIButton *btn = sender;</span><br><span class="line">    </span><br><span class="line">    // 声明回调 从详情页面返回当前页面时更新标题</span><br><span class="line">    DetailCallback block = ^()&#123;</span><br><span class="line">        self.title = @&quot;Info Checked&quot;;</span><br><span class="line">    &#125;;</span><br><span class="line">    </span><br><span class="line">    // 通过中间层调用别的组件，传递参数</span><br><span class="line">    NSDictionary *params = @&#123;k_Key_Image : btn.currentBackgroundImage, k_Key_Block : block&#125;;</span><br><span class="line">    UIViewController *controller = [[CTMediator sharedInstance] CTDetail:params];</span><br><span class="line">    if (controller) &#123;</span><br><span class="line">        [self.navigationController pushViewController:controller animated:YES];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<p>在本次调用中，主页组件中并未直接引用详情组件的头文件，只是引用了详情组件的中间通信层<code>CTMediator+Detail.h</code>。主页组件最终通过详情中间通信层提供的接口实现了对详情组件的通信或者说服务的调用。</p>
+<h5 id="5-流程总结"><a href="#5-流程总结" class="headerlink" title="5.流程总结"></a>5.流程总结</h5><ul>
+<li>定义目标组件；</li>
+<li>定义目标组件的对外服务类和接口；</li>
+<li>定义目标组件的中间通信层；</li>
+<li>发起者与目标组件的中间通信层交互，调用目标组件的接口；</li>
+<li>中间通信层调用CTMediator，通过运行时接口实现通信；</li>
+</ul>
+<h4 id="5-思考"><a href="#5-思考" class="headerlink" title="5.思考"></a>5.思考</h4><p>优点：</p>
+<ul>
+<li>巧妙的利用了运行时接口，通过反射机制完成组件间的通信和解耦；</li>
+<li>组件之间不再引用对方头文件，而是通过中间通信层进行通信；</li>
+<li>调用方组件只导入或者说依赖了像CTMediator+Detail分类这样的中间通信层，且这种依赖关系只是单向的；</li>
+<li>从整体来看，各大组件之间没有耦合，都只以中间层为中心与其他组件进行通信。</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>调用发起方组件虽说只是与服务提供方组件的中间通信层进行交互，但还是需要导入中间通信层的头文件；</li>
+<li>中间通信层中需要明文指定类名和方法名，在没有代码补全的情况下很可能出错；</li>
+<li>受反射机制的限制，本地调用时通信层中接收的参数个数有限，所以只能以字典等容器的方式传值，不够灵活方便；</li>
+<li>远程调用时，URL中参数的类型也会受到限制，只适合用来进行应用内部页面跳转或别的App调起我们本地的页面；</li>
+</ul>
+<p>整体来看，基于反射原理的组件化解决方案还是不够完美，后续会陆续介绍其他两种组件化方案，待续~</p>
+<hr>
+<p>相关参考：</p>
+<p>#<a href="https://github.com/davidli-/DaModules-Hardcore" target="_blank" rel="noopener">©反射方案demo</a></p>
+<p>#<a href="https://github.com/davidli-/DaModule-Protocol" target="_blank" rel="noopener">©服务协议注册方案demo</a></p>
+<p>#<a href="https://github.com/youzan/Bifrost" target="_blank" rel="noopener">©有赞Bifrost</a></p>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#架构">
+    <span class="tag-code">架构</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2019/08/31/podspec.html">
+        <span class="nav-arrow">← </span>
+        
+          搭建自己的pod库
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#一、组件化"><span class="toc-nav-text">一、组件化</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#1-目的"><span class="toc-nav-text">1.目的</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-好处"><span class="toc-nav-text">2.好处</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3-方案"><span class="toc-nav-text">3.方案</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#二、反射机制"><span class="toc-nav-text">二、反射机制</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#1-场景"><span class="toc-nav-text">1.场景</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-思路"><span class="toc-nav-text">2.思路</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#2-1-反射类名"><span class="toc-nav-text">2.1.反射类名</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#2-2-反射方法名"><span class="toc-nav-text">2.2.反射方法名</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#2-3-调用"><span class="toc-nav-text">2.3.调用</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#2-4-优化"><span class="toc-nav-text">2.4.优化</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3-CTMediator"><span class="toc-nav-text">3.CTMediator</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#1-代码"><span class="toc-nav-text">1.代码</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#2-本地调用"><span class="toc-nav-text">2.本地调用</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#3-远程调用"><span class="toc-nav-text">3.远程调用</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#4-实战"><span class="toc-nav-text">4.实战</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#1-目标组件"><span class="toc-nav-text">1.目标组件</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#2-暴露接口"><span class="toc-nav-text">2.暴露接口</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#3-通信类"><span class="toc-nav-text">3.通信类</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#4-调用服务"><span class="toc-nav-text">4.调用服务</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#5-流程总结"><span class="toc-nav-text">5.流程总结</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#5-思考"><span class="toc-nav-text">5.思考</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'http://yoursite.com/2019/09/03/modules.html';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+     // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+        
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+
+    // qrcode
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+
+    // gitment
+    var gitmentConfig = "";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "组件化学习之路-反射方案",
+        owner: "",
+        repo: "",
+        oauth: {
+          client_id: "",
+          client_secret: ""
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  })();
+</script>
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2019 | <a href="https://github.com/davidlii" target="_blank">Davidli</a>
+    <br>
+    <a href="https://hexo.io" target="_blank">Hexo</a> | Theme-<a href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+<script src="/js/script.js"></script>
+  </body>
+</html>
