@@ -140,10 +140,10 @@
 <p>在详情中简单的修改信息之后，返回主页时更新主页的标题。</p>
 <h3 id="3-思路"><a href="#3-思路" class="headerlink" title="3.思路"></a>3.思路</h3><p>基于反射原理的组件化方案，其首要目标还是实现各组件之间的通信，同时减少组件间的耦合。其实现原理如下：</p>
 <h4 id="3-1-反射类名"><a href="#3-1-反射类名" class="headerlink" title="3.1.反射类名"></a>3.1.反射类名</h4><p>利用运行时接口将类名反射成类，如目标组件的类名：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Class NSClassFromString(NSString *aClassName);</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Class *targetObj = NSClassFromString(NSString *aClassName);</span><br></pre></td></tr></table></figure>
 <h4 id="3-2-反射方法名"><a href="#3-2-反射方法名" class="headerlink" title="3.2.反射方法名"></a>3.2.反射方法名</h4><p>将方法名反射成SEL，如目标组件提供的接口：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SEL NSSelectorFromString(NSString *aSelectorName);</span><br></pre></td></tr></table></figure>
-<h4 id="3-3-调用"><a href="#3-3-调用" class="headerlink" title="3.3.调用"></a>3.3.调用</h4><p>通过 [obj performSelector:SEL withObject:params] 实现与目标组件的通信：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SEL sel = NSSelectorFromString(NSString *aSelectorName);</span><br></pre></td></tr></table></figure>
+<h4 id="3-3-调用"><a href="#3-3-调用" class="headerlink" title="3.3.调用"></a>3.3.调用</h4><p>通过 [targetObj performSelector:sel withObject:params] 实现与目标组件的通信：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (id)performSelector:(SEL)aSelector withObject:(id)object;</span><br></pre></td></tr></table></figure>
 <h4 id="3-4-优化"><a href="#3-4-优化" class="headerlink" title="3.4.优化"></a>3.4.优化</h4><p>由于 performSelector 传递的参数个数有限，且返回值只能为id类型，所以可使用 NSInvocation 作为备用方案：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">+ (NSInvocation *)invocationWithMethodSignature:(NSMethodSignature *)sig; // 创建实例</span><br><span class="line"></span><br><span class="line">@property (nullable, assign) id target; //设置目标</span><br><span class="line">@property SEL selector; // 设置目标函数</span><br><span class="line"></span><br><span class="line">- (void)setArgument:(void *)argumentLocation atIndex:(NSInteger)idx; //设置参数</span><br><span class="line">- (void)invoke; // 发起调用</span><br><span class="line">- (void)getReturnValue:(void *)retLoc; // 获取返回值</span><br></pre></td></tr></table></figure>
@@ -225,6 +225,7 @@
 <hr>
 <p>相关参考：</p>
 <p>#<a href="https://github.com/davidli-/DaModules-Hardcore" target="_blank" rel="noopener">©反射方案demo</a></p>
+<p>#<a href="https://github.com/davidli-/HelModules-URL" target="_blank" rel="noopener">©URL+Block方案demo</a></p>
 <p>#<a href="https://github.com/davidli-/DaModule-Protocol" target="_blank" rel="noopener">©服务协议注册方案demo</a></p>
 <p>#<a href="https://github.com/youzan/Bifrost" target="_blank" rel="noopener">©有赞Bifrost</a></p>
 </section>
@@ -252,6 +253,13 @@
         
       </a>
     
+    
+      <a class="nav-right" href="/2019/12/21/modules-protocol.html">
+        
+          组件化之路-协议+服务注册+URL+反射方案
+        
+        <span class="nav-arrow"> →</span>
+      </a>
     
   </div>
 
