@@ -129,6 +129,27 @@
   
     <article class="article-card">
       <h2 class="article-head">
+        <a href="/2018/01/20/reuse_cell.html">UITableViewCell 的重用、卡顿与离屏渲染</a>
+      </h2>
+      <p class="article-date">January 20, 2018</p>
+      
+        
+  <a href="/tags#机制">
+    <span class="tag-code">机制</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          1、Cell 的重用#示例1：常见用法
+123456789101112- (UITableViewCell *)tableView:(UITableView *)tableViewcellForRowAtIndexPath:(NSIndexPath *)indexPath &#123;  s ...
+        
+      </div>
+      <a class="more" href="/2018/01/20/reuse_cell.html">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
         <a href="/2018/01/18/patterns.html">常用架构模式</a>
       </h2>
       <p class="article-date">January 18, 2018</p>
@@ -158,12 +179,12 @@
       <p class="article-date">January 14, 2018</p>
       
         
-  <a href="/tags#block">
-    <span class="tag-code">block</span>
-  </a>
-
   <a href="/tags#内存管理">
     <span class="tag-code">内存管理</span>
+  </a>
+
+  <a href="/tags#block">
+    <span class="tag-code">block</span>
   </a>
 
   <a href="/tags#循环引用">
@@ -352,33 +373,6 @@
         
       </div>
       <a class="more" href="/2017/11/27/bad_access.html">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2017/11/27/weak.html">weak 的实现原理</a>
-      </h2>
-      <p class="article-date">November 27, 2017</p>
-      
-        
-  <a href="/tags#机制">
-    <span class="tag-code">机制</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          
-weak 表示的是一个弱引用，不会增加对象的引用计数，并且在所指向的对象被释放之后，weak 指针会被置为nil。weak 引用通常是用于处理循环引用的问题。
-
-实现原理：
-初始化：
-
-runtime 调用 objc_initWeak 函数，初始化一个新的 weak 指针指向对象的地址。
- ...
-        
-      </div>
-      <a class="more" href="/2017/11/27/weak.html">Read more</a>
     </article>
   
 
