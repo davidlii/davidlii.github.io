@@ -10,7 +10,7 @@
   
   <title>
     
-      组件化之路-协议+服务注册+URL+反射方案 | Davidli
+      组件化-面向协议方案 | Davidli
     
   </title>
   <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -126,7 +126,7 @@
 </header>
 
     <div id="article-banner">
-  <h2>组件化之路-协议+服务注册+URL+反射方案</h2>
+  <h2>组件化-面向协议方案</h2>
   <p class="post-date">2019-12-21</p>
   <div class="arrow-down">
     <a href="javascript:;"></a>
@@ -193,7 +193,8 @@
 <p>当前应用的<code>AppDelegate</code>回调中调用注册中心提供的远程调用接口:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">- (BOOL)application:(UIApplication *)app</span><br><span class="line">            openURL:(NSURL *)url</span><br><span class="line">            options:(NSDictionary&lt;UIApplicationOpenURLOptionsKey,id&gt; *)options</span><br><span class="line">&#123;</span><br><span class="line">    return [ModuleProtocolMediator performActionWithUrl:url completion:^(id info) &#123;</span><br><span class="line">        NSLog(@&quot;++++%@&quot;,info);</span><br><span class="line">    &#125;];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p><code>performActionWithUrl</code>接口的具体实现可往上翻一翻<code>3.4.注册协议</code>章节中的<code>ModuleProtocolMediator</code>类。此方法借鉴了前两篇文章中分析过的<code>URL</code>和<code>反射</code>原理，反射出协议类名和方法名，再通过注册中心查找并创建实现了此协议的类的实例，最后利用运行时接口调用协议方法，我已在上面的代码中已经做了详细注释。</p>
-<h5 id="3-6-方案总结"><a href="#3-6-方案总结" class="headerlink" title="3.6.方案总结"></a>3.6.方案总结</h5><p>优点：</p>
+<h5 id="3-6-方案总结"><a href="#3-6-方案总结" class="headerlink" title="3.6.方案总结"></a>3.6.方案总结</h5><p><img src="https://davidlii.nos-eastchina1.126.net/pic_module_protocols.jpg" alt="组件化-面向协议"></p>
+<p>优点：</p>
 <ul>
 <li>服务协议注册方案体现了面向协议（抽象）的编程思想，组件间通过协议进行通信；</li>
 <li>协议方法中可以定义任意个数和任意类型的参数；</li>
@@ -235,7 +236,7 @@
       <a class="nav-left" href="/2019/11/12/modules-runtime.html">
         <span class="nav-arrow">← </span>
         
-          组件化之路-反射方案
+          组件化-反射方案
         
       </a>
     
@@ -350,7 +351,7 @@
     var gitmentConfig = "";
     if (gitmentConfig !== 'undefined') {
       var gitment = new Gitment({
-        id: "组件化之路-协议+服务注册+URL+反射方案",
+        id: "组件化-面向协议方案",
         owner: "",
         repo: "",
         oauth: {
