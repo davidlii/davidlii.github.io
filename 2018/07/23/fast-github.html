@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
-  <head><meta name="generator" content="Hexo 3.8.0">
+  <head>
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
   <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
   <meta name="description" content="This is Davidli&#39;s blog ~">
   <meta name="keyword" content="hexo-theme, vuejs">
   
-    <link rel="shortcut icon" type="image/ico" href="/image/logo.png"> 
+    <link rel="shortcut icon" type="image/ico" href="/image/logo.png"/> 
   
   <title>
     
@@ -16,13 +16,17 @@
   <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
   <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
   <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="/css/style.css">
+  
+<link rel="stylesheet" href="/css/style.css">
 <link rel="stylesheet" href="/css/plugins/gitment.css">
+
   <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
   <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
   <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
-  <script src="/js/qrious.js"></script>
+  
+<script src="/js/qrious.js"></script>
 <script src="/js/gitment.js"></script>
+
   
   
     <!-- MathJax support START -->
@@ -49,9 +53,9 @@
   
 
 
-</head>
+<meta name="generator" content="Hexo 6.2.0"></head>
 <div class="wechat-share">
-  <img src="/css/images/logo.png">
+  <img src="/css/images/logo.png" />
 </div>
 
   <body>
@@ -144,28 +148,31 @@
 <h2 id="1、打开host文件"><a href="#1、打开host文件" class="headerlink" title="#1、打开host文件"></a>#1、打开host文件</h2><ul>
 <li>直接通过Finder</li>
 </ul>
-<p>快捷键 command + shift + G，输入“/etc”，回车即可进入etc文件夹，找到hosts文件，直接通过系统的“文本编辑”打开即可。</p>
+<p>快捷键 command + shift + G，输入“&#x2F;etc”，回车即可进入etc文件夹，找到hosts文件，直接通过系统的“文本编辑”打开即可。</p>
 <ul>
 <li>使用终端打开</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vi /etc/hosts</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vi /etc/hosts</span><br></pre></td></tr></table></figure>
+
 <p>输入密码后会看到目前hosts文件的配置信息：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">##</span><br><span class="line"># Host Database</span><br><span class="line">#</span><br><span class="line"># localhost is used to configure the loopback interface</span><br><span class="line"># when the system is booting.  Do not change this entry.</span><br><span class="line">##</span><br><span class="line">127.0.0.1	localhost</span><br><span class="line">255.255.255.255	broadcasthost</span><br><span class="line">::1             localhost</span><br></pre></td></tr></table></figure>
-<h2 id="2、查询Github域名对应的ip地址"><a href="#2、查询Github域名对应的ip地址" class="headerlink" title="#2、查询Github域名对应的ip地址"></a>#2、查询Github域名对应的ip地址</h2><p>在浏览器中访问 <a href="https://www.ipaddress.com" target="_blank" rel="noopener">此网站</a>，在其搜索框中分别输入“github.com” 与 “github.global.ssl.fastly.net”，查询并记录下其对应的ip地址。我的查询结果如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">192.30.253.112 	github.com</span><br><span class="line">151.101.13.194	github.global.ssl.fastly.net</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">##</span><br><span class="line"># Host Database</span><br><span class="line">#</span><br><span class="line"># localhost is used to configure the loopback interface</span><br><span class="line"># when the system is booting.  Do not change this entry.</span><br><span class="line">##</span><br><span class="line">127.0.0.1	localhost</span><br><span class="line">255.255.255.255	broadcasthost</span><br><span class="line">::1             localhost </span><br></pre></td></tr></table></figure>
+
+<h2 id="2、查询Github域名对应的ip地址"><a href="#2、查询Github域名对应的ip地址" class="headerlink" title="#2、查询Github域名对应的ip地址"></a>#2、查询Github域名对应的ip地址</h2><p>在浏览器中访问 <a target="_blank" rel="noopener" href="https://www.ipaddress.com/">此网站</a>，在其搜索框中分别输入“github.com” 与 “github.global.ssl.fastly.net”，查询并记录下其对应的ip地址。我的查询结果如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">192.30.253.112 	github.com</span><br><span class="line">151.101.13.194	github.global.ssl.fastly.net</span><br></pre></td></tr></table></figure>
 <h2 id="3、修改hosts文件"><a href="#3、修改hosts文件" class="headerlink" title="#3、修改hosts文件"></a>#3、修改hosts文件</h2><p>通过“文本编辑”工具 或者 终端中使用 vi 命令打开hosts文件，将上面两行记录写入hosts文件，保存并退出。结果如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">##</span><br><span class="line"># Host Database</span><br><span class="line">#</span><br><span class="line"># localhost is used to configure the loopback interface</span><br><span class="line"># when the system is booting.  Do not change this entry.</span><br><span class="line">##</span><br><span class="line">127.0.0.1	localhost</span><br><span class="line">255.255.255.255	broadcasthost</span><br><span class="line">::1             localhost </span><br><span class="line"></span><br><span class="line">192.30.253.112 	github.com</span><br><span class="line">151.101.13.194	github.global.ssl.fastly.net</span><br></pre></td></tr></table></figure>
-<h2 id="4、重新访问-Github-com"><a href="#4、重新访问-Github-com" class="headerlink" title="#4、重新访问 Github.com~"></a>#4、重新访问 Github.com~</h2><p>现在，重新访问 <a href="https://Github.com" target="_blank" rel="noopener">Github.com</a> 试试~</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">##</span><br><span class="line"># Host Database</span><br><span class="line">#</span><br><span class="line"># localhost is used to configure the loopback interface</span><br><span class="line"># when the system is booting.  Do not change this entry.</span><br><span class="line">##</span><br><span class="line">127.0.0.1	localhost</span><br><span class="line">255.255.255.255	broadcasthost</span><br><span class="line">::1             localhost </span><br><span class="line"></span><br><span class="line">192.30.253.112 	github.com</span><br><span class="line">151.101.13.194	github.global.ssl.fastly.net</span><br></pre></td></tr></table></figure>
+
+<h2 id="4、重新访问-Github-com"><a href="#4、重新访问-Github-com" class="headerlink" title="#4、重新访问 Github.com~"></a>#4、重新访问 Github.com~</h2><p>现在，重新访问 <a target="_blank" rel="noopener" href="https://github.com/">Github.com</a> 试试~</p>
 <hr>
 <p>相关参考：</p>
-<p>#<a href="https://blog.csdn.net/wu__di/article/details/50538916" target="_blank" rel="noopener">©传送门</a></p>
+<p>#<a target="_blank" rel="noopener" href="https://blog.csdn.net/wu__di/article/details/50538916">©传送门</a></p>
 </section>
     <!-- Tags START -->
     
       <div class="tags">
         <span>Tags:</span>
         
-  <a href="/tags#FQA">
+  <a href="/tags#FQA" >
     <span class="tag-code">FQA</span>
   </a>
 
@@ -229,7 +236,7 @@
   <div class="toc-main">
     <strong class="toc-title">Catalog</strong>
     
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1、打开host文件"><span class="toc-nav-text">#1、打开host文件</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2、查询Github域名对应的ip地址"><span class="toc-nav-text">#2、查询Github域名对应的ip地址</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3、修改hosts文件"><span class="toc-nav-text">#3、修改hosts文件</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4、重新访问-Github-com"><span class="toc-nav-text">#4、重新访问 Github.com~</span></a></li></ol>
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1%E3%80%81%E6%89%93%E5%BC%80host%E6%96%87%E4%BB%B6"><span class="toc-nav-text">#1、打开host文件</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2%E3%80%81%E6%9F%A5%E8%AF%A2Github%E5%9F%9F%E5%90%8D%E5%AF%B9%E5%BA%94%E7%9A%84ip%E5%9C%B0%E5%9D%80"><span class="toc-nav-text">#2、查询Github域名对应的ip地址</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3%E3%80%81%E4%BF%AE%E6%94%B9hosts%E6%96%87%E4%BB%B6"><span class="toc-nav-text">#3、修改hosts文件</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4%E3%80%81%E9%87%8D%E6%96%B0%E8%AE%BF%E9%97%AE-Github-com"><span class="toc-nav-text">#4、重新访问 Github.com~</span></a></li></ol>
     
   </div>
 </aside>
@@ -325,9 +332,9 @@
 </div>
     <footer class="app-footer">
   <p class="copyright">
-    &copy; 2020 | <a href="https://github.com/davidlii" target="_blank">Davidli</a>
+    &copy; 2022 | <a href="https://github.com/davidlii" target="_blank">Davidli</a>
     <br>
-    <a href="https://hexo.io" target="_blank">Hexo</a> | Theme-<a href="https://github.com/yanm1ng">yanm1ng</a>
+    <a href="https://hexo.io" target="_blank">Hexo</a> | Theme-<a target="_blank" rel="noopener" href="https://github.com/yanm1ng">yanm1ng</a>
   </p>
 </footer>
 
@@ -368,6 +375,8 @@
 </script>
 <!-- Baidu Tongji -->
 
+
 <script src="/js/script.js"></script>
+
   </body>
 </html>

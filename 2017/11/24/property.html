@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
-  <head><meta name="generator" content="Hexo 3.8.0">
+  <head>
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
   <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
   <meta name="description" content="This is Davidli&#39;s blog ~">
   <meta name="keyword" content="hexo-theme, vuejs">
   
-    <link rel="shortcut icon" type="image/ico" href="/image/logo.png"> 
+    <link rel="shortcut icon" type="image/ico" href="/image/logo.png"/> 
   
   <title>
     
@@ -16,13 +16,17 @@
   <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
   <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
   <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="/css/style.css">
+  
+<link rel="stylesheet" href="/css/style.css">
 <link rel="stylesheet" href="/css/plugins/gitment.css">
+
   <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
   <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
   <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
-  <script src="/js/qrious.js"></script>
+  
+<script src="/js/qrious.js"></script>
 <script src="/js/gitment.js"></script>
+
   
   
     <!-- MathJax support START -->
@@ -49,9 +53,9 @@
   
 
 
-</head>
+<meta name="generator" content="Hexo 6.2.0"></head>
 <div class="wechat-share">
-  <img src="/css/images/logo.png">
+  <img src="/css/images/logo.png" />
 </div>
 
   <body>
@@ -136,45 +140,53 @@
   <!-- Article START -->
   <article class="post-article">
     <section class="markdown-content"><h3 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h3><h4 id="1-retain："><a href="#1-retain：" class="headerlink" title="1.retain："></a>1.retain：</h4><p>类似于ARC下的 <code>strong</code>，表示强引用和持有的关系：将属性成员变量的指针指向源对象，同时持有源对象（此对象的引用计数会加1）。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">//retain</span><br><span class="line">-(void)setName:(NSString *)newName</span><br><span class="line">&#123;</span><br><span class="line">    if (_name != newName) &#123;</span><br><span class="line">        [newName retain];</span><br><span class="line">        [_name release];</span><br><span class="line">        _name = newName;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">//retain</span><br><span class="line">-(void)setName:(NSString *)newName</span><br><span class="line">&#123;</span><br><span class="line">    if (_name != newName) &#123;</span><br><span class="line">        [newName retain];</span><br><span class="line">        [_name release];</span><br><span class="line">        _name = newName;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <h4 id="2-assign："><a href="#2-assign：" class="headerlink" title="2.assign："></a>2.assign：</h4><p>类似于ARC下的 <code>weak</code>，表示弱引用和不持有的关系：将属性成员变量的指针指向源对象，但不持有源对象，不更改其引用计数，一般用于基本数据类型(<code>NSInteger</code>，<code>CGFloat</code>)和C类型、<code>int,float,double,bool</code>等，这些数值主要存在于栈上)。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">//assign</span><br><span class="line">-(void)setName:(NSString *)newName</span><br><span class="line">&#123;</span><br><span class="line">    _name = newName;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>weak 与 assign 的区别：</strong><br>&emsp;</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">//assign</span><br><span class="line">-(void)setName:(NSString *)newName</span><br><span class="line">&#123;</span><br><span class="line">    _name = newName;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>weak 与 assign 的区别：</strong><br>&amp;emsp;</p>
 <p>1、修饰的对象</p>
-<p><strong>assign</strong> 可修饰对象类型和基本类型，一般用于修饰基本类型。<strong>weak</strong> 只可以修饰对象类型，修饰基本数据类型时编译器会报错。<br>&emsp;</p>
+<p><strong>assign</strong> 可修饰对象类型和基本类型，一般用于修饰基本类型。<strong>weak</strong> 只可以修饰对象类型，修饰基本数据类型时编译器会报错。<br>&amp;emsp;</p>
 <p>2、修饰对象类型时是否产生野指针</p>
-<p><strong>weak</strong> 不会产生野指针问题：weak 修饰的对象释放后指针会自动被置nil，之后再向该对象发消息也不会崩溃。<strong>assign</strong> 修饰对象类型时可能会产生野指针问题：assign 修饰的象被释放后指针不会自动被置空，此时向对象发消息会崩溃。<br>另外，如果assign只是修饰基本数据类型，则是安全的。<br>&emsp;</p>
+<p><strong>weak</strong> 不会产生野指针问题：weak 修饰的对象释放后指针会自动被置nil，之后再向该对象发消息也不会崩溃。<strong>assign</strong> 修饰对象类型时可能会产生野指针问题：assign 修饰的象被释放后指针不会自动被置空，此时向对象发消息会崩溃。<br>另外，如果assign只是修饰基本数据类型，则是安全的。<br>&amp;emsp;</p>
 <p>3、小结：<br>值类型会被放入栈中，遵循先进后出原则，由系统负责管理栈内存。而引用类型会被放入堆中，需要我们自己手动管理内存或通过ARC管理。<strong>weak</strong> 适用于 delegate 和 block 等引用类型，不会导致野指针问题，可用于解决循环引用问题，是安全的。<strong>assign</strong> 适用于基本数据类型，不适用于引用类型。</p>
-<h4 id="3-copy："><a href="#3-copy：" class="headerlink" title="3.copy："></a>3.copy：</h4><p>表示拷贝和持有：会在内存中拷贝一份源对象，并将属性对应的成员变量的指针指向此拷贝出的新对象，新对象的引用计数 = 1。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">-(void)setName:(NSString *)newName</span><br><span class="line">&#123;</span><br><span class="line">    if (_name != newName) &#123;</span><br><span class="line">        [_name release];</span><br><span class="line">        _name = [newName copy];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="3-copy："><a href="#3-copy：" class="headerlink" title="3.copy："></a>3.copy：</h4><p>表示拷贝和持有：会在内存中拷贝一份源对象，并将属性对应的成员变量的指针指向此拷贝出的新对象，新对象的引用计数 &#x3D; 1。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">-(void)setName:(NSString *)newName</span><br><span class="line">&#123;</span><br><span class="line">    if (_name != newName) &#123;</span><br><span class="line">        [_name release];</span><br><span class="line">        _name = [newName copy];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <p>与 strong 的区别在于：<code>strong</code> 修饰的变量与原对象指向同一片内存空间，对变量的修改会影响到源对象。而<code>copy</code> 修饰的对象与源对象指向两片不同的内存空间，变量与原对象两者互不影响。</p>
-<h4 id="4-readwrite："><a href="#4-readwrite：" class="headerlink" title="4.readwrite："></a>4.readwrite：</h4><p>编译器自动为属性创建 setter/getter 方法。</p>
-<h4 id="5-readonly："><a href="#5-readonly：" class="headerlink" title="5.readonly："></a>5.readonly：</h4><p>编译器只为属性创建 getter 方法。<br>&emsp;</p>
+<h4 id="4-readwrite："><a href="#4-readwrite：" class="headerlink" title="4.readwrite："></a>4.readwrite：</h4><p>编译器自动为属性创建 setter&#x2F;getter 方法。</p>
+<h4 id="5-readonly："><a href="#5-readonly：" class="headerlink" title="5.readonly："></a>5.readonly：</h4><p>编译器只为属性创建 getter 方法。<br>&amp;emsp;</p>
 <p>属性被声明为只读时，可以同时重写属性的<code>getter</code>与<code>setter</code> 使其变为 readwrite。</p>
 <h4 id="6-nonatomic："><a href="#6-nonatomic：" class="headerlink" title="6.nonatomic："></a>6.nonatomic：</h4><p>nonatomic 修饰的对象不保证<code>setter</code>和<code>getter</code>的完整性，所以多个线程对它进行访问，它可能会返回未初始化的对象。正因为如此，它比 atomic 快，但它不是线程安全的。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">// @property(nonatomic, copy) NSString *name;</span><br><span class="line">- (NSString *)name </span><br><span class="line">&#123;</span><br><span class="line">    return _name;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)setName:(NSString *)newName </span><br><span class="line">&#123;</span><br><span class="line">    [_name release];</span><br><span class="line">    _name = [newName copy];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">// @property(nonatomic, copy) NSString *name;</span><br><span class="line">- (NSString *)name </span><br><span class="line">&#123;</span><br><span class="line">    return _name;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)setName:(NSString *)newName </span><br><span class="line">&#123;</span><br><span class="line">    [_name release];</span><br><span class="line">    _name = [newName copy];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <h4 id="7-atomic："><a href="#7-atomic：" class="headerlink" title="7.atomic："></a>7.atomic：</h4><p>atomic 修饰的对象会保证<code>setter</code>和<code>getter</code>的完整性，任何线程对其访问都可以得到一个完整的初始化后的对象。例如有多个线程同时调用<code>setter</code>，不会出现某个线程执行完<code>setter</code>全部语句之前，另一个线程开始执行<code>setter</code>情况，相当于函数头尾加了锁一样。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">// @property(atomic, copy) NSString *name;</span><br><span class="line">- (NSString *)name </span><br><span class="line">&#123;</span><br><span class="line">    @synchronized(self) &#123;</span><br><span class="line">        return _name;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)setName:(NSString *)newName </span><br><span class="line">&#123;</span><br><span class="line">    @synchronized(self) &#123;</span><br><span class="line">      [_name release];</span><br><span class="line">      _name = [newName copy];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">// @property(atomic, copy) NSString *name;</span><br><span class="line">- (NSString *)name </span><br><span class="line">&#123;</span><br><span class="line">    @synchronized(self) &#123;</span><br><span class="line">        return _name;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)setName:(NSString *)newName </span><br><span class="line">&#123;</span><br><span class="line">    @synchronized(self) &#123;</span><br><span class="line">      [_name release];</span><br><span class="line">      _name = [newName copy];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <p>因为要保证操作完成，所以速度慢。它比<code>nonatomic</code>安全，但也并不是绝对的线程安全，例如多个线程同时调用<code>set</code>和<code>get</code>就会导致获得的对象值不一样甚至发生崩溃。绝对的线程安全就要用到线程的同步机制，比如使用<code>NSLock</code>、<code>@synchronized</code>等加锁。</p>
-<h4 id="8-默认值"><a href="#8-默认值" class="headerlink" title="8.默认值"></a>8.默认值</h4><p>基本数据类型的默认关键字是：<code>atomic</code>、<code>readwrite</code>、<code>assign</code>；<br>&emsp;</p>
+<h4 id="8-默认值"><a href="#8-默认值" class="headerlink" title="8.默认值"></a>8.默认值</h4><p>基本数据类型的默认关键字是：<code>atomic</code>、<code>readwrite</code>、<code>assign</code>；<br>&amp;emsp;</p>
 <p>属性的默认关键字是：<code>atomic</code>、<code>readwrite</code>、<code>strong</code>。</p>
-<h3 id="Getter与Setter"><a href="#Getter与Setter" class="headerlink" title="Getter与Setter"></a>Getter与Setter</h3><h4 id="dynamic"><a href="#dynamic" class="headerlink" title="@dynamic"></a>@dynamic</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@dynamic var;</span><br></pre></td></tr></table></figure>
+<h3 id="Getter与Setter"><a href="#Getter与Setter" class="headerlink" title="Getter与Setter"></a>Getter与Setter</h3><h4 id="dynamic"><a href="#dynamic" class="headerlink" title="@dynamic"></a>@dynamic</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@dynamic var;</span><br></pre></td></tr></table></figure>
+
 <p>@dynamic：告诉编译器，属性的<code>getter</code>和<code>setter</code>由我们自己实现，不需要编译器自动生成。如果我们将属性标记为<code>@dynamic var;</code>而又没有提供对应的<code>getter</code>与<code>setter</code>时，编译期是不会报错，但在运行期如果访问属性或者给属性赋值时则会报错并崩溃，因为运行时找不到对应的<code>getter</code>和<code>setter</code>去完成这两个操作。</p>
-<h4 id="synthesize"><a href="#synthesize" class="headerlink" title="@synthesize"></a>@synthesize</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@syntheszie var;</span><br></pre></td></tr></table></figure>
+<h4 id="synthesize"><a href="#synthesize" class="headerlink" title="@synthesize"></a>@synthesize</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@syntheszie var;</span><br></pre></td></tr></table></figure>
+
 <p>@synthesize：告诉编译器，在编译期用我指定的成员变量实现属性的<code>getter</code>和<code>setter</code>。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">@interface AppDelegate()</span><br><span class="line">@property (nonatomic, strong) NSArray *anArr;</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation AppDelegate</span><br><span class="line">//@dynamic anArr;</span><br><span class="line">@synthesize anArr;</span><br><span class="line"></span><br><span class="line">- (BOOL)application:(UIApplication *)application</span><br><span class="line">didFinishLaunchingWithOptions:(NSDictionary *)launchOptions</span><br><span class="line">&#123;</span><br><span class="line">    self.anArr = @[@&quot;Hello&quot;];</span><br><span class="line">    NSString *str = self.anArr[0];</span><br><span class="line">    return YES;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">@interface AppDelegate()</span><br><span class="line">@property (nonatomic, strong) NSArray *anArr;</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation AppDelegate</span><br><span class="line">//@dynamic anArr;</span><br><span class="line">@synthesize anArr;</span><br><span class="line"></span><br><span class="line">- (BOOL)application:(UIApplication *)application</span><br><span class="line">didFinishLaunchingWithOptions:(NSDictionary *)launchOptions</span><br><span class="line">&#123;</span><br><span class="line">    self.anArr = @[@&quot;Hello&quot;];</span><br><span class="line">    NSString *str = self.anArr[0];</span><br><span class="line">    return YES;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <p>注意上面访问属性时使用的都是<code>self.anArr</code>，这时如果使用<code>_anArr</code>会报错，因为<code>@synthesize anArr;</code>只创建了成员变量<code>anArr</code>并绑定到属性<code>anArr</code>上。所以需要我们使用<code>@synthesize anArr = _anArr</code>来让编译器帮我们创建成员变量<code>_anArr</code>并将其绑定到属性上。</p>
 <h4 id="默认值"><a href="#默认值" class="headerlink" title="默认值"></a>默认值</h4><p>iOS5之后，如果<code>@synthesize</code>和<code>@dynamic</code>都没写，那么属性默认是<code>@syntheszie var = _var</code>;</p>
 <hr>
 <p>相关参考：</p>
-<p>#<a href="https://xiaozhuanlan.com/topic/3908156472" target="_blank" rel="noopener">©故胤道长</a></p>
+<p>#<a target="_blank" rel="noopener" href="https://xiaozhuanlan.com/topic/3908156472">©故胤道长</a></p>
 </section>
     <!-- Tags START -->
     
       <div class="tags">
         <span>Tags:</span>
         
-  <a href="/tags#FQA">
+  <a href="/tags#FQA" >
     <span class="tag-code">FQA</span>
   </a>
 
@@ -238,7 +250,7 @@
   <div class="toc-main">
     <strong class="toc-title">Catalog</strong>
     
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#区别"><span class="toc-nav-text">区别</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#1-retain："><span class="toc-nav-text">1.retain：</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-assign："><span class="toc-nav-text">2.assign：</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3-copy："><span class="toc-nav-text">3.copy：</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#4-readwrite："><span class="toc-nav-text">4.readwrite：</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#5-readonly："><span class="toc-nav-text">5.readonly：</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#6-nonatomic："><span class="toc-nav-text">6.nonatomic：</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#7-atomic："><span class="toc-nav-text">7.atomic：</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#8-默认值"><span class="toc-nav-text">8.默认值</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Getter与Setter"><span class="toc-nav-text">Getter与Setter</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#dynamic"><span class="toc-nav-text">@dynamic</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#synthesize"><span class="toc-nav-text">@synthesize</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#默认值"><span class="toc-nav-text">默认值</span></a></li></ol></li></ol>
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%8C%BA%E5%88%AB"><span class="toc-nav-text">区别</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#1-retain%EF%BC%9A"><span class="toc-nav-text">1.retain：</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-assign%EF%BC%9A"><span class="toc-nav-text">2.assign：</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3-copy%EF%BC%9A"><span class="toc-nav-text">3.copy：</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#4-readwrite%EF%BC%9A"><span class="toc-nav-text">4.readwrite：</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#5-readonly%EF%BC%9A"><span class="toc-nav-text">5.readonly：</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#6-nonatomic%EF%BC%9A"><span class="toc-nav-text">6.nonatomic：</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#7-atomic%EF%BC%9A"><span class="toc-nav-text">7.atomic：</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#8-%E9%BB%98%E8%AE%A4%E5%80%BC"><span class="toc-nav-text">8.默认值</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Getter%E4%B8%8ESetter"><span class="toc-nav-text">Getter与Setter</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#dynamic"><span class="toc-nav-text">@dynamic</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#synthesize"><span class="toc-nav-text">@synthesize</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E9%BB%98%E8%AE%A4%E5%80%BC"><span class="toc-nav-text">默认值</span></a></li></ol></li></ol>
     
   </div>
 </aside>
@@ -334,9 +346,9 @@
 </div>
     <footer class="app-footer">
   <p class="copyright">
-    &copy; 2020 | <a href="https://github.com/davidlii" target="_blank">Davidli</a>
+    &copy; 2022 | <a href="https://github.com/davidlii" target="_blank">Davidli</a>
     <br>
-    <a href="https://hexo.io" target="_blank">Hexo</a> | Theme-<a href="https://github.com/yanm1ng">yanm1ng</a>
+    <a href="https://hexo.io" target="_blank">Hexo</a> | Theme-<a target="_blank" rel="noopener" href="https://github.com/yanm1ng">yanm1ng</a>
   </p>
 </footer>
 
@@ -377,6 +389,8 @@
 </script>
 <!-- Baidu Tongji -->
 
+
 <script src="/js/script.js"></script>
+
   </body>
 </html>

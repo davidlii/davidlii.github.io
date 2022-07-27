@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
-  <head><meta name="generator" content="Hexo 3.8.0">
+  <head>
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
   <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
   <meta name="description" content="This is Davidli&#39;s blog ~">
   <meta name="keyword" content="hexo-theme, vuejs">
   
-    <link rel="shortcut icon" type="image/ico" href="/image/logo.png"> 
+    <link rel="shortcut icon" type="image/ico" href="/image/logo.png"/> 
   
   <title>
     
@@ -16,13 +16,17 @@
   <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
   <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
   <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="/css/style.css">
+  
+<link rel="stylesheet" href="/css/style.css">
 <link rel="stylesheet" href="/css/plugins/gitment.css">
+
   <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
   <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
   <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
-  <script src="/js/qrious.js"></script>
+  
+<script src="/js/qrious.js"></script>
 <script src="/js/gitment.js"></script>
+
   
   
     <!-- MathJax support START -->
@@ -49,9 +53,9 @@
   
 
 
-</head>
+<meta name="generator" content="Hexo 6.2.0"></head>
 <div class="wechat-share">
-  <img src="/css/images/logo.png">
+  <img src="/css/images/logo.png" />
 </div>
 
   <body>
@@ -137,25 +141,31 @@
   <article class="post-article">
     <section class="markdown-content"><p>日常实践中，我们经常要声明一些字符串属性，包括<code>NSString</code>和<code>NSMutableString</code>，而字符串最常用的修饰符就要数<code>strong</code>和<code>copy</code>了。这两个修饰符对字符串有什么影响呢？</p>
 <h4 id="1-不可变源字符串"><a href="#1-不可变源字符串" class="headerlink" title="1.不可变源字符串"></a>1.不可变源字符串</h4><p>#示例1：用 NSString 赋值</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">@interface AppDelegate()</span><br><span class="line">@property (nonatomic, strong) NSString *aStrongStr;</span><br><span class="line">@property (nonatomic, copy) NSString *aCopyStr;</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">- (BOOL)application:(UIApplication *)application</span><br><span class="line">didFinishLaunchingWithOptions:(NSDictionary *)launchOptions</span><br><span class="line">&#123;</span><br><span class="line">    //用 NSString 赋值</span><br><span class="line">    NSString *oriStr = [NSString stringWithFormat:@&quot;A&quot;];</span><br><span class="line">    </span><br><span class="line">    self.aStrongStr = oriStr;</span><br><span class="line">    self.aCopyStr = oriStr;</span><br><span class="line"></span><br><span class="line">    NSLog(@&quot;++oriStr:  值地址:%p,  对象地址:%p,  值:%@&quot;,oriStr,&amp;oriStr,oriStr);</span><br><span class="line">    NSLog(@&quot;++Strong:  值地址:%p,  对象地址:%p,  值:%@&quot;,_aStrongStr,&amp;_aStrongStr,_aStrongStr);</span><br><span class="line">    NSLog(@&quot;++Copy:    值地址:%p,  对象地址:%p,  值:%@&quot;,_aCopyStr,&amp;_aCopyStr,_aCopyStr);</span><br><span class="line"></span><br><span class="line">    return YES;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">@interface AppDelegate()</span><br><span class="line">@property (nonatomic, strong) NSString *aStrongStr;</span><br><span class="line">@property (nonatomic, copy) NSString *aCopyStr;</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">- (BOOL)application:(UIApplication *)application</span><br><span class="line">didFinishLaunchingWithOptions:(NSDictionary *)launchOptions</span><br><span class="line">&#123;</span><br><span class="line">    //用 NSString 赋值</span><br><span class="line">    NSString *oriStr = [NSString stringWithFormat:@&quot;A&quot;];</span><br><span class="line">    </span><br><span class="line">    self.aStrongStr = oriStr;</span><br><span class="line">    self.aCopyStr = oriStr;</span><br><span class="line"></span><br><span class="line">    NSLog(@&quot;++oriStr:  值地址:%p,  对象地址:%p,  值:%@&quot;,oriStr,&amp;oriStr,oriStr);</span><br><span class="line">    NSLog(@&quot;++Strong:  值地址:%p,  对象地址:%p,  值:%@&quot;,_aStrongStr,&amp;_aStrongStr,_aStrongStr);</span><br><span class="line">    NSLog(@&quot;++Copy:    值地址:%p,  对象地址:%p,  值:%@&quot;,_aCopyStr,&amp;_aCopyStr,_aCopyStr);</span><br><span class="line"></span><br><span class="line">    return YES;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <p>输出日志：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">++oriStr:  值地址:0xbe72b1df90af7acc,  对象地址:0x7ffeeadebd68,  值:A</span><br><span class="line">++Strong:  值地址:0xbe72b1df90af7acc,  对象地址:0x60000164bf48,  值:A</span><br><span class="line">++Copy:    值地址:0xbe72b1df90af7acc,  对象地址:0x60000164bf50,  值:A</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">++oriStr:  值地址:0xbe72b1df90af7acc,  对象地址:0x7ffeeadebd68,  值:A</span><br><span class="line">++Strong:  值地址:0xbe72b1df90af7acc,  对象地址:0x60000164bf48,  值:A</span><br><span class="line">++Copy:    值地址:0xbe72b1df90af7acc,  对象地址:0x60000164bf50,  值:A</span><br></pre></td></tr></table></figure>
+
 <p>当使用 NSString 类型的<code>oriStr</code>给<code>strong</code>和<code>copy</code>修饰的字符串对象赋值时，两个对象的指针都指向原字符串<code>oriStr</code>，三者值相同。这是因为，oriStr 作为 NSString 类型的字符串，它的值是不可变的，所以也就不存在 oriStr 变化引起指向它的对象跟着变化一说。无论是<code>strong</code>还是<code>copy</code>类型的字符串对象指向 oriStr，都只能是指针拷贝，三者值相同。</p>
 <h4 id="2-可变源字符串"><a href="#2-可变源字符串" class="headerlink" title="2.可变源字符串"></a>2.可变源字符串</h4><p>#示例2：用 NSMutableString 赋值</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">@interface AppDelegate()</span><br><span class="line">@property (nonatomic, strong) NSString *aStrongStr;</span><br><span class="line">@property (nonatomic, copy) NSString *aCopyStr;</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">- (BOOL)application:(UIApplication *)application</span><br><span class="line">didFinishLaunchingWithOptions:(NSDictionary *)launchOptions</span><br><span class="line">&#123;</span><br><span class="line">    //用 NSMutableString 赋值</span><br><span class="line">    NSMutableString *oriStr = [NSMutableString stringWithFormat:@&quot;A&quot;];</span><br><span class="line">    </span><br><span class="line">    self.aStrongStr = oriStr;</span><br><span class="line">    self.aCopyStr = oriStr;</span><br><span class="line">    [oriStr setString:@&quot;B&quot;];</span><br><span class="line">    </span><br><span class="line">    NSLog(@&quot;++oriStr:  值地址:%p,  对象地址:%p,  值:%@&quot;,oriStr,&amp;oriStr,oriStr);</span><br><span class="line">    NSLog(@&quot;++Strong:  值地址:%p,  对象地址:%p,  值:%@&quot;,_aStrongStr,&amp;_aStrongStr,_aStrongStr);</span><br><span class="line">    NSLog(@&quot;++Copy:    值地址:%p,  对象地址:%p,  值:%@&quot;,_aCopyStr,&amp;_aCopyStr,_aCopyStr);</span><br><span class="line"></span><br><span class="line">    return YES;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">@interface AppDelegate()</span><br><span class="line">@property (nonatomic, strong) NSString *aStrongStr;</span><br><span class="line">@property (nonatomic, copy) NSString *aCopyStr;</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">- (BOOL)application:(UIApplication *)application</span><br><span class="line">didFinishLaunchingWithOptions:(NSDictionary *)launchOptions</span><br><span class="line">&#123;</span><br><span class="line">    //用 NSMutableString 赋值</span><br><span class="line">    NSMutableString *oriStr = [NSMutableString stringWithFormat:@&quot;A&quot;];</span><br><span class="line">    </span><br><span class="line">    self.aStrongStr = oriStr;</span><br><span class="line">    self.aCopyStr = oriStr;</span><br><span class="line">    [oriStr setString:@&quot;B&quot;];</span><br><span class="line">    </span><br><span class="line">    NSLog(@&quot;++oriStr:  值地址:%p,  对象地址:%p,  值:%@&quot;,oriStr,&amp;oriStr,oriStr);</span><br><span class="line">    NSLog(@&quot;++Strong:  值地址:%p,  对象地址:%p,  值:%@&quot;,_aStrongStr,&amp;_aStrongStr,_aStrongStr);</span><br><span class="line">    NSLog(@&quot;++Copy:    值地址:%p,  对象地址:%p,  值:%@&quot;,_aCopyStr,&amp;_aCopyStr,_aCopyStr);</span><br><span class="line"></span><br><span class="line">    return YES;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <p>输出日志：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">++oriStr:  值地址:0x6000034a30c0,  对象地址:0x7ffee3d91d68,  值:B</span><br><span class="line">++Strong:  值地址:0x6000034a30c0,  对象地址:0x6000034afeb8,  值:B</span><br><span class="line">++Copy:    值地址:0x93fa3cf485bc30e9,  对象地址:0x6000034afec0,  值:A</span><br></pre></td></tr></table></figure>
-<p>当使用 NSMutableString 类型的<code>oriStr</code>给<code>strong</code>类型的字符串赋值时，<code>_aStrongStr</code>对<code>oriStr</code>进行了指针拷贝，即二者指向同一对象。当<code>oriStr</code>的值变化时，<code>_aStrongStr</code>也跟着发生变化。<br>&emsp;</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">++oriStr:  值地址:0x6000034a30c0,  对象地址:0x7ffee3d91d68,  值:B</span><br><span class="line">++Strong:  值地址:0x6000034a30c0,  对象地址:0x6000034afeb8,  值:B</span><br><span class="line">++Copy:    值地址:0x93fa3cf485bc30e9,  对象地址:0x6000034afec0,  值:A</span><br></pre></td></tr></table></figure>
+
+<p>当使用 NSMutableString 类型的<code>oriStr</code>给<code>strong</code>类型的字符串赋值时，<code>_aStrongStr</code>对<code>oriStr</code>进行了指针拷贝，即二者指向同一对象。当<code>oriStr</code>的值变化时，<code>_aStrongStr</code>也跟着发生变化。<br>&amp;emsp;</p>
 <p>当使用 NSMutableString 类型的<code>oriStr</code>给<code>copy</code>类型的字符串赋值时，<code>_aCopyStr</code>对<code>oriStr</code>进行了深拷贝，二者指向了不同的对象。当<code>oriStr</code>的值变化时，<code>_aCopyStr</code>的值并未跟着变化而是保持不变。</p>
-<h4 id="3-小结"><a href="#3-小结" class="headerlink" title="3.小结"></a>3.小结</h4><p>1、当源字符串为<code>NSString</code>类型，给<code>strong</code>和<code>copy</code>修饰的属性赋值时，效果一样，都是浅拷贝，得到的两个对象都与源字符串的值相同。同时，由于源字符串不可变，如果想修改这两个对象的值，可以将二者指向新的字符串对象，或直接用字符串字面量赋值。<br>&emsp;</p>
-<p>2、当源字符串为<code>NSMutableString</code>类型，给<code>strong</code>修饰的属性赋值时，也是浅拷贝，但要注意，由于源字符串是可变的，所以源字符串的变化会影响到<code>strong</code>修饰的属性及其对应的成员变量。<br>&emsp;</p>
+<h4 id="3-小结"><a href="#3-小结" class="headerlink" title="3.小结"></a>3.小结</h4><p>1、当源字符串为<code>NSString</code>类型，给<code>strong</code>和<code>copy</code>修饰的属性赋值时，效果一样，都是浅拷贝，得到的两个对象都与源字符串的值相同。同时，由于源字符串不可变，如果想修改这两个对象的值，可以将二者指向新的字符串对象，或直接用字符串字面量赋值。<br>&amp;emsp;</p>
+<p>2、当源字符串为<code>NSMutableString</code>类型，给<code>strong</code>修饰的属性赋值时，也是浅拷贝，但要注意，由于源字符串是可变的，所以源字符串的变化会影响到<code>strong</code>修饰的属性及其对应的成员变量。<br>&amp;emsp;</p>
 <p>3、当源字符串为<code>NSMutableString</code>类型，使用<code>copy</code>修饰的属性赋值时，是深拷贝，新对象的值与源字符串的值相同，但二者的指针不同，不会相互影响。</p>
 <hr>
 <p>通常情况下，我们声明一个字符串类型的属性并给其赋值时，并不希望源字符串后续的修改会影响到我们的字符串属性，所以，<strong>综合起来还是使用<code>copy</code>稳妥</strong>。这样，如果源字符串为<code>NSString</code>类型，其内容不可变，所以不存在后续影响；如果源字符串为<code>NSMutableString</code>类型，因为<code>copy</code>会做深拷贝，所以也不存在后续影响的问题。</p>
 <h4 id="4-给属性成员变量的赋值"><a href="#4-给属性成员变量的赋值" class="headerlink" title="4.给属性成员变量的赋值"></a>4.给属性成员变量的赋值</h4><p>上面的示例中，在给属性赋值时，使用的都是<code>self.属性 = xx</code>格式，而直接给属性的成员变量赋值时，即<code>_属性名 = xx</code>，需要特别注意：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">@interface AppDelegate()</span><br><span class="line">@property (nonatomic, strong) NSString *aStrongStr;</span><br><span class="line">@property (nonatomic, copy) NSString *aCopyStr;</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">- (BOOL)application:(UIApplication *)application</span><br><span class="line">didFinishLaunchingWithOptions:(NSDictionary *)launchOptions</span><br><span class="line">&#123;</span><br><span class="line">    //用 NSMutableString 赋值</span><br><span class="line">    NSMutableString *oriStr = [NSMutableString stringWithFormat:@&quot;A&quot;];</span><br><span class="line">    </span><br><span class="line">    //注意这里是给属性对应的成员变量赋值</span><br><span class="line">    _aStrongStr = oriStr;</span><br><span class="line">    _aCopyStr = oriStr;</span><br><span class="line">    [oriStr setString:@&quot;B&quot;];</span><br><span class="line">    </span><br><span class="line">    NSLog(@&quot;++oriStr:  值地址:%p,  对象地址:%p,  值:%@&quot;,oriStr,&amp;oriStr,oriStr);</span><br><span class="line">    NSLog(@&quot;++Strong:  值地址:%p,  对象地址:%p,  值:%@&quot;,_aStrongStr,&amp;_aStrongStr,_aStrongStr);</span><br><span class="line">    NSLog(@&quot;++Copy:    值地址:%p,  对象地址:%p,  值:%@&quot;,_aCopyStr,&amp;_aCopyStr,_aCopyStr);</span><br><span class="line">    </span><br><span class="line">    return YES;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">@interface AppDelegate()</span><br><span class="line">@property (nonatomic, strong) NSString *aStrongStr;</span><br><span class="line">@property (nonatomic, copy) NSString *aCopyStr;</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">- (BOOL)application:(UIApplication *)application</span><br><span class="line">didFinishLaunchingWithOptions:(NSDictionary *)launchOptions</span><br><span class="line">&#123;</span><br><span class="line">    //用 NSMutableString 赋值</span><br><span class="line">    NSMutableString *oriStr = [NSMutableString stringWithFormat:@&quot;A&quot;];</span><br><span class="line">    </span><br><span class="line">    //注意这里是给属性对应的成员变量赋值</span><br><span class="line">    _aStrongStr = oriStr;</span><br><span class="line">    _aCopyStr = oriStr;</span><br><span class="line">    [oriStr setString:@&quot;B&quot;];</span><br><span class="line">    </span><br><span class="line">    NSLog(@&quot;++oriStr:  值地址:%p,  对象地址:%p,  值:%@&quot;,oriStr,&amp;oriStr,oriStr);</span><br><span class="line">    NSLog(@&quot;++Strong:  值地址:%p,  对象地址:%p,  值:%@&quot;,_aStrongStr,&amp;_aStrongStr,_aStrongStr);</span><br><span class="line">    NSLog(@&quot;++Copy:    值地址:%p,  对象地址:%p,  值:%@&quot;,_aCopyStr,&amp;_aCopyStr,_aCopyStr);</span><br><span class="line">    </span><br><span class="line">    return YES;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <p>输出日志：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">++oriStr:  值地址:0x60000101a760,  对象地址:0x7ffee854ed68,  值:B</span><br><span class="line">++Strong:  值地址:0x60000101a760,  对象地址:0x60000101e148,  值:B</span><br><span class="line">++Copy:    值地址:0x60000101a760,  对象地址:0x60000101e150,  值:B</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">++oriStr:  值地址:0x60000101a760,  对象地址:0x7ffee854ed68,  值:B</span><br><span class="line">++Strong:  值地址:0x60000101a760,  对象地址:0x60000101e148,  值:B</span><br><span class="line">++Copy:    值地址:0x60000101a760,  对象地址:0x60000101e150,  值:B</span><br></pre></td></tr></table></figure>
+
 <p>示例中是给属性对应的<code>成员变量</code>赋值的！虽然源字符串还是<code>NSMutableString</code>类型，但从打印的日志来看，<code>copy</code>修饰的属性并未做深拷贝，且它的值始终受到源字符串变化的影响。这是因为，以下划线开头的成员变量是ARC环境下，编译器自动帮我们添加的，给其赋值时，并不会触发属性的 setter，也就没有默认的<code>copy</code>操作，因此也就不会有<code>copy</code>效果~</p>
 </section>
     <!-- Tags START -->
@@ -163,7 +173,7 @@
       <div class="tags">
         <span>Tags:</span>
         
-  <a href="/tags#内存管理">
+  <a href="/tags#内存管理" >
     <span class="tag-code">内存管理</span>
   </a>
 
@@ -227,7 +237,7 @@
   <div class="toc-main">
     <strong class="toc-title">Catalog</strong>
     
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#1-不可变源字符串"><span class="toc-nav-text">1.不可变源字符串</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-可变源字符串"><span class="toc-nav-text">2.可变源字符串</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3-小结"><span class="toc-nav-text">3.小结</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#4-给属性成员变量的赋值"><span class="toc-nav-text">4.给属性成员变量的赋值</span></a></li></ol>
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#1-%E4%B8%8D%E5%8F%AF%E5%8F%98%E6%BA%90%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="toc-nav-text">1.不可变源字符串</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-%E5%8F%AF%E5%8F%98%E6%BA%90%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="toc-nav-text">2.可变源字符串</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3-%E5%B0%8F%E7%BB%93"><span class="toc-nav-text">3.小结</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#4-%E7%BB%99%E5%B1%9E%E6%80%A7%E6%88%90%E5%91%98%E5%8F%98%E9%87%8F%E7%9A%84%E8%B5%8B%E5%80%BC"><span class="toc-nav-text">4.给属性成员变量的赋值</span></a></li></ol>
     
   </div>
 </aside>
@@ -323,9 +333,9 @@
 </div>
     <footer class="app-footer">
   <p class="copyright">
-    &copy; 2020 | <a href="https://github.com/davidlii" target="_blank">Davidli</a>
+    &copy; 2022 | <a href="https://github.com/davidlii" target="_blank">Davidli</a>
     <br>
-    <a href="https://hexo.io" target="_blank">Hexo</a> | Theme-<a href="https://github.com/yanm1ng">yanm1ng</a>
+    <a href="https://hexo.io" target="_blank">Hexo</a> | Theme-<a target="_blank" rel="noopener" href="https://github.com/yanm1ng">yanm1ng</a>
   </p>
 </footer>
 
@@ -366,6 +376,8 @@
 </script>
 <!-- Baidu Tongji -->
 
+
 <script src="/js/script.js"></script>
+
   </body>
 </html>

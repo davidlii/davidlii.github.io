@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
-  <head><meta name="generator" content="Hexo 3.8.0">
+  <head>
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
   <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
   <meta name="description" content="This is Davidli&#39;s blog ~">
   <meta name="keyword" content="hexo-theme, vuejs">
   
-    <link rel="shortcut icon" type="image/ico" href="/image/logo.png"> 
+    <link rel="shortcut icon" type="image/ico" href="/image/logo.png"/> 
   
   <title>
     
@@ -16,13 +16,17 @@
   <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
   <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
   <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="/css/style.css">
+  
+<link rel="stylesheet" href="/css/style.css">
 <link rel="stylesheet" href="/css/plugins/gitment.css">
+
   <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
   <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
   <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
-  <script src="/js/qrious.js"></script>
+  
+<script src="/js/qrious.js"></script>
 <script src="/js/gitment.js"></script>
+
   
   
     <!-- MathJax support START -->
@@ -49,9 +53,9 @@
   
 
 
-</head>
+<meta name="generator" content="Hexo 6.2.0"></head>
 <div class="wechat-share">
-  <img src="/css/images/logo.png">
+  <img src="/css/images/logo.png" />
 </div>
 
   <body>
@@ -136,45 +140,48 @@
   <!-- Article START -->
   <article class="post-article">
     <section class="markdown-content"><h3 id="1、Cell-的重用"><a href="#1、Cell-的重用" class="headerlink" title="1、Cell 的重用"></a>1、Cell 的重用</h3><p>#示例1：常见用法</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">- (UITableViewCell *)tableView:(UITableView *)tableView</span><br><span class="line">cellForRowAtIndexPath:(NSIndexPath *)indexPath </span><br><span class="line">&#123;</span><br><span class="line">  static NSString *CellIdentifier = @&quot;Cell&quot;;</span><br><span class="line">  UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];</span><br><span class="line">  if (nil == cell) &#123;</span><br><span class="line">    cell = [[UITableViewCell alloc] initWithStyle:</span><br><span class="line">    UITableViewCellStyleDefault </span><br><span class="line">    reuseIdentifier:CellIdentifier];</span><br><span class="line">  &#125;</span><br><span class="line">  return cell;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>[tableView dequeueReusableCellWithIdentifier:CellIdentifier]; 就是 cell 重用的标志性语句。上面的代码逻辑是：当需要显示一个 Cell 时，系统会先去重用队列中查询是否有可重用的 cell，如果有则复用它，如果没有则新建一个 cell。<br>&emsp;</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">- (UITableViewCell *)tableView:(UITableView *)tableView</span><br><span class="line">cellForRowAtIndexPath:(NSIndexPath *)indexPath </span><br><span class="line">&#123;</span><br><span class="line">  static NSString *CellIdentifier = @&quot;Cell&quot;;</span><br><span class="line">  UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];</span><br><span class="line">  if (nil == cell) &#123;</span><br><span class="line">    cell = [[UITableViewCell alloc] initWithStyle:</span><br><span class="line">    UITableViewCellStyleDefault </span><br><span class="line">    reuseIdentifier:CellIdentifier];</span><br><span class="line">  &#125;</span><br><span class="line">  return cell;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>[tableView dequeueReusableCellWithIdentifier:CellIdentifier]; 就是 cell 重用的标志性语句。上面的代码逻辑是：当需要显示一个 Cell 时，系统会先去重用队列中查询是否有可重用的 cell，如果有则复用它，如果没有则新建一个 cell。<br>&amp;emsp;</p>
 <p>#示例2：读取 UITableView 的属性</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">+ (void)ivarList</span><br><span class="line">&#123;</span><br><span class="line">    unsigned int count = 0;</span><br><span class="line">    Ivar *ivars = class_copyIvarList([UITableView class], &amp;count);</span><br><span class="line">    </span><br><span class="line">    for (int i = 0; i&lt;count; i++)&#123;</span><br><span class="line">        Ivar ivar = ivars[i];</span><br><span class="line">        const char *charName = ivar_getName(ivar);</span><br><span class="line">        const char *charType = ivar_getTypeEncoding(ivar);</span><br><span class="line">        NSLog(@&quot;Name:%s,Type:%s&quot;,charName,charType);</span><br><span class="line">    &#125;</span><br><span class="line">    free(ivars);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">+ (void)ivarList</span><br><span class="line">&#123;</span><br><span class="line">    unsigned int count = 0;</span><br><span class="line">    Ivar *ivars = class_copyIvarList([UITableView class], &amp;count);</span><br><span class="line">    </span><br><span class="line">    for (int i = 0; i&lt;count; i++)&#123;</span><br><span class="line">        Ivar ivar = ivars[i];</span><br><span class="line">        const char *charName = ivar_getName(ivar);</span><br><span class="line">        const char *charType = ivar_getTypeEncoding(ivar);</span><br><span class="line">        NSLog(@&quot;Name:%s,Type:%s&quot;,charName,charType);</span><br><span class="line">    &#125;</span><br><span class="line">    free(ivars);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <p>上面通过运行时函数 <code>class_copyIvarList</code> 来读取 UITableView 中所有成员变量。结果如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">。。。</span><br><span class="line">Name:_visibleCells,Type:@&quot;NSMutableArray&quot;</span><br><span class="line">Name:_reusableTableCells,Type:@&quot;NSMutableDictionary&quot;</span><br><span class="line">。。。</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">。。。</span><br><span class="line">Name:_visibleCells,Type:@&quot;NSMutableArray&quot;</span><br><span class="line">Name:_reusableTableCells,Type:@&quot;NSMutableDictionary&quot;</span><br><span class="line">。。。</span><br></pre></td></tr></table></figure>
+
 <p>从打印结果可以看到，UITableView 中包括了以下两个属性：</p>
 <ul>
 <li><strong>visibleCells</strong>：（保存当前屏幕范围内显示的 cells）</li>
 <li><strong>reusableTableCells</strong>：（保存可重用的 cells）</li>
 </ul>
-<p><strong>Cell的重用逻辑：</strong><br>&emsp;</p>
-<p>（1）.假如当前屏幕能显示10个 Cell，在 UITableView 开始渲染时，系统会通过 <code>-initWithStyle:reuseIdentifier:</code> 方法创建10个新的 cell （标志相同） 并显示，这些 cell 会被放入 <code>visibleCells</code> 这个数组中。<br>&emsp;</p>
-<p>（2）.向下滑动 TableView，当 <strong>cell1</strong> 完全移出屏幕，并且 <strong>cell11</strong> (它也是alloc出来的，原因同上)完全显示出来时，<strong>cell11</strong> 会被加入到 <code>visiableCells</code>，而 <strong>cell1</strong> 则被移出 <code>visiableCells</code> 并加入到 <code>reusableTableCells</code> 中。<br>&emsp;</p>
-<p>（3）.接着向下滑动 TableView，因为 <strong>cell1</strong> 已经在 <code>reusableTableCells</code> 中，所以 即将显示的第12个 cell 会重用 <strong>cell1</strong>。因此 <strong>cell1</strong> 会被移出 <code>reusableTableCells</code> 并加入到 <code>visiableCells</code> 中；同时 <strong>cell2</strong> 移出 <code>visiableCells</code> 并加入到 <code>reusableTableCells</code> 中。<br>&emsp;</p>
-<p>（4）.接下来的重用以此类推。。<br>&emsp;</p>
+<p><strong>Cell的重用逻辑：</strong><br>&amp;emsp;</p>
+<p>（1）.假如当前屏幕能显示10个 Cell，在 UITableView 开始渲染时，系统会通过 <code>-initWithStyle:reuseIdentifier:</code> 方法创建10个新的 cell （标志相同） 并显示，这些 cell 会被放入 <code>visibleCells</code> 这个数组中。<br>&amp;emsp;</p>
+<p>（2）.向下滑动 TableView，当 <strong>cell1</strong> 完全移出屏幕，并且 <strong>cell11</strong> (它也是alloc出来的，原因同上)完全显示出来时，<strong>cell11</strong> 会被加入到 <code>visiableCells</code>，而 <strong>cell1</strong> 则被移出 <code>visiableCells</code> 并加入到 <code>reusableTableCells</code> 中。<br>&amp;emsp;</p>
+<p>（3）.接着向下滑动 TableView，因为 <strong>cell1</strong> 已经在 <code>reusableTableCells</code> 中，所以 即将显示的第12个 cell 会重用 <strong>cell1</strong>。因此 <strong>cell1</strong> 会被移出 <code>reusableTableCells</code> 并加入到 <code>visiableCells</code> 中；同时 <strong>cell2</strong> 移出 <code>visiableCells</code> 并加入到 <code>reusableTableCells</code> 中。<br>&amp;emsp;</p>
+<p>（4）.接下来的重用以此类推。。<br>&amp;emsp;</p>
 <p><strong>注意：</strong> cell 是重用的，所以在配置 cell 时一定要重新设置重用的 cell，不要遗留老的数据。</p>
 <h3 id="2、卡顿与离屏渲染"><a href="#2、卡顿与离屏渲染" class="headerlink" title="2、卡顿与离屏渲染"></a>2、卡顿与离屏渲染</h3><p>Tableview 使用中常会出现性能问题，其中会涉及到离屏渲染，下面这些博客里会有专业的分析，多看看，收益颇丰~</p>
 <ul>
-<li>#<a href="https://blog.ibireme.com/2015/11/12/smooth_user_interfaces_for_ios/" target="_blank" rel="noopener">©ibireme-保持界面流畅的技巧</a></li>
-<li>#<a href="https://blog.csdn.net/qq_29846663/article/details/68960512" target="_blank" rel="noopener">©于海明-离屏渲染</a></li>
+<li>#<a target="_blank" rel="noopener" href="https://blog.ibireme.com/2015/11/12/smooth_user_interfaces_for_ios/">©ibireme-保持界面流畅的技巧</a></li>
+<li>#<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_29846663/article/details/68960512">©于海明-离屏渲染</a></li>
 </ul>
 <p>以下是从上面博客摘录的部分内容：</p>
-<h4 id="2-1-卡顿的原因"><a href="#2-1-卡顿的原因" class="headerlink" title="2.1 卡顿的原因"></a>2.1 卡顿的原因</h4><p>通常来说，计算机系统中 CPU、GPU、显示器是协同工作的：<code>CPU</code> 负责计算显示的内容，如视图的创建、布局计算、图片解码、文本绘制等，完成后提交到 GPU；<code>GPU</code> 负责对 CPU 提交的内容进行变换、合成、渲染，完成后将渲染结果放入帧缓冲区；<code>视频控制器</code>会按照 VSync 信号逐行读取帧缓冲区的数据，经过可能的数模转换传递给显示器显示。<br>&emsp;</p>
+<h4 id="2-1-卡顿的原因"><a href="#2-1-卡顿的原因" class="headerlink" title="2.1 卡顿的原因"></a>2.1 卡顿的原因</h4><p>通常来说，计算机系统中 CPU、GPU、显示器是协同工作的：<code>CPU</code> 负责计算显示的内容，如视图的创建、布局计算、图片解码、文本绘制等，完成后提交到 GPU；<code>GPU</code> 负责对 CPU 提交的内容进行变换、合成、渲染，完成后将渲染结果放入帧缓冲区；<code>视频控制器</code>会按照 VSync 信号逐行读取帧缓冲区的数据，经过可能的数模转换传递给显示器显示。<br>&amp;emsp;</p>
 <p>如果在一个 VSync 时间内，CPU 或者 GPU 没有完成内容提交，则那一帧就会被丢弃，等待下一次机会再显示，而这时显示屏会保留之前的内容不变。这就是界面卡顿的原因。</p>
-<h4 id="2-2-离屏渲染"><a href="#2-2-离屏渲染" class="headerlink" title="2.2.离屏渲染"></a>2.2.离屏渲染</h4><p><strong>#离屏渲染：</strong> 指的是GPU在当前屏幕缓冲区以外开辟一个缓冲区进行渲染操作；<br>&emsp;</p>
-<p><strong>#当前屏幕渲染：</strong> 是指GPU的渲染操作是在当前用于显示的屏幕缓冲区进行。<br>&emsp;</p>
-<p>离屏渲染对性能影响很大，主要是因为离屏渲染会创建新的缓冲区，且在离屏渲染的整个过程，需要多次切换上下文环境。这些操作的开销很大（涉及到 OpenGL 的 pipelines 和 barrier 等），尤其是当有大量离屏渲染的情况时。<br>&emsp;</p>
-<p><strong>#为什么会有离屏渲染机制?</strong>：<br>&emsp;</p>
-<p>有些效果被认为不能直接呈现于屏幕，而需要在别的地方做额外的处理预合成。图层属性的混合体没有预合成之前不能直接在屏幕中绘制，所以就需要屏幕外渲染。屏幕外渲染并不意味着软件绘制，但是它意味着图层必须在被显示之前在一个屏幕外上下文中被渲染（不论CPU还是GPU）。<br>&emsp;</p>
+<h4 id="2-2-离屏渲染"><a href="#2-2-离屏渲染" class="headerlink" title="2.2.离屏渲染"></a>2.2.离屏渲染</h4><p><strong>#离屏渲染：</strong> 指的是GPU在当前屏幕缓冲区以外开辟一个缓冲区进行渲染操作；<br>&amp;emsp;</p>
+<p><strong>#当前屏幕渲染：</strong> 是指GPU的渲染操作是在当前用于显示的屏幕缓冲区进行。<br>&amp;emsp;</p>
+<p>离屏渲染对性能影响很大，主要是因为离屏渲染会创建新的缓冲区，且在离屏渲染的整个过程，需要多次切换上下文环境。这些操作的开销很大（涉及到 OpenGL 的 pipelines 和 barrier 等），尤其是当有大量离屏渲染的情况时。<br>&amp;emsp;</p>
+<p>**#为什么会有离屏渲染机制?**：<br>&amp;emsp;</p>
+<p>有些效果被认为不能直接呈现于屏幕，而需要在别的地方做额外的处理预合成。图层属性的混合体没有预合成之前不能直接在屏幕中绘制，所以就需要屏幕外渲染。屏幕外渲染并不意味着软件绘制，但是它意味着图层必须在被显示之前在一个屏幕外上下文中被渲染（不论CPU还是GPU）。<br>&amp;emsp;</p>
 <p><strong>#会触发离屏渲染的场景：</strong></p>
 <ul>
 <li>为图层设置遮罩（layer.mask）；</li>
 <li>将图层的 layer.masksToBounds 或 view.clipsToBounds 设置为YES；</li>
 <li>将图层 layer.allowsGroupOpacity 设置为YES 且 layer.opacity小于1.0；</li>
 <li>为图层设置阴影（layer.[shadowRadius\shadowOffset\shadowOpacity]）；</li>
-<li>为图层开启<a href="https://blog.csdn.net/bravegogo/article/details/80494455" target="_blank" rel="noopener">光栅化</a>：layer.shouldRasterize = YES；</li>
+<li>为图层开启<a target="_blank" rel="noopener" href="https://blog.csdn.net/bravegogo/article/details/80494455">光栅化</a>：layer.shouldRasterize &#x3D; YES；</li>
 <li>为图层设置圆角 layer.cornerRadius；</li>
-<li>为图层设置抗锯齿性：layer.allowsEdgeAntialiasing = YES；</li>
+<li>为图层设置抗锯齿性：layer.allowsEdgeAntialiasing &#x3D; YES；</li>
 <li>文本（任何种类，包括UILabel，CATextLayer，Core Text等）；</li>
 <li>使用 CGContext 在 drawRect :方法中绘制大部分情况下会导致离屏渲染（使用CPU渲染）。</li>
 </ul>
@@ -182,26 +189,26 @@
 <ul>
 <li>使用中间透明，四个角有背景色的图片代替圆角效果；</li>
 <li>使用 CAShapeLayer 配合 UIBezierPath 画圆角；</li>
-<li>使用 ShadowPath 提前告诉CoreAnimation待渲染图层的形状(layer.shadowPath = [UIBezierPath bezierPathWithRect:layer.bounds])；</li>
-<li>设置 layer.opaque = YES，减少复杂图层合成；</li>
+<li>使用 ShadowPath 提前告诉CoreAnimation待渲染图层的形状(layer.shadowPath &#x3D; [UIBezierPath bezierPathWithRect:layer.bounds])；</li>
+<li>设置 layer.opaque &#x3D; YES，减少复杂图层合成；</li>
 <li>尽量使用不包含透明（alpha）通道的图片资源；</li>
 <li>尽量设置 layer 的大小值为整形值。</li>
 <li>使用异步进行 layer 渲染（如 Facebook的AsyncDisplayKit框架）；</li>
 </ul>
 <hr>
 <p>相关参考：</p>
-<p>#<a href="http://blog.csdn.net/huifeidexin_1/article/details/7678986" target="_blank" rel="noopener">©CSDN.huifeidexin_1-cell重用</a></p>
-<p>#<a href="https://blog.ibireme.com/2015/11/12/smooth_user_interfaces_for_ios/" target="_blank" rel="noopener">©ibireme-保持界面流畅的技巧</a></p>
-<p>#<a href="https://blog.csdn.net/qq_29846663/article/details/68960512" target="_blank" rel="noopener">©于海明-离屏渲染</a></p>
-<p>#<a href="https://blog.csdn.net/bravegogo/article/details/80494455" target="_blank" rel="noopener">©CSDN.bravegogo-光栅化</a></p>
-<p>#<a href="http://texturegroup.org/docs/corner-rounding.html" target="_blank" rel="noopener">©Texture-Corner Rounding</a></p>
+<p>#<a target="_blank" rel="noopener" href="http://blog.csdn.net/huifeidexin_1/article/details/7678986">©CSDN.huifeidexin_1-cell重用</a></p>
+<p>#<a target="_blank" rel="noopener" href="https://blog.ibireme.com/2015/11/12/smooth_user_interfaces_for_ios/">©ibireme-保持界面流畅的技巧</a></p>
+<p>#<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_29846663/article/details/68960512">©于海明-离屏渲染</a></p>
+<p>#<a target="_blank" rel="noopener" href="https://blog.csdn.net/bravegogo/article/details/80494455">©CSDN.bravegogo-光栅化</a></p>
+<p>#<a target="_blank" rel="noopener" href="http://texturegroup.org/docs/corner-rounding.html">©Texture-Corner Rounding</a></p>
 </section>
     <!-- Tags START -->
     
       <div class="tags">
         <span>Tags:</span>
         
-  <a href="/tags#机制">
+  <a href="/tags#机制" >
     <span class="tag-code">机制</span>
   </a>
 
@@ -265,7 +272,7 @@
   <div class="toc-main">
     <strong class="toc-title">Catalog</strong>
     
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1、Cell-的重用"><span class="toc-nav-text">1、Cell 的重用</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2、卡顿与离屏渲染"><span class="toc-nav-text">2、卡顿与离屏渲染</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-1-卡顿的原因"><span class="toc-nav-text">2.1 卡顿的原因</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-2-离屏渲染"><span class="toc-nav-text">2.2.离屏渲染</span></a></li></ol></li></ol>
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1%E3%80%81Cell-%E7%9A%84%E9%87%8D%E7%94%A8"><span class="toc-nav-text">1、Cell 的重用</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2%E3%80%81%E5%8D%A1%E9%A1%BF%E4%B8%8E%E7%A6%BB%E5%B1%8F%E6%B8%B2%E6%9F%93"><span class="toc-nav-text">2、卡顿与离屏渲染</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-1-%E5%8D%A1%E9%A1%BF%E7%9A%84%E5%8E%9F%E5%9B%A0"><span class="toc-nav-text">2.1 卡顿的原因</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-2-%E7%A6%BB%E5%B1%8F%E6%B8%B2%E6%9F%93"><span class="toc-nav-text">2.2.离屏渲染</span></a></li></ol></li></ol>
     
   </div>
 </aside>
@@ -361,9 +368,9 @@
 </div>
     <footer class="app-footer">
   <p class="copyright">
-    &copy; 2020 | <a href="https://github.com/davidlii" target="_blank">Davidli</a>
+    &copy; 2022 | <a href="https://github.com/davidlii" target="_blank">Davidli</a>
     <br>
-    <a href="https://hexo.io" target="_blank">Hexo</a> | Theme-<a href="https://github.com/yanm1ng">yanm1ng</a>
+    <a href="https://hexo.io" target="_blank">Hexo</a> | Theme-<a target="_blank" rel="noopener" href="https://github.com/yanm1ng">yanm1ng</a>
   </p>
 </footer>
 
@@ -404,6 +411,8 @@
 </script>
 <!-- Baidu Tongji -->
 
+
 <script src="/js/script.js"></script>
+
   </body>
 </html>

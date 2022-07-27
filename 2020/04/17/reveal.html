@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
-  <head><meta name="generator" content="Hexo 3.8.0">
+  <head>
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
   <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
   <meta name="description" content="This is Davidli&#39;s blog ~">
   <meta name="keyword" content="hexo-theme, vuejs">
   
-    <link rel="shortcut icon" type="image/ico" href="/image/logo.png"> 
+    <link rel="shortcut icon" type="image/ico" href="/image/logo.png"/> 
   
   <title>
     
@@ -16,13 +16,17 @@
   <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
   <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
   <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="/css/style.css">
+  
+<link rel="stylesheet" href="/css/style.css">
 <link rel="stylesheet" href="/css/plugins/gitment.css">
+
   <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
   <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
   <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
-  <script src="/js/qrious.js"></script>
+  
+<script src="/js/qrious.js"></script>
 <script src="/js/gitment.js"></script>
+
   
   
     <!-- MathJax support START -->
@@ -49,9 +53,9 @@
   
 
 
-</head>
+<meta name="generator" content="Hexo 6.2.0"></head>
 <div class="wechat-share">
-  <img src="/css/images/logo.png">
+  <img src="/css/images/logo.png" />
 </div>
 
   <body>
@@ -138,16 +142,16 @@
     <section class="markdown-content"><h3 id="1-简介"><a href="#1-简介" class="headerlink" title="1.简介"></a>1.简介</h3><h4 id="1-1-场景"><a href="#1-1-场景" class="headerlink" title="1.1.场景"></a>1.1.场景</h4><ul>
 <li>场景1</li>
 </ul>
-<p>我们在模拟器或真机上调试自家应用时，一般的过程可能是：<br>&emsp;<br>修改界面元素 → 编译运行 → 效果不满意继续修改 → 编译运行<br>&emsp;<br>当某些效果需要反复调试时，很多时间会浪费在编译运行阶段，尤其是当你的应用比较复杂时。<br>&emsp;</p>
+<p>我们在模拟器或真机上调试自家应用时，一般的过程可能是：<br>&amp;emsp;<br>修改界面元素 → 编译运行 → 效果不满意继续修改 → 编译运行<br>&amp;emsp;<br>当某些效果需要反复调试时，很多时间会浪费在编译运行阶段，尤其是当你的应用比较复杂时。<br>&amp;emsp;</p>
 <p>解决这个痛点有多种方式，如使用<code>RN</code>、<code>Flutter</code>等框架，它们都支持实时渲染，不过这些都涉及到成本的取舍。</p>
 <ul>
 <li>场景2</li>
 </ul>
-<p>有时我们需要研究某些第三方应用的界面布局，如做竞品分析或者学习优秀应用的设计，可问题在于我们有拿不到这些应用的源码，挠头~<br>&emsp;<br>解决这个痛点时，我所知道的是可以通过<code>砸壳</code>+<code>反编译</code>来获取这些应用的伪代码，修改后重新签名打包看效果。但伪代码可读性差，非所见即所得，也不能实时调试。</p>
+<p>有时我们需要研究某些第三方应用的界面布局，如做竞品分析或者学习优秀应用的设计，可问题在于我们有拿不到这些应用的源码，挠头~<br>&amp;emsp;<br>解决这个痛点时，我所知道的是可以通过<code>砸壳</code>+<code>反编译</code>来获取这些应用的伪代码，修改后重新签名打包看效果。但伪代码可读性差，非所见即所得，也不能实时调试。</p>
 <hr>
 <p>要解决上面两种场景下的界面调试问题，更便捷的<code>Reveal</code>就派上用场了~</p>
 <p><img src="https://davidlii.nos-eastchina1.126.net/pic_reveal.png" alt="reveal"></p>
-<h4 id="1-2-描述"><a href="#1-2-描述" class="headerlink" title="1.2.描述"></a>1.2.描述</h4><p>下面是摘自<a href="https://revealapp.com" target="_blank" rel="noopener">官网</a>的描述：</p>
+<h4 id="1-2-描述"><a href="#1-2-描述" class="headerlink" title="1.2.描述"></a>1.2.描述</h4><p>下面是摘自<a target="_blank" rel="noopener" href="https://revealapp.com/">官网</a>的描述：</p>
 <blockquote>
 <p>Reveal brings powerful runtime view debugging to iOS developers. With advanced visualisations, comprehensive inspectors and the ability to modify applications on the fly, you’ll be debugging view layout and rendering problems in seconds.</p>
 </blockquote>
@@ -162,7 +166,7 @@
 <li>Xcode编译出的、在模拟器上运行的自家测试版应用；</li>
 <li>真机上运行的第三方或自家的商店版应用；</li>
 </ul>
-<h3 id="2-安装"><a href="#2-安装" class="headerlink" title="2.安装"></a>2.安装</h3><p><code>Reveal</code>是一款收费应用，个人版售价\$59，商业版\$119，企业版另议，有能力的话还是支持一下正版吧。网上有破解版仅供学习使用，这里就不放传送门了。另外你需要一台越狱后的设备以便调试第三方应用。你也可以直接在模拟器上调试，不过只能调试自家应用。不论是调试三方应用还是自家应用，你都需要集成reveal的库文件，只是两者的集成方式稍有不同。</p>
+<h3 id="2-安装"><a href="#2-安装" class="headerlink" title="2.安装"></a>2.安装</h3><p><code>Reveal</code>是一款收费应用，个人版售价$59，商业版$119，企业版另议，有能力的话还是支持一下正版吧。网上有破解版仅供学习使用，这里就不放传送门了。另外你需要一台越狱后的设备以便调试第三方应用。你也可以直接在模拟器上调试，不过只能调试自家应用。不论是调试三方应用还是自家应用，你都需要集成reveal的库文件，只是两者的集成方式稍有不同。</p>
 <h3 id="3-集成"><a href="#3-集成" class="headerlink" title="3.集成"></a>3.集成</h3><h4 id="3-1-自家应用"><a href="#3-1-自家应用" class="headerlink" title="3.1.自家应用"></a>3.1.自家应用</h4><p>要调试自家应用，除了在MAC上安装<code>Reveal</code>外，你还需要在自己的工程中集成reveal库：</p>
 <blockquote>
 <p>We maintain a CocoaPods Podspec for integrating Reveal into your Xcode projects.</p>
@@ -170,11 +174,13 @@
 <ul>
 <li>修改Podfile：</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">target &apos;YourMainAppTargetName&apos; do</span><br><span class="line">    pod &apos;Reveal-SDK&apos;, :configurations =&gt; [&apos;Debug&apos;]</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">target &#x27;YourMainAppTargetName&#x27; do</span><br><span class="line">    pod &#x27;Reveal-SDK&#x27;, :configurations =&gt; [&#x27;Debug&#x27;]</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+
 <ul>
 <li>导入RevealServer.framework</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pod install</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pod install</span><br></pre></td></tr></table></figure>
+
 <ul>
 <li>编译运行，模拟器中应用跑起来之后，Reveal界面中会自动显示该应用。具体的效果如下：</li>
 </ul>
@@ -196,13 +202,15 @@
 </ul>
 <p><img src="https://davidlii.nos-eastchina1.126.net/pic_revealserver_framework.png" alt="revealserver_framework"></p>
 <ul>
-<li>终端中通过<code>scp</code>命令，拷贝库到设备的/Library/Frameworks/目录下：</li>
+<li>终端中通过<code>scp</code>命令，拷贝库到设备的&#x2F;Library&#x2F;Frameworks&#x2F;目录下：</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// 这个IP地址是手机所在WiFi的IP地址</span><br><span class="line">scp -r RevealServer.framework root@192.168.xx.xxx:/Library/Frameworks/</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// 这个IP地址是手机所在WiFi的IP地址</span><br><span class="line">scp -r RevealServer.framework root@192.168.xx.xxx:/Library/Frameworks/ </span><br></pre></td></tr></table></figure>
+
 <ul>
 <li>重启SpringBoard，以便让导入的 RevealServer 库生效：</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">//手机/设备所在WiFi的IP地址</span><br><span class="line">$ ssh root@192.168.31.xx</span><br><span class="line">// 输入root用户的密码，默认值alphine，修改过的话自行输入</span><br><span class="line">root@192.168.31.xx&apos;s password:</span><br><span class="line">//重启springboard</span><br><span class="line">Hes-iPhone:~ root# killall SpringBoard</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">//手机/设备所在WiFi的IP地址</span><br><span class="line">$ ssh root@192.168.31.xx</span><br><span class="line">// 输入root用户的密码，默认值alphine，修改过的话自行输入</span><br><span class="line">root@192.168.31.xx&#x27;s password:</span><br><span class="line">//重启springboard</span><br><span class="line">Hes-iPhone:~ root# killall SpringBoard</span><br></pre></td></tr></table></figure>
+
 <ul>
 <li><p>越狱手机上，在Cydia商店中搜索并安装Reveal2Loader：<br><img src="https://davidlii.nos-eastchina1.126.net/pic_reveal_tweek_1.PNG" alt="reveal_tweek_1"></p>
 </li>
@@ -217,19 +225,19 @@
 <li><p>接下来就可以愉快的调试了~</p>
 </li>
 </ul>
-<h3 id="4-注意事项"><a href="#4-注意事项" class="headerlink" title="4.注意事项"></a>4.注意事项</h3><p><code>Reveal</code>支持 USB 和 WiFi 两种连接模式，如果在自己的设备上调试第三方应用，你需要确保手机通过数据线连接到MAC上，或者让手机与MAC处于同一WiFi环境中。<br>&emsp;<br>不要将集成了Reveal Server framework的应用提交到商店！！</p>
+<h3 id="4-注意事项"><a href="#4-注意事项" class="headerlink" title="4.注意事项"></a>4.注意事项</h3><p><code>Reveal</code>支持 USB 和 WiFi 两种连接模式，如果在自己的设备上调试第三方应用，你需要确保手机通过数据线连接到MAC上，或者让手机与MAC处于同一WiFi环境中。<br>&amp;emsp;<br>不要将集成了Reveal Server framework的应用提交到商店！！</p>
 <hr>
 <p>相关参考：</p>
-<p>#<a href="https://www.jianshu.com/p/f2970ef365fe" target="_blank" rel="noopener">©reveal的三种集成方式</a></p>
-<p>#<a href="https://www.jianshu.com/p/213ddc050ff2" target="_blank" rel="noopener">©reveal的集成</a></p>
-<p>#<a href="https://blog.csdn.net/yishengzhiai005/article/details/103456794?depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromBaidu-5&amp;utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromBaidu-5" target="_blank" rel="noopener">©越狱设备调试第三方应用</a></p>
+<p>#<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/f2970ef365fe">©reveal的三种集成方式</a></p>
+<p>#<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/213ddc050ff2">©reveal的集成</a></p>
+<p>#<a target="_blank" rel="noopener" href="https://blog.csdn.net/yishengzhiai005/article/details/103456794?depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromBaidu-5&utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromBaidu-5">©越狱设备调试第三方应用</a></p>
 </section>
     <!-- Tags START -->
     
       <div class="tags">
         <span>Tags:</span>
         
-  <a href="/tags#逆向工程">
+  <a href="/tags#逆向工程" >
     <span class="tag-code">逆向工程</span>
   </a>
 
@@ -293,7 +301,7 @@
   <div class="toc-main">
     <strong class="toc-title">Catalog</strong>
     
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1-简介"><span class="toc-nav-text">1.简介</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#1-1-场景"><span class="toc-nav-text">1.1.场景</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#1-2-描述"><span class="toc-nav-text">1.2.描述</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#1-3-作用"><span class="toc-nav-text">1.3.作用</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#1-4-对象"><span class="toc-nav-text">1.4.对象</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-安装"><span class="toc-nav-text">2.安装</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-集成"><span class="toc-nav-text">3.集成</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3-1-自家应用"><span class="toc-nav-text">3.1.自家应用</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3-2-第三方应用"><span class="toc-nav-text">3.2.第三方应用</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#4-注意事项"><span class="toc-nav-text">4.注意事项</span></a></li></ol>
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1-%E7%AE%80%E4%BB%8B"><span class="toc-nav-text">1.简介</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#1-1-%E5%9C%BA%E6%99%AF"><span class="toc-nav-text">1.1.场景</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#1-2-%E6%8F%8F%E8%BF%B0"><span class="toc-nav-text">1.2.描述</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#1-3-%E4%BD%9C%E7%94%A8"><span class="toc-nav-text">1.3.作用</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#1-4-%E5%AF%B9%E8%B1%A1"><span class="toc-nav-text">1.4.对象</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-%E5%AE%89%E8%A3%85"><span class="toc-nav-text">2.安装</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-%E9%9B%86%E6%88%90"><span class="toc-nav-text">3.集成</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3-1-%E8%87%AA%E5%AE%B6%E5%BA%94%E7%94%A8"><span class="toc-nav-text">3.1.自家应用</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3-2-%E7%AC%AC%E4%B8%89%E6%96%B9%E5%BA%94%E7%94%A8"><span class="toc-nav-text">3.2.第三方应用</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#4-%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-nav-text">4.注意事项</span></a></li></ol>
     
   </div>
 </aside>
@@ -389,9 +397,9 @@
 </div>
     <footer class="app-footer">
   <p class="copyright">
-    &copy; 2020 | <a href="https://github.com/davidlii" target="_blank">Davidli</a>
+    &copy; 2022 | <a href="https://github.com/davidlii" target="_blank">Davidli</a>
     <br>
-    <a href="https://hexo.io" target="_blank">Hexo</a> | Theme-<a href="https://github.com/yanm1ng">yanm1ng</a>
+    <a href="https://hexo.io" target="_blank">Hexo</a> | Theme-<a target="_blank" rel="noopener" href="https://github.com/yanm1ng">yanm1ng</a>
   </p>
 </footer>
 
@@ -432,6 +440,8 @@
 </script>
 <!-- Baidu Tongji -->
 
+
 <script src="/js/script.js"></script>
+
   </body>
 </html>

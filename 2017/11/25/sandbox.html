@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
-  <head><meta name="generator" content="Hexo 3.8.0">
+  <head>
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
   <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
   <meta name="description" content="This is Davidli&#39;s blog ~">
   <meta name="keyword" content="hexo-theme, vuejs">
   
-    <link rel="shortcut icon" type="image/ico" href="/image/logo.png"> 
+    <link rel="shortcut icon" type="image/ico" href="/image/logo.png"/> 
   
   <title>
     
@@ -16,13 +16,17 @@
   <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
   <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
   <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="/css/style.css">
+  
+<link rel="stylesheet" href="/css/style.css">
 <link rel="stylesheet" href="/css/plugins/gitment.css">
+
   <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
   <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
   <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
-  <script src="/js/qrious.js"></script>
+  
+<script src="/js/qrious.js"></script>
 <script src="/js/gitment.js"></script>
+
   
   
     <!-- MathJax support START -->
@@ -49,9 +53,9 @@
   
 
 
-</head>
+<meta name="generator" content="Hexo 6.2.0"></head>
 <div class="wechat-share">
-  <img src="/css/images/logo.png">
+  <img src="/css/images/logo.png" />
 </div>
 
   <body>
@@ -138,19 +142,23 @@
     <section class="markdown-content"><h3 id="1、沙盒"><a href="#1、沙盒" class="headerlink" title="1、沙盒"></a>1、沙盒</h3><blockquote>
 <p>iOS程序默认情况下只能访问程序自己的目录，这个目录被称为“沙盒”。</p>
 </blockquote>
-<p>&emsp;沙盒的目录结构：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&quot;应用程序包&quot;</span><br><span class="line">- Documents</span><br><span class="line">- Library</span><br><span class="line">  *Caches</span><br><span class="line">  *Preferences</span><br><span class="line">- tmp</span><br></pre></td></tr></table></figure>
+<p>&amp;emsp;沙盒的目录结构：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&quot;应用程序包&quot;</span><br><span class="line">- Documents</span><br><span class="line">- Library</span><br><span class="line">  *Caches</span><br><span class="line">  *Preferences</span><br><span class="line">- tmp</span><br></pre></td></tr></table></figure>
+
 <h4 id="1-1-”应用程序包”"><a href="#1-1-”应用程序包”" class="headerlink" title="1.1.”应用程序包”:"></a>1.1.”应用程序包”:</h4><p>这里存放的是应用程序的源文件，包括资源文件和可执行文件。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">String *path = [[NSBundle mainBundle] bundlePath];</span><br><span class="line">NSLog(@&quot;%@&quot;, path);</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">String *path = [[NSBundle mainBundle] bundlePath];</span><br><span class="line">NSLog(@&quot;%@&quot;, path);</span><br></pre></td></tr></table></figure>
+
 <h4 id="1-2-Documents"><a href="#1-2-Documents" class="headerlink" title="1.2.Documents:"></a>1.2.Documents:</h4><p>最常用的目录，iTunes同步该应用时会同步此文件夹中的内容，适合存储重要数据。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">NSString *path = NSSearchPathForDirectoriesInDomains(</span><br><span class="line">NSDocumentDirectory,</span><br><span class="line">NSUserDomainMask,</span><br><span class="line">YES).firstObject;</span><br><span class="line"></span><br><span class="line">NSLog(@&quot;%@&quot;,path);</span><br></pre></td></tr></table></figure>
-<h4 id="1-3-Library-Caches"><a href="#1-3-Library-Caches" class="headerlink" title="1.3.Library/Caches:"></a>1.3.Library/Caches:</h4><p>iTunes不会同步此文件夹，适合存储体积大，不需要备份的非重要数据。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">NSString *path = NSSearchPathForDirectoriesInDomains(</span><br><span class="line">NSCachesDirectory,</span><br><span class="line">NSUserDomainMask, YES).firstObject;</span><br><span class="line"></span><br><span class="line">NSLog(@&quot;%@&quot;,path);</span><br></pre></td></tr></table></figure>
-<h4 id="1-4-Library-Preferences"><a href="#1-4-Library-Preferences" class="headerlink" title="1.4.Library/Preferences:"></a>1.4.Library/Preferences:</h4><p>iTunes同步该应用时会同步此文件夹中的内容，通常保存应用的设置信息。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">NSString *path = NSSearchPathForDirectoriesInDomains(</span><br><span class="line">NSDocumentDirectory,</span><br><span class="line">NSUserDomainMask,</span><br><span class="line">YES).firstObject;</span><br><span class="line"></span><br><span class="line">NSLog(@&quot;%@&quot;,path);</span><br></pre></td></tr></table></figure>
+
+<h4 id="1-3-Library-x2F-Caches"><a href="#1-3-Library-x2F-Caches" class="headerlink" title="1.3.Library&#x2F;Caches:"></a>1.3.Library&#x2F;Caches:</h4><p>iTunes不会同步此文件夹，适合存储体积大，不需要备份的非重要数据。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">NSString *path = NSSearchPathForDirectoriesInDomains(</span><br><span class="line">NSCachesDirectory,</span><br><span class="line">NSUserDomainMask, YES).firstObject;</span><br><span class="line"></span><br><span class="line">NSLog(@&quot;%@&quot;,path);</span><br></pre></td></tr></table></figure>
+
+<h4 id="1-4-Library-x2F-Preferences"><a href="#1-4-Library-x2F-Preferences" class="headerlink" title="1.4.Library&#x2F;Preferences:"></a>1.4.Library&#x2F;Preferences:</h4><p>iTunes同步该应用时会同步此文件夹中的内容，通常保存应用的设置信息。</p>
 <h4 id="1-5-tmp"><a href="#1-5-tmp" class="headerlink" title="1.5.tmp:"></a>1.5.tmp:</h4><p>iTunes不会同步此文件夹，系统可能在应用没运行时就删除该目录下的文件，所以此目录适合保存应用中的一些临时文件，用完就删除。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">NSString *path = NSTemporaryDirectory();</span><br><span class="line">NSLog(@&quot;%@&quot;, path);</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">NSString *path = NSTemporaryDirectory();</span><br><span class="line">NSLog(@&quot;%@&quot;, path);</span><br></pre></td></tr></table></figure>
 <hr>
-<h3 id="2、本地持久化方案"><a href="#2、本地持久化方案" class="headerlink" title="2、本地持久化方案"></a>2、本地持久化方案</h3><h4 id="2-1-plist文件"><a href="#2-1-plist文件" class="headerlink" title="2.1.plist文件"></a>2.1.plist文件</h4><p>&emsp;通过XML文件的方式保存数据，支持保存的数据类型有：</p>
+<h3 id="2、本地持久化方案"><a href="#2、本地持久化方案" class="headerlink" title="2、本地持久化方案"></a>2、本地持久化方案</h3><h4 id="2-1-plist文件"><a href="#2-1-plist文件" class="headerlink" title="2.1.plist文件"></a>2.1.plist文件</h4><p>&amp;emsp;通过XML文件的方式保存数据，支持保存的数据类型有：</p>
 <ol>
 <li>NSArray;</li>
 <li>NSMutableArray;</li>
@@ -163,24 +171,27 @@
 <li>NSNumber;</li>
 <li>NSDate;</li>
 </ol>
-<p>&emsp;plist读写数据示例：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">NSString *path = NSSearchPathForDirectoriesInDomains(</span><br><span class="line">NSDocumentDirectory,NSUserDomainMask,YES).firstObject;</span><br><span class="line"></span><br><span class="line">NSString *fileName = [path stringByAppendingPathComponent:@&quot;nameXX.plist&quot;];</span><br><span class="line"></span><br><span class="line">NSArray *array = @[@&quot;1&quot;, @&quot;2&quot;, @&quot;3&quot;];</span><br><span class="line">[array writeToFile:fileName atomically:YES];</span><br><span class="line"></span><br><span class="line">NSArray *result = [NSArray arrayWithContentsOfFile:fileName];</span><br><span class="line">NSLog(@&quot;%@&quot;, result);</span><br></pre></td></tr></table></figure>
-<h4 id="2-2-KeyChain-钥匙串"><a href="#2-2-KeyChain-钥匙串" class="headerlink" title="2.2.KeyChain 钥匙串"></a>2.2.KeyChain 钥匙串</h4><p>&emsp;信息存储到钥匙串中之后，在应用删除重新安装时，仍然能取出之前保存的值。可以使用第三方库UICKeyChainStore实现钥匙串存储操作（<a href="https://github.com/kishikawakatsumi/UICKeyChainStore" target="_blank" rel="noopener">Github地址</a>）。</p>
-<h4 id="2-3-preference（偏好设置）"><a href="#2-3-preference（偏好设置）" class="headerlink" title="2.3.preference（偏好设置）"></a>2.3.preference（偏好设置）</h4><p>&emsp;用来保存应用程序的配置信息的。如果需要立即写入文件的就必须调用synchronize方法，否则系统会根据I/O情况不定时刻地保存到文件中。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">//1.获得NSUserDefaults文件</span><br><span class="line">NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];</span><br><span class="line">//2.向文件中写入内容</span><br><span class="line">[userDefaults setObject:@&quot;AAA&quot; forKey:@&quot;a&quot;];</span><br><span class="line">//2.1立即同步</span><br><span class="line">[userDefaults synchronize];</span><br><span class="line"></span><br><span class="line">//3.读取文件</span><br><span class="line">NSString *name = [userDefaults objectForKey:@&quot;a&quot;];</span><br><span class="line">NSLog(@&quot;%@&quot;, name);</span><br></pre></td></tr></table></figure>
-<h4 id="2-4-NSKeyedArchiver（归档）"><a href="#2-4-NSKeyedArchiver（归档）" class="headerlink" title="2.4.NSKeyedArchiver（归档）"></a>2.4.NSKeyedArchiver（归档）</h4><p>&emsp;归档，只要遵循了 NSCoding 协议的对象都可以通过它实现序列化。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">@interface Person : NSObject &lt;NSCoding&gt;</span><br><span class="line"></span><br><span class="line">@property (nonatomic, copy) NSString *name;</span><br><span class="line">@property (nonatomic, assign) NSInteger age;</span><br><span class="line"></span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation Person</span><br><span class="line">//解档</span><br><span class="line">- (instancetype)initWithCoder:(NSCoder *)aDecoder</span><br><span class="line">&#123;</span><br><span class="line">if ([super init]) &#123;</span><br><span class="line">self.name = [aDecoder decodeObjectForKey:@&quot;name&quot;];</span><br><span class="line">self.age = [aDecoder decodeIntegerForKey:@&quot;age&quot;];</span><br><span class="line">&#125;</span><br><span class="line">return self;</span><br><span class="line">&#125;</span><br><span class="line">//归档</span><br><span class="line">- (void)encodeWithCoder:(NSCoder *)aCoder</span><br><span class="line">&#123;</span><br><span class="line">[aCoder encodeObject:self.name forKey:@&quot;name&quot;];</span><br><span class="line">[aCoder encodeInteger:self.age forKey:@&quot;age&quot;];</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
-<p>&emsp;存取示例：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">NSString *file = [NSSearchPathForDirectoriesInDomains(</span><br><span class="line">NSDocumentDirectory, NSUserDomainMask, YES).firstObject</span><br><span class="line">stringByAppendingPathComponent:@&quot;person.data&quot;];</span><br><span class="line">//存</span><br><span class="line">Person *person = [[Person alloc] init];</span><br><span class="line">person.name = @&quot;III&quot;;</span><br><span class="line">person.age = 20;</span><br><span class="line">[NSKeyedArchiver archiveRootObject:person toFile:file];</span><br><span class="line">//取</span><br><span class="line">Person *newPerson = [NSKeyedUnarchiver unarchiveObjectWithFile:file];</span><br><span class="line">NSLog(@&quot;++++%@&quot;,newPerson.name);</span><br></pre></td></tr></table></figure>
-<p>&emsp;如果需要归档的类是某个自定义类的子类时，就需要在归档和解档之前先实现父类的归档和解档方法。即 [super encodeWithCoder:aCoder] 和 [super initWithCoder:aDecoder] 方法;</p>
-<h4 id="2-5-CoreData"><a href="#2-5-CoreData" class="headerlink" title="2.5.CoreData"></a>2.5.CoreData</h4><p>&emsp;未完待续。。</p>
+<p>&amp;emsp;plist读写数据示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">NSString *path = NSSearchPathForDirectoriesInDomains(</span><br><span class="line">NSDocumentDirectory,NSUserDomainMask,YES).firstObject;</span><br><span class="line"></span><br><span class="line">NSString *fileName = [path stringByAppendingPathComponent:@&quot;nameXX.plist&quot;];</span><br><span class="line"></span><br><span class="line">NSArray *array = @[@&quot;1&quot;, @&quot;2&quot;, @&quot;3&quot;];</span><br><span class="line">[array writeToFile:fileName atomically:YES];</span><br><span class="line"></span><br><span class="line">NSArray *result = [NSArray arrayWithContentsOfFile:fileName];</span><br><span class="line">NSLog(@&quot;%@&quot;, result);</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-2-KeyChain-钥匙串"><a href="#2-2-KeyChain-钥匙串" class="headerlink" title="2.2.KeyChain 钥匙串"></a>2.2.KeyChain 钥匙串</h4><p>&amp;emsp;信息存储到钥匙串中之后，在应用删除重新安装时，仍然能取出之前保存的值。可以使用第三方库UICKeyChainStore实现钥匙串存储操作（<a target="_blank" rel="noopener" href="https://github.com/kishikawakatsumi/UICKeyChainStore">Github地址</a>）。</p>
+<h4 id="2-3-preference（偏好设置）"><a href="#2-3-preference（偏好设置）" class="headerlink" title="2.3.preference（偏好设置）"></a>2.3.preference（偏好设置）</h4><p>&amp;emsp;用来保存应用程序的配置信息的。如果需要立即写入文件的就必须调用synchronize方法，否则系统会根据I&#x2F;O情况不定时刻地保存到文件中。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">//1.获得NSUserDefaults文件</span><br><span class="line">NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];</span><br><span class="line">//2.向文件中写入内容</span><br><span class="line">[userDefaults setObject:@&quot;AAA&quot; forKey:@&quot;a&quot;];</span><br><span class="line">//2.1立即同步</span><br><span class="line">[userDefaults synchronize];</span><br><span class="line"></span><br><span class="line">//3.读取文件</span><br><span class="line">NSString *name = [userDefaults objectForKey:@&quot;a&quot;];</span><br><span class="line">NSLog(@&quot;%@&quot;, name);</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-4-NSKeyedArchiver（归档）"><a href="#2-4-NSKeyedArchiver（归档）" class="headerlink" title="2.4.NSKeyedArchiver（归档）"></a>2.4.NSKeyedArchiver（归档）</h4><p>&amp;emsp;归档，只要遵循了 NSCoding 协议的对象都可以通过它实现序列化。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">@interface Person : NSObject &lt;NSCoding&gt;</span><br><span class="line"></span><br><span class="line">@property (nonatomic, copy) NSString *name;</span><br><span class="line">@property (nonatomic, assign) NSInteger age;</span><br><span class="line"></span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation Person</span><br><span class="line">//解档</span><br><span class="line">- (instancetype)initWithCoder:(NSCoder *)aDecoder</span><br><span class="line">&#123;</span><br><span class="line">if ([super init]) &#123;</span><br><span class="line">self.name = [aDecoder decodeObjectForKey:@&quot;name&quot;];</span><br><span class="line">self.age = [aDecoder decodeIntegerForKey:@&quot;age&quot;];</span><br><span class="line">&#125;</span><br><span class="line">return self;</span><br><span class="line">&#125;</span><br><span class="line">//归档</span><br><span class="line">- (void)encodeWithCoder:(NSCoder *)aCoder</span><br><span class="line">&#123;</span><br><span class="line">[aCoder encodeObject:self.name forKey:@&quot;name&quot;];</span><br><span class="line">[aCoder encodeInteger:self.age forKey:@&quot;age&quot;];</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<p>&amp;emsp;存取示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">NSString *file = [NSSearchPathForDirectoriesInDomains(</span><br><span class="line">NSDocumentDirectory, NSUserDomainMask, YES).firstObject</span><br><span class="line">stringByAppendingPathComponent:@&quot;person.data&quot;];</span><br><span class="line">//存</span><br><span class="line">Person *person = [[Person alloc] init];</span><br><span class="line">person.name = @&quot;III&quot;;</span><br><span class="line">person.age = 20;</span><br><span class="line">[NSKeyedArchiver archiveRootObject:person toFile:file];</span><br><span class="line">//取</span><br><span class="line">Person *newPerson = [NSKeyedUnarchiver unarchiveObjectWithFile:file];</span><br><span class="line">NSLog(@&quot;++++%@&quot;,newPerson.name);</span><br></pre></td></tr></table></figure>
+
+<p>&amp;emsp;如果需要归档的类是某个自定义类的子类时，就需要在归档和解档之前先实现父类的归档和解档方法。即 [super encodeWithCoder:aCoder] 和 [super initWithCoder:aDecoder] 方法;</p>
+<h4 id="2-5-CoreData"><a href="#2-5-CoreData" class="headerlink" title="2.5.CoreData"></a>2.5.CoreData</h4><p>&amp;emsp;未完待续。。</p>
 </section>
     <!-- Tags START -->
     
       <div class="tags">
         <span>Tags:</span>
         
-  <a href="/tags#FQA">
+  <a href="/tags#FQA" >
     <span class="tag-code">FQA</span>
   </a>
 
@@ -244,7 +255,7 @@
   <div class="toc-main">
     <strong class="toc-title">Catalog</strong>
     
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1、沙盒"><span class="toc-nav-text">1、沙盒</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#1-1-”应用程序包”"><span class="toc-nav-text">1.1.”应用程序包”:</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#1-2-Documents"><span class="toc-nav-text">1.2.Documents:</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#1-3-Library-Caches"><span class="toc-nav-text">1.3.Library/Caches:</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#1-4-Library-Preferences"><span class="toc-nav-text">1.4.Library/Preferences:</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#1-5-tmp"><span class="toc-nav-text">1.5.tmp:</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2、本地持久化方案"><span class="toc-nav-text">2、本地持久化方案</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-1-plist文件"><span class="toc-nav-text">2.1.plist文件</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-2-KeyChain-钥匙串"><span class="toc-nav-text">2.2.KeyChain 钥匙串</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-3-preference（偏好设置）"><span class="toc-nav-text">2.3.preference（偏好设置）</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-4-NSKeyedArchiver（归档）"><span class="toc-nav-text">2.4.NSKeyedArchiver（归档）</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-5-CoreData"><span class="toc-nav-text">2.5.CoreData</span></a></li></ol></li></ol>
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1%E3%80%81%E6%B2%99%E7%9B%92"><span class="toc-nav-text">1、沙盒</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#1-1-%E2%80%9D%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E5%8C%85%E2%80%9D"><span class="toc-nav-text">1.1.”应用程序包”:</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#1-2-Documents"><span class="toc-nav-text">1.2.Documents:</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#1-3-Library-x2F-Caches"><span class="toc-nav-text">1.3.Library&#x2F;Caches:</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#1-4-Library-x2F-Preferences"><span class="toc-nav-text">1.4.Library&#x2F;Preferences:</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#1-5-tmp"><span class="toc-nav-text">1.5.tmp:</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2%E3%80%81%E6%9C%AC%E5%9C%B0%E6%8C%81%E4%B9%85%E5%8C%96%E6%96%B9%E6%A1%88"><span class="toc-nav-text">2、本地持久化方案</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-1-plist%E6%96%87%E4%BB%B6"><span class="toc-nav-text">2.1.plist文件</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-2-KeyChain-%E9%92%A5%E5%8C%99%E4%B8%B2"><span class="toc-nav-text">2.2.KeyChain 钥匙串</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-3-preference%EF%BC%88%E5%81%8F%E5%A5%BD%E8%AE%BE%E7%BD%AE%EF%BC%89"><span class="toc-nav-text">2.3.preference（偏好设置）</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-4-NSKeyedArchiver%EF%BC%88%E5%BD%92%E6%A1%A3%EF%BC%89"><span class="toc-nav-text">2.4.NSKeyedArchiver（归档）</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-5-CoreData"><span class="toc-nav-text">2.5.CoreData</span></a></li></ol></li></ol>
     
   </div>
 </aside>
@@ -340,9 +351,9 @@
 </div>
     <footer class="app-footer">
   <p class="copyright">
-    &copy; 2020 | <a href="https://github.com/davidlii" target="_blank">Davidli</a>
+    &copy; 2022 | <a href="https://github.com/davidlii" target="_blank">Davidli</a>
     <br>
-    <a href="https://hexo.io" target="_blank">Hexo</a> | Theme-<a href="https://github.com/yanm1ng">yanm1ng</a>
+    <a href="https://hexo.io" target="_blank">Hexo</a> | Theme-<a target="_blank" rel="noopener" href="https://github.com/yanm1ng">yanm1ng</a>
   </p>
 </footer>
 
@@ -383,6 +394,8 @@
 </script>
 <!-- Baidu Tongji -->
 
+
 <script src="/js/script.js"></script>
+
   </body>
 </html>

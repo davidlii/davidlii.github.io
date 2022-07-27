@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
-  <head><meta name="generator" content="Hexo 3.8.0">
+  <head>
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
   <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
   <meta name="description" content="This is Davidli&#39;s blog ~">
   <meta name="keyword" content="hexo-theme, vuejs">
   
-    <link rel="shortcut icon" type="image/ico" href="/image/logo.png"> 
+    <link rel="shortcut icon" type="image/ico" href="/image/logo.png"/> 
   
   <title>
     
@@ -16,13 +16,17 @@
   <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
   <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
   <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="/css/style.css">
+  
+<link rel="stylesheet" href="/css/style.css">
 <link rel="stylesheet" href="/css/plugins/gitment.css">
+
   <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
   <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
   <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
-  <script src="/js/qrious.js"></script>
+  
+<script src="/js/qrious.js"></script>
 <script src="/js/gitment.js"></script>
+
   
   
     <!-- MathJax support START -->
@@ -49,9 +53,9 @@
   
 
 
-</head>
+<meta name="generator" content="Hexo 6.2.0"></head>
 <div class="wechat-share">
-  <img src="/css/images/logo.png">
+  <img src="/css/images/logo.png" />
 </div>
 
   <body>
@@ -135,36 +139,42 @@
 <main class="app-body flex-box">
   <!-- Article START -->
   <article class="post-article">
-    <section class="markdown-content"><h2 id="1-Autoresizing"><a href="#1-Autoresizing" class="headerlink" title="#1.Autoresizing"></a>#1.Autoresizing</h2><p><code>Autoresizing</code>是苹果早期的界面适配方案，那时苹果的设备还不算多，iPhone 只有 4s 及其之前的产品，都是3.5英寸屏幕；iPad 也只有 iPad1、iPad2，都是9.7英寸。并且当时 iOS 上的应用很少需要适配横屏，所以<code>Autoresizing</code>能够满足绝大部分的适配需求。<br>&emsp;</p>
+    <section class="markdown-content"><h2 id="1-Autoresizing"><a href="#1-Autoresizing" class="headerlink" title="#1.Autoresizing"></a>#1.Autoresizing</h2><p><code>Autoresizing</code>是苹果早期的界面适配方案，那时苹果的设备还不算多，iPhone 只有 4s 及其之前的产品，都是3.5英寸屏幕；iPad 也只有 iPad1、iPad2，都是9.7英寸。并且当时 iOS 上的应用很少需要适配横屏，所以<code>Autoresizing</code>能够满足绝大部分的适配需求。<br>&amp;emsp;</p>
 <p>1.1.<code>xib</code>或者<code>故事板</code>(iOS5)中的6条线：</p>
 <p><img src="https://davidlii.nos-eastchina1.126.net/pic_AutoResizing.png" alt="autoresizing"></p>
 <p>1.2.代码中的6个枚举值：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">typedef NS_OPTIONS(NSUInteger, UIViewAutoresizing) &#123;</span><br><span class="line">    UIViewAutoresizingNone                 = 0,         //不变</span><br><span class="line">    UIViewAutoresizingFlexibleLeftMargin   = 1 &lt;&lt; 0,    //与父视图的左边距可变，以保证右边距不变</span><br><span class="line">    UIViewAutoresizingFlexibleWidth        = 1 &lt;&lt; 1,    //自动调整自身宽度，以保证左右边距不变</span><br><span class="line">    UIViewAutoresizingFlexibleRightMargin  = 1 &lt;&lt; 2,    //与父视图的右边距可变，以保证左边距不变</span><br><span class="line">    UIViewAutoresizingFlexibleTopMargin    = 1 &lt;&lt; 3,    //与父视图的上边距可变，以保证底部边距不变</span><br><span class="line">    UIViewAutoresizingFlexibleHeight       = 1 &lt;&lt; 4,    //自动调整自身高度，以保证上下边距不变</span><br><span class="line">    UIViewAutoresizingFlexibleBottomMargin = 1 &lt;&lt; 5     //与父视图的下边距可变，以保证上边距不变</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">typedef NS_OPTIONS(NSUInteger, UIViewAutoresizing) &#123;</span><br><span class="line">    UIViewAutoresizingNone                 = 0,         //不变</span><br><span class="line">    UIViewAutoresizingFlexibleLeftMargin   = 1 &lt;&lt; 0,    //与父视图的左边距可变，以保证右边距不变</span><br><span class="line">    UIViewAutoresizingFlexibleWidth        = 1 &lt;&lt; 1,    //自动调整自身宽度，以保证左右边距不变</span><br><span class="line">    UIViewAutoresizingFlexibleRightMargin  = 1 &lt;&lt; 2,    //与父视图的右边距可变，以保证左边距不变</span><br><span class="line">    UIViewAutoresizingFlexibleTopMargin    = 1 &lt;&lt; 3,    //与父视图的上边距可变，以保证底部边距不变</span><br><span class="line">    UIViewAutoresizingFlexibleHeight       = 1 &lt;&lt; 4,    //自动调整自身高度，以保证上下边距不变</span><br><span class="line">    UIViewAutoresizingFlexibleBottomMargin = 1 &lt;&lt; 5     //与父视图的下边距可变，以保证上边距不变</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
 <p>这6个枚举值在实际应用时一般都是组合起来使用：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// 跟随父视图的宽度和高度等比缩放，以保证上下左右边距都不变</span><br><span class="line">view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;</span><br></pre></td></tr></table></figure>
-<p>通过<code>Autoresizing</code>，你可以方便的设置某个控件~<strong>相对于其父视图的布局</strong>~但这也是它的最大缺点：它只能用于设置子视图相对于其父视图的布局，对于与其同级的兄弟视图，或者其他父视图内的子视图之间的位置关系，它能做的很少。</p>
-<h2 id="2-AutoLayout"><a href="#2-AutoLayout" class="headerlink" title="#2.AutoLayout"></a>#2.AutoLayout</h2><p>2012年 iOS6 发布，随之而来的设备是 4.0 英寸的 iPhone 5，我们需要适配的屏幕尺寸多了一个。为了减少开发者的适配工作量，苹果提供了基于<code>约束</code>的<code>AutoLayout</code>，即自动布局这一适配方案。<code>约束</code>条件控制了各控件之间的位置关系，且不局限于子控件与其父视图之间了，任意两个控件之间都可以设置约束关系。<br>&emsp;</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// 跟随父视图的宽度和高度等比缩放，以保证上下左右边距都不变</span><br><span class="line">view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;</span><br></pre></td></tr></table></figure>
+
+
+<p>通过<code>Autoresizing</code>，你可以方便的设置某个控件<del><strong>相对于其父视图的布局</strong></del>但这也是它的最大缺点：它只能用于设置子视图相对于其父视图的布局，对于与其同级的兄弟视图，或者其他父视图内的子视图之间的位置关系，它能做的很少。</p>
+<h2 id="2-AutoLayout"><a href="#2-AutoLayout" class="headerlink" title="#2.AutoLayout"></a>#2.AutoLayout</h2><p>2012年 iOS6 发布，随之而来的设备是 4.0 英寸的 iPhone 5，我们需要适配的屏幕尺寸多了一个。为了减少开发者的适配工作量，苹果提供了基于<code>约束</code>的<code>AutoLayout</code>，即自动布局这一适配方案。<code>约束</code>条件控制了各控件之间的位置关系，且不局限于子控件与其父视图之间了，任意两个控件之间都可以设置约束关系。<br>&amp;emsp;</p>
 <p>2.1.故事板中开启自动布局：</p>
 <p><img src="https://davidlii.nos-eastchina1.126.net/pic_autolayout.png" alt="AutoLayout"></p>
 <p>2.2.代码中设置约束：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">_mTitle.translatesAutoresizingMaskIntoConstraints = NO;</span><br><span class="line">//mTitle 宽度 100</span><br><span class="line">NSLayoutConstraint *widthcons = [NSLayoutConstraint constraintWithItem:_mTitle</span><br><span class="line">                             attribute:NSLayoutAttributeWidth</span><br><span class="line">                             relatedBy:NSLayoutRelationEqual</span><br><span class="line">                                toItem:nil</span><br><span class="line">                             attribute:NSLayoutAttributeNotAnAttribute</span><br><span class="line">                            multiplier:1.f</span><br><span class="line">                              constant:100.f];</span><br><span class="line">//mTitle 在self.view中水平居中</span><br><span class="line">NSLayoutConstraint *deltXcons =[NSLayoutConstraint constraintWithItem:_mTitle</span><br><span class="line">                                                            attribute:NSLayoutAttributeCenterX</span><br><span class="line">                                                            relatedBy:NSLayoutRelationEqual</span><br><span class="line">                                                               toItem:self.view</span><br><span class="line">                                                            attribute:NSLayoutAttributeCenterX</span><br><span class="line">                                                           multiplier:1.f</span><br><span class="line">                                                             constant:0];</span><br><span class="line">//mTitle 在self.view中垂直居中</span><br><span class="line">NSLayoutConstraint *deltYcons =[NSLayoutConstraint constraintWithItem:_mTitle</span><br><span class="line">                                                            attribute:NSLayoutAttributeCenterY</span><br><span class="line">                                                            relatedBy:NSLayoutRelationEqual</span><br><span class="line">                                                               toItem:self.view</span><br><span class="line">                                                            attribute:NSLayoutAttributeCenterY</span><br><span class="line">                                                           multiplier:1.f</span><br><span class="line">                                                             constant:0];</span><br><span class="line">[self.view addConstraint:widthcons];</span><br><span class="line">[self.view addConstraint:deltXcons];</span><br><span class="line">[self.view addConstraint:deltYcons];</span><br><span class="line">__weak typeof(self) wSf = self;</span><br><span class="line">[UIView animateWithDuration:0.5 animations:^&#123;</span><br><span class="line">    __strong typeof(wSf) sSf = wSf;</span><br><span class="line">    [sSf.mTitle layoutIfNeeded];</span><br><span class="line">&#125;];</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">_mTitle.translatesAutoresizingMaskIntoConstraints = NO;</span><br><span class="line">//mTitle 宽度 100</span><br><span class="line">NSLayoutConstraint *widthcons = [NSLayoutConstraint constraintWithItem:_mTitle</span><br><span class="line">                             attribute:NSLayoutAttributeWidth</span><br><span class="line">                             relatedBy:NSLayoutRelationEqual</span><br><span class="line">                                toItem:nil</span><br><span class="line">                             attribute:NSLayoutAttributeNotAnAttribute</span><br><span class="line">                            multiplier:1.f</span><br><span class="line">                              constant:100.f];</span><br><span class="line">//mTitle 在self.view中水平居中</span><br><span class="line">NSLayoutConstraint *deltXcons =[NSLayoutConstraint constraintWithItem:_mTitle</span><br><span class="line">                                                            attribute:NSLayoutAttributeCenterX</span><br><span class="line">                                                            relatedBy:NSLayoutRelationEqual</span><br><span class="line">                                                               toItem:self.view</span><br><span class="line">                                                            attribute:NSLayoutAttributeCenterX</span><br><span class="line">                                                           multiplier:1.f</span><br><span class="line">                                                             constant:0];</span><br><span class="line">//mTitle 在self.view中垂直居中</span><br><span class="line">NSLayoutConstraint *deltYcons =[NSLayoutConstraint constraintWithItem:_mTitle</span><br><span class="line">                                                            attribute:NSLayoutAttributeCenterY</span><br><span class="line">                                                            relatedBy:NSLayoutRelationEqual</span><br><span class="line">                                                               toItem:self.view</span><br><span class="line">                                                            attribute:NSLayoutAttributeCenterY</span><br><span class="line">                                                           multiplier:1.f</span><br><span class="line">                                                             constant:0];</span><br><span class="line">[self.view addConstraint:widthcons];</span><br><span class="line">[self.view addConstraint:deltXcons];</span><br><span class="line">[self.view addConstraint:deltYcons];</span><br><span class="line">__weak typeof(self) wSf = self;</span><br><span class="line">[UIView animateWithDuration:0.5 animations:^&#123;</span><br><span class="line">    __strong typeof(wSf) sSf = wSf;</span><br><span class="line">    [sSf.mTitle layoutIfNeeded];</span><br><span class="line">&#125;];</span><br></pre></td></tr></table></figure>
+
 <ul>
 <li>参数1：attribute</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">typedef NS_ENUM(NSInteger, NSLayoutAttribute) &#123;</span><br><span class="line">    NSLayoutAttributeLeft = 1,</span><br><span class="line">    NSLayoutAttributeRight,</span><br><span class="line">    NSLayoutAttributeTop,</span><br><span class="line">    NSLayoutAttributeBottom,</span><br><span class="line">    NSLayoutAttributeLeading,</span><br><span class="line">    NSLayoutAttributeTrailing,</span><br><span class="line">    NSLayoutAttributeWidth,</span><br><span class="line">    NSLayoutAttributeHeight,</span><br><span class="line">    NSLayoutAttributeCenterX,</span><br><span class="line">    NSLayoutAttributeCenterY,</span><br><span class="line">    NSLayoutAttributeLastBaseline,</span><br><span class="line">    NSLayoutAttributeBaseline NS_SWIFT_UNAVAILABLE(&quot;Use &apos;lastBaseline&apos; instead&quot;) = NSLayoutAttributeLastBaseline,</span><br><span class="line">    NSLayoutAttributeFirstBaseline NS_ENUM_AVAILABLE_IOS(8_0),</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    NSLayoutAttributeLeftMargin NS_ENUM_AVAILABLE_IOS(8_0),</span><br><span class="line">    NSLayoutAttributeRightMargin NS_ENUM_AVAILABLE_IOS(8_0),</span><br><span class="line">    NSLayoutAttributeTopMargin NS_ENUM_AVAILABLE_IOS(8_0),</span><br><span class="line">    NSLayoutAttributeBottomMargin NS_ENUM_AVAILABLE_IOS(8_0),</span><br><span class="line">    NSLayoutAttributeLeadingMargin NS_ENUM_AVAILABLE_IOS(8_0),</span><br><span class="line">    NSLayoutAttributeTrailingMargin NS_ENUM_AVAILABLE_IOS(8_0),</span><br><span class="line">    NSLayoutAttributeCenterXWithinMargins NS_ENUM_AVAILABLE_IOS(8_0),</span><br><span class="line">    NSLayoutAttributeCenterYWithinMargins NS_ENUM_AVAILABLE_IOS(8_0),</span><br><span class="line">    </span><br><span class="line">    NSLayoutAttributeNotAnAttribute = 0</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">typedef NS_ENUM(NSInteger, NSLayoutAttribute) &#123;</span><br><span class="line">    NSLayoutAttributeLeft = 1,</span><br><span class="line">    NSLayoutAttributeRight,</span><br><span class="line">    NSLayoutAttributeTop,</span><br><span class="line">    NSLayoutAttributeBottom,</span><br><span class="line">    NSLayoutAttributeLeading,</span><br><span class="line">    NSLayoutAttributeTrailing,</span><br><span class="line">    NSLayoutAttributeWidth,</span><br><span class="line">    NSLayoutAttributeHeight,</span><br><span class="line">    NSLayoutAttributeCenterX,</span><br><span class="line">    NSLayoutAttributeCenterY,</span><br><span class="line">    NSLayoutAttributeLastBaseline,</span><br><span class="line">    NSLayoutAttributeBaseline NS_SWIFT_UNAVAILABLE(&quot;Use &#x27;lastBaseline&#x27; instead&quot;) = NSLayoutAttributeLastBaseline,</span><br><span class="line">    NSLayoutAttributeFirstBaseline NS_ENUM_AVAILABLE_IOS(8_0),</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    NSLayoutAttributeLeftMargin NS_ENUM_AVAILABLE_IOS(8_0),</span><br><span class="line">    NSLayoutAttributeRightMargin NS_ENUM_AVAILABLE_IOS(8_0),</span><br><span class="line">    NSLayoutAttributeTopMargin NS_ENUM_AVAILABLE_IOS(8_0),</span><br><span class="line">    NSLayoutAttributeBottomMargin NS_ENUM_AVAILABLE_IOS(8_0),</span><br><span class="line">    NSLayoutAttributeLeadingMargin NS_ENUM_AVAILABLE_IOS(8_0),</span><br><span class="line">    NSLayoutAttributeTrailingMargin NS_ENUM_AVAILABLE_IOS(8_0),</span><br><span class="line">    NSLayoutAttributeCenterXWithinMargins NS_ENUM_AVAILABLE_IOS(8_0),</span><br><span class="line">    NSLayoutAttributeCenterYWithinMargins NS_ENUM_AVAILABLE_IOS(8_0),</span><br><span class="line">    </span><br><span class="line">    NSLayoutAttributeNotAnAttribute = 0</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
 <ul>
 <li>参数2：relation</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">typedef NS_ENUM(NSInteger, NSLayoutRelation) &#123;</span><br><span class="line">    NSLayoutRelationLessThanOrEqual = -1,</span><br><span class="line">    NSLayoutRelationEqual = 0,</span><br><span class="line">    NSLayoutRelationGreaterThanOrEqual = 1,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">typedef NS_ENUM(NSInteger, NSLayoutRelation) &#123;</span><br><span class="line">    NSLayoutRelationLessThanOrEqual = -1,</span><br><span class="line">    NSLayoutRelationEqual = 0,</span><br><span class="line">    NSLayoutRelationGreaterThanOrEqual = 1,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
 <ul>
 <li>参数3：multiplier</li>
 </ul>
-<p>比例或者倍数，最终约束的值 = multiplier * constant。</p>
+<p>比例或者倍数，最终约束的值 &#x3D; multiplier * constant。</p>
 <ul>
 <li>参数4：constant</li>
 </ul>
 <p>默认倍数为1时的约束的值。</p>
-<p>&emsp;</p>
+<p>&amp;emsp;</p>
 <p><strong>注意事项：</strong></p>
 <ul>
 <li>在添加约束之前，须确保控件已经添加到父视图中；</li>
@@ -177,17 +187,18 @@
 <li>Regular（宽大型）</li>
 <li>Any（任意，即compact或者Regular）</li>
 </ul>
-<p>这三种抽象尺寸的组合，可以描述任意类型的设备及其横竖屏状态、splitView等，比如：<br>&emsp;</p>
+<p>这三种抽象尺寸的组合，可以描述任意类型的设备及其横竖屏状态、splitView等，比如：<br>&amp;emsp;</p>
 <p>（w<strong>R</strong> h<strong>R</strong>）表示横竖屏状态下全屏的iPad：</p>
 <p><img src="https://davidlii.nos-eastchina1.126.net/pic_sizeclasses1.png" alt="sizeclass1"><br><img src="https://davidlii.nos-eastchina1.126.net/pic_sizeclasses2.png" alt="sizeclass2"></p>
-<p>（w<strong>C</strong> h<strong>R</strong>）表示竖屏状态下的iPhone，或者iPad上 1/3 的 splitView：</p>
+<p>（w<strong>C</strong> h<strong>R</strong>）表示竖屏状态下的iPhone，或者iPad上 1&#x2F;3 的 splitView：</p>
 <p><img src="https://davidlii.nos-eastchina1.126.net/pic_sizeclasses3.png" alt="sizeclass3"></p>
 <p>（w<strong>C</strong> h<strong>C</strong>）表示横屏状态下的非 plus 版iPhone：</p>
 <p><img src="https://davidlii.nos-eastchina1.126.net/pic_sizeclasses4.png" alt="sizeclass4"></p>
 <p>（w<strong>R</strong> h<strong>C</strong>）表示横屏状态下的 plus 版iPhone：</p>
 <p><img src="https://davidlii.nos-eastchina1.126.net/pic_sizeclasses5.png" alt="sizeclass5"></p>
 <p>需要注意：<code>SizeClasses</code>只是对设备尺寸的抽象，真正的布局还需要依赖并开启<code>AutoLayout</code>。</p>
-<h2 id="4-布局接口"><a href="#4-布局接口" class="headerlink" title="#4.布局接口"></a>#4.布局接口</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (void)layoutSubviews;</span><br></pre></td></tr></table></figure>
+<h2 id="4-布局接口"><a href="#4-布局接口" class="headerlink" title="#4.布局接口"></a>#4.布局接口</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (void)layoutSubviews;</span><br></pre></td></tr></table></figure>
+
 <p>系统会在视图需要重新计算其<code>frame</code>时调用此方法，这些情况包括：</p>
 <ul>
 <li>改变了视图的 frame；</li>
@@ -195,25 +206,34 @@
 <li>改变了视图层级，如新增子视图；</li>
 <li>屏幕旋转了；</li>
 </ul>
-<p>你也可以重写此方法，以便自定义视图及其子视图的布局信息。<br>&emsp;</p>
+<p>你也可以重写此方法，以便自定义视图及其子视图的布局信息。<br>&amp;emsp;</p>
 <p>此方法由系统自动调用，不建议我们手动调用。真有需要时使用 [view layoutIfNeeded] 来让系统自动触发此方法。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (void)layoutIfNeeded;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (void)layoutIfNeeded;</span><br></pre></td></tr></table></figure>
+
 <p>告诉布局系统<code>立即</code>更新布局。比如你更新了约束并想立刻开始位移动画时，手动调用此方法即可。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (void)setNeedsLayout;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (void)setNeedsLayout;</span><br></pre></td></tr></table></figure>
+
 <p>将视图标记为需要更新布局，但不会立马进行，而是在下一个 update cycle 中进行。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (void)drawRect:(CGRect)rect;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (void)drawRect:(CGRect)rect;</span><br></pre></td></tr></table></figure>
+
 <p>若需要在当前视图上绘制自定义的内容，则重写此方法。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-  void)setNeedsDisplay;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-  void)setNeedsDisplay;</span><br></pre></td></tr></table></figure>
+
 <p>将视图标记为需要重绘，其实质是 layer 的重绘，最终会触发-drawRect:方法。</p>
-<h2 id="5-约束的属性-amp-接口"><a href="#5-约束的属性-amp-接口" class="headerlink" title="#5.约束的属性&amp;接口"></a>#5.约束的属性&amp;接口</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">/* By default, the autoresizing mask on a view gives rise to </span><br><span class="line">constraints that fully determine the view&apos;s position. </span><br><span class="line">This allows the auto layout system to track the frames of views </span><br><span class="line">whose layout is controlled manually (through -setFrame:, for example).</span><br><span class="line">When you elect to position the view using auto layout by </span><br><span class="line">adding your own constraints, you must set this property to NO. </span><br><span class="line">IB will do this for you.</span><br><span class="line"> */</span><br><span class="line">BOOL translatesAutoresizingMaskIntoConstraints; // Default YES</span><br></pre></td></tr></table></figure>
+<h2 id="5-约束的属性-amp-接口"><a href="#5-约束的属性-amp-接口" class="headerlink" title="#5.约束的属性&amp;接口"></a>#5.约束的属性&amp;接口</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">/* By default, the autoresizing mask on a view gives rise to </span><br><span class="line">constraints that fully determine the view&#x27;s position. </span><br><span class="line">This allows the auto layout system to track the frames of views </span><br><span class="line">whose layout is controlled manually (through -setFrame:, for example).</span><br><span class="line">When you elect to position the view using auto layout by </span><br><span class="line">adding your own constraints, you must set this property to NO. </span><br><span class="line">IB will do this for you.</span><br><span class="line"> */</span><br><span class="line">BOOL translatesAutoresizingMaskIntoConstraints; // Default YES</span><br></pre></td></tr></table></figure>
+
 <p>这是<code>Autoresizing</code>时代的产物，使用 IB 创建视图时，此属性默认为 NO；纯代码添加视图时，其默认值为 YES。当我们需要手动添加和修改约束时，需要将此属性置为 NO。因为视图的 AutoresizingMask 会被转换成对应效果的约束。这样很可能与我们手动添加的其它约束有冲突。此属性设置成 NO 时，AutoresizingMask 就不会变成约束，即当前视图的 AutoresizingMask 失效了。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (BOOL)needsUpdateConstraints;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (BOOL)needsUpdateConstraints;</span><br></pre></td></tr></table></figure>
+
 <p>“Constraint-based layout system” 使用此返回值去决定是否需要调用 updateConstraints 作为正常布局过程的一部分。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (void)updateConstraints;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (void)updateConstraints;</span><br></pre></td></tr></table></figure>
+
 <p>系统更新约束，自定义 view 时可以重写此方法，在其中添加 view 需要的局部 contraints。注意：要在实现在最后调用 [super updateConstraints]。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (void)updateConstraintsIfNeeded;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (void)updateConstraintsIfNeeded;</span><br></pre></td></tr></table></figure>
+
 <p>立即触发约束更新，自动更新布局。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (void)setNeedsUpdateConstraints;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (void)setNeedsUpdateConstraints;</span><br></pre></td></tr></table></figure>
+
 <p>当有约束需要更新时，调用此方法来标记这些约束需要在未来的某个点更新，系统之后调用 updateConstraints。</p>
 <h2 id="6-自动布局过程"><a href="#6-自动布局过程" class="headerlink" title="#6.自动布局过程"></a>#6.自动布局过程</h2><p><code>updating constraints</code> -&gt; <code>layout</code> -&gt; <code>display</code>，每一个步骤都依赖于上一步。</p>
 <ul>
@@ -239,26 +259,27 @@
 <li>viewWillDisAppear</li>
 <li>viewDidDisAppear</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">/* Base implementation sends -updateConstraints to the view.</span><br><span class="line">When a view has a view controller, this message is sent </span><br><span class="line">to the view controller during the autolayout updateConstraints </span><br><span class="line">pass in lieu of sending updateConstraints directly to the view.</span><br><span class="line"></span><br><span class="line">You may override this method in a UIViewController subclass for </span><br><span class="line">updating custom constraints instead of subclassing your view </span><br><span class="line">and overriding -[UIView updateConstraints].</span><br><span class="line"></span><br><span class="line">Overrides must call super or send -updateConstraints to the view.</span><br><span class="line">*/</span><br><span class="line">- (void)updateViewConstraints;</span><br></pre></td></tr></table></figure>
-<p>注意，这个<code>-updateViewConstraints</code>方法是 UIViewController 中的，不是 UIView 中的<code>-updateConstraints</code>方法。。“view 属于某个 VC”（比如 self.view），当此 view 需要执行<code>updateConstraints</code>时，会调用 VC 的<code>updateViewConstraints</code>，这样就不用你再自定义此 view 并重写其<code>updateConstraints</code>方法了。方法中需要调用其 super 方法。这个方法的默认实现是调用其所有 subview 的 updateConstraints 方法，这样就自上而下的完成了布局。<br>&emsp;</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">/* Base implementation sends -updateConstraints to the view.</span><br><span class="line">When a view has a view controller, this message is sent </span><br><span class="line">to the view controller during the autolayout updateConstraints </span><br><span class="line">pass in lieu of sending updateConstraints directly to the view.</span><br><span class="line"></span><br><span class="line">You may override this method in a UIViewController subclass for </span><br><span class="line">updating custom constraints instead of subclassing your view </span><br><span class="line">and overriding -[UIView updateConstraints].</span><br><span class="line"></span><br><span class="line">Overrides must call super or send -updateConstraints to the view.</span><br><span class="line">*/</span><br><span class="line">- (void)updateViewConstraints;</span><br></pre></td></tr></table></figure>
+
+<p>注意，这个<code>-updateViewConstraints</code>方法是 UIViewController 中的，不是 UIView 中的<code>-updateConstraints</code>方法。。“view 属于某个 VC”（比如 self.view），当此 view 需要执行<code>updateConstraints</code>时，会调用 VC 的<code>updateViewConstraints</code>，这样就不用你再自定义此 view 并重写其<code>updateConstraints</code>方法了。方法中需要调用其 super 方法。这个方法的默认实现是调用其所有 subview 的 updateConstraints 方法，这样就自上而下的完成了布局。<br>&amp;emsp;</p>
 <p>另外，updateViewConstraints、viewWillLayoutSubviews、viewDidLayoutSubviews 在当前 vc 布局过程中可能会被多次调用，这三个方法在离开当前控制器时也会被调用。</p>
 <h2 id="8-小结"><a href="#8-小结" class="headerlink" title="#8.小结"></a>#8.小结</h2><p>除了<code>self.view</code>外，其他视图的实际 frame 要在以下两个方法执行完之后才能确定：</p>
 <ul>
 <li>view 的 layoutSubViews;</li>
 <li>VC 的 viewDidLayoutSubviews;</li>
 </ul>
-<p>所以，当我们真的需要 frame 时要在这个两个时间点以后再去获取。这就是 viewDidLoad 里通过<code>setFrame</code>的方式修改原先在xib里拖动的约束代码无效的症结所在。因为 updateViewConstraints 在 viewDidLoad 后执行，会覆盖掉之前的设置的frame，所以无效。<br>&emsp;</p>
+<p>所以，当我们真的需要 frame 时要在这个两个时间点以后再去获取。这就是 viewDidLoad 里通过<code>setFrame</code>的方式修改原先在xib里拖动的约束代码无效的症结所在。因为 updateViewConstraints 在 viewDidLoad 后执行，会覆盖掉之前的设置的frame，所以无效。<br>&amp;emsp;</p>
 <p>另外需要注意一点：在使用 sb 或者 xib 加载 VC 时，viewDidLoad 中只有 self.view 的 frame 信息是准确的，其他所有的控件的 frame 都是它们在 sb 或 xib 中的原始尺寸，与当前设备可能不符。</p>
 <hr>
 <p>相关参考：</p>
-<p>#<a href="https://blog.csdn.net/zpz5789/article/details/50922469" target="_blank" rel="noopener">©zpz5789-Updating constraints、Layout</a></p>
+<p>#<a target="_blank" rel="noopener" href="https://blog.csdn.net/zpz5789/article/details/50922469">©zpz5789-Updating constraints、Layout</a></p>
 </section>
     <!-- Tags START -->
     
       <div class="tags">
         <span>Tags:</span>
         
-  <a href="/tags#FQA">
+  <a href="/tags#FQA" >
     <span class="tag-code">FQA</span>
   </a>
 
@@ -322,7 +343,7 @@
   <div class="toc-main">
     <strong class="toc-title">Catalog</strong>
     
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-Autoresizing"><span class="toc-nav-text">#1.Autoresizing</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-AutoLayout"><span class="toc-nav-text">#2.AutoLayout</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-SizeClasses"><span class="toc-nav-text">#3.SizeClasses</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-布局接口"><span class="toc-nav-text">#4.布局接口</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#5-约束的属性-amp-接口"><span class="toc-nav-text">#5.约束的属性&amp;接口</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#6-自动布局过程"><span class="toc-nav-text">#6.自动布局过程</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#7-VC中视图的布局过程"><span class="toc-nav-text">#7.VC中视图的布局过程</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#8-小结"><span class="toc-nav-text">#8.小结</span></a></li></ol>
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-Autoresizing"><span class="toc-nav-text">#1.Autoresizing</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-AutoLayout"><span class="toc-nav-text">#2.AutoLayout</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-SizeClasses"><span class="toc-nav-text">#3.SizeClasses</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-%E5%B8%83%E5%B1%80%E6%8E%A5%E5%8F%A3"><span class="toc-nav-text">#4.布局接口</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#5-%E7%BA%A6%E6%9D%9F%E7%9A%84%E5%B1%9E%E6%80%A7-amp-%E6%8E%A5%E5%8F%A3"><span class="toc-nav-text">#5.约束的属性&amp;接口</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#6-%E8%87%AA%E5%8A%A8%E5%B8%83%E5%B1%80%E8%BF%87%E7%A8%8B"><span class="toc-nav-text">#6.自动布局过程</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#7-VC%E4%B8%AD%E8%A7%86%E5%9B%BE%E7%9A%84%E5%B8%83%E5%B1%80%E8%BF%87%E7%A8%8B"><span class="toc-nav-text">#7.VC中视图的布局过程</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#8-%E5%B0%8F%E7%BB%93"><span class="toc-nav-text">#8.小结</span></a></li></ol>
     
   </div>
 </aside>
@@ -418,9 +439,9 @@
 </div>
     <footer class="app-footer">
   <p class="copyright">
-    &copy; 2020 | <a href="https://github.com/davidlii" target="_blank">Davidli</a>
+    &copy; 2022 | <a href="https://github.com/davidlii" target="_blank">Davidli</a>
     <br>
-    <a href="https://hexo.io" target="_blank">Hexo</a> | Theme-<a href="https://github.com/yanm1ng">yanm1ng</a>
+    <a href="https://hexo.io" target="_blank">Hexo</a> | Theme-<a target="_blank" rel="noopener" href="https://github.com/yanm1ng">yanm1ng</a>
   </p>
 </footer>
 
@@ -461,6 +482,8 @@
 </script>
 <!-- Baidu Tongji -->
 
+
 <script src="/js/script.js"></script>
+
   </body>
 </html>
