@@ -133,6 +133,88 @@
   
     <article class="article-card">
       <h2 class="article-head">
+        <a href="/2019/02/25/launch.html">App 的启动过程</a>
+      </h2>
+      <p class="article-date">February 25, 2019</p>
+      
+        
+  <a href="/tags#编译与启动" >
+    <span class="tag-code">编译与启动</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          
+文章整理自 头条技术 和 DevilH 等的博客，具体请看最后的参考链接。
+
+启动过程分解应用启动的过程可分为两步：
+
+t（总）&#x3D; t1（main函数之前） + t2（main函数之后）
+
+t1：加载系统动态库和应用可执行文件；
+t2：构建界面并完成渲染和展示：main函数到-a ...
+        
+      </div>
+      <a class="more" href="/2019/02/25/launch.html">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2019/02/15/compile.html">编译器</a>
+      </h2>
+      <p class="article-date">February 15, 2019</p>
+      
+        
+  <a href="/tags#编译与启动" >
+    <span class="tag-code">编译与启动</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          1.编译&#x2F;解释型语言
+编译型语言
+
+代码须编译成机器码才能在CPU上执行的语言，如OC和Swift，其优点是代码执行效率高。
+
+解释型语言
+
+解释型语言，如 JavaScript 和 Python，代码不需要经过编译器，而是通过解释器直接将代码解释成CPU可以执行的代码。编写灵活， ...
+        
+      </div>
+      <a class="more" href="/2019/02/15/compile.html">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2018/12/12/static-dynamic.html">派发机制</a>
+      </h2>
+      <p class="article-date">December 12, 2018</p>
+      
+        
+  <a href="/tags#runtime" >
+    <span class="tag-code">runtime</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          函数&#x2F;方法把代码内聚到一处并对外暴露函数名，这提高了代码的复用性，也对外隐藏了具体的实现过程。根据函数名找到具体的函数实现，这就是函数派发的过程。函数派发的机制分两种：
+
+静态派发
+动态派发
+
+
+一、静态派发
+static dispatch is a form of polymor ...
+        
+      </div>
+      <a class="more" href="/2018/12/12/static-dynamic.html">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
         <a href="/2018/10/09/algorithm.html">常用排序算法</a>
       </h2>
       <p class="article-date">October 9, 2018</p>
@@ -152,6 +234,51 @@
         
       </div>
       <a class="more" href="/2018/10/09/algorithm.html">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2018/09/15/swift-dynamic.html">Swift-@objc\@objcMember\dynamic</a>
+      </h2>
+      <p class="article-date">September 15, 2018</p>
+      
+        
+  <a href="/tags#Swift" >
+    <span class="tag-code">Swift</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          1.@objc将Swift中的元素暴露给OC运行时，以便在OC中调用Swift代码。
+常见的，如Swift中给按钮添加点击事件时，需要给selector添加@objc标记。因为SEL是OC运行时中的特性，runtime根据SEL查找函数的实现。要将按钮回调函数暴露给OC运行时，需要将其标记为 ...
+        
+      </div>
+      <a class="more" href="/2018/09/15/swift-dynamic.html">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2018/09/14/swift-map.html">Swift高阶函数</a>
+      </h2>
+      <p class="article-date">September 14, 2018</p>
+      
+        
+  <a href="/tags#Swift" >
+    <span class="tag-code">Swift</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          1.map遍历集合并对每个元素执行相同的操作，从而将元素映射成新值并放在数组中返回，新值可以是原类型也可以是新的类型。
+
+对数组
+
+1234//将元素映射成string类型let intArr = [0,1,2]let newArr = intArr.map &#123; &quot;\($ ...
+        
+      </div>
+      <a class="more" href="/2018/09/14/swift-map.html">Read more</a>
     </article>
   
     <article class="article-card">
@@ -186,33 +313,6 @@ class 的实例可被多个对象引用
         
       </div>
       <a class="more" href="/2018/09/13/swift-faq.html">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2018/09/05/static-dynamic.html">派发机制</a>
-      </h2>
-      <p class="article-date">September 5, 2018</p>
-      
-        
-  <a href="/tags#runtime" >
-    <span class="tag-code">runtime</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          函数&#x2F;方法把代码内聚到一处并对外暴露函数名，这提高了代码的复用性，也对外隐藏了具体的实现过程。根据函数名找到具体的函数实现，这就是函数派发的过程。函数派发的机制分两种：
-
-静态派发
-动态派发
-
-
-一、静态派发
-static dispatch is a form of polymor ...
-        
-      </div>
-      <a class="more" href="/2018/09/05/static-dynamic.html">Read more</a>
     </article>
   
     <article class="article-card">
@@ -260,7 +360,7 @@ static dispatch is a form of polymor ...
   
     <article class="article-card">
       <h2 class="article-head">
-        <a href="/2018/08/20/swift-refcycle.html">Swift闭包对变量的捕获 & 循环引用</a>
+        <a href="/2018/08/20/swift-refcycle.html">Swift闭包捕获变量&循环引用</a>
       </h2>
       <p class="article-date">August 20, 2018</p>
       
@@ -281,110 +381,6 @@ A closure can capture constants and variables from the surrounding context in wh
         
       </div>
       <a class="more" href="/2018/08/20/swift-refcycle.html">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2018/08/02/resign.html">ipa 重新签名</a>
-      </h2>
-      <p class="article-date">August 2, 2018</p>
-      
-        
-  <a href="/tags#逆向工程" >
-    <span class="tag-code">逆向工程</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          1、需求：
-非企业证书签名的 ipa 想要在企业内分发。
-对商店中下载的应用砸壳并修改内容后，希望重新打包并安装到手机上；
-
-这些都需要对ipa重新签名~
-2、原理移除原有签名，通过codesign工具对原 ipa 使用新证书重新签名并得到新的安装包。
-12345$ codesignUsag ...
-        
-      </div>
-      <a class="more" href="/2018/08/02/resign.html">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2018/07/27/iosreverse.html">iOS 应用逆向工程</a>
-      </h2>
-      <p class="article-date">July 27, 2018</p>
-      
-        
-  <a href="/tags#逆向工程" >
-    <span class="tag-code">逆向工程</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          一般来说，软件逆向工程可以看作系统分析和代码分析两个阶段的有机结合。在系统分析阶段，我们从整体上观察目标程序的行为特征，文件的组织架构，从而找到我们感兴趣的地方。代码分析阶段，利用各种工具对程序本身的二进制文件进行分析，从而了解目标软件的实现，进而借鉴其设计思路、内部算法、反思教训等。
-1. ...
-        
-      </div>
-      <a class="more" href="/2018/07/27/iosreverse.html">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2018/07/23/fast-github.html">Github 访问慢的解决方案</a>
-      </h2>
-      <p class="article-date">July 23, 2018</p>
-      
-        
-  <a href="/tags#FQA" >
-    <span class="tag-code">FQA</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          Github为国外网站，所以域名解析时速度慢的。。解决此问题有俩方法：
-
-挂VPN
-修改hosts配置
-
-本文讲的是第二种，修改hosts文件，具体步骤如下：
-#1、打开host文件
-直接通过Finder
-
-快捷键 command + shift + G，输入“&#x2F;etc”，回车即可 ...
-        
-      </div>
-      <a class="more" href="/2018/07/23/fast-github.html">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2018/07/15/launch.html">App 的启动过程</a>
-      </h2>
-      <p class="article-date">July 15, 2018</p>
-      
-        
-  <a href="/tags#编译与启动" >
-    <span class="tag-code">编译与启动</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          
-文章整理自 头条技术 和 DevilH 等的博客，具体请看最后的参考链接。
-
-启动过程分解应用启动的过程可分为两步：
-
-t（总）&#x3D; t1（main函数之前） + t2（main函数之后）
-
-t1：加载系统动态库和应用可执行文件；
-t2：构建界面并完成渲染和展示：main函数到-a ...
-        
-      </div>
-      <a class="more" href="/2018/07/15/launch.html">Read more</a>
     </article>
   
 

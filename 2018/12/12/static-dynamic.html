@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="This is Davidli&#39;s blog ~">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" type="image/ico" href="/image/logo.png"/> 
+  
+  <title>
+    
+      派发机制 | Davidli
+    
+  </title>
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+
+  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+  
+<script src="/js/qrious.js"></script>
+<script src="/js/gitment.js"></script>
+
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>Davidli</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Davidli</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Davidli</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>派发机制</h2>
+  <p class="post-date">2018-12-12</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><p>函数&#x2F;方法把代码内聚到一处并对外暴露函数名，这提高了代码的复用性，也对外隐藏了具体的实现过程。根据函数名找到具体的函数实现，这就是函数派发的过程。函数派发的机制分两种：</p>
+<ul>
+<li>静态派发</li>
+<li>动态派发</li>
+</ul>
+<hr>
+<h3 id="一、静态派发"><a href="#一、静态派发" class="headerlink" title="一、静态派发"></a>一、静态派发</h3><blockquote>
+<p>static dispatch is a form of polymorphism fully resolved during compile time. It is a form of method dispatch, which describes how a language or environment will select which implementation of a method or function to use.</p>
+</blockquote>
+<blockquote>
+<p>Dynamic dispatch contrasts with static dispatch, in which the implementation of a polymorphic operation is selected at compile-time. </p>
+</blockquote>
+<p>静态派发机制下，“方法的实现在编译期就已确定”，即编译器在编译期就已经能确定函数具体实现的位置在哪。调用函数时，runtime 会直接跳转到函数的内存地址上执行具体的实现。<br>&amp;emsp;</p>
+<p><strong>优点</strong>：执行快、性能好、编译器能进行内联等优化。<br>&amp;emsp;</p>
+<p><strong>缺点</strong>：缺乏动态性，函数实现在运行期不能修改，无法满足某些特定的需求，比如在运行时替换某个方法。</p>
+<h3 id="二、动态派发"><a href="#二、动态派发" class="headerlink" title="二、动态派发"></a>二、动态派发</h3><blockquote>
+<p>Dynamic dispatch is the process of selecting which implementation of a polymorphic operation (method or function) to call at run time. </p>
+</blockquote>
+<p>动态派发，是指“在运行时决定方法调用哪个实现”的过程。动态派发机制产生的原因是面向对象语言的多态性。动态派发机制下，编译器在编译期还不知道函数的具体实现是哪个；在执行函数时<code>runtime</code>才会根据函数名去函数表中查找并执行具体的实现。每种语言都有自己的机制来支持动态派发，例如swift支持函数表派发、消息派发~<br>&amp;emsp;</p>
+<p><strong>缺点</strong>：需要查表，执行效率相对低一些。</p>
+<h4 id="2-1-函数表派发"><a href="#2-1-函数表派发" class="headerlink" title="2.1.函数表派发"></a>2.1.函数表派发</h4><p>这是<code>编译型语言</code>最常采用的函数派发机制。编译器在编译期为每个类创建一个与之相关联的函数表<code>virtual table</code>，即<code>vtable</code>。它是一个由函数指针组成的数组，指针指向的是函数的具体实现。<br>&amp;emsp;</p>
+<p>#<a target="_blank" rel="noopener" href="https://www.raizlabs.com/dev/2016/12/swift-method-dispatch/?utm_campaign=This+Week+in+Swift">示例1</a>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">class ParentClass &#123;</span><br><span class="line">    func method1() &#123;&#125;</span><br><span class="line">    func method2() &#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line">class ChildClass: ParentClass &#123;</span><br><span class="line">    override func method2() &#123;&#125;</span><br><span class="line">    func method3() &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>编译器会创建两个 dispatch table：</p>
+<p><img src="https://davidlii.nos-eastchina1.126.net/pic_virtual_dispatch.png" alt="table dispatch"></p>
+<p>调用某个方法：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">let obj = ChildClass()</span><br><span class="line">obj.method2()</span><br></pre></td></tr></table></figure>
+
+<p>派发流程：</p>
+<ol>
+<li>runtime 会先去读取 <code>函数表</code> 0xB00；</li>
+<li>根据函数的索引去读取函数指针：function2 索引值是 1，所以去读取 0xB00 + 1；</li>
+<li>最后跳转到函数对应的内存地址 0x222 上执行具体的实现。</li>
+</ol>
+<h4 id="2-2-消息派发"><a href="#2-2-消息派发" class="headerlink" title="2.2.消息派发"></a>2.2.消息派发</h4><p>这是OC中的派发机制，OC中方法的调用会被转化为消息：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">objc_msgSend(id self, SEL op, ...)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>参数1：调用者；</li>
+<li>参数2：调用的方法；</li>
+<li>省略号：方法的N个参数。</li>
+</ul>
+<p>派发流程：</p>
+<ol>
+<li>方法的调用者会通过<code>isa</code>指针找到其所属的类。</li>
+<li>runtime 会先去<code>cache</code>中查找对应的方法；</li>
+<li>若<code>cache</code>中没有找到则去<code>methodLists</code>中查找。</li>
+<li>找到后通过函数指针跳转到对应的实现中执行，并将方法加入到<code>cache</code>中以便下次查找；</li>
+<li>如果<code>methodLists</code>中也没找到，则继续顺着继承关系到父类中查找；</li>
+<li>如果直到根类 NSObject 都还没找到则会尝试<code>动态方法决议</code>或<code>消息转发</code>机制；</li>
+<li>如果没有实现这两种机制，则方法的调用会因找不到对应的实现而报运行时错误。</li>
+</ol>
+<p>消息派发机制是这三种派发机制中最具动态性的，你可以用<code>swizzling</code>黑魔法修改函数的实现；也可以用<code>isa-swizzling</code>修改对象本身，如KVO的<a target="_blank" rel="noopener" href="https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/KeyValueObserving/Articles/KVOImplementation.html#//apple_ref/doc/uid/20002307-BAJEAIEE">底层实现</a>。<br>&amp;emsp;</p>
+<p>另外，Swift 作为静态语言天然支持静态派发，但它也用到了OC的<code>runtime library</code>，所以同样支持消息派发。</p>
+<hr>
+<h2 id="三、Swift的派发机制"><a href="#三、Swift的派发机制" class="headerlink" title="三、Swift的派发机制"></a>三、Swift的派发机制</h2><p>Swift 的函数派发机制因函数定义的位置、特别声明等而异：<br>&amp;emsp;</p>
+<table>
+<thead>
+<tr>
+<th align="center">设定</th>
+<th align="center">静态派发</th>
+<th align="center">函数表派发</th>
+<th align="center">消息派发</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">特别声明</td>
+<td align="center">static &#x2F; final</td>
+<td align="center">-</td>
+<td align="center">dynamic</td>
+</tr>
+<tr>
+<td align="center">class</td>
+<td align="center">extensions</td>
+<td align="center">initial declaration</td>
+<td align="center">标注为@objc的extensions</td>
+</tr>
+<tr>
+<td align="center">protocol</td>
+<td align="center">extensions</td>
+<td align="center">initial declaration</td>
+<td align="center">-</td>
+</tr>
+<tr>
+<td align="center">value type</td>
+<td align="center">all func</td>
+<td align="center">-</td>
+<td align="center">-</td>
+</tr>
+<tr>
+<td align="center">&amp;emsp;</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+</tbody></table>
+<p>#静态派发：</p>
+<ol>
+<li><code>static</code> 或 <code>final</code> 标注的函数不能被重写，所以不具有多态性，使用静态派发；</li>
+<li><code>final</code> 标注的类会失去所有动态的能力，其中的函数也是使用静态派发；</li>
+<li>Enum、Struct 是值类型，不能继承别的类型也就没有重写一说，其函数总是静态派发；</li>
+<li>协议的扩展中定义的函数是静态派发；</li>
+<li>类的扩展中定义的函数，除了标记为<code>@objc</code>的外，其他都是静态派发。</li>
+</ol>
+<p>#动态派发：</p>
+<ol>
+<li>类或协议中声明的原始函数，使用的是函数表派发；</li>
+<li>继承自NSObject或其子类的Swift类中，被重写的OC类的函数使用的还是OC的消息派发；</li>
+<li>由 <code>dynamic</code> 标记的函数使用的是消息派发；</li>
+<li>Extensions 中标记为<code>@objc</code>的函数使用的是消息派发。</li>
+</ol>
+<p>#示例2：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">protocol Eat &#123;</span><br><span class="line">    func eat()  //函数表派发</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">extension Eat &#123;</span><br><span class="line">    func eat() &#123;//函数表派发</span><br><span class="line">        print(&quot;eat()协议方法的默认实现，不是重写哦（swift分类中不能重写原类中已有的方法）~&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">    func drink() &#123;//静态派发</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Sheep: Eat &#123;</span><br><span class="line">    func eat() &#123;//函数表派发</span><br><span class="line">        print(&quot;eat的实现&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">    func drink() &#123;//函数表派发</span><br><span class="line">        print(&quot;dink的实现&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">    @objc func run() &#123;&#125; //消息派发</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">extension Sheep &#123;</span><br><span class="line">    func jump() &#123;&#125; //静态派发</span><br><span class="line">    @objc func sleep() &#123;&#125; //消息派发</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">enum DiceNumber : Int &#123;</span><br><span class="line">    case one = 1</span><br><span class="line">    case two</span><br><span class="line">    case three</span><br><span class="line">    case four</span><br><span class="line">    case five</span><br><span class="line">    case six</span><br><span class="line">    </span><br><span class="line">    mutating func updateDirection(num:DiceNumber) &#123;//静态派发</span><br><span class="line">        self = num</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">struct Dice &#123;</span><br><span class="line">    var slides = 6</span><br><span class="line">    func random(dice: DiceNumber) -&gt; Int &#123;//静态派发</span><br><span class="line">        return dice.rawValue</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="四、动-x2F-静态语言"><a href="#四、动-x2F-静态语言" class="headerlink" title="四、动&#x2F;静态语言"></a>四、动&#x2F;静态语言</h2><p>动态&#x2F;静态语言一般是指动态&#x2F;静态编程语言，强调的是“程序在运行期是否可扩展”。</p>
+<h4 id="4-1-动态语言"><a href="#4-1-动态语言" class="headerlink" title="4.1.动态语言"></a>4.1.动态语言</h4><blockquote>
+<p>Dynamic programming language, in computer science, is a class of high-level programming languages which, at runtime, execute many common programming behaviors that static programming languages perform during compilation. These behaviors could include extension of the program, by adding new code, by extending objects and definitions, or by modifying the type system. </p>
+</blockquote>
+<p>动态语言是程序在运行期可以扩展的一类语言，包括：添加新代码、扩展对象或定义、修改类型系统。常见的动态语言有：<code>JavaScript</code>、<code>Python</code>、<code>Ruby</code>、<code>PHP</code>以及<code>OC</code>。</p>
+<h4 id="4-2-静态语言"><a href="#4-2-静态语言" class="headerlink" title="4.2.静态语言"></a>4.2.静态语言</h4><p>静态语言是与动态语言相对应，运行期程序不可扩展。常见的静态语言有：<code>Java</code>、<code>C</code>、<code>C++</code>。<br>&amp;emsp;</p>
+<p>Swift 也是静态语言，Swift 中声明的方法、属性在编译期就已经确定。同时 Swift 也支持动态绑定和派发，只不过需要将类中的属性、方法标注为 <code>@objc</code>和<code>dynamic</code>，这样 Swift 的动态特性就可以使用 OC 的运行时机制来实现。</p>
+<h2 id="五、动-x2F-静态类型语言"><a href="#五、动-x2F-静态类型语言" class="headerlink" title="五、动&#x2F;静态类型语言"></a>五、动&#x2F;静态类型语言</h2><p>静态&#x2F;动态类型语言强调的是“数据类型”在何时确定。</p>
+<h4 id="5-1-静态类型语言"><a href="#5-1-静态类型语言" class="headerlink" title="5.1.静态类型语言"></a>5.1.静态类型语言</h4><p>静态类型语言，是数据类型在编译期就确定下来的语言，一般在使用变量之前要明确声明变量的类型。代表语言有：<code>C</code>、<code>C++</code>、<code>C#</code>、<code>Java</code>、<code>Delphi</code>以及<code>OC</code>。</p>
+<h4 id="5-2-动态类型语言"><a href="#5-2-动态类型语言" class="headerlink" title="5.2.动态类型语言"></a>5.2.动态类型语言</h4><p>动态类型语言，是在运行期间才去做数据类型检查的语言。一般变量在使用之前不需要明确声明类型，被赋值时才知道数据具体的类型。代表语言有：<code>Python</code>、<code>Ruby</code>以及一些脚本语言如<code>JavaScript</code>。</p>
+<hr>
+<p>相关参考：</p>
+<p>#<a target="_blank" rel="noopener" href="https://blog.csdn.net/lvxiangan/article/details/78391281">©CSDN</a></p>
+<p>#<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Dynamic_programming_language">©维基百科-Dynamic programming language</a></p>
+<p>#<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Type_system">©维基百科-Type_system</a></p>
+<p>#<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Dynamic_dispatch">©维基百科-Dynamic dispatch</a></p>
+<p>#<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Static_dispatch">©维基百科-Static dispatch</a></p>
+<p>#<a target="_blank" rel="noopener" href="https://trinhngocthuyen.github.io/2017-09-25-method-dispatch-in-swift.html">©Method dispatch in Swift</a></p>
+<p>#<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/7272e46d47f4">©简书-alvin_wang</a></p>
+<p>#<a target="_blank" rel="noopener" href="https://www.raizlabs.com/dev/2016/12/swift-method-dispatch/?utm_campaign=This+Week+in+Swift">©BRIAN KING</a></p>
+<p>#<a target="_blank" rel="noopener" href="https://github.com/devedbox/SwiftWT/wiki/Dynamic-Swift">©devedbox-Dynamic Swift</a></p>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#runtime" >
+    <span class="tag-code">runtime</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2018/10/09/algorithm.html">
+        <span class="nav-arrow">← </span>
+        
+          常用排序算法
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2019/02/15/compile.html">
+        
+          编译器
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E4%B8%80%E3%80%81%E9%9D%99%E6%80%81%E6%B4%BE%E5%8F%91"><span class="toc-nav-text">一、静态派发</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E4%BA%8C%E3%80%81%E5%8A%A8%E6%80%81%E6%B4%BE%E5%8F%91"><span class="toc-nav-text">二、动态派发</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-1-%E5%87%BD%E6%95%B0%E8%A1%A8%E6%B4%BE%E5%8F%91"><span class="toc-nav-text">2.1.函数表派发</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-2-%E6%B6%88%E6%81%AF%E6%B4%BE%E5%8F%91"><span class="toc-nav-text">2.2.消息派发</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E4%B8%89%E3%80%81Swift%E7%9A%84%E6%B4%BE%E5%8F%91%E6%9C%BA%E5%88%B6"><span class="toc-nav-text">三、Swift的派发机制</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E5%9B%9B%E3%80%81%E5%8A%A8-x2F-%E9%9D%99%E6%80%81%E8%AF%AD%E8%A8%80"><span class="toc-nav-text">四、动&#x2F;静态语言</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#4-1-%E5%8A%A8%E6%80%81%E8%AF%AD%E8%A8%80"><span class="toc-nav-text">4.1.动态语言</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#4-2-%E9%9D%99%E6%80%81%E8%AF%AD%E8%A8%80"><span class="toc-nav-text">4.2.静态语言</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E4%BA%94%E3%80%81%E5%8A%A8-x2F-%E9%9D%99%E6%80%81%E7%B1%BB%E5%9E%8B%E8%AF%AD%E8%A8%80"><span class="toc-nav-text">五、动&#x2F;静态类型语言</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#5-1-%E9%9D%99%E6%80%81%E7%B1%BB%E5%9E%8B%E8%AF%AD%E8%A8%80"><span class="toc-nav-text">5.1.静态类型语言</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#5-2-%E5%8A%A8%E6%80%81%E7%B1%BB%E5%9E%8B%E8%AF%AD%E8%A8%80"><span class="toc-nav-text">5.2.动态类型语言</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'http://yoursite.com/2018/12/12/static-dynamic.html';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+     // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+        
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+
+    // qrcode
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+
+    // gitment
+    var gitmentConfig = "";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "派发机制",
+        owner: "",
+        repo: "",
+        oauth: {
+          client_id: "",
+          client_secret: ""
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  })();
+</script>
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2022 | <a href="https://github.com/davidlii" target="_blank">Davidli</a>
+    <br>
+    <a href="https://hexo.io" target="_blank">Hexo</a> | Theme-<a target="_blank" rel="noopener" href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

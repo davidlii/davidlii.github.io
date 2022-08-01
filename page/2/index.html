@@ -133,59 +133,28 @@
   
     <article class="article-card">
       <h2 class="article-head">
-        <a href="/2019/05/25/RAC-async.html">RAC-异步行为</a>
+        <a href="/2019/08/31/podspec.html">搭建自己的pod库</a>
       </h2>
-      <p class="article-date">May 25, 2019</p>
+      <p class="article-date">August 31, 2019</p>
       
         
-  <a href="/tags#源码" >
-    <span class="tag-code">源码</span>
+  <a href="/tags#架构" >
+    <span class="tag-code">架构</span>
   </a>
 
       
       <div class="article-summary">
         
-          前言OC中的异步行为：
+          前言使用三方库时基本的语法是：
+1pod &#x27;pod-Name&#x27;
 
-block
-delegate
-KVO
-通知
-target-action机制
+之后通过以下命令导入此库:
+1pod install
 
-异步行为的共同点：
-
-何时触发并不确定，观察者需要等待其触发时的回调；
-异步行为的创建和触发并不在同一块区域，往往是分开的。
-
-异步行为的缺点：
-
-异步行为的创建和回调相对分散，这不符合代 ...
+pod会从官方索引库中查找并导入此三方库。有时我们不希望自己的库对外公开，如只在公司范围内使用，这时就可以在代码托管平台发布一个私有库，导入库时通过: ...
         
       </div>
-      <a class="more" href="/2019/05/25/RAC-async.html">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2019/05/25/RAC-signal.html">RAC-信号与订阅者</a>
-      </h2>
-      <p class="article-date">May 25, 2019</p>
-      
-        
-  <a href="/tags#源码" >
-    <span class="tag-code">源码</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          一.信号1.信号是啥RAC文档 中关于RACSignal的描述:
-
-A signal, represented by the RACSignal class, is a push-driven stream.Signals generally represent data that will ...
-        
-      </div>
-      <a class="more" href="/2019/05/25/RAC-signal.html">Read more</a>
+      <a class="more" href="/2019/08/31/podspec.html">Read more</a>
     </article>
   
     <article class="article-card">
@@ -283,83 +252,35 @@ frida官网：https://www.frida.re/docs/home ...
   
     <article class="article-card">
       <h2 class="article-head">
-        <a href="/2018/12/07/str-modifier.html">字符串属性的修饰符</a>
+        <a href="/2019/03/25/code_confusion.html">代码混淆、shell 脚本自动替换</a>
       </h2>
-      <p class="article-date">December 7, 2018</p>
+      <p class="article-date">March 25, 2019</p>
       
         
-  <a href="/tags#内存管理" >
-    <span class="tag-code">内存管理</span>
+  <a href="/tags#逆向工程" >
+    <span class="tag-code">逆向工程</span>
   </a>
 
       
       <div class="article-summary">
         
-          日常实践中，我们经常要声明一些字符串属性，包括NSString和NSMutableString，而字符串最常用的修饰符就要数strong和copy了。这两个修饰符对字符串有什么影响呢？
-1.不可变源字符串#示例1：用 NSString 赋值
-1234567891011121314151617 ...
+          1、逆向&amp;破解：
+通过 dumpdecrypted 给 APP 砸壳；
+通过 class-dump 查看 .h文件里的函数；
+通过 Hopper、IDA Pro 等工具反编译后分析业务代码；
+通过 Reveal 在运行时调试和修改 iOS应用的 UI；
+
+2、混淆代码类名、方法名、变 ...
         
       </div>
-      <a class="more" href="/2018/12/07/str-modifier.html">Read more</a>
+      <a class="more" href="/2019/03/25/code_confusion.html">Read more</a>
     </article>
   
     <article class="article-card">
       <h2 class="article-head">
-        <a href="/2018/11/18/load-initialize.html">+load 与 +initialize</a>
+        <a href="/2019/03/23/shell-ipa.html">Shell脚本打包与上传</a>
       </h2>
-      <p class="article-date">November 18, 2018</p>
-      
-        
-  <a href="/tags#FQA" >
-    <span class="tag-code">FQA</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          有时，我们需要在应用启动阶段，或者类初始化之前处理一些指定的需求，这时你可能需要这俩方法：
-12+ (void)load;+ (void)initialize;
-
-1.load
-Invoked whenever a class or category is added to the Obje ...
-        
-      </div>
-      <a class="more" href="/2018/11/18/load-initialize.html">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2018/10/22/draw.html">图层</a>
-      </h2>
-      <p class="article-date">October 22, 2018</p>
-      
-        
-  <a href="/tags#FQA" >
-    <span class="tag-code">FQA</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          1.图层的绘制图层，即CALayer的绘有两种实现方案：
-
-自己绘制；
-交给代理对象绘制。
-
-1.1.自己绘制图层自己绘制时，需要重写 -drawInContext 方法，具体步骤为：
-
-调用 CALayer 对象的 setNeedsDisplay 方法触发重绘；
-重写 drawInCont ...
-        
-      </div>
-      <a class="more" href="/2018/10/22/draw.html">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2018/10/14/shell-ipa.html">Shell脚本打包与上传</a>
-      </h2>
-      <p class="article-date">October 14, 2018</p>
+      <p class="article-date">March 23, 2019</p>
       
         
   <a href="/tags#效率" >
@@ -377,7 +298,74 @@ Invoked whenever a class or category is added to the Obje ...
 自动化：这里所说的自动化，主要是通过shell脚本，利用 Command Line Tools 提供的 xcodebuild 命令来编译和导出 ipa，再通过 Application Loader  ...
         
       </div>
-      <a class="more" href="/2018/10/14/shell-ipa.html">Read more</a>
+      <a class="more" href="/2019/03/23/shell-ipa.html">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2019/03/22/iosreverse.html">iOS 应用逆向工程</a>
+      </h2>
+      <p class="article-date">March 22, 2019</p>
+      
+        
+  <a href="/tags#逆向工程" >
+    <span class="tag-code">逆向工程</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          一般来说，软件逆向工程可以看作系统分析和代码分析两个阶段的有机结合。在系统分析阶段，我们从整体上观察目标程序的行为特征，文件的组织架构，从而找到我们感兴趣的地方。代码分析阶段，利用各种工具对程序本身的二进制文件进行分析，从而了解目标软件的实现，进而借鉴其设计思路、内部算法、反思教训等。
+1. ...
+        
+      </div>
+      <a class="more" href="/2019/03/22/iosreverse.html">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2019/03/16/mach_o.html">Mach-O</a>
+      </h2>
+      <p class="article-date">March 16, 2019</p>
+      
+        
+  <a href="/tags#逆向工程" >
+    <span class="tag-code">逆向工程</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          &amp;emsp;Xcode 构建一个程序的过程中，会把源文件 (.m 和 .h) 文件转换为一个可执行文件（Mach-O executable）。这个可执行文件中包含的字节码将会被 CPU (iOS 设备中的 ARM 处理器或 Mac 上的 Intel 处理器) 执行。当然，我们也可以不 ...
+        
+      </div>
+      <a class="more" href="/2019/03/16/mach_o.html">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2019/03/15/resign.html">ipa 重新签名</a>
+      </h2>
+      <p class="article-date">March 15, 2019</p>
+      
+        
+  <a href="/tags#逆向工程" >
+    <span class="tag-code">逆向工程</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          1、需求：
+非企业证书签名的 ipa 想要在企业内分发。
+对商店中下载的应用砸壳并修改内容后，希望重新打包并安装到手机上；
+
+这些都需要对ipa重新签名~
+2、原理移除原有签名，通过codesign工具对原 ipa 使用新证书重新签名并得到新的安装包。
+12345$ codesignUsag ...
+        
+      </div>
+      <a class="more" href="/2019/03/15/resign.html">Read more</a>
     </article>
   
 

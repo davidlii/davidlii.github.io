@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="This is Davidli&#39;s blog ~">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" type="image/ico" href="/image/logo.png"/> 
+  
+  <title>
+    
+      Swift可选拆包 | Davidli
+    
+  </title>
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+
+  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+  
+<script src="/js/qrious.js"></script>
+<script src="/js/gitment.js"></script>
+
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>Davidli</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Davidli</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Davidli</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>Swift可选拆包</h2>
+  <p class="post-date">2018-08-15</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><blockquote>
+<p>You use optionals in situations where a value may be absent. An optional represents two possibilities: Either there is a value, and you can unwrap the optional to access that value, or there isn’t a value at all.</p>
+</blockquote>
+<p>可选用来表示值的或缺，当可选没有值时相当于OC中的nil，而当有值时我们需要对可选进行拆包才能取出和访问这个值。本篇将对可选的拆包方式做一次汇总~</p>
+<h3 id="1-强制拆包"><a href="#1-强制拆包" class="headerlink" title="1.强制拆包"></a>1.强制拆包</h3><blockquote>
+<p>Once you’re sure that the optional does contain a value, you can access its underlying value by adding an exclamation mark (!) to the end of the optional’s name. The exclamation mark effectively says, “I know that this optional definitely has a value; please use it.” This is known as forced unwrapping of the optional’s value:</p>
+</blockquote>
+<p>强制拆包是指当确定可选有值时，在可选后标注一个<code>!</code>，表明“我确定可选有值，请给我值”。<br>&amp;emsp;</p>
+<p>#示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">let possibleNumber = &quot;123&quot;</span><br><span class="line">let convertedNumber = Int(possibleNumber)</span><br><span class="line">// convertedNumber is inferred to be of type &quot;Int?&quot;, or &quot;optional Int&quot;</span><br><span class="line"></span><br><span class="line">print(&quot;convertedNumber has an integer value of \(convertedNumber!).&quot;) // 这个convertedNumber!即为强制拆包</span><br><span class="line"></span><br><span class="line">// Prints &quot;convertedNumber has an integer value of 123.&quot;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-可选绑定"><a href="#2-可选绑定" class="headerlink" title="2.可选绑定"></a>2.可选绑定</h3><blockquote>
+<p>You use optional binding to find out whether an optional contains a value, and if so, to make that value available as a temporary constant or variable. Optional binding can be used with if and while statements to check for a value inside an optional, and to extract that value into a constant or variable, as part of a single action.</p>
+</blockquote>
+<p>可选绑定是当可选有值时将值绑定到一个临时变量或常量中的一种方法，多用在<code>if</code>和<code>while</code>语句中。</p>
+<p>&amp;emsp;</p>
+<p>#示例1：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">if let actualNumber = Int(possibleNumber) &#123; // 有值时绑定到临时常量actualNumber中</span><br><span class="line">    print(&quot;The string \&quot;\(possibleNumber)\&quot; has an integer value of \(actualNumber)&quot;)</span><br><span class="line">&#125; else &#123;</span><br><span class="line">    print(&quot;The string \&quot;\(possibleNumber)\&quot; could not be converted to an integer&quot;)</span><br><span class="line">&#125;</span><br><span class="line">// Prints &quot;The string &quot;123&quot; has an integer value of 123&quot;</span><br></pre></td></tr></table></figure>
+
+<p>#示例2：if中多个可选绑定组合</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">if let firstNumber = Int(&quot;4&quot;), let secondNumber = Int(&quot;42&quot;), firstNumber &lt; secondNumber &amp;&amp; secondNumber &lt; 100 &#123;</span><br><span class="line">    print(&quot;\(firstNumber) &lt; \(secondNumber) &lt; 100&quot;)</span><br><span class="line">&#125;</span><br><span class="line">// Prints &quot;4 &lt; 42 &lt; 100&quot;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-隐式拆包变量声明"><a href="#3-隐式拆包变量声明" class="headerlink" title="3.隐式拆包变量声明"></a>3.隐式拆包变量声明</h3><blockquote>
+<p>Sometimes it’s clear from a program’s structure that an optional will always have a value, after that value is first set. In these cases, it’s useful to remove the need to check and unwrap the optional’s value every time it’s accessed, because it can be safely assumed to have a value all of the time.<br>These kinds of optionals are defined as implicitly unwrapped optionals. You write an implicitly unwrapped optional by placing an exclamation mark (String!) rather than a question mark (String?) after the type that you want to make optional.</p>
+</blockquote>
+<p>有时当可选被首次赋值之后，能确定此可选后续必定有值，且不会再被设置为nil。这时为了不必每次访问可选变量时都进行拆包或检查，可在声明可选时往其后面标注一个<code>!</code>，这种可选就是隐式拆包的可选。<br>&amp;emsp;</p>
+<p>使用隐式拆包可选时，可以像普通可选一样进行可选绑定，也可以像非可选变量一样不必在其后加<code>!</code>：<br>&amp;emsp;</p>
+<p>#示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">let possibleString: String? = &quot;An optional string.&quot;</span><br><span class="line">let forcedString: String = possibleString! // requires an exclamation mark</span><br><span class="line"></span><br><span class="line">let assumedString: String! = &quot;An implicitly unwrapped optional string.&quot;</span><br><span class="line">let implicitString: String = assumedString // no need for an exclamation mark</span><br><span class="line"></span><br><span class="line">if let definiteString = assumedString &#123;</span><br><span class="line">    print(definiteString)</span><br><span class="line">&#125;</span><br><span class="line">// Prints &quot;An implicitly unwrapped optional string.&quot;</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-可选链"><a href="#4-可选链" class="headerlink" title="4.可选链"></a>4.可选链</h3><blockquote>
+<p>Optional chaining is a process for querying and calling properties, methods, and subscripts on an optional that might currently be nil. If the optional contains a value, the property, method, or subscript call succeeds; if the optional is nil, the property, method, or subscript call returns nil. Multiple queries can be chained together, and the entire chain fails gracefully if any link in the chain is nil.</p>
+</blockquote>
+<p>当可选对象调用属性、方法或下标时，可选本身可能为nil。如果为nil，则调用失败；如果不为nil，则调用成功。<br>&amp;emsp;</p>
+<p>多个调用可以链接到一起并返回一个可选值，一旦其中某个调用返回nil时，整个调用链就会失败。<br>&amp;emsp;</p>
+<p>#示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">class Person &#123;</span><br><span class="line">    var residence: Residence?</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Residence &#123;</span><br><span class="line">    var numberOfRooms: Int &#123;</span><br><span class="line">        get &#123;</span><br><span class="line">            print(&quot;++numberOfRooms is 1)&quot;)</span><br><span class="line">            return 1</span><br><span class="line">        &#125;</span><br><span class="line">        set &#123;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">let john = Person()</span><br><span class="line">let opt = john.residence?.numberOfRooms // opt is a Int? type</span><br><span class="line"></span><br><span class="line">if let roomCount = opt &#123;</span><br><span class="line">    print(&quot;John&#x27;s residence has \(roomCount) room(s).&quot;)</span><br><span class="line">&#125; else &#123;</span><br><span class="line">    print(&quot;Unable to retrieve the number of rooms.&quot;)</span><br><span class="line">&#125;</span><br><span class="line">// Prints &quot;Unable to retrieve the number of rooms.&quot;</span><br></pre></td></tr></table></figure>
+
+<p>这里的”john.residence?.numberOfRooms”就是一个可选链，此可选链返回一个<code>Int?</code>类型的可选<code>opt</code>，将其拆包即可。<br>&amp;emsp;</p>
+<p>变量<code>john</code>初始化时其<code>residence</code>对象并未赋值，即为nil，所以整个可选链调用失败，也不会再访问后续的<code>numberOfRooms</code>属性。因为可选链失败了，所以对<code>opt</code>进行可选绑定时取不到值，因此输出最后一行~</p>
+<h3 id="5-空合运算符"><a href="#5-空合运算符" class="headerlink" title="5.空合运算符??"></a>5.空合运算符??</h3><blockquote>
+<p>The nil-coalescing operator (a ?? b) unwraps an optional a if it contains a value, or returns a default value b if a is nil. The expression a is always of an optional type. The expression b must match the type that is stored inside a.</p>
+</blockquote>
+<p>空合运算符在可选<code>a</code>有值时会对<code>a</code>进行拆包并返回拆包后的值<code>a!</code>；如果可选<code>a</code>没有值则返回默认值<code>b</code>。<br>&amp;emsp;</p>
+<p><code>b</code>的值必须与<code>a</code>的类型一致。<br>&amp;emsp;</p>
+<p>空合运算符是下面代码的缩写:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a != nil ? a! : b</span><br></pre></td></tr></table></figure>
+
+<h3 id="6-guard模式匹配"><a href="#6-guard模式匹配" class="headerlink" title="6.guard模式匹配"></a>6.guard模式匹配</h3><blockquote>
+<p>A guard statement, like an if statement, executes statements depending on the Boolean value of an expression. You use a guard statement to require that a condition must be true in order for the code after the guard statement to be executed. Unlike an if statement, a guard statement always has an else clause—the code inside the else clause is executed if the condition is not true.</p>
+</blockquote>
+<p><code>guard</code>和<code>if</code>语句一样，都是根据紧随其后的 Boolean 型表达式而决定后续行为，不同的是<code>guard</code>的声明中一定要有一个<code>else</code>代码块。在<code>guard</code>语句中，如果表达式为真才会继续执行<code>guard</code>声明之后的代码，否则就执行其<code>else</code>代码块中的代码。<br>&amp;emsp;</p>
+<p>基于这些，我们可以像在<code>if</code>语句中一样，在<code>guard</code>中使用可选绑定进行拆包。<br>&amp;emsp;</p>
+<p>#示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">func greet(person: [String: String]) &#123;</span><br><span class="line">    guard let name = person[&quot;name&quot;] else &#123; // 可选绑定</span><br><span class="line">        return</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    print(&quot;Hello \(name)!&quot;)</span><br><span class="line"></span><br><span class="line">    guard let location = person[&quot;location&quot;] else &#123; // 可选绑定</span><br><span class="line">        print(&quot;I hope the weather is nice near you.&quot;)</span><br><span class="line">        return</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    print(&quot;I hope the weather is nice in \(location).&quot;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">greet(person: [&quot;name&quot;: &quot;John&quot;])</span><br><span class="line">// Prints &quot;Hello John!&quot;</span><br><span class="line">// Prints &quot;I hope the weather is nice near you.&quot;</span><br><span class="line">greet(person: [&quot;name&quot;: &quot;Jane&quot;, &quot;location&quot;: &quot;Cupertino&quot;])</span><br><span class="line">// Prints &quot;Hello Jane!&quot;</span><br><span class="line">// Prints &quot;I hope the weather is nice in Cupertino.&quot;</span><br></pre></td></tr></table></figure>
+
+<h3 id="结尾"><a href="#结尾" class="headerlink" title="结尾"></a>结尾</h3><p>以上几种就是常见的拆包方法，1和3是强制拆包，有可能出错所以不安全，建议使用其他几种方法进行拆包~</p>
+<hr>
+<p>相关参考：</p>
+<p>#<a target="_blank" rel="noopener" href="https://docs.swift.org/swift-book/LanguageGuide/TheBasics.html">©Swift.org</a></p>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#Swift" >
+    <span class="tag-code">Swift</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2018/07/23/fast-github.html">
+        <span class="nav-arrow">← </span>
+        
+          Github 访问慢的解决方案
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2018/08/16/swift-as.html">
+        
+          Swift-is/as类型检查
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-nav-text">前言</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1-%E5%BC%BA%E5%88%B6%E6%8B%86%E5%8C%85"><span class="toc-nav-text">1.强制拆包</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-%E5%8F%AF%E9%80%89%E7%BB%91%E5%AE%9A"><span class="toc-nav-text">2.可选绑定</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-%E9%9A%90%E5%BC%8F%E6%8B%86%E5%8C%85%E5%8F%98%E9%87%8F%E5%A3%B0%E6%98%8E"><span class="toc-nav-text">3.隐式拆包变量声明</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#4-%E5%8F%AF%E9%80%89%E9%93%BE"><span class="toc-nav-text">4.可选链</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#5-%E7%A9%BA%E5%90%88%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="toc-nav-text">5.空合运算符??</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#6-guard%E6%A8%A1%E5%BC%8F%E5%8C%B9%E9%85%8D"><span class="toc-nav-text">6.guard模式匹配</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E7%BB%93%E5%B0%BE"><span class="toc-nav-text">结尾</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'http://yoursite.com/2018/08/15/swift-unwrap.html';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+     // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+        
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+
+    // qrcode
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+
+    // gitment
+    var gitmentConfig = "";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "Swift可选拆包",
+        owner: "",
+        repo: "",
+        oauth: {
+          client_id: "",
+          client_secret: ""
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  })();
+</script>
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2022 | <a href="https://github.com/davidlii" target="_blank">Davidli</a>
+    <br>
+    <a href="https://hexo.io" target="_blank">Hexo</a> | Theme-<a target="_blank" rel="noopener" href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

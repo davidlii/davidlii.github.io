@@ -133,6 +133,64 @@
   
     <article class="article-card">
       <h2 class="article-head">
+        <a href="/2017/11/22/http.html">网络知识点笔记</a>
+      </h2>
+      <p class="article-date">November 22, 2017</p>
+      
+        
+  <a href="/tags#网络" >
+    <span class="tag-code">网络</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          #1.网络分层
+应用层
+表示层
+会话层
+传输层
+网络层
+数据链路层
+物理层
+
+#2.术语2.1.TCP
+传输控制协议：传输层协议之一；
+面向连接：传输数据前需要三次握手建立连接；
+稳定可靠：传输数据时有响应、重发、拥堵控制机制；
+时效性低：握手、响应、重发等机制会消耗大量时间，占用大量系统资 ...
+        
+      </div>
+      <a class="more" href="/2017/11/22/http.html">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2017/11/21/lock.html">iOS中的八大锁</a>
+      </h2>
+      <p class="article-date">November 21, 2017</p>
+      
+        
+  <a href="/tags#多线程" >
+    <span class="tag-code">多线程</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          1.锁防止在多线程(多任务)的情况下对共享资源(临界资源)的脏读或者脏写。也可以理解为：执行多线程时用于强行限制资源访问的同步机制，即并发控制中保证互斥的要求。
+1.1.分类
+Mutex 互斥锁
+Spin lock 自旋锁
+Condition Variable 条件变量
+Read&#x2F; ...
+        
+      </div>
+      <a class="more" href="/2017/11/21/lock.html">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
         <a href="/2017/11/17/nsoperation.html">多线程：NSOperation</a>
       </h2>
       <p class="article-date">November 17, 2017</p>
@@ -318,52 +376,6 @@ OC允许给分类增加属性，但不会自动生成getter、setter函数，因
         
       </div>
       <a class="more" href="/2017/08/25/runtime_ivar.html">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2017/08/23/runtime_message.html">Runtime：消息机制</a>
-      </h2>
-      <p class="article-date">August 23, 2017</p>
-      
-        
-  <a href="/tags#runtime" >
-    <span class="tag-code">runtime</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          1.id在objc/objc.h中，id的定义如下：
-12345678/// Represents an instance of a class.struct objc_object &#123;Class isa  OBJC_ISA_AVAILABILITY;&#125;;/// A po ...
-        
-      </div>
-      <a class="more" href="/2017/08/23/runtime_message.html">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2017/08/22/runtime_metaclass.html">Runtime：元类</a>
-      </h2>
-      <p class="article-date">August 22, 2017</p>
-      
-        
-  <a href="/tags#runtime" >
-    <span class="tag-code">runtime</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          1.runtimeruntime，直译过来是运行时，它是一套底层的C语言API，包含很多强大实用的C语言数据类型和C语言函数。我们的OC代码在运行阶段都是基于runtime环境才能正常运行的。
-2.常用场景
-发送消息；
-读取成员变量；
-动态为某个类增加属性；
-交换类中的方法、动态为某个类添加 ...
-        
-      </div>
-      <a class="more" href="/2017/08/22/runtime_metaclass.html">Read more</a>
     </article>
   
 

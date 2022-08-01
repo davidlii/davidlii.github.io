@@ -133,9 +133,9 @@
   
     <article class="article-card">
       <h2 class="article-head">
-        <a href="/2020/05/09/dart.html">Dart语言入门</a>
+        <a href="/2022/01/09/dart.html">Dart语言入门</a>
       </h2>
-      <p class="article-date">May 9, 2020</p>
+      <p class="article-date">January 9, 2022</p>
       
         
   <a href="/tags#Flutter" >
@@ -151,7 +151,213 @@ Dart is a client-optimized language for fast apps on any platform.
 Dart是谷歌开发的计算机编程语言，可用于移动应用、网页、服务器等领域。它是一门面向对象的语言，也是强类型的、类定义的、单继承的语言，支持接口、混 ...
         
       </div>
-      <a class="more" href="/2020/05/09/dart.html">Read more</a>
+      <a class="more" href="/2022/01/09/dart.html">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2021/06/06/RAC-sig-filter.html">RAC-数据的过滤与转换</a>
+      </h2>
+      <p class="article-date">June 6, 2021</p>
+      
+        
+  <a href="/tags#源码" >
+    <span class="tag-code">源码</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          前言信号在订阅后就可以接收回调的数据了，有时候我们需要对收到的数据进行过滤或者转换后才能继续使用。&amp;emsp;
+例如发送按钮的userInteractionEnabled状态需要依请求的isFnished状态而定：请求发送后未完成则按钮不可点击，请求成功返回后按钮可点击。这种场景下我 ...
+        
+      </div>
+      <a class="more" href="/2021/06/06/RAC-sig-filter.html">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2021/06/01/RAC-sig-order.html">RAC-信号的组合</a>
+      </h2>
+      <p class="article-date">June 1, 2021</p>
+      
+        
+  <a href="/tags#源码" >
+    <span class="tag-code">源码</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          前言项目中往往有多个信号在执行任务，而这些信号之间通常要按照一定的方式或顺序进行组合。比如：
+
+先要用户登录成功才能加载通讯录；
+请求头像和用户信息都完成后才刷新详情页。
+
+RAC 针对诸如这些场景，设计了一套实用的API供我们组合信号：
+concat12/// Subscribes to  ...
+        
+      </div>
+      <a class="more" href="/2021/06/01/RAC-sig-order.html">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2021/05/25/RAC-async.html">RAC-异步行为</a>
+      </h2>
+      <p class="article-date">May 25, 2021</p>
+      
+        
+  <a href="/tags#源码" >
+    <span class="tag-code">源码</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          前言OC中的异步行为：
+
+block
+delegate
+KVO
+通知
+target-action机制
+
+异步行为的共同点：
+
+何时触发并不确定，观察者需要等待其触发时的回调；
+异步行为的创建和触发并不在同一块区域，往往是分开的。
+
+异步行为的缺点：
+
+异步行为的创建和回调相对分散，这不符合代 ...
+        
+      </div>
+      <a class="more" href="/2021/05/25/RAC-async.html">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2021/05/25/RAC-signal.html">RAC-信号与订阅者</a>
+      </h2>
+      <p class="article-date">May 25, 2021</p>
+      
+        
+  <a href="/tags#源码" >
+    <span class="tag-code">源码</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          一.信号1.信号是啥RAC文档 中关于RACSignal的描述:
+
+A signal, represented by the RACSignal class, is a push-driven stream.Signals generally represent data that will ...
+        
+      </div>
+      <a class="more" href="/2021/05/25/RAC-signal.html">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2020/12/21/modules-protocol.html">组件化-面向协议方案</a>
+      </h2>
+      <p class="article-date">December 21, 2020</p>
+      
+        
+  <a href="/tags#架构" >
+    <span class="tag-code">架构</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          1.前言URL和反射方案各有自己的局限性：
+
+URL路由方案支持的参数类型不够灵活；
+反射方案的中间通信层使用明文类名和接口名，硬编码极容易出错；
+两种方案中组件之间传值时需要引用对方的实体文件，这样就依然存在耦合问题；
+
+本篇将要探讨的协议+服务注册+URL+反射方案，其中的协议就很好的解 ...
+        
+      </div>
+      <a class="more" href="/2020/12/21/modules-protocol.html">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2020/11/12/modules-runtime.html">组件化-反射方案</a>
+      </h2>
+      <p class="article-date">November 12, 2020</p>
+      
+        
+  <a href="/tags#架构" >
+    <span class="tag-code">架构</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          1.前言上一篇文章中分析了组件化的目标和好处，同时梳理了基于URL+Block的路由组件化解决方案的原理、实践和优缺点。本文将继续介绍第二种解决方案：基于反射原理的组件化方案。
+2.场景从主页跳转到详情，传入详情页所需的头像；&amp;emsp;
+在详情中简单的修改信息之后，返回主页时更新主 ...
+        
+      </div>
+      <a class="more" href="/2020/11/12/modules-runtime.html">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2020/09/03/modules-url.html">组件化-URL路由方案</a>
+      </h2>
+      <p class="article-date">September 3, 2020</p>
+      
+        
+  <a href="/tags#架构" >
+    <span class="tag-code">架构</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          一、组件化1.目的为了解耦：把复杂系统拆分成多个组件，分离组件边界和责任，便于独立升级和维护。
+2.好处
+明确组件职责
+
+按合理的粒度将系统拆分成多个组件，确保组件各司其职，以便于复用。
+
+减少组件间的依赖
+
+通信层实现了组件间的通信，而不用在组件间跳转、调用服务时引用其他组件的文件。
+
+提 ...
+        
+      </div>
+      <a class="more" href="/2020/09/03/modules-url.html">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2020/09/01/patterns.html">常用架构模式</a>
+      </h2>
+      <p class="article-date">September 1, 2020</p>
+      
+        
+  <a href="/tags#架构" >
+    <span class="tag-code">架构</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          架构模式
+架构模式，用于描述软件系统里的基本的结构组织或纲要。架构模式提供了一些定义好的子系统，指定它们的责任，并给出把它们组织在一起的法则和指南。常见的架构模式有：分层模式、微核模式、管道与过滤器、MVC模式、REST模式、SOA模式。
+
+#为什么会出现架构模式？&amp;emsp;
+架构 ...
+        
+      </div>
+      <a class="more" href="/2020/09/01/patterns.html">Read more</a>
     </article>
   
     <article class="article-card">
@@ -175,204 +381,6 @@ Dart是谷歌开发的计算机编程语言，可用于移动应用、网页、�
         
       </div>
       <a class="more" href="/2020/04/17/reveal.html">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2019/12/21/modules-protocol.html">组件化-面向协议方案</a>
-      </h2>
-      <p class="article-date">December 21, 2019</p>
-      
-        
-  <a href="/tags#架构" >
-    <span class="tag-code">架构</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          1.前言URL和反射方案各有自己的局限性：
-
-URL路由方案支持的参数类型不够灵活；
-反射方案的中间通信层使用明文类名和接口名，硬编码极容易出错；
-两种方案中组件之间传值时需要引用对方的实体文件，这样就依然存在耦合问题；
-
-本篇将要探讨的协议+服务注册+URL+反射方案，其中的协议就很好的解 ...
-        
-      </div>
-      <a class="more" href="/2019/12/21/modules-protocol.html">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2019/11/12/modules-runtime.html">组件化-反射方案</a>
-      </h2>
-      <p class="article-date">November 12, 2019</p>
-      
-        
-  <a href="/tags#架构" >
-    <span class="tag-code">架构</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          1.前言上一篇文章中分析了组件化的目标和好处，同时梳理了基于URL+Block的路由组件化解决方案的原理、实践和优缺点。本文将继续介绍第二种解决方案：基于反射原理的组件化方案。
-2.场景从主页跳转到详情，传入详情页所需的头像；&amp;emsp;
-在详情中简单的修改信息之后，返回主页时更新主 ...
-        
-      </div>
-      <a class="more" href="/2019/11/12/modules-runtime.html">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2019/09/03/modules-url.html">组件化-URL路由方案</a>
-      </h2>
-      <p class="article-date">September 3, 2019</p>
-      
-        
-  <a href="/tags#架构" >
-    <span class="tag-code">架构</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          一、组件化1.目的为了解耦：把复杂系统拆分成多个组件，分离组件边界和责任，便于独立升级和维护。
-2.好处
-明确组件职责
-
-按合理的粒度将系统拆分成多个组件，确保组件各司其职，以便于复用。
-
-减少组件间的依赖
-
-通信层实现了组件间的通信，而不用在组件间跳转、调用服务时引用其他组件的文件。
-
-提 ...
-        
-      </div>
-      <a class="more" href="/2019/09/03/modules-url.html">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2019/08/31/podspec.html">搭建自己的pod库</a>
-      </h2>
-      <p class="article-date">August 31, 2019</p>
-      
-        
-  <a href="/tags#架构" >
-    <span class="tag-code">架构</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          前言使用三方库时基本的语法是：
-1pod &#x27;pod-Name&#x27;
-
-之后通过以下命令导入此库:
-1pod install
-
-pod会从官方索引库中查找并导入此三方库。有时我们不希望自己的库对外公开，如只在公司范围内使用，这时就可以在代码托管平台发布一个私有库，导入库时通过: ...
-        
-      </div>
-      <a class="more" href="/2019/08/31/podspec.html">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2019/06/20/swift-unwrap.html">Swift可选拆包汇总</a>
-      </h2>
-      <p class="article-date">June 20, 2019</p>
-      
-        
-  <a href="/tags#Swift" >
-    <span class="tag-code">Swift</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          前言
-You use optionals in situations where a value may be absent. An optional represents two possibilities: Either there is a value, and you can unw ...
-        
-      </div>
-      <a class="more" href="/2019/06/20/swift-unwrap.html">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2019/06/17/swift-as.html">Swift-is/as类型检查</a>
-      </h2>
-      <p class="article-date">June 17, 2019</p>
-      
-        
-  <a href="/tags#Swift" >
-    <span class="tag-code">Swift</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          一、前言作为面向对象的语言，OC 与 Swift 都具有多态性，有时会大量使用类簇，因此描述对象的信息成为了常见需求。
-
-判断对象在继承树上的位置；
-判断对象是否遵守了某个协议；
-
-这些都是对象内省能力的一部分，本文将尝试对 OC 和 Swift 中这些场景的实现做一次整理。
-二、OC版NS ...
-        
-      </div>
-      <a class="more" href="/2019/06/17/swift-as.html">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2019/06/06/RAC-sig-filter.html">RAC-数据的过滤与转换</a>
-      </h2>
-      <p class="article-date">June 6, 2019</p>
-      
-        
-  <a href="/tags#源码" >
-    <span class="tag-code">源码</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          前言信号在订阅后就可以接收回调的数据了，有时候我们需要对收到的数据进行过滤或者转换后才能继续使用。&amp;emsp;
-例如发送按钮的userInteractionEnabled状态需要依请求的isFnished状态而定：请求发送后未完成则按钮不可点击，请求成功返回后按钮可点击。这种场景下我 ...
-        
-      </div>
-      <a class="more" href="/2019/06/06/RAC-sig-filter.html">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2019/06/01/RAC-sig-order.html">RAC-信号的组合</a>
-      </h2>
-      <p class="article-date">June 1, 2019</p>
-      
-        
-  <a href="/tags#源码" >
-    <span class="tag-code">源码</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          前言项目中往往有多个信号在执行任务，而这些信号之间通常要按照一定的方式或顺序进行组合。比如：
-
-先要用户登录成功才能加载通讯录；
-请求头像和用户信息都完成后才刷新详情页。
-
-RAC 针对诸如这些场景，设计了一套实用的API供我们组合信号：
-concat12/// Subscribes to  ...
-        
-      </div>
-      <a class="more" href="/2019/06/01/RAC-sig-order.html">Read more</a>
     </article>
   
 

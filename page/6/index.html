@@ -133,6 +133,53 @@
   
     <article class="article-card">
       <h2 class="article-head">
+        <a href="/2017/12/22/download.html">iOS 文件下载</a>
+      </h2>
+      <p class="article-date">December 22, 2017</p>
+      
+        
+  <a href="/tags#网络" >
+    <span class="tag-code">网络</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          iOS 中实现文件下载有以下几种方式：
+一.NSDataNSData 提供了类方法实现文件下载：
+123NSURL  *aUrl = [NSURL URLWithString:@&quot;https://example.jpg&quot;];NSData *data = [NSData d ...
+        
+      </div>
+      <a class="more" href="/2017/12/22/download.html">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2017/11/28/crash.html">iOS异常捕获</a>
+      </h2>
+      <p class="article-date">November 28, 2017</p>
+      
+        
+  <a href="/tags#异常" >
+    <span class="tag-code">异常</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          线上APP获取崩溃信息的方式：
+使用系统 API 收集崩溃信息并上传到服务器。
+使用友盟、Bugly 等第三方收集分析SDK。
+使用 iTunes Connect 上的崩溃收集服务。
+
+这里暂时只讲第一种。iOS提供了异常发生时的处理API，在程序启动的时候可以添加这样的Handler，这样 ...
+        
+      </div>
+      <a class="more" href="/2017/11/28/crash.html">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
         <a href="/2017/11/27/bad_access.html">内存错误调试</a>
       </h2>
       <p class="article-date">November 27, 2017</p>
@@ -328,64 +375,6 @@ iOS程序默认情况下只能访问程序自己的目录，这个目录被称�
         
       </div>
       <a class="more" href="/2017/11/24/property.html">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2017/11/22/http.html">网络知识点笔记</a>
-      </h2>
-      <p class="article-date">November 22, 2017</p>
-      
-        
-  <a href="/tags#网络" >
-    <span class="tag-code">网络</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          #1.网络分层
-应用层
-表示层
-会话层
-传输层
-网络层
-数据链路层
-物理层
-
-#2.术语2.1.TCP
-传输控制协议：传输层协议之一；
-面向连接：传输数据前需要三次握手建立连接；
-稳定可靠：传输数据时有响应、重发、拥堵控制机制；
-时效性低：握手、响应、重发等机制会消耗大量时间，占用大量系统资 ...
-        
-      </div>
-      <a class="more" href="/2017/11/22/http.html">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2017/11/21/lock.html">iOS中的八大锁</a>
-      </h2>
-      <p class="article-date">November 21, 2017</p>
-      
-        
-  <a href="/tags#多线程" >
-    <span class="tag-code">多线程</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          1.锁防止在多线程(多任务)的情况下对共享资源(临界资源)的脏读或者脏写。也可以理解为：执行多线程时用于强行限制资源访问的同步机制，即并发控制中保证互斥的要求。
-1.1.分类
-Mutex 互斥锁
-Spin lock 自旋锁
-Condition Variable 条件变量
-Read&#x2F; ...
-        
-      </div>
-      <a class="more" href="/2017/11/21/lock.html">Read more</a>
     </article>
   
 

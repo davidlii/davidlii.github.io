@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="This is Davidli&#39;s blog ~">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" type="image/ico" href="/image/logo.png"/> 
+  
+  <title>
+    
+      图层 | Davidli
+    
+  </title>
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+
+  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+  
+<script src="/js/qrious.js"></script>
+<script src="/js/gitment.js"></script>
+
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>Davidli</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Davidli</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Davidli</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>图层</h2>
+  <p class="post-date">2017-12-29</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h3 id="1-图层的绘制"><a href="#1-图层的绘制" class="headerlink" title="1.图层的绘制"></a>1.图层的绘制</h3><p>图层，即<code>CALayer</code>的绘有两种实现方案：</p>
+<ol>
+<li>自己绘制；</li>
+<li>交给代理对象绘制。</li>
+</ol>
+<h4 id="1-1-自己绘制"><a href="#1-1-自己绘制" class="headerlink" title="1.1.自己绘制"></a>1.1.自己绘制</h4><p>图层自己绘制时，需要重写 -drawInContext 方法，具体步骤为：</p>
+<ul>
+<li>调用 CALayer 对象的 setNeedsDisplay 方法触发重绘；</li>
+<li>重写 drawInContext: 方法绘制新内容。</li>
+</ul>
+<p>#示例1.1：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">#import &quot;CustomLayer.h&quot;</span><br><span class="line"></span><br><span class="line">@implementation CustomLayer</span><br><span class="line"></span><br><span class="line">//重写drawInContext</span><br><span class="line">- (void)drawInContext:(CGContextRef)ctx</span><br><span class="line">&#123;</span><br><span class="line">    CGContextSetLineWidth(ctx, 2);</span><br><span class="line">    CGContextSetFillColorWithColor(ctx, [UIColor blueColor].CGColor);</span><br><span class="line">    CGContextSetStrokeColorWithColor(ctx, [UIColor whiteColor].CGColor);</span><br><span class="line">    </span><br><span class="line">    //贝塞尔曲线画三角形</span><br><span class="line">    UIBezierPath *aPath = [UIBezierPath bezierPath];</span><br><span class="line">    aPath.lineWidth = 2.0; //设置线宽</span><br><span class="line">    aPath.lineCapStyle = kCGLineCapRound; //线条拐角</span><br><span class="line">    aPath.lineJoinStyle = kCGLineCapRound; //终点处理</span><br><span class="line">    [aPath moveToPoint:CGPointMake(100, 50)];</span><br><span class="line">    [aPath addLineToPoint:CGPointMake(150, 100)];</span><br><span class="line">    [aPath addLineToPoint:CGPointMake(50, 100)];</span><br><span class="line">    [aPath closePath];</span><br><span class="line"></span><br><span class="line">    CGContextAddPath(ctx, aPath.CGPath);</span><br><span class="line">    CGContextDrawPath(ctx, kCGPathFillStroke);</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+
+<p>将自定义 CustomLayer 添加到视图上，调用-setNeedsDisplay触发重绘：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">#import &quot;CustomLayer.h&quot;</span><br><span class="line">@implementation ViewController</span><br><span class="line"></span><br><span class="line">- (void)viewDidAppear:(BOOL)animated</span><br><span class="line">&#123;</span><br><span class="line">    [super viewDidAppear:animated];</span><br><span class="line"></span><br><span class="line">    CustomLayer *layer = [[CustomLayer alloc] init];</span><br><span class="line">    layer.backgroundColor = [UIColor whiteColor].CGColor;</span><br><span class="line">    layer.frame = CGRectMake(100, 300, 100, 100);</span><br><span class="line">    [self.view.layer addSublayer:layer];</span><br><span class="line">    [layer setNeedsDisplay];//调用此方法触发重绘</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+
+<h4 id="1-2-代理绘制"><a href="#1-2-代理绘制" class="headerlink" title="1.2.代理绘制"></a>1.2.代理绘制</h4><p>图层内部没有实现<code>-drawInContext</code>方法时，就需要将绘制任务代理给别的对象。默认情况下，CALayer的代理是其所属的视图。代理给别的对象时，此对象需要实现 CALayerDelegate。</p>
+<ul>
+<li>设置 CALayer 的 CALayerDelegate；</li>
+<li>调用 CALayer 的-setNeedsDisplay 触发绘制；</li>
+<li>在代理方法-drawLayer:inContext:的实现中绘制内容。</li>
+</ul>
+<p>#示例1.2：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#import &quot;CustomLayer.h&quot;</span><br><span class="line"></span><br><span class="line">@implementation CustomLayer</span><br><span class="line">//这里不重写-drawInContext:方法</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+
+<p>将自定义CALayer添加到视图上，设置代理并调用-setNeedsDisplay触发重绘：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">#import &quot;CustomLayer.h&quot;</span><br><span class="line">@interface ViewController ()&lt;CALayerDelegate&gt;</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation ViewController</span><br><span class="line"></span><br><span class="line">- (void)viewDidAppear:(BOOL)animated</span><br><span class="line">&#123;</span><br><span class="line">    [super viewDidAppear:animated];</span><br><span class="line"></span><br><span class="line">    CustomLayer *layer = [[CustomLayer alloc] init];</span><br><span class="line">    layer.backgroundColor = [UIColor whiteColor].CGColor;</span><br><span class="line">    layer.frame = CGRectMake(100, 300, 100, 100);</span><br><span class="line">    layer.delegate = self;</span><br><span class="line">    [self.view.layer addSublayer:layer];</span><br><span class="line">    [layer setNeedsDisplay];//调用此方法触发重绘</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//CALayerDelegate</span><br><span class="line">-(void)drawLayer:(CALayer *)layer inContext:(CGContextRef)ctx</span><br><span class="line">&#123;</span><br><span class="line">    CGContextAddEllipseInRect(ctx, CGRectMake(0, 0, 50, 50));</span><br><span class="line">    CGContextSetRGBFillColor(ctx, 1, 0, 1, 1);</span><br><span class="line">    CGContextDrawPath(ctx, kCGPathFillStroke);</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+
+<p>如果既重写了 CustomLayer 中的-drawInContext:，又实现了 CALayerDelegate，那么最终只会在-drawInContext中进行重绘。</p>
+<h3 id="2-视图的绘制"><a href="#2-视图的绘制" class="headerlink" title="2.视图的绘制"></a>2.视图的绘制</h3><h4 id="2-1-显示原理"><a href="#2-1-显示原理" class="headerlink" title="2.1.显示原理"></a>2.1.显示原理</h4><p>通常，我们会使用UIView等控件来设置需要显示的内容，但实际上，视图本身并不负责内容的显示，甚至动画也不是在视图上执行的。从继承关系上来看，视图都直接或间接的继承自 UIResponder，从设计目标上来看视图的主要作用是处理用户交互。那么，显示和动画的工作由谁来处理呢？答案：CALayer！</p>
+<blockquote>
+<p>CALayer<br>An object that manages image-based content and allows you to perform animations on that content.</p>
+</blockquote>
+<p>视图内部默认有个.layer属性，这个<code>CALayer</code>对象正是视图显示和动画的幕后主角，视图的绘制本质上来说就是图层的绘制。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">/* An object providing the contents of the layer, typically a CGImageRef,</span><br><span class="line"> * but may be something else. (For example, NSImage objects are</span><br><span class="line"> * supported on Mac OS X 10.6 and later.) Default value is nil.</span><br><span class="line"> * Animatable. */</span><br><span class="line"></span><br><span class="line">@property(nullable, strong) id contents;</span><br></pre></td></tr></table></figure>
+
+<p>CALayer 中有个<code>contents</code>属性，即图层的内容，是一个位图（CGImageRef），指向一片叫做 backing store(后备存储区)的缓存区。默认情况下，此属性的值为空，它会从<code>后备存储</code>中读取内容并显示。当我们通过视图展示内容时：</p>
+<ul>
+<li>使用视图及其子控件，设置好宽高、背景色等内容；</li>
+<li>runloop即将休眠或退出时，开始视图的绘制，调用 drawRect 方法；</li>
+<li>drawRect 内通过 CoreGraphics 在 CGContextRef 中绘制内容并保存为位图；</li>
+<li>绘制的位图被保存到由 CPU 开辟的一片叫 backing store 的缓存中；</li>
+<li>图层的<code>contents</code>会从 backing store 中读取内容；</li>
+<li>图层将<code>contents</code>中的位图交给<code>GPU</code>进行合成、转换和渲染；</li>
+<li>GPU 将渲染结果放入<code>帧缓冲区</code>；</li>
+<li><code>视频控制器</code>会按照 VSync 信号逐行读取帧缓冲区的数据，经过可能的数模转换传递给<code>显示器</code>展示。</li>
+</ul>
+<p>除了设置视图的宽高、背景色来展示内容外，我们也可以直接给 layer.contents 赋值，这种情况下，显示内容时不再从<code>后备存储</code>中读取内容，而是直接使用<code>contents</code>中的位图。</p>
+<blockquote>
+<p>If you are using the layer to display a static image, you can set this property to the CGImageRef containing the image you want to display. Assigning a value to this property causes the layer to use your image rather than create a separate backing store.</p>
+</blockquote>
+<h4 id="2-2-drawRect"><a href="#2-2-drawRect" class="headerlink" title="2.2.drawRect"></a>2.2.drawRect</h4><p>一般在自定义一个视图的绘制时，我们需要重写其-drawRect:方法。<br>&amp;emsp;</p>
+<p>#示例2.2:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">#import &quot;CustomView.h&quot;</span><br><span class="line">@implementation ViewController</span><br><span class="line">- (void)viewDidAppear:(BOOL)animated</span><br><span class="line">&#123;</span><br><span class="line">    [super viewDidAppear:animated];</span><br><span class="line">    </span><br><span class="line">    CustomView *view = [[CustomView alloc] init];</span><br><span class="line">    view.backgroundColor = [UIColor whiteColor];</span><br><span class="line">    view.frame = CGRectMake(100, 300, 100, 100);</span><br><span class="line">    [self.view addSubview:view];</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">#import &quot;CustomView.h&quot;</span><br><span class="line"></span><br><span class="line">@implementation CustomView</span><br><span class="line">//自定义视图并重写drawRect</span><br><span class="line">- (void)drawRect:(CGRect)rect</span><br><span class="line">&#123;</span><br><span class="line">    //边宽</span><br><span class="line">    CGFloat lineWidth = 3.0f;</span><br><span class="line">    //半径</span><br><span class="line">    CGFloat radius = (CGRectGetWidth(rect) - lineWidth * 2) / 2.0;</span><br><span class="line">    //圆心</span><br><span class="line">    CGPoint center = CGPointMake(CGRectGetWidth(rect)/2.0, CGRectGetHeight(rect) / 2.0);</span><br><span class="line">    //扇形起点</span><br><span class="line">    CGFloat startAngle = - M_PI_2;</span><br><span class="line">    //根据进度计算扇形结束位置</span><br><span class="line">    CGFloat endAngle = startAngle + 0.8 * M_PI * 2;</span><br><span class="line">    //根据起始点、原点、半径绘制弧线</span><br><span class="line">    UIBezierPath *path = [UIBezierPath bezierPathWithArcCenter:center radius:radius startAngle:startAngle endAngle:endAngle clockwise:YES];</span><br><span class="line">    </span><br><span class="line">    CGContextRef ref = UIGraphicsGetCurrentContext();</span><br><span class="line">    CGContextSetLineWidth(ref, lineWidth);</span><br><span class="line">    CGContextSetFillColorWithColor(ref, [UIColor yellowColor].CGColor);</span><br><span class="line">    CGContextSetStrokeColorWithColor(ref, [UIColor blueColor].CGColor);</span><br><span class="line">    //从弧线结束为止绘制一条线段到圆心。这样系统会自动闭合图形，绘制一条从圆心到弧线起点的线段。</span><br><span class="line">    [path addLineToPoint:center];</span><br><span class="line">    CGContextAddPath(ref, path.CGPath);</span><br><span class="line">    CGContextDrawPath(ref, kCGPathFillStroke);</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-3-调用堆栈"><a href="#2-3-调用堆栈" class="headerlink" title="2.3.调用堆栈"></a>2.3.调用堆栈</h4><p><img src="https://davidlii.nos-eastchina1.126.net/pic_drawrect.png" alt="视图重绘"></p>
+<p>这是调用-drawRect时的堆栈图。当前 runloop 即将休眠或退出时，观察者回调函数中自动调用视图对象中 CALayer 的<code>-display</code>方法。下面是 CALayer.h 中对此方法的描述：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">/* Reload the content of this layer. Calls the -drawInContext: method</span><br><span class="line"> * then updates the `contents&#x27; property of the layer. Typically this is</span><br><span class="line"> * not called directly. */</span><br><span class="line"></span><br><span class="line">- (void)display;</span><br></pre></td></tr></table></figure>
+
+<p>即<code>-display</code>用来更新图层的内容，其内部会继续调用<code>-drawInContext:</code>并更新<code>contents</code>中的内容。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">/* Called via the -display method when the `contents&#x27; property is being</span><br><span class="line"> * updated. Default implementation does nothing. The context may be</span><br><span class="line"> * clipped to protect valid layer content. Subclasses that wish to find</span><br><span class="line"> * the actual region to draw can call CGContextGetClipBoundingBox(). */</span><br><span class="line"></span><br><span class="line">- (void)drawInContext:(CGContextRef)ctx;</span><br><span class="line"></span><br><span class="line">/* If defined, called by the default implementation of -drawInContext: */</span><br><span class="line"></span><br><span class="line">- (void)drawLayer:(CALayer *)layer inContext:(CGContextRef)ctx;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Draws the layer’s content using the specified graphics context.The default implementation of this method does not do any drawing itself. If the layer’s delegate implements the drawLayer:inContext: method, that method is called to do the actual drawing.</span><br><span class="line">Subclasses can override this method and use it to draw the layer’s content. When drawing, all coordinates should be specified in points in the logical coordinate space.</span><br></pre></td></tr></table></figure>
+
+<p><code>-drawInContext:</code>是图层内绘制内容的地方。默认情况下方法体中什么都不做，如果图层的代理实现了 drawLayer:inContext: 代理方法，那么就由这个方法来实现真正的绘制。示例3中我们没有重写此方法，所以图层会将绘制任务代理给别人。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">In iOS, if the layer is associated with a UIView object, this property must be set to the view that owns the layer.</span><br></pre></td></tr></table></figure>
+
+<p>默认情况下，视图中根layer的代理是视图对象本身，所以绘制任务会通过代理转交给layer所属的视图。从堆栈图来看，drawLayer:inContext:代理方法内自动调用了视图的 drawRect 方法。也就是说，本来需要由 CALayer 来完成的绘制任务，通过代理转交给了视图的 drawRect，这也正是我们重写视图 drawRect 方法所要做的事情。<br>&amp;emsp;</p>
+<p>调用流程梳理如下：</p>
+<ol>
+<li>将视图添加到界面或者调用视图对象的-setNeedsDisplay方法，触发重绘；</li>
+<li>视图将绘制任务交给内部的.layer处理；</li>
+<li>layer 调用 -display 方法；</li>
+<li>-display 继续调用-drawInContext绘制内容；</li>
+<li>因为没有重写-drawInContext，CALayer将绘制任务通过代理交给layer所属的视图；</li>
+<li>视图实现-drawLayer:inContext:代理方法，并调用自己的-drarRect:绘制内容；</li>
+</ol>
+<p>有个小知识点，-drawLayer:inContext:代理方法最后有个参数<code>ctx</code>，即绘图的上下文。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">- (void)drawLayer:(CALayer*)layer inContext:(CGContextRef)context &#123;</span><br><span class="line">    UIGraphicsPushContext(context);</span><br><span class="line"></span><br><span class="line">    CGRect bounds;</span><br><span class="line">    bounds = CGContextGetClipBoundingBox(context);</span><br><span class="line">    [self drawRect:bounds];</span><br><span class="line"></span><br><span class="line">    UIGraphicsPopContext();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这是博主thinkq的一篇 <a target="_blank" rel="noopener" href="https://www.jianshu.com/p/c49833c04362">文章</a> 中帖出来的 drawLayer:inContext: 的实现代码，方法内将layer传递过来的 CGContextRef 压入绘图上下文栈顶。我们在视图的 drawRect 中通过 UIGraphicsGetCurrentContext() 获取的正是此上下文，最后 drawRect 中的绘制任务都会保存在此<code>ctx</code>中。CGContextRef 是 <code>per-thread</code>的，进入子线程中通过 UIGraphicsGetCurrentContext() 获取栈顶的上下文会为空。这时，就需要通过 UIGraphicsBeginImageContext() 创建一个<code>基于位图的</code>上下文并将其设为当前上下文进行绘图。<br>&amp;emsp;</p>
+<p>另外，通过重写视图的 drawRect 方法，使用 CoreGraphic 来绘制内容，这会消耗很大一部分内存，尤其是当你需要不断重绘时。所以，可以考虑使用 <code>CAShapeLayer</code> 来绘制。CAShapeLayer 通过矢量图形而非 bitmap 来绘制图层，所以更节省内存、渲染速度也更快。</p>
+<h4 id="2-3-绘制与线程"><a href="#2-3-绘制与线程" class="headerlink" title="2.3.绘制与线程"></a>2.3.绘制与线程</h4><p>视图的显示流程被分为<code>绘制</code>和<code>渲染</code>两个阶段。绘制的工作是由<code>CPU</code>来处理的，视图的 drawRect 方法或者图层的 drawInContext 方法内，绘制任务默认都是在主线程进行的，当使用 CoreGraphics绘图时，如果内容比较复杂则会导致CPU性能瓶颈从而造成卡顿现象。渲染的工作是由<code>GPU</code>来完成的，当需要渲染的图片过大、有离屏渲染等情况时，渲染不能及时完成，也会造成卡顿现象。所以有时我们需要在异步线程中执行绘图任务，再回到主线程将绘制结果返回给视图或CALayer。在使用 tableviewCell 这种控件时，避免离屏渲染问题。<br>&amp;emsp;</p>
+<p>#示例2.3：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">- (UIImage*)drawdrawAsynchronousInRect:(CGRect)rect</span><br><span class="line">&#123;</span><br><span class="line">    CGFloat scale = [[UIScreen mainScreen] scale];</span><br><span class="line">    </span><br><span class="line">    rect.size.width *= scale;</span><br><span class="line">    rect.size.height *= scale;</span><br><span class="line">    </span><br><span class="line">    UIGraphicsBeginImageContext(rect.size);</span><br><span class="line">    </span><br><span class="line">    CGContextRef context = UIGraphicsGetCurrentContext();</span><br><span class="line">    CGContextScaleCTM(context, scale, scale);</span><br><span class="line">    </span><br><span class="line">    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();</span><br><span class="line">    UIGraphicsEndImageContext();</span><br><span class="line">    return [UIImage imageWithCGImage:image.CGImage scale:scale orientation:UIImageOrientationUp];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//调用示例</span><br><span class="line">UIImageView *imageView;</span><br><span class="line">    NSOperationQueue *drawQueue = [[NSOperationQueue alloc] init];</span><br><span class="line">    [drawQueue addOperationWithBlock:^&#123;</span><br><span class="line">        //异步队列中绘图</span><br><span class="line">        UIImage *image = [self drawdrawAsynchronousInRect:rect];</span><br><span class="line">        //回到主线程设置图片</span><br><span class="line">        [[NSOperationQueue mainQueue] addOperationWithBlock:^&#123;</span><br><span class="line">            [imageView setImage:image];</span><br><span class="line">        &#125;];</span><br><span class="line">    &#125;];</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-图层与动画"><a href="#3-图层与动画" class="headerlink" title="3.图层与动画"></a>3.图层与动画</h3><h4 id="3-1-隐式动画"><a href="#3-1-隐式动画" class="headerlink" title="3.1.隐式动画"></a>3.1.隐式动画</h4><p>当我们修改了图层的可动画属性时，属性并不会立刻显示最终结果，而是有一个平滑的过渡效果，持续0.25秒，这就是图层的<code>隐式动画</code>。这个过程中，我们没有明确指定动画的类型，仅仅是改变了某个属性。<br>&amp;emsp;</p>
+<p>#示例3.1.1：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">#import &quot;CustomLayer.h&quot;</span><br><span class="line">@interface ViewController ()</span><br><span class="line">@property (nonatomic, strong) CustomLayer *mSublayer;</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation ViewController</span><br><span class="line">- (void)viewDidAppear:(BOOL)animated</span><br><span class="line">&#123;</span><br><span class="line">    [super viewDidAppear:animated];</span><br><span class="line"></span><br><span class="line">    _mSublayer = [[CustomLayer alloc] init];</span><br><span class="line">    _mSublayer.backgroundColor = [UIColor whiteColor].CGColor;</span><br><span class="line">    _mSublayer.frame = CGRectMake(100, 300, 100, 100);</span><br><span class="line">    [self.view.layer addSublayer:_mSublayer];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">-(void)touchesBegan:(NSSet&lt;UITouch *&gt; *)touches withEvent:(UIEvent *)event&#123;</span><br><span class="line">    CGAffineTransform transform = _mSublayer.affineTransform;</span><br><span class="line">    transform = CGAffineTransformRotate(transform, M_PI_2);</span><br><span class="line">    _mSublayer.affineTransform = transform;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>示例中我们只是对刚添加的图层的<code>affineTransform</code>属性值做了修改，运行点击界面后图层会有一个0.25秒的旋转动画。<br>&amp;emsp;</p>
+<p>隐式动画的背后其实是<code>Core Animation</code>在默默处理动画事务：当我们修改了图层的可动画属性时，Core Animation 会通过事务将我们的属性变化包裹起来，即包含在<code>CATransaction</code>的<code>begin</code>与<code>commit</code>中；事务被保存在一个栈结构中，当隐式动画被提交之后，它就被保存在栈顶的事务中；<code>runloop</code>的循环中会自动开始栈顶的这个事务，从而执行动画过程。<br>&amp;emsp;</p>
+<p>我们可以试着将上面执行动画部分的代码稍作修改，加入事务的语句：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">-(void)touchesBegan:(NSSet&lt;UITouch *&gt; *)touches withEvent:(UIEvent *)event&#123;</span><br><span class="line">    //创建事务</span><br><span class="line">    [CATransaction begin];</span><br><span class="line">    //自定义动画时长</span><br><span class="line">    [CATransaction setAnimationDuration:2.0f];</span><br><span class="line">    //自定义动画结束后的处理逻辑</span><br><span class="line">    [CATransaction setCompletionBlock:^&#123;</span><br><span class="line">        _mSublayer.backgroundColor = [UIColor redColor].CGColor;</span><br><span class="line">    &#125;];</span><br><span class="line">    CGAffineTransform transform = _mSublayer.affineTransform;</span><br><span class="line">    transform = CGAffineTransformRotate(transform, M_PI_2);</span><br><span class="line">    _mSublayer.affineTransform = transform;</span><br><span class="line">    //[CATransaction commit];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>运行后可以看到，如果不<code>commit</code>，动画根本不会执行~另外，可以看到可变属性的动画时长和动画后的处理语句都可以自定义，这跟下面两种<code>UIView</code>的动画方式类似：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">//1</span><br><span class="line">[UIView beginAnimations:@&quot;x&quot; context:nil];</span><br><span class="line">//animation here</span><br><span class="line">[UIView commitAnimations];</span><br><span class="line">//2</span><br><span class="line">[UIView animateWithDuration:2.0f animations:^&#123;</span><br><span class="line">    //animation here</span><br><span class="line">&#125;];</span><br></pre></td></tr></table></figure>
+
+<p>实际上这两种方式的内部都是通过<code>事务</code>来实现的，动画的创建和提交分别调用了<code>CATransaction</code>的<code>begin</code>与<code>commit</code>。<br>&amp;emsp;</p>
+<p>需要注意的是，<strong>隐式动画只在我们直接创建的图层上有效，<code>UIView</code>中根图的隐式动画默认是关闭的</strong>，对<code>UIView</code>中根图层做动画时，不会有动画效果:<br>&amp;emsp;</p>
+<p>#示例3.1.2：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">-(void)touchesBegan:(NSSet&lt;UITouch *&gt; *)touches withEvent:(UIEvent *)event&#123;</span><br><span class="line">    [CATransaction begin];</span><br><span class="line">    [CATransaction setAnimationDuration:2.0f];</span><br><span class="line">    CGAffineTransform transform = self.view.layer.affineTransform;</span><br><span class="line">    transform = CGAffineTransformRotate(transform, M_PI_2);</span><br><span class="line">    //修改 self.view 中根图层的可变属性</span><br><span class="line">    self.view.layer.affineTransform = transform;</span><br><span class="line">    [CATransaction commit];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>示例中我们对<code>self.view.layer.affineTransform</code>做了修改，并且通过事务设置了动画时长为2秒，但运行后可以看到并没有动画效果，而是直接变到目标值。<br>&amp;emsp;</p>
+<p>那么，CALayer 是如何确定自己是否执行隐式动画的呢？我们对<code>#示例3.1.1</code>中的代码稍作修改：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">#import &quot;CustomLayer.h&quot;</span><br><span class="line">@interface ViewController ()&lt;CALayerDelegate&gt;//修改1：声明图层代理</span><br><span class="line">@property (nonatomic, strong) CustomLayer *mSublayer;</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation ViewController</span><br><span class="line">- (void)viewDidAppear:(BOOL)animated</span><br><span class="line">&#123;</span><br><span class="line">    [super viewDidAppear:animated];</span><br><span class="line"></span><br><span class="line">    _mSublayer = [[CustomLayer alloc] init];</span><br><span class="line">    //修改2：指定图层的代理为当前VC</span><br><span class="line">    _mSublayer.delegate = self;</span><br><span class="line">    _mSublayer.backgroundColor = [UIColor whiteColor].CGColor;</span><br><span class="line">    _mSublayer.frame = CGRectMake(100, 300, 100, 100);</span><br><span class="line">    [self.view.layer addSublayer:_mSublayer];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">-(void)touchesBegan:(NSSet&lt;UITouch *&gt; *)touches withEvent:(UIEvent *)event&#123;</span><br><span class="line">    CGAffineTransform transform = _mSublayer.affineTransform;</span><br><span class="line">    transform = CGAffineTransformRotate(transform, M_PI_2);</span><br><span class="line">    _mSublayer.affineTransform = transform;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//修改3：实现代理</span><br><span class="line">- (id&lt;CAAction&gt;)actionForLayer:(CALayer *)layer forKey:(NSString *)event&#123;</span><br><span class="line">    NSLog(@&quot;++++属性:%@&quot;,event);</span><br><span class="line">    return nil;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>示例中有三处修改，都是关于<code>CALayerDelegate</code>的。运行后点击界面触发隐式动画，下面是动画触发时的堆栈信息：</p>
+<p><img src="https://davidlii.nos-eastchina1.126.net/pic_action_for_layer.png" alt="actionForLayer"></p>
+<p>&amp;emsp;</p>
+<p>可以看到，动画提交后，CALayer 调用了其<code>actionForKey</code>方法，试图返回一个实现了<code>CAAction</code>协议的对象，参数<code>event</code>对应的正是我们修改的可动画属性。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line">/** Action methods. **/</span><br><span class="line"></span><br><span class="line">/* An &quot;action&quot; is an object that responds to an &quot;event&quot; via the</span><br><span class="line"> * CAAction protocol (see below). Events are named using standard</span><br><span class="line"> * dot-separated key paths. Each layer defines a mapping from event key</span><br><span class="line"> * paths to action objects. Events are posted by looking up the action</span><br><span class="line"> * object associated with the key path and sending it the method</span><br><span class="line"> * defined by the CAAction protocol.</span><br><span class="line"> *</span><br><span class="line"> * When an action object is invoked it receives three parameters: the</span><br><span class="line"> * key path naming the event, the object on which the event happened</span><br><span class="line"> * (i.e. the layer), and optionally a dictionary of named arguments</span><br><span class="line"> * specific to each event.</span><br><span class="line"> *</span><br><span class="line"> * To provide implicit animations for layer properties, an event with</span><br><span class="line"> * the same name as each property is posted whenever the value of the</span><br><span class="line"> * property is modified. A suitable CAAnimation object is associated by</span><br><span class="line"> * default with each implicit event (CAAnimation implements the action</span><br><span class="line"> * protocol).</span><br><span class="line"> *</span><br><span class="line"> * The layer class also defines the following events that are not</span><br><span class="line"> * linked directly to properties:</span><br><span class="line"> *</span><br><span class="line"> * onOrderIn</span><br><span class="line"> *      Invoked when the layer is made visible, i.e. either its</span><br><span class="line"> *      superlayer becomes visible, or it&#x27;s added as a sublayer of a</span><br><span class="line"> *      visible layer</span><br><span class="line"> *</span><br><span class="line"> * onOrderOut</span><br><span class="line"> *      Invoked when the layer becomes non-visible. */</span><br><span class="line"></span><br><span class="line">/* Returns the default action object associated with the event named by</span><br><span class="line"> * the string &#x27;event&#x27;. The default implementation returns a suitable</span><br><span class="line"> * animation object for events posted by animatable properties, nil</span><br><span class="line"> * otherwise. */</span><br><span class="line"></span><br><span class="line">+ (nullable id&lt;CAAction&gt;)defaultActionForKey:(NSString *)event;</span><br><span class="line"></span><br><span class="line">/* Returns the action object associated with the event named by the</span><br><span class="line"> * string &#x27;event&#x27;. The default implementation searches for an action</span><br><span class="line"> * object in the following places:</span><br><span class="line"> *</span><br><span class="line"> * 1. if defined, call the delegate method -actionForLayer:forKey:</span><br><span class="line"> * 2. look in the layer&#x27;s `actions&#x27; dictionary</span><br><span class="line"> * 3. look in any `actions&#x27; dictionaries in the `style&#x27; hierarchy</span><br><span class="line"> * 4. call +defaultActionForKey: on the layer&#x27;s class</span><br><span class="line"> *</span><br><span class="line"> * If any of these steps results in a non-nil action object, the</span><br><span class="line"> * following steps are ignored. If the final result is an instance of</span><br><span class="line"> * NSNull, it is converted to `nil&#x27;. */</span><br><span class="line"></span><br><span class="line">- (nullable id&lt;CAAction&gt;)actionForKey:(NSString *)event;</span><br><span class="line"></span><br><span class="line">/* A dictionary mapping keys to objects implementing the CAAction</span><br><span class="line"> * protocol. Default value is nil. */</span><br><span class="line"></span><br><span class="line">@property(nullable, copy) NSDictionary&lt;NSString *, id&lt;CAAction&gt;&gt; *actions;</span><br><span class="line"></span><br><span class="line">@protocol CALayerDelegate &lt;NSObject&gt;</span><br><span class="line">//...略</span><br><span class="line"></span><br><span class="line">/* If defined, called by the default implementation of the</span><br><span class="line"> * -actionForKey: method. Should return an object implementing the</span><br><span class="line"> * CAAction protocol. May return &#x27;nil&#x27; if the delegate doesn&#x27;t specify</span><br><span class="line"> * a behavior for the current event. Returning the null object (i.e.</span><br><span class="line"> * &#x27;[NSNull null]&#x27;) explicitly forces no further search. (I.e. the</span><br><span class="line"> * +defaultActionForKey: method will not be called.) */</span><br><span class="line"></span><br><span class="line">- (nullable id&lt;CAAction&gt;)actionForLayer:(CALayer *)layer forKey:(NSString *)event;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+
+<p><code>CAAction</code>可以视为图层隐式动画的行为。动画提交后图层会通过<code>-actionForKey:</code>方法寻找一个<code>CAAction</code>对象，寻找的过程如下：</p>
+<ul>
+<li>先尝试通过 CALayerDelegate 的 -actionForLayer:forKey: 代理方法返回一个 CAAction 对象；</li>
+<li>如果代理方法返回 null，则停止寻找，属性的修改不执行任何动画，直接更新到目标值；</li>
+<li>如果代理方法返回 nil，则继续从 layer 的 actions 字典中查找 CAAction 对象；</li>
+<li>如果 actions 字典中没有包含对应的属性，则图层继续在它的 style 字典中搜索属性名；</li>
+<li>如果在 style 里也找不到，则从 +defaultActionForKey: 方法中返回属性对应的默认行为对象；</li>
+</ul>
+<p>上面的搜索过程中，<code>-actionForLayer:forKey:</code>如果返回<code>null</code>对象，则不执行动画；如果返回<code>nil</code>则会执行隐式动画。如果返回<code>CAAction</code>协议对象，则由 Core Animation 创建对应的动画。<br>&amp;emsp;</p>
+<p>上面提到的对视图的根图层的可动画属性进行修改时，并不会触发隐式动画，实际上就是因为视图默认是其根图层的代理，<code>-actionForLayer:forKey:</code>返回了一个<code>null</code>对象。你可以尝试让当前 VC 实现<code>self.view.layer</code>的代理并返回<code>nil</code>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">@interface ViewController ()&lt;CALayerDelegate&gt;</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation ViewController</span><br><span class="line">-(void)touchesBegan:(NSSet&lt;UITouch *&gt; *)touches withEvent:(UIEvent *)event&#123;</span><br><span class="line">    //设置代理</span><br><span class="line">    self.view.layer.delegate = self;</span><br><span class="line">    [CATransaction begin];</span><br><span class="line">    [CATransaction setAnimationDuration:2.0f];</span><br><span class="line">    CGAffineTransform transform = self.view.layer.affineTransform;</span><br><span class="line">    transform = CGAffineTransformRotate(transform, M_PI_2);</span><br><span class="line">    //修改 self.view 中根图层的可变属性</span><br><span class="line">    self.view.layer.affineTransform = transform;</span><br><span class="line">    [CATransaction commit];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (id&lt;CAAction&gt;)actionForLayer:(CALayer *)layer forKey:(NSString *)event&#123;</span><br><span class="line">    NSLog(@&quot;++++属性:%@&quot;,event);</span><br><span class="line">    return nil;</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+
+<p>再运行并点击界面后可以看到，<code>self.view.layer</code>这次执行了隐式动画！</p>
+<h4 id="3-2-图层树"><a href="#3-2-图层树" class="headerlink" title="3.2.图层树"></a>3.2.图层树</h4><p>和视图一样图层也有一个树形结构，称为“图层树”，即<code>展示树</code>和<code>模型树</code>，两者可以通过相应的方法获得。</p>
+<ul>
+<li>展示树</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (instancetype)presentationLayer;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>Returns a copy of the presentation layer object that represents the state of the layer as it currently appears onscreen.</p>
+</blockquote>
+<blockquote>
+<p>Discussion<br>The layer object returned by this method provides a close approximation of the layer that is currently being displayed onscreen. While an animation is in progress, you can retrieve this object and use it to get the current values for those animations.<br>The sublayers, mask, and superlayer properties of the returned layer return the corresponding objects from the presentation tree (not the model tree). This pattern also applies to any read-only layer methods. For example, the hitTest: method of the returned object queries the layer objects in the presentation tree.</p>
+</blockquote>
+<p>当 layer 处于动画状态时，<code>展示树</code>会返回一个当前正在展示中的 layer，其属性值都是当前运动状态中对应的值，动画过程中会不断变化。<br>&amp;emsp;</p>
+<p>注意：展示树只有当图层展示在界面上之后才会有值，在此之前调用此树会返回<code>nil</code>。</p>
+<ul>
+<li>模型树</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (instancetype)modelLayer;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>Returns the model layer object associated with the receiver, if any.</p>
+</blockquote>
+<blockquote>
+<p>Discussion<br>Calling this method on a layer in the presentation tree returns the corresponding layer object in the model tree. This method returns a value only when a transaction involving changes to the presentation layer is in progress. If no transaction is in progress, the results of calling this method are undefined.</p>
+</blockquote>
+<p>在<code>呈现图层</code>上调用<code>–modelLayer</code>将会返回它正在呈现所依赖的 CALayer。通常在一个图层上调用<code>-modelLayer</code>会返回<code>self</code>。<br>&amp;emsp;</p>
+<p>关于这两个树的应用，可以移步到我在<code>事件传递 &amp; 事件响应、hitTest</code>这篇文章中的<code>抢红包</code>的示例~</p>
+<h3 id="4-位置相关属性"><a href="#4-位置相关属性" class="headerlink" title="4.位置相关属性"></a>4.位置相关属性</h3><h4 id="4-1-frame"><a href="#4-1-frame" class="headerlink" title="4.1.frame"></a>4.1.frame</h4><blockquote>
+<p>The frame rectangle, which describes the view’s location and size in its superview’s coordinate system.</p>
+</blockquote>
+<p><code>frame</code>，表示视图在其父视图坐标系中的位置和大小。这里的位置<code>frame.origin(x,y)</code>即视图的左上角，它参照的是父视图的坐标系原点。改变frame的值只会影响到视图本身，其子视图的相对位置不变。</p>
+<h4 id="4-2-bounds"><a href="#4-2-bounds" class="headerlink" title="4.2.bounds"></a>4.2.bounds</h4><blockquote>
+<p>The bounds rectangle, which describes the view’s location and size in its own coordinate system.</p>
+</blockquote>
+<p><code>bounds</code>，表示视图在其自身坐标系中的位置和大小。默认情况下，bounds &#x3D; (0, 0, frame.size.width, frame.size.heigth)，即：</p>
+<ul>
+<li>bounds.origin默认为 (0, 0)；</li>
+<li>bounds.size &#x3D; frame.size；</li>
+</ul>
+<p>其中<code>bounds.origin(x,y)</code>参照的是视图自身的坐标系原点，修改<code>bounds.origin</code>不会改变视图本身的位置，而是改变其自身的坐标系原点；因为子视图的位置参照的是父视图坐标系的原点，所以修改视图的<code>bounds.origin</code>最终影响的是其子视图的位置。具体表现是：</p>
+<ul>
+<li><code>bounds.origin(x,y)</code>相当于当前视图的坐标系原点与视图左上角之间带向量的间距；</li>
+<li>默认情况下，视图本身的坐标系原点与视图左上角重合，即bounds.origin(x,y) &#x3D; (0, 0)；</li>
+<li>当<code>origin.x</code>为正值时，间距在x轴上拉大，因为修改origin不影响视图本身的位置，所以视图左上角位置不变，只能让视图坐标系原点向左移动；此时子视图frame和bounds的数值都没变，但受父视图坐标系原点左移的影响，子视图本身也会跟着父视图的原点左移；</li>
+<li>当<code>origin.y</code>为正值时，间距在y轴上拉大，因为视图左上角不变，所以视图坐标系原点会向上移动；子视图frame和bounds都不变，但它的实际位置会跟着父视图的原点向上移；</li>
+</ul>
+<p>#示例：</p>
+<p><img src="https://davidlii.nos-eastchina1.126.net/pic_frame_bounds.png" alt="bounds"></p>
+<p>上图中，视图A是父视图，视图B是A的子视图。</p>
+<ul>
+<li>粉色背景中视图A.bounds.origin &#x3D; (0,0)；视图B.bounds.origin &#x3D; (0, 0)；</li>
+<li>绿色背景中视图A.bounds.origin被修改为(50,0)，所以视图A自身的坐标系原点会向左移动50；</li>
+<li>视图B是视图A的子视图，所以视图B会跟着视图A的坐标系原点向左移动50；</li>
+</ul>
+<p><strong>结论</strong>：修改bounds.origin会影响到子视图参照的坐标系原点；修改bounds.size会影响到视图本身的大小；</p>
+<h4 id="4-3-anchorPoint"><a href="#4-3-anchorPoint" class="headerlink" title="4.3.anchorPoint"></a>4.3.anchorPoint</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">/* Defines the anchor point of the layer&#x27;s bounds rect, as a point in</span><br><span class="line"> * normalized layer coordinates - &#x27;(0, 0)&#x27; is the bottom left corner of</span><br><span class="line"> * the bounds rect, &#x27;(1, 1)&#x27; is the top right corner. Defaults to</span><br><span class="line"> * &#x27;(0.5, 0.5)&#x27;, i.e. the center of the bounds rect. Animatable. */</span><br><span class="line"></span><br><span class="line">@property CGPoint anchorPoint;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>翻译过来是<code>锚点</code>，这是一个<code>CGPoint</code>类型的属性，可以理解为在 layer <code>自身坐标系</code>中的一个点。锚点在<code>x</code>轴和<code>y</code>轴上数值的变化范围均为[0~1]，例如<code>(0,0)</code>表示 layer 的左上角，<code>(0.5,0.5)</code>表示 layer 的中心点，<code>(1,1)</code>表示 layer 的右下角。锚点的默认值为<code>(0.5,0.5)</code>，即 layer 的中心点。直接修改锚点的值会触发隐式动画。</p>
+<h4 id="4-4-position"><a href="#4-4-position" class="headerlink" title="4.4.position"></a>4.4.position</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">/* The position in the superlayer that the anchor point of the layer&#x27;s</span><br><span class="line"> * bounds rect is aligned to. Defaults to the zero point. Animatable. */</span><br><span class="line"></span><br><span class="line">@property CGPoint position;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>此属性也是<code>CGPoint</code>类型，表示一个点，即 layer 的<code>锚点</code>在其父图层中对应的点，也就是说<code>anchorPoint</code>与<code>position</code>两个点是重合的，只不过前者在自身坐标系统内，后者在父图层内。<br>&amp;emsp;</p>
+<p>为了方便理解，你可以将 layer 想象成一张便签纸，<code>anchorPoint</code>是用来固定便签纸的一枚图钉，图钉可以扎在便签纸自身范围内的任何位置上；<code>position</code>表示黑板上的一个点，便签纸会被图钉钉在黑板上，而钉在黑板上的这个点就是<code>position</code>。<br>&amp;emsp;</p>
+<p>#示例：<br>&amp;emsp;</p>
+<p><code>bounds = (0, 0, 50, 50)</code>，<code>position = (0, 0)</code>，<code>anchorPoint = (0,0)</code>，效果如下：</p>
+<p><img src="https://davidlii.nos-eastchina1.126.net/pic_position_anchor1.png" alt="效果图1"></p>
+<p><code>bounds = (0, 0, 50, 50)</code>，<code>position = (0, 0)</code>，<code>anchorPoint = (0.5,0.5)</code>，效果如下：</p>
+<p><img src="https://davidlii.nos-eastchina1.126.net/pic_position_anchor2.png" alt="效果图2"></p>
+<p><code>bounds = (0, 0, 100, 100)</code>，<code>position = (0, 0)</code>，<code>anchorPoint = (0.5,0.5)</code>，效果如下：</p>
+<p><img src="https://davidlii.nos-eastchina1.126.net/pic_position_anchor3.png" alt="效果图3"></p>
+<p><code>bounds = (0, 0, 50, 50)</code>，<code>position = (0, 0)</code>，<code>anchorPoint = (0,0)</code>，<code>affineTransform = (M_PI / 4.0);</code>效果如下：</p>
+<p><img src="https://davidlii.nos-eastchina1.126.net/pic_position_anchor4.png" alt="效果图4"></p>
+<p><strong>结论：</strong>CALayer 在其<code>superlayer</code>上的<code>frame</code>是由其自己的<code>bounds</code>、<code>position</code>和<code>anchorPoint</code>及<code>affineTransform</code>等属性共同决定的。</p>
+<hr>
+<p>相关参考：</p>
+<p>#<a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/quartzcore/calayer?language=objc">©Apple-CALayer</a></p>
+<p>#<a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/quartzcore/cashapelayer">©AppleDev-CAShapelayer</a></p>
+<p>#<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/c49833c04362">©thinkq-关于drawRect</a></p>
+<p>#<a target="_blank" rel="noopener" href="https://blog.csdn.net/catsmen/article/details/46546897">©catsmen-隐式动画和显式动画</a></p>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#FQA" >
+    <span class="tag-code">FQA</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2017/12/25/load-initialize.html">
+        <span class="nav-arrow">← </span>
+        
+          +load 与 +initialize
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2018/01/07/uiresponder.html">
+        
+          事件传递 &amp; 事件响应、hitTest
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1-%E5%9B%BE%E5%B1%82%E7%9A%84%E7%BB%98%E5%88%B6"><span class="toc-nav-text">1.图层的绘制</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#1-1-%E8%87%AA%E5%B7%B1%E7%BB%98%E5%88%B6"><span class="toc-nav-text">1.1.自己绘制</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#1-2-%E4%BB%A3%E7%90%86%E7%BB%98%E5%88%B6"><span class="toc-nav-text">1.2.代理绘制</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-%E8%A7%86%E5%9B%BE%E7%9A%84%E7%BB%98%E5%88%B6"><span class="toc-nav-text">2.视图的绘制</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-1-%E6%98%BE%E7%A4%BA%E5%8E%9F%E7%90%86"><span class="toc-nav-text">2.1.显示原理</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-2-drawRect"><span class="toc-nav-text">2.2.drawRect</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-3-%E8%B0%83%E7%94%A8%E5%A0%86%E6%A0%88"><span class="toc-nav-text">2.3.调用堆栈</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-3-%E7%BB%98%E5%88%B6%E4%B8%8E%E7%BA%BF%E7%A8%8B"><span class="toc-nav-text">2.3.绘制与线程</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-%E5%9B%BE%E5%B1%82%E4%B8%8E%E5%8A%A8%E7%94%BB"><span class="toc-nav-text">3.图层与动画</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3-1-%E9%9A%90%E5%BC%8F%E5%8A%A8%E7%94%BB"><span class="toc-nav-text">3.1.隐式动画</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3-2-%E5%9B%BE%E5%B1%82%E6%A0%91"><span class="toc-nav-text">3.2.图层树</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#4-%E4%BD%8D%E7%BD%AE%E7%9B%B8%E5%85%B3%E5%B1%9E%E6%80%A7"><span class="toc-nav-text">4.位置相关属性</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#4-1-frame"><span class="toc-nav-text">4.1.frame</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#4-2-bounds"><span class="toc-nav-text">4.2.bounds</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#4-3-anchorPoint"><span class="toc-nav-text">4.3.anchorPoint</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#4-4-position"><span class="toc-nav-text">4.4.position</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'http://yoursite.com/2017/12/29/draw.html';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+     // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+        
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+
+    // qrcode
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+
+    // gitment
+    var gitmentConfig = "";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "图层",
+        owner: "",
+        repo: "",
+        oauth: {
+          client_id: "",
+          client_secret: ""
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  })();
+</script>
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2022 | <a href="https://github.com/davidlii" target="_blank">Davidli</a>
+    <br>
+    <a href="https://hexo.io" target="_blank">Hexo</a> | Theme-<a target="_blank" rel="noopener" href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

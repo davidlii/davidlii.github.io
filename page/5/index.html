@@ -133,6 +133,49 @@
   
     <article class="article-card">
       <h2 class="article-head">
+        <a href="/2018/01/31/source_code_afn.html">AFNetworking</a>
+      </h2>
+      <p class="article-date">January 31, 2018</p>
+      
+        
+  <a href="/tags#源码" >
+    <span class="tag-code">源码</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          一、导入库导入 AFN 的 Podfile：
+12345source &#x27;https://github.com/CocoaPods/Specs.git&#x27;platform :ios, &#x27;8.0&#x27;target &#x27;TargetName&#x27; d ...
+        
+      </div>
+      <a class="more" href="/2018/01/31/source_code_afn.html">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2018/01/28/source_code_sd.html">SDWebImage</a>
+      </h2>
+      <p class="article-date">January 28, 2018</p>
+      
+        
+  <a href="/tags#源码" >
+    <span class="tag-code">源码</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          一、导入 SD库：12345platform :ios, &#x27;10.0&#x27;//ASDF替换为自己项目的target名target ‘ASDF’ dopod &#x27;SDWebImage&#x27;, &#x27;~&gt; 3.7.3&#x27;end
+
+二、下载类的实现 ...
+        
+      </div>
+      <a class="more" href="/2018/01/28/source_code_sd.html">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
         <a href="/2018/01/21/autoreleasepool.html">OC中的内存管理</a>
       </h2>
       <p class="article-date">January 21, 2018</p>
@@ -170,30 +213,6 @@
         
       </div>
       <a class="more" href="/2018/01/20/reuse_cell.html">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2018/01/18/patterns.html">常用架构模式</a>
-      </h2>
-      <p class="article-date">January 18, 2018</p>
-      
-        
-  <a href="/tags#架构" >
-    <span class="tag-code">架构</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          架构模式
-架构模式，用于描述软件系统里的基本的结构组织或纲要。架构模式提供了一些定义好的子系统，指定它们的责任，并给出把它们组织在一起的法则和指南。常见的架构模式有：分层模式、微核模式、管道与过滤器、MVC模式、REST模式、SOA模式。
-
-#为什么会出现架构模式？&amp;emsp;
-架构 ...
-        
-      </div>
-      <a class="more" href="/2018/01/18/patterns.html">Read more</a>
     </article>
   
     <article class="article-card">
@@ -282,28 +301,54 @@
   
     <article class="article-card">
       <h2 class="article-head">
-        <a href="/2017/12/29/code_confusion.html">代码混淆、shell 脚本自动替换</a>
+        <a href="/2017/12/29/draw.html">图层</a>
       </h2>
       <p class="article-date">December 29, 2017</p>
       
         
-  <a href="/tags#逆向工程" >
-    <span class="tag-code">逆向工程</span>
+  <a href="/tags#FQA" >
+    <span class="tag-code">FQA</span>
   </a>
 
       
       <div class="article-summary">
         
-          1、逆向&amp;破解：
-通过 dumpdecrypted 给 APP 砸壳；
-通过 class-dump 查看 .h文件里的函数；
-通过 Hopper、IDA Pro 等工具反编译后分析业务代码；
-通过 Reveal 在运行时调试和修改 iOS应用的 UI；
+          1.图层的绘制图层，即CALayer的绘有两种实现方案：
 
-2、混淆代码类名、方法名、变 ...
+自己绘制；
+交给代理对象绘制。
+
+1.1.自己绘制图层自己绘制时，需要重写 -drawInContext 方法，具体步骤为：
+
+调用 CALayer 对象的 setNeedsDisplay 方法触发重绘；
+重写 drawInCont ...
         
       </div>
-      <a class="more" href="/2017/12/29/code_confusion.html">Read more</a>
+      <a class="more" href="/2017/12/29/draw.html">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2017/12/25/load-initialize.html">+load 与 +initialize</a>
+      </h2>
+      <p class="article-date">December 25, 2017</p>
+      
+        
+  <a href="/tags#FQA" >
+    <span class="tag-code">FQA</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          有时，我们需要在应用启动阶段，或者类初始化之前处理一些指定的需求，这时你可能需要这俩方法：
+12+ (void)load;+ (void)initialize;
+
+1.load
+Invoked whenever a class or category is added to the Obje ...
+        
+      </div>
+      <a class="more" href="/2017/12/25/load-initialize.html">Read more</a>
     </article>
   
     <article class="article-card">
@@ -325,53 +370,6 @@
         
       </div>
       <a class="more" href="/2017/12/24/initializer.html">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2017/12/22/download.html">iOS 文件下载</a>
-      </h2>
-      <p class="article-date">December 22, 2017</p>
-      
-        
-  <a href="/tags#网络" >
-    <span class="tag-code">网络</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          iOS 中实现文件下载有以下几种方式：
-一.NSDataNSData 提供了类方法实现文件下载：
-123NSURL  *aUrl = [NSURL URLWithString:@&quot;https://example.jpg&quot;];NSData *data = [NSData d ...
-        
-      </div>
-      <a class="more" href="/2017/12/22/download.html">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2017/11/28/crash.html">iOS异常捕获</a>
-      </h2>
-      <p class="article-date">November 28, 2017</p>
-      
-        
-  <a href="/tags#异常" >
-    <span class="tag-code">异常</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          线上APP获取崩溃信息的方式：
-使用系统 API 收集崩溃信息并上传到服务器。
-使用友盟、Bugly 等第三方收集分析SDK。
-使用 iTunes Connect 上的崩溃收集服务。
-
-这里暂时只讲第一种。iOS提供了异常发生时的处理API，在程序启动的时候可以添加这样的Handler，这样 ...
-        
-      </div>
-      <a class="more" href="/2017/11/28/crash.html">Read more</a>
     </article>
   
 

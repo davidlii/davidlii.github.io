@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="This is Davidli&#39;s blog ~">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" type="image/ico" href="/image/logo.png"/> 
+  
+  <title>
+    
+      代码混淆、shell 脚本自动替换 | Davidli
+    
+  </title>
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+
+  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+  
+<script src="/js/qrious.js"></script>
+<script src="/js/gitment.js"></script>
+
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>Davidli</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Davidli</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Davidli</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>代码混淆、shell 脚本自动替换</h2>
+  <p class="post-date">2019-03-25</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h3 id="1、逆向-amp-破解："><a href="#1、逆向-amp-破解：" class="headerlink" title="1、逆向&amp;破解："></a>1、逆向&amp;破解：</h3><ul>
+<li>通过 dumpdecrypted 给 APP 砸壳；</li>
+<li>通过 class-dump 查看 .h文件里的函数；</li>
+<li>通过 Hopper、IDA Pro 等工具反编译后分析业务代码；</li>
+<li>通过 Reveal 在运行时调试和修改 iOS应用的 UI；</li>
+</ul>
+<h3 id="2、混淆代码"><a href="#2、混淆代码" class="headerlink" title="2、混淆代码"></a>2、混淆代码</h3><p>类名、方法名、变量名等会暴露APP的很多关键信息，攻击者通过 class-dump 得到头文件后，可以根据提取到的这些字符串，快速找到相关逻辑的处理函数，从而进行分析破解。所以，代码混淆很有必要性。混淆的主旨思想是：</p>
+<ul>
+<li>在开发阶段保留清晰可读的代码；</li>
+<li>在编译打包后的代码中，把一些敏感字符串变为为无意义的符号；</li>
+<li>增加攻击者阅读代码的难度以及根据字符串静态搜索的难度；</li>
+</ul>
+<p>当然，手动替换工程中所有的类名、方法名、变量名，这肯定会是很大的一个工作量。所以，我们可以智能一点，使用脚本来帮我们做。通过脚本，扫描工程目录下所有.h &amp; .m 文件，并对其中的敏感内容做替换。另外，可以配合 #define 别名的方式，增加破译难度。</p>
+<h3 id="3、混淆的实现："><a href="#3、混淆的实现：" class="headerlink" title="3、混淆的实现："></a>3、混淆的实现：</h3><h4 id="3-1-在工程的根目录下，新建两个文件："><a href="#3-1-在工程的根目录下，新建两个文件：" class="headerlink" title="3.1.在工程的根目录下，新建两个文件："></a>3.1.在工程的根目录下，新建两个文件：</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd Desktop/CodeMix  //工程根目录</span><br><span class="line">touch Confusion.sh  //脚本</span><br><span class="line">touch ToBeConfused.list //存放所有需要替换的敏感字</span><br></pre></td></tr></table></figure>
+
+<p><strong>Confusion.sh</strong>，一个 shell 脚本文件，用来自动寻找工程目录下.h与.m文件中的所有敏感字，将它们替换为无意义的字符并定义成宏。</p>
+<p><strong>ToBeConfused.list</strong>， 用来保存所有需要替换的敏感字，其后缀格式无所谓，比如.text也可以。shell 脚本会从此文件中逐行取字符并把它替换为无意义的字符。</p>
+<h4 id="3-2-MapOfConfusion-h"><a href="#3-2-MapOfConfusion-h" class="headerlink" title="3.2.MapOfConfusion.h"></a>3.2.MapOfConfusion.h</h4><p>在工程根目录下，新建 MapOfConfusion.h 文件。此文件与上面两个文件在同一目录下。作用是在混淆代码时，把自动生成的字符串定义成宏，存放在此文件中。</p>
+<h4 id="3-3-设置脚本"><a href="#3-3-设置脚本" class="headerlink" title="3.3.设置脚本"></a>3.3.设置脚本</h4><p>编辑 Confusion.sh 文件，输入以下内容：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line">#!/usr/bin/env bash</span><br><span class="line"></span><br><span class="line">TABLENAME=symbols</span><br><span class="line"></span><br><span class="line">SYMBOL_DB_FILE=&quot;symbols&quot;</span><br><span class="line"></span><br><span class="line">#ToBeConfused.list 路径</span><br><span class="line">STRING_SYMBOL_FILE=&quot;$PROJECT_DIR/ToBeConfused.list&quot;</span><br><span class="line"></span><br><span class="line">#项目文件路径</span><br><span class="line">CONFUSE_FILE=&quot;$SRCROOT&quot;</span><br><span class="line"></span><br><span class="line">#MapOfConfusion.h 路径</span><br><span class="line">HEAD_FILE=&quot;$PROJECT_DIR/MapOfConfusion.h&quot;</span><br><span class="line"></span><br><span class="line">export LC_CTYPE=C</span><br><span class="line"></span><br><span class="line">#取以.m或.h结尾的文件以+号或-号开头的行</span><br><span class="line">#|去掉所有+号或－号|用空格代替符号|n个空格跟着&lt;号 替换成 &lt;号</span><br><span class="line">#|开头不能是IBAction|用空格split字串取第二部分|排序|去重复|删除空行</span><br><span class="line">#|删掉以init开头的行&gt;写进ToBeConfused.list</span><br><span class="line"></span><br><span class="line">grep -h -r -I  &quot;^[-+]&quot; $CONFUSE_FILE  --include &#x27;*.[mh]&#x27; |sed &quot;s/[+-]//g&quot;|sed &quot;s/[();,: *^/&#123;]/ /g&quot;|sed &quot;s/[ ]*&lt;/&lt;/&quot;| sed &quot;/^[ ]*IBAction/d&quot;|awk &#x27;&#123;split($0,b,&quot; &quot;); print b[2]; &#125;&#x27;| sort|uniq |sed &quot;/^$/d&quot;|sed -n &quot;/^xMix_/p&quot; &gt;$STRING_SYMBOL_FILE</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">#维护数据库方便日后作排重,以下代码来自念茜的博客</span><br><span class="line">createTable()</span><br><span class="line">&#123;</span><br><span class="line">echo &quot;create table $TABLENAME(src text, des text);&quot; | sqlite3 $SYMBOL_DB_FILE</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">insertValue()</span><br><span class="line">&#123;</span><br><span class="line">echo &quot;insert into $TABLENAME values(&#x27;$1&#x27; ,&#x27;$2&#x27;);&quot; | sqlite3 $SYMBOL_DB_FILE</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">query()</span><br><span class="line">&#123;</span><br><span class="line">echo &quot;select * from $TABLENAME where src=&#x27;$1&#x27;;&quot; | sqlite3 $SYMBOL_DB_FILE</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">ramdomString()</span><br><span class="line">&#123;</span><br><span class="line">openssl rand -base64 64 | tr -cd &#x27;a-zA-Z&#x27; |head -c 16</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">rm -f $SYMBOL_DB_FILE</span><br><span class="line">rm -f $HEAD_FILE</span><br><span class="line">createTable</span><br><span class="line"></span><br><span class="line">touch $HEAD_FILE</span><br><span class="line">echo &#x27;#ifndef MapOfConfusion_h</span><br><span class="line">#define MapOfConfusion_h&#x27; &gt;&gt; $HEAD_FILE</span><br><span class="line">echo &quot;//confuse string at `date`&quot; &gt;&gt; $HEAD_FILE</span><br><span class="line">cat &quot;$STRING_SYMBOL_FILE&quot; | while read -ra line; do</span><br><span class="line">if [[ ! -z &quot;$line&quot; ]]; then</span><br><span class="line">ramdom=`ramdomString`</span><br><span class="line">echo $line $ramdom</span><br><span class="line">insertValue $line $ramdom</span><br><span class="line">echo &quot;#define $line $ramdom&quot; &gt;&gt; $HEAD_FILE</span><br><span class="line">fi</span><br><span class="line">done</span><br><span class="line">echo &quot;#endif&quot; &gt;&gt; $HEAD_FILE</span><br><span class="line"></span><br><span class="line">sqlite3 $SYMBOL_DB_FILE .dump</span><br></pre></td></tr></table></figure>
+
+<p>上面的脚本会从工程根目录（$SRCROOT）下的所有.m和.h文件中，自动找出以“xMix_”开头的待混淆函数名，写入 ToBeConfused.list 文件中。然后再从 ToBeConfused.list 中逐行提取函数名进行宏定义，宏定义使用随机字符串。然后写到 MapOfConfusion.h 文件中。</p>
+<p>编辑完成后保存，然后执行下面命令，把 Confusion.sh 设置成可执行文件。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod +x Confusion.sh</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-4-添加-Run-Script"><a href="#3-4-添加-Run-Script" class="headerlink" title="3.4.添加 Run Script"></a>3.4.添加 Run Script</h4><p>工程 Targets-》build phases-》New Run script Phase，设置.sh文件路径：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$PROJECT_DIR/Confusion.sh</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-5-添加-PCH-文件"><a href="#3-5-添加-PCH-文件" class="headerlink" title="3.5.添加 PCH 文件"></a>3.5.添加 PCH 文件</h4><p>工程根目录下，新建 PrefixHeader.pch 文件，并导入 MapOfConfusion.h：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#ifndef PrefixHeader_pch</span><br><span class="line">#define PrefixHeader_pch</span><br><span class="line"></span><br><span class="line">#import &quot;MapOfConfusion.h&quot;</span><br><span class="line"></span><br><span class="line">#endif /* PrefixHeader_pch */</span><br></pre></td></tr></table></figure>
+
+<p>工程 Targets-》build Settings 中搜索Prefix Header，设置好 pch 路径：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$PROJECT_DIR/PrefixHeader.pch</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-6-添加以xMix-开头的测试代码："><a href="#3-6-添加以xMix-开头的测试代码：" class="headerlink" title="3.6.添加以xMix_开头的测试代码："></a>3.6.添加以xMix_开头的测试代码：</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#import &lt;UIKit/UIKit.h&gt;</span><br><span class="line"></span><br><span class="line">@interface ViewController : UIViewController</span><br><span class="line"></span><br><span class="line">- (void)xMix_Function1;</span><br><span class="line">- (void)xMix_Function2WithName:(NSString *)param1 xMix_Gender:(int)param2;</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-7-build-amp-class-dump"><a href="#3-7-build-amp-class-dump" class="headerlink" title="3.7.build &amp; class-dump"></a>3.7.build &amp; class-dump</h4><p>build 之后，打开 MapOfConfusion.h 文件，可以看到以xMix_开头的方法名都已被宏定义为一个随机字符串。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#ifndef MapOfConfusion_h</span><br><span class="line">#define MapOfConfusion</span><br><span class="line">//confuse string at Fri Dec 29 21:15:24 CST 2017</span><br><span class="line">#define xMix_Function1 vKfXvdhupKXlBptl</span><br><span class="line">#define xMix_Function2WithName xRDhGWmotGCNvgqp</span><br><span class="line">#endif</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>打包之后，得到 ipa 文件，使用 class-dump 工具反编译出 ViewController.h 文件即可查看混淆之后的代码。（略）</p>
+<hr>
+<p>相关参考：</p>
+<p>#<a target="_blank" rel="noopener" href="http://blog.csdn.net/yiyaaixuexi/article/details/29201699">©念茜</a></p>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#逆向工程" >
+    <span class="tag-code">逆向工程</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2019/03/23/shell-ipa.html">
+        <span class="nav-arrow">← </span>
+        
+          Shell脚本打包与上传
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2019/03/28/jailbreak-ios12.html">
+        
+          iOS12越狱填坑
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1%E3%80%81%E9%80%86%E5%90%91-amp-%E7%A0%B4%E8%A7%A3%EF%BC%9A"><span class="toc-nav-text">1、逆向&amp;破解：</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2%E3%80%81%E6%B7%B7%E6%B7%86%E4%BB%A3%E7%A0%81"><span class="toc-nav-text">2、混淆代码</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3%E3%80%81%E6%B7%B7%E6%B7%86%E7%9A%84%E5%AE%9E%E7%8E%B0%EF%BC%9A"><span class="toc-nav-text">3、混淆的实现：</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3-1-%E5%9C%A8%E5%B7%A5%E7%A8%8B%E7%9A%84%E6%A0%B9%E7%9B%AE%E5%BD%95%E4%B8%8B%EF%BC%8C%E6%96%B0%E5%BB%BA%E4%B8%A4%E4%B8%AA%E6%96%87%E4%BB%B6%EF%BC%9A"><span class="toc-nav-text">3.1.在工程的根目录下，新建两个文件：</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3-2-MapOfConfusion-h"><span class="toc-nav-text">3.2.MapOfConfusion.h</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3-3-%E8%AE%BE%E7%BD%AE%E8%84%9A%E6%9C%AC"><span class="toc-nav-text">3.3.设置脚本</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3-4-%E6%B7%BB%E5%8A%A0-Run-Script"><span class="toc-nav-text">3.4.添加 Run Script</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3-5-%E6%B7%BB%E5%8A%A0-PCH-%E6%96%87%E4%BB%B6"><span class="toc-nav-text">3.5.添加 PCH 文件</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3-6-%E6%B7%BB%E5%8A%A0%E4%BB%A5xMix-%E5%BC%80%E5%A4%B4%E7%9A%84%E6%B5%8B%E8%AF%95%E4%BB%A3%E7%A0%81%EF%BC%9A"><span class="toc-nav-text">3.6.添加以xMix_开头的测试代码：</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3-7-build-amp-class-dump"><span class="toc-nav-text">3.7.build &amp; class-dump</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'http://yoursite.com/2019/03/25/code_confusion.html';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+     // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+        
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+
+    // qrcode
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+
+    // gitment
+    var gitmentConfig = "";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "代码混淆、shell 脚本自动替换",
+        owner: "",
+        repo: "",
+        oauth: {
+          client_id: "",
+          client_secret: ""
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  })();
+</script>
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2022 | <a href="https://github.com/davidlii" target="_blank">Davidli</a>
+    <br>
+    <a href="https://hexo.io" target="_blank">Hexo</a> | Theme-<a target="_blank" rel="noopener" href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

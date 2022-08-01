@@ -133,6 +133,82 @@
   
     <article class="article-card">
       <h2 class="article-head">
+        <a href="/2018/08/16/swift-as.html">Swift-is/as类型检查</a>
+      </h2>
+      <p class="article-date">August 16, 2018</p>
+      
+        
+  <a href="/tags#Swift" >
+    <span class="tag-code">Swift</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          一、前言作为面向对象的语言，OC 与 Swift 都具有多态性，有时会大量使用类簇，因此描述对象的信息成为了常见需求。
+
+判断对象在继承树上的位置；
+判断对象是否遵守了某个协议；
+
+这些都是对象内省能力的一部分，本文将尝试对 OC 和 Swift 中这些场景的实现做一次整理。
+二、OC版NS ...
+        
+      </div>
+      <a class="more" href="/2018/08/16/swift-as.html">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2018/08/15/swift-unwrap.html">Swift可选拆包</a>
+      </h2>
+      <p class="article-date">August 15, 2018</p>
+      
+        
+  <a href="/tags#Swift" >
+    <span class="tag-code">Swift</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          前言
+You use optionals in situations where a value may be absent. An optional represents two possibilities: Either there is a value, and you can unw ...
+        
+      </div>
+      <a class="more" href="/2018/08/15/swift-unwrap.html">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2018/07/23/fast-github.html">Github 访问慢的解决方案</a>
+      </h2>
+      <p class="article-date">July 23, 2018</p>
+      
+        
+  <a href="/tags#FQA" >
+    <span class="tag-code">FQA</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          Github为国外网站，所以域名解析时速度慢的。。解决此问题有俩方法：
+
+挂VPN
+修改hosts配置
+
+本文讲的是第二种，修改hosts文件，具体步骤如下：
+#1、打开host文件
+直接通过Finder
+
+快捷键 command + shift + G，输入“&#x2F;etc”，回车即可 ...
+        
+      </div>
+      <a class="more" href="/2018/07/23/fast-github.html">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
         <a href="/2018/07/11/dsym.html">结合dSYM文件分析crash日志</a>
       </h2>
       <p class="article-date">July 11, 2018</p>
@@ -153,26 +229,6 @@
   
     <article class="article-card">
       <h2 class="article-head">
-        <a href="/2018/07/07/mach_o.html">Mach-O</a>
-      </h2>
-      <p class="article-date">July 7, 2018</p>
-      
-        
-  <a href="/tags#逆向工程" >
-    <span class="tag-code">逆向工程</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          &amp;emsp;Xcode 构建一个程序的过程中，会把源文件 (.m 和 .h) 文件转换为一个可执行文件（Mach-O executable）。这个可执行文件中包含的字节码将会被 CPU (iOS 设备中的 ARM 处理器或 Mac 上的 Intel 处理器) 执行。当然，我们也可以不 ...
-        
-      </div>
-      <a class="more" href="/2018/07/07/mach_o.html">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
         <a href="/2018/06/22/autolayout.html">约束与布局</a>
       </h2>
       <p class="article-date">June 22, 2018</p>
@@ -189,6 +245,28 @@
         
       </div>
       <a class="more" href="/2018/06/22/autolayout.html">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2018/06/15/str-modifier.html">字符串属性的修饰符</a>
+      </h2>
+      <p class="article-date">June 15, 2018</p>
+      
+        
+  <a href="/tags#内存管理" >
+    <span class="tag-code">内存管理</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          日常实践中，我们经常要声明一些字符串属性，包括NSString和NSMutableString，而字符串最常用的修饰符就要数strong和copy了。这两个修饰符对字符串有什么影响呢？
+1.不可变源字符串#示例1：用 NSString 赋值
+1234567891011121314151617 ...
+        
+      </div>
+      <a class="more" href="/2018/06/15/str-modifier.html">Read more</a>
     </article>
   
     <article class="article-card">
@@ -285,76 +363,6 @@ The exact meaning of “copy” can vary from class to class, but a copy must be
         
       </div>
       <a class="more" href="/2018/03/15/block.html">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2018/01/31/source_code_afn.html">AFNetworking</a>
-      </h2>
-      <p class="article-date">January 31, 2018</p>
-      
-        
-  <a href="/tags#源码" >
-    <span class="tag-code">源码</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          一、导入库导入 AFN 的 Podfile：
-12345source &#x27;https://github.com/CocoaPods/Specs.git&#x27;platform :ios, &#x27;8.0&#x27;target &#x27;TargetName&#x27; d ...
-        
-      </div>
-      <a class="more" href="/2018/01/31/source_code_afn.html">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2018/01/28/source_code_sd.html">SDWebImage</a>
-      </h2>
-      <p class="article-date">January 28, 2018</p>
-      
-        
-  <a href="/tags#源码" >
-    <span class="tag-code">源码</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          一、导入 SD库：12345platform :ios, &#x27;10.0&#x27;//ASDF替换为自己项目的target名target ‘ASDF’ dopod &#x27;SDWebImage&#x27;, &#x27;~&gt; 3.7.3&#x27;end
-
-二、下载类的实现 ...
-        
-      </div>
-      <a class="more" href="/2018/01/28/source_code_sd.html">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2018/01/27/compile.html">编译器、代码编译过程、Xcode Build过程</a>
-      </h2>
-      <p class="article-date">January 27, 2018</p>
-      
-        
-  <a href="/tags#编译与启动" >
-    <span class="tag-code">编译与启动</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          1.编译&#x2F;解释型语言
-编译型语言
-
-代码须编译成机器码才能在CPU上执行的语言，如OC和Swift，其优点是代码执行效率高。
-
-解释型语言
-
-解释型语言，如 JavaScript 和 Python，代码不需要经过编译器，而是通过解释器直接将代码解释成CPU可以执行的代码。编写灵活， ...
-        
-      </div>
-      <a class="more" href="/2018/01/27/compile.html">Read more</a>
     </article>
   
 
