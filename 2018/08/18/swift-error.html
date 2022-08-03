@@ -10,7 +10,7 @@
   
   <title>
     
-      Swift中异常处理 | Davidli
+      Swift中Error异常 | Davidli
     
   </title>
   <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -130,7 +130,7 @@
 </header>
 
     <div id="article-banner">
-  <h2>Swift中异常处理</h2>
+  <h2>Swift中Error异常</h2>
   <p class="post-date">2018-08-18</p>
   <div class="arrow-down">
     <a href="javascript:;"></a>
@@ -139,9 +139,44 @@
 <main class="app-body flex-box">
   <!-- Article START -->
   <article class="post-article">
-    <section class="markdown-content"><hr>
-<p>相关参考：</p>
-<p>#<a target="_blank" rel="noopener" href="https://davidlii.cn/">©</a></p>
+    <section class="markdown-content"><h4 id="1-异常的表示"><a href="#1-异常的表示" class="headerlink" title="1.异常的表示"></a>1.异常的表示</h4><p>Swift中用实现了<code>Error</code>协议的类型表示异常，通常用枚举来表示一组错误信息。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">enum VendingMachineError: Error &#123;</span><br><span class="line">    case invalidSelection</span><br><span class="line">    case insufficientFunds(coinsNeeded: Int)</span><br><span class="line">    case outOfStock</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-抛出异常"><a href="#2-抛出异常" class="headerlink" title="2.抛出异常"></a>2.抛出异常</h4><p>在方法的参数后，返回值前使用<code>throws</code>标记可能方法可能抛出异常。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">struct Item &#123;</span><br><span class="line">    var price: Int</span><br><span class="line">    var count: Int</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class VendingMachine &#123;</span><br><span class="line">    var inventory = [</span><br><span class="line">        &quot;Candy Bar&quot;: Item(price: 12, count: 7),</span><br><span class="line">        &quot;Chips&quot;: Item(price: 10, count: 4),</span><br><span class="line">        &quot;Pretzels&quot;: Item(price: 7, count: 11)</span><br><span class="line">    ]</span><br><span class="line">    var coinsDeposited = 0</span><br><span class="line"></span><br><span class="line">    func vend(itemNamed name: String) throws &#123;   //抛出异常</span><br><span class="line">        guard let item = inventory[name] else &#123;</span><br><span class="line">            throw VendingMachineError.invalidSelection</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        guard item.count &gt; 0 else &#123;</span><br><span class="line">            throw VendingMachineError.outOfStock</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        guard item.price &lt;= coinsDeposited else &#123;</span><br><span class="line">            throw VendingMachineError.insufficientFunds(coinsNeeded: item.price - coinsDeposited)</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        coinsDeposited -= item.price</span><br><span class="line"></span><br><span class="line">        var newItem = item</span><br><span class="line">        newItem.count -= 1</span><br><span class="line">        inventory[name] = newItem</span><br><span class="line"></span><br><span class="line">        print(&quot;Dispensing \(name)&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-异常的处理"><a href="#3-异常的处理" class="headerlink" title="3.异常的处理"></a>3.异常的处理</h4><p>异常被抛出后，必须要有相应的代码块处理这个异常。可分四种处理方法：</p>
+<ul>
+<li>将异常传递给调用此函数的代码；</li>
+<li>使用do-catch语句处理异常；</li>
+<li>将异常作为可选类型处理；</li>
+<li>断言异常绝不会发生，万一真的发生则闪退；</li>
+</ul>
+<p>异常会改变代码的执行路径，使用<code>try</code>、<code>try?</code>或者<code>try!</code>标记可能抛出异常的地方。</p>
+<ul>
+<li>示例1：传递异常</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">let favoriteSnacks = [</span><br><span class="line">    &quot;Alice&quot;: &quot;Chips&quot;,</span><br><span class="line">    &quot;Bob&quot;: &quot;Licorice&quot;,</span><br><span class="line">    &quot;Eve&quot;: &quot;Pretzels&quot;,</span><br><span class="line">]</span><br><span class="line">func buyFavoriteSnack(person: String, vendingMachine: VendingMachine) throws &#123; //向上传递异常</span><br><span class="line">    let snackName = favoriteSnacks[person] ?? &quot;Candy Bar&quot;</span><br><span class="line">    try vendingMachine.vend(itemNamed: snackName)  //将异常向上传递</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>示例2：do-catch</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">do &#123;</span><br><span class="line">    try expression</span><br><span class="line">    statements</span><br><span class="line">&#125; catch pattern 1 &#123;</span><br><span class="line">    statements</span><br><span class="line">&#125; catch pattern 2 where condition &#123;</span><br><span class="line">    statements</span><br><span class="line">&#125; catch pattern 3, pattern 4 where condition &#123;</span><br><span class="line">    statements</span><br><span class="line">&#125; catch &#123;</span><br><span class="line">    statements</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//具体案例</span><br><span class="line">var vendingMachine = VendingMachine()</span><br><span class="line">vendingMachine.coinsDeposited = 8</span><br><span class="line">do &#123;</span><br><span class="line">    try buyFavoriteSnack(person: &quot;Alice&quot;, vendingMachine: vendingMachine)</span><br><span class="line">    print(&quot;Success! Yum.&quot;)</span><br><span class="line">&#125; catch VendingMachineError.invalidSelection &#123;</span><br><span class="line">    print(&quot;Invalid Selection.&quot;)</span><br><span class="line">&#125; catch VendingMachineError.outOfStock &#123;</span><br><span class="line">    print(&quot;Out of Stock.&quot;)</span><br><span class="line">&#125; catch VendingMachineError.insufficientFunds(let coinsNeeded) &#123;</span><br><span class="line">    print(&quot;Insufficient funds. Please insert an additional \(coinsNeeded) coins.&quot;)</span><br><span class="line">&#125; catch &#123;</span><br><span class="line">    print(&quot;Unexpected error: \(error).&quot;)</span><br><span class="line">&#125;</span><br><span class="line">// Prints &quot;Insufficient funds. Please insert an additional 2 coins.&quot;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>示例3：try?转为可选类型</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">func someThrowingFunction() throws -&gt; Int &#123;</span><br><span class="line">    // ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">let x = try? someThrowingFunction()</span><br><span class="line"></span><br><span class="line">let y: Int?</span><br><span class="line">do &#123;</span><br><span class="line">    y = try someThrowingFunction()</span><br><span class="line">&#125; catch &#123;</span><br><span class="line">    y = nil</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用<code>try?</code>将可能抛出异常的方法的返回值转换成可选类型。如果未抛出异常，则try?表达式的值即为函数的值；如果抛出了异常则表达式的值为nil。</p>
+<ul>
+<li>示例4：try!</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">let photo = try! loadImage(atPath: &quot;./Resources/John Appleseed.jpg&quot;)</span><br></pre></td></tr></table></figure>
+
+<p><code>try!</code>断言此方法的调用不会出现异常，如果真的抛出异常则会报运行时错误。</p>
+<h4 id="4-兼容NSError"><a href="#4-兼容NSError" class="headerlink" title="4.兼容NSError"></a>4.兼容NSError</h4><p>Swift中<code>Error</code>可直接转换成OC中的<code>NSError</code>, 如<code>SomeError.error0 as NSError</code>，只是没有errorCode, domain等信息。如果想和NSError一样, 则需要实现<code>LocalizedError</code>与<code>CustomNSError</code>协议:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">enum SwiftError: Error, LocalizedError, CustomNSError &#123;</span><br><span class="line">    case error0, error1</span><br><span class="line">    public var errorDescription: String? &#123;</span><br><span class="line">        switch self &#123;</span><br><span class="line">        case .error0:</span><br><span class="line">            return &quot;error description error0&quot;</span><br><span class="line">        case .error1:</span><br><span class="line">            return &quot;error description error1&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    var errorCode: Int &#123;</span><br><span class="line">        switch self &#123;</span><br><span class="line">        case .error0:</span><br><span class="line">            return 0</span><br><span class="line">        case .error1:</span><br><span class="line">            return 1</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    public static var errorDomain: String &#123;</span><br><span class="line">        return &quot;error domain SwiftError&quot;</span><br><span class="line">    &#125;</span><br><span class="line">    public var errorUserInfo: [String : Any] &#123;</span><br><span class="line">        switch self &#123;</span><br><span class="line">        case .error0:</span><br><span class="line">            return [&quot;info&quot;: &quot;This is Error0&quot;]</span><br><span class="line">        case .error1:</span><br><span class="line">            return [&quot;info&quot;: &quot;This is error1&quot;]</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">print(SwiftError.error0 as NSError) //__lldb_expr_7.SwiftError.error0</span><br><span class="line">print(SwiftError.error0.errorCode)  //0</span><br></pre></td></tr></table></figure>
 </section>
     <!-- Tags START -->
     
@@ -212,7 +247,7 @@
   <div class="toc-main">
     <strong class="toc-title">Catalog</strong>
     
-      <ol class="nav">none</ol>
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#1-%E5%BC%82%E5%B8%B8%E7%9A%84%E8%A1%A8%E7%A4%BA"><span class="toc-nav-text">1.异常的表示</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-%E6%8A%9B%E5%87%BA%E5%BC%82%E5%B8%B8"><span class="toc-nav-text">2.抛出异常</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3-%E5%BC%82%E5%B8%B8%E7%9A%84%E5%A4%84%E7%90%86"><span class="toc-nav-text">3.异常的处理</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#4-%E5%85%BC%E5%AE%B9NSError"><span class="toc-nav-text">4.兼容NSError</span></a></li></ol>
     
   </div>
 </aside>
@@ -278,7 +313,7 @@
     var gitmentConfig = "";
     if (gitmentConfig !== 'undefined') {
       var gitment = new Gitment({
-        id: "Swift中异常处理",
+        id: "Swift中Error异常",
         owner: "",
         repo: "",
         oauth: {

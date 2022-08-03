@@ -133,7 +133,7 @@
   
     <article class="article-card">
       <h2 class="article-head">
-        <a href="/2018/08/18/swift-error.html">Swift中异常处理</a>
+        <a href="/2018/08/18/swift-error.html">Swift中Error异常</a>
       </h2>
       <p class="article-date">August 18, 2018</p>
       
@@ -145,10 +145,8 @@
       
       <div class="article-summary">
         
-          
-相关参考：
-#©
-
+          1.异常的表示Swift中用实现了Error协议的类型表示异常，通常用枚举来表示一组错误信息。
+12345enum VendingMachineError: Error &#123;    case invalidSelection    case insufficientFunds(coi ...
         
       </div>
       <a class="more" href="/2018/08/18/swift-error.html">Read more</a>
