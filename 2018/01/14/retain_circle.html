@@ -139,8 +139,8 @@
 <main class="app-body flex-box">
   <!-- Article START -->
   <article class="post-article">
-    <section class="markdown-content"><h3 id="1-概念"><a href="#1-概念" class="headerlink" title="1.概念"></a>1.概念</h3><p>循环引用可以简单理解为 A 强引用 B，B 又强引用了 A，双方同时保持对方的一个引用，导致引用计数不为0，始终无法释放。<br>&amp;emsp;</p>
-<p><strong>影响？</strong><br>&amp;emsp;</p>
+    <section class="markdown-content"><h3 id="1-概念"><a href="#1-概念" class="headerlink" title="1.概念"></a>1.概念</h3><p>循环引用可以简单理解为 A 强引用 B，B 又强引用了 A，双方同时保持对方的一个引用，导致引用计数不为0，始终无法释放。<br><br/></p>
+<p><strong>影响？</strong><br><br/></p>
 <p>导致对象无法释放，造成内存泄露。如果是 ViewController 内出现循环引用，在反复 push &amp; pop 后，ViewController 释放不掉，导致内存激增，甚至引发crash。</p>
 <h3 id="2-场景"><a href="#2-场景" class="headerlink" title="2.场景"></a>2.场景</h3><h4 id="2-1-block"><a href="#2-1-block" class="headerlink" title="2.1.block"></a>2.1.block</h4><p>下面是一段关于 block 的描述：</p>
 <blockquote>
@@ -183,7 +183,7 @@
 <p>输出日志：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">+++self.rfc:1</span><br><span class="line">+++self.rfc:1,weakSelf.rfc:2</span><br><span class="line">+++执行block</span><br><span class="line">+++weakself.rfc:3</span><br></pre></td></tr></table></figure>
 
-<p>原理：<code>__weak</code>修饰的<code>weakSelf</code>是一个弱引用，它指向<code>self</code>但不会增加<code>self</code>的引用计数，从而打破<code>self</code>与<code>block</code>之间的循环引用。<br>&amp;emsp;</p>
+<p>原理：<code>__weak</code>修饰的<code>weakSelf</code>是一个弱引用，它指向<code>self</code>但不会增加<code>self</code>的引用计数，从而打破<code>self</code>与<code>block</code>之间的循环引用。<br><br/></p>
 <p><strong>ps：</strong> 这里之所以再强引用一下 weakSelf，是因为<code>__weak</code>修饰的对象都是弱引用，随时可能会被系统释放，造成后面调用 weakSelf 时 weakSelf 可能已经是nil了。<code>__strong</code>修饰的<code>strongSelf</code>是一个强引用，保证了<code>weakSelf</code>在 block 声明周期内不会被销毁，而且<code>strongSelf</code>是一个自动变量，在 block 执行完毕后会自动释放。</p>
 <ul>
 <li><strong>解决办法2：</strong></li>
@@ -233,7 +233,7 @@
     
       <a class="nav-right" href="/2018/01/20/reuse_cell.html">
         
-          UITableViewCell 的重用、卡顿与离屏渲染
+          Cell重用、卡顿、离屏渲染
         
         <span class="nav-arrow"> →</span>
       </a>

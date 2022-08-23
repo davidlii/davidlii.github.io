@@ -149,18 +149,24 @@
 <p>日志：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">++CA34E048-C879-4BCA-8105-8E6F3DA137C4</span><br><span class="line">++4C808BD6-C7EE-4E35-BEB5-B319F37BEA30</span><br><span class="line">++C9B7AA3E-71AD-462B-BAC1-36B9433B987F</span><br><span class="line">++A8847816-7194-4ECF-8FA4-75C566D68B21</span><br><span class="line">++6C9FCC03-BCF7-4B68-9A98-8209BF83690E</span><br></pre></td></tr></table></figure>
 
-<p>循环5次，每次取到的值都不一样。所以当用户重新启动了应用或者删除应用重装后，UUID都会被重置。因此你需要在应用第一次启动时就将其UUID保存到钥匙串中，之后从钥匙串中取值。<br>&amp;emsp;</p>
+<p>循环5次，每次取到的值都不一样。所以当用户重新启动了应用或者删除应用重装后，UUID都会被重置。因此你需要在应用第一次启动时就将其UUID保存到钥匙串中，之后从钥匙串中取值。<br><br/></p>
 <p>因为每次使用系统方法获取到的UUID都是不一样的，所以每个应用都会产生与之对应的UUID。像淘宝和支付宝账号互通的这种系列应用，如果从淘宝切到支付宝，因为UUID不一样了就提示换了设备，显然不符合实际情况。</p>
 <h4 id="3、IDFV"><a href="#3、IDFV" class="headerlink" title="3、IDFV"></a>3、IDFV</h4><p>iOS6.0之后，苹果提供的新方法。它是通过 bundleID 的反转的前两部分进行匹配，如果内容相同则认为是同一个Vendor（供应商），例如对于<code>com.example.app1</code>和<code>com.example.app2</code>这两个 bundleID，它们就属于同一个 Vendor，共享同一个<code>IDFV</code>。这样就解决了上面提到的账号互通类应用切换登录时的问题。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">UIDevice *device = [UIDevice currentDevice];</span><br><span class="line">NSUUID * uuid = [device identifierForVendor];</span><br></pre></td></tr></table></figure>
 
-<p><strong>vendor</strong>（运营商）的值是根据已经上架到 Appstore 的 App 来决定的。如果应用不是通过 Appstore 安装的（如企业版或开发调试阶段），那么会根据<code>bundle ID</code>判断。<br>&amp;emsp;<br>iOS6.x中，会取 bundleID 的前两个部分生成 <code>vendor ID</code>（##com.example##.app.app1）。<br>&amp;emsp;<br>iOS7.x之后，除了最后一部分外，其他部分的 bundleID 都会用来生成<code>vendor ID</code>（##com.example.app##.app1）。<br>&amp;emsp;<br>需要注意的是，用户删除了某 APP 重装后，APP 里再获取 <code>IDFV</code> 时，值和之前的就不同了。</p>
+<p><strong>vendor</strong>（运营商）的值是根据已经上架到 Appstore 的 App 来决定的。如果应用不是通过 Appstore 安装的（如企业版或开发调试阶段），那么会根据<code>bundle ID</code>判断。<br><br/></p>
+<p>iOS6.x中，会取 bundleID 的前两个部分生成 <code>vendor ID</code>（##com.example##.app.app1）。<br><br/></p>
+<p>iOS7.x之后，除了最后一部分外，其他部分的 bundleID 都会用来生成<code>vendor ID</code>（##com.example.app##.app1）。<br><br/></p>
+<p>需要注意的是，用户删除了某 APP 重装后，APP 里再获取 <code>IDFV</code> 时，值和之前的就不同了。</p>
 <h4 id="4、IDFA"><a href="#4、IDFA" class="headerlink" title="4、IDFA"></a>4、IDFA</h4><p>IDFA - identifierForIdentifier（广告标示符），每个设备只有一个IDFA，在同一个设备上的所有 APP 都会取到相同的值，是iOS6 苹果专门给各广告提供商用来追踪用户而设定的。虽然 iPhone 默认是允许追踪的，而且一般用户都不知道有这么个设置，但是用户可以在 设置 - 隐私 - 广告追踪 里重置此 ID 的值，或者限制此 ID 的使用，所以有可能会取不到值。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">//依赖库：AdSupport.framework</span><br><span class="line">#import &lt;AdSupport/AdSupport.h&gt;</span><br><span class="line">[[[ASIdentifierManager sharedManager] advertisingIdentifier] UUIDString];</span><br></pre></td></tr></table></figure>
 
 <p><strong>注意</strong>：App Store 禁止不使用广告而只采集 IDFA 的 APP 上架。</p>
-<h4 id="5、OpenUDID"><a href="#5、OpenUDID" class="headerlink" title="5、OpenUDID"></a>5、OpenUDID</h4><p>UDID 被弃用后，广大开发者需要寻找一个可以替代的 UDID，并且不受苹果控制的方案，由此，OpenUDID 成为了当时使用最广泛的开源 UDID 代替方案。OpenUDID 利用一个非常巧妙的方法在不同程序间存储标示符：在粘贴板中用了一个特殊的名称来存储标示符，通过这种方法，其他应用程序也可以获取。<br>&amp;emsp;<br>每台iOS设备的 OpenUDID 是通过第一个带有 OpenUDID SDK包的 App 生成，如果你完全删除全部带有 OpenUDID SDK包的App（比如恢复系统等），那么OpenUDID会重新生成，而且和之前的值会不同，相当于新设备。<br>&amp;emsp;<br>另外，苹果在 iOS 7 之后对粘贴板做了限制，导致同一个设备上的应用间，无法再共享一个 OpenUDID。</p>
-<h4 id="6、MAC"><a href="#6、MAC" class="headerlink" title="6、MAC"></a>6、MAC</h4><p>MAC 地址在网络上用来区分设备的唯一性，接入网络的设备都有一个MAC地址，他们肯定都是唯一的。一部 iPhone 上可能有多个 MAC 地址，包括 WIFI 的、SIM 的等，但是 iTouch 和 iPad 上就有一个 WIFI 的，因此只需获取 WIFI 的 MAC 地址就好了。一般会采取 MD5（MAC 地址 + bundleID）获取唯一标识。<br>&amp;emsp;<br>但是 MAC 地址和 UDID 一样，存在隐私问题， iOS 7 之后，所有设备请求 MAC 地址会返回一个固定值，这个方法也不攻自破了。</p>
+<h4 id="5、OpenUDID"><a href="#5、OpenUDID" class="headerlink" title="5、OpenUDID"></a>5、OpenUDID</h4><p>UDID 被弃用后，广大开发者需要寻找一个可以替代的 UDID，并且不受苹果控制的方案，由此，OpenUDID 成为了当时使用最广泛的开源 UDID 代替方案。OpenUDID 利用一个非常巧妙的方法在不同程序间存储标示符：在粘贴板中用了一个特殊的名称来存储标示符，通过这种方法，其他应用程序也可以获取。<br><br/></p>
+<p>每台iOS设备的 OpenUDID 是通过第一个带有 OpenUDID SDK包的 App 生成，如果你完全删除全部带有 OpenUDID SDK包的App（比如恢复系统等），那么OpenUDID会重新生成，而且和之前的值会不同，相当于新设备。<br><br/></p>
+<p>另外，苹果在 iOS 7 之后对粘贴板做了限制，导致同一个设备上的应用间，无法再共享一个 OpenUDID。</p>
+<h4 id="6、MAC"><a href="#6、MAC" class="headerlink" title="6、MAC"></a>6、MAC</h4><p>MAC 地址在网络上用来区分设备的唯一性，接入网络的设备都有一个MAC地址，他们肯定都是唯一的。一部 iPhone 上可能有多个 MAC 地址，包括 WIFI 的、SIM 的等，但是 iTouch 和 iPad 上就有一个 WIFI 的，因此只需获取 WIFI 的 MAC 地址就好了。一般会采取 MD5（MAC 地址 + bundleID）获取唯一标识。<br><br/></p>
+<p>但是 MAC 地址和 UDID 一样，存在隐私问题， iOS 7 之后，所有设备请求 MAC 地址会返回一个固定值，这个方法也不攻自破了。</p>
 <h4 id="7、IDFV-keychain"><a href="#7、IDFV-keychain" class="headerlink" title="7、IDFV + keychain"></a>7、IDFV + keychain</h4><p>通过以上几种储存唯一标识的方法的分析，总结一下各有优劣。很多方法被苹果禁止或者漏洞太多，越来越不被开发者使用，现在苹果主推 IDFA 和 IDFV 这两种方法，但是 IDFV 在 APP 重新安装时会变化，所以可以将IDFV存储到钥匙串中，以后每次想获取标识符时都从钥匙串中取。</p>
 </section>
     <!-- Tags START -->

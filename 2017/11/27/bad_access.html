@@ -139,29 +139,29 @@
 <main class="app-body flex-box">
   <!-- Article START -->
   <article class="post-article">
-    <section class="markdown-content"><h3 id="1、内存错误是啥"><a href="#1、内存错误是啥" class="headerlink" title="1、内存错误是啥"></a>1、内存错误是啥</h3><p>&amp;emsp;在C和OC中，你一直在处理指针。指针是存储另一个变量的内存地址的变量。当向一个对象发送消息时，指向该对象的指针将会被引用。这意味着，你获取了指针所指的内存地址，并访问该存储区域的值。</p>
-<p>&amp;emsp;当该存储器区域不再映射到你的应用时，或者换句话说，该内存区域在你认为使用的时候却没有使用，该内存区域是无法访问的。 这时内核会抛出一个异常（ EXC ），表明你的应用程序不能访问该存储器区域（BAD ACCESS） 。</p>
-<p>&amp;emsp;总之，当你碰到 EXC_BAD_ACCESS ，这意味着你试图发送消息到的内存块，但内存块无法执行该消息。但是，在某些情况下， EXC_BAD_ACCESS 是由被损坏的指针引起的。每当你的应用程序尝试引用损坏的指针，一个异常就会被内核抛出。</p>
+    <section class="markdown-content"><h3 id="1、内存错误是啥"><a href="#1、内存错误是啥" class="headerlink" title="1、内存错误是啥"></a>1、内存错误是啥</h3><p>在C和OC中，你一直在处理指针。指针是存储另一个变量的内存地址的变量。当向一个对象发送消息时，指向该对象的指针将会被引用。这意味着，你获取了指针所指的内存地址，并访问该存储区域的值。</p>
+<p>当该存储器区域不再映射到你的应用时，或者换句话说，该内存区域在你认为使用的时候却没有使用，该内存区域是无法访问的。 这时内核会抛出一个异常（ EXC ），表明你的应用程序不能访问该存储器区域（BAD ACCESS） 。</p>
+<p>总之，当你碰到 EXC_BAD_ACCESS ，这意味着你试图发送消息到的内存块，但内存块无法执行该消息。但是，在某些情况下， EXC_BAD_ACCESS 是由被损坏的指针引起的。每当你的应用程序尝试引用损坏的指针，一个异常就会被内核抛出。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">static NSMutableArray *array;</span><br><span class="line"> </span><br><span class="line">- (void)viewDidLoad</span><br><span class="line">&#123;</span><br><span class="line">    [super viewDidLoad];</span><br><span class="line">    array = [[NSMutableArray alloc] initWithCapacity:5];</span><br><span class="line">    [array release];</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">- (void) viewWillAppear:(BOOL)animated </span><br><span class="line">&#123;</span><br><span class="line">    [array addObject:@&quot;Hello&quot;];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>&amp;emsp;上面的代码就会出现 EXC_BAD_ACCESS 错误，错误日志为：</p>
+<p>上面的代码就会出现 EXC_BAD_ACCESS 错误，错误日志为：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-[CALayerArray addObject:]: unrecognized selector sent to instance 0x604000443480</span><br></pre></td></tr></table></figure>
-<p>&amp;emsp;其中 0x604000443480 就是 array 变量的地址。</p>
-<p>&amp;emsp;<strong>ps：</strong> Xcode7.0 之后的版本在编译上面的代码时，会在“[array release];”处报错：</p>
+<p>其中 0x604000443480 就是 array 变量的地址。</p>
+<p><strong>ps：</strong> Xcode7.0 之后的版本在编译上面的代码时，会在“[array release];”处报错：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">release is unavailable in automatic reference counting mode</span><br></pre></td></tr></table></figure>
 
-<p>&amp;emsp;所以，为了模拟上面的 EXC_BAD_ACCESS 错误，需要对编译环境进行设置：</p>
+<p>所以，为了模拟上面的 EXC_BAD_ACCESS 错误，需要对编译环境进行设置：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Build Settings -&gt; Objective-C Automatic Reference Counting -&gt; NO。</span><br></pre></td></tr></table></figure>
 
 <hr>
-<h3 id="2、咋调试？（Zombie-模式）"><a href="#2、咋调试？（Zombie-模式）" class="headerlink" title="2、咋调试？（Zombie 模式）"></a>2、咋调试？（Zombie 模式）</h3><p>&amp;emsp;EXC_BAD_ACCESS 难以调试的原因是，你不知道你的应用程序试图访问哪个对象时出了问题。在 Xcode 中，启用僵尸对象意味着被释放的对象将会以僵尸的形式被保留。如果向僵尸对象发送消息，应用程序将会由于 EXC_BAD_ACCESS 而崩溃，此时 Xcode 就可以告诉你你试图访问的是哪个僵尸对象。</p>
-<p>&amp;emsp;下面是在 Xcode9.2 中开启僵尸调试模式的步骤：</p>
+<h3 id="2、咋调试？（Zombie-模式）"><a href="#2、咋调试？（Zombie-模式）" class="headerlink" title="2、咋调试？（Zombie 模式）"></a>2、咋调试？（Zombie 模式）</h3><p>EXC_BAD_ACCESS 难以调试的原因是，你不知道你的应用程序试图访问哪个对象时出了问题。在 Xcode 中，启用僵尸对象意味着被释放的对象将会以僵尸的形式被保留。如果向僵尸对象发送消息，应用程序将会由于 EXC_BAD_ACCESS 而崩溃，此时 Xcode 就可以告诉你你试图访问的是哪个僵尸对象。</p>
+<p>下面是在 Xcode9.2 中开启僵尸调试模式的步骤：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">左上角Edit Scheme -&gt; Run -&gt; Diagnostics -&gt; 勾选Zombie Objects</span><br></pre></td></tr></table></figure>
 
-<p>&amp;emsp;设置完之后还是上面的代码，再次运行之后，会打印如下报错信息：</p>
+<p>设置完之后还是上面的代码，再次运行之后，会打印如下报错信息：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Thread 1: EXC_BAD_INSTRUCTION (code=EXC_I386_INVOP, subcode=0x0)</span><br><span class="line">*** -[__NSArrayM addObject:]: message sent to deallocated instance 0x60400045d1c0</span><br></pre></td></tr></table></figure>
 
-<p>&amp;emsp;找到问题后记得还原 scheme中的 Zombie 设置。</p>
+<p>找到问题后记得还原 scheme中的 Zombie 设置。</p>
 </section>
     <!-- Tags START -->
     

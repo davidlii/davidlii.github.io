@@ -148,7 +148,7 @@
 <li>破解内购；</li>
 </ul>
 <h3 id="2-防范"><a href="#2-防范" class="headerlink" title="2.防范"></a>2.防范</h3><p>在这方面我是真没有经验，于是抱着学习的态度去查看了相关的论坛和资料，学学别人的经验，这里做一个简单的记录~</p>
-<h4 id="2-1-检测是否越狱（念茜）"><a href="#2-1-检测是否越狱（念茜）" class="headerlink" title="2.1.检测是否越狱（念茜）"></a>2.1.检测是否越狱（念茜）</h4><p>这是最常见的被动防御方法，比如当应用启动时，先检测设备是否已经越狱，如果已越狱则禁止应用启动；在用户发起内购支付时，如果发现设备已越狱，则直接拒绝内购请求并给出相应的提示。根据我的测试，<code>部落冲突</code>游戏就是通过闪退直接禁止越狱设备启动自己，而腾讯旗下的产品基本上都会在越狱设备发起支付时给出提示，<code>别踩音乐块儿</code>也是如此。<br>&amp;emsp;</p>
+<h4 id="2-1-检测是否越狱（念茜）"><a href="#2-1-检测是否越狱（念茜）" class="headerlink" title="2.1.检测是否越狱（念茜）"></a>2.1.检测是否越狱（念茜）</h4><p>这是最常见的被动防御方法，比如当应用启动时，先检测设备是否已经越狱，如果已越狱则禁止应用启动；在用户发起内购支付时，如果发现设备已越狱，则直接拒绝内购请求并给出相应的提示。根据我的测试，<code>部落冲突</code>游戏就是通过闪退直接禁止越狱设备启动自己，而腾讯旗下的产品基本上都会在越狱设备发起支付时给出提示，<code>别踩音乐块儿</code>也是如此。<br><br/></p>
 <p>以下摘自<a target="_blank" rel="noopener" href="https://blog.csdn.net/yiyaaixuexi/article/details/20286929">念茜</a>的博客：</p>
 <ul>
 <li>检测越狱文件或目录</li>
@@ -193,11 +193,12 @@
 <p>restrict，C语言中的一种类型限定符（Type Qualifiers），用于告诉编译器，对象已经被指针所引用，不能通过除该指针外所有其他直接或间接的方式修改该对象的内容。</p>
 </blockquote>
 <p>restrict是c99标准引入的，它只可以用于限定和约束指针，并表明指针是访问一个数据对象的唯一且初始的方式。即它告诉编译器，所有修改该指针所指向内存中内容的操作都必须通过该指针来修改，而不能通过其它途径(其它变量或指针)来修改；这样做的好处是，能帮助编译器进行更好的优化代码，生成更有效率的汇编代码。如 int *restrict ptr, ptr 指向的内存单元只能被 ptr 访问到，任何同样指向这个内存单元的其他指针都是未定义的，直白点就是无效指针。</p>
-<p>&amp;emsp;</p>
+<br/>
+
 <p>示例：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">int ar[10];</span><br><span class="line">int * restrict restar=(int *)malloc(10*sizeof(int));</span><br><span class="line">int *par=ar;</span><br></pre></td></tr></table></figure>
 
-<p>这里说明restar是访问由malloc()分配的内存的唯一且初始的方式。par就不是了。<br>&amp;emsp;</p>
+<p>这里说明restar是访问由malloc()分配的内存的唯一且初始的方式。par就不是了。<br><br/></p>
 <p>通过在 Xcode 里的 Other Linker Flags 设置参数，可以防止应用的二进制文件被注入 dylib（仅限于iOS 10 以下系统）。dylib 无法注入，也就意味着没办法用<code>cycript</code>动态调试进程</p>
 <ul>
 <li>Other Linker Flags 参数：</li>
@@ -211,7 +212,7 @@
 <li><a target="_blank" rel="noopener" href="http://bbs.iosre.com/t/tweak-app-app-tweak/438">iosre论坛snakeninny</a></li>
 <li><a target="_blank" rel="noopener" href="https://pewpewthespells.com/blog/blocking_code_injection_on_ios_and_os_x.html">pewpewthespells-blocking_code_injection</a></li>
 </ul>
-<h4 id="2-4-反ptrace调试"><a href="#2-4-反ptrace调试" class="headerlink" title="2.4.反ptrace调试"></a>2.4.反ptrace调试</h4><p><code>ptrace</code>是系统函数，此函数提供一个进程去监听和控制另一个进程，并且可以检测被控制进程的内存和寄存器里面的数据。<code>ptrace</code>可以用来实现断点调试和系统调用跟踪。<br>&amp;emsp;</p>
+<h4 id="2-4-反ptrace调试"><a href="#2-4-反ptrace调试" class="headerlink" title="2.4.反ptrace调试"></a>2.4.反ptrace调试</h4><p><code>ptrace</code>是系统函数，此函数提供一个进程去监听和控制另一个进程，并且可以检测被控制进程的内存和寄存器里面的数据。<code>ptrace</code>可以用来实现断点调试和系统调用跟踪。<br><br/></p>
 <p>参考博文：<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/ebdfb0a25c85">https://www.jianshu.com/p/ebdfb0a25c85</a></p>
 <h4 id="2-5-第三方加固"><a href="#2-5-第三方加固" class="headerlink" title="2.5.第三方加固"></a>2.5.第三方加固</h4><p>缺点：</p>
 <ul>

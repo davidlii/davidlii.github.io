@@ -222,7 +222,7 @@
   
     <article class="article-card">
       <h2 class="article-head">
-        <a href="/2018/01/20/reuse_cell.html">UITableViewCell 的重用、卡顿与离屏渲染</a>
+        <a href="/2018/01/20/reuse_cell.html">Cell重用、卡顿、离屏渲染</a>
       </h2>
       <p class="article-date">January 20, 2018</p>
       
@@ -263,9 +263,9 @@
       
       <div class="article-summary">
         
-          1.概念循环引用可以简单理解为 A 强引用 B，B 又强引用了 A，双方同时保持对方的一个引用，导致引用计数不为0，始终无法释放。&amp;emsp;
-影响？&amp;emsp;
-导致对象无法释放，造成内存泄露。如果是 ViewController 内出现循环引用，在反复 push &amp ...
+          1.概念循环引用可以简单理解为 A 强引用 B，B 又强引用了 A，双方同时保持对方的一个引用，导致引用计数不为0，始终无法释放。
+影响？
+导致对象无法释放，造成内存泄露。如果是 ViewController 内出现循环引用，在反复 push &amp; pop 后，ViewControll ...
         
       </div>
       <a class="more" href="/2018/01/14/retain_circle.html">Read more</a>
@@ -285,15 +285,17 @@
       
       <div class="article-summary">
         
-          库？&amp;emsp;库是代码的集合、共享代码的一种方式。分为：
+          库？库是代码的集合、共享代码的一种方式。分为：
 
 开源库：源代码公开，能看到具体的实现。（如SD、AF）
 闭源库：源码不公开，是经过编译后的二进制文件，看不到具体实现。
 
-&amp;emsp;其中，闭源库有两种形式：
+其中，闭源库有两种形式：
 
 静态库：.a 和 .framework
-动态库：.d ...
+动态库：.dylib 和 .framework
+
+问 ...
         
       </div>
       <a class="more" href="/2018/01/09/framework.html">Read more</a>

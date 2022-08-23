@@ -143,13 +143,18 @@
 <h3 id="Xcode-默认配置"><a href="#Xcode-默认配置" class="headerlink" title="Xcode 默认配置"></a>Xcode 默认配置</h3><p>Xcode 在生成项目时已经帮我们配置好了两个环境，并且已经在同一个scheme下做好了配置：</p>
 <p><img src="https://davidlii.nos-eastchina1.126.net/pic_schemeeditor.png" alt="scheme"></p>
 <p>#<strong>Debug</strong></p>
-<p>&amp;emsp;</p>
+<br/>
+
 <p>测试环境，一般 Build、Run、Test 和 Analyze，都在这个环境中进行。</p>
-<p>&amp;emsp;<br>#<strong>Release</strong></p>
-<p>&amp;emsp;</p>
+<br/>
+
+<p>#<strong>Release</strong></p>
+<br/>
+
 <p>生产环境，Profile 和 Archive 打包上传商店时，使用这个环境。</p>
-<p>&amp;emsp;</p>
-<p>查看<code>Build Settings</code>，你能看到每个设置下都分两种环境，可以做不同的设置。<br>&amp;emsp;</p>
+<br/>
+
+<p>查看<code>Build Settings</code>，你能看到每个设置下都分两种环境，可以做不同的设置。<br><br/></p>
 <p>有时我们需要的不止这两种环境，可能还需要企业版，又或者需要刷排名引流，这时就需要我们自己配置这些分包了。分包配置的大致原理是：同一个 <code>TARGET</code> 中设置不同的 <code>Configurations</code>，从而区分各种环境。下面将介绍具体的配置步骤~</p>
 <h3 id="1-配置-PROJECT"><a href="#1-配置-PROJECT" class="headerlink" title="1.配置 PROJECT"></a>1.配置 PROJECT</h3><h4 id="1-1-info"><a href="#1-1-info" class="headerlink" title="1.1.info"></a>1.1.info</h4><p><code>PROJECT</code>-&gt;<code>info</code>-&gt;<code>Configurations</code>，点下方<code>+</code>，复制一份<code>Debug</code>或者<code>Rlease</code>的配置，重新命名，如<code>InHouse</code>。</p>
 <p><img src="https://davidlii.nos-eastchina1.126.net/pic_project_info_configurarations.png" alt="info-configurations"></p>

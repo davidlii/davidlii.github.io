@@ -139,18 +139,18 @@
 <main class="app-body flex-box">
   <!-- Article START -->
   <article class="post-article">
-    <section class="markdown-content"><h3 id="库？"><a href="#库？" class="headerlink" title="库？"></a>库？</h3><p>&amp;emsp;库是代码的集合、共享代码的一种方式。分为：</p>
+    <section class="markdown-content"><h3 id="库？"><a href="#库？" class="headerlink" title="库？"></a>库？</h3><p>库是代码的集合、共享代码的一种方式。分为：</p>
 <ul>
 <li>开源库：源代码公开，能看到具体的实现。（如SD、AF）</li>
 <li>闭源库：源码不公开，是经过编译后的二进制文件，看不到具体实现。</li>
 </ul>
-<p>&amp;emsp;其中，闭源库有两种形式：</p>
+<p>其中，闭源库有两种形式：</p>
 <ul>
 <li>静态库：.a 和 .framework</li>
 <li>动态库：.dylib 和 .framework</li>
 </ul>
-<p>&amp;emsp;问：framework 为啥即是静态库又是动态库呢？</p>
-<p>&amp;emsp;答：系统的.framework 是动态库，我们自己建的.framework 是静态库。</p>
+<p>问：framework 为啥即是静态库又是动态库呢？</p>
+<p>答：系统的.framework 是动态库，我们自己建的.framework 是静态库。</p>
 <h4 id="1、静态库-与-动态库的区别？"><a href="#1、静态库-与-动态库的区别？" class="headerlink" title="1、静态库 与 动态库的区别？"></a>1、静态库 与 动态库的区别？</h4><ul>
 <li>静态库在编译阶段会成为 App 可执行文件的一部分，会增加可执行文件的大小。因为 App 尺寸变大，启动时需要加载的内容变多，所以可能导致 App 启动变慢。动态库则“智能”一些，它不会改变可执行文件的大小，只有 App 需要用到这个 dylib 时，系统才会把它加载进内存，成为进程的一部分。</li>
 <li>静态库在连接时会被完整的复制到可执行文件中，被多次使用就有多份冗余拷贝。动态库则不复制，由系统动态加载且只加载一次到内存，可供多个程序调用，节省内存。</li>
@@ -192,7 +192,7 @@
 <ul>
 <li>测试自己制作的静态库文件</li>
 </ul>
-<p>&amp;emsp;将.h 以及上步导出的.a文件导入自己的工程中，调用.h 中的接口。</p>
+<p>将.h 以及上步导出的.a文件导入自己的工程中，调用.h 中的接口。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">#import &quot;AppDelegate.h&quot;</span><br><span class="line">#import &quot;Aframe.h&quot;</span><br><span class="line"></span><br><span class="line">@implementation AppDelegate</span><br><span class="line"></span><br><span class="line">- (void)testLibA&#123;</span><br><span class="line">    Aframe *aframe = [Aframe new];</span><br><span class="line">    [aframe mathAdd];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (BOOL)application:(UIApplication *)application</span><br><span class="line">didFinishLaunchingWithOptions:(NSDictionary *)launchOptions</span><br><span class="line">&#123;</span><br><span class="line">    [self testLibA];</span><br><span class="line">    return YES;</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
 
 <h3 id="framework的制作？"><a href="#framework的制作？" class="headerlink" title=".framework的制作？"></a>.framework的制作？</h3><ul>
@@ -228,11 +228,11 @@
 </ul>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">lipo -create /xx.framework/xx(真机.framework文件路径) </span><br><span class="line">/xx.framework/xx(模拟器.framework文件路径) </span><br><span class="line">-output Desktop/xx</span><br></pre></td></tr></table></figure>
 
-<p>&amp;emsp;这一步可能会报错，但是依然会生成一个 xx.lipo 文件，将其后缀去掉并 复制到&#x2F;xx.framework(真机.framework文件路径) 下，替换目录中原有的 framework。</p>
+<p>这一步可能会报错，但是依然会生成一个 xx.lipo 文件，将其后缀去掉并 复制到&#x2F;xx.framework(真机.framework文件路径) 下，替换目录中原有的 framework。</p>
 <ul>
 <li>测试 framework</li>
 </ul>
-<p>&amp;emsp;将上一步中替换完成的xx.framework 复制到新的工程里，导入头文件：</p>
+<p>将上一步中替换完成的xx.framework 复制到新的工程里，导入头文件：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">#import &lt;Framework/Framework.h&gt;</span><br><span class="line"></span><br><span class="line">@implementation AppDelegate</span><br><span class="line"></span><br><span class="line">- (void)testFramework&#123;</span><br><span class="line">    MathTool *mathTool = [MathTool new];</span><br><span class="line">    [mathTool mathAdd];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (BOOL)application:(UIApplication *)application </span><br><span class="line">didFinishLaunchingWithOptions:(NSDictionary *)launchOptions</span><br><span class="line">&#123;</span><br><span class="line">    [self testFramework];</span><br><span class="line">    return YES;</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure></section>
     <!-- Tags START -->
     

@@ -162,7 +162,7 @@
 <ul>
 <li>找到开发环境配置文件并复制到<code>xx.app</code>文件夹下</li>
 </ul>
-<p>如果是自己的 ipa 那么这个<code>.mobileprovision</code>文件可以直接使用现成的，从<code>Xcode-&gt;账户</code>中找到，show in finder 后复制一份重命名为<code>embedded.mobileprovision</code>，拖到<code>.app</code>文件夹下即可<br>&amp;emsp;</p>
+<p>如果是自己的 ipa 那么这个<code>.mobileprovision</code>文件可以直接使用现成的，从<code>Xcode-&gt;账户</code>中找到，show in finder 后复制一份重命名为<code>embedded.mobileprovision</code>，拖到<code>.app</code>文件夹下即可<br><br/></p>
 <p>也可以使用命令行操作：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cp xx.mobileprovision Payload/xx.app/embedded.mobileprovision</span><br></pre></td></tr></table></figure>
 <p>注意：复制到<code>xx.app</code>目录下的配置文件一定要命名为<code>embedded.mobileprovision</code>！</p>
@@ -207,8 +207,8 @@
 
 <h3 id="3-3-调试"><a href="#3-3-调试" class="headerlink" title="3.3.调试"></a>3.3.调试</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ios-deploy -d -b Payload/xx.app</span><br></pre></td></tr></table></figure>
 
-<p>出现<code>success</code>字样，就说明成功了~<br>&amp;emsp;</p>
-<p>如果遇到错误提示：“Error: There was an internal API error. AMDeviceSecureInstallApplication(0, device, url, options, install_callback, 0)”,就可能存在有 framework 或者 dylib 未签名的情况。这时就需要把 app 文件夹下的 framework 全都签名。<br>&amp;emsp;</p>
+<p>出现<code>success</code>字样，就说明成功了~<br><br/></p>
+<p>如果遇到错误提示：“Error: There was an internal API error. AMDeviceSecureInstallApplication(0, device, url, options, install_callback, 0)”,就可能存在有 framework 或者 dylib 未签名的情况。这时就需要把 app 文件夹下的 framework 全都签名。<br><br/></p>
 <p>重新打包，生成新的ipa</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ zip -r new.ipa Payload/</span><br></pre></td></tr></table></figure>
 

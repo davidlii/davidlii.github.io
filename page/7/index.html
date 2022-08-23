@@ -344,9 +344,12 @@ To create a new class, start by calling objc_allocateClassPair. Then set the cla
       
       <div class="article-summary">
         
-          方法交换Method Swizzling&amp;emsp;
-作用：动态交换两个方法的实现(即IMP指针)；&amp;emsp;
-原理：在类的数据结构体中有一个”方法列表”，它存放着 SEL 与 IMP 的映射关系。Method Swizzling 就是对这个列表进行的操作，通过改变这种映射 ...
+          方法交换Method Swizzling
+作用：动态交换两个方法的实现(即IMP指针)；
+原理：在类的数据结构体中有一个”方法列表”，它存放着 SEL 与 IMP 的映射关系。Method Swizzling 就是对这个列表进行的操作，通过改变这种映射关系，完成两个方法IMP的交换；
+
+
+使 ...
         
       </div>
       <a class="more" href="/2017/09/01/runtime_swizzle.html">Read more</a>
@@ -366,13 +369,13 @@ To create a new class, start by calling objc_allocateClassPair. Then set the cla
       
       <div class="article-summary">
         
-          1.对象关联使用关联，我们可以在不修改类定义的前提下，为其对象增加存储空间。&amp;emsp;
+          1.对象关联使用关联，我们可以在不修改类定义的前提下，为其对象增加存储空间。
 适合的场景：
 
 把某对象与特定对象相关联；
 OC允许给分类增加属性，但不会自动生成getter、setter函数，因此调用时会崩溃，使用关联可以解决此问题；
 
-1.1.创建关联1OBJC_EXP ...
+1.1.创建关联1OBJC_EXPORT void o ...
         
       </div>
       <a class="more" href="/2017/08/30/runtime_associate.html">Read more</a>
