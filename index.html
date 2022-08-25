@@ -13,7 +13,7 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
   <meta name="theme-color" content="#2f4154">
-  <meta name="author" content="John Doe">
+  <meta name="author" content="Davidli">
   <meta name="keywords" content="Davidli">
   
     <meta name="description" content="This is Davidli&#39;s blog ~">
@@ -23,7 +23,7 @@
 <meta property="og:site_name" content="Davidli">
 <meta property="og:description" content="This is Davidli&#39;s blog ~">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:author" content="John Doe">
+<meta property="article:author" content="Davidli">
 <meta property="article:tag" content="Davidli">
 <meta name="twitter:card" content="summary_large_image">
   
@@ -63,7 +63,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"yoursite.com","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"❤","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -225,7 +225,13 @@
   <div class="row mx-auto index-card">
     
     
-    <article class="col-12 col-md-12 mx-auto index-info">
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2022/01/09/dart.html" target="_blank">
+          <img src="/img/index_img.jpg" srcset="/img/loading.gif" lazyload alt="Dart语言入门">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
       <h1 class="index-header">
         
         <a href="/2022/01/09/dart.html" target="_blank">
@@ -234,7 +240,7 @@
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2022/01/09/dart.html" target="_blank">
+      <a class="index-excerpt " href="/2022/01/09/dart.html" target="_blank">
         <div>
           一.简介 Dart is a client-optimized language for fast apps on any platform.  Dart是谷歌开发的计算机编程语言，可用于移动应用、网页、服务器等领域。它是一门面向对象的语言，也是强类型的、类定义的、单继承的语言，支持接口、混入(Mixins)、抽象类、泛型、可选类型等。它融合了许多现代编程语言的优秀特性，从中能看到JavaScri
         </div>
@@ -286,7 +292,13 @@
   <div class="row mx-auto index-card">
     
     
-    <article class="col-12 col-md-12 mx-auto index-info">
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2021/06/06/RAC-sig-filter.html" target="_blank">
+          <img src="/img/index_img.jpg" srcset="/img/loading.gif" lazyload alt="RAC-数据的过滤与转换">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
       <h1 class="index-header">
         
         <a href="/2021/06/06/RAC-sig-filter.html" target="_blank">
@@ -295,7 +307,7 @@
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2021/06/06/RAC-sig-filter.html" target="_blank">
+      <a class="index-excerpt " href="/2021/06/06/RAC-sig-filter.html" target="_blank">
         <div>
           前言信号在订阅后就可以接收回调的数据了，有时候我们需要对收到的数据进行过滤或者转换后才能继续使用。 例如发送按钮的userInteractionEnabled状态需要依请求的isFnished状态而定：请求发送后未完成则按钮不可点击，请求成功返回后按钮可点击。这种场景下我们只需要创建一个信号监听请求的isFnished属性，并对信号返回的结果进行取反即可。 再比如修改昵称时一般不能前后输入一样的昵
         </div>
@@ -347,7 +359,13 @@
   <div class="row mx-auto index-card">
     
     
-    <article class="col-12 col-md-12 mx-auto index-info">
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2021/06/01/RAC-sig-order.html" target="_blank">
+          <img src="/img/index_img.jpg" srcset="/img/loading.gif" lazyload alt="RAC-信号的组合">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
       <h1 class="index-header">
         
         <a href="/2021/06/01/RAC-sig-order.html" target="_blank">
@@ -356,7 +374,7 @@
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2021/06/01/RAC-sig-order.html" target="_blank">
+      <a class="index-excerpt " href="/2021/06/01/RAC-sig-order.html" target="_blank">
         <div>
           前言项目中往往有多个信号在执行任务，而这些信号之间通常要按照一定的方式或顺序进行组合。比如：  先要用户登录成功才能加载通讯录； 请求头像和用户信息都完成后才刷新详情页。  RAC 针对诸如这些场景，设计了一套实用的API供我们组合信号： concat12&#x2F;&#x2F;&#x2F; Subscribes to &#96;signal&#96; when the source signal completes.- (RACSignal
         </div>
@@ -408,7 +426,13 @@
   <div class="row mx-auto index-card">
     
     
-    <article class="col-12 col-md-12 mx-auto index-info">
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2021/05/25/RAC-async.html" target="_blank">
+          <img src="/img/index_img.jpg" srcset="/img/loading.gif" lazyload alt="RAC-异步行为">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
       <h1 class="index-header">
         
         <a href="/2021/05/25/RAC-async.html" target="_blank">
@@ -417,7 +441,7 @@
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2021/05/25/RAC-async.html" target="_blank">
+      <a class="index-excerpt " href="/2021/05/25/RAC-async.html" target="_blank">
         <div>
           前言OC中的异步行为：  block delegate KVO 通知 target-action机制  异步行为的共同点：  何时触发并不确定，观察者需要等待其触发时的回调； 异步行为的创建和触发并不在同一块区域，往往是分开的。  异步行为的缺点：  异步行为的创建和回调相对分散，这不符合代码规范中”高内聚”的要求； 使用不当时，这些行为往往会造成循环引用等问题。  RAC文档 摘要：  One
         </div>
@@ -469,7 +493,13 @@
   <div class="row mx-auto index-card">
     
     
-    <article class="col-12 col-md-12 mx-auto index-info">
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2021/05/25/RAC-signal.html" target="_blank">
+          <img src="/img/index_img.jpg" srcset="/img/loading.gif" lazyload alt="RAC-信号与订阅者">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
       <h1 class="index-header">
         
         <a href="/2021/05/25/RAC-signal.html" target="_blank">
@@ -478,7 +508,7 @@
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2021/05/25/RAC-signal.html" target="_blank">
+      <a class="index-excerpt " href="/2021/05/25/RAC-signal.html" target="_blank">
         <div>
           一.信号1.信号是啥RAC文档 中关于RACSignal的描述:  A signal, represented by the RACSignal class, is a push-driven stream.Signals generally represent data that will be delivered in the future. As work is performed or d
         </div>
@@ -530,7 +560,13 @@
   <div class="row mx-auto index-card">
     
     
-    <article class="col-12 col-md-12 mx-auto index-info">
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2020/12/21/modules-protocol.html" target="_blank">
+          <img src="/img/index_img.jpg" srcset="/img/loading.gif" lazyload alt="组件化-面向协议方案">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
       <h1 class="index-header">
         
         <a href="/2020/12/21/modules-protocol.html" target="_blank">
@@ -539,7 +575,7 @@
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2020/12/21/modules-protocol.html" target="_blank">
+      <a class="index-excerpt " href="/2020/12/21/modules-protocol.html" target="_blank">
         <div>
           1.前言URL和反射方案各有自己的局限性：  URL路由方案支持的参数类型不够灵活； 反射方案的中间通信层使用明文类名和接口名，硬编码极容易出错； 两种方案中组件之间传值时需要引用对方的实体文件，这样就依然存在耦合问题；  本篇将要探讨的协议+服务注册+URL+反射方案，其中的协议就很好的解决了这些问题~ 2.思路2.1.本地调用组件将自己对外提供的服务以协议的形式进行声明，对其他所有组件可见；
         </div>
@@ -591,7 +627,13 @@
   <div class="row mx-auto index-card">
     
     
-    <article class="col-12 col-md-12 mx-auto index-info">
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2020/11/12/modules-runtime.html" target="_blank">
+          <img src="/img/index_img.jpg" srcset="/img/loading.gif" lazyload alt="组件化-反射方案">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
       <h1 class="index-header">
         
         <a href="/2020/11/12/modules-runtime.html" target="_blank">
@@ -600,7 +642,7 @@
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2020/11/12/modules-runtime.html" target="_blank">
+      <a class="index-excerpt " href="/2020/11/12/modules-runtime.html" target="_blank">
         <div>
           1.前言上一篇文章中分析了组件化的目标和好处，同时梳理了基于URL+Block的路由组件化解决方案的原理、实践和优缺点。本文将继续介绍第二种解决方案：基于反射原理的组件化方案。 2.场景从主页跳转到详情，传入详情页所需的头像； 在详情中简单的修改信息之后，返回主页时更新主页的标题。 3.思路基于反射原理的组件化方案，其首要目标还是实现各组件之间的通信，同时减少组件间的耦合。其实现原理如下： 3.1
         </div>
@@ -652,7 +694,13 @@
   <div class="row mx-auto index-card">
     
     
-    <article class="col-12 col-md-12 mx-auto index-info">
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2020/09/03/modules-url.html" target="_blank">
+          <img src="/img/index_img.jpg" srcset="/img/loading.gif" lazyload alt="组件化-URL路由方案">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
       <h1 class="index-header">
         
         <a href="/2020/09/03/modules-url.html" target="_blank">
@@ -661,7 +709,7 @@
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2020/09/03/modules-url.html" target="_blank">
+      <a class="index-excerpt " href="/2020/09/03/modules-url.html" target="_blank">
         <div>
           一、组件化1.目的为了解耦：把复杂系统拆分成多个组件，分离组件边界和责任，便于独立升级和维护。 2.好处 明确组件职责  按合理的粒度将系统拆分成多个组件，确保组件各司其职，以便于复用。  减少组件间的依赖  通信层实现了组件间的通信，而不用在组件间跳转、调用服务时引用其他组件的文件。  提升开发&#x2F;编译&#x2F;测试效率  开发人员只须关注自己的组件，不再需要导入或编译其他组件，从而提
         </div>
@@ -713,7 +761,13 @@
   <div class="row mx-auto index-card">
     
     
-    <article class="col-12 col-md-12 mx-auto index-info">
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2020/09/01/patterns.html" target="_blank">
+          <img src="/img/index_img.jpg" srcset="/img/loading.gif" lazyload alt="常用架构模式">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
       <h1 class="index-header">
         
         <a href="/2020/09/01/patterns.html" target="_blank">
@@ -722,7 +776,7 @@
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2020/09/01/patterns.html" target="_blank">
+      <a class="index-excerpt " href="/2020/09/01/patterns.html" target="_blank">
         <div>
           架构模式 架构模式，用于描述软件系统里的基本的结构组织或纲要。架构模式提供了一些定义好的子系统，指定它们的责任，并给出把它们组织在一起的法则和指南。常见的架构模式有：分层模式、微核模式、管道与过滤器、MVC模式、REST模式、SOA模式。  #为什么会出现架构模式？ 架构模式诞生于软件开发的最大难题：需求变更。需求变更往往导致软件代码的修改。而有些代码尤其是一些大型系统，其代码理解起来会非常困难，
         </div>
@@ -774,7 +828,13 @@
   <div class="row mx-auto index-card">
     
     
-    <article class="col-12 col-md-12 mx-auto index-info">
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2020/04/17/reveal.html" target="_blank">
+          <img src="/img/index_img.jpg" srcset="/img/loading.gif" lazyload alt="界面调试工具：Reveal">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
       <h1 class="index-header">
         
         <a href="/2020/04/17/reveal.html" target="_blank">
@@ -783,7 +843,7 @@
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2020/04/17/reveal.html" target="_blank">
+      <a class="index-excerpt " href="/2020/04/17/reveal.html" target="_blank">
         <div>
           1.简介1.1.场景 场景1  我们在模拟器或真机上调试自家应用时，一般的过程可能是： 修改界面元素 → 编译运行 → 效果不满意继续修改 → 编译运行 当某些效果需要反复调试时，很多时间会浪费在编译运行阶段，尤其是当你的应用比较复杂时。 解决这个痛点有多种方式，如使用RN、Flutter等框架，它们都支持实时渲染，不过这些都涉及到成本的取舍。  场景2  有时我们需要研究某些第三方应用的界面布局
         </div>

@@ -13,7 +13,7 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
   <meta name="theme-color" content="#2f4154">
-  <meta name="author" content="John Doe">
+  <meta name="author" content="Davidli">
   <meta name="keywords" content="Davidli">
   
     <meta name="description" content="This is Davidli&#39;s blog ~">
@@ -23,7 +23,7 @@
 <meta property="og:site_name" content="Davidli">
 <meta property="og:description" content="This is Davidli&#39;s blog ~">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:author" content="John Doe">
+<meta property="article:author" content="Davidli">
 <meta property="article:tag" content="Davidli">
 <meta name="twitter:card" content="summary_large_image">
   
@@ -63,7 +63,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"yoursite.com","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"❤","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -225,7 +225,13 @@
   <div class="row mx-auto index-card">
     
     
-    <article class="col-12 col-md-12 mx-auto index-info">
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2017/08/25/runtime_ivar.html" target="_blank">
+          <img src="/img/index_img.jpg" srcset="/img/loading.gif" lazyload alt="Runtime：成员变量、属性及其应用">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
       <h1 class="index-header">
         
         <a href="/2017/08/25/runtime_ivar.html" target="_blank">
@@ -234,7 +240,7 @@
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2017/08/25/runtime_ivar.html" target="_blank">
+      <a class="index-excerpt " href="/2017/08/25/runtime_ivar.html" target="_blank">
         <div>
           1.成员变量Ivar在objc&#x2F;runtime.h中，Ivar的描述如下： 1234567891011&#x2F;&#x2F;&#x2F; An opaque type that represents an instance variable.typedef struct objc_ivar *Ivar;struct objc_ivar &amp;#123;char *ivar_namechar *ivar_typeint ivar_
         </div>
@@ -286,7 +292,13 @@
   <div class="row mx-auto index-card">
     
     
-    <article class="col-12 col-md-12 mx-auto index-info">
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2017/08/23/runtime_message.html" target="_blank">
+          <img src="/img/index_img.jpg" srcset="/img/loading.gif" lazyload alt="Runtime：消息机制">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
       <h1 class="index-header">
         
         <a href="/2017/08/23/runtime_message.html" target="_blank">
@@ -295,7 +307,7 @@
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2017/08/23/runtime_message.html" target="_blank">
+      <a class="index-excerpt " href="/2017/08/23/runtime_message.html" target="_blank">
         <div>
           1.id在objc&#x2F;objc.h中，id的定义如下： 12345678&#x2F;&#x2F;&#x2F; Represents an instance of a class.struct objc_object &amp;#123;Class isa  OBJC_ISA_AVAILABILITY;&amp;#125;;&#x2F;&#x2F;&#x2F; A pointer to an instance of a class.typedef struct objc_ob
         </div>
@@ -347,7 +359,13 @@
   <div class="row mx-auto index-card">
     
     
-    <article class="col-12 col-md-12 mx-auto index-info">
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2017/08/22/runtime_metaclass.html" target="_blank">
+          <img src="/img/index_img.jpg" srcset="/img/loading.gif" lazyload alt="Runtime：元类">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
       <h1 class="index-header">
         
         <a href="/2017/08/22/runtime_metaclass.html" target="_blank">
@@ -356,7 +374,7 @@
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2017/08/22/runtime_metaclass.html" target="_blank">
+      <a class="index-excerpt " href="/2017/08/22/runtime_metaclass.html" target="_blank">
         <div>
           1.runtimeruntime，直译过来是运行时，它是一套底层的C语言API，包含很多强大实用的C语言数据类型和C语言函数。我们的OC代码在运行阶段都是基于runtime环境才能正常运行的。 2.常用场景 发送消息； 读取成员变量； 动态为某个类增加属性； 交换类中的方法、动态为某个类添加方法； 动态创建、删除、修改一个类；  3.对象 OC中，含有isa指针且该指针可以正确指向类的数据结构，都
         </div>
@@ -408,7 +426,13 @@
   <div class="row mx-auto index-card">
     
     
-    <article class="col-12 col-md-12 mx-auto index-info">
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2017/07/24/hello-world.html" target="_blank">
+          <img src="/img/index_img.jpg" srcset="/img/loading.gif" lazyload alt="Hello World">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
       <h1 class="index-header">
         
         <a href="/2017/07/24/hello-world.html" target="_blank">
@@ -417,7 +441,7 @@
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2017/07/24/hello-world.html" target="_blank">
+      <a class="index-excerpt " href="/2017/07/24/hello-world.html" target="_blank">
         <div>
           Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick
         </div>

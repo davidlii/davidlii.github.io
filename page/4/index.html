@@ -13,7 +13,7 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
   <meta name="theme-color" content="#2f4154">
-  <meta name="author" content="John Doe">
+  <meta name="author" content="Davidli">
   <meta name="keywords" content="Davidli">
   
     <meta name="description" content="This is Davidli&#39;s blog ~">
@@ -23,7 +23,7 @@
 <meta property="og:site_name" content="Davidli">
 <meta property="og:description" content="This is Davidli&#39;s blog ~">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:author" content="John Doe">
+<meta property="article:author" content="Davidli">
 <meta property="article:tag" content="Davidli">
 <meta name="twitter:card" content="summary_large_image">
   
@@ -63,7 +63,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"yoursite.com","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"❤","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -225,7 +225,13 @@
   <div class="row mx-auto index-card">
     
     
-    <article class="col-12 col-md-12 mx-auto index-info">
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2018/08/18/swift-error.html" target="_blank">
+          <img src="/img/index_img.jpg" srcset="/img/loading.gif" lazyload alt="Swift中Error异常">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
       <h1 class="index-header">
         
         <a href="/2018/08/18/swift-error.html" target="_blank">
@@ -234,7 +240,7 @@
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2018/08/18/swift-error.html" target="_blank">
+      <a class="index-excerpt " href="/2018/08/18/swift-error.html" target="_blank">
         <div>
           1.异常的表示Swift中用实现了Error协议的类型表示异常，通常用枚举来表示一组错误信息。 12345enum VendingMachineError: Error &amp;#123;    case invalidSelection    case insufficientFunds(coinsNeeded: Int)    case outOfStock&amp;#125;  2.抛出异常在方法的参数后
         </div>
@@ -286,7 +292,13 @@
   <div class="row mx-auto index-card">
     
     
-    <article class="col-12 col-md-12 mx-auto index-info">
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2018/08/16/swift-as.html" target="_blank">
+          <img src="/img/index_img.jpg" srcset="/img/loading.gif" lazyload alt="Swift-is/as类型检查">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
       <h1 class="index-header">
         
         <a href="/2018/08/16/swift-as.html" target="_blank">
@@ -295,7 +307,7 @@
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2018/08/16/swift-as.html" target="_blank">
+      <a class="index-excerpt " href="/2018/08/16/swift-as.html" target="_blank">
         <div>
           一、前言作为面向对象的语言，OC 与 Swift 都具有多态性，有时会大量使用类簇，因此描述对象的信息成为了常见需求。  判断对象在继承树上的位置； 判断对象是否遵守了某个协议；  这些都是对象内省能力的一部分，本文将尝试对 OC 和 Swift 中这些场景的实现做一次整理。 二、OC版NSObject协议中提供了诸多内省方法，本文主要讨论以下三个： 12345678&#x2F;&#x2F;NSObject.h@pr
         </div>
@@ -347,7 +359,13 @@
   <div class="row mx-auto index-card">
     
     
-    <article class="col-12 col-md-12 mx-auto index-info">
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2018/08/15/swift-unwrap.html" target="_blank">
+          <img src="/img/index_img.jpg" srcset="/img/loading.gif" lazyload alt="Swift可选拆包">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
       <h1 class="index-header">
         
         <a href="/2018/08/15/swift-unwrap.html" target="_blank">
@@ -356,7 +374,7 @@
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2018/08/15/swift-unwrap.html" target="_blank">
+      <a class="index-excerpt " href="/2018/08/15/swift-unwrap.html" target="_blank">
         <div>
           前言 You use optionals in situations where a value may be absent. An optional represents two possibilities: Either there is a value, and you can unwrap the optional to access that value, or there isn’t
         </div>
@@ -408,7 +426,13 @@
   <div class="row mx-auto index-card">
     
     
-    <article class="col-12 col-md-12 mx-auto index-info">
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2018/07/23/fast-github.html" target="_blank">
+          <img src="/img/index_img.jpg" srcset="/img/loading.gif" lazyload alt="Github 访问慢的解决方案">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
       <h1 class="index-header">
         
         <a href="/2018/07/23/fast-github.html" target="_blank">
@@ -417,7 +441,7 @@
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2018/07/23/fast-github.html" target="_blank">
+      <a class="index-excerpt " href="/2018/07/23/fast-github.html" target="_blank">
         <div>
           Github为国外网站，所以域名解析时速度慢的。。解决此问题有俩方法：  挂VPN 修改hosts配置  本文讲的是第二种，修改hosts文件，具体步骤如下： #1、打开host文件 直接通过Finder  快捷键 command + shift + G，输入“&#x2F;etc”，回车即可进入etc文件夹，找到hosts文件，直接通过系统的“文本编辑”打开即可。  使用终端打开  1sudo v
         </div>
@@ -469,7 +493,13 @@
   <div class="row mx-auto index-card">
     
     
-    <article class="col-12 col-md-12 mx-auto index-info">
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2018/07/11/dsym.html" target="_blank">
+          <img src="/img/index_img.jpg" srcset="/img/loading.gif" lazyload alt="结合dSYM文件分析crash日志">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
       <h1 class="index-header">
         
         <a href="/2018/07/11/dsym.html" target="_blank">
@@ -478,7 +508,7 @@
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2018/07/11/dsym.html" target="_blank">
+      <a class="index-excerpt " href="/2018/07/11/dsym.html" target="_blank">
         <div>
           一、dSYM1.1.dSYM调试符号表，是苹果为调试和定位问题而使用的一种调试文件。调试符号信息在构建应用时就保存在Mach-O文件中了，而.dSYM就是从Mach-O文件中抽取调试信息而得到的一个单独的文件目录。它使用的是 DWARF 结构，在 .xcarchive 目录中其层次结构如下： 123456.xcarchive--dSYMs  |--Your.app.dSYM    |--Conte
         </div>
@@ -530,7 +560,13 @@
   <div class="row mx-auto index-card">
     
     
-    <article class="col-12 col-md-12 mx-auto index-info">
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2018/06/22/autolayout.html" target="_blank">
+          <img src="/img/index_img.jpg" srcset="/img/loading.gif" lazyload alt="约束与布局">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
       <h1 class="index-header">
         
         <a href="/2018/06/22/autolayout.html" target="_blank">
@@ -539,7 +575,7 @@
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2018/06/22/autolayout.html" target="_blank">
+      <a class="index-excerpt " href="/2018/06/22/autolayout.html" target="_blank">
         <div>
           #1.AutoresizingAutoresizing是苹果早期的界面适配方案，那时苹果的设备还不算多，iPhone 只有 4s 及其之前的产品，都是3.5英寸屏幕；iPad 也只有 iPad1、iPad2，都是9.7英寸。并且当时 iOS 上的应用很少需要适配横屏，所以Autoresizing能够满足绝大部分的适配需求。 1.1.xib或者故事板(iOS5)中的6条线：  1.2.代码中的6个枚
         </div>
@@ -591,7 +627,13 @@
   <div class="row mx-auto index-card">
     
     
-    <article class="col-12 col-md-12 mx-auto index-info">
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2018/06/15/str-modifier.html" target="_blank">
+          <img src="/img/index_img.jpg" srcset="/img/loading.gif" lazyload alt="字符串属性的修饰符">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
       <h1 class="index-header">
         
         <a href="/2018/06/15/str-modifier.html" target="_blank">
@@ -600,7 +642,7 @@
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2018/06/15/str-modifier.html" target="_blank">
+      <a class="index-excerpt " href="/2018/06/15/str-modifier.html" target="_blank">
         <div>
           日常实践中，我们经常要声明一些字符串属性，包括NSString和NSMutableString，而字符串最常用的修饰符就要数strong和copy了。这两个修饰符对字符串有什么影响呢？ 1.不可变源字符串#示例1：用 NSString 赋值 123456789101112131415161718192021222324252627@interface AppDelegate()@property
         </div>
@@ -652,7 +694,13 @@
   <div class="row mx-auto index-card">
     
     
-    <article class="col-12 col-md-12 mx-auto index-info">
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2018/06/14/copy.html" target="_blank">
+          <img src="/img/index_img.jpg" srcset="/img/loading.gif" lazyload alt="拷贝相关知识点">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
       <h1 class="index-header">
         
         <a href="/2018/06/14/copy.html" target="_blank">
@@ -661,7 +709,7 @@
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2018/06/14/copy.html" target="_blank">
+      <a class="index-excerpt " href="/2018/06/14/copy.html" target="_blank">
         <div>
           1.拷贝-初探文档摘要：  The exact meaning of “copy” can vary from class to class, but a copy must be a functionally independent object with values identical to the original at the time the copy was made.  上面的摘要
         </div>
@@ -713,7 +761,13 @@
   <div class="row mx-auto index-card">
     
     
-    <article class="col-12 col-md-12 mx-auto index-info">
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2018/04/13/kvo.html" target="_blank">
+          <img src="/img/index_img.jpg" srcset="/img/loading.gif" lazyload alt="KVO 的底层实现">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
       <h1 class="index-header">
         
         <a href="/2018/04/13/kvo.html" target="_blank">
@@ -722,7 +776,7 @@
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2018/04/13/kvo.html" target="_blank">
+      <a class="index-excerpt " href="/2018/04/13/kvo.html" target="_blank">
         <div>
           #是啥?KVO 是通过一个 key 来找到某个属性并监听其值的改变。其实这也是一种典型的观察者模式。 #咋用? 添加观察者 在观察者中实现监听方法：-observeValueForKeyPath: ofObject: change: context:。 移除观察者  #示例： 1234567891011121314151617&#x2F;&#x2F;Person.h#import &quot;Model.h&amp;quot
         </div>
@@ -774,7 +828,13 @@
   <div class="row mx-auto index-card">
     
     
-    <article class="col-12 col-md-12 mx-auto index-info">
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2018/04/12/kvc.html" target="_blank">
+          <img src="/img/index_img.jpg" srcset="/img/loading.gif" lazyload alt="KVC 的底层实现">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
       <h1 class="index-header">
         
         <a href="/2018/04/12/kvc.html" target="_blank">
@@ -783,7 +843,7 @@
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2018/04/12/kvc.html" target="_blank">
+      <a class="index-excerpt " href="/2018/04/12/kvc.html" target="_blank">
         <div>
           1.KVC是啥?键值编码（key value coding）是一种可以通过字符串的名字（key）来访问类属性的机制。区别于通过调用Setter、Getter来访问属性的方法。 2.啥用?通常我们要访问一个类中属性的值时，可以使用点语法（如 people.name）。但当你想访问私有属性或成员变量时，点语法就没用了。而有了 KVC 问题就迎刃而解。  常用方法?  NSKeyValueCoding.
         </div>

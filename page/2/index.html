@@ -13,7 +13,7 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
   <meta name="theme-color" content="#2f4154">
-  <meta name="author" content="John Doe">
+  <meta name="author" content="Davidli">
   <meta name="keywords" content="Davidli">
   
     <meta name="description" content="This is Davidli&#39;s blog ~">
@@ -23,7 +23,7 @@
 <meta property="og:site_name" content="Davidli">
 <meta property="og:description" content="This is Davidli&#39;s blog ~">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:author" content="John Doe">
+<meta property="article:author" content="Davidli">
 <meta property="article:tag" content="Davidli">
 <meta name="twitter:card" content="summary_large_image">
   
@@ -63,7 +63,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"yoursite.com","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"❤","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -225,7 +225,13 @@
   <div class="row mx-auto index-card">
     
     
-    <article class="col-12 col-md-12 mx-auto index-info">
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2019/08/31/podspec.html" target="_blank">
+          <img src="/img/index_img.jpg" srcset="/img/loading.gif" lazyload alt="搭建自己的pod库">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
       <h1 class="index-header">
         
         <a href="/2019/08/31/podspec.html" target="_blank">
@@ -234,7 +240,7 @@
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2019/08/31/podspec.html" target="_blank">
+      <a class="index-excerpt " href="/2019/08/31/podspec.html" target="_blank">
         <div>
           前言使用三方库时基本的语法是： 1pod &amp;#x27;pod-Name&amp;#x27;  之后通过以下命令导入此库: 1pod install  pod会从官方索引库中查找并导入此三方库。有时我们不希望自己的库对外公开，如只在公司范围内使用，这时就可以在代码托管平台发布一个私有库，导入库时通过:source &#x3D;&gt;指定私有库的远程索引库地址即可。 本篇文章将记录下从私有库到公开库的完整发布流程~
         </div>
@@ -286,7 +292,13 @@
   <div class="row mx-auto index-card">
     
     
-    <article class="col-12 col-md-12 mx-auto index-info">
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2019/04/18/majia.html" target="_blank">
+          <img src="/img/index_img.jpg" srcset="/img/loading.gif" lazyload alt="分包配置">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
       <h1 class="index-header">
         
         <a href="/2019/04/18/majia.html" target="_blank">
@@ -295,7 +307,7 @@
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2019/04/18/majia.html" target="_blank">
+      <a class="index-excerpt " href="/2019/04/18/majia.html" target="_blank">
         <div>
           思维导图 Xcode 默认配置Xcode 在生成项目时已经帮我们配置好了两个环境，并且已经在同一个scheme下做好了配置：  #Debug   测试环境，一般 Build、Run、Test 和 Analyze，都在这个环境中进行。   #Release   生产环境，Profile 和 Archive 打包上传商店时，使用这个环境。   查看Build Settings，你能看到每个设置下都分两
         </div>
@@ -347,7 +359,13 @@
   <div class="row mx-auto index-card">
     
     
-    <article class="col-12 col-md-12 mx-auto index-info">
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2019/04/02/safeapp.html" target="_blank">
+          <img src="/img/index_img.jpg" srcset="/img/loading.gif" lazyload alt="应用的安全">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
       <h1 class="index-header">
         
         <a href="/2019/04/02/safeapp.html" target="_blank">
@@ -356,7 +374,7 @@
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2019/04/02/safeapp.html" target="_blank">
+      <a class="index-excerpt " href="/2019/04/02/safeapp.html" target="_blank">
         <div>
           这段时间 iOS12 越狱工具发布了，屁颠屁颠的去研究了一键砸壳，昨天忽然想起来之前公司的产品被人破解，拿到了关键信息进而薅羊毛的事。那时的解决方案是检测异常请求和独立出一个加密framework。现在想想，这些措施都太简单或者不够高效，还需要更进一步研究应用的安全问题。  1.被破解的危害 被人逆向分析通信协议、API、核心算法等； 篡改IPA、植入广告和木马； 重打包并发布盗版应用； 破解内购
         </div>
@@ -408,7 +426,13 @@
   <div class="row mx-auto index-card">
     
     
-    <article class="col-12 col-md-12 mx-auto index-info">
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2019/03/31/frida.html" target="_blank">
+          <img src="/img/index_img.jpg" srcset="/img/loading.gif" lazyload alt="frida一键砸壳">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
       <h1 class="index-header">
         
         <a href="/2019/03/31/frida.html" target="_blank">
@@ -417,7 +441,7 @@
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2019/03/31/frida.html" target="_blank">
+      <a class="index-excerpt " href="/2019/03/31/frida.html" target="_blank">
         <div>
           前两天重新给我的 iOS12 设备越狱，然后砸壳和反编译一个应用，结果又是ps命令出错、又是cycript命令出错，到处查资料，折腾了好久。后来发现竟然有一键砸壳的工具frida，这里含泪记录下来整个砸壳的流程~  frida官网：https:&#x2F;&#x2F;www.frida.re&#x2F;docs&#x2F;home&#x2F; 1.iOS设备配置1.1.越狱我的设备是 iOS12.1，所以使用目前最新的越狱工具uncc0ver，版
         </div>
@@ -469,7 +493,13 @@
   <div class="row mx-auto index-card">
     
     
-    <article class="col-12 col-md-12 mx-auto index-info">
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2019/03/28/jailbreak-ios12.html" target="_blank">
+          <img src="/img/index_img.jpg" srcset="/img/loading.gif" lazyload alt="iOS12越狱填坑">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
       <h1 class="index-header">
         
         <a href="/2019/03/28/jailbreak-ios12.html" target="_blank">
@@ -478,7 +508,7 @@
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2019/03/28/jailbreak-ios12.html" target="_blank">
+      <a class="index-excerpt " href="/2019/03/28/jailbreak-ios12.html" target="_blank">
         <div>
           最近看到有新版的iOS12越狱工具发布，一时手痒，于是将手里的设备进行了越狱。这中间又出了各种问题，在这里记录下来，顺便给后面踩坑的同学做个参考~  1.越狱工具unc0verjailbreak for iOS 11.0-12.1.2，版本号为 v3.0.0~b48，手机 Safari 中打开 这里，在第二个 Tab 的jailbreaks选项中找到unc0ver-new beta，下载完成后进入
         </div>
@@ -530,7 +560,13 @@
   <div class="row mx-auto index-card">
     
     
-    <article class="col-12 col-md-12 mx-auto index-info">
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2019/03/25/code_confusion.html" target="_blank">
+          <img src="/img/index_img.jpg" srcset="/img/loading.gif" lazyload alt="代码混淆、shell 脚本自动替换">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
       <h1 class="index-header">
         
         <a href="/2019/03/25/code_confusion.html" target="_blank">
@@ -539,7 +575,7 @@
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2019/03/25/code_confusion.html" target="_blank">
+      <a class="index-excerpt " href="/2019/03/25/code_confusion.html" target="_blank">
         <div>
           1、逆向&amp;破解： 通过 dumpdecrypted 给 APP 砸壳； 通过 class-dump 查看 .h文件里的函数； 通过 Hopper、IDA Pro 等工具反编译后分析业务代码； 通过 Reveal 在运行时调试和修改 iOS应用的 UI；  2、混淆代码类名、方法名、变量名等会暴露APP的很多关键信息，攻击者通过 class-dump 得到头文件后，可以根据提取到的这些字符串
         </div>
@@ -591,7 +627,13 @@
   <div class="row mx-auto index-card">
     
     
-    <article class="col-12 col-md-12 mx-auto index-info">
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2019/03/23/shell-ipa.html" target="_blank">
+          <img src="/img/index_img.jpg" srcset="/img/loading.gif" lazyload alt="Shell脚本打包与上传">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
       <h1 class="index-header">
         
         <a href="/2019/03/23/shell-ipa.html" target="_blank">
@@ -600,7 +642,7 @@
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2019/03/23/shell-ipa.html" target="_blank">
+      <a class="index-excerpt " href="/2019/03/23/shell-ipa.html" target="_blank">
         <div>
           打包流程： 编译.xcarchive包； 生成.ipa文件； 上传到苹果商店或第三方平台。  自动化：这里所说的自动化，主要是通过shell脚本，利用 Command Line Tools 提供的 xcodebuild 命令来编译和导出 ipa，再通过 Application Loader 提供的 altool 命令行工具，或者其他三方平台提供的命令行工具上传 ipa 和 dSYM 文件。 清理构
         </div>
@@ -652,7 +694,13 @@
   <div class="row mx-auto index-card">
     
     
-    <article class="col-12 col-md-12 mx-auto index-info">
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2019/03/22/iosreverse.html" target="_blank">
+          <img src="/img/index_img.jpg" srcset="/img/loading.gif" lazyload alt="iOS 应用逆向工程">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
       <h1 class="index-header">
         
         <a href="/2019/03/22/iosreverse.html" target="_blank">
@@ -661,7 +709,7 @@
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2019/03/22/iosreverse.html" target="_blank">
+      <a class="index-excerpt " href="/2019/03/22/iosreverse.html" target="_blank">
         <div>
           一般来说，软件逆向工程可以看作系统分析和代码分析两个阶段的有机结合。在系统分析阶段，我们从整体上观察目标程序的行为特征，文件的组织架构，从而找到我们感兴趣的地方。代码分析阶段，利用各种工具对程序本身的二进制文件进行分析，从而了解目标软件的实现，进而借鉴其设计思路、内部算法、反思教训等。 1.设备越狱通过爱思、PP助手、同步助手、unc0ver等工具，对已经备份过的设备进行越狱； 2.安装插件2.1
         </div>
@@ -713,7 +761,13 @@
   <div class="row mx-auto index-card">
     
     
-    <article class="col-12 col-md-12 mx-auto index-info">
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2019/03/16/mach_o.html" target="_blank">
+          <img src="/img/index_img.jpg" srcset="/img/loading.gif" lazyload alt="Mach-O">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
       <h1 class="index-header">
         
         <a href="/2019/03/16/mach_o.html" target="_blank">
@@ -722,7 +776,7 @@
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2019/03/16/mach_o.html" target="_blank">
+      <a class="index-excerpt " href="/2019/03/16/mach_o.html" target="_blank">
         <div>
           Xcode 构建一个程序的过程中，会把源文件 (.m 和 .h) 文件转换为一个可执行文件（Mach-O executable）。这个可执行文件中包含的字节码将会被 CPU (iOS 设备中的 ARM 处理器或 Mac 上的 Intel 处理器) 执行。当然，我们也可以不使用 Xcode，而是通过苹果提供的命令行工具（command line tools）来构建一个程序。 #1 不使用 Xcode
         </div>
@@ -774,7 +828,13 @@
   <div class="row mx-auto index-card">
     
     
-    <article class="col-12 col-md-12 mx-auto index-info">
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2019/03/15/resign.html" target="_blank">
+          <img src="/img/index_img.jpg" srcset="/img/loading.gif" lazyload alt="ipa 重新签名">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
       <h1 class="index-header">
         
         <a href="/2019/03/15/resign.html" target="_blank">
@@ -783,7 +843,7 @@
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2019/03/15/resign.html" target="_blank">
+      <a class="index-excerpt " href="/2019/03/15/resign.html" target="_blank">
         <div>
           1、需求： 非企业证书签名的 ipa 想要在企业内分发。 对商店中下载的应用砸壳并修改内容后，希望重新打包并安装到手机上；  这些都需要对ipa重新签名~ 2、原理移除原有签名，通过codesign工具对原 ipa 使用新证书重新签名并得到新的安装包。 12345$ codesignUsage: codesign -s identity [-fv*] [-o flags] [-r reqs] [-
         </div>
