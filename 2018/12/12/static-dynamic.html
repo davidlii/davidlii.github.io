@@ -151,15 +151,15 @@
 <blockquote>
 <p>Dynamic dispatch contrasts with static dispatch, in which the implementation of a polymorphic operation is selected at compile-time. </p>
 </blockquote>
-<p>静态派发机制下，“方法的实现在编译期就已确定”，即编译器在编译期就已经能确定函数具体实现的位置在哪。调用函数时，runtime 会直接跳转到函数的内存地址上执行具体的实现。<br>&amp;emsp;</p>
-<p><strong>优点</strong>：执行快、性能好、编译器能进行内联等优化。<br>&amp;emsp;</p>
+<p>静态派发机制下，“方法的实现在编译期就已确定”，即编译器在编译期就已经能确定函数具体实现的位置在哪。调用函数时，runtime 会直接跳转到函数的内存地址上执行具体的实现。<br><br/></p>
+<p><strong>优点</strong>：执行快、性能好、编译器能进行内联等优化。<br><br/></p>
 <p><strong>缺点</strong>：缺乏动态性，函数实现在运行期不能修改，无法满足某些特定的需求，比如在运行时替换某个方法。</p>
 <h3 id="二、动态派发"><a href="#二、动态派发" class="headerlink" title="二、动态派发"></a>二、动态派发</h3><blockquote>
 <p>Dynamic dispatch is the process of selecting which implementation of a polymorphic operation (method or function) to call at run time. </p>
 </blockquote>
-<p>动态派发，是指“在运行时决定方法调用哪个实现”的过程。动态派发机制产生的原因是面向对象语言的多态性。动态派发机制下，编译器在编译期还不知道函数的具体实现是哪个；在执行函数时<code>runtime</code>才会根据函数名去函数表中查找并执行具体的实现。每种语言都有自己的机制来支持动态派发，例如swift支持函数表派发、消息派发~<br>&amp;emsp;</p>
+<p>动态派发，是指“在运行时决定方法调用哪个实现”的过程。动态派发机制产生的原因是面向对象语言的多态性。动态派发机制下，编译器在编译期还不知道函数的具体实现是哪个；在执行函数时<code>runtime</code>才会根据函数名去函数表中查找并执行具体的实现。每种语言都有自己的机制来支持动态派发，例如swift支持函数表派发、消息派发~<br><br/></p>
 <p><strong>缺点</strong>：需要查表，执行效率相对低一些。</p>
-<h4 id="2-1-函数表派发"><a href="#2-1-函数表派发" class="headerlink" title="2.1.函数表派发"></a>2.1.函数表派发</h4><p>这是<code>编译型语言</code>最常采用的函数派发机制。编译器在编译期为每个类创建一个与之相关联的函数表<code>virtual table</code>，即<code>vtable</code>。它是一个由函数指针组成的数组，指针指向的是函数的具体实现。<br>&amp;emsp;</p>
+<h4 id="2-1-函数表派发"><a href="#2-1-函数表派发" class="headerlink" title="2.1.函数表派发"></a>2.1.函数表派发</h4><p>这是<code>编译型语言</code>最常采用的函数派发机制。编译器在编译期为每个类创建一个与之相关联的函数表<code>virtual table</code>，即<code>vtable</code>。它是一个由函数指针组成的数组，指针指向的是函数的具体实现。<br><br/></p>
 <p>#<a target="_blank" rel="noopener" href="https://www.raizlabs.com/dev/2016/12/swift-method-dispatch/?utm_campaign=This+Week+in+Swift">示例1</a>：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">class ParentClass &#123;</span><br><span class="line">    func method1() &#123;&#125;</span><br><span class="line">    func method2() &#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line">class ChildClass: ParentClass &#123;</span><br><span class="line">    override func method2() &#123;&#125;</span><br><span class="line">    func method3() &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -192,10 +192,10 @@
 <li>如果直到根类 NSObject 都还没找到则会尝试<code>动态方法决议</code>或<code>消息转发</code>机制；</li>
 <li>如果没有实现这两种机制，则方法的调用会因找不到对应的实现而报运行时错误。</li>
 </ol>
-<p>消息派发机制是这三种派发机制中最具动态性的，你可以用<code>swizzling</code>黑魔法修改函数的实现；也可以用<code>isa-swizzling</code>修改对象本身，如KVO的<a target="_blank" rel="noopener" href="https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/KeyValueObserving/Articles/KVOImplementation.html#//apple_ref/doc/uid/20002307-BAJEAIEE">底层实现</a>。<br>&amp;emsp;</p>
+<p>消息派发机制是这三种派发机制中最具动态性的，你可以用<code>swizzling</code>黑魔法修改函数的实现；也可以用<code>isa-swizzling</code>修改对象本身，如KVO的<a target="_blank" rel="noopener" href="https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/KeyValueObserving/Articles/KVOImplementation.html#//apple_ref/doc/uid/20002307-BAJEAIEE">底层实现</a>。<br><br/></p>
 <p>另外，Swift 作为静态语言天然支持静态派发，但它也用到了OC的<code>runtime library</code>，所以同样支持消息派发。</p>
 <hr>
-<h2 id="三、Swift的派发机制"><a href="#三、Swift的派发机制" class="headerlink" title="三、Swift的派发机制"></a>三、Swift的派发机制</h2><p>Swift 的函数派发机制因函数定义的位置、特别声明等而异：<br>&amp;emsp;</p>
+<h2 id="三、Swift的派发机制"><a href="#三、Swift的派发机制" class="headerlink" title="三、Swift的派发机制"></a>三、Swift的派发机制</h2><p>Swift 的函数派发机制因函数定义的位置、特别声明等而异：<br><br/></p>
 <table>
 <thead>
 <tr>
@@ -230,7 +230,7 @@
 <td align="center">-</td>
 </tr>
 <tr>
-<td align="center">&amp;emsp;</td>
+<td align="center"><br/></td>
 <td align="center"></td>
 <td align="center"></td>
 <td align="center"></td>
@@ -260,7 +260,7 @@
 <p>Dynamic programming language, in computer science, is a class of high-level programming languages which, at runtime, execute many common programming behaviors that static programming languages perform during compilation. These behaviors could include extension of the program, by adding new code, by extending objects and definitions, or by modifying the type system. </p>
 </blockquote>
 <p>动态语言是程序在运行期可以扩展的一类语言，包括：添加新代码、扩展对象或定义、修改类型系统。常见的动态语言有：<code>JavaScript</code>、<code>Python</code>、<code>Ruby</code>、<code>PHP</code>以及<code>OC</code>。</p>
-<h4 id="4-2-静态语言"><a href="#4-2-静态语言" class="headerlink" title="4.2.静态语言"></a>4.2.静态语言</h4><p>静态语言是与动态语言相对应，运行期程序不可扩展。常见的静态语言有：<code>Java</code>、<code>C</code>、<code>C++</code>。<br>&amp;emsp;</p>
+<h4 id="4-2-静态语言"><a href="#4-2-静态语言" class="headerlink" title="4.2.静态语言"></a>4.2.静态语言</h4><p>静态语言是与动态语言相对应，运行期程序不可扩展。常见的静态语言有：<code>Java</code>、<code>C</code>、<code>C++</code>。<br><br/></p>
 <p>Swift 也是静态语言，Swift 中声明的方法、属性在编译期就已经确定。同时 Swift 也支持动态绑定和派发，只不过需要将类中的属性、方法标注为 <code>@objc</code>和<code>dynamic</code>，这样 Swift 的动态特性就可以使用 OC 的运行时机制来实现。</p>
 <h2 id="五、动-x2F-静态类型语言"><a href="#五、动-x2F-静态类型语言" class="headerlink" title="五、动&#x2F;静态类型语言"></a>五、动&#x2F;静态类型语言</h2><p>静态&#x2F;动态类型语言强调的是“数据类型”在何时确定。</p>
 <h4 id="5-1-静态类型语言"><a href="#5-1-静态类型语言" class="headerlink" title="5.1.静态类型语言"></a>5.1.静态类型语言</h4><p>静态类型语言，是数据类型在编译期就确定下来的语言，一般在使用变量之前要明确声明变量的类型。代表语言有：<code>C</code>、<code>C++</code>、<code>C#</code>、<code>Java</code>、<code>Delphi</code>以及<code>OC</code>。</p>

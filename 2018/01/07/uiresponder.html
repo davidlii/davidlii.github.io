@@ -149,7 +149,7 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">//处理触摸事件</span><br><span class="line">- (void)touchesBegan:(NSSet*)touches withEvent:(UIEvent*)event;</span><br><span class="line">- (void)touchesMoved:(NSSet*)touches withEvent:(UIEvent*)event;</span><br><span class="line">- (void)touchesEnded:(NSSet*)touches withEvent:(UIEvent*)event;</span><br><span class="line">- (void)touchesCancelled:(NSSet*)touches withEvent:(UIEvent*)ev</span><br><span class="line"></span><br><span class="line">//加速计事件</span><br><span class="line">- (void)motionBegan:(UIEventSubtype)motion withEvent:(UIEvent*)event;</span><br><span class="line">- (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent*)event;</span><br><span class="line">- (void)motionCancelled:(UIEventSubtype)motion withEvent:(UIEvent*)event;</span><br><span class="line"></span><br><span class="line">//远程控制事件</span><br><span class="line">- (void)remoteControlReceivedWithEvent:(UIEvent*)event;</span><br></pre></td></tr></table></figure>
 
 <h4 id="1-2-触摸事件的产生"><a href="#1-2-触摸事件的产生" class="headerlink" title="1.2.触摸事件的产生"></a>1.2.触摸事件的产生</h4><p>下面是在自定义视图<code>CustomView</code>的<code>-hitTest:withEvent:</code>方法中断点后，随机在界面中点击后得到的堆栈信息：</p>
-<p><img src="https://davidlii.nos-eastchina1.126.net/pic_response_chain.png" alt="chain"><br>&amp;emsp;</p>
+<p><img src="https://davidlii.nos-eastchina1.126.net/pic_response_chain.png" alt="chain"><br><br/></p>
 <p>当用户在屏幕上做手指点击、缩放等操作时，就会触发触摸事件。此时 UIKit 会创建一个 UIEvent 事件对象，该对象会被添加到一个事件队列中。后续会由 UIApplication 负责事件的分发和传递，直到找到一个合适的响应视图。</p>
 <h3 id="2、事件的传递"><a href="#2、事件的传递" class="headerlink" title="2、事件的传递"></a>2、事件的传递</h3><p>事件的传递过程其实就是点击检测的过程，即查找事件触发者的过程。这个过程中，响应者对象需要做两个判断条件：</p>
 <ul>
@@ -176,14 +176,14 @@
 <p>返回YES，则触摸点在当前 view 上。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event</span><br><span class="line">&#123;</span><br><span class="line">    // 1.判断下窗口能否接收事件</span><br><span class="line">    if (!self.userInteractionEnabled ||</span><br><span class="line">        self.hidden == YES ||</span><br><span class="line">        self.alpha &lt;= 0.01)&#123;</span><br><span class="line">        return nil;</span><br><span class="line">    &#125;</span><br><span class="line">    // 2.判断触摸点在不在窗口上</span><br><span class="line">    if (![self pointInside:point withEvent:event])&#123;</span><br><span class="line">        return nil;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    // 3.从后往前遍历子视图数组</span><br><span class="line">    int count = (int)self.subviews.count;</span><br><span class="line">    </span><br><span class="line">    for (int i = count - 1; i &gt;= 0; i--) &#123;</span><br><span class="line">        // 获取子视图</span><br><span class="line">        UIView *childView = self.subviews[i];</span><br><span class="line">        // 坐标系的转换,把窗口上的点转换为子视图上的点</span><br><span class="line">        // 把自己视图上的点转换成子视图上的点</span><br><span class="line">        CGPoint childP = [self convertPoint:point toView:childView];</span><br><span class="line">        UIView *fitView = [childView hitTest:childP withEvent:event];</span><br><span class="line">        if (fitView) &#123;</span><br><span class="line">            return fitView;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    // 4.没有找到更合适的view，返回自己</span><br><span class="line">    return self;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>事件传递给某个<code>视图A</code>后，A就会调用它自己的<code>hitTest:withEvent:</code>方法。如果此方法返回 nil，那么<code>视图A</code>和其子视图都不是最合适的 view，不能响应该事件。这种情况下最合适的 view 就是视图A的<code>父视图</code>。<br>&amp;emsp;</p>
+<p>事件传递给某个<code>视图A</code>后，A就会调用它自己的<code>hitTest:withEvent:</code>方法。如果此方法返回 nil，那么<code>视图A</code>和其子视图都不是最合适的 view，不能响应该事件。这种情况下最合适的 view 就是视图A的<code>父视图</code>。<br><br/></p>
 <p>找到最合适的视图后，就会调用视图的<code>-touches</code>系列方法来作具体的事件处理。</p>
 <h4 id="2-3-事件的拦截"><a href="#2-3-事件的拦截" class="headerlink" title="2.3.事件的拦截"></a>2.3.事件的拦截</h4><p>正因为<code>hitTest:withEvent:</code>方法可以返回最合适的 view，所以想让谁成为最合适的 view 就重写谁父视图的<code>hitTest:withEvent:</code>方法返回指定的子视图；或者重写自己的<code>hitTest:withEvent:</code>方法并返回<code>self</code>。一般来说是建议在父视图的<code>hitTest:withEvent:</code>中返回子视图作为最合适的 view！</p>
-<h3 id="3、事件的响应"><a href="#3、事件的响应" class="headerlink" title="3、事件的响应"></a>3、事件的响应</h3><h4 id="3-1-响应者链"><a href="#3-1-响应者链" class="headerlink" title="3.1.响应者链"></a>3.1.响应者链</h4><p>上面说到，<code>事件传递</code>的过程就是查找最合适的事件接收者的过程。然而检测到了这个对象之后，对象是否愿意响应事件？如何响应？不愿意响应时事件又给谁处理？这些都跟“响应者链”有关。<br>&amp;emsp;</p>
+<h3 id="3、事件的响应"><a href="#3、事件的响应" class="headerlink" title="3、事件的响应"></a>3、事件的响应</h3><h4 id="3-1-响应者链"><a href="#3-1-响应者链" class="headerlink" title="3.1.响应者链"></a>3.1.响应者链</h4><p>上面说到，<code>事件传递</code>的过程就是查找最合适的事件接收者的过程。然而检测到了这个对象之后，对象是否愿意响应事件？如何响应？不愿意响应时事件又给谁处理？这些都跟“响应者链”有关。<br><br/></p>
 <p>如果事件的接收者决定处理事件，则该接收者就成为响应者；而事件不是只能由一个响应者来处理，当前响应者可以将事件继续传递给其下一位响应者，这些响应者按照先后关系就构成了“响应者链”。</p>
 <h4 id="3-2-响应者的查找"><a href="#3-2-响应者的查找" class="headerlink" title="3.2.响应者的查找"></a>3.2.响应者的查找</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@property(nonatomic, readonly, nullable) UIResponder *nextResponder;</span><br></pre></td></tr></table></figure>
 
-<p>这是UIResponder中声明的一个属性，表示当前响应者对象的下一个响应者。因为 UIView 和 UIViewController 等继承自 UIResponder，所以我们可以通过这个属性来查找下一个响应者。<br>&amp;emsp;</p>
+<p>这是UIResponder中声明的一个属性，表示当前响应者对象的下一个响应者。因为 UIView 和 UIViewController 等继承自 UIResponder，所以我们可以通过这个属性来查找下一个响应者。<br><br/></p>
 <p>事件的响应是一个从子视图到父视图的查找过程:</p>
 <ol>
 <li>如果当前 view 是控制器的 self.view，那么控制器就是上一个响应者，事件就传递给控制器；</li>
@@ -192,7 +192,7 @@
 <li>如果 window 对象也不处理，则事件会传递给 UIApplication 对象；</li>
 <li>如果 UIApplication 也不能处理该事件，则将其丢弃，本次点击什么都不响应。</li>
 </ol>
-<p>#示例：<br>&amp;emsp;</p>
+<p>#示例：<br><br/></p>
 <p>在<code>ViewController</code>的<code>self.view</code>(橙色)中有个白色圆角的视图(UIViewInspectable)，圆角视图内有个自定义的蓝色视图(ASDFBlueView)，蓝色视图中有个<code>label</code>，如下：</p>
 <p><img src="https://davidlii.nos-eastchina1.126.net/pic_responsiblelabel.png" alt="responsiblelabel"></p>
 <p>结构图：</p>
@@ -208,9 +208,9 @@
 <h4 id="3-3-事件的处理"><a href="#3-3-事件的处理" class="headerlink" title="3.3.事件的处理"></a>3.3.事件的处理</h4><p>在找到合适的视图后就会调用视图的<code>-touches</code>方法，<code>-touches</code>默认做法是把事件顺着响应者链条向上抛。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event</span><br><span class="line">&#123; </span><br><span class="line">    // 默认会把事件传递给上一个响应者,上一个响应者是父视图,交给父视图处理</span><br><span class="line">    [super touchesBegan:touches withEvent:event]; </span><br><span class="line">    // 注意不是调用父视图的touches方法，而是调用父类的touches方法</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>如果视图实现了 touches…方法，则事件将由该视图来处理。如果调用了<code>[super touches….];</code>事件就将顺着响应者链往上传递，传递给上一个响应者；接着就会调用上一个响应者的 <code>-touches….</code> 方法。<br>&amp;emsp;</p>
-<p>#示例：让label响应点击事件<br>&amp;emsp;</p>
-<p>默认情况下 label 的<code>userInteractionEnabled</code>为 NO，即 label 不能接收触摸事件，接下来的示例还是以3.2小节中的树形结构为例，要让 label 响应触摸事件。可能你会觉得这个功能有点鸡肋，哈哈，是的，这里我只是想演示一下如何让指定视图响应触摸或点击事件。<br>&amp;emsp;</p>
+<p>如果视图实现了 touches…方法，则事件将由该视图来处理。如果调用了<code>[super touches….];</code>事件就将顺着响应者链往上传递，传递给上一个响应者；接着就会调用上一个响应者的 <code>-touches….</code> 方法。<br><br/></p>
+<p>#示例：让label响应点击事件<br><br/></p>
+<p>默认情况下 label 的<code>userInteractionEnabled</code>为 NO，即 label 不能接收触摸事件，接下来的示例还是以3.2小节中的树形结构为例，要让 label 响应触摸事件。可能你会觉得这个功能有点鸡肋，哈哈，是的，这里我只是想演示一下如何让指定视图响应触摸或点击事件。<br><br/></p>
 <p><strong>思路</strong>：自定义蓝色视图和label，重写蓝色视图的<code>hitTest</code>方法，当触摸点在其子视图 label 的范围内时，返回此 label，这样触摸事件就转发给 label 并触发 label 的<code>-touch:</code> 系列方法。</p>
 <ul>
 <li>蓝色视图 ASDFBlueView:</li>
@@ -233,13 +233,13 @@
 <li>如果点击 label 以外的蓝色区域，则只会触发<code>ASDFBlueView</code>中的<code>-touch:</code>方法；</li>
 <li>如果点击 label，则 label 会响应点击并触发其<code>-touch:</code>方法；</li>
 </ul>
-<p><strong>延伸</strong>：<br>&amp;emsp;</p>
-<p>1、按照上面的思路，如果点击任何地方都只让当前<code>ViewController</code>响应事件，则重写其所有子视图的<code>-hitTest</code>方法并都返回<code>nil</code>即可；<br>&amp;emsp;</p>
+<p><strong>延伸</strong>：<br><br/></p>
+<p>1、按照上面的思路，如果点击任何地方都只让当前<code>ViewController</code>响应事件，则重写其所有子视图的<code>-hitTest</code>方法并都返回<code>nil</code>即可；<br><br/></p>
 <p>2、如果既想 label 响应事件，又想蓝色视图响应事件，只需在 label 的<code>-touch:</code>方法中调用<code>[super touch..]</code>即可。</p>
 <h4 id="3-4-视图的拖拽"><a href="#3-4-视图的拖拽" class="headerlink" title="3.4.视图的拖拽"></a>3.4.视图的拖拽</h4><p>自定义一个view，并重写下面方法：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event</span><br><span class="line">&#123;</span><br><span class="line">    UITouch *touch = [touches anyObject];</span><br><span class="line">    </span><br><span class="line">    CGPoint curP = [touch locationInView:self];</span><br><span class="line">    CGPoint preP = [touch previousLocationInView:self];</span><br><span class="line">    CGFloat offsetX = curP.x - preP.x;</span><br><span class="line">    CGFloat offsetY = curP.y - preP.y;</span><br><span class="line">    </span><br><span class="line">    self.transform = CGAffineTransformTranslate(self.transform, offsetX, offsetY);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h4 id="3-5-抢飘落的红包"><a href="#3-5-抢飘落的红包" class="headerlink" title="3.5.抢飘落的红包"></a>3.5.抢飘落的红包</h4><p>需求：红包按照某种轨迹飘落，点到飘落中的红包才算抢到。<br>&amp;emsp;</p>
+<h4 id="3-5-抢飘落的红包"><a href="#3-5-抢飘落的红包" class="headerlink" title="3.5.抢飘落的红包"></a>3.5.抢飘落的红包</h4><p>需求：红包按照某种轨迹飘落，点到飘落中的红包才算抢到。<br><br/></p>
 <p>思路分析：</p>
 <ul>
 <li>飘落中的红包实则是一个执行了<code>position</code>动画的视图；</li>
