@@ -155,8 +155,8 @@
 
 <p>当使用 NSMutableString 类型的<code>oriStr</code>给<code>strong</code>类型的字符串赋值时，<code>_aStrongStr</code>对<code>oriStr</code>的值对象<code>A</code>的地址进行了指针拷贝，二者值相等。当<code>oriStr</code>值对象的指针未变但值变成<code>B</code>时，<code>_aStrongStr</code>中值对象指针跟<code>oriStr</code>一样也没变，所以其值也会变成<code>B</code>。</p>
 <p>当使用 NSMutableString 类型的<code>oriStr</code>给<code>copy</code>类型的字符串赋值时，<code>_aCopyStr</code>对<code>oriStr</code>的值对象进行了深拷贝，二者指向了不同的对象。当<code>oriStr</code>的值变化时，<code>_aCopyStr</code>的值并未跟着变化而是保持不变。</p>
-<h4 id="3-小结"><a href="#3-小结" class="headerlink" title="3.小结"></a>3.小结</h4><p>1、当源字符串为<code>NSString</code>类型，给<code>strong</code>和<code>copy</code>修饰的属性赋值时，效果一样，都是浅拷贝，得到的两个对象都与源字符串的值相同。同时，由于源字符串不可变，如果想修改这两个对象的值，可以将二者指向新的字符串对象，或直接用字符串字面量赋值。<br><br/></p>
-<p>2、当源字符串为<code>NSMutableString</code>类型，给<code>strong</code>修饰的属性赋值时，也是浅拷贝，但要注意，由于源字符串是可变的，所以源字符串的变化会影响到<code>strong</code>修饰的属性及其对应的成员变量。<br><br/></p>
+<h4 id="3-小结"><a href="#3-小结" class="headerlink" title="3.小结"></a>3.小结</h4><p>1、当源字符串为<code>NSString</code>类型，给<code>strong</code>和<code>copy</code>修饰的属性赋值时，效果一样，都是浅拷贝，得到的两个对象都与源字符串的值相同。同时，由于源字符串不可变，如果想修改这两个对象的值，可以将二者指向新的字符串对象，或直接用字符串字面量赋值。<br>&amp;emsp;</p>
+<p>2、当源字符串为<code>NSMutableString</code>类型，给<code>strong</code>修饰的属性赋值时，也是浅拷贝，但要注意，由于源字符串是可变的，所以源字符串的变化会影响到<code>strong</code>修饰的属性及其对应的成员变量。<br>&amp;emsp;</p>
 <p>3、当源字符串为<code>NSMutableString</code>类型，使用<code>copy</code>修饰的属性赋值时，是深拷贝，新对象的值与源字符串的值相同，但二者的指针不同，不会相互影响。</p>
 <hr>
 <p>通常情况下，我们声明一个字符串类型的属性并给其赋值时，并不希望源字符串后续的修改会影响到我们的字符串属性，所以，<strong>综合起来还是使用<code>copy</code>稳妥</strong>。这样，如果源字符串为<code>NSString</code>类型，其内容不可变，所以不存在后续影响；如果源字符串为<code>NSMutableString</code>类型，因为<code>copy</code>会做深拷贝，所以也不存在后续影响的问题。</p>

@@ -139,11 +139,10 @@
 <main class="app-body flex-box">
   <!-- Article START -->
   <article class="post-article">
-    <section class="markdown-content"><h3 id="方法交换"><a href="#方法交换" class="headerlink" title="方法交换"></a>方法交换</h3><p>Method Swizzling<br><br/></p>
-<p>作用：动态交换两个方法的实现(即IMP指针)；<br><br/></p>
+    <section class="markdown-content"><h3 id="方法交换"><a href="#方法交换" class="headerlink" title="方法交换"></a>方法交换</h3><p>Method Swizzling<br>&amp;emsp;</p>
+<p>作用：动态交换两个方法的实现(即IMP指针)；<br>&amp;emsp;</p>
 <p>原理：在类的数据结构体中有一个”方法列表”，它存放着 SEL 与 IMP 的映射关系。Method Swizzling 就是对这个列表进行的操作，通过改变这种映射关系，完成两个方法IMP的交换；</p>
-<br/>
-
+<p>&amp;emsp;</p>
 <p>使用场景：</p>
 <ol>
 <li>类的某个原有方法无法满足新的需求，需要扩展并替换之。如数组新增对象时，检测对象是否为nil；</li>

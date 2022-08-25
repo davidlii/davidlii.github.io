@@ -155,8 +155,8 @@
 </ul>
 <p>读写锁适用于大量读少量写的环境，其效率相对普通的互斥锁和自旋锁要慢一个数量级。</p>
 <hr>
-<p>关于互斥锁与自旋锁的场景举例：<br><br/></p>
-<p>在一个双核的机器上有两个线程（线程A和线程B），它们分别运行在<code>Core0</code>和<code>Core1</code>上。假设线程A想要通过<code>pthread_mutex_lock</code>操作去得到一个临界区的锁，而此时这个锁正被线程B所持有，那么线程A就会被阻塞，<code>Core0</code>会在此时进行上下文切换，将线程A置于等待队列中，此时<code>Core0</code>就可以运行其他的任务（例如另一个线程C），而不必进行忙等待。<br><br/></p>
+<p>关于互斥锁与自旋锁的场景举例：<br>&amp;emsp;</p>
+<p>在一个双核的机器上有两个线程（线程A和线程B），它们分别运行在<code>Core0</code>和<code>Core1</code>上。假设线程A想要通过<code>pthread_mutex_lock</code>操作去得到一个临界区的锁，而此时这个锁正被线程B所持有，那么线程A就会被阻塞，<code>Core0</code>会在此时进行上下文切换，将线程A置于等待队列中，此时<code>Core0</code>就可以运行其他的任务（例如另一个线程C），而不必进行忙等待。<br>&amp;emsp;</p>
 <p>如果线程A是使用<code>pthread_spin_lock</code>操作去请求锁，那么线程A就会一直在<code>Core0</code>上进行忙等待并不停的进行锁请求，直到得到这个锁为止。</p>
 <h3 id="2-八大锁"><a href="#2-八大锁" class="headerlink" title="2.八大锁"></a>2.八大锁</h3><p>按照性能排序，从高到低：</p>
 <ol>
@@ -174,7 +174,7 @@
 <p>输出日志：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">++++线程1 上锁</span><br><span class="line">++++线程2 上锁</span><br><span class="line">++++线程2执行任务....</span><br><span class="line">++++线程2 解锁</span><br><span class="line">++++线程1执行任务....</span><br><span class="line">++++线程1 解锁</span><br></pre></td></tr></table></figure>
 
-<p><strong>ps：</strong>此自旋锁存在优先级反转问题，iOS10 之后苹果推出了<code>os_unfair_lock</code>来替代它。<br><br/></p>
+<p><strong>ps：</strong>此自旋锁存在优先级反转问题，iOS10 之后苹果推出了<code>os_unfair_lock</code>来替代它。<br>&amp;emsp;</p>
 <p>关于优先级反转问题，<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E4%BC%98%E5%85%88%E7%BA%A7%E7%BF%BB%E8%BD%AC/4945202">百度百科</a> 有更详细的介绍：</p>
 <blockquote>
 <p>优先级翻转是当一个高优先级任务通过信号量机制访问共享资源时，该信号量已被一低优先级任务占有，因此造成高优先级任务被许多具有较低优先级任务阻塞，实时性难以得到保证。</p>
@@ -196,9 +196,9 @@
 <h4 id="4-2-NSLock"><a href="#4-2-NSLock" class="headerlink" title="4.2.NSLock"></a>4.2.NSLock</h4><p>NSLock 遵循 NSLocking 协议的互斥锁，通过<code>lock</code>与<code>unlock</code>配合使用。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">@interface NSLock : NSObject &lt;NSLocking&gt;</span><br><span class="line">&#123;</span><br><span class="line">@private</span><br><span class="line">void *_priv;</span><br><span class="line">&#125;</span><br><span class="line">- (BOOL)tryLock;</span><br><span class="line">- (BOOL)lockBeforeDate:(NSDate *)limit;</span><br><span class="line">@property (nullable, copy) NSString *name;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
 
-<p>互斥锁会使得线程阻塞，阻塞的过程又分两个阶段，第一阶段是会先空转，可以理解成跑一个 while 循环，不断地去申请加锁，在空转一定时间之后，线程会进入 <code>waiting</code> 状态，此时线程就不占用CPU资源了，等锁可用的时候，这个线程会立即被唤醒。<br><br/></p>
-<p><code>tryLock</code> 则不会阻塞线程，如果获取锁成功则返回YES，获取失败则返回NO。这个方法无论如何都会立即返回，在拿不到锁时不会一直在那等待。<br><br/></p>
-<p><code>lockBeforeDate:</code> 方法会在所指定 Date 之前尝试加锁，会阻塞线程。<br><br/></p>
+<p>互斥锁会使得线程阻塞，阻塞的过程又分两个阶段，第一阶段是会先空转，可以理解成跑一个 while 循环，不断地去申请加锁，在空转一定时间之后，线程会进入 <code>waiting</code> 状态，此时线程就不占用CPU资源了，等锁可用的时候，这个线程会立即被唤醒。<br>&amp;emsp;</p>
+<p><code>tryLock</code> 则不会阻塞线程，如果获取锁成功则返回YES，获取失败则返回NO。这个方法无论如何都会立即返回，在拿不到锁时不会一直在那等待。<br>&amp;emsp;</p>
+<p><code>lockBeforeDate:</code> 方法会在所指定 Date 之前尝试加锁，会阻塞线程。<br>&amp;emsp;</p>
 <p><strong>ps:</strong> 如果使用 NSLock 连续锁定两次，则会造成死锁。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">- (void)nslockTest</span><br><span class="line">&#123;</span><br><span class="line">    NSLock *nslock = [NSLock new];</span><br><span class="line">    //线程1</span><br><span class="line">    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^&#123;</span><br><span class="line">        NSLog(@&quot;++++线程1 上锁&quot;);</span><br><span class="line">        [nslock lock];</span><br><span class="line">        sleep(5);</span><br><span class="line">        NSLog(@&quot;++++线程1执行任务....&quot;);</span><br><span class="line">        [nslock unlock];</span><br><span class="line">        NSLog(@&quot;++++线程1 解锁&quot;);</span><br><span class="line">    &#125;);</span><br><span class="line">    </span><br><span class="line">    //线程2</span><br><span class="line">    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^&#123;</span><br><span class="line">        NSLog(@&quot;++++线程2 上锁&quot;);</span><br><span class="line">        sleep(1);</span><br><span class="line">        BOOL succed = [nslock tryLock];</span><br><span class="line">        if (succed) &#123;</span><br><span class="line">            NSLog(@&quot;++++线程2上锁成功&quot;);</span><br><span class="line">            NSLog(@&quot;++++线程2执行任务....&quot;);</span><br><span class="line">            [nslock unlock];</span><br><span class="line">            NSLog(@&quot;++++线程2 解锁&quot;);</span><br><span class="line">        &#125;else&#123;</span><br><span class="line">            NSLog(@&quot;++++线程2上锁失败&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">    </span><br><span class="line">    //线程3</span><br><span class="line">    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^&#123;</span><br><span class="line">        NSLog(@&quot;++++线程3 上锁&quot;);</span><br><span class="line">        sleep(1);</span><br><span class="line">        [nslock lock];</span><br><span class="line">        NSLog(@&quot;++++线程3执行任务....&quot;);</span><br><span class="line">        [nslock unlock];</span><br><span class="line">        NSLog(@&quot;++++线程3 解锁&quot;);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -228,18 +228,18 @@
 <p>A condition object acts as both a lock and a checkpoint in a given thread. The lock protects your code while it tests the condition and performs the task triggered by the condition. The checkpoint behavior requires that the condition be true before the thread proceeds with its task. While the condition is not true, the thread blocks. It remains blocked until another thread signals the condition object.</p>
 </blockquote>
 <p><strong>1.锁</strong></p>
-<p>NSCondition 实现了<code>NSLocking</code>协议，与<code>NSLock</code>一样可用来处理线程同步问题。<br><br/></p>
+<p>NSCondition 实现了<code>NSLocking</code>协议，与<code>NSLock</code>一样可用来处理线程同步问题。<br>&amp;emsp;</p>
 <p><strong>2.检查点</strong></p>
 <p>检查当前线程是否满足某个条件：条件不满足时线程会阻塞，直到另一个线程向该条件发送通知。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">@interface NSCondition : NSObject &lt;NSLocking&gt; &#123;</span><br><span class="line"></span><br><span class="line">- (void)wait;</span><br><span class="line">- (BOOL)waitUntilDate:(NSDate *)limit;</span><br><span class="line">- (void)signal;</span><br><span class="line">- (void)broadcast;</span><br><span class="line"></span><br><span class="line">@property (nullable, copy) NSString *name;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
 
-<p>NSCondition 提供了 wait 和 signal 接口，接口命名与信号量类似。<br><br/></p>
+<p>NSCondition 提供了 wait 和 signal 接口，接口命名与信号量类似。<br>&amp;emsp;</p>
 <p>场景：开启两个线程，线程A下载图片，线程B对图片做解码操作。</p>
 <ul>
 <li>线程B的要求是：如果没有图片则自动阻塞；</li>
 <li>当线程A下载完成后，则满足了线程B的需求，发送信号给B线程让其继续处理图片。</li>
 </ul>
-<p>这样的场景就是生产者消费者模式（收发同步问题）。<br><br/></p>
+<p>这样的场景就是生产者消费者模式（收发同步问题）。<br>&amp;emsp;</p>
 <p>原理：</p>
 <ul>
 <li>消费者取得锁，取产品，如果没有，则wait，直到有线程唤醒它去消费产品；</li>
@@ -264,9 +264,9 @@
 <li>因为<code>condition</code>修改为了 1，线程3 符合条件并成功上锁，之后线程3将<code>condition</code> 修改为3。</li>
 <li>最后线程2执行。</li>
 </ul>
-<p>从上面的结果可以发现，NSConditionLock 还可以实现任务之间的依赖。<br><br/></p>
+<p>从上面的结果可以发现，NSConditionLock 还可以实现任务之间的依赖。<br>&amp;emsp;</p>
 <p><strong>使用案例：PINRemoteImage</strong>。</p>
-<h4 id="5-3-dispatch-semaphore"><a href="#5-3-dispatch-semaphore" class="headerlink" title="5.3.dispatch_semaphore"></a>5.3.dispatch_semaphore</h4><p>信号量：就是一种可用来控制访问资源的数量的标识。当一个线程在进入一段关键代码之前，线程必须获取一个信号量，一旦该关键代码段完成了，那么该线程必须释放信号量。其它想进入该关键代码段的线程必须等待前面的线程释放信号量。<br><br/></p>
+<h4 id="5-3-dispatch-semaphore"><a href="#5-3-dispatch-semaphore" class="headerlink" title="5.3.dispatch_semaphore"></a>5.3.dispatch_semaphore</h4><p>信号量：就是一种可用来控制访问资源的数量的标识。当一个线程在进入一段关键代码之前，线程必须获取一个信号量，一旦该关键代码段完成了，那么该线程必须释放信号量。其它想进入该关键代码段的线程必须等待前面的线程释放信号量。<br>&amp;emsp;</p>
 <p>网上有一个经典的停车场的例子：信号量的值就相当于剩余车位的数目，<code>dispatch_semaphore_wait</code>就相当于来了一辆车，<code>dispatch_semaphore_signal</code>就相当于走了一辆车。停车位的剩余数目在初始化的时候就已经指明了（<code>dispatch_semaphore_create(value:Int)）</code>），调用一次<code>dispatch_semaphore_signal</code>，剩余的车位就增加一个；调用一次<code>dispatch_semaphore_wait</code>剩余车位就减少一个；当剩余车位为0时，再来车（即调用<code>dispatch_semaphore_wait</code>）就只能等待。有耐心的车主会一直等下去，没耐心的车主在等待“一段时间”之后就会离开。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">//创建信号量，参数：信号量的初值，如果小于0则会返回NULL</span><br><span class="line">dispatch_semaphore_create（信号量值）</span><br><span class="line"></span><br><span class="line">//减少信号量，时间：DISPATCH_TIME_NOW、DISPATCH_TIME_FOREVER</span><br><span class="line">dispatch_semaphore_wait（信号量，等待时间）</span><br><span class="line"></span><br><span class="line">//释放信号量</span><br><span class="line">dispatch_semaphore_signal(信号量)</span><br></pre></td></tr></table></figure>
 

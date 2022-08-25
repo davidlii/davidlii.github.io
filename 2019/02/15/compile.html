@@ -146,9 +146,9 @@
 <ul>
 <li>解释型语言</li>
 </ul>
-<p>解释型语言，如 JavaScript 和 Python，代码不需要经过编译器，而是通过解释器直接将代码解释成CPU可以执行的代码。编写灵活，但执行效率低一些~<br><br/></p>
+<p>解释型语言，如 JavaScript 和 Python，代码不需要经过编译器，而是通过解释器直接将代码解释成CPU可以执行的代码。编写灵活，但执行效率低一些~<br>&amp;emsp;</p>
 <p>本篇主要关注编译型语言。编译过程可以划分为前端和后端两部分：</p>
-<h3 id="2-编译器前端：Clang"><a href="#2-编译器前端：Clang" class="headerlink" title="2.编译器前端：Clang"></a>2.编译器前端：Clang</h3><p>编译器前端将不同的高级编程语言经过词法分析、语法分析转化为与前端语言无关的统一的中间表示。iOS 中的编译器前端使用的是 Clang，它是一个 C++ 编写的、基于LLVM 的 C&#x2F;C++&#x2F;Objective-C&#x2F;Objective-C++ 编译器。其主要任务是处理一些和具体机器无关的针对语言的分析操作：<br><br/></p>
+<h3 id="2-编译器前端：Clang"><a href="#2-编译器前端：Clang" class="headerlink" title="2.编译器前端：Clang"></a>2.编译器前端：Clang</h3><p>编译器前端将不同的高级编程语言经过词法分析、语法分析转化为与前端语言无关的统一的中间表示。iOS 中的编译器前端使用的是 Clang，它是一个 C++ 编写的、基于LLVM 的 C&#x2F;C++&#x2F;Objective-C&#x2F;Objective-C++ 编译器。其主要任务是处理一些和具体机器无关的针对语言的分析操作：<br>&amp;emsp;</p>
 <p>预处理：</p>
 <ul>
 <li>符号化 (Tokenization)</li>
@@ -165,7 +165,7 @@
 <ul>
 <li>将 AST 转换为更低级的中间码 (LLVM IR)</li>
 </ul>
-<h3 id="3-编译器后端：LLVM"><a href="#3-编译器后端：LLVM" class="headerlink" title="3.编译器后端：LLVM"></a>3.编译器后端：LLVM</h3><p>编译器后端负责将中间代码进行优化并最终生成对应平台的汇编代码。LLVM 属于编译器后端，其主要作用是：<br><br/></p>
+<h3 id="3-编译器后端：LLVM"><a href="#3-编译器后端：LLVM" class="headerlink" title="3.编译器后端：LLVM"></a>3.编译器后端：LLVM</h3><p>编译器后端负责将中间代码进行优化并最终生成对应平台的汇编代码。LLVM 属于编译器后端，其主要作用是：<br>&amp;emsp;</p>
 <p>代码优化</p>
 <ul>
 <li>对生成的中间码做优化</li>
