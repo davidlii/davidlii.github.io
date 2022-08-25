@@ -1,145 +1,292 @@
+
+
 <!DOCTYPE html>
-<html>
-  <head>
-  <meta http-equiv="content-type" content="text/html; charset=utf-8">
-  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
-  <meta name="description" content="This is Davidli&#39;s blog ~">
-  <meta name="keyword" content="hexo-theme, vuejs">
-  
-    <link rel="shortcut icon" type="image/ico" href="/image/logo.png"/> 
-  
-  <title>
-    
-      FQA-常见问题 | Davidli
-    
-  </title>
-  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
-  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
-  
-<link rel="stylesheet" href="/css/style.css">
-<link rel="stylesheet" href="/css/plugins/gitment.css">
-
-  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
-  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
-  
-<script src="/js/qrious.js"></script>
-<script src="/js/gitment.js"></script>
-
-  
-  
-    <!-- MathJax support START -->
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      });
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      });
-    </script>
-    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <!-- MathJax support END -->
-  
+<html lang="zh-Hans" data-default-color-scheme=auto>
 
 
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="Davidli">
+  
+    <meta name="description" content="1、VC的生命周期 -initWithCoder: &#x2F;&#x2F;VC初始化 -initWithNibName:bundle: -loadView &#x2F;&#x2F;从nib载入视图或返回一个自定义视图 -viewDidLoad &#x2F;&#x2F;视图载入完成并开始进一步的设置 -viewWillAppear: &#x2F;&#x2F;视图即将出现在屏幕上 -updateVi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="FQA-常见问题">
+<meta property="og:url" content="http://yoursite.com/2017/11/24/faq.html">
+<meta property="og:site_name" content="Davidli">
+<meta property="og:description" content="1、VC的生命周期 -initWithCoder: &#x2F;&#x2F;VC初始化 -initWithNibName:bundle: -loadView &#x2F;&#x2F;从nib载入视图或返回一个自定义视图 -viewDidLoad &#x2F;&#x2F;视图载入完成并开始进一步的设置 -viewWillAppear: &#x2F;&#x2F;视图即将出现在屏幕上 -updateVi">
+<meta property="og:locale">
+<meta property="og:image" content="https://davidlii.nos-eastchina1.126.net/pic_nsnullObj.png">
+<meta property="og:image" content="https://davidlii.nos-eastchina1.126.net/pic_po_nsnullObj_nil.png">
+<meta property="article:published_time" content="2017-11-24T10:14:32.000Z">
+<meta property="article:modified_time" content="2019-06-16T16:47:32.000Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="FQA">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://davidlii.nos-eastchina1.126.net/pic_nsnullObj.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>FQA-常见问题 - Davidli</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"yoursite.com","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
 <meta name="generator" content="Hexo 6.2.0"></head>
-<div class="wechat-share">
-  <img src="/css/images/logo.png" />
-</div>
 
-  <body>
-    <header class="header fixed-header">
-  <div class="header-container">
-    <a class="home-link" href="/">
-      <div class="logo"></div>
-      <span>Davidli</span>
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Davidli</strong>
     </a>
-    <ul class="right-list">
-      
-        <li class="list-item">
-          
-            <a href="/" class="item-link">Davidli</a>
-          
-        </li>
-      
-        <li class="list-item">
-          
-            <a href="/archives/" class="item-link">归档</a>
-          
-        </li>
-      
-        <li class="list-item">
-          
-            <a href="/tags/" class="item-link">标签</a>
-          
-        </li>
-      
-        <li class="list-item">
-          
-            <a href="/about/" class="item-link">关于</a>
-          
-        </li>
-      
-    </ul>
-    <div class="menu">
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-    </div>
-    <div class="menu-mask">
-      <ul class="menu-list">
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
         
-          <li class="menu-item">
-            
-              <a href="/" class="menu-link">Davidli</a>
-            
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                Categories
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                Tags
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
           </li>
+          
         
-          <li class="menu-item">
-            
-              <a href="/archives/" class="menu-link">归档</a>
-            
-          </li>
         
-          <li class="menu-item">
-            
-              <a href="/tags/" class="menu-link">标签</a>
-            
-          </li>
-        
-          <li class="menu-item">
-            
-              <a href="/about/" class="menu-link">关于</a>
-            
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
           </li>
         
       </ul>
     </div>
   </div>
-</header>
+</nav>
 
-    <div id="article-banner">
-  <h2>FQA-常见问题</h2>
-  <p class="post-date">2017-11-24</p>
-  <div class="arrow-down">
-    <a href="javascript:;"></a>
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="FQA-常见问题"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2017-11-24 18:14" pubdate>
+          November 24, 2017 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          9.5k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          80 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
   </div>
 </div>
-<main class="app-body flex-box">
-  <!-- Article START -->
-  <article class="post-article">
-    <section class="markdown-content"><h3 id="1、VC的生命周期"><a href="#1、VC的生命周期" class="headerlink" title="1、VC的生命周期"></a>1、VC的生命周期</h3><ul>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">FQA-常见问题</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h3 id="1、VC的生命周期"><a href="#1、VC的生命周期" class="headerlink" title="1、VC的生命周期"></a>1、VC的生命周期</h3><ul>
 <li>-initWithCoder: &#x2F;&#x2F;VC初始化</li>
 <li>-initWithNibName:bundle:</li>
 <li>-loadView &#x2F;&#x2F;从nib载入视图或返回一个自定义视图</li>
@@ -158,32 +305,32 @@
 <h3 id="2、VC跳转时生命周期调用顺序"><a href="#2、VC跳转时生命周期调用顺序" class="headerlink" title="2、VC跳转时生命周期调用顺序"></a>2、VC跳转时生命周期调用顺序</h3><ul>
 <li>情形1：由 A push 到 B 时：</li>
 </ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-[B viewDidLoad]</span><br><span class="line">-[A viewWillDisappear:]</span><br><span class="line">-[B viewWillAppear:]</span><br><span class="line">-[A viewDidDisappear:]</span><br><span class="line">-[B viewDidAppear:]</span><br></pre></td></tr></table></figure>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs css">-<span class="hljs-selector-attr">[B viewDidLoad]</span><br>-<span class="hljs-selector-attr">[A viewWillDisappear:]</span><br>-<span class="hljs-selector-attr">[B viewWillAppear:]</span><br>-<span class="hljs-selector-attr">[A viewDidDisappear:]</span><br>-<span class="hljs-selector-attr">[B viewDidAppear:]</span><br></code></pre></td></tr></table></figure>
 
 <ul>
 <li>情形2：由 A present 到 B 时：</li>
 </ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-[B viewDidLoad]</span><br><span class="line">-[A viewWillDisappear:]</span><br><span class="line">-[B viewWillAppear:]</span><br><span class="line">-[B viewDidAppear:]</span><br><span class="line">-[A viewDidDisappear:]</span><br></pre></td></tr></table></figure>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs css">-<span class="hljs-selector-attr">[B viewDidLoad]</span><br>-<span class="hljs-selector-attr">[A viewWillDisappear:]</span><br>-<span class="hljs-selector-attr">[B viewWillAppear:]</span><br>-<span class="hljs-selector-attr">[B viewDidAppear:]</span><br>-<span class="hljs-selector-attr">[A viewDidDisappear:]</span><br></code></pre></td></tr></table></figure>
 
-<h3 id="3、宏定义使用错误案例"><a href="#3、宏定义使用错误案例" class="headerlink" title="3、宏定义使用错误案例"></a>3、宏定义使用错误案例</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">#define MATH_MAX(a,b) a &gt; b ? a : b</span><br><span class="line"></span><br><span class="line">- (void)defineExmple</span><br><span class="line">&#123;</span><br><span class="line">    //case1</span><br><span class="line">    printf(&quot;result: %d\n&quot;,MATH_MAX(2,1) + 1);//结果：result: 2</span><br><span class="line">    //case2</span><br><span class="line">    int i = 1;</span><br><span class="line">    printf(&quot;largest: %d\n&quot;, MATH_MAX(i++,0));//结果：largest: 2</span><br><span class="line">    //case3</span><br><span class="line">    printf(&quot;now i value = %d\n&quot;, i);//结果：now i value = 3</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="3、宏定义使用错误案例"><a href="#3、宏定义使用错误案例" class="headerlink" title="3、宏定义使用错误案例"></a>3、宏定义使用错误案例</h3><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs arduino"><span class="hljs-meta">#<span class="hljs-keyword">define</span> MATH_MAX(a,b) a &gt; b ? a : b</span><br><br>- (<span class="hljs-type">void</span>)defineExmple<br>&#123;<br>    <span class="hljs-comment">//case1</span><br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;result: %d\n&quot;</span>,<span class="hljs-built_in">MATH_MAX</span>(<span class="hljs-number">2</span>,<span class="hljs-number">1</span>) + <span class="hljs-number">1</span>);<span class="hljs-comment">//结果：result: 2</span><br>    <span class="hljs-comment">//case2</span><br>    <span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;largest: %d\n&quot;</span>, <span class="hljs-built_in">MATH_MAX</span>(i++,<span class="hljs-number">0</span>));<span class="hljs-comment">//结果：largest: 2</span><br>    <span class="hljs-comment">//case3</span><br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;now i value = %d\n&quot;</span>, i);<span class="hljs-comment">//结果：now i value = 3</span><br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>输出结果都不是设想的值？这里涉及到编译器对“#”开头的行、自定义宏等宏的处理逻辑。<br><br/></p>
 <p>宏定义是在预编译阶段把宏的内容拷贝的源代码的相应位置，所以case1中<code>MATH_MAX(a,b)+1</code>就展开为<code>a&gt;b?a:b+1</code>，冒号后面变成了<code>b+1</code>。。这就跟设计之初的愿望相违背了~<br><br/></p>
 <p>同理，case2和case3在编译时，会变成：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">printf(&quot;largest: %d\n&quot;, i++ &gt; 0 ? i++ : 0);</span><br></pre></td></tr></table></figure>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">printf</span>(<span class="hljs-string">&quot;largest: %d\n&quot;</span>, i++ &gt; <span class="hljs-number">0</span> ? i++ : <span class="hljs-number">0</span>);<br></code></pre></td></tr></table></figure>
 
 <p>这里i做了两次++运算，显然也不是设想之初的结果。<br><br/></p>
 <p>#修改case1：</p>
 <p>宏定义部分应该加上括号：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#define MATH_MAX(a,b) (a &gt; b ? a : b)</span><br></pre></td></tr></table></figure>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs css"><span class="hljs-selector-id">#define</span> MATH_MAX(<span class="hljs-selector-tag">a</span>,<span class="hljs-selector-tag">b</span>) (<span class="hljs-selector-tag">a</span> &gt; <span class="hljs-selector-tag">b</span> ? <span class="hljs-selector-tag">a</span> : b)<br></code></pre></td></tr></table></figure>
 
 <p>#修改case2和case3：</p>
 <p>不要在需要预处理的代码中加入内联代码逻辑。</p>
 <h3 id="4、指针-地址"><a href="#4、指针-地址" class="headerlink" title="4、指针\地址"></a>4、指针\地址</h3><p><code>一般变量</code>存放的是数据本身；<br><code>指针变量</code>存放的是数据的地址。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">int a = 68;</span><br><span class="line">long *p = NULL;</span><br><span class="line">p = &amp;a;</span><br><span class="line">NSLog(@&quot;++a的值:%d \n++&amp;a:%p \n++p保存的指针:%p \n++*p的值:%d \n++变量p的地址:%p&quot;,a,&amp;a,p,*p,&amp;p);</span><br></pre></td></tr></table></figure>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs reasonml"><span class="hljs-built_in">int</span> a = <span class="hljs-number">68</span>;<br>long *p = NULL;<br>p = &amp;a;<br><span class="hljs-constructor">NSLog(@<span class="hljs-string">&quot;++a的值:%d \n++&amp;a:%p \n++p保存的指针:%p \n++*p的值:%d \n++变量p的地址:%p&quot;</span>,<span class="hljs-params">a</span>,&amp;<span class="hljs-params">a</span>,<span class="hljs-params">p</span>,<span class="hljs-operator">*</span><span class="hljs-params">p</span>,&amp;<span class="hljs-params">p</span>)</span>;<br></code></pre></td></tr></table></figure>
 
 <p>输出日志：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">++a的值:68 </span><br><span class="line">++&amp;a:0x7ffee43cec64 </span><br><span class="line">++p保存的指针:0x7ffee43cec64 </span><br><span class="line">++*p的值:68 </span><br><span class="line">++变量p的地址:0x7ffee43cec58</span><br></pre></td></tr></table></figure>
+<figure class="highlight brainfuck"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs brainfuck"><span class="hljs-literal">++</span><span class="hljs-comment">a的值:68</span> <br><span class="hljs-literal">++</span><span class="hljs-comment">&amp;a:0x7ffee43cec64</span> <br><span class="hljs-literal">++</span><span class="hljs-comment">p保存的指针:0x7ffee43cec64</span> <br><span class="hljs-literal">++</span><span class="hljs-comment">*p的值:68</span> <br><span class="hljs-literal">++</span><span class="hljs-comment">变量p的地址:0x7ffee43cec58</span><br></code></pre></td></tr></table></figure>
 
 <p><code>*</code>是指针的标识，表示接下来的变量是一个<code>指针变量</code>；<code>&amp;</code>用来取变量的地址。<br><br/></p>
 <p>上面的示例中，<code>a</code>是一般变量，保存数值<code>68</code>；而<code>a</code>作为变量，系统会为其分配一个地址<code>0x7ffee43cec64</code>；<code>p</code>是初始值为空的指针变量，随后指向<code>&amp;a</code>，即变量<code>p</code>保存的是变量<code>a</code>的地址（<code>0x7ffee43cec64</code>）；<code>p</code>作为指针变量，其保存的指针所指向的值为 68，变量<code>p</code>自己的内存地址为<code>0x7ffee43cec58</code>。</p>
@@ -191,23 +338,23 @@
 <ul>
 <li>NULL，表示C类型的指针为空；</li>
 </ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">long *p = NULL;</span><br></pre></td></tr></table></figure>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs abnf">long *p <span class="hljs-operator">=</span> NULL<span class="hljs-comment">;</span><br></code></pre></td></tr></table></figure>
 
 <ul>
 <li>nil，表示OC中对象的指针为空；</li>
 </ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">NSObject *obj = nil;</span><br></pre></td></tr></table></figure>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs abnf">NSObject *obj <span class="hljs-operator">=</span> nil<span class="hljs-comment">;</span><br></code></pre></td></tr></table></figure>
 
 <ul>
 <li>Nil，表示OC中类类型变量的值为空；</li>
 </ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Class class = Nil;</span><br></pre></td></tr></table></figure>
+<figure class="highlight delphi"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs delphi"><span class="hljs-keyword">Class</span> <span class="hljs-keyword">class</span> = <span class="hljs-keyword">Nil</span>;<br></code></pre></td></tr></table></figure>
 
 <p>2、<code>NSNull</code>与以上三者不同，它是一个OC类，用于创建空对象：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">NSNull *nsnullObj = [NSNull null]; // 1</span><br><span class="line">NSArray *aArr = @[@(1),nsnullObj];</span><br><span class="line">for (NSObject *item in aArr) &#123;</span><br><span class="line">    if ([item isEqual:[NSNull null]]) &#123; // 2</span><br><span class="line">        nsnullObj = nil; // 3</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-built_in">NSNull</span> *nsnullObj = [<span class="hljs-built_in">NSNull</span> null]; <span class="hljs-comment">// 1</span><br><span class="hljs-built_in">NSArray</span> *aArr = @[@(<span class="hljs-number">1</span>),nsnullObj];<br><span class="hljs-keyword">for</span> (<span class="hljs-built_in">NSObject</span> *item <span class="hljs-keyword">in</span> aArr) &#123;<br>    <span class="hljs-keyword">if</span> ([item isEqual:[<span class="hljs-built_in">NSNull</span> null]]) &#123; <span class="hljs-comment">// 2</span><br>        nsnullObj = <span class="hljs-literal">nil</span>; <span class="hljs-comment">// 3</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 
-<p>示例中1处即为刚创建的空对象<code>nsnullObj</code>,它的内存地址如下：<br><img src="https://davidlii.nos-eastchina1.126.net/pic_nsnullObj.png" alt="nsnullObj"></p>
-<p>示例中3处将空对象置为nil后，其内存地址如下：<br><img src="https://davidlii.nos-eastchina1.126.net/pic_po_nsnullObj_nil.png" alt="pic_nsnullObj_nil"></p>
+<p>示例中1处即为刚创建的空对象<code>nsnullObj</code>,它的内存地址如下：<br><img src="https://davidlii.nos-eastchina1.126.net/pic_nsnullObj.png" srcset="/img/loading.gif" lazyload alt="nsnullObj"></p>
+<p>示例中3处将空对象置为nil后，其内存地址如下：<br><img src="https://davidlii.nos-eastchina1.126.net/pic_po_nsnullObj_nil.png" srcset="/img/loading.gif" lazyload alt="pic_nsnullObj_nil"></p>
 <p>所以可以看出<code>NSNull</code>仍然是一个对象，只是此对象中什么都没有而已~</p>
 <h3 id="6、对象的比较-x3D-x3D-与isEqual"><a href="#6、对象的比较-x3D-x3D-与isEqual" class="headerlink" title="6、对象的比较&#x3D;&#x3D;与isEqual"></a>6、对象的比较&#x3D;&#x3D;与isEqual</h3><ul>
 <li>&#x3D;&#x3D;</li>
@@ -215,10 +362,10 @@
 <p>比较的是<code>值</code>。<br><br/></p>
 <p><code>基本数据类型</code>比较数值，数值相等即为真；<br><code>指针变量</code>比较变量内保存的<code>地址</code>，地址相同，即指向同一个数据对象，返回真。<br><br/></p>
 <p>#示例1：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">- (void)test&#123;</span><br><span class="line">    NSString *A = @&quot;Hello&quot;; //常量区</span><br><span class="line">    NSString *B = @&quot;Hello&quot;; //常量区</span><br><span class="line">    NSString *C = [[NSString alloc] initWithString:@&quot;Hello&quot;]; //常量区</span><br><span class="line">    NSString *D = [[NSString alloc] initWithString:@&quot;Hello&quot;]; //常量区</span><br><span class="line">    NSString *E = [NSString stringWithFormat:@&quot;Hello&quot;]; //堆区</span><br><span class="line">    NSString *F = [NSString stringWithFormat:@&quot;Hello&quot;]; //堆区</span><br><span class="line">    </span><br><span class="line">    NSLog(@&quot;A:%p&quot;,A); //打印A对象保存的指针</span><br><span class="line">    NSLog(@&quot;B:%p&quot;,B);</span><br><span class="line">    NSLog(@&quot;C:%p&quot;,C);</span><br><span class="line">    NSLog(@&quot;D:%p&quot;,D);</span><br><span class="line">    NSLog(@&quot;E:%p&quot;,E);</span><br><span class="line">    NSLog(@&quot;F:%p&quot;,F);</span><br><span class="line">    </span><br><span class="line">    NSLog(@&quot;A==B:%d&quot;,A==B); // 检测AB变量内保存的地址是否相同</span><br><span class="line">    NSLog(@&quot;C==D:%d&quot;,C==D);</span><br><span class="line">    NSLog(@&quot;E==F:%d&quot;,E==F);</span><br><span class="line">    </span><br><span class="line">    NSLog(@&quot;A==C:%d&quot;,A==C);</span><br><span class="line">    NSLog(@&quot;A==E:%d&quot;,A==E);</span><br><span class="line">    NSLog(@&quot;C==E:%d&quot;,C==E);</span><br><span class="line"></span><br><span class="line">    NSLog(@&quot;A isEqual: B : %d&quot;,[A isEqual:B]);</span><br><span class="line">    NSLog(@&quot;A isEqual: C : %d&quot;,[A isEqual:C]);</span><br><span class="line">    NSLog(@&quot;A isEqual: E : %d&quot;,[A isEqual:E]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs objectivec">- (<span class="hljs-type">void</span>)test&#123;<br>    <span class="hljs-built_in">NSString</span> *A = <span class="hljs-string">@&quot;Hello&quot;</span>; <span class="hljs-comment">//常量区</span><br>    <span class="hljs-built_in">NSString</span> *B = <span class="hljs-string">@&quot;Hello&quot;</span>; <span class="hljs-comment">//常量区</span><br>    <span class="hljs-built_in">NSString</span> *C = [[<span class="hljs-built_in">NSString</span> alloc] initWithString:<span class="hljs-string">@&quot;Hello&quot;</span>]; <span class="hljs-comment">//常量区</span><br>    <span class="hljs-built_in">NSString</span> *D = [[<span class="hljs-built_in">NSString</span> alloc] initWithString:<span class="hljs-string">@&quot;Hello&quot;</span>]; <span class="hljs-comment">//常量区</span><br>    <span class="hljs-built_in">NSString</span> *E = [<span class="hljs-built_in">NSString</span> stringWithFormat:<span class="hljs-string">@&quot;Hello&quot;</span>]; <span class="hljs-comment">//堆区</span><br>    <span class="hljs-built_in">NSString</span> *F = [<span class="hljs-built_in">NSString</span> stringWithFormat:<span class="hljs-string">@&quot;Hello&quot;</span>]; <span class="hljs-comment">//堆区</span><br>    <br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;A:%p&quot;</span>,A); <span class="hljs-comment">//打印A对象保存的指针</span><br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;B:%p&quot;</span>,B);<br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;C:%p&quot;</span>,C);<br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;D:%p&quot;</span>,D);<br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;E:%p&quot;</span>,E);<br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;F:%p&quot;</span>,F);<br>    <br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;A==B:%d&quot;</span>,A==B); <span class="hljs-comment">// 检测AB变量内保存的地址是否相同</span><br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;C==D:%d&quot;</span>,C==D);<br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;E==F:%d&quot;</span>,E==F);<br>    <br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;A==C:%d&quot;</span>,A==C);<br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;A==E:%d&quot;</span>,A==E);<br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;C==E:%d&quot;</span>,C==E);<br><br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;A isEqual: B : %d&quot;</span>,[A isEqual:B]);<br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;A isEqual: C : %d&quot;</span>,[A isEqual:C]);<br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;A isEqual: E : %d&quot;</span>,[A isEqual:E]);<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>输出：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">A:0x1015870e8</span><br><span class="line">B:0x1015870e8</span><br><span class="line">C:0x1015870e8</span><br><span class="line">D:0x1015870e8 // ABCD都指向常量区的同一个对象@&quot;Hello&quot;</span><br><span class="line">E:0xf538015112db6b7d</span><br><span class="line">F:0xf538015112db6b7d</span><br><span class="line">A==B:1 //指针相等返回真</span><br><span class="line">C==D:1</span><br><span class="line">E==F:1</span><br><span class="line">A==C:1</span><br><span class="line">A==E:0 //指针不同返回假</span><br><span class="line">C==E:0</span><br><span class="line">A isEqual: B : 1</span><br><span class="line">A isEqual: C : 1</span><br><span class="line">A isEqual: E : 1 //重写了isEqual方法，指针不同字符串相同即返回真</span><br></pre></td></tr></table></figure>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">A</span>:<span class="hljs-number">0</span>x1015870e8<br><span class="hljs-attribute">B</span>:<span class="hljs-number">0</span>x1015870e8<br><span class="hljs-attribute">C</span>:<span class="hljs-number">0</span>x1015870e8<br><span class="hljs-attribute">D</span>:<span class="hljs-number">0</span>x1015870e8 // ABCD都指向常量区的同一个对象@<span class="hljs-string">&quot;Hello&quot;</span><br><span class="hljs-attribute">E</span>:<span class="hljs-number">0</span>xf538015112db6b7d<br><span class="hljs-attribute">F</span>:<span class="hljs-number">0</span>xf538015112db6b7d<br><span class="hljs-attribute">A</span>==B:<span class="hljs-number">1</span> //指针相等返回真<br><span class="hljs-attribute">C</span>==D:<span class="hljs-number">1</span><br><span class="hljs-attribute">E</span>==F:<span class="hljs-number">1</span><br><span class="hljs-attribute">A</span>==C:<span class="hljs-number">1</span><br><span class="hljs-attribute">A</span>==E:<span class="hljs-number">0</span> //指针不同返回假<br><span class="hljs-attribute">C</span>==E:<span class="hljs-number">0</span><br><span class="hljs-attribute">A</span> isEqual: B : <span class="hljs-number">1</span><br><span class="hljs-attribute">A</span> isEqual: C : <span class="hljs-number">1</span><br><span class="hljs-attribute">A</span> isEqual: E : <span class="hljs-number">1</span> //重写了isEqual方法，指针不同字符串相同即返回真<br></code></pre></td></tr></table></figure>
 
 <ul>
 <li>isEqual:</li>
@@ -228,7 +375,7 @@
 </blockquote>
 <p><code>isEqual:</code>默认情况下，效果与<code>==</code>一样，两个对象指向的<code>地址</code>相同时才返回真。<br><br/></p>
 <p>有时在创建子类时，需要你自己重写此方法的实现：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">- (BOOL)isEqual:(id)obj &#123;</span><br><span class="line">    if (obj == self)&#123; //先比较指针</span><br><span class="line">        return YES;</span><br><span class="line">    &#125;</span><br><span class="line">    if (!obj || ![obj isKindOfClass:[self class]])&#123; //再比较类型</span><br><span class="line">        return NO;</span><br><span class="line">    &#125;</span><br><span class="line">    return [self isEqualToUser:obj]; //再比较自定义的属性</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">- (BOOL)isEqualToUser:(User *)aUser &#123;</span><br><span class="line"> if (self == aUser)&#123;</span><br><span class="line">    return YES;</span><br><span class="line"> &#125;</span><br><span class="line"> if (![(id)[self name] isEqual:[aUser name]])&#123; //比较属性</span><br><span class="line">    return NO;</span><br><span class="line">    &#125;</span><br><span class="line"> &#125;</span><br><span class="line"> return YES;</span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs objectivec">- (<span class="hljs-type">BOOL</span>)isEqual:(<span class="hljs-type">id</span>)obj &#123;<br>    <span class="hljs-keyword">if</span> (obj == <span class="hljs-keyword">self</span>)&#123; <span class="hljs-comment">//先比较指针</span><br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">YES</span>;<br>    &#125;<br>    <span class="hljs-keyword">if</span> (!obj || ![obj isKindOfClass:[<span class="hljs-keyword">self</span> <span class="hljs-keyword">class</span>]])&#123; <span class="hljs-comment">//再比较类型</span><br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">NO</span>;<br>    &#125;<br>    <span class="hljs-keyword">return</span> [<span class="hljs-keyword">self</span> isEqualToUser:obj]; <span class="hljs-comment">//再比较自定义的属性</span><br>&#125;<br> <br>- (<span class="hljs-type">BOOL</span>)isEqualToUser:(User *)aUser &#123;<br> <span class="hljs-keyword">if</span> (<span class="hljs-keyword">self</span> == aUser)&#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">YES</span>;<br> &#125;<br> <span class="hljs-keyword">if</span> (![(<span class="hljs-type">id</span>)[<span class="hljs-keyword">self</span> name] isEqual:[aUser name]])&#123; <span class="hljs-comment">//比较属性</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">NO</span>;<br>    &#125;<br> &#125;<br> <span class="hljs-keyword">return</span> <span class="hljs-literal">YES</span>;<br>&#125; <br></code></pre></td></tr></table></figure>
 
 <p>实际上<code>NSString</code>就重写了此方法的实现，只要两个字符串对象中的值相同即返回真，参考<code>示例1</code>。</p>
 <blockquote>
@@ -236,29 +383,29 @@
 </blockquote>
 <p>两个对象相等时，它们的<code>hash</code>值一定相等，所以你往往也需要重写<code>hash</code>方法~</p>
 <h3 id="7、集合与对象的引用关系"><a href="#7、集合与对象的引用关系" class="headerlink" title="7、集合与对象的引用关系"></a>7、集合与对象的引用关系</h3><p>常用的集合容器<code>NSArray</code>、<code>NSDictionary</code>、<code>NSSet</code>都是<code>强引用容器</code>，这些容器会强引用其内部的对象。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">//Xcode中禁用ARC以便使用引用计数</span><br><span class="line">- (BOOL)application:(UIApplication *)application</span><br><span class="line">didFinishLaunchingWithOptions:(NSDictionary *)launchOptions</span><br><span class="line">&#123;</span><br><span class="line">    @autoreleasepool &#123;</span><br><span class="line">        NSObject *obj = [[[NSObject alloc] init] autorelease];</span><br><span class="line">        NSLog(@&quot;++1.obj:%p ++&amp;obj:%p ++obj.rc:%lu&quot;,obj,&amp;obj,obj.retainCount);</span><br><span class="line">        </span><br><span class="line">        NSMutableArray *array = [NSMutableArray arrayWithCapacity:1];</span><br><span class="line">        [array addObject:obj];</span><br><span class="line">        NSLog(@&quot;++++2.obj.rc:%lu&quot;,obj.retainCount);</span><br><span class="line">        </span><br><span class="line">        [array removeAllObjects];</span><br><span class="line">        NSLog(@&quot;++++3.obj.rc:%lu&quot;,obj.retainCount);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return YES;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-comment">//Xcode中禁用ARC以便使用引用计数</span><br>- (<span class="hljs-type">BOOL</span>)application:(<span class="hljs-built_in">UIApplication</span> *)application<br>didFinishLaunchingWithOptions:(<span class="hljs-built_in">NSDictionary</span> *)launchOptions<br>&#123;<br>    <span class="hljs-keyword">@autoreleasepool</span> &#123;<br>        <span class="hljs-built_in">NSObject</span> *obj = [[[<span class="hljs-built_in">NSObject</span> alloc] init] autorelease];<br>        <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;++1.obj:%p ++&amp;obj:%p ++obj.rc:%lu&quot;</span>,obj,&amp;obj,obj.retainCount);<br>        <br>        <span class="hljs-built_in">NSMutableArray</span> *array = [<span class="hljs-built_in">NSMutableArray</span> arrayWithCapacity:<span class="hljs-number">1</span>];<br>        [array addObject:obj];<br>        <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;++++2.obj.rc:%lu&quot;</span>,obj.retainCount);<br>        <br>        [array removeAllObjects];<br>        <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;++++3.obj.rc:%lu&quot;</span>,obj.retainCount);<br>    &#125;<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">YES</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>输出日志：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">++1.obj:0x600002449230 ++&amp;obj:0x7ffee57fac60 ++obj.rc:1</span><br><span class="line">++++2.obj.rc:2</span><br><span class="line">++++3.obj.rc:1</span><br></pre></td></tr></table></figure>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs stylus">++<span class="hljs-number">1</span><span class="hljs-selector-class">.obj</span>:<span class="hljs-number">0</span>x600002449230 ++&amp;obj:<span class="hljs-number">0</span>x7ffee57fac60 ++obj<span class="hljs-selector-class">.rc</span>:<span class="hljs-number">1</span><br>++++<span class="hljs-number">2</span><span class="hljs-selector-class">.obj</span><span class="hljs-selector-class">.rc</span>:<span class="hljs-number">2</span><br>++++<span class="hljs-number">3</span><span class="hljs-selector-class">.obj</span><span class="hljs-selector-class">.rc</span>:<span class="hljs-number">1</span><br></code></pre></td></tr></table></figure>
 
 <p>当对象被添加到集合中时，其引用计数会 +1；对象被移出集合时，其引用计数 -1。所以，实践中我们需要注意这种强引用关系及其可能引起的对象释放问题~<br><br/></p>
 <p>那么，怎么实现弱引用容器呢？</p>
 <ul>
 <li>方案1：使用 NSValue 提供的两个类方法类存取对象：</li>
 </ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">//保存对象时</span><br><span class="line">NSValue *value = [NSValue valueWithNonretainedObject:myObj];</span><br><span class="line">[array addObject:value];</span><br><span class="line"></span><br><span class="line">//读取对象时</span><br><span class="line">value = [array objectAtIndex:x];</span><br><span class="line">myObj = [value pointerValue];</span><br></pre></td></tr></table></figure>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs angelscript"><span class="hljs-comment">//保存对象时</span><br>NSValue *value = [NSValue valueWithNonretainedObject:myObj];<br><span class="hljs-string">[array addObject:value]</span>;<br><br><span class="hljs-comment">//读取对象时</span><br>value = [<span class="hljs-built_in">array</span> objectAtIndex:x];<br>myObj = [value pointerValue];<br></code></pre></td></tr></table></figure>
 
 <p>#示例：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">//Person.m</span><br><span class="line">@implementation Person</span><br><span class="line">-(void)dealloc&#123;</span><br><span class="line">    [super dealloc];</span><br><span class="line">    NSLog(@&quot;++++PERSON IS DEALLOCED~&quot;);</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">//调用</span><br><span class="line">- (BOOL)application:(UIApplication *)application</span><br><span class="line">didFinishLaunchingWithOptions:(NSDictionary *)launchOptions</span><br><span class="line">&#123;</span><br><span class="line">    @autoreleasepool &#123;</span><br><span class="line">        Person *obj = [[[Person alloc] init] autorelease];</span><br><span class="line">        NSLog(@&quot;++1.obj:%p ++&amp;obj:%p ++obj.rc:%lu&quot;,obj,&amp;obj,obj.retainCount);</span><br><span class="line">        </span><br><span class="line">        NSMutableArray *array = [NSMutableArray arrayWithCapacity:1];</span><br><span class="line">        NSValue *value = [NSValue valueWithNonretainedObject:obj];</span><br><span class="line">        [array addObject:value];</span><br><span class="line">        NSLog(@&quot;++++2.obj.rc:%lu&quot;,obj.retainCount);</span><br><span class="line">        </span><br><span class="line">        for (NSValue *valueN in array) &#123;</span><br><span class="line">            Person * objN = [valueN pointerValue];</span><br><span class="line">            NSLog(@&quot;++3.objN:%p ++&amp;objN:%p ++objN.rc:%lu&quot;,objN,&amp;objN,objN.retainCount);</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        obj = nil;</span><br><span class="line">        </span><br><span class="line">        for (NSValue *valueN in array) &#123;</span><br><span class="line">            Person * objN = [valueN pointerValue];</span><br><span class="line">            NSLog(@&quot;++4.objN:%p ++&amp;objN:%p ++objN.rc:%lu&quot;,objN,&amp;objN,objN.retainCount);</span><br><span class="line">        &#125;</span><br><span class="line">        [array removeAllObjects];</span><br><span class="line">        </span><br><span class="line">        NSLog(@&quot;++5.obj:%@ ++&amp;obj:%p ++obj.rc:%lu&quot;,obj,&amp;obj,obj.retainCount);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    return YES;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><code class="hljs reasonml"><span class="hljs-comment">//Person.m</span><br>@implementation Person<br>-(void)dealloc&#123;<br>    <span class="hljs-literal">[<span class="hljs-identifier">super</span> <span class="hljs-identifier">dealloc</span>]</span>;<br>    <span class="hljs-constructor">NSLog(@<span class="hljs-string">&quot;++++PERSON IS DEALLOCED~&quot;</span>)</span>;<br>&#125;<br>@<span class="hljs-keyword">end</span><br><br><span class="hljs-comment">//调用</span><br>- (BOOL)application:(UIApplication *)application<br>didFinishLaunchingWithOptions:(NSDictionary *)launchOptions<br>&#123;<br>    @autoreleasepool &#123;<br>        Person *obj = <span class="hljs-literal">[[[P<span class="hljs-identifier">erson</span> <span class="hljs-identifier">alloc</span>]</span> init] autorelease];<br>        <span class="hljs-constructor">NSLog(@<span class="hljs-string">&quot;++1.obj:%p ++&amp;obj:%p ++obj.rc:%lu&quot;</span>,<span class="hljs-params">obj</span>,&amp;<span class="hljs-params">obj</span>,<span class="hljs-params">obj</span>.<span class="hljs-params">retainCount</span>)</span>;<br>        <br>        NSMutableArray *<span class="hljs-built_in">array</span> = <span class="hljs-literal">[NSM<span class="hljs-identifier">utableArray</span> <span class="hljs-identifier">arrayWithCapacity</span>:<span class="hljs-number">1</span>]</span>;<br>        NSValue *value = <span class="hljs-literal">[NSV<span class="hljs-identifier">alue</span> <span class="hljs-identifier">valueWithNonretainedObject</span>:<span class="hljs-identifier">obj</span>]</span>;<br>        <span class="hljs-literal">[<span class="hljs-identifier">array</span> <span class="hljs-identifier">addObject</span>:<span class="hljs-identifier">value</span>]</span>;<br>        <span class="hljs-constructor">NSLog(@<span class="hljs-string">&quot;++++2.obj.rc:%lu&quot;</span>,<span class="hljs-params">obj</span>.<span class="hljs-params">retainCount</span>)</span>;<br>        <br>        <span class="hljs-keyword">for</span> (NSValue *valueN <span class="hljs-keyword">in</span> <span class="hljs-built_in">array</span>) &#123;<br>            Person<span class="hljs-operator"> * </span>objN = <span class="hljs-literal">[<span class="hljs-identifier">valueN</span> <span class="hljs-identifier">pointerValue</span>]</span>;<br>            <span class="hljs-constructor">NSLog(@<span class="hljs-string">&quot;++3.objN:%p ++&amp;objN:%p ++objN.rc:%lu&quot;</span>,<span class="hljs-params">objN</span>,&amp;<span class="hljs-params">objN</span>,<span class="hljs-params">objN</span>.<span class="hljs-params">retainCount</span>)</span>;<br>        &#125;<br>        <br>        obj = nil;<br>        <br>        <span class="hljs-keyword">for</span> (NSValue *valueN <span class="hljs-keyword">in</span> <span class="hljs-built_in">array</span>) &#123;<br>            Person<span class="hljs-operator"> * </span>objN = <span class="hljs-literal">[<span class="hljs-identifier">valueN</span> <span class="hljs-identifier">pointerValue</span>]</span>;<br>            <span class="hljs-constructor">NSLog(@<span class="hljs-string">&quot;++4.objN:%p ++&amp;objN:%p ++objN.rc:%lu&quot;</span>,<span class="hljs-params">objN</span>,&amp;<span class="hljs-params">objN</span>,<span class="hljs-params">objN</span>.<span class="hljs-params">retainCount</span>)</span>;<br>        &#125;<br>        <span class="hljs-literal">[<span class="hljs-identifier">array</span> <span class="hljs-identifier">removeAllObjects</span>]</span>;<br>        <br>        <span class="hljs-constructor">NSLog(@<span class="hljs-string">&quot;++5.obj:%@ ++&amp;obj:%p ++obj.rc:%lu&quot;</span>,<span class="hljs-params">obj</span>,&amp;<span class="hljs-params">obj</span>,<span class="hljs-params">obj</span>.<span class="hljs-params">retainCount</span>)</span>;<br>    &#125;<br>    <br>    return YES;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>输出日志：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">++1.obj:0x60000323c9c0 ++&amp;obj:0x7ffeeb5fec60 ++obj.rc:1</span><br><span class="line">++++2.obj.rc:1</span><br><span class="line">++3.objN:0x60000323c9c0 ++&amp;objN:0x7ffeeb5fec00 ++objN.rc:1</span><br><span class="line">++4.objN:0x60000323c9c0 ++&amp;objN:0x7ffeeb5febb0 ++objN.rc:1</span><br><span class="line">++5.obj:(null) ++&amp;obj:0x7ffeeb5fec60 ++obj.rc:0</span><br><span class="line">++++PERSON IS DEALLOCED~</span><br></pre></td></tr></table></figure>
+<figure class="highlight brainfuck"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs brainfuck"><span class="hljs-literal">++</span><span class="hljs-comment">1</span><span class="hljs-string">.</span><span class="hljs-comment">obj:0x60000323c9c0</span> <span class="hljs-literal">++</span><span class="hljs-comment">&amp;obj:0x7ffeeb5fec60</span> <span class="hljs-literal">++</span><span class="hljs-comment">obj</span><span class="hljs-string">.</span><span class="hljs-comment">rc:1</span><br><span class="hljs-literal">++++</span><span class="hljs-comment">2</span><span class="hljs-string">.</span><span class="hljs-comment">obj</span><span class="hljs-string">.</span><span class="hljs-comment">rc:1</span><br><span class="hljs-literal">++</span><span class="hljs-comment">3</span><span class="hljs-string">.</span><span class="hljs-comment">objN:0x60000323c9c0</span> <span class="hljs-literal">++</span><span class="hljs-comment">&amp;objN:0x7ffeeb5fec00</span> <span class="hljs-literal">++</span><span class="hljs-comment">objN</span><span class="hljs-string">.</span><span class="hljs-comment">rc:1</span><br><span class="hljs-literal">++</span><span class="hljs-comment">4</span><span class="hljs-string">.</span><span class="hljs-comment">objN:0x60000323c9c0</span> <span class="hljs-literal">++</span><span class="hljs-comment">&amp;objN:0x7ffeeb5febb0</span> <span class="hljs-literal">++</span><span class="hljs-comment">objN</span><span class="hljs-string">.</span><span class="hljs-comment">rc:1</span><br><span class="hljs-literal">++</span><span class="hljs-comment">5</span><span class="hljs-string">.</span><span class="hljs-comment">obj:(null)</span> <span class="hljs-literal">++</span><span class="hljs-comment">&amp;obj:0x7ffeeb5fec60</span> <span class="hljs-literal">++</span><span class="hljs-comment">obj</span><span class="hljs-string">.</span><span class="hljs-comment">rc:0</span><br><span class="hljs-literal">++++</span><span class="hljs-comment">PERSON IS DEALLOCED~</span><br></code></pre></td></tr></table></figure>
 
 <p>通过<code>NSValue</code>包装<code>obj</code>之后，即使添加到数组，<code>obj</code>的引用计数也不会增加，且当在数组外部将<code>obj</code>置为 nil 之后，<code>obj</code>对象会自动销毁。</p>
 <h3 id="8、静态变量、静态常量"><a href="#8、静态变量、静态常量" class="headerlink" title="8、静态变量、静态常量"></a>8、静态变量、静态常量</h3><ul>
 <li><strong>static</strong></li>
 </ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">static NSString *aStaticString;</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-keyword">static</span> <span class="hljs-built_in">NSString</span> *aStaticString;<br></code></pre></td></tr></table></figure>
 
 <p>修饰<code>局部变量</code>时，静态局部变量的作用范围为该函数体。它的值在编译期就会确定下来，并被存储到全局变量区。因此静态局部变量只会生成一份内存、只会初始化一次并供所有对象使用；静态局部变量的生命周期和程序相同，直到程序结束这个局部变量才会销毁。<br><br/></p>
 <p>修饰<code>全局变量</code>时，静态全局变量的作用域仅限于当前文件（.m），它也是被存储到全局变量区，生命周期与程序相同，程序结束时才会销毁。使用静态全局变量能避免在同一个文件中重复定义全局变量。<br><br/></p>
@@ -268,12 +415,12 @@
 </ul>
 <p><code>const</code>修饰的是常量，强调的是变量的值不可变。常量在第一次赋值之后不能再修改。<br><br/></p>
 <p>在 OC 中一般是结合<code>static</code>使用，示例：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">//用法1</span><br><span class="line">static NSString * const s1;</span><br><span class="line">//用法2</span><br><span class="line">static const NSString * s2;</span><br><span class="line">//用法3</span><br><span class="line">static NSString const * s3;</span><br><span class="line"></span><br><span class="line">@implementation AppDelegate</span><br><span class="line"></span><br><span class="line">- (BOOL)application:(UIApplication *)application</span><br><span class="line">didFinishLaunchingWithOptions:(NSDictionary *)launchOptions</span><br><span class="line">&#123;</span><br><span class="line">    s1 = @&quot;A&quot;;//编译时会报错</span><br><span class="line">    s2 = @&quot;B&quot;;//编译正常</span><br><span class="line">    s3 = @&quot;C&quot;;//编译正常</span><br><span class="line">    return YES;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-comment">//用法1</span><br><span class="hljs-keyword">static</span> <span class="hljs-built_in">NSString</span> * <span class="hljs-keyword">const</span> s1;<br><span class="hljs-comment">//用法2</span><br><span class="hljs-keyword">static</span> <span class="hljs-keyword">const</span> <span class="hljs-built_in">NSString</span> * s2;<br><span class="hljs-comment">//用法3</span><br><span class="hljs-keyword">static</span> <span class="hljs-built_in">NSString</span> <span class="hljs-keyword">const</span> * s3;<br><br><span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">AppDelegate</span></span><br><br>- (<span class="hljs-type">BOOL</span>)application:(<span class="hljs-built_in">UIApplication</span> *)application<br>didFinishLaunchingWithOptions:(<span class="hljs-built_in">NSDictionary</span> *)launchOptions<br>&#123;<br>    s1 = <span class="hljs-string">@&quot;A&quot;</span>;<span class="hljs-comment">//编译时会报错</span><br>    s2 = <span class="hljs-string">@&quot;B&quot;</span>;<span class="hljs-comment">//编译正常</span><br>    s3 = <span class="hljs-string">@&quot;C&quot;</span>;<span class="hljs-comment">//编译正常</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">YES</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>示例中，<code>用法2</code>和<code>3</code>实质上是一样的。<code>用法1</code>和<code>2</code>的区别，用英语表达会更直观一些：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">static NSString * const s1;</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-keyword">static</span> <span class="hljs-built_in">NSString</span> * <span class="hljs-keyword">const</span> s1;<br></code></pre></td></tr></table></figure>
 <p><code>指针常量</code>，A constant pointer (not modifiable) to an NSString object (its value can be modified)。这里的<code>s1</code>是一个字符串对象的指针，因此 const 修饰的是指针，即指针为常量不能修改，但指针指向的值是可以修改的。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">static const NSString * s2;</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-keyword">static</span> <span class="hljs-keyword">const</span> <span class="hljs-built_in">NSString</span> * s2;<br></code></pre></td></tr></table></figure>
 
 <p><code>常量指针</code>，A modifiable pointer to a constant NSString object (its value can’t be modified)。这里<code>s2</code>和<code>s3</code>是指针，<code>*s2</code>和<code>*s3</code>是指针指向的值，const 修饰的是值，即值不可变，但字符串对象可以修改其指针，重新取别的值。</p>
 <h3 id="9、分类与扩展"><a href="#9、分类与扩展" class="headerlink" title="9、分类与扩展"></a>9、分类与扩展</h3><p><strong>代码组织形式上</strong>：<br><br/></p>
@@ -285,239 +432,368 @@
 <p><strong>属性定义上</strong>：<br><br/></p>
 <p>分类和扩展都可以定义属性，不同的是扩展中的属性会由编译器自动提供存取器；而分类中虽然定义了属性，编译器却不会为其提供存取器，需要我们自己通过<code>对象绑定机制</code>主动实现。</p>
 <h3 id="10、URL缓存策略"><a href="#10、URL缓存策略" class="headerlink" title="10、URL缓存策略"></a>10、URL缓存策略</h3><p>NSURLRequestCachePolicy 用来指定网络请求的缓存策略，具体的枚举和作用如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">NSURLRequestUseProtocolCachePolicy = 0</span><br></pre></td></tr></table></figure>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs abnf"><span class="hljs-attribute">NSURLRequestUseProtocolCachePolicy</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span><br></code></pre></td></tr></table></figure>
 
 <p>默认缓存策略，当客户端发起一个请求时，首先检查本地是否有缓存(NSCachedURLResponse)。如果没有缓存，则直接从服务器处获取；如果有缓存，则继续检查缓存是否过期（通过Cache-Control:max-age或者Expires）。如果没有过期，则直接使用缓存数据；如果缓存过期了，则向服务器发起一个请求，服务器会对比它保存的资源的 Last-Modified 或者 Etags 字段(二者都存在的情况下下如果有一个不同则认为缓存已过期)，如果不同则返回新数据，否则返回 304 Not Modified 并继续使用缓存数据（客户端可以再使用”max-age”秒缓存数据）。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">NSURLRequestReloadIgnoringLocalCacheData = NSURLRequestReloadIgnoringCacheData = 1</span><br></pre></td></tr></table></figure>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs abnf"><span class="hljs-attribute">NSURLRequestReloadIgnoringLocalCacheData</span> <span class="hljs-operator">=</span> NSURLRequestReloadIgnoringCacheData <span class="hljs-operator">=</span> <span class="hljs-number">1</span><br></code></pre></td></tr></table></figure>
 
 <p>不使用缓存，直接从服务器请求原始数据。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">NSURLRequestReturnCacheDataElseLoad = 2</span><br></pre></td></tr></table></figure>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs abnf"><span class="hljs-attribute">NSURLRequestReturnCacheDataElseLoad</span> <span class="hljs-operator">=</span> <span class="hljs-number">2</span><br></code></pre></td></tr></table></figure>
 
 <p>无论缓存是否过期，有缓存则使用缓存，否则重新请求原始数据。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">NSURLRequestReturnCacheDataDontLoad = 3, </span><br></pre></td></tr></table></figure>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-attr">NSURLRequestReturnCacheDataDontLoad</span> = <span class="hljs-number">3</span>, <br></code></pre></td></tr></table></figure>
 
 <p>有缓存则使用缓存，无论缓存是否过期；无缓存则视为失败，不会重新请求原始数据，类似于离线模式。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">NSURLRequestReloadIgnoringLocalAndRemoteCacheData = 4 //Unimplemented</span><br></pre></td></tr></table></figure>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs abnf"><span class="hljs-attribute">NSURLRequestReloadIgnoringLocalAndRemoteCacheData</span> <span class="hljs-operator">=</span> <span class="hljs-number">4</span> //Unimplemented<br></code></pre></td></tr></table></figure>
 
 <p>本地缓存、代理和其他中介都要忽视他们的缓存，直接加载源数据。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">NSURLRequestReloadRevalidatingCacheData = 5 //Unimplemented</span><br></pre></td></tr></table></figure>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs abnf"><span class="hljs-attribute">NSURLRequestReloadRevalidatingCacheData</span> <span class="hljs-operator">=</span> <span class="hljs-number">5</span> //Unimplemented<br></code></pre></td></tr></table></figure>
 
 <p>向服务器发送一个请求，如果服务器确认缓存有效，则继续使用缓存，否则从源段加载数据。<br><br/></p>
 <p>使用缓存的目的是为了降低对网络连接的依赖，减少对相同 URL 的多次请求，提高应用的响应速度。这里所说的缓存是指对 URL 请求响应体(NSCachedURLResponse)的缓存。iOS 中响应的缓存是通过 <a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/foundation/urlcache">NSURLCache</a> 来实现的，它会将<code>NSURLRequest</code>与<code>NSCachedURLResponse</code>进行映射，并保存在内存和磁盘中。你甚至可以指定两片缓存的容量大小和存储路径。</p>
 <hr>
 <p>相关参考：</p>
 <p>#<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/22953091/difference-between-nsstring-const-and-const-nsstring">©Stack Overflow</a></p>
-</section>
-    <!-- Tags START -->
-    
-      <div class="tags">
-        <span>Tags:</span>
-        
-  <a href="/tags#FQA" >
-    <span class="tag-code">FQA</span>
-  </a>
 
-      </div>
-    
-    <!-- Tags END -->
-    <!-- NAV START -->
-    
-  <div class="nav-container">
-    <!-- reverse left and right to put prev and next in a more logic postition -->
-    
-      <a class="nav-left" href="/2017/11/24/memory.html">
-        <span class="nav-arrow">← </span>
-        
-          虚拟内存分配
-        
-      </a>
-    
-    
-      <a class="nav-right" href="/2017/11/25/udid_idfa.html">
-        
-          iOS 设备唯一标识符
-        
-        <span class="nav-arrow"> →</span>
-      </a>
-    
-  </div>
-
-    <!-- NAV END -->
-    <!-- 打赏 START -->
-    
-      <div class="money-like">
-        <div class="reward-btn">
-          赏
-          <span class="money-code">
-            <span class="alipay-code">
-              <div class="code-image"></div>
-              <b>使用支付宝打赏</b>
-            </span>
-            <span class="wechat-code">
-              <div class="code-image"></div>
-              <b>使用微信打赏</b>
-            </span>
-          </span>
-        </div>
-        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
-      </div>
-    
-    <!-- 打赏 END -->
-    <!-- 二维码 START -->
-    
-    <!-- 二维码 END -->
-    
-      <!-- No Comment -->
-    
-  </article>
-  <!-- Article END -->
-  <!-- Catalog START -->
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
   
-    <aside class="catalog-container">
-  <div class="toc-main">
-    <strong class="toc-title">Catalog</strong>
-    
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1%E3%80%81VC%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="toc-nav-text">1、VC的生命周期</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2%E3%80%81VC%E8%B7%B3%E8%BD%AC%E6%97%B6%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E8%B0%83%E7%94%A8%E9%A1%BA%E5%BA%8F"><span class="toc-nav-text">2、VC跳转时生命周期调用顺序</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3%E3%80%81%E5%AE%8F%E5%AE%9A%E4%B9%89%E4%BD%BF%E7%94%A8%E9%94%99%E8%AF%AF%E6%A1%88%E4%BE%8B"><span class="toc-nav-text">3、宏定义使用错误案例</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#4%E3%80%81%E6%8C%87%E9%92%88-%E5%9C%B0%E5%9D%80"><span class="toc-nav-text">4、指针\地址</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#5%E3%80%81NULL%E3%80%81nil%E3%80%81Nil%E3%80%81NSNull"><span class="toc-nav-text">5、NULL、nil、Nil、NSNull</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#6%E3%80%81%E5%AF%B9%E8%B1%A1%E7%9A%84%E6%AF%94%E8%BE%83-x3D-x3D-%E4%B8%8EisEqual"><span class="toc-nav-text">6、对象的比较&#x3D;&#x3D;与isEqual</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#7%E3%80%81%E9%9B%86%E5%90%88%E4%B8%8E%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%BC%95%E7%94%A8%E5%85%B3%E7%B3%BB"><span class="toc-nav-text">7、集合与对象的引用关系</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#8%E3%80%81%E9%9D%99%E6%80%81%E5%8F%98%E9%87%8F%E3%80%81%E9%9D%99%E6%80%81%E5%B8%B8%E9%87%8F"><span class="toc-nav-text">8、静态变量、静态常量</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#9%E3%80%81%E5%88%86%E7%B1%BB%E4%B8%8E%E6%89%A9%E5%B1%95"><span class="toc-nav-text">9、分类与扩展</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#10%E3%80%81URL%E7%BC%93%E5%AD%98%E7%AD%96%E7%95%A5"><span class="toc-nav-text">10、URL缓存策略</span></a></li></ol>
-    
-  </div>
-</aside>
   
-  <!-- Catalog END -->
-</main>
-
-<script>
-  (function () {
-    var url = 'http://yoursite.com/2017/11/24/faq.html';
-    var banner = ''
-    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
-      $('#article-banner').css({
-        'background-image': 'url(' + banner + ')'
-      })
-    } else {
-      $('#article-banner').geopattern(url)
-    }
-    $('.header').removeClass('fixed-header')
-
-     // error image
-    $(".markdown-content img").on('error', function() {
-      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
-      $(this).css({
-        'cursor': 'default'
-      })
-    })
-
-    // zoom image
-    $(".markdown-content img").on('click', function() {
-      var src = $(this).attr('src')
-      if (src !== 'http://file.muyutech.com/error-img.png') {
-        var imageW = $(this).width()
-        var imageH = $(this).height()
-        
-        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
-        zoom = zoom < 1 ? 1 : zoom
-        zoom = zoom > 2 ? 2 : zoom
-        var transY = (($(window).height() - imageH) / 2).toFixed(2)
-
-        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
-        $('.image-view-wrap').addClass('wrap-active')
-        $('.image-view-wrap img').css({
-          'width': `${imageW}`,
-          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
-        })
-        $('html').css('overflow', 'hidden')
-
-        $('.image-view-wrap').on('click', function() {
-          $(this).remove()
-          $('html').attr('style', '')
-        })
-      }
-    })
-
-    // qrcode
-    var qr = new QRious({
-      element: document.getElementById('share-qrcode'),
-      value: document.location.href
-    });
-
-    // gitment
-    var gitmentConfig = "";
-    if (gitmentConfig !== 'undefined') {
-      var gitment = new Gitment({
-        id: "FQA-常见问题",
-        owner: "",
-        repo: "",
-        oauth: {
-          client_id: "",
-          client_secret: ""
-        },
-        theme: {
-          render(state, instance) {
-            const container = document.createElement('div')
-            container.lang = "en-US"
-            container.className = 'gitment-container gitment-root-container'
-            container.appendChild(instance.renderHeader(state, instance))
-            container.appendChild(instance.renderEditor(state, instance))
-            container.appendChild(instance.renderComments(state, instance))
-            container.appendChild(instance.renderFooter(state, instance))
-            return container;
-          }
-        }
-      })
-      gitment.render(document.getElementById('comments'))
-    }
-  })();
-</script>
-
-    <div class="scroll-top">
-  <span class="arrow-icon"></span>
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/FQA/">#FQA</a>
+      
+    </div>
+  
 </div>
-    <footer class="app-footer">
-  <p class="copyright">
-    &copy; 2022 | <a href="https://github.com/davidlii" target="_blank">Davidli</a>
-    <br>
-    <a href="https://hexo.io" target="_blank">Hexo</a> | Theme-<a target="_blank" rel="noopener" href="https://github.com/yanm1ng">yanm1ng</a>
-  </p>
-</footer>
 
-<script>
-  function async(u, c) {
-    var d = document, t = 'script',
-      o = d.createElement(t),
-      s = d.getElementsByTagName(t)[0];
-    o.src = u;
-    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
-    s.parentNode.insertBefore(o, s);
-  }
-</script>
-<script>
-  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
-    FastClick.attach(document.body);
-  })
-</script>
 
-<script>
-  var hasLine = 'true';
-  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
-    $('figure pre').each(function(i, block) {
-      var figure = $(this).parents('figure');
-      if (hasLine === 'false') {
-        figure.find('.gutter').hide();
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>FQA-常见问题</div>
+      <div>http://yoursite.com/2017/11/24/faq.html</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>November 24, 2017</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>Licensed under</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2017/11/25/udid_idfa.html" title="iOS 设备唯一标识符">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">iOS 设备唯一标识符</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2017/11/24/memory.html" title="虚拟内存分配">
+                        <span class="hidden-mobile">虚拟内存分配</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;Table of Contents</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://github.com/davidlii" target="_blank" rel="nofollow noopener"><span>Davidlii</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        Views: 
+        <span id="busuanzi_value_site_pv"></span>
+        
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        Visitors: 
+        <span id="busuanzi_value_site_uv"></span>
+        
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
       }
-      var lang = figure.attr('class').split(' ')[1] || 'code';
-      var codeHtml = $(this).html();
-      var codeTag = document.createElement('code');
-      codeTag.className = lang;
-      codeTag.innerHTML = codeHtml;
-      $(this).attr('class', '').empty().html(codeTag);
-      figure.attr('data-lang', lang.toUpperCase());
-      hljs.highlightBlock(block);
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
     });
-  })
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
 </script>
-<!-- Baidu Tongji -->
 
 
-<script src="/js/script.js"></script>
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
 
-  </body>
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
 </html>

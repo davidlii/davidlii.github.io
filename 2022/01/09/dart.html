@@ -1,145 +1,289 @@
+
+
 <!DOCTYPE html>
-<html>
-  <head>
-  <meta http-equiv="content-type" content="text/html; charset=utf-8">
-  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
-  <meta name="description" content="This is Davidli&#39;s blog ~">
-  <meta name="keyword" content="hexo-theme, vuejs">
-  
-    <link rel="shortcut icon" type="image/ico" href="/image/logo.png"/> 
-  
-  <title>
-    
-      Dart语言入门 | Davidli
-    
-  </title>
-  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
-  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
-  
-<link rel="stylesheet" href="/css/style.css">
-<link rel="stylesheet" href="/css/plugins/gitment.css">
-
-  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
-  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
-  
-<script src="/js/qrious.js"></script>
-<script src="/js/gitment.js"></script>
-
-  
-  
-    <!-- MathJax support START -->
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      });
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      });
-    </script>
-    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <!-- MathJax support END -->
-  
+<html lang="zh-Hans" data-default-color-scheme=auto>
 
 
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="Davidli">
+  
+    <meta name="description" content="一.简介 Dart is a client-optimized language for fast apps on any platform.  Dart是谷歌开发的计算机编程语言，可用于移动应用、网页、服务器等领域。它是一门面向对象的语言，也是强类型的、类定义的、单继承的语言，支持接口、混入(Mixins)、抽象类、泛型、可选类型等。它融合了许多现代编程语言的优秀特性，从中能看到JavaScri">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Dart语言入门">
+<meta property="og:url" content="http://yoursite.com/2022/01/09/dart.html">
+<meta property="og:site_name" content="Davidli">
+<meta property="og:description" content="一.简介 Dart is a client-optimized language for fast apps on any platform.  Dart是谷歌开发的计算机编程语言，可用于移动应用、网页、服务器等领域。它是一门面向对象的语言，也是强类型的、类定义的、单继承的语言，支持接口、混入(Mixins)、抽象类、泛型、可选类型等。它融合了许多现代编程语言的优秀特性，从中能看到JavaScri">
+<meta property="og:locale">
+<meta property="article:published_time" content="2022-01-09T01:26:24.000Z">
+<meta property="article:modified_time" content="2020-05-09T01:26:24.000Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Flutter">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>Dart语言入门 - Davidli</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"yoursite.com","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
 <meta name="generator" content="Hexo 6.2.0"></head>
-<div class="wechat-share">
-  <img src="/css/images/logo.png" />
-</div>
 
-  <body>
-    <header class="header fixed-header">
-  <div class="header-container">
-    <a class="home-link" href="/">
-      <div class="logo"></div>
-      <span>Davidli</span>
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Davidli</strong>
     </a>
-    <ul class="right-list">
-      
-        <li class="list-item">
-          
-            <a href="/" class="item-link">Davidli</a>
-          
-        </li>
-      
-        <li class="list-item">
-          
-            <a href="/archives/" class="item-link">归档</a>
-          
-        </li>
-      
-        <li class="list-item">
-          
-            <a href="/tags/" class="item-link">标签</a>
-          
-        </li>
-      
-        <li class="list-item">
-          
-            <a href="/about/" class="item-link">关于</a>
-          
-        </li>
-      
-    </ul>
-    <div class="menu">
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-    </div>
-    <div class="menu-mask">
-      <ul class="menu-list">
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
         
-          <li class="menu-item">
-            
-              <a href="/" class="menu-link">Davidli</a>
-            
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                Categories
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                Tags
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
           </li>
+          
         
-          <li class="menu-item">
-            
-              <a href="/archives/" class="menu-link">归档</a>
-            
-          </li>
         
-          <li class="menu-item">
-            
-              <a href="/tags/" class="menu-link">标签</a>
-            
-          </li>
-        
-          <li class="menu-item">
-            
-              <a href="/about/" class="menu-link">关于</a>
-            
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
           </li>
         
       </ul>
     </div>
   </div>
-</header>
+</nav>
 
-    <div id="article-banner">
-  <h2>Dart语言入门</h2>
-  <p class="post-date">2022-01-09</p>
-  <div class="arrow-down">
-    <a href="javascript:;"></a>
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Dart语言入门"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-01-09 09:26" pubdate>
+          January 9, 2022 am
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          18k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          155 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
   </div>
 </div>
-<main class="app-body flex-box">
-  <!-- Article START -->
-  <article class="post-article">
-    <section class="markdown-content"><h3 id="一-简介"><a href="#一-简介" class="headerlink" title="一.简介"></a>一.简介</h3><blockquote>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Dart语言入门</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h3 id="一-简介"><a href="#一-简介" class="headerlink" title="一.简介"></a>一.简介</h3><blockquote>
 <p>Dart is a client-optimized language for fast apps on any platform.</p>
 </blockquote>
 <p><code>Dart</code>是谷歌开发的计算机编程语言，可用于移动应用、网页、服务器等领域。它是一门面向对象的语言，也是强类型的、类定义的、单继承的语言，支持接口、混入(Mixins)、抽象类、泛型、可选类型等。它融合了许多现代编程语言的优秀特性，从中能看到JavaScript、Swift等的影子。</p>
@@ -156,22 +300,22 @@
 <li>Symbol（符号，如根号√￣）</li>
 </ul>
 <p><code>num</code>表示数值型，包括整型<code>int</code>和浮点型<code>double</code>，没有<code>float</code>。其中 int 可转为 double 类型，反之则不行。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">void main() &#123;</span><br><span class="line">  var a = 1.0;</span><br><span class="line">  a = 1;</span><br><span class="line">  </span><br><span class="line">  num b = 1; // 直接使用num</span><br><span class="line">  b = 1.0;</span><br><span class="line">  </span><br><span class="line">  var c = 1;</span><br><span class="line">  c = 1.0; //报错：A value of type &#x27;double&#x27; can&#x27;t be assigned to a variable of type &#x27;int&#x27;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs abnf">void main() &#123;<br>  var a <span class="hljs-operator">=</span> <span class="hljs-number">1.0</span><span class="hljs-comment">;</span><br>  a <span class="hljs-operator">=</span> <span class="hljs-number">1</span><span class="hljs-comment">;</span><br>  <br>  num b <span class="hljs-operator">=</span> <span class="hljs-number">1</span><span class="hljs-comment">; // 直接使用num</span><br>  b <span class="hljs-operator">=</span> <span class="hljs-number">1.0</span><span class="hljs-comment">;</span><br>  <br>  var c <span class="hljs-operator">=</span> <span class="hljs-number">1</span><span class="hljs-comment">;</span><br>  c <span class="hljs-operator">=</span> <span class="hljs-number">1.0</span><span class="hljs-comment">; //报错：A value of type &#x27;double&#x27; can&#x27;t be assigned to a variable of type &#x27;int&#x27;</span><br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p><code>num</code>类型与<code>String</code>类型可相互转换：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">void main() &#123;</span><br><span class="line">  var a = 1.0;</span><br><span class="line">  a = double.parse(&#x27;2.0&#x27;); //字符转浮点</span><br><span class="line">  print(a);</span><br><span class="line">  var b = a.toString(); //浮点转String</span><br><span class="line">  print(&#x27;+++$b, type:$&#123;b.runtimeType&#125;&#x27;); //输出“+++2, type:String”</span><br><span class="line">  </span><br><span class="line">  int c;</span><br><span class="line">  c = int.parse(&quot;3&quot;);</span><br><span class="line">  var d = c.toString();</span><br><span class="line">  print(&#x27;+++c:$c,d:$d, type:$&#123;d.runtimeType&#125;&#x27;); //输出&quot;+++c:3,d:3, type:String&quot;</span><br><span class="line"></span><br><span class="line">  num e = 4;</span><br><span class="line">  final f = e.toString();  //num转字符</span><br><span class="line">  e = double.parse(&#x27;5.0&#x27;); //字符转num</span><br><span class="line">  print(&#x27;+++f:$f,e:$e&#x27;); //输出&quot;+++f:4,e:5&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs dart"><span class="hljs-keyword">void</span> main() &#123;<br>  <span class="hljs-keyword">var</span> a = <span class="hljs-number">1.0</span>;<br>  a = <span class="hljs-built_in">double</span>.parse(<span class="hljs-string">&#x27;2.0&#x27;</span>); <span class="hljs-comment">//字符转浮点</span><br>  <span class="hljs-built_in">print</span>(a);<br>  <span class="hljs-keyword">var</span> b = a.toString(); <span class="hljs-comment">//浮点转String</span><br>  <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;+++<span class="hljs-subst">$b</span>, type:<span class="hljs-subst">$&#123;b.runtimeType&#125;</span>&#x27;</span>); <span class="hljs-comment">//输出“+++2, type:String”</span><br>  <br>  <span class="hljs-built_in">int</span> c;<br>  c = <span class="hljs-built_in">int</span>.parse(<span class="hljs-string">&quot;3&quot;</span>);<br>  <span class="hljs-keyword">var</span> d = c.toString();<br>  <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;+++c:<span class="hljs-subst">$c</span>,d:<span class="hljs-subst">$d</span>, type:<span class="hljs-subst">$&#123;d.runtimeType&#125;</span>&#x27;</span>); <span class="hljs-comment">//输出&quot;+++c:3,d:3, type:String&quot;</span><br><br>  <span class="hljs-built_in">num</span> e = <span class="hljs-number">4</span>;<br>  <span class="hljs-keyword">final</span> f = e.toString();  <span class="hljs-comment">//num转字符</span><br>  e = <span class="hljs-built_in">double</span>.parse(<span class="hljs-string">&#x27;5.0&#x27;</span>); <span class="hljs-comment">//字符转num</span><br>  <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;+++f:<span class="hljs-subst">$f</span>,e:<span class="hljs-subst">$e</span>&#x27;</span>); <span class="hljs-comment">//输出&quot;+++f:4,e:5&quot;</span><br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>Dart 中的集合与 Swift 相似，具备<code>自动推断类型</code>的能力：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">// 这里 Dart 会推断 list 的类型为 List&lt;int&gt; 。 </span><br><span class="line">// 如果将非整数对象添加到此 List 中， 则会报错。</span><br><span class="line"></span><br><span class="line">var list = [1, 2, 3];</span><br><span class="line">assert(list.length == 3);</span><br><span class="line">assert(list[1] == 2);</span><br><span class="line"></span><br><span class="line">list[1] = 1;</span><br><span class="line">assert(list[1] == 1);</span><br></pre></td></tr></table></figure>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs dart"><span class="hljs-comment">// 这里 Dart 会推断 list 的类型为 List&lt;int&gt; 。 </span><br><span class="hljs-comment">// 如果将非整数对象添加到此 List 中， 则会报错。</span><br><br><span class="hljs-keyword">var</span> list = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>];<br><span class="hljs-keyword">assert</span>(list.length == <span class="hljs-number">3</span>);<br><span class="hljs-keyword">assert</span>(list[<span class="hljs-number">1</span>] == <span class="hljs-number">2</span>);<br><br>list[<span class="hljs-number">1</span>] = <span class="hljs-number">1</span>;<br><span class="hljs-keyword">assert</span>(list[<span class="hljs-number">1</span>] == <span class="hljs-number">1</span>);<br></code></pre></td></tr></table></figure>
 
 <h4 id="2-万物皆对象"><a href="#2-万物皆对象" class="headerlink" title="2.万物皆对象"></a>2.万物皆对象</h4><p>Dart中万物皆对象，所有对象都直接或间接继承自<code>Object</code>类，无论是数字，函数还是 null 都是对象。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">enum Color &#123;</span><br><span class="line">  red,</span><br><span class="line">  green,</span><br><span class="line">  blue</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void main() &#123;</span><br><span class="line">  var a = 1;</span><br><span class="line">  print(a is Object); //true</span><br><span class="line">  </span><br><span class="line">  a = null;</span><br><span class="line">  print(&#x27;$&#123;a.runtimeType&#125;, $&#123;a is Object&#125;&#x27;); //Null, true</span><br><span class="line">  </span><br><span class="line">  var x = Color.blue;</span><br><span class="line">  print(x is Object); //true</span><br><span class="line"></span><br><span class="line">  //未初始化时默认值是null</span><br><span class="line">  int aInt;</span><br><span class="line">  print(aInt); //null</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs dart"><span class="hljs-keyword">enum</span> Color &#123;<br>  red,<br>  green,<br>  blue<br>&#125;<br><br><span class="hljs-keyword">void</span> main() &#123;<br>  <span class="hljs-keyword">var</span> a = <span class="hljs-number">1</span>;<br>  <span class="hljs-built_in">print</span>(a <span class="hljs-keyword">is</span> <span class="hljs-built_in">Object</span>); <span class="hljs-comment">//true</span><br>  <br>  a = <span class="hljs-keyword">null</span>;<br>  <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;<span class="hljs-subst">$&#123;a.runtimeType&#125;</span>, <span class="hljs-subst">$&#123;a <span class="hljs-keyword">is</span> Object&#125;</span>&#x27;</span>); <span class="hljs-comment">//Null, true</span><br>  <br>  <span class="hljs-keyword">var</span> x = Color.blue;<br>  <span class="hljs-built_in">print</span>(x <span class="hljs-keyword">is</span> <span class="hljs-built_in">Object</span>); <span class="hljs-comment">//true</span><br><br>  <span class="hljs-comment">//未初始化时默认值是null</span><br>  <span class="hljs-built_in">int</span> aInt;<br>  <span class="hljs-built_in">print</span>(aInt); <span class="hljs-comment">//null</span><br>&#125;<br></code></pre></td></tr></table></figure>
 
 <h4 id="3-动态类型"><a href="#3-动态类型" class="headerlink" title="3.动态类型"></a>3.动态类型</h4><p>一般声明变量时都会明确申明变量的类型，或者通过<code>类型推断</code>来自动识别变量的类型：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">int a = 1; //指定为int</span><br><span class="line">var b = 2; //推断为int</span><br></pre></td></tr></table></figure>
+<figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs perl"><span class="hljs-keyword">int</span> a = <span class="hljs-number">1</span>; <span class="hljs-regexp">//</span>指定为<span class="hljs-keyword">int</span><br>var b = <span class="hljs-number">2</span>; <span class="hljs-regexp">//</span>推断为<span class="hljs-keyword">int</span><br></code></pre></td></tr></table></figure>
 
 <p>但如果对象不限定为单个类型，或者暂时不知道是什么类型，则可以指定为<code>对象类型</code>或<code>动态类型</code>：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">enum Color &#123;</span><br><span class="line">  red,</span><br><span class="line">  green,</span><br><span class="line">  blue</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void main() &#123;</span><br><span class="line">  </span><br><span class="line">  //指定为Object，类似于Swift中的Any或者OC中的id</span><br><span class="line">  List&lt;Object&gt; arr;</span><br><span class="line">  arr = [1,&quot;x&quot;,Color.red];</span><br><span class="line">  var x = arr[2];</span><br><span class="line">  </span><br><span class="line">  if (x is int)&#123;</span><br><span class="line">    print(&#x27;$x is int&#x27;);</span><br><span class="line">  &#125;else if (x is String) &#123;</span><br><span class="line">    print(&#x27;$x is String&#x27;);</span><br><span class="line">  &#125;else if (x is Color) &#123;</span><br><span class="line">    print(&#x27;$x is enum&#x27;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  // 动态类型</span><br><span class="line">  dynamic name = &#x27;Bob&#x27;;</span><br><span class="line">  name = 1; // 可以更改类型</span><br><span class="line">  print(&#x27;name is:$name&#x27;); //输出”name is:1“</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs dart"><span class="hljs-keyword">enum</span> Color &#123;<br>  red,<br>  green,<br>  blue<br>&#125;<br><br><span class="hljs-keyword">void</span> main() &#123;<br>  <br>  <span class="hljs-comment">//指定为Object，类似于Swift中的Any或者OC中的id</span><br>  <span class="hljs-built_in">List</span>&lt;<span class="hljs-built_in">Object</span>&gt; arr;<br>  arr = [<span class="hljs-number">1</span>,<span class="hljs-string">&quot;x&quot;</span>,Color.red];<br>  <span class="hljs-keyword">var</span> x = arr[<span class="hljs-number">2</span>];<br>  <br>  <span class="hljs-keyword">if</span> (x <span class="hljs-keyword">is</span> <span class="hljs-built_in">int</span>)&#123;<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;<span class="hljs-subst">$x</span> is int&#x27;</span>);<br>  &#125;<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (x <span class="hljs-keyword">is</span> <span class="hljs-built_in">String</span>) &#123;<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;<span class="hljs-subst">$x</span> is String&#x27;</span>);<br>  &#125;<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (x <span class="hljs-keyword">is</span> Color) &#123;<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;<span class="hljs-subst">$x</span> is enum&#x27;</span>);<br>  &#125;<br><br>  <span class="hljs-comment">// 动态类型</span><br>  <span class="hljs-built_in">dynamic</span> name = <span class="hljs-string">&#x27;Bob&#x27;</span>;<br>  name = <span class="hljs-number">1</span>; <span class="hljs-comment">// 可以更改类型</span><br>  <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;name is:<span class="hljs-subst">$name</span>&#x27;</span>); <span class="hljs-comment">//输出”name is:1“</span><br>&#125;<br></code></pre></td></tr></table></figure>
 
 
 <h4 id="4-编译时常量"><a href="#4-编译时常量" class="headerlink" title="4.编译时常量"></a>4.编译时常量</h4><p>Dart中声明常量时有两种标识符<code>const</code>和<code>final</code>。</p>
@@ -180,11 +324,11 @@
 <li>final可修饰编译时常量或运行时常量；</li>
 </ul>
 <p><code>编译时常量</code>是指常量的值在编译时就已经确定，而<code>运行时常量</code>的值在运行时才确定：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">class A &#123;  </span><br><span class="line">&#125;</span><br><span class="line">void main() &#123;</span><br><span class="line">  num a = 1;</span><br><span class="line">  final b = a.toString();</span><br><span class="line">  const c = a.toString(); //报错：Const variables must be initialized with a constant value</span><br><span class="line"></span><br><span class="line">  final c = A();</span><br><span class="line">  const d = A(); // 报错，因为创建A的实例时使用的构造函数在运行时才执行。</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs abnf">class A &#123;  <br>&#125;<br>void main() &#123;<br>  num a <span class="hljs-operator">=</span> <span class="hljs-number">1</span><span class="hljs-comment">;</span><br>  final b <span class="hljs-operator">=</span> a.toString()<span class="hljs-comment">;</span><br>  const c <span class="hljs-operator">=</span> a.toString()<span class="hljs-comment">; //报错：Const variables must be initialized with a constant value</span><br><br>  final c <span class="hljs-operator">=</span> A()<span class="hljs-comment">;</span><br>  const d <span class="hljs-operator">=</span> A()<span class="hljs-comment">; // 报错，因为创建A的实例时使用的构造函数在运行时才执行。</span><br>&#125;<br></code></pre></td></tr></table></figure>
 
 
 <p>集合的可变性是由【其本身的修饰符】和【其字面量的修饰符】共同决定的：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">// 基本类型</span><br><span class="line">final name = &#x27;Bob&#x27;; // Without a type annotation</span><br><span class="line">final String nickname = &#x27;Bobby&#x27;;</span><br><span class="line">name = &#x27;Alice&#x27;; // Error: 一个 final 变量只能被设置一次。</span><br><span class="line"></span><br><span class="line">// 集合</span><br><span class="line">var constantList = const [1, 2, 3];</span><br><span class="line">// constantList[1] = 1; // 取消注释会引起编译时异常。</span><br><span class="line"></span><br><span class="line">const constantList2 = [1, 2, 3];</span><br><span class="line">constantList[1] = 1; // 取消注释会引起编译时异常。</span><br><span class="line"></span><br><span class="line">final constantList2 = [1, 2, 3];</span><br><span class="line">constantList2[1] = 1; // 取消注释不会引起错误。</span><br><span class="line"></span><br><span class="line">var constantList3 = final [1, 2, 3]; //报错</span><br></pre></td></tr></table></figure>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-regexp">//</span> 基本类型<br>final name = <span class="hljs-string">&#x27;Bob&#x27;</span>; <span class="hljs-regexp">//</span> Without a type annotation<br>final String nickname = <span class="hljs-string">&#x27;Bobby&#x27;</span>;<br>name = <span class="hljs-string">&#x27;Alice&#x27;</span>; <span class="hljs-regexp">//</span> Error: 一个 final 变量只能被设置一次。<br><br><span class="hljs-regexp">//</span> 集合<br>var constantList = const [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>];<br><span class="hljs-regexp">//</span> constantList[<span class="hljs-number">1</span>] = <span class="hljs-number">1</span>; <span class="hljs-regexp">//</span> 取消注释会引起编译时异常。<br><br>const constantList2 = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>];<br>constantList[<span class="hljs-number">1</span>] = <span class="hljs-number">1</span>; <span class="hljs-regexp">//</span> 取消注释会引起编译时异常。<br><br>final constantList2 = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>];<br>constantList2[<span class="hljs-number">1</span>] = <span class="hljs-number">1</span>; <span class="hljs-regexp">//</span> 取消注释不会引起错误。<br><br>var constantList3 = final [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>]; <span class="hljs-regexp">//</span>报错<br></code></pre></td></tr></table></figure>
 
 <p>可以这么总结：</p>
 <ul>
@@ -198,7 +342,7 @@
 <li>胖箭头语法</li>
 </ul>
 <p>如果函数中只有一句表达式，可以使用简写语法：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">int add(int a, int b) =&gt; a+b; // 胖箭头</span><br><span class="line">void main() &#123;</span><br><span class="line">  print(add(1, 2)); // 调用</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-function"><span class="hljs-built_in">int</span> <span class="hljs-title">add</span>(<span class="hljs-params"><span class="hljs-built_in">int</span> a, <span class="hljs-built_in">int</span> b</span>)</span> =&gt; a+b; <span class="hljs-comment">// 胖箭头</span><br><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">main</span>()</span> &#123;<br>  print(<span class="hljs-keyword">add</span>(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>)); <span class="hljs-comment">// 调用</span><br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>在箭头 (&#x3D;&gt;) 和分号 (;) 之间只能使用一个表达式 ，不能是语句。</p>
 <ul>
@@ -209,101 +353,101 @@
 <li>位置可选参数</li>
 </ul>
 <p>将参数放到 [] 中来标记参数是可选的；</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">class Bird &#123;</span><br><span class="line">  void tweet(int a, int b)&#123; //未命名参数</span><br><span class="line">    print(&quot;tweet: JIO JIO JIO~&quot;);</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  int tweet2(&#123;int a, int b, int c&#125;)&#123; //命名可选参数，调用时类似于 swift 的外部参数</span><br><span class="line">    if(b is Null)&#123;</span><br><span class="line">      b = 0;</span><br><span class="line">    &#125;</span><br><span class="line">    print(&quot;tweet2: $a + $b + $c JIO JIO JIO~&quot;);</span><br><span class="line">    return a+b;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  int tweet3(int a, [int b, int c])&#123; //位置可选参数</span><br><span class="line">    print(&#x27;tweet3: b:$b,c:$c&#x27;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void main() &#123;</span><br><span class="line">  var b = Bird();</span><br><span class="line">  b.tweet(1, 2);      // 输出：tweet: JIO JIO JIO~</span><br><span class="line">  b.tweet2(a:1, b:2); // 输出：tweet2: 1 + 2 + null JIO JIO JIO~</span><br><span class="line">  b.tweet2(a:1);      // 输出：tweet2: 1 + 0 + null JIO JIO JIO~</span><br><span class="line">  b.tweet3(1);        // 输出：tweet3: b:null,c:null</span><br><span class="line">  b.tweet3(1, 2);     // 输出：tweet3: b:2,c:null</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs dart"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Bird</span> </span>&#123;<br>  <span class="hljs-keyword">void</span> tweet(<span class="hljs-built_in">int</span> a, <span class="hljs-built_in">int</span> b)&#123; <span class="hljs-comment">//未命名参数</span><br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;tweet: JIO JIO JIO~&quot;</span>);<br>  &#125;<br>  <br>  <span class="hljs-built_in">int</span> tweet2(&#123;<span class="hljs-built_in">int</span> a, <span class="hljs-built_in">int</span> b, <span class="hljs-built_in">int</span> c&#125;)&#123; <span class="hljs-comment">//命名可选参数，调用时类似于 swift 的外部参数</span><br>    <span class="hljs-keyword">if</span>(b <span class="hljs-keyword">is</span> <span class="hljs-built_in">Null</span>)&#123;<br>      b = <span class="hljs-number">0</span>;<br>    &#125;<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;tweet2: <span class="hljs-subst">$a</span> + <span class="hljs-subst">$b</span> + <span class="hljs-subst">$c</span> JIO JIO JIO~&quot;</span>);<br>    <span class="hljs-keyword">return</span> a+b;<br>  &#125;<br>  <br>  <span class="hljs-built_in">int</span> tweet3(<span class="hljs-built_in">int</span> a, [<span class="hljs-built_in">int</span> b, <span class="hljs-built_in">int</span> c])&#123; <span class="hljs-comment">//位置可选参数</span><br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;tweet3: b:<span class="hljs-subst">$b</span>,c:<span class="hljs-subst">$c</span>&#x27;</span>);<br>  &#125;<br>&#125;<br><br><span class="hljs-keyword">void</span> main() &#123;<br>  <span class="hljs-keyword">var</span> b = Bird();<br>  b.tweet(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>);      <span class="hljs-comment">// 输出：tweet: JIO JIO JIO~</span><br>  b.tweet2(a:<span class="hljs-number">1</span>, b:<span class="hljs-number">2</span>); <span class="hljs-comment">// 输出：tweet2: 1 + 2 + null JIO JIO JIO~</span><br>  b.tweet2(a:<span class="hljs-number">1</span>);      <span class="hljs-comment">// 输出：tweet2: 1 + 0 + null JIO JIO JIO~</span><br>  b.tweet3(<span class="hljs-number">1</span>);        <span class="hljs-comment">// 输出：tweet3: b:null,c:null</span><br>  b.tweet3(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>);     <span class="hljs-comment">// 输出：tweet3: b:2,c:null</span><br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>一个参数只能选择【命名可选参数】和【位置可选参数】其中一种方式修饰。</p>
 <ul>
 <li>默认参数值</li>
 </ul>
 <p>和Swift一样，定义方法时使用 &#x3D; 来定义可选参数的默认值，默认值只能是编译时常量。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">int add(int a, [int b = 0]) =&gt; a+b;</span><br><span class="line">void main() &#123;</span><br><span class="line">  print(add(1, 2)); // 输出3</span><br><span class="line">  print(add(1));    // 输出1</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-function"><span class="hljs-built_in">int</span> <span class="hljs-title">add</span>(<span class="hljs-params"><span class="hljs-built_in">int</span> a, [<span class="hljs-built_in">int</span> b = <span class="hljs-number">0</span>]</span>)</span> =&gt; a+b;<br><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">main</span>()</span> &#123;<br>  print(<span class="hljs-keyword">add</span>(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>)); <span class="hljs-comment">// 输出3</span><br>  print(<span class="hljs-keyword">add</span>(<span class="hljs-number">1</span>));    <span class="hljs-comment">// 输出1</span><br>&#125;<br></code></pre></td></tr></table></figure>
 
 <h4 id="6-函数是一等公民"><a href="#6-函数是一等公民" class="headerlink" title="6.函数是一等公民"></a>6.函数是一等公民</h4><p>与Swift一样，Dart中函数也是一等公民，这意味着一个函数可以作为另一个函数的参数。示例1：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">void printElement(int element) &#123;</span><br><span class="line">  print(element);</span><br><span class="line">&#125;</span><br><span class="line">void main() &#123;</span><br><span class="line">  var list = [1, 2, 3];</span><br><span class="line">  // 将 printElement 函数名作为参数传递</span><br><span class="line">  list.forEach(printElement);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">printElement</span>(<span class="hljs-params"><span class="hljs-built_in">int</span> element</span>)</span> &#123;<br>  print(element);<br>&#125;<br><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">main</span>()</span> &#123;<br>  <span class="hljs-keyword">var</span> list = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>];<br>  <span class="hljs-comment">// 将 printElement 函数名作为参数传递</span><br>  list.forEach(printElement);<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>同样可以将一个函数赋值给一个变量，例如：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">String printElement(String element) &#123;</span><br><span class="line">  var x = &#x27;$element&#x27;.toUpperCase();</span><br><span class="line">  print(x);</span><br><span class="line">  return x;</span><br><span class="line">&#125;</span><br><span class="line">void main() &#123;</span><br><span class="line">  var loudify = printElement;</span><br><span class="line">  print(loudify(&#x27;hello&#x27;) == &#x27;HELLO&#x27;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-title class_">String</span> <span class="hljs-title function_">printElement</span>(<span class="hljs-params"><span class="hljs-built_in">String</span> element</span>) &#123;<br>  <span class="hljs-keyword">var</span> x = <span class="hljs-string">&#x27;$element&#x27;</span>.<span class="hljs-title function_">toUpperCase</span>();<br>  <span class="hljs-title function_">print</span>(x);<br>  <span class="hljs-keyword">return</span> x;<br>&#125;<br><span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-keyword">var</span> loudify = printElement;<br>  <span class="hljs-title function_">print</span>(<span class="hljs-title function_">loudify</span>(<span class="hljs-string">&#x27;hello&#x27;</span>) == <span class="hljs-string">&#x27;HELLO&#x27;</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>但是，Dart中函数作为参数时，会有个<em><strong>小困扰</strong></em>，示例2：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">// 定义方法</span><br><span class="line">int mathAdd(int a, int b) &#123;      //相加</span><br><span class="line">  return a + b;</span><br><span class="line">&#125;</span><br><span class="line">int mathMultiple(int a, int b) &#123; //相乘</span><br><span class="line">  return a * b;</span><br><span class="line">&#125;</span><br><span class="line">int mathIncrease(int a) &#123;        //自增1</span><br><span class="line">  return ++a;</span><br><span class="line">&#125;</span><br><span class="line">// 方法作为参数</span><br><span class="line">int math1(int a, int b, Function mathOperation) &#123; // 接收2个参数</span><br><span class="line">  return mathOperation(a, b); //调用具体做事的函数</span><br><span class="line">&#125;</span><br><span class="line">int math2(int a, Function mathOperation) &#123;        //接收1个参数</span><br><span class="line">  return mathOperation(a);</span><br><span class="line">&#125;</span><br><span class="line">//调用</span><br><span class="line">main() &#123;</span><br><span class="line">  // 向外层函数传递内层函数作为参数时，直接使用内层函数名</span><br><span class="line">  print(math1(1, 2, mathAdd));</span><br><span class="line">  print(math1(1, 2, mathMultiple));</span><br><span class="line">  print(math2(1, mathIncrease));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs reasonml"><span class="hljs-comment">// 定义方法</span><br><span class="hljs-built_in">int</span> math<span class="hljs-constructor">Add(<span class="hljs-params">int</span> <span class="hljs-params">a</span>, <span class="hljs-params">int</span> <span class="hljs-params">b</span>)</span> &#123;      <span class="hljs-comment">//相加</span><br>  return a + b;<br>&#125;<br><span class="hljs-built_in">int</span> math<span class="hljs-constructor">Multiple(<span class="hljs-params">int</span> <span class="hljs-params">a</span>, <span class="hljs-params">int</span> <span class="hljs-params">b</span>)</span> &#123; <span class="hljs-comment">//相乘</span><br>  return a<span class="hljs-operator"> * </span>b;<br>&#125;<br><span class="hljs-built_in">int</span> math<span class="hljs-constructor">Increase(<span class="hljs-params">int</span> <span class="hljs-params">a</span>)</span> &#123;        <span class="hljs-comment">//自增1</span><br>  return ++a;<br>&#125;<br><span class="hljs-comment">// 方法作为参数</span><br><span class="hljs-built_in">int</span> math1(<span class="hljs-built_in">int</span> a, <span class="hljs-built_in">int</span> b, Function mathOperation) &#123; <span class="hljs-comment">// 接收2个参数</span><br>  return math<span class="hljs-constructor">Operation(<span class="hljs-params">a</span>, <span class="hljs-params">b</span>)</span>; <span class="hljs-comment">//调用具体做事的函数</span><br>&#125;<br><span class="hljs-built_in">int</span> math2(<span class="hljs-built_in">int</span> a, Function mathOperation) &#123;        <span class="hljs-comment">//接收1个参数</span><br>  return math<span class="hljs-constructor">Operation(<span class="hljs-params">a</span>)</span>;<br>&#125;<br><span class="hljs-comment">//调用</span><br>main<span class="hljs-literal">()</span> &#123;<br>  <span class="hljs-comment">// 向外层函数传递内层函数作为参数时，直接使用内层函数名</span><br>  print(math1(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, mathAdd));<br>  print(math1(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, mathMultiple));<br>  print(math2(<span class="hljs-number">1</span>, mathIncrease));<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>示例2中，当方法作为参数（mathOperation）时，Dart只是将mathOperation标注为<code>Function</code>类型：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">int math1(int a, int b, Function mathOperation) &#123;</span><br><span class="line">  return mathOperation(a, b);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs aspectj"><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">math1</span><span class="hljs-params">(<span class="hljs-keyword">int</span> a, <span class="hljs-keyword">int</span> b, Function mathOperation)</span> </span>&#123;<br>  <span class="hljs-function"><span class="hljs-keyword">return</span> <span class="hljs-title">mathOperation</span><span class="hljs-params">(a, b)</span></span>;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>但从<code>Function</code>关键字上并看不出mathOperation代表的函数有几个参数，参数分别是什么类型，返回值是啥，这有时很容易让人困惑。这一点上就没有 Swift 做的好，后者将函数作为参数时，会明确标明此函数的类型：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">// 定义作为参数的函数</span><br><span class="line">func addTwoInts(_ a: Int, _ b: Int) -&gt; Int &#123;</span><br><span class="line">    return a + b</span><br><span class="line">&#125;</span><br><span class="line">// 定义作为参数的函数</span><br><span class="line">func multiplyTwoInts(_ a: Int, _ b: Int) -&gt; Int &#123;</span><br><span class="line">    return a * b</span><br><span class="line">&#125;</span><br><span class="line">// 定义使用函数作为参数的函数（明确知道作为参数的函数是什么类型的）</span><br><span class="line">func printMathResult(_ mathFunction: (Int, Int) -&gt; Int, _ a: Int, _ b: Int) &#123;</span><br><span class="line">    print(&quot;Result: \(mathFunction(a, b))&quot;)</span><br><span class="line">&#125;</span><br><span class="line">// 调用并传递函数作为参数</span><br><span class="line">printMathResult(addTwoInts, 3, 5) // Prints &quot;Result: 8&quot;</span><br></pre></td></tr></table></figure>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs swift"><span class="hljs-comment">// 定义作为参数的函数</span><br><span class="hljs-keyword">func</span> <span class="hljs-title function_">addTwoInts</span>(<span class="hljs-keyword">_</span> <span class="hljs-params">a</span>: <span class="hljs-type">Int</span>, <span class="hljs-keyword">_</span> <span class="hljs-params">b</span>: <span class="hljs-type">Int</span>) -&gt; <span class="hljs-type">Int</span> &#123;<br>    <span class="hljs-keyword">return</span> a <span class="hljs-operator">+</span> b<br>&#125;<br><span class="hljs-comment">// 定义作为参数的函数</span><br><span class="hljs-keyword">func</span> <span class="hljs-title function_">multiplyTwoInts</span>(<span class="hljs-keyword">_</span> <span class="hljs-params">a</span>: <span class="hljs-type">Int</span>, <span class="hljs-keyword">_</span> <span class="hljs-params">b</span>: <span class="hljs-type">Int</span>) -&gt; <span class="hljs-type">Int</span> &#123;<br>    <span class="hljs-keyword">return</span> a <span class="hljs-operator">*</span> b<br>&#125;<br><span class="hljs-comment">// 定义使用函数作为参数的函数（明确知道作为参数的函数是什么类型的）</span><br><span class="hljs-keyword">func</span> <span class="hljs-title function_">printMathResult</span>(<span class="hljs-keyword">_</span> <span class="hljs-params">mathFunction</span>: (<span class="hljs-type">Int</span>, <span class="hljs-type">Int</span>) -&gt; <span class="hljs-type">Int</span>, <span class="hljs-keyword">_</span> <span class="hljs-params">a</span>: <span class="hljs-type">Int</span>, <span class="hljs-keyword">_</span> <span class="hljs-params">b</span>: <span class="hljs-type">Int</span>) &#123;<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Result: <span class="hljs-subst">\(mathFunction(a, b))</span>&quot;</span>)<br>&#125;<br><span class="hljs-comment">// 调用并传递函数作为参数</span><br>printMathResult(addTwoInts, <span class="hljs-number">3</span>, <span class="hljs-number">5</span>) <span class="hljs-comment">// Prints &quot;Result: 8&quot;</span><br></code></pre></td></tr></table></figure>
 
 <p>这里<code>(Int, Int) -&gt; Int</code>即明确指明了<code>mathFunction</code>参数的函数签名，清楚明了。</p>
 <h4 id="7-闭包"><a href="#7-闭包" class="headerlink" title="7.闭包"></a>7.闭包</h4><p>大部分方法都带有名字，你也可以创建没名字的方法，称之为<code>匿名函数</code>或者<code>闭包</code>。<br><br/></p>
 <p>匿名函数和命名函数看起来类似— 在括号之间可以定义一些参数或可选参数，参数使用逗号分割。<br><br/></p>
 <p>后面大括号中的代码为函数体：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">([[Type] param1[, …]]) &#123; </span><br><span class="line">  codeBlock; </span><br><span class="line">&#125;; </span><br></pre></td></tr></table></figure>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs lua">(<span class="hljs-string">[[Type] param1[, …]]</span>) &#123; <br>  codeBlock; <br>&#125;; <br></code></pre></td></tr></table></figure>
 
 <p>示例1：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">void main() &#123;</span><br><span class="line">  var loudify = (msg) =&gt; &#x27;$&#123;msg.toUpperCase()&#125;&#x27;; // 匿名函数/闭包，赋值给变量</span><br><span class="line">  print(loudify(&#x27;hello&#x27;) == &#x27;HELLO&#x27;); //调用闭包，输出true</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs dart"><span class="hljs-keyword">void</span> main() &#123;<br>  <span class="hljs-keyword">var</span> loudify = (msg) =&gt; <span class="hljs-string">&#x27;<span class="hljs-subst">$&#123;msg.toUpperCase()&#125;</span>&#x27;</span>; <span class="hljs-comment">// 匿名函数/闭包，赋值给变量</span><br>  <span class="hljs-built_in">print</span>(loudify(<span class="hljs-string">&#x27;hello&#x27;</span>) == <span class="hljs-string">&#x27;HELLO&#x27;</span>); <span class="hljs-comment">//调用闭包，输出true</span><br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>示例2：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">var list = [&#x27;apples&#x27;, &#x27;bananas&#x27;, &#x27;oranges&#x27;];</span><br><span class="line">list.forEach((item) &#123;</span><br><span class="line">  print(&#x27;$&#123;list.indexOf(item)&#125;: $item&#x27;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs dart"><span class="hljs-keyword">var</span> list = [<span class="hljs-string">&#x27;apples&#x27;</span>, <span class="hljs-string">&#x27;bananas&#x27;</span>, <span class="hljs-string">&#x27;oranges&#x27;</span>];<br>list.forEach((item) &#123;<br>  <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;<span class="hljs-subst">$&#123;list.indexOf(item)&#125;</span>: <span class="hljs-subst">$item</span>&#x27;</span>);<br>&#125;);<br></code></pre></td></tr></table></figure>
 
 <h4 id="8-链式-x2F-级联"><a href="#8-链式-x2F-级联" class="headerlink" title="8.链式&#x2F;级联"></a>8.链式&#x2F;级联</h4><p>级联运算符 <code>..</code>可以像RAC一样，实现对同一个对像的一系列链式操作。 除了调用函数，还可以访问同一对象上的字段属性。 </p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// 一般情况下的操作</span><br><span class="line">var button = querySelector(&#x27;#confirm&#x27;);</span><br><span class="line">button.text = &#x27;Confirm&#x27;;</span><br><span class="line">button.classes.add(&#x27;important&#x27;);</span><br><span class="line">button.onClick.listen((e) =&gt; window.alert(&#x27;Confirmed!&#x27;));</span><br></pre></td></tr></table></figure>
+<figure class="highlight mel"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs mel"><span class="hljs-comment">// 一般情况下的操作</span><br>var <span class="hljs-keyword">button</span> = querySelector(<span class="hljs-string">&#x27;#confirm&#x27;</span>);<br><span class="hljs-keyword">button</span>.<span class="hljs-keyword">text</span> = <span class="hljs-string">&#x27;Confirm&#x27;</span>;<br><span class="hljs-keyword">button</span>.classes.add(<span class="hljs-string">&#x27;important&#x27;</span>);<br><span class="hljs-keyword">button</span>.onClick.listen((e) =&gt; <span class="hljs-keyword">window</span>.alert(<span class="hljs-string">&#x27;Confirmed!&#x27;</span>));<br></code></pre></td></tr></table></figure>
 
 <p>使用级联操作符：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">querySelector(&#x27;#confirm&#x27;) // 获取对象。</span><br><span class="line">  ..text = &#x27;Confirm&#x27; // 调用成员变量。</span><br><span class="line">  ..classes.add(&#x27;important&#x27;)</span><br><span class="line">  ..onClick.listen((e) =&gt; window.alert(&#x27;Confirmed!&#x27;));</span><br></pre></td></tr></table></figure>
+<figure class="highlight arcade"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs arcade">querySelector(<span class="hljs-string">&#x27;#confirm&#x27;</span>) <span class="hljs-comment">// 获取对象。</span><br>  ..<span class="hljs-built_in">text</span> = <span class="hljs-string">&#x27;Confirm&#x27;</span> <span class="hljs-comment">// 调用成员变量。</span><br>  ..classes.add(<span class="hljs-string">&#x27;important&#x27;</span>)<br>  ..onClick.listen(<span class="hljs-function">(<span class="hljs-params">e</span>) =&gt;</span> window.alert(<span class="hljs-string">&#x27;Confirmed!&#x27;</span>));<br></code></pre></td></tr></table></figure>
 
 <h4 id="9-switch的值"><a href="#9-switch的值" class="headerlink" title="9.switch的值"></a>9.switch的值</h4><p><code>switch</code>可比较整数、字符串、枚举。比较的对象必须都是同一个类的实例且类没有重写<code>==</code>。 </p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">// 定义枚举</span><br><span class="line">enum Color&#123;</span><br><span class="line">  red,</span><br><span class="line">  green,</span><br><span class="line">  blue</span><br><span class="line">&#125;</span><br><span class="line">// 比较</span><br><span class="line">void main() &#123;</span><br><span class="line">  var a = Color.red;</span><br><span class="line">  switch (a)&#123;</span><br><span class="line">    case Color.red:</span><br><span class="line">      print(&quot;red&quot;);</span><br><span class="line">      break;</span><br><span class="line">    case Color.green:</span><br><span class="line">      print(&quot;green&quot;);</span><br><span class="line">      break;</span><br><span class="line">    case Color.blue:</span><br><span class="line">      print(&#x27;blue&#x27;);</span><br><span class="line">      break;</span><br><span class="line">    default:</span><br><span class="line">      print(&quot;unknown&quot;);</span><br><span class="line">  &#125;</span><br><span class="line">  // 试错</span><br><span class="line">  var x = 0.1;</span><br><span class="line">  switch (x)&#123; //报错 The switch case expression type &#x27;double&#x27; can&#x27;t override the == operator</span><br><span class="line">    case 0.0:</span><br><span class="line">      print(&#x27;0.0&#x27;);</span><br><span class="line">      break;</span><br><span class="line">    case 0.1:</span><br><span class="line">      print(&#x27;0.1&#x27;);</span><br><span class="line">      break;</span><br><span class="line">    default:</span><br><span class="line">      print(&#x27;default&#x27;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight axapta"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><code class="hljs axapta"><span class="hljs-comment">// 定义枚举</span><br><span class="hljs-built_in">enum</span> Color&#123;<br>  red,<br>  green,<br>  blue<br>&#125;<br><span class="hljs-comment">// 比较</span><br><span class="hljs-keyword">void</span> main() &#123;<br>  <span class="hljs-built_in">var</span> a = Color.red;<br>  <span class="hljs-keyword">switch</span> (a)&#123;<br>    <span class="hljs-keyword">case</span> Color.red:<br>      <span class="hljs-keyword">print</span>(<span class="hljs-string">&quot;red&quot;</span>);<br>      <span class="hljs-keyword">break</span>;<br>    <span class="hljs-keyword">case</span> Color.green:<br>      <span class="hljs-keyword">print</span>(<span class="hljs-string">&quot;green&quot;</span>);<br>      <span class="hljs-keyword">break</span>;<br>    <span class="hljs-keyword">case</span> Color.blue:<br>      <span class="hljs-keyword">print</span>(<span class="hljs-string">&#x27;blue&#x27;</span>);<br>      <span class="hljs-keyword">break</span>;<br>    <span class="hljs-literal">default</span>:<br>      <span class="hljs-keyword">print</span>(<span class="hljs-string">&quot;unknown&quot;</span>);<br>  &#125;<br>  <span class="hljs-comment">// 试错</span><br>  <span class="hljs-built_in">var</span> x = <span class="hljs-number">0.1</span>;<br>  <span class="hljs-keyword">switch</span> (x)&#123; <span class="hljs-comment">//报错 The switch case expression type &#x27;double&#x27; can&#x27;t override the == operator</span><br>    <span class="hljs-keyword">case</span> <span class="hljs-number">0.0</span>:<br>      <span class="hljs-keyword">print</span>(<span class="hljs-string">&#x27;0.0&#x27;</span>);<br>      <span class="hljs-keyword">break</span>;<br>    <span class="hljs-keyword">case</span> <span class="hljs-number">0.1</span>:<br>      <span class="hljs-keyword">print</span>(<span class="hljs-string">&#x27;0.1&#x27;</span>);<br>      <span class="hljs-keyword">break</span>;<br>    <span class="hljs-literal">default</span>:<br>      <span class="hljs-keyword">print</span>(<span class="hljs-string">&#x27;default&#x27;</span>);<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <h4 id="10-可选链"><a href="#10-可选链" class="headerlink" title="10.可选链"></a>10.可选链</h4><p>与Swift一样，调用方法时使用<code>?.</code>来代替<code>.</code>， 可以避免因为左边对象可能为 null 导致的异常：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">var p = Point(2, 2);</span><br><span class="line">// 如果 p 为 non-null，设置它变量 y 的值为 4。</span><br><span class="line">p?.y = 4;</span><br></pre></td></tr></table></figure>
+<figure class="highlight arcade"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs arcade"><span class="hljs-keyword">var</span> p = <span class="hljs-built_in">Point</span>(<span class="hljs-number">2</span>, <span class="hljs-number">2</span>);<br><span class="hljs-comment">// 如果 p 为 non-null，设置它变量 y 的值为 4。</span><br>p?.y = <span class="hljs-number">4</span>;<br></code></pre></td></tr></table></figure>
 
 <h4 id="11-构造函数"><a href="#11-构造函数" class="headerlink" title="11.构造函数"></a>11.构造函数</h4><ul>
 <li>构造函数</li>
 </ul>
 <p>创建一个与类同名的函数来声明构造函数：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">class Point &#123;</span><br><span class="line">  num x, y, z;</span><br><span class="line">  </span><br><span class="line">  Point(num x, num y) &#123; //构造函数</span><br><span class="line">    this.x = x;</span><br><span class="line">    this.y = y; </span><br><span class="line">    //不要求所有成员变量都完成初始化</span><br><span class="line">    print(&#x27;x:$x,y:$y,z:$z&#x27;); //x:0,y:1,z:null</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">// 创建实例</span><br><span class="line">void main() &#123;</span><br><span class="line">  var p = Point(0,1);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs dart"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Point</span> </span>&#123;<br>  <span class="hljs-built_in">num</span> x, y, z;<br>  <br>  Point(<span class="hljs-built_in">num</span> x, <span class="hljs-built_in">num</span> y) &#123; <span class="hljs-comment">//构造函数</span><br>    <span class="hljs-keyword">this</span>.x = x;<br>    <span class="hljs-keyword">this</span>.y = y; <br>    <span class="hljs-comment">//不要求所有成员变量都完成初始化</span><br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;x:<span class="hljs-subst">$x</span>,y:<span class="hljs-subst">$y</span>,z:<span class="hljs-subst">$z</span>&#x27;</span>); <span class="hljs-comment">//x:0,y:1,z:null</span><br>  &#125;<br>&#125;<br><span class="hljs-comment">// 创建实例</span><br><span class="hljs-keyword">void</span> main() &#123;<br>  <span class="hljs-keyword">var</span> p = Point(<span class="hljs-number">0</span>,<span class="hljs-number">1</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>利用语法糖对上面的构造函数进行简化：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">class Point &#123;</span><br><span class="line">  num x, y, z;</span><br><span class="line">  Point(this.x, this.y); // 将传入的参数的值赋值给对应的实例变量</span><br><span class="line">&#125;</span><br><span class="line">void main() &#123;</span><br><span class="line">  var p = Point(0,1);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-keyword">class</span> <span class="hljs-title">Point</span> &#123;<br>  num x, y, z;<br>  Point(<span class="hljs-keyword">this</span>.x, <span class="hljs-keyword">this</span>.y); <span class="hljs-comment">// 将传入的参数的值赋值给对应的实例变量</span><br>&#125;<br><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">main</span>()</span> &#123;<br>  <span class="hljs-keyword">var</span> p = Point(<span class="hljs-number">0</span>,<span class="hljs-number">1</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <ul>
 <li>默认构造函数</li>
 </ul>
 <p>在【没有声明构造函数的情况下】， Dart 会提供一个默认的构造函数。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">class Point &#123;</span><br><span class="line">  num x, y, z;</span><br><span class="line">&#125;</span><br><span class="line">void main() &#123;</span><br><span class="line">  var p = Point(); //默认构造函数</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-keyword">class</span> <span class="hljs-title">Point</span> &#123;<br>  num x, y, z;<br>&#125;<br><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">main</span>()</span> &#123;<br>  <span class="hljs-keyword">var</span> p = Point(); <span class="hljs-comment">//默认构造函数</span><br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>【子类不会自动继承父类的构造函数】。如果子类不声明构造函数，那么它就只有默认构造函数：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">class Point &#123; // 父类</span><br><span class="line">  num x, y;</span><br><span class="line">  Point(this.x, this.y); //自定义构造函数</span><br><span class="line">&#125;</span><br><span class="line">class SubPoint extends Point &#123; // 子类</span><br><span class="line">  num z;</span><br><span class="line">  // 没有构造函数，所以只有默认构造函数SubPoint()</span><br><span class="line">&#125;</span><br><span class="line">void main() &#123;</span><br><span class="line">  var p  = SubPoint(1，2); // 报错1，因为子类不会自动继承父类的构造函数，所以这里调用无效</span><br><span class="line">  var p2 = SubPoint();    // 报错2，因为子类只有默认构造函数，而子类的默认构造函数会调用父类的无参构造函数</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs scala"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Point</span> </span>&#123; <span class="hljs-comment">// 父类</span><br>  num x, y;<br>  <span class="hljs-type">Point</span>(<span class="hljs-keyword">this</span>.x, <span class="hljs-keyword">this</span>.y); <span class="hljs-comment">//自定义构造函数</span><br>&#125;<br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SubPoint</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Point</span> </span>&#123; <span class="hljs-comment">// 子类</span><br>  num z;<br>  <span class="hljs-comment">// 没有构造函数，所以只有默认构造函数SubPoint()</span><br>&#125;<br>void main() &#123;<br>  <span class="hljs-keyword">var</span> p  = <span class="hljs-type">SubPoint</span>(<span class="hljs-number">1</span>，<span class="hljs-number">2</span>); <span class="hljs-comment">// 报错1，因为子类不会自动继承父类的构造函数，所以这里调用无效</span><br>  <span class="hljs-keyword">var</span> p2 = <span class="hljs-type">SubPoint</span>();    <span class="hljs-comment">// 报错2，因为子类只有默认构造函数，而子类的默认构造函数会调用父类的无参构造函数</span><br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>示例中会出现两处报错：<br><br/></p>
 <p>报错1是因为子类不会自动继承父类的构造函数，所以也就无法调用父类的构造函数；<br><br/></p>
 <p>报错2是因为<em><strong>子类的默认构造函数会自动调用父类的无参构造函数</strong></em>，而此时父类中因为提供了自定义构造函数，所以就没有无参构造函数，因此调用失败，所以子类想要调用默认构造参数。父类就不能自定义构造函数：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">class Point &#123; // 父类</span><br><span class="line">  num x, y;</span><br><span class="line">&#125;</span><br><span class="line">class SubPoint extends Point &#123; // 子类</span><br><span class="line">  num z;</span><br><span class="line">&#125;</span><br><span class="line">void main() &#123;</span><br><span class="line">  var p = SubPoint();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs scala"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Point</span> </span>&#123; <span class="hljs-comment">// 父类</span><br>  num x, y;<br>&#125;<br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SubPoint</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Point</span> </span>&#123; <span class="hljs-comment">// 子类</span><br>  num z;<br>&#125;<br>void main() &#123;<br>  <span class="hljs-keyword">var</span> p = <span class="hljs-type">SubPoint</span>();<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <ul>
 <li>命名构造函数</li>
 </ul>
 <p>给构造函数命名，以便更清晰的表明函数的意图，格式为<code>【类名.函数名(参数..)】</code>：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">class Point &#123; // 父类</span><br><span class="line">  num x, y;</span><br><span class="line">  Point.initWithXY(this.x,this.y)&#123;</span><br><span class="line">    print(&#x27;called super init,x:$x,y:$y&#x27;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">class SubPoint extends Point &#123; // 子类</span><br><span class="line">  num z;</span><br><span class="line">  SubPoint.initWithXYZ(num x, y, this.z): super.initWithXY(x,y)&#123; //注意这里调用父类构造函数的语法</span><br><span class="line">    print(&#x27;called sub init,x:$x,y:$y,z:$z&#x27;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">void main() &#123;</span><br><span class="line">  var p = SubPoint.initWithXYZ(1,2,3);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs dart"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Point</span> </span>&#123; <span class="hljs-comment">// 父类</span><br>  <span class="hljs-built_in">num</span> x, y;<br>  Point.initWithXY(<span class="hljs-keyword">this</span>.x,<span class="hljs-keyword">this</span>.y)&#123;<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;called super init,x:<span class="hljs-subst">$x</span>,y:<span class="hljs-subst">$y</span>&#x27;</span>);<br>  &#125;<br>&#125;<br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SubPoint</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Point</span> </span>&#123; <span class="hljs-comment">// 子类</span><br>  <span class="hljs-built_in">num</span> z;<br>  SubPoint.initWithXYZ(<span class="hljs-built_in">num</span> x, y, <span class="hljs-keyword">this</span>.z): <span class="hljs-keyword">super</span>.initWithXY(x,y)&#123; <span class="hljs-comment">//注意这里调用父类构造函数的语法</span><br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;called sub init,x:<span class="hljs-subst">$x</span>,y:<span class="hljs-subst">$y</span>,z:<span class="hljs-subst">$z</span>&#x27;</span>);<br>  &#125;<br>&#125;<br><span class="hljs-keyword">void</span> main() &#123;<br>  <span class="hljs-keyword">var</span> p = SubPoint.initWithXYZ(<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>注意这里调用父类构造函数的语法：【在当前构造函数冒号 (:) 之后，函数体之前，声明调用父类构造函数】。</p>
 <h4 id="12-初始化列表"><a href="#12-初始化列表" class="headerlink" title="12.初始化列表"></a>12.初始化列表</h4><p>与Swift不一样的是，Dart的构造函数中并不强制所有成员变量都完成初始化，那它们什么时候去初始化呢？Dart的解决方案是<code>初始化列表</code>，即在构造函数的方法体花括号<code>&#123;...&#125;</code>之前初始化实例变量【~~比较奇怪的语法~~】。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">class Point &#123; // 父类</span><br><span class="line">  num x, y;</span><br><span class="line">  Point.initWithXY(this.x,this.y)&#123;</span><br><span class="line">    print(&#x27;called super init,x:$x,y:$y&#x27;);</span><br><span class="line">  &#125;</span><br><span class="line">  Point.initFromMap(Map&lt;String,int&gt;dic)</span><br><span class="line">    : x = dic[&#x27;x&#x27;],</span><br><span class="line">      y = dic[&#x27;y&#x27;]&#123; //初始化列表，初始化当前类的实例变量</span><br><span class="line">        print(&#x27;called super.initFromMap,x:$x,y:$y&#x27;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">class SubPoint extends Point &#123; // 子类</span><br><span class="line">  num z;</span><br><span class="line">  SubPoint.initList(Map&lt;String,int&gt;dic)</span><br><span class="line">    : z = dic[&#x27;z&#x27;],</span><br><span class="line">      super.initFromMap(dic)&#123; //调用父类构造函数要放在初始化列表的最后</span><br><span class="line">        if (x == 1)&#123;</span><br><span class="line">          x = 0; // 函数体内可以继续修改变量的值</span><br><span class="line">        &#125;</span><br><span class="line">        print(&#x27;called sub.initList,x:$x,y:$y&#x27;);</span><br><span class="line">  &#125;</span><br><span class="line">  SubPoint.initWithXYZ(x,y,this.z): super.initWithXY(x,y)&#123;</span><br><span class="line">    print(&#x27;called sub init,x:$x,y:$y,z:$z&#x27;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">void main() &#123;</span><br><span class="line">  var dic = &#123;&#x27;x&#x27;:1,&#x27;y&#x27;:2,&#x27;z&#x27;:3&#125;;</span><br><span class="line">  var p = SubPoint.initList(dic);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs dart"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Point</span> </span>&#123; <span class="hljs-comment">// 父类</span><br>  <span class="hljs-built_in">num</span> x, y;<br>  Point.initWithXY(<span class="hljs-keyword">this</span>.x,<span class="hljs-keyword">this</span>.y)&#123;<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;called super init,x:<span class="hljs-subst">$x</span>,y:<span class="hljs-subst">$y</span>&#x27;</span>);<br>  &#125;<br>  Point.initFromMap(<span class="hljs-built_in">Map</span>&lt;<span class="hljs-built_in">String</span>,<span class="hljs-built_in">int</span>&gt;dic)<br>    : x = dic[<span class="hljs-string">&#x27;x&#x27;</span>],<br>      y = dic[<span class="hljs-string">&#x27;y&#x27;</span>]&#123; <span class="hljs-comment">//初始化列表，初始化当前类的实例变量</span><br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;called super.initFromMap,x:<span class="hljs-subst">$x</span>,y:<span class="hljs-subst">$y</span>&#x27;</span>);<br>  &#125;<br>&#125;<br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SubPoint</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Point</span> </span>&#123; <span class="hljs-comment">// 子类</span><br>  <span class="hljs-built_in">num</span> z;<br>  SubPoint.initList(<span class="hljs-built_in">Map</span>&lt;<span class="hljs-built_in">String</span>,<span class="hljs-built_in">int</span>&gt;dic)<br>    : z = dic[<span class="hljs-string">&#x27;z&#x27;</span>],<br>      <span class="hljs-keyword">super</span>.initFromMap(dic)&#123; <span class="hljs-comment">//调用父类构造函数要放在初始化列表的最后</span><br>        <span class="hljs-keyword">if</span> (x == <span class="hljs-number">1</span>)&#123;<br>          x = <span class="hljs-number">0</span>; <span class="hljs-comment">// 函数体内可以继续修改变量的值</span><br>        &#125;<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;called sub.initList,x:<span class="hljs-subst">$x</span>,y:<span class="hljs-subst">$y</span>&#x27;</span>);<br>  &#125;<br>  SubPoint.initWithXYZ(x,y,<span class="hljs-keyword">this</span>.z): <span class="hljs-keyword">super</span>.initWithXY(x,y)&#123;<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;called sub init,x:<span class="hljs-subst">$x</span>,y:<span class="hljs-subst">$y</span>,z:<span class="hljs-subst">$z</span>&#x27;</span>);<br>  &#125;<br>&#125;<br><span class="hljs-keyword">void</span> main() &#123;<br>  <span class="hljs-keyword">var</span> dic = &#123;<span class="hljs-string">&#x27;x&#x27;</span>:<span class="hljs-number">1</span>,<span class="hljs-string">&#x27;y&#x27;</span>:<span class="hljs-number">2</span>,<span class="hljs-string">&#x27;z&#x27;</span>:<span class="hljs-number">3</span>&#125;;<br>  <span class="hljs-keyword">var</span> p = SubPoint.initList(dic);<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>各参数的初始化用逗号分隔，且调用父类构造函数的语句要放在初始化列表的最后。</p>
 <h4 id="13-Getter-x2F-Setter"><a href="#13-Getter-x2F-Setter" class="headerlink" title="13.Getter&#x2F;Setter"></a>13.Getter&#x2F;Setter</h4><p>和Swift一样，Dart中属性的Getter&#x2F;Setter也是为<code>计算属性</code>而存在的：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">class Rectangle &#123;</span><br><span class="line">  num left, top, width, height;</span><br><span class="line"></span><br><span class="line">  Rectangle(this.left, this.top, this.width, this.height);</span><br><span class="line"></span><br><span class="line">  // 定义两个计算属性： right 和 bottom。</span><br><span class="line">  num get right =&gt; left + width;</span><br><span class="line">  set right(num value) =&gt; left = value - width;</span><br><span class="line">  num get bottom =&gt; top + height;</span><br><span class="line">  set bottom(num value) =&gt; top = value - height;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void main() &#123;</span><br><span class="line">  var rect = Rectangle(3, 4, 20, 15);</span><br><span class="line">  print(rect.left);    //调用Getter 输出“3”</span><br><span class="line">  rect.right = 12;     //调用Setter</span><br><span class="line">  print(rect.right);   //12</span><br><span class="line">  print(rect.left);    //-8</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs arduino"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Rectangle</span> &#123;<br>  num left, top, width, height;<br><br>  <span class="hljs-built_in">Rectangle</span>(<span class="hljs-keyword">this</span>.left, <span class="hljs-keyword">this</span>.top, <span class="hljs-keyword">this</span>.width, <span class="hljs-keyword">this</span>.height);<br><br>  <span class="hljs-comment">// 定义两个计算属性： right 和 bottom。</span><br>  num get right =&gt; left + width;<br>  <span class="hljs-function">set <span class="hljs-title">right</span><span class="hljs-params">(num value)</span> </span>=&gt; left = value - width;<br>  num get bottom =&gt; top + height;<br>  <span class="hljs-function">set <span class="hljs-title">bottom</span><span class="hljs-params">(num value)</span> </span>=&gt; top = value - height;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>&#123;<br>  var rect = <span class="hljs-built_in">Rectangle</span>(<span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">20</span>, <span class="hljs-number">15</span>);<br>  <span class="hljs-built_in">print</span>(rect.left);    <span class="hljs-comment">//调用Getter 输出“3”</span><br>  rect.right = <span class="hljs-number">12</span>;     <span class="hljs-comment">//调用Setter</span><br>  <span class="hljs-built_in">print</span>(rect.right);   <span class="hljs-comment">//12</span><br>  <span class="hljs-built_in">print</span>(rect.left);    <span class="hljs-comment">//-8</span><br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>通过修改left，从而影响 left + width &#x3D; right，最终完成对right属性的修改。</p>
 <h4 id="14-抽象类-amp-extends"><a href="#14-抽象类-amp-extends" class="headerlink" title="14.抽象类&amp;extends"></a>14.抽象类&amp;extends</h4><p>使用<code>abstract</code>来定义抽象类。抽象类不能被实例化，通常用来定义接口，以及部分实现。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">// 抽象类</span><br><span class="line">abstract class AbstractClass &#123;</span><br><span class="line">  // 定义字段...</span><br><span class="line">  var name;</span><br><span class="line">  var hasValue = 1;</span><br><span class="line">  </span><br><span class="line">  // 抽象方法。</span><br><span class="line">  abstractMethod();</span><br><span class="line">  </span><br><span class="line">  // 带实现的方法</span><br><span class="line">  funcWithImplements()&#123;</span><br><span class="line">    print(&quot;~~~~~~~&quot;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">// 子类</span><br><span class="line">class ConcreteClass extends AbstractClass &#123; // 单继承</span><br><span class="line">  var name = 1;</span><br><span class="line">  var hasValue = 2;</span><br><span class="line">  </span><br><span class="line">  @override</span><br><span class="line">  abstractMethod()&#123; // 提供方法实现，所以这里的方法就不是抽象方法了...</span><br><span class="line">    print(&#x27;++call abstractMethod()&#x27;);</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  @override</span><br><span class="line">  funcWithImplements()&#123; // 重写</span><br><span class="line">    print(&quot;~~~call funcWithImplements()&quot;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">void main() &#123;</span><br><span class="line">  var a = ConcreteClass();</span><br><span class="line">  a.abstractMethod();       //++call abstractMethod()</span><br><span class="line">  a.funcWithImplements();   //~~~call funcWithImplements()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><code class="hljs scala"><span class="hljs-comment">// 抽象类</span><br><span class="hljs-keyword">abstract</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">AbstractClass</span> </span>&#123;<br>  <span class="hljs-comment">// 定义字段...</span><br>  <span class="hljs-keyword">var</span> name;<br>  <span class="hljs-keyword">var</span> hasValue = <span class="hljs-number">1</span>;<br>  <br>  <span class="hljs-comment">// 抽象方法。</span><br>  abstractMethod();<br>  <br>  <span class="hljs-comment">// 带实现的方法</span><br>  funcWithImplements()&#123;<br>    print(<span class="hljs-string">&quot;~~~~~~~&quot;</span>);<br>  &#125;<br>&#125;<br><span class="hljs-comment">// 子类</span><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ConcreteClass</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">AbstractClass</span> </span>&#123; <span class="hljs-comment">// 单继承</span><br>  <span class="hljs-keyword">var</span> name = <span class="hljs-number">1</span>;<br>  <span class="hljs-keyword">var</span> hasValue = <span class="hljs-number">2</span>;<br>  <br>  <span class="hljs-meta">@override</span><br>  abstractMethod()&#123; <span class="hljs-comment">// 提供方法实现，所以这里的方法就不是抽象方法了...</span><br>    print(&#x27;++call abstractMethod()&#x27;);<br>  &#125;<br>  <br>  <span class="hljs-meta">@override</span><br>  funcWithImplements()&#123; <span class="hljs-comment">// 重写</span><br>    print(<span class="hljs-string">&quot;~~~call funcWithImplements()&quot;</span>);<br>  &#125;<br>&#125;<br>void main() &#123;<br>  <span class="hljs-keyword">var</span> a = <span class="hljs-type">ConcreteClass</span>();<br>  a.abstractMethod();       <span class="hljs-comment">//++call abstractMethod()</span><br>  a.funcWithImplements();   <span class="hljs-comment">//~~~call funcWithImplements()</span><br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>Dart也和Swift一样，只允许单继承~</p>
 <h4 id="15-接口-amp-implements"><a href="#15-接口-amp-implements" class="headerlink" title="15.接口&amp;implements"></a>15.接口&amp;implements</h4><p>Dart中移除了<code>interface</code>关键字，可以通过抽象类或<code>implements</code>普通类来实现接口的功能。</p>
 <blockquote>
 <p>每个类都隐式的定义了一个接口，接口包含了该类所有的实例成员及其实现的接口。 如果要创建一个 A 类，A 要支持 B 类的 API ，但是不需要继承 B 的实现， 那么可以通过 A 实现 B 的接口。</p>
 </blockquote>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">// 抽象类1</span><br><span class="line">abstract class AbstractClass &#123;</span><br><span class="line">  // 定义字段...</span><br><span class="line">  var name;</span><br><span class="line">  var hasValue = 1;</span><br><span class="line">  </span><br><span class="line">  // 抽象方法。</span><br><span class="line">  abstractMethod();</span><br><span class="line"></span><br><span class="line">  // 带实现的方法</span><br><span class="line">  funcWithImplements()&#123;</span><br><span class="line">    print(&quot;~~~~~~~&quot;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">// 抽象类2</span><br><span class="line">abstract class AbstractClass2 &#123;</span><br><span class="line">  abstractMethod2();</span><br><span class="line">&#125;</span><br><span class="line">// 实现类</span><br><span class="line">class ConcreteClass implements AbstractClass, AbstractClass2 &#123; //可以实现多个抽象类</span><br><span class="line">  var name = 1;</span><br><span class="line">  var hasValue = 2;</span><br><span class="line"></span><br><span class="line">  @override</span><br><span class="line">  abstractMethod()&#123;</span><br><span class="line">    print(&#x27;++call abstractMethod()&#x27;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  @override</span><br><span class="line">  abstractMethod2()&#123;</span><br><span class="line">    print(&#x27;++call abstractMethod2()&#x27;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  @override</span><br><span class="line">  funcWithImplements()&#123;</span><br><span class="line">    print(&quot;~~~call funcWithImplements()&quot;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">void main() &#123;</span><br><span class="line">  var a = ConcreteClass();</span><br><span class="line">  a.abstractMethod();       //++call abstractMethod()</span><br><span class="line">  a.abstractMethod2();      //++call abstractMethod2()</span><br><span class="line">  a.funcWithImplements();   //~~~call funcWithImplements()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-comment">// 抽象类1</span><br><span class="hljs-keyword">abstract</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">AbstractClass</span> &#123;<br>  <span class="hljs-comment">// 定义字段...</span><br>  <span class="hljs-keyword">var</span> name;<br>  <span class="hljs-keyword">var</span> hasValue = <span class="hljs-number">1</span>;<br>  <br>  <span class="hljs-comment">// 抽象方法。</span><br>  <span class="hljs-title function_">abstractMethod</span>();<br><br>  <span class="hljs-comment">// 带实现的方法</span><br>  <span class="hljs-title function_">funcWithImplements</span>(<span class="hljs-params"></span>)&#123;<br>    <span class="hljs-title function_">print</span>(<span class="hljs-string">&quot;~~~~~~~&quot;</span>);<br>  &#125;<br>&#125;<br><span class="hljs-comment">// 抽象类2</span><br><span class="hljs-keyword">abstract</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">AbstractClass2</span> &#123;<br>  <span class="hljs-title function_">abstractMethod2</span>();<br>&#125;<br><span class="hljs-comment">// 实现类</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">ConcreteClass</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">AbstractClass</span>, <span class="hljs-title class_">AbstractClass2</span> &#123; <span class="hljs-comment">//可以实现多个抽象类</span><br>  <span class="hljs-keyword">var</span> name = <span class="hljs-number">1</span>;<br>  <span class="hljs-keyword">var</span> hasValue = <span class="hljs-number">2</span>;<br><br>  <span class="hljs-meta">@override</span><br>  <span class="hljs-title function_">abstractMethod</span>(<span class="hljs-params"></span>)&#123;<br>    <span class="hljs-title function_">print</span>(<span class="hljs-string">&#x27;++call abstractMethod()&#x27;</span>);<br>  &#125;<br><br>  <span class="hljs-meta">@override</span><br>  <span class="hljs-title function_">abstractMethod2</span>(<span class="hljs-params"></span>)&#123;<br>    <span class="hljs-title function_">print</span>(<span class="hljs-string">&#x27;++call abstractMethod2()&#x27;</span>);<br>  &#125;<br><br>  <span class="hljs-meta">@override</span><br>  <span class="hljs-title function_">funcWithImplements</span>(<span class="hljs-params"></span>)&#123;<br>    <span class="hljs-title function_">print</span>(<span class="hljs-string">&quot;~~~call funcWithImplements()&quot;</span>);<br>  &#125;<br>&#125;<br><span class="hljs-built_in">void</span> <span class="hljs-title function_">main</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-keyword">var</span> a = <span class="hljs-title class_">ConcreteClass</span>();<br>  a.<span class="hljs-title function_">abstractMethod</span>();       <span class="hljs-comment">//++call abstractMethod()</span><br>  a.<span class="hljs-title function_">abstractMethod2</span>();      <span class="hljs-comment">//++call abstractMethod2()</span><br>  a.<span class="hljs-title function_">funcWithImplements</span>();   <span class="hljs-comment">//~~~call funcWithImplements()</span><br>&#125;<br></code></pre></td></tr></table></figure>
 
 <h4 id="16-Mixin"><a href="#16-Mixin" class="headerlink" title="16.Mixin"></a>16.Mixin</h4><p><code>Mixin</code>就是“混入”的意思，用于给当前类添加【新的】【可选】功能。<br><br/></p>
 <p>通常来说，我们可以通过<code>继承</code>或者实现<code>接口</code>来给现有类扩展新的功能。但这些都是带有侵入性的，你可能会获得这些父类或接口中一些多余的功能，并且你需要自己提供这些功能的实现；使用 Mixin 则你只需要定义可复用的 mixin 类，在其中定义API并提供具体实现，然后就可以将这些mixin类的API通过<code>with</code>关键字组合到当前类中。</p>
@@ -312,20 +456,20 @@
 </blockquote>
 <p><code>Mixin</code>是复用类代码的一种途径，复用的类可以在不同层级，可以不存在继承关系。<br><br/></p>
 <p>通过创建一个继承自<code>Object</code>且没有构造函数的类，来实现一个<code>Mixin</code>。 如果Mixin不希望作为常规类被使用，使用关键字<code>mixin</code>替换<code>class</code>。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">class Devices &#123;</span><br><span class="line">  void run() &#123;</span><br><span class="line">    print(&#x27;++++开机&#x27;);</span><br><span class="line">  &#125;</span><br><span class="line">  void stop() &#123;</span><br><span class="line">    print(&#x27;++++关机&#x27;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">class iPhone extends Devices &#123;</span><br><span class="line">  void run() &#123;</span><br><span class="line">    super.run();</span><br><span class="line">    print(&#x27;++++iphone 开机&#x27;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">// 定义组件/能力</span><br><span class="line">mixin iOS &#123; </span><br><span class="line">  void call() &#123;</span><br><span class="line">    print(&#x27;+++iOS running&#x27;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 定义组件/能力 </span><br><span class="line">class AppStore &#123;</span><br><span class="line">  void download() &#123;</span><br><span class="line">    print(&#x27;++++downloading&#x27;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 混入、拓展iPhone的功能</span><br><span class="line">class iPhoneX extends iPhone with iOS, AppStore &#123;</span><br><span class="line">  void run() &#123;</span><br><span class="line">    super.run();</span><br><span class="line">    print(&#x27;iphoneX 开机&#x27;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void main() &#123;</span><br><span class="line">  var p = iPhoneX();</span><br><span class="line">  p.run();</span><br><span class="line">  p.call();     //使用混入的能力</span><br><span class="line">  p.download(); //使用混入的能力</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><code class="hljs scala"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Devices</span> </span>&#123;<br>  void run() &#123;<br>    print(&#x27;++++开机&#x27;);<br>  &#125;<br>  void stop() &#123;<br>    print(&#x27;++++关机&#x27;);<br>  &#125;<br>&#125;<br> <br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">iPhone</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Devices</span> </span>&#123;<br>  void run() &#123;<br>    <span class="hljs-keyword">super</span>.run();<br>    print(&#x27;++++iphone 开机&#x27;);<br>  &#125;<br>&#125;<br> <br><span class="hljs-comment">// 定义组件/能力</span><br>mixin iOS &#123; <br>  void call() &#123;<br>    print(&#x27;+++iOS running&#x27;);<br>  &#125;<br>&#125;<br><br><span class="hljs-comment">// 定义组件/能力 </span><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">AppStore</span> </span>&#123;<br>  void download() &#123;<br>    print(&#x27;++++downloading&#x27;);<br>  &#125;<br>&#125;<br><br><span class="hljs-comment">// 混入、拓展iPhone的功能</span><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">iPhoneX</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">iPhone</span> <span class="hljs-keyword">with</span> <span class="hljs-title">iOS</span>, <span class="hljs-title">AppStore</span> </span>&#123;<br>  void run() &#123;<br>    <span class="hljs-keyword">super</span>.run();<br>    print(&#x27;iphoneX 开机&#x27;);<br>  &#125;<br>&#125;<br><br>void main() &#123;<br>  <span class="hljs-keyword">var</span> p = iPhoneX();<br>  p.run();<br>  p.call();     <span class="hljs-comment">//使用混入的能力</span><br>  p.download(); <span class="hljs-comment">//使用混入的能力</span><br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>Dart的这个功能还是挺强大的，根据我的掌握的知识，Swift 中尚没有与之对应的关键字。不过真要说的话，或许可以借道<code>protocol</code>+<code>extension</code>，在不增加某个类本身的代码量的前提下，给此类扩展额外的能力：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">// 定义组件/能力</span><br><span class="line">protocol IOS &#123;</span><br><span class="line">    func call()</span><br><span class="line">&#125;</span><br><span class="line">// 定义组件/能力</span><br><span class="line">protocol AppStore &#123;</span><br><span class="line">    func download()</span><br><span class="line">&#125;</span><br><span class="line">// 扩展协议 </span><br><span class="line">extension IOS &#123;</span><br><span class="line">    func call()&#123; //给接口添加默认行为</span><br><span class="line">        print(&quot;+++iOS running&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">// 扩展协议</span><br><span class="line">extension AppStore&#123;</span><br><span class="line">    func download()&#123; //给接口添加默认行为</span><br><span class="line">        print(&quot;++++downloading&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 在不额外增加iPhone类本身代码的前提下，扩展其能力</span><br><span class="line">class iPhone: IOS, AppStore&#123;</span><br><span class="line">    func run()&#123;</span><br><span class="line">      print(&quot;++++iphone 开机&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 使用额外的能力</span><br><span class="line">let iphone = iPhone()</span><br><span class="line">iphone.run()</span><br><span class="line">iphone.call()</span><br><span class="line">iphone.download()</span><br></pre></td></tr></table></figure>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs swift"><span class="hljs-comment">// 定义组件/能力</span><br><span class="hljs-keyword">protocol</span> <span class="hljs-title class_">IOS</span> &#123;<br>    <span class="hljs-keyword">func</span> <span class="hljs-title function_">call</span>()<br>&#125;<br><span class="hljs-comment">// 定义组件/能力</span><br><span class="hljs-keyword">protocol</span> <span class="hljs-title class_">AppStore</span> &#123;<br>    <span class="hljs-keyword">func</span> <span class="hljs-title function_">download</span>()<br>&#125;<br><span class="hljs-comment">// 扩展协议 </span><br><span class="hljs-keyword">extension</span> <span class="hljs-title class_">IOS</span> &#123;<br>    <span class="hljs-keyword">func</span> <span class="hljs-title function_">call</span>()&#123; <span class="hljs-comment">//给接口添加默认行为</span><br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;+++iOS running&quot;</span>)<br>    &#125;<br>&#125;<br><span class="hljs-comment">// 扩展协议</span><br><span class="hljs-keyword">extension</span> <span class="hljs-title class_">AppStore</span>&#123;<br>    <span class="hljs-keyword">func</span> <span class="hljs-title function_">download</span>()&#123; <span class="hljs-comment">//给接口添加默认行为</span><br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;++++downloading&quot;</span>)<br>    &#125;<br>&#125;<br><br><span class="hljs-comment">// 在不额外增加iPhone类本身代码的前提下，扩展其能力</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">iPhone</span>: <span class="hljs-title class_">IOS</span>, <span class="hljs-title class_">AppStore</span>&#123;<br>    <span class="hljs-keyword">func</span> <span class="hljs-title function_">run</span>()&#123;<br>      <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;++++iphone 开机&quot;</span>);<br>    &#125;<br>&#125;<br><br><span class="hljs-comment">// 使用额外的能力</span><br><span class="hljs-keyword">let</span> iphone <span class="hljs-operator">=</span> iPhone()<br>iphone.run()<br>iphone.call()<br>iphone.download()<br></code></pre></td></tr></table></figure>
 
 
 <h4 id="17-泛型"><a href="#17-泛型" class="headerlink" title="17.泛型"></a>17.泛型</h4><p>这里的泛型与 Swift 中的类似，都是使用<code>&lt;T&gt;</code>格式来表示。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">class Store&lt;T&gt; &#123;</span><br><span class="line">  var map = &#123;&#125;;</span><br><span class="line">  T getByKey(String key)&#123;</span><br><span class="line">    T value = map[key];</span><br><span class="line">    return value;</span><br><span class="line">  &#125;</span><br><span class="line">  void setByKey(String key, T value)&#123;</span><br><span class="line">    map[key] = value;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">void main() &#123;</span><br><span class="line">  var aStore = Store();</span><br><span class="line">  aStore.setByKey(&#x27;first&#x27;, 1);</span><br><span class="line">  print(aStore.getByKey(&#x27;first&#x27;));</span><br><span class="line">  aStore.setByKey(&#x27;second&#x27;, &#x27;ii&#x27;);</span><br><span class="line">  print(aStore.getByKey(&#x27;second&#x27;));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight processing"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs processing"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Store</span>&lt;T&gt; &#123;<br>  var <span class="hljs-built_in">map</span> = &#123;&#125;;<br>  T <span class="hljs-title function_">getByKey</span>(<span class="hljs-built_in">String</span> <span class="hljs-built_in">key</span>)&#123;<br>    T value = <span class="hljs-built_in">map</span>[<span class="hljs-built_in">key</span>];<br>    <span class="hljs-keyword">return</span> value;<br>  &#125;<br>  <span class="hljs-keyword">void</span> <span class="hljs-title function_">setByKey</span>(<span class="hljs-built_in">String</span> <span class="hljs-built_in">key</span>, T value)&#123;<br>    <span class="hljs-built_in">map</span>[<span class="hljs-built_in">key</span>] = value;<br>  &#125;<br>&#125;<br><span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span>() &#123;<br>  var aStore = <span class="hljs-title function_">Store</span>();<br>  aStore.<span class="hljs-property">setByKey</span>(<span class="hljs-string">&#x27;first&#x27;</span>, <span class="hljs-number">1</span>);<br>  <span class="hljs-built_in">print</span>(aStore.<span class="hljs-property">getByKey</span>(<span class="hljs-string">&#x27;first&#x27;</span>));<br>  aStore.<span class="hljs-property">setByKey</span>(<span class="hljs-string">&#x27;second&#x27;</span>, <span class="hljs-string">&#x27;ii&#x27;</span>);<br>  <span class="hljs-built_in">print</span>(aStore.<span class="hljs-property">getByKey</span>(<span class="hljs-string">&#x27;second&#x27;</span>));<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <h4 id="18-is-amp-as"><a href="#18-is-amp-as" class="headerlink" title="18.is&amp;as"></a>18.is&amp;as</h4><p><code>is</code>用于进行类型检查，即类是否在某个类的继承树上。或者检查对象是否实现了某个接口：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">class Person &#123;</span><br><span class="line">  String name;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">abstract class Speak &#123;</span><br><span class="line">  speak();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Student extends Person implements Speak&#123;</span><br><span class="line">  int identifier;</span><br><span class="line">  speak()&#123;</span><br><span class="line">    print(&#x27;Hello~&#x27;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void main() &#123;</span><br><span class="line">  var p = Person();</span><br><span class="line">  var s = Student();</span><br><span class="line">  Person  x = Student(); //父类指针指向子类对象</span><br><span class="line">  //Student y = Person();  //报错，不允许子类指针指向父类实例</span><br><span class="line">  </span><br><span class="line">  print(p is Person);  //true，直属类</span><br><span class="line">  print(s is Student); //true，直属类</span><br><span class="line">  print(s is Person);  //true，父类</span><br><span class="line">  print(x is Student); //true，x实际就是Student</span><br><span class="line">  print(x is Person);  //true，x是Student，也是Person的子类</span><br><span class="line">  print(p is Speak);   //false，父类没实现Speak接口</span><br><span class="line">  print(s is Speak);   //true，子类实现了Speak接口</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight axapta"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs axapta"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Person</span> &#123;<br>  String name;<br>&#125;<br><br><span class="hljs-keyword">abstract</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Speak</span> &#123;<br>  speak();<br>&#125;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Student</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">Person</span> <span class="hljs-keyword">implements</span> Speak&#123;<br>  <span class="hljs-built_in">int</span> identifier;<br>  speak()&#123;<br>    <span class="hljs-keyword">print</span>(<span class="hljs-string">&#x27;Hello~&#x27;</span>);<br>  &#125;<br>&#125;<br><br><span class="hljs-keyword">void</span> main() &#123;<br>  <span class="hljs-built_in">var</span> p = Person();<br>  <span class="hljs-built_in">var</span> s = Student();<br>  Person  x = Student(); <span class="hljs-comment">//父类指针指向子类对象</span><br>  <span class="hljs-comment">//Student y = Person();  //报错，不允许子类指针指向父类实例</span><br>  <br>  <span class="hljs-keyword">print</span>(p <span class="hljs-keyword">is</span> Person);  <span class="hljs-comment">//true，直属类</span><br>  <span class="hljs-keyword">print</span>(s <span class="hljs-keyword">is</span> Student); <span class="hljs-comment">//true，直属类</span><br>  <span class="hljs-keyword">print</span>(s <span class="hljs-keyword">is</span> Person);  <span class="hljs-comment">//true，父类</span><br>  <span class="hljs-keyword">print</span>(x <span class="hljs-keyword">is</span> Student); <span class="hljs-comment">//true，x实际就是Student</span><br>  <span class="hljs-keyword">print</span>(x <span class="hljs-keyword">is</span> Person);  <span class="hljs-comment">//true，x是Student，也是Person的子类</span><br>  <span class="hljs-keyword">print</span>(p <span class="hljs-keyword">is</span> Speak);   <span class="hljs-comment">//false，父类没实现Speak接口</span><br>  <span class="hljs-keyword">print</span>(s <span class="hljs-keyword">is</span> Speak);   <span class="hljs-comment">//true，子类实现了Speak接口</span><br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p><code>as</code>用于类型转换：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">class Person &#123;</span><br><span class="line">  String name;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">abstract class Speak &#123;</span><br><span class="line">  speak();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Student extends Person implements Speak&#123;</span><br><span class="line">  int identifier;</span><br><span class="line">  speak()&#123;</span><br><span class="line">    print(&#x27;Hello~&#x27;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void main() &#123;</span><br><span class="line">  var p = Person();</span><br><span class="line">  var s = Student();</span><br><span class="line">  Person  x = Student(); //父类指针指向子类对象</span><br><span class="line">  </span><br><span class="line">  var y = x as Student;</span><br><span class="line">  y.identifier = 101;</span><br><span class="line">  </span><br><span class="line">  print(p as Person);    //Instance of &#x27;Person&#x27;</span><br><span class="line">  print(p as Student);   //报错，运行时异常</span><br><span class="line">  print(s as Person);    //Instance of &#x27;Student&#x27;</span><br><span class="line">  print(s as Student);   //Instance of &#x27;Student&#x27;</span><br><span class="line">  print(x as Person);    //Instance of &#x27;Student&#x27;</span><br><span class="line">  print(x as Student);   //Instance of &#x27;Student&#x27;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight axapta"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs axapta"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Person</span> &#123;<br>  String name;<br>&#125;<br><br><span class="hljs-keyword">abstract</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Speak</span> &#123;<br>  speak();<br>&#125;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Student</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">Person</span> <span class="hljs-keyword">implements</span> Speak&#123;<br>  <span class="hljs-built_in">int</span> identifier;<br>  speak()&#123;<br>    <span class="hljs-keyword">print</span>(<span class="hljs-string">&#x27;Hello~&#x27;</span>);<br>  &#125;<br>&#125;<br><br><span class="hljs-keyword">void</span> main() &#123;<br>  <span class="hljs-built_in">var</span> p = Person();<br>  <span class="hljs-built_in">var</span> s = Student();<br>  Person  x = Student(); <span class="hljs-comment">//父类指针指向子类对象</span><br>  <br>  <span class="hljs-built_in">var</span> y = x <span class="hljs-keyword">as</span> Student;<br>  y.identifier = <span class="hljs-number">101</span>;<br>  <br>  <span class="hljs-keyword">print</span>(p <span class="hljs-keyword">as</span> Person);    <span class="hljs-comment">//Instance of &#x27;Person&#x27;</span><br>  <span class="hljs-keyword">print</span>(p <span class="hljs-keyword">as</span> Student);   <span class="hljs-comment">//报错，运行时异常</span><br>  <span class="hljs-keyword">print</span>(s <span class="hljs-keyword">as</span> Person);    <span class="hljs-comment">//Instance of &#x27;Student&#x27;</span><br>  <span class="hljs-keyword">print</span>(s <span class="hljs-keyword">as</span> Student);   <span class="hljs-comment">//Instance of &#x27;Student&#x27;</span><br>  <span class="hljs-keyword">print</span>(x <span class="hljs-keyword">as</span> Person);    <span class="hljs-comment">//Instance of &#x27;Student&#x27;</span><br>  <span class="hljs-keyword">print</span>(x <span class="hljs-keyword">as</span> Student);   <span class="hljs-comment">//Instance of &#x27;Student&#x27;</span><br>&#125;<br></code></pre></td></tr></table></figure>
 
 <h4 id="19-库"><a href="#19-库" class="headerlink" title="19.库"></a>19.库</h4><ul>
 <li>库不仅提供了 API ，而且对代码起到了封装的作用。 </li>
@@ -333,24 +477,24 @@
 <li>Dart 没有“public”、“protected”和“private”，以下划线（_）开头的标识符仅在当前库内可见。</li>
 <li>每个 Dart 应用程序都是一个库 ，虽然没有使用 library 指令。</li>
 </ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// 导入核心库</span><br><span class="line">import &#x27;dart:math&#x27;;</span><br><span class="line"></span><br><span class="line">// 从外部包导入库</span><br><span class="line">import &#x27;package:test/test.dart&#x27;;</span><br><span class="line"></span><br><span class="line">// 导入文件</span><br><span class="line">import &#x27;path/to/my_other_file.dart&#x27;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs aspectj"><span class="hljs-comment">// 导入核心库</span><br><span class="hljs-keyword">import</span> <span class="hljs-string">&#x27;dart:math&#x27;</span>;<br><br><span class="hljs-comment">// 从外部包导入库</span><br><span class="hljs-keyword">import</span> <span class="hljs-string">&#x27;package:test/test.dart&#x27;</span>;<br><br><span class="hljs-comment">// 导入文件</span><br><span class="hljs-keyword">import</span> <span class="hljs-string">&#x27;path/to/my_other_file.dart&#x27;</span>;<br></code></pre></td></tr></table></figure>
 
 <p>如果只使用库的一部分功能，则可以选择需要导入的内容：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// Import only foo.</span><br><span class="line">import &#x27;package:lib1/lib1.dart&#x27; show foo;</span><br><span class="line"></span><br><span class="line">// Import all names EXCEPT foo.</span><br><span class="line">import &#x27;package:lib2/lib2.dart&#x27; hide foo;</span><br></pre></td></tr></table></figure>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">// <span class="hljs-keyword">Import</span> <span class="hljs-keyword">only</span> foo.<br><span class="hljs-keyword">import</span> <span class="hljs-string">&#x27;package:lib1/lib1.dart&#x27;</span> <span class="hljs-keyword">show</span> foo;<br><br>// <span class="hljs-keyword">Import</span> <span class="hljs-keyword">all</span> names <span class="hljs-keyword">EXCEPT</span> foo.<br><span class="hljs-keyword">import</span> <span class="hljs-string">&#x27;package:lib2/lib2.dart&#x27;</span> hide foo;<br></code></pre></td></tr></table></figure>
 
 <p>如果导入两个存在冲突标识符的库， 则可以为这两个库，或者其中一个指定前缀。 例如，如果 library1 和 library2 都有一个 Element 类， 那么可以通过下面的方式处理：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">import &#x27;package:lib1/lib1.dart&#x27;;</span><br><span class="line">import &#x27;package:lib2/lib2.dart&#x27; as lib2;</span><br><span class="line"></span><br><span class="line">// 使用 lib1 中的 Element。</span><br><span class="line">Element element1 = Element();</span><br><span class="line"></span><br><span class="line">// 使用 lib2 中的 Element。</span><br><span class="line">lib2.Element element2 = lib2.Element();</span><br></pre></td></tr></table></figure>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs dart"><span class="hljs-keyword">import</span> <span class="hljs-string">&#x27;package:lib1/lib1.dart&#x27;</span>;<br><span class="hljs-keyword">import</span> <span class="hljs-string">&#x27;package:lib2/lib2.dart&#x27;</span> <span class="hljs-keyword">as</span> lib2;<br><br><span class="hljs-comment">// 使用 lib1 中的 Element。</span><br><span class="hljs-built_in">Element</span> element1 = <span class="hljs-built_in">Element</span>();<br><br><span class="hljs-comment">// 使用 lib2 中的 Element。</span><br>lib2.<span class="hljs-built_in">Element</span> element2 = lib2.<span class="hljs-built_in">Element</span>();<br></code></pre></td></tr></table></figure>
 
 <h4 id="20-异步"><a href="#20-异步" class="headerlink" title="20.异步"></a>20.异步</h4><p>Dart 默认是单线程的，耗时操作很容易造成线程阻塞：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">loadData()&#123;</span><br><span class="line">  String dataURL = &quot;https://jsonplaceholder.typicode.com/posts&quot;;</span><br><span class="line">  http.Response response = http.get(dataURL);</span><br><span class="line">  setState(() &#123;</span><br><span class="line">    widgets = json.decode(response.body);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs abnf">loadData()&#123;<br>  String dataURL <span class="hljs-operator">=</span> <span class="hljs-string">&quot;https://jsonplaceholder.typicode.com/posts&quot;</span><span class="hljs-comment">;</span><br>  http.Response response <span class="hljs-operator">=</span> http.get(dataURL)<span class="hljs-comment">;</span><br>  setState(() &#123;<br>    widgets <span class="hljs-operator">=</span> json.decode(response.body)<span class="hljs-comment">;</span><br>  &#125;)<span class="hljs-comment">;</span><br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>网络请求可能会很慢，这时主线程会被挂起，直到请求完成并更新状态。<br><br/></p>
 <p>好在 Dart 提供了异步工具<code>async</code>、<code>await</code>、<code>Future</code>，来实现异步操作。函数体被<code>async</code>标记的函数，即是一个异步函数。将<code>async</code>关键字添加到函数使其返回<code>Future</code>，以便检查结果。<br><br/></p>
 <p>例如，下面的同步函数，它返回一个 String ：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">String lookUpVersion() =&gt; &#x27;1.0.0&#x27;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">String</span> lookUpVersion() =&gt; &#x27;<span class="hljs-number">1</span>.<span class="hljs-number">0</span>.<span class="hljs-number">0</span>&#x27;;<br></code></pre></td></tr></table></figure>
 
 <p>假如将来的实现将非常耗时，将其更改为异步函数，返回值是<code>Future</code>：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Future&lt;String&gt; lookUpVersion() async =&gt; &#x27;1.0.0&#x27;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-function">Future&lt;String&gt; <span class="hljs-title">lookUpVersion</span>() <span class="hljs-keyword">async</span></span> =&gt; <span class="hljs-string">&#x27;1.0.0&#x27;</span>;<br></code></pre></td></tr></table></figure>
 
 <ul>
 <li><code>await</code>与<code>async</code>借鉴自ES7，一般成对出现；</li>
@@ -359,16 +503,16 @@
 <li>async修饰的方法会立刻返回，不阻塞当前线程；</li>
 </ul>
 <p>示例1：调用时不带<code>await</code></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Future refreshDate() async&#123;</span><br><span class="line">  print(&quot;++++3333: +$&#123;DateTime.now()&#125;&quot;);</span><br><span class="line">  await Future.delayed(Duration(seconds:5));</span><br><span class="line">  print(&quot;++++44444: $&#123;DateTime.now()&#125;&quot;);</span><br><span class="line">  return null;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void main() async&#123;</span><br><span class="line">  print(&quot;++++111: $&#123;DateTime.now()&#125;&quot;);</span><br><span class="line">  refreshDate(); // 不标记为await 会直接执行下一行</span><br><span class="line">  print(&quot;++++222: $&#123;DateTime.now()&#125;&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs dart">Future refreshDate() <span class="hljs-keyword">async</span>&#123;<br>  <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;++++3333: +<span class="hljs-subst">$&#123;DateTime.now()&#125;</span>&quot;</span>);<br>  <span class="hljs-keyword">await</span> Future.delayed(<span class="hljs-built_in">Duration</span>(seconds:<span class="hljs-number">5</span>));<br>  <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;++++44444: <span class="hljs-subst">$&#123;DateTime.now()&#125;</span>&quot;</span>);<br>  <span class="hljs-keyword">return</span> <span class="hljs-keyword">null</span>;<br>&#125;<br><br><span class="hljs-keyword">void</span> main() <span class="hljs-keyword">async</span>&#123;<br>  <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;++++111: <span class="hljs-subst">$&#123;DateTime.now()&#125;</span>&quot;</span>);<br>  refreshDate(); <span class="hljs-comment">// 不标记为await 会直接执行下一行</span><br>  <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;++++222: <span class="hljs-subst">$&#123;DateTime.now()&#125;</span>&quot;</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>日志：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">++++111: 2020-05-08 23:53:59.366</span><br><span class="line">++++3333: +2020-05-08 23:53:59.366</span><br><span class="line">++++222: 2020-05-08 23:53:59.366</span><br><span class="line">++++44444: 2020-05-08 23:54:04.367</span><br></pre></td></tr></table></figure>
+<figure class="highlight subunit"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs subunit">+++<span class="hljs-string">+111</span>: 2020<span class="hljs-string">-05</span><span class="hljs-string">-08</span> 23:53:59.366<br>+++<span class="hljs-string">+3333</span>: <span class="hljs-string">+2020</span><span class="hljs-string">-05</span><span class="hljs-string">-08</span> 23:53:59.366<br>+++<span class="hljs-string">+222</span>: 2020<span class="hljs-string">-05</span><span class="hljs-string">-08</span> 23:53:59.366<br>+++<span class="hljs-string">+44444</span>: 2020<span class="hljs-string">-05</span><span class="hljs-string">-08</span> 23:54:04.367<br></code></pre></td></tr></table></figure>
 
 <p>示例2：调用时带<code>await</code></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Future refreshDate() async&#123;</span><br><span class="line">  print(&quot;++++3333: +$&#123;DateTime.now()&#125;&quot;);</span><br><span class="line">  await Future.delayed(Duration(seconds:5));</span><br><span class="line">  print(&quot;++++44444: $&#123;DateTime.now()&#125;&quot;);</span><br><span class="line">  return null;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void main() async&#123;</span><br><span class="line">  print(&quot;++++111: $&#123;DateTime.now()&#125;&quot;);</span><br><span class="line">  await refreshDate(); // 标记为await 则先执行完refreshDate操作才会执行下一行</span><br><span class="line">  print(&quot;++++222: $&#123;DateTime.now()&#125;&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs dart">Future refreshDate() <span class="hljs-keyword">async</span>&#123;<br>  <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;++++3333: +<span class="hljs-subst">$&#123;DateTime.now()&#125;</span>&quot;</span>);<br>  <span class="hljs-keyword">await</span> Future.delayed(<span class="hljs-built_in">Duration</span>(seconds:<span class="hljs-number">5</span>));<br>  <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;++++44444: <span class="hljs-subst">$&#123;DateTime.now()&#125;</span>&quot;</span>);<br>  <span class="hljs-keyword">return</span> <span class="hljs-keyword">null</span>;<br>&#125;<br><br><span class="hljs-keyword">void</span> main() <span class="hljs-keyword">async</span>&#123;<br>  <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;++++111: <span class="hljs-subst">$&#123;DateTime.now()&#125;</span>&quot;</span>);<br>  <span class="hljs-keyword">await</span> refreshDate(); <span class="hljs-comment">// 标记为await 则先执行完refreshDate操作才会执行下一行</span><br>  <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;++++222: <span class="hljs-subst">$&#123;DateTime.now()&#125;</span>&quot;</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>日志：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">++++111: 2020-05-08 23:51:24.701</span><br><span class="line">++++3333: +2020-05-08 23:51:24.701</span><br><span class="line">++++44444: 2020-05-08 23:51:29.702</span><br><span class="line">++++222: 2020-05-08 23:51:29.702</span><br></pre></td></tr></table></figure>
+<figure class="highlight subunit"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs subunit">+++<span class="hljs-string">+111</span>: 2020<span class="hljs-string">-05</span><span class="hljs-string">-08</span> 23:51:24.701<br>+++<span class="hljs-string">+3333</span>: <span class="hljs-string">+2020</span><span class="hljs-string">-05</span><span class="hljs-string">-08</span> 23:51:24.701<br>+++<span class="hljs-string">+44444</span>: 2020<span class="hljs-string">-05</span><span class="hljs-string">-08</span> 23:51:29.702<br>+++<span class="hljs-string">+222</span>: 2020<span class="hljs-string">-05</span><span class="hljs-string">-08</span> 23:51:29.702<br></code></pre></td></tr></table></figure>
 
 <p>Dart 还提供了<code>Isolate</code>来让代码运行在其他线程中，从而实现并发编程，后续有时间继续研究~</p>
 <h3 id="三-后记"><a href="#三-后记" class="headerlink" title="三.后记"></a>三.后记</h3><p><code>Dart</code>包含了诸多现代编程语言的特性，特点鲜明：</p>
@@ -390,210 +534,340 @@
 <p>#<a target="_blank" rel="noopener" href="https://www.dartcn.com/">©Dart中文网</a></p>
 <p>#<a target="_blank" rel="noopener" href="https://dartpad.cn/">©DartPad-在线编译调试工具</a></p>
 <p>#<a target="_blank" rel="noopener" href="https://flutterchina.club/">©Flutter中文网</a></p>
-</section>
-    <!-- Tags START -->
-    
-      <div class="tags">
-        <span>Tags:</span>
-        
-  <a href="/tags#Flutter" >
-    <span class="tag-code">Flutter</span>
-  </a>
 
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Flutter/">#Flutter</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Dart语言入门</div>
+      <div>http://yoursite.com/2022/01/09/dart.html</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>January 9, 2022</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>Licensed under</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
       </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/06/06/RAC-sig-filter.html" title="RAC-数据的过滤与转换">
+                        <span class="hidden-mobile">RAC-数据的过滤与转换</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;Table of Contents</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
     
-    <!-- Tags END -->
-    <!-- NAV START -->
+
     
-  <div class="nav-container">
-    <!-- reverse left and right to put prev and next in a more logic postition -->
-    
-      <a class="nav-left" href="/2021/06/06/RAC-sig-filter.html">
-        <span class="nav-arrow">← </span>
-        
-          RAC-数据的过滤与转换
-        
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
       </a>
     
-    
-  </div>
 
-    <!-- NAV END -->
-    <!-- 打赏 START -->
     
-      <div class="money-like">
-        <div class="reward-btn">
-          赏
-          <span class="money-code">
-            <span class="alipay-code">
-              <div class="code-image"></div>
-              <b>使用支付宝打赏</b>
-            </span>
-            <span class="wechat-code">
-              <div class="code-image"></div>
-              <b>使用微信打赏</b>
-            </span>
-          </span>
-        </div>
-        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
       </div>
-    
-    <!-- 打赏 END -->
-    <!-- 二维码 START -->
-    
-    <!-- 二维码 END -->
-    
-      <!-- No Comment -->
-    
-  </article>
-  <!-- Article END -->
-  <!-- Catalog START -->
-  
-    <aside class="catalog-container">
-  <div class="toc-main">
-    <strong class="toc-title">Catalog</strong>
-    
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E4%B8%80-%E7%AE%80%E4%BB%8B"><span class="toc-nav-text">一.简介</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E4%BA%8C-%E8%AF%AD%E6%B3%95%E3%80%81%E7%89%B9%E6%80%A7"><span class="toc-nav-text">二.语法、特性</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#1-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="toc-nav-text">1.数据类型</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-%E4%B8%87%E7%89%A9%E7%9A%86%E5%AF%B9%E8%B1%A1"><span class="toc-nav-text">2.万物皆对象</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3-%E5%8A%A8%E6%80%81%E7%B1%BB%E5%9E%8B"><span class="toc-nav-text">3.动态类型</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#4-%E7%BC%96%E8%AF%91%E6%97%B6%E5%B8%B8%E9%87%8F"><span class="toc-nav-text">4.编译时常量</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#5-%E5%87%BD%E6%95%B0-amp-%E5%8F%AF%E9%80%89%E5%8F%82%E6%95%B0"><span class="toc-nav-text">5.函数&amp;可选参数</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#6-%E5%87%BD%E6%95%B0%E6%98%AF%E4%B8%80%E7%AD%89%E5%85%AC%E6%B0%91"><span class="toc-nav-text">6.函数是一等公民</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#7-%E9%97%AD%E5%8C%85"><span class="toc-nav-text">7.闭包</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#8-%E9%93%BE%E5%BC%8F-x2F-%E7%BA%A7%E8%81%94"><span class="toc-nav-text">8.链式&#x2F;级联</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#9-switch%E7%9A%84%E5%80%BC"><span class="toc-nav-text">9.switch的值</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#10-%E5%8F%AF%E9%80%89%E9%93%BE"><span class="toc-nav-text">10.可选链</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#11-%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0"><span class="toc-nav-text">11.构造函数</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#12-%E5%88%9D%E5%A7%8B%E5%8C%96%E5%88%97%E8%A1%A8"><span class="toc-nav-text">12.初始化列表</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#13-Getter-x2F-Setter"><span class="toc-nav-text">13.Getter&#x2F;Setter</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#14-%E6%8A%BD%E8%B1%A1%E7%B1%BB-amp-extends"><span class="toc-nav-text">14.抽象类&amp;extends</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#15-%E6%8E%A5%E5%8F%A3-amp-implements"><span class="toc-nav-text">15.接口&amp;implements</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#16-Mixin"><span class="toc-nav-text">16.Mixin</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#17-%E6%B3%9B%E5%9E%8B"><span class="toc-nav-text">17.泛型</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#18-is-amp-as"><span class="toc-nav-text">18.is&amp;as</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#19-%E5%BA%93"><span class="toc-nav-text">19.库</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#20-%E5%BC%82%E6%AD%A5"><span class="toc-nav-text">20.异步</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E4%B8%89-%E5%90%8E%E8%AE%B0"><span class="toc-nav-text">三.后记</span></a></li></ol>
-    
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
   </div>
-</aside>
-  
-  <!-- Catalog END -->
-</main>
-
-<script>
-  (function () {
-    var url = 'http://yoursite.com/2022/01/09/dart.html';
-    var banner = ''
-    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
-      $('#article-banner').css({
-        'background-image': 'url(' + banner + ')'
-      })
-    } else {
-      $('#article-banner').geopattern(url)
-    }
-    $('.header').removeClass('fixed-header')
-
-     // error image
-    $(".markdown-content img").on('error', function() {
-      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
-      $(this).css({
-        'cursor': 'default'
-      })
-    })
-
-    // zoom image
-    $(".markdown-content img").on('click', function() {
-      var src = $(this).attr('src')
-      if (src !== 'http://file.muyutech.com/error-img.png') {
-        var imageW = $(this).width()
-        var imageH = $(this).height()
-        
-        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
-        zoom = zoom < 1 ? 1 : zoom
-        zoom = zoom > 2 ? 2 : zoom
-        var transY = (($(window).height() - imageH) / 2).toFixed(2)
-
-        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
-        $('.image-view-wrap').addClass('wrap-active')
-        $('.image-view-wrap img').css({
-          'width': `${imageW}`,
-          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
-        })
-        $('html').css('overflow', 'hidden')
-
-        $('.image-view-wrap').on('click', function() {
-          $(this).remove()
-          $('html').attr('style', '')
-        })
-      }
-    })
-
-    // qrcode
-    var qr = new QRious({
-      element: document.getElementById('share-qrcode'),
-      value: document.location.href
-    });
-
-    // gitment
-    var gitmentConfig = "";
-    if (gitmentConfig !== 'undefined') {
-      var gitment = new Gitment({
-        id: "Dart语言入门",
-        owner: "",
-        repo: "",
-        oauth: {
-          client_id: "",
-          client_secret: ""
-        },
-        theme: {
-          render(state, instance) {
-            const container = document.createElement('div')
-            container.lang = "en-US"
-            container.className = 'gitment-container gitment-root-container'
-            container.appendChild(instance.renderHeader(state, instance))
-            container.appendChild(instance.renderEditor(state, instance))
-            container.appendChild(instance.renderComments(state, instance))
-            container.appendChild(instance.renderFooter(state, instance))
-            return container;
-          }
-        }
-      })
-      gitment.render(document.getElementById('comments'))
-    }
-  })();
-</script>
-
-    <div class="scroll-top">
-  <span class="arrow-icon"></span>
 </div>
-    <footer class="app-footer">
-  <p class="copyright">
-    &copy; 2022 | <a href="https://github.com/davidlii" target="_blank">Davidli</a>
-    <br>
-    <a href="https://hexo.io" target="_blank">Hexo</a> | Theme-<a target="_blank" rel="noopener" href="https://github.com/yanm1ng">yanm1ng</a>
-  </p>
-</footer>
 
-<script>
-  function async(u, c) {
-    var d = document, t = 'script',
-      o = d.createElement(t),
-      s = d.getElementsByTagName(t)[0];
-    o.src = u;
-    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
-    s.parentNode.insertBefore(o, s);
-  }
-</script>
-<script>
-  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
-    FastClick.attach(document.body);
-  })
-</script>
+    
 
-<script>
-  var hasLine = 'true';
-  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
-    $('figure pre').each(function(i, block) {
-      var figure = $(this).parents('figure');
-      if (hasLine === 'false') {
-        figure.find('.gutter').hide();
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://github.com/davidlii" target="_blank" rel="nofollow noopener"><span>Davidlii</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        Views: 
+        <span id="busuanzi_value_site_pv"></span>
+        
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        Visitors: 
+        <span id="busuanzi_value_site_uv"></span>
+        
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
       }
-      var lang = figure.attr('class').split(' ')[1] || 'code';
-      var codeHtml = $(this).html();
-      var codeTag = document.createElement('code');
-      codeTag.className = lang;
-      codeTag.innerHTML = codeHtml;
-      $(this).attr('class', '').empty().html(codeTag);
-      figure.attr('data-lang', lang.toUpperCase());
-      hljs.highlightBlock(block);
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
     });
-  })
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
 </script>
-<!-- Baidu Tongji -->
 
 
-<script src="/js/script.js"></script>
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
 
-  </body>
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
 </html>

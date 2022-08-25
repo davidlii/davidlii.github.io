@@ -1,146 +1,293 @@
+
+
 <!DOCTYPE html>
-<html>
-  <head>
-  <meta http-equiv="content-type" content="text/html; charset=utf-8">
-  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
-  <meta name="description" content="This is Davidli&#39;s blog ~">
-  <meta name="keyword" content="hexo-theme, vuejs">
-  
-    <link rel="shortcut icon" type="image/ico" href="/image/logo.png"/> 
-  
-  <title>
-    
-      frida一键砸壳 | Davidli
-    
-  </title>
-  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
-  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
-  
-<link rel="stylesheet" href="/css/style.css">
-<link rel="stylesheet" href="/css/plugins/gitment.css">
-
-  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
-  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
-  
-<script src="/js/qrious.js"></script>
-<script src="/js/gitment.js"></script>
-
-  
-  
-    <!-- MathJax support START -->
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      });
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      });
-    </script>
-    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <!-- MathJax support END -->
-  
+<html lang="zh-Hans" data-default-color-scheme=auto>
 
 
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="Davidli">
+  
+    <meta name="description" content="前两天重新给我的 iOS12 设备越狱，然后砸壳和反编译一个应用，结果又是ps命令出错、又是cycript命令出错，到处查资料，折腾了好久。后来发现竟然有一键砸壳的工具frida，这里含泪记录下来整个砸壳的流程~  frida官网：https:&#x2F;&#x2F;www.frida.re&#x2F;docs&#x2F;home&#x2F; 1.iOS设备配置1.1.越狱我的设备是 iOS12.1，所以使用目前最新的越狱工具uncc0ver，版">
+<meta property="og:type" content="article">
+<meta property="og:title" content="frida一键砸壳">
+<meta property="og:url" content="http://yoursite.com/2019/03/31/frida.html">
+<meta property="og:site_name" content="Davidli">
+<meta property="og:description" content="前两天重新给我的 iOS12 设备越狱，然后砸壳和反编译一个应用，结果又是ps命令出错、又是cycript命令出错，到处查资料，折腾了好久。后来发现竟然有一键砸壳的工具frida，这里含泪记录下来整个砸壳的流程~  frida官网：https:&#x2F;&#x2F;www.frida.re&#x2F;docs&#x2F;home&#x2F; 1.iOS设备配置1.1.越狱我的设备是 iOS12.1，所以使用目前最新的越狱工具uncc0ver，版">
+<meta property="og:locale">
+<meta property="og:image" content="https://davidlii.nos-eastchina1.126.net/pic_frida.png">
+<meta property="og:image" content="https://davidlii.nos-eastchina1.126.net/pic_crackerXI.PNG">
+<meta property="article:published_time" content="2019-03-31T15:19:07.000Z">
+<meta property="article:modified_time" content="2019-03-31T15:19:07.000Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="逆向工程">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://davidlii.nos-eastchina1.126.net/pic_frida.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>frida一键砸壳 - Davidli</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"yoursite.com","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
 <meta name="generator" content="Hexo 6.2.0"></head>
-<div class="wechat-share">
-  <img src="/css/images/logo.png" />
-</div>
 
-  <body>
-    <header class="header fixed-header">
-  <div class="header-container">
-    <a class="home-link" href="/">
-      <div class="logo"></div>
-      <span>Davidli</span>
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Davidli</strong>
     </a>
-    <ul class="right-list">
-      
-        <li class="list-item">
-          
-            <a href="/" class="item-link">Davidli</a>
-          
-        </li>
-      
-        <li class="list-item">
-          
-            <a href="/archives/" class="item-link">归档</a>
-          
-        </li>
-      
-        <li class="list-item">
-          
-            <a href="/tags/" class="item-link">标签</a>
-          
-        </li>
-      
-        <li class="list-item">
-          
-            <a href="/about/" class="item-link">关于</a>
-          
-        </li>
-      
-    </ul>
-    <div class="menu">
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-    </div>
-    <div class="menu-mask">
-      <ul class="menu-list">
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
         
-          <li class="menu-item">
-            
-              <a href="/" class="menu-link">Davidli</a>
-            
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                Categories
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                Tags
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
           </li>
+          
         
-          <li class="menu-item">
-            
-              <a href="/archives/" class="menu-link">归档</a>
-            
-          </li>
         
-          <li class="menu-item">
-            
-              <a href="/tags/" class="menu-link">标签</a>
-            
-          </li>
-        
-          <li class="menu-item">
-            
-              <a href="/about/" class="menu-link">关于</a>
-            
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
           </li>
         
       </ul>
     </div>
   </div>
-</header>
+</nav>
 
-    <div id="article-banner">
-  <h2>frida一键砸壳</h2>
-  <p class="post-date">2019-03-31</p>
-  <div class="arrow-down">
-    <a href="javascript:;"></a>
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="frida一键砸壳"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2019-03-31 23:19" pubdate>
+          March 31, 2019 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          5.4k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          45 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
   </div>
 </div>
-<main class="app-body flex-box">
-  <!-- Article START -->
-  <article class="post-article">
-    <section class="markdown-content"><p>前两天重新给我的 iOS12 设备越狱，然后砸壳和反编译一个应用，结果又是<code>ps</code>命令出错、又是<code>cycript</code>命令出错，到处查资料，折腾了好久。后来发现竟然有<code>一键砸壳</code>的工具<code>frida</code>，这里含泪记录下来整个砸壳的流程~</p>
-<p><img src="https://davidlii.nos-eastchina1.126.net/pic_frida.png" alt="纲目"></p>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">frida一键砸壳</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>前两天重新给我的 iOS12 设备越狱，然后砸壳和反编译一个应用，结果又是<code>ps</code>命令出错、又是<code>cycript</code>命令出错，到处查资料，折腾了好久。后来发现竟然有<code>一键砸壳</code>的工具<code>frida</code>，这里含泪记录下来整个砸壳的流程~</p>
+<p><img src="https://davidlii.nos-eastchina1.126.net/pic_frida.png" srcset="/img/loading.gif" lazyload alt="纲目"></p>
 <p>frida官网：<a target="_blank" rel="noopener" href="https://www.frida.re/docs/home/">https://www.frida.re/docs/home/</a></p>
 <h3 id="1-iOS设备配置"><a href="#1-iOS设备配置" class="headerlink" title="1.iOS设备配置"></a>1.iOS设备配置</h3><h4 id="1-1-越狱"><a href="#1-1-越狱" class="headerlink" title="1.1.越狱"></a>1.1.越狱</h4><p>我的设备是 iOS12.1，所以使用目前最新的越狱工具<code>uncc0ver</code>，版本号<code>v3.0.3~b48</code>，可以到 <a target="_blank" rel="noopener" href="https://app.ignition.fun/">这里</a> 下载。下载完成后启动<code>unc0ver</code>，点击<code>jailbreak</code>即可自动完成越狱并安装 Cydia 商店。</p>
 <h4 id="1-2-frida插件"><a href="#1-2-frida插件" class="headerlink" title="1.2.frida插件"></a>1.2.frida插件</h4><p>在 Cydia 中添加”<a target="_blank" rel="noopener" href="https://build.frida.re&quot;/">https://build.frida.re&quot;</a> 源并安装<code>frida</code>插件。</p>
@@ -148,7 +295,7 @@
 <ul>
 <li>安装 usbmuxd；</li>
 </ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ brew install usbmuxd</span><br></pre></td></tr></table></figure>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm">$ <span class="hljs-keyword">brew </span><span class="hljs-keyword">install </span>usbmuxd<br></code></pre></td></tr></table></figure>
 
 <ul>
 <li><p>设备通过数据线连接到 Mac 上；</p>
@@ -156,44 +303,44 @@
 <li><p>端口映射；</p>
 </li>
 </ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ iproxy 2222 22</span><br></pre></td></tr></table></figure>
+<figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs crystal"><span class="hljs-variable">$ </span>iproxy <span class="hljs-number">2222</span> <span class="hljs-number">22</span><br></code></pre></td></tr></table></figure>
 
 <p>将设备上<code>22</code>端口号映射到电脑上<code>2222</code>端口。</p>
 <h4 id="2-2-pip"><a href="#2-2-pip" class="headerlink" title="2.2.pip"></a>2.2.pip</h4><p><code>pip</code>是 Python 包管理工具,该工具提供了对 Python 包的查找、下载、安装、卸载的功能。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo easy_install pip</span><br></pre></td></tr></table></figure>
+<figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs crystal"><span class="hljs-variable">$ </span>sudo easy_install pip<br></code></pre></td></tr></table></figure>
 
 <h4 id="2-3-frida"><a href="#2-3-frida" class="headerlink" title="2.3.frida"></a>2.3.frida</h4><p>安装和升级<code>frida</code>：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ pip install --user frida</span><br></pre></td></tr></table></figure>
+<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs crmsh">$ pip install --<span class="hljs-keyword">user</span> <span class="hljs-title">frida</span><br></code></pre></td></tr></table></figure>
 
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo easy_install --upgrade frida</span><br></pre></td></tr></table></figure>
+<figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ada">$ sudo easy_install <span class="hljs-comment">--upgrade frida</span><br></code></pre></td></tr></table></figure>
 
 <h4 id="2-4-frida-tools"><a href="#2-4-frida-tools" class="headerlink" title="2.4.frida-tools"></a>2.4.frida-tools</h4><p>这是<code>frida</code>的命令行界面(CLI)，后面我们正是使用它自带的一些命令来查看或者调试应用。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ pip install frida-tools</span><br></pre></td></tr></table></figure>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cmake">$ pip <span class="hljs-keyword">install</span> frida-tools<br></code></pre></td></tr></table></figure>
 
 <h4 id="2-5-frida-ios-dump"><a href="#2-5-frida-ios-dump" class="headerlink" title="2.5.frida-ios-dump"></a>2.5.frida-ios-dump</h4><p>在桌面新建文件夹<code>Frida</code>：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ mkdir Frida</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash"><span class="hljs-built_in">mkdir</span> Frida</span><br></code></pre></td></tr></table></figure>
 
 <p>将<code>frida-ios-dump</code>克隆到刚才的文件夹中：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git clone https://github.com/AloneMonkey/frida-ios-dump Frida/</span><br></pre></td></tr></table></figure>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">$ git clone https:<span class="hljs-regexp">//gi</span>thub.com<span class="hljs-regexp">/AloneMonkey/</span>frida-ios-dump Frida/<br></code></pre></td></tr></table></figure>
 
 <p>安装依赖：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ cd Frida</span><br><span class="line">$ sudo pip install -r requirements.txt</span><br></pre></td></tr></table></figure>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs powershell"><span class="hljs-variable">$</span> <span class="hljs-built_in">cd</span> Frida<br><span class="hljs-variable">$</span> sudo pip install <span class="hljs-literal">-r</span> requirements.txt<br></code></pre></td></tr></table></figure>
 
 <p>修改<code>dump.py</code>配置：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">User = &#x27;root&#x27;</span><br><span class="line">Password = ‘alpine’</span><br><span class="line">Host = &#x27;localhost&#x27;</span><br><span class="line">Port = 2222</span><br></pre></td></tr></table></figure>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-attr">User</span> = <span class="hljs-string">&#x27;root&#x27;</span><br><span class="hljs-attr">Password</span> = ‘alpine’<br><span class="hljs-attr">Host</span> = <span class="hljs-string">&#x27;localhost&#x27;</span><br><span class="hljs-attr">Port</span> = <span class="hljs-number">2222</span><br></code></pre></td></tr></table></figure>
 
 <p>这里的<code>Password</code>要与越狱后<code>root</code>身份的密码一致，默认为<code>alpine</code>。一般越狱后考虑到 ssh 的安全问题，一般都要修改<code>root</code>和<code>mobile</code>身份的密码，所以这里要根据你自己的设置而修改。</p>
 <h3 id="3-砸壳"><a href="#3-砸壳" class="headerlink" title="3.砸壳"></a>3.砸壳</h3><h4 id="3-1-查看进程"><a href="#3-1-查看进程" class="headerlink" title="3.1.查看进程"></a>3.1.查看进程</h4><p>接下来就可以进入实战阶段了，你可以使用<code>frida</code>指令查看正在运行的或者全部已安装的进程的信息。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># Connect Frida to an iPad over USB and list running processes</span><br><span class="line">$ frida-ps -U</span><br><span class="line"></span><br><span class="line"># List running applications</span><br><span class="line">$ frida-ps -Ua</span><br><span class="line"></span><br><span class="line"># List installed applications</span><br><span class="line">$ frida-ps -Uai</span><br><span class="line"></span><br><span class="line"># Connect Frida to the specific device</span><br><span class="line">$ frida-ps -D 0216027d1d6d3a03</span><br></pre></td></tr></table></figure>
+<figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs crystal"><span class="hljs-comment"># Connect Frida to an iPad over USB and list running processes</span><br><span class="hljs-variable">$ </span>frida-ps -U<br><br><span class="hljs-comment"># List running applications</span><br><span class="hljs-variable">$ </span>frida-ps -Ua<br><br><span class="hljs-comment"># List installed applications</span><br><span class="hljs-variable">$ </span>frida-ps -Uai<br><br><span class="hljs-comment"># Connect Frida to the specific device</span><br><span class="hljs-variable">$ </span>frida-ps -D <span class="hljs-number">0</span>216027d1d6d3a03<br></code></pre></td></tr></table></figure>
 
 <p>比如我查看当前设备中已经打开的应用：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">$ frida-ps -Ua</span><br><span class="line"> PID  Name    Identifier</span><br><span class="line">----  ------  -------------------------</span><br><span class="line">1509  Filza   com.tigisoftware.Filza</span><br><span class="line">1250  微信      com.tencent.xin</span><br><span class="line">1251  支付宝     com.alipay.iphoneclient</span><br><span class="line">1441  斗鱼      tv.douyu.live</span><br><span class="line">1525  照片      com.apple.mobileslideshow</span><br><span class="line">1246  百度手机卫士  com.baidu.security</span><br><span class="line">1501  网易新闻    com.netease.news</span><br><span class="line">1249  邮件      com.apple.mobilemail </span><br></pre></td></tr></table></figure>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs stylus">$ frida-ps -Ua<br> PID  Name    Identifier<br>----  ------  -------------------------<br><span class="hljs-number">1509</span>  Filza   com<span class="hljs-selector-class">.tigisoftware</span><span class="hljs-selector-class">.Filza</span><br><span class="hljs-number">1250</span>  微信      com<span class="hljs-selector-class">.tencent</span><span class="hljs-selector-class">.xin</span><br><span class="hljs-number">1251</span>  支付宝     com<span class="hljs-selector-class">.alipay</span><span class="hljs-selector-class">.iphoneclient</span><br><span class="hljs-number">1441</span>  斗鱼      tv<span class="hljs-selector-class">.douyu</span><span class="hljs-selector-class">.live</span><br><span class="hljs-number">1525</span>  照片      com<span class="hljs-selector-class">.apple</span><span class="hljs-selector-class">.mobileslideshow</span><br><span class="hljs-number">1246</span>  百度手机卫士  com<span class="hljs-selector-class">.baidu</span><span class="hljs-selector-class">.security</span><br><span class="hljs-number">1501</span>  网易新闻    com<span class="hljs-selector-class">.netease</span><span class="hljs-selector-class">.news</span><br><span class="hljs-number">1249</span>  邮件      com<span class="hljs-selector-class">.apple</span><span class="hljs-selector-class">.mobilemail</span> <br></code></pre></td></tr></table></figure>
 
 <p>第一列是进程<code>ID</code>，第二列是进程<code>名称</code>，第三列是进程<code>bundle id</code>。</p>
 <h4 id="3-2-开始砸壳"><a href="#3-2-开始砸壳" class="headerlink" title="3.2.开始砸壳"></a>3.2.开始砸壳</h4><p>重点 lei 了~砸壳时我们使用的是刚才克隆而来的<code>frida-ios-dump</code>中的<code>./dump.py</code>这个 Python 脚本文件。使用方法：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ cd Frida</span><br><span class="line">$ ./dump.py 微信</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash"><span class="hljs-built_in">cd</span> Frida</span><br><span class="hljs-meta prompt_">$ </span><span class="language-bash">./dump.py 微信</span><br></code></pre></td></tr></table></figure>
 <p>砸壳时使用<code>名称</code>和<code>bundle id</code>都可以。注意，执行<code>$ ./dump.py xxx</code>时，被砸壳的应用一定要是在<code>运行</code>状态，不能在后台，也不能锁屏。如果此应用没有在运行状态，那么执行完此命令后，该应用会自动运行起来，这时再运行一次上面的命令即可。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">Start the target app 微信</span><br><span class="line">Dumping 微信 to /var/folders/18/prkfmw9150xbt4s2b47hhff40000gn/T</span><br><span class="line">start dump /var/containers/Bundle/Application/F441A6E7-863E-4A1C-AAEB-ECD4F9555208/WeChat.app/WeChat</span><br><span class="line">WeChat.fid: 100%|██████████| 80.3M/80.3M [00:05&lt;00:00, 16.1MB/s]</span><br><span class="line">start dump /private/var/containers/Bundle/Application/F441A6E7-863E-4A1C-AAEB-ECD4F9555208/WeChat.app/Frameworks/zstd.framework/zstd</span><br><span class="line">zstd.fid: 100%|██████████| 682k/682k [00:00&lt;00:00, 3.99MB/s]</span><br><span class="line">start dump /private/var/containers/Bundle/Application/F441A6E7-863E-4A1C-AAEB-ECD4F9555208/WeChat.app/Frameworks/TXLiteAVSDK_Smart_No_VOD.framework/TXLiteAVSDK_Smart_No_VOD</span><br><span class="line">TXLiteAVSDK_Smart_No_VOD.fid: 100%|██████████| 5.21M/5.21M [00:00&lt;00:00, 11.3MB/s]</span><br><span class="line">start dump /private/var/containers/Bundle/Application/F441A6E7-863E-4A1C-AAEB-ECD4F9555208/WeChat.app/Frameworks/matrixreport.framework/matrixreport</span><br><span class="line">matrixreport.fid: 100%|██████████| 460k/460k [00:00&lt;00:00, 3.90MB/s]</span><br><span class="line">start dump /private/var/containers/Bundle/Application/F441A6E7-863E-4A1C-AAEB-ECD4F9555208/WeChat.app/Frameworks/YTFaceProSDK.framework/YTFaceProSDK</span><br><span class="line">YTFaceProSDK.fid: 100%|██████████| 13.1M/13.1M [00:01&lt;00:00, 13.7MB/s]</span><br><span class="line">start dump /private/var/containers/Bundle/Application/F441A6E7-863E-4A1C-AAEB-ECD4F9555208/WeChat.app/Frameworks/GPUImage.framework/GPUImage</span><br><span class="line">GPUImage.fid: 100%|██████████| 1.21M/1.21M [00:00&lt;00:00, 7.08MB/s]</span><br><span class="line">start dump /private/var/containers/Bundle/Application/F441A6E7-863E-4A1C-AAEB-ECD4F9555208/WeChat.app/Frameworks/WCDB.framework/WCDB</span><br><span class="line">WCDB.fid: 100%|██████████| 4.25M/4.25M [00:00&lt;00:00, 11.5MB/s]</span><br><span class="line">start dump /private/var/containers/Bundle/Application/F441A6E7-863E-4A1C-AAEB-ECD4F9555208/WeChat.app/Frameworks/MMCommon.framework/MMCommon</span><br><span class="line">MMCommon.fid: 100%|██████████| 1.18M/1.18M [00:00&lt;00:00, 5.37MB/s]</span><br><span class="line">start dump /private/var/containers/Bundle/Application/F441A6E7-863E-4A1C-AAEB-ECD4F9555208/WeChat.app/Frameworks/MultiMedia.framework/MultiMedia</span><br><span class="line">MultiMedia.fid: 100%|██████████| 7.66M/7.66M [00:00&lt;00:00, 12.3MB/s]</span><br><span class="line">start dump /private/var/containers/Bundle/Application/F441A6E7-863E-4A1C-AAEB-ECD4F9555208/WeChat.app/Frameworks/QBar.framework/QBar</span><br><span class="line">QBar.fid: 100%|██████████| 2.62M/2.62M [00:00&lt;00:00, 10.0MB/s]</span><br><span class="line">start dump /private/var/containers/Bundle/Application/F441A6E7-863E-4A1C-AAEB-ECD4F9555208/WeChat.app/Frameworks/QMapKit.framework/QMapKit</span><br><span class="line">QMapKit.fid: 100%|██████████| 3.79M/3.79M [00:00&lt;00:00, 10.3MB/s]</span><br><span class="line">start dump /private/var/containers/Bundle/Application/F441A6E7-863E-4A1C-AAEB-ECD4F9555208/WeChat.app/Frameworks/ConfSDK.framework/ConfSDK</span><br><span class="line">ConfSDK.fid: 100%|██████████| 4.01M/4.01M [00:00&lt;00:00, 10.8MB/s]</span><br><span class="line">start dump /private/var/containers/Bundle/Application/F441A6E7-863E-4A1C-AAEB-ECD4F9555208/WeChat.app/Frameworks/mars.framework/mars</span><br><span class="line">mars.fid: 100%|██████████| 8.79M/8.79M [00:00&lt;00:00, 13.4MB/s]</span><br><span class="line">Expression_46@2x.png: 211MB [00:31, 6.96MB/s]</span><br><span class="line">0.00B [00:00, ?B/s]Generating &quot;微信.ipa&quot;</span><br></pre></td></tr></table></figure>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">Start</span> the target app 微信<br><span class="hljs-attribute">Dumping</span> 微信 to /var/folders/<span class="hljs-number">18</span>/prkfmw9150xbt4s2b47hhff40000gn/T<br><span class="hljs-attribute">start</span> dump /var/containers/Bundle/Application/F441A6E7-<span class="hljs-number">863</span>E-<span class="hljs-number">4</span>A1C-AAEB-ECD4F9555208/WeChat.app/WeChat<br><span class="hljs-attribute">WeChat</span>.fid: <span class="hljs-number">100</span>%|██████████| <span class="hljs-number">80</span>.<span class="hljs-number">3</span>M/<span class="hljs-number">80</span>.<span class="hljs-number">3</span>M<span class="hljs-meta"> [00:05&lt;00:00, 16.1MB/s]</span><br><span class="hljs-attribute">start</span> dump /private/var/containers/Bundle/Application/F441A6E7-<span class="hljs-number">863</span>E-<span class="hljs-number">4</span>A1C-AAEB-ECD4F9555208/WeChat.app/Frameworks/zstd.framework/zstd<br><span class="hljs-attribute">zstd</span>.fid: <span class="hljs-number">100</span>%|██████████| <span class="hljs-number">682</span>k/<span class="hljs-number">682</span>k<span class="hljs-meta"> [00:00&lt;00:00, 3.99MB/s]</span><br><span class="hljs-attribute">start</span> dump /private/var/containers/Bundle/Application/F441A6E7-<span class="hljs-number">863</span>E-<span class="hljs-number">4</span>A1C-AAEB-ECD4F9555208/WeChat.app/Frameworks/TXLiteAVSDK_Smart_No_VOD.framework/TXLiteAVSDK_Smart_No_VOD<br><span class="hljs-attribute">TXLiteAVSDK_Smart_No_VOD</span>.fid: <span class="hljs-number">100</span>%|██████████| <span class="hljs-number">5</span>.<span class="hljs-number">21</span>M/<span class="hljs-number">5</span>.<span class="hljs-number">21</span>M<span class="hljs-meta"> [00:00&lt;00:00, 11.3MB/s]</span><br><span class="hljs-attribute">start</span> dump /private/var/containers/Bundle/Application/F441A6E7-<span class="hljs-number">863</span>E-<span class="hljs-number">4</span>A1C-AAEB-ECD4F9555208/WeChat.app/Frameworks/matrixreport.framework/matrixreport<br><span class="hljs-attribute">matrixreport</span>.fid: <span class="hljs-number">100</span>%|██████████| <span class="hljs-number">460</span>k/<span class="hljs-number">460</span>k<span class="hljs-meta"> [00:00&lt;00:00, 3.90MB/s]</span><br><span class="hljs-attribute">start</span> dump /private/var/containers/Bundle/Application/F441A6E7-<span class="hljs-number">863</span>E-<span class="hljs-number">4</span>A1C-AAEB-ECD4F9555208/WeChat.app/Frameworks/YTFaceProSDK.framework/YTFaceProSDK<br><span class="hljs-attribute">YTFaceProSDK</span>.fid: <span class="hljs-number">100</span>%|██████████| <span class="hljs-number">13</span>.<span class="hljs-number">1</span>M/<span class="hljs-number">13</span>.<span class="hljs-number">1</span>M<span class="hljs-meta"> [00:01&lt;00:00, 13.7MB/s]</span><br><span class="hljs-attribute">start</span> dump /private/var/containers/Bundle/Application/F441A6E7-<span class="hljs-number">863</span>E-<span class="hljs-number">4</span>A1C-AAEB-ECD4F9555208/WeChat.app/Frameworks/GPUImage.framework/GPUImage<br><span class="hljs-attribute">GPUImage</span>.fid: <span class="hljs-number">100</span>%|██████████| <span class="hljs-number">1</span>.<span class="hljs-number">21</span>M/<span class="hljs-number">1</span>.<span class="hljs-number">21</span>M<span class="hljs-meta"> [00:00&lt;00:00, 7.08MB/s]</span><br><span class="hljs-attribute">start</span> dump /private/var/containers/Bundle/Application/F441A6E7-<span class="hljs-number">863</span>E-<span class="hljs-number">4</span>A1C-AAEB-ECD4F9555208/WeChat.app/Frameworks/WCDB.framework/WCDB<br><span class="hljs-attribute">WCDB</span>.fid: <span class="hljs-number">100</span>%|██████████| <span class="hljs-number">4</span>.<span class="hljs-number">25</span>M/<span class="hljs-number">4</span>.<span class="hljs-number">25</span>M<span class="hljs-meta"> [00:00&lt;00:00, 11.5MB/s]</span><br><span class="hljs-attribute">start</span> dump /private/var/containers/Bundle/Application/F441A6E7-<span class="hljs-number">863</span>E-<span class="hljs-number">4</span>A1C-AAEB-ECD4F9555208/WeChat.app/Frameworks/MMCommon.framework/MMCommon<br><span class="hljs-attribute">MMCommon</span>.fid: <span class="hljs-number">100</span>%|██████████| <span class="hljs-number">1</span>.<span class="hljs-number">18</span>M/<span class="hljs-number">1</span>.<span class="hljs-number">18</span>M<span class="hljs-meta"> [00:00&lt;00:00, 5.37MB/s]</span><br><span class="hljs-attribute">start</span> dump /private/var/containers/Bundle/Application/F441A6E7-<span class="hljs-number">863</span>E-<span class="hljs-number">4</span>A1C-AAEB-ECD4F9555208/WeChat.app/Frameworks/MultiMedia.framework/MultiMedia<br><span class="hljs-attribute">MultiMedia</span>.fid: <span class="hljs-number">100</span>%|██████████| <span class="hljs-number">7</span>.<span class="hljs-number">66</span>M/<span class="hljs-number">7</span>.<span class="hljs-number">66</span>M<span class="hljs-meta"> [00:00&lt;00:00, 12.3MB/s]</span><br><span class="hljs-attribute">start</span> dump /private/var/containers/Bundle/Application/F441A6E7-<span class="hljs-number">863</span>E-<span class="hljs-number">4</span>A1C-AAEB-ECD4F9555208/WeChat.app/Frameworks/QBar.framework/QBar<br><span class="hljs-attribute">QBar</span>.fid: <span class="hljs-number">100</span>%|██████████| <span class="hljs-number">2</span>.<span class="hljs-number">62</span>M/<span class="hljs-number">2</span>.<span class="hljs-number">62</span>M<span class="hljs-meta"> [00:00&lt;00:00, 10.0MB/s]</span><br><span class="hljs-attribute">start</span> dump /private/var/containers/Bundle/Application/F441A6E7-<span class="hljs-number">863</span>E-<span class="hljs-number">4</span>A1C-AAEB-ECD4F9555208/WeChat.app/Frameworks/QMapKit.framework/QMapKit<br><span class="hljs-attribute">QMapKit</span>.fid: <span class="hljs-number">100</span>%|██████████| <span class="hljs-number">3</span>.<span class="hljs-number">79</span>M/<span class="hljs-number">3</span>.<span class="hljs-number">79</span>M<span class="hljs-meta"> [00:00&lt;00:00, 10.3MB/s]</span><br><span class="hljs-attribute">start</span> dump /private/var/containers/Bundle/Application/F441A6E7-<span class="hljs-number">863</span>E-<span class="hljs-number">4</span>A1C-AAEB-ECD4F9555208/WeChat.app/Frameworks/ConfSDK.framework/ConfSDK<br><span class="hljs-attribute">ConfSDK</span>.fid: <span class="hljs-number">100</span>%|██████████| <span class="hljs-number">4</span>.<span class="hljs-number">01</span>M/<span class="hljs-number">4</span>.<span class="hljs-number">01</span>M<span class="hljs-meta"> [00:00&lt;00:00, 10.8MB/s]</span><br><span class="hljs-attribute">start</span> dump /private/var/containers/Bundle/Application/F441A6E7-<span class="hljs-number">863</span>E-<span class="hljs-number">4</span>A1C-AAEB-ECD4F9555208/WeChat.app/Frameworks/mars.framework/mars<br><span class="hljs-attribute">mars</span>.fid: <span class="hljs-number">100</span>%|██████████| <span class="hljs-number">8</span>.<span class="hljs-number">79</span>M/<span class="hljs-number">8</span>.<span class="hljs-number">79</span>M<span class="hljs-meta"> [00:00&lt;00:00, 13.4MB/s]</span><br><span class="hljs-attribute">Expression_46</span>@<span class="hljs-number">2</span>x.png: <span class="hljs-number">211</span>MB<span class="hljs-meta"> [00:31, 6.96MB/s]</span><br><span class="hljs-attribute">0</span>.<span class="hljs-number">00</span>B<span class="hljs-meta"> [00:00, ?B/s]Generating &quot;微信.ipa&quot;</span><br></code></pre></td></tr></table></figure>
 
 <p>脚本会自动在当前目录中生成 dump 之后的<code>微信.ipa</code>文件，这就是我们想要的砸壳后的文件了~~</p>
 <h3 id="4-Hopper反编译"><a href="#4-Hopper反编译" class="headerlink" title="4.Hopper反编译"></a>4.Hopper反编译</h3><p>拿到砸壳后的<code>ipa</code>之后，使用解压缩软件将其解压后会得到一个<code>Payload</code>文件夹，里面就是 ipa 对应的二进制文件。打开<code>Hopper disassembler</code>，将二进制文件拖到其窗口中，自动开始反编译过程~</p>
@@ -212,223 +359,352 @@
 <li>使用 Mac 上的 iTools等助手将文件导出，解压后即可开始反编译。</li>
 </ul>
 <p>根据我的测试，被砸壳的应用一定要在非启动状态，就是说一定要由<code>CrackerXI</code>来启动目标应用，所以我猜它的原理应该也是在应用二进制文件启动加载阶段，注入自己的动态库并开始砸壳。</p>
-<p><img src="https://davidlii.nos-eastchina1.126.net/pic_crackerXI.PNG" alt="crackerXI"></p>
+<p><img src="https://davidlii.nos-eastchina1.126.net/pic_crackerXI.PNG" srcset="/img/loading.gif" lazyload alt="crackerXI"></p>
 <p>懒人改变世界~~</p>
 <hr>
 <p>相关参考：</p>
 <p>#<a target="_blank" rel="noopener" href="https://www.frida.re/docs/installation/">©frida官网</a></p>
 <p>#<a target="_blank" rel="noopener" href="http://www.alonemonkey.com/2018/01/30/frida-ios-dump/">©AloneMonkey - 一条命令完成砸壳</a></p>
-</section>
-    <!-- Tags START -->
-    
-      <div class="tags">
-        <span>Tags:</span>
-        
-  <a href="/tags#逆向工程" >
-    <span class="tag-code">逆向工程</span>
-  </a>
 
-      </div>
-    
-    <!-- Tags END -->
-    <!-- NAV START -->
-    
-  <div class="nav-container">
-    <!-- reverse left and right to put prev and next in a more logic postition -->
-    
-      <a class="nav-left" href="/2019/03/28/jailbreak-ios12.html">
-        <span class="nav-arrow">← </span>
-        
-          iOS12越狱填坑
-        
-      </a>
-    
-    
-      <a class="nav-right" href="/2019/04/02/safeapp.html">
-        
-          应用的安全
-        
-        <span class="nav-arrow"> →</span>
-      </a>
-    
-  </div>
-
-    <!-- NAV END -->
-    <!-- 打赏 START -->
-    
-      <div class="money-like">
-        <div class="reward-btn">
-          赏
-          <span class="money-code">
-            <span class="alipay-code">
-              <div class="code-image"></div>
-              <b>使用支付宝打赏</b>
-            </span>
-            <span class="wechat-code">
-              <div class="code-image"></div>
-              <b>使用微信打赏</b>
-            </span>
-          </span>
-        </div>
-        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
-      </div>
-    
-    <!-- 打赏 END -->
-    <!-- 二维码 START -->
-    
-    <!-- 二维码 END -->
-    
-      <!-- No Comment -->
-    
-  </article>
-  <!-- Article END -->
-  <!-- Catalog START -->
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
   
-    <aside class="catalog-container">
-  <div class="toc-main">
-    <strong class="toc-title">Catalog</strong>
-    
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1-iOS%E8%AE%BE%E5%A4%87%E9%85%8D%E7%BD%AE"><span class="toc-nav-text">1.iOS设备配置</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#1-1-%E8%B6%8A%E7%8B%B1"><span class="toc-nav-text">1.1.越狱</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#1-2-frida%E6%8F%92%E4%BB%B6"><span class="toc-nav-text">1.2.frida插件</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-Mac%E9%85%8D%E7%BD%AE"><span class="toc-nav-text">2.Mac配置</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-1-usbmuxd"><span class="toc-nav-text">2.1.usbmuxd</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-2-pip"><span class="toc-nav-text">2.2.pip</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-3-frida"><span class="toc-nav-text">2.3.frida</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-4-frida-tools"><span class="toc-nav-text">2.4.frida-tools</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-5-frida-ios-dump"><span class="toc-nav-text">2.5.frida-ios-dump</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-%E7%A0%B8%E5%A3%B3"><span class="toc-nav-text">3.砸壳</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3-1-%E6%9F%A5%E7%9C%8B%E8%BF%9B%E7%A8%8B"><span class="toc-nav-text">3.1.查看进程</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3-2-%E5%BC%80%E5%A7%8B%E7%A0%B8%E5%A3%B3"><span class="toc-nav-text">3.2.开始砸壳</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#4-Hopper%E5%8F%8D%E7%BC%96%E8%AF%91"><span class="toc-nav-text">4.Hopper反编译</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#5-CrackerXI"><span class="toc-nav-text">5.CrackerXI</span></a></li></ol>
-    
-  </div>
-</aside>
   
-  <!-- Catalog END -->
-</main>
-
-<script>
-  (function () {
-    var url = 'http://yoursite.com/2019/03/31/frida.html';
-    var banner = ''
-    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
-      $('#article-banner').css({
-        'background-image': 'url(' + banner + ')'
-      })
-    } else {
-      $('#article-banner').geopattern(url)
-    }
-    $('.header').removeClass('fixed-header')
-
-     // error image
-    $(".markdown-content img").on('error', function() {
-      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
-      $(this).css({
-        'cursor': 'default'
-      })
-    })
-
-    // zoom image
-    $(".markdown-content img").on('click', function() {
-      var src = $(this).attr('src')
-      if (src !== 'http://file.muyutech.com/error-img.png') {
-        var imageW = $(this).width()
-        var imageH = $(this).height()
-        
-        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
-        zoom = zoom < 1 ? 1 : zoom
-        zoom = zoom > 2 ? 2 : zoom
-        var transY = (($(window).height() - imageH) / 2).toFixed(2)
-
-        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
-        $('.image-view-wrap').addClass('wrap-active')
-        $('.image-view-wrap img').css({
-          'width': `${imageW}`,
-          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
-        })
-        $('html').css('overflow', 'hidden')
-
-        $('.image-view-wrap').on('click', function() {
-          $(this).remove()
-          $('html').attr('style', '')
-        })
-      }
-    })
-
-    // qrcode
-    var qr = new QRious({
-      element: document.getElementById('share-qrcode'),
-      value: document.location.href
-    });
-
-    // gitment
-    var gitmentConfig = "";
-    if (gitmentConfig !== 'undefined') {
-      var gitment = new Gitment({
-        id: "frida一键砸壳",
-        owner: "",
-        repo: "",
-        oauth: {
-          client_id: "",
-          client_secret: ""
-        },
-        theme: {
-          render(state, instance) {
-            const container = document.createElement('div')
-            container.lang = "en-US"
-            container.className = 'gitment-container gitment-root-container'
-            container.appendChild(instance.renderHeader(state, instance))
-            container.appendChild(instance.renderEditor(state, instance))
-            container.appendChild(instance.renderComments(state, instance))
-            container.appendChild(instance.renderFooter(state, instance))
-            return container;
-          }
-        }
-      })
-      gitment.render(document.getElementById('comments'))
-    }
-  })();
-</script>
-
-    <div class="scroll-top">
-  <span class="arrow-icon"></span>
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/">#逆向工程</a>
+      
+    </div>
+  
 </div>
-    <footer class="app-footer">
-  <p class="copyright">
-    &copy; 2022 | <a href="https://github.com/davidlii" target="_blank">Davidli</a>
-    <br>
-    <a href="https://hexo.io" target="_blank">Hexo</a> | Theme-<a target="_blank" rel="noopener" href="https://github.com/yanm1ng">yanm1ng</a>
-  </p>
-</footer>
 
-<script>
-  function async(u, c) {
-    var d = document, t = 'script',
-      o = d.createElement(t),
-      s = d.getElementsByTagName(t)[0];
-    o.src = u;
-    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
-    s.parentNode.insertBefore(o, s);
-  }
-</script>
-<script>
-  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
-    FastClick.attach(document.body);
-  })
-</script>
 
-<script>
-  var hasLine = 'true';
-  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
-    $('figure pre').each(function(i, block) {
-      var figure = $(this).parents('figure');
-      if (hasLine === 'false') {
-        figure.find('.gutter').hide();
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>frida一键砸壳</div>
+      <div>http://yoursite.com/2019/03/31/frida.html</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>March 31, 2019</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>Licensed under</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2019/04/02/safeapp.html" title="应用的安全">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">应用的安全</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2019/03/28/jailbreak-ios12.html" title="iOS12越狱填坑">
+                        <span class="hidden-mobile">iOS12越狱填坑</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;Table of Contents</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://github.com/davidlii" target="_blank" rel="nofollow noopener"><span>Davidlii</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        Views: 
+        <span id="busuanzi_value_site_pv"></span>
+        
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        Visitors: 
+        <span id="busuanzi_value_site_uv"></span>
+        
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
       }
-      var lang = figure.attr('class').split(' ')[1] || 'code';
-      var codeHtml = $(this).html();
-      var codeTag = document.createElement('code');
-      codeTag.className = lang;
-      codeTag.innerHTML = codeHtml;
-      $(this).attr('class', '').empty().html(codeTag);
-      figure.attr('data-lang', lang.toUpperCase());
-      hljs.highlightBlock(block);
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
     });
-  })
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
 </script>
-<!-- Baidu Tongji -->
 
 
-<script src="/js/script.js"></script>
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
 
-  </body>
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
 </html>

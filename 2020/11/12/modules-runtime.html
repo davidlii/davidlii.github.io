@@ -1,165 +1,311 @@
+
+
 <!DOCTYPE html>
-<html>
-  <head>
-  <meta http-equiv="content-type" content="text/html; charset=utf-8">
-  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
-  <meta name="description" content="This is Davidli&#39;s blog ~">
-  <meta name="keyword" content="hexo-theme, vuejs">
-  
-    <link rel="shortcut icon" type="image/ico" href="/image/logo.png"/> 
-  
-  <title>
-    
-      组件化-反射方案 | Davidli
-    
-  </title>
-  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
-  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
-  
-<link rel="stylesheet" href="/css/style.css">
-<link rel="stylesheet" href="/css/plugins/gitment.css">
-
-  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
-  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
-  
-<script src="/js/qrious.js"></script>
-<script src="/js/gitment.js"></script>
-
-  
-  
-    <!-- MathJax support START -->
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      });
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      });
-    </script>
-    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <!-- MathJax support END -->
-  
+<html lang="zh-Hans" data-default-color-scheme=auto>
 
 
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="Davidli">
+  
+    <meta name="description" content="1.前言上一篇文章中分析了组件化的目标和好处，同时梳理了基于URL+Block的路由组件化解决方案的原理、实践和优缺点。本文将继续介绍第二种解决方案：基于反射原理的组件化方案。 2.场景从主页跳转到详情，传入详情页所需的头像； 在详情中简单的修改信息之后，返回主页时更新主页的标题。 3.思路基于反射原理的组件化方案，其首要目标还是实现各组件之间的通信，同时减少组件间的耦合。其实现原理如下： 3.1">
+<meta property="og:type" content="article">
+<meta property="og:title" content="组件化-反射方案">
+<meta property="og:url" content="http://yoursite.com/2020/11/12/modules-runtime.html">
+<meta property="og:site_name" content="Davidli">
+<meta property="og:description" content="1.前言上一篇文章中分析了组件化的目标和好处，同时梳理了基于URL+Block的路由组件化解决方案的原理、实践和优缺点。本文将继续介绍第二种解决方案：基于反射原理的组件化方案。 2.场景从主页跳转到详情，传入详情页所需的头像； 在详情中简单的修改信息之后，返回主页时更新主页的标题。 3.思路基于反射原理的组件化方案，其首要目标还是实现各组件之间的通信，同时减少组件间的耦合。其实现原理如下： 3.1">
+<meta property="og:locale">
+<meta property="og:image" content="https://davidlii.nos-eastchina1.126.net/pic_module_runtime.jpg">
+<meta property="article:published_time" content="2020-11-12T02:47:33.000Z">
+<meta property="article:modified_time" content="2019-11-12T02:47:33.000Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="架构">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://davidlii.nos-eastchina1.126.net/pic_module_runtime.jpg">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>组件化-反射方案 - Davidli</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"yoursite.com","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
 <meta name="generator" content="Hexo 6.2.0"></head>
-<div class="wechat-share">
-  <img src="/css/images/logo.png" />
-</div>
 
-  <body>
-    <header class="header fixed-header">
-  <div class="header-container">
-    <a class="home-link" href="/">
-      <div class="logo"></div>
-      <span>Davidli</span>
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Davidli</strong>
     </a>
-    <ul class="right-list">
-      
-        <li class="list-item">
-          
-            <a href="/" class="item-link">Davidli</a>
-          
-        </li>
-      
-        <li class="list-item">
-          
-            <a href="/archives/" class="item-link">归档</a>
-          
-        </li>
-      
-        <li class="list-item">
-          
-            <a href="/tags/" class="item-link">标签</a>
-          
-        </li>
-      
-        <li class="list-item">
-          
-            <a href="/about/" class="item-link">关于</a>
-          
-        </li>
-      
-    </ul>
-    <div class="menu">
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-    </div>
-    <div class="menu-mask">
-      <ul class="menu-list">
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
         
-          <li class="menu-item">
-            
-              <a href="/" class="menu-link">Davidli</a>
-            
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                Categories
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                Tags
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
           </li>
+          
         
-          <li class="menu-item">
-            
-              <a href="/archives/" class="menu-link">归档</a>
-            
-          </li>
         
-          <li class="menu-item">
-            
-              <a href="/tags/" class="menu-link">标签</a>
-            
-          </li>
-        
-          <li class="menu-item">
-            
-              <a href="/about/" class="menu-link">关于</a>
-            
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
           </li>
         
       </ul>
     </div>
   </div>
-</header>
+</nav>
 
-    <div id="article-banner">
-  <h2>组件化-反射方案</h2>
-  <p class="post-date">2020-11-12</p>
-  <div class="arrow-down">
-    <a href="javascript:;"></a>
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="组件化-反射方案"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2020-11-12 10:47" pubdate>
+          November 12, 2020 am
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          11k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          93 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
   </div>
 </div>
-<main class="app-body flex-box">
-  <!-- Article START -->
-  <article class="post-article">
-    <section class="markdown-content"><h3 id="1-前言"><a href="#1-前言" class="headerlink" title="1.前言"></a>1.前言</h3><p>上一篇文章中分析了组件化的目标和好处，同时梳理了基于<code>URL+Block</code>的路由组件化解决方案的原理、实践和优缺点。本文将继续介绍第二种解决方案：基于反射原理的组件化方案。</p>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">组件化-反射方案</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h3 id="1-前言"><a href="#1-前言" class="headerlink" title="1.前言"></a>1.前言</h3><p>上一篇文章中分析了组件化的目标和好处，同时梳理了基于<code>URL+Block</code>的路由组件化解决方案的原理、实践和优缺点。本文将继续介绍第二种解决方案：基于反射原理的组件化方案。</p>
 <h3 id="2-场景"><a href="#2-场景" class="headerlink" title="2.场景"></a>2.场景</h3><p>从<code>主页</code>跳转到<code>详情</code>，传入详情页所需的头像；<br><br/></p>
 <p>在详情中简单的修改信息之后，返回主页时更新主页的标题。</p>
 <h3 id="3-思路"><a href="#3-思路" class="headerlink" title="3.思路"></a>3.思路</h3><p>基于反射原理的组件化方案，其首要目标还是实现各组件之间的通信，同时减少组件间的耦合。其实现原理如下：</p>
 <h4 id="3-1-反射类名"><a href="#3-1-反射类名" class="headerlink" title="3.1.反射类名"></a>3.1.反射类名</h4><p>利用运行时接口将类名反射成类，如目标组件的类名：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Class *targetObj = NSClassFromString(NSString *aClassName);</span><br></pre></td></tr></table></figure>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs abnf">Class *targetObj <span class="hljs-operator">=</span> NSClassFromString(NSString *aClassName)<span class="hljs-comment">;</span><br></code></pre></td></tr></table></figure>
 
 <h4 id="3-2-反射方法名"><a href="#3-2-反射方法名" class="headerlink" title="3.2.反射方法名"></a>3.2.反射方法名</h4><p>将方法名反射成SEL，如目标组件提供的接口：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SEL sel = NSSelectorFromString(NSString *aSelectorName);</span><br></pre></td></tr></table></figure>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs abnf">SEL sel <span class="hljs-operator">=</span> NSSelectorFromString(NSString *aSelectorName)<span class="hljs-comment">;</span><br></code></pre></td></tr></table></figure>
 
 <h4 id="3-3-调用"><a href="#3-3-调用" class="headerlink" title="3.3.调用"></a>3.3.调用</h4><p>通过 [targetObj performSelector:sel withObject:params] 实现与目标组件的通信：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (id)performSelector:(SEL)aSelector withObject:(id)object;</span><br></pre></td></tr></table></figure>
+<figure class="highlight erlang"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs erlang">- <span class="hljs-params">(id)</span>performSelector:<span class="hljs-params">(SEL)</span>aSelector withObject:<span class="hljs-params">(id)</span>object;<br></code></pre></td></tr></table></figure>
 
 <h4 id="3-4-优化"><a href="#3-4-优化" class="headerlink" title="3.4.优化"></a>3.4.优化</h4><p>由于 performSelector 传递的参数个数有限，且返回值只能为id类型，所以可使用 NSInvocation 作为备用方案：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">+ (NSInvocation *)invocationWithMethodSignature:(NSMethodSignature *)sig; // 创建实例</span><br><span class="line"></span><br><span class="line">@property (nullable, assign) id target; //设置目标</span><br><span class="line">@property SEL selector; // 设置目标函数</span><br><span class="line"></span><br><span class="line">- (void)setArgument:(void *)argumentLocation atIndex:(NSInteger)idx; //设置参数</span><br><span class="line">- (void)invoke; // 发起调用</span><br><span class="line">- (void)getReturnValue:(void *)retLoc; // 获取返回值</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs objectivec">+ (<span class="hljs-built_in">NSInvocation</span> *)invocationWithMethodSignature:(<span class="hljs-built_in">NSMethodSignature</span> *)sig; <span class="hljs-comment">// 创建实例</span><br><br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nullable</span>, <span class="hljs-keyword">assign</span>) <span class="hljs-type">id</span> target; <span class="hljs-comment">//设置目标</span><br><span class="hljs-keyword">@property</span> SEL selector; <span class="hljs-comment">// 设置目标函数</span><br><br>- (<span class="hljs-type">void</span>)setArgument:(<span class="hljs-type">void</span> *)argumentLocation atIndex:(<span class="hljs-built_in">NSInteger</span>)idx; <span class="hljs-comment">//设置参数</span><br>- (<span class="hljs-type">void</span>)invoke; <span class="hljs-comment">// 发起调用</span><br>- (<span class="hljs-type">void</span>)getReturnValue:(<span class="hljs-type">void</span> *)retLoc; <span class="hljs-comment">// 获取返回值</span><br></code></pre></td></tr></table></figure>
 
 <h3 id="4-CTMediator"><a href="#4-CTMediator" class="headerlink" title="4.CTMediator"></a>4.CTMediator</h3><p>反射方案利用了运行时的一些接口，如果你熟悉的话完全可以自己去尝试调用这些接口，实现组件间的通信。这里我想介绍的是一个用于实现组件间通信的三方库<a target="_blank" rel="noopener" href="https://github.com/casatwy/CTMediator">CTMediator</a>，它正是基于OC的反射机制，帮我们封装了 Target-action 和 NSInvocation 操作。它提供了两种调用组件的方式：本地调用和远程调用，同时提供了其他副产品。这个库对实践基于反射原理的组件化解耦方案提供了很好的帮助，至少你可以拿来做个参考。</p>
 <h4 id="4-1-代码"><a href="#4-1-代码" class="headerlink" title="4.1.代码"></a>4.1.代码</h4><p>这个库很精炼，只有两个文件：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">// CTMediator.h</span><br><span class="line"></span><br><span class="line">@interface CTMediator : NSObject</span><br><span class="line"></span><br><span class="line">+ (instancetype)sharedInstance;</span><br><span class="line"></span><br><span class="line">// 远程App调用入口</span><br><span class="line">- (id)performActionWithUrl:(NSURL *)url</span><br><span class="line">                completion:(void(^)(NSDictionary *info))completion;</span><br><span class="line"></span><br><span class="line">// 本地组件调用入口</span><br><span class="line">- (id)performTarget:(NSString *)targetName</span><br><span class="line">             action:(NSString *)actionName</span><br><span class="line">             params:(NSDictionary *)params</span><br><span class="line">  shouldCacheTarget:(BOOL)shouldCacheTarget;</span><br><span class="line"></span><br><span class="line">- (void)releaseCachedTargetWithTargetName:(NSString *)targetName;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-comment">// CTMediator.h</span><br><br><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">CTMediator</span> : <span class="hljs-title">NSObject</span></span><br><br>+ (<span class="hljs-keyword">instancetype</span>)sharedInstance;<br><br><span class="hljs-comment">// 远程App调用入口</span><br>- (<span class="hljs-type">id</span>)performActionWithUrl:(<span class="hljs-built_in">NSURL</span> *)url<br>                completion:(<span class="hljs-type">void</span>(^)(<span class="hljs-built_in">NSDictionary</span> *info))completion;<br><br><span class="hljs-comment">// 本地组件调用入口</span><br>- (<span class="hljs-type">id</span>)performTarget:(<span class="hljs-built_in">NSString</span> *)targetName<br>             action:(<span class="hljs-built_in">NSString</span> *)actionName<br>             params:(<span class="hljs-built_in">NSDictionary</span> *)params<br>  shouldCacheTarget:(<span class="hljs-type">BOOL</span>)shouldCacheTarget;<br><br>- (<span class="hljs-type">void</span>)releaseCachedTargetWithTargetName:(<span class="hljs-built_in">NSString</span> *)targetName;<br><span class="hljs-keyword">@end</span><br></code></pre></td></tr></table></figure>
 
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br></pre></td><td class="code"><pre><span class="line">// CTMediator.m</span><br><span class="line"></span><br><span class="line">@implementation CTMediator</span><br><span class="line"></span><br><span class="line">/* 远程APP调用入口</span><br><span class="line"> scheme://[target]/[action]?[params]</span><br><span class="line"> url sample:</span><br><span class="line"> aaa://targetA/actionB?id=1234</span><br><span class="line"> */</span><br><span class="line"></span><br><span class="line">- (id)performActionWithUrl:(NSURL *)url</span><br><span class="line">                completion:(void (^)(NSDictionary *))completion</span><br><span class="line">&#123;</span><br><span class="line">    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];</span><br><span class="line">    NSString *urlString = [url query];</span><br><span class="line">    for (NSString *param in [urlString componentsSeparatedByString:@&quot;&amp;&quot;]) &#123;</span><br><span class="line">        NSArray *elts = [param componentsSeparatedByString:@&quot;=&quot;];</span><br><span class="line">        if([elts count] &lt; 2) continue;</span><br><span class="line">        [params setObject:[elts lastObject] forKey:[elts firstObject]];</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    /* 这里这么写主要是出于安全考虑，防止黑客通过远程方式调用本地模块。</span><br><span class="line">    这里的做法足以应对绝大多数场景，如果要求更加严苛，也可以做更加复杂的安全逻辑。*/</span><br><span class="line">    NSString *actionName = [url.path stringByReplacingOccurrencesOfString:@&quot;/&quot; withString:@&quot;&quot;];</span><br><span class="line">    if ([actionName hasPrefix:@&quot;native&quot;]) &#123;</span><br><span class="line">        return @(NO);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    /* 这个demo针对URL的路由处理非常简单，就只是取对应的target名字和method名字，</span><br><span class="line">    但这已经足以应对绝大部份需求。如果需要拓展，可以在这个方法调用之前加入完整的路由逻辑</span><br><span class="line">    */</span><br><span class="line">    id result = [self performTarget:url.host</span><br><span class="line">                             action:actionName</span><br><span class="line">                             params:params</span><br><span class="line">                  shouldCacheTarget:NO];</span><br><span class="line">    if (completion) &#123;</span><br><span class="line">        if (result) &#123;</span><br><span class="line">            completion(@&#123;@&quot;result&quot;:result&#125;);</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            completion(nil);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return result;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// ME:本地组件调用入口</span><br><span class="line">- (id)performTarget:(NSString *)targetName</span><br><span class="line">             action:(NSString *)actionName</span><br><span class="line">             params:(NSDictionary *)params</span><br><span class="line">  shouldCacheTarget:(BOOL)shouldCacheTarget</span><br><span class="line">&#123;</span><br><span class="line">    NSString *swiftModuleName = params[kCTMediatorParamsKeySwiftTargetModuleName];</span><br><span class="line">    </span><br><span class="line">    // 反射target</span><br><span class="line">    NSString *targetClassString = nil;</span><br><span class="line">    if (swiftModuleName.length &gt; 0) &#123;</span><br><span class="line">        targetClassString = [NSString stringWithFormat:@&quot;%@.Target_%@&quot;, swiftModuleName, targetName];</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        // NOTICE: 就是这里给类名加了前缀!!!</span><br><span class="line">        targetClassString = [NSString stringWithFormat:@&quot;Target_%@&quot;, targetName];</span><br><span class="line">    &#125;</span><br><span class="line">    NSObject *target = self.cachedTarget[targetClassString];</span><br><span class="line">    if (target == nil) &#123;</span><br><span class="line">        Class targetClass = NSClassFromString(targetClassString);</span><br><span class="line">        target = [[targetClass alloc] init];</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    // 反射action</span><br><span class="line">    NSString *actionString = [NSString stringWithFormat:@&quot;Action_%@:&quot;, actionName];</span><br><span class="line">    SEL action = NSSelectorFromString(actionString);</span><br><span class="line">    </span><br><span class="line">    if (target == nil) &#123;</span><br><span class="line">        /*这里是处理无响应请求的地方之一，这个demo做得比较简单，如果没有可以响应的target，就直接return了。</span><br><span class="line">        实际开发过程中是可以事先给一个固定的target专门用于在这个时候顶上，然后处理这种请求的</span><br><span class="line">         */</span><br><span class="line">        [self NoTargetActionResponseWithTargetString:targetClassString</span><br><span class="line">                                      selectorString:actionString</span><br><span class="line">                                        originParams:params];</span><br><span class="line">        return nil;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    if (shouldCacheTarget) &#123;</span><br><span class="line">        self.cachedTarget[targetClassString] = target;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    if ([target respondsToSelector:action]) &#123;</span><br><span class="line">        // NOTICE: 调用 NSInvocation 进行通信</span><br><span class="line">        return [self safePerformAction:action target:target params:params];</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        // 这里是处理无响应请求的地方，如果无响应，则尝试调用对应target的notFound方法统一处理</span><br><span class="line">        SEL action = NSSelectorFromString(@&quot;notFound:&quot;);</span><br><span class="line">        if ([target respondsToSelector:action]) &#123;</span><br><span class="line">            return [self safePerformAction:action target:target params:params];</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            /* 这里也是处理无响应请求的地方，在notFound都没有的时候，这个demo是直接return了。</span><br><span class="line">            实际开发过程中，可以用前面提到的固定的target顶上的。</span><br><span class="line">             */</span><br><span class="line">            [self NoTargetActionResponseWithTargetString:targetClassString</span><br><span class="line">                                          selectorString:actionString</span><br><span class="line">                                            originParams:params];</span><br><span class="line">            [self.cachedTarget removeObjectForKey:targetClassString];</span><br><span class="line">            return nil;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (id)safePerformAction:(SEL)action</span><br><span class="line">                 target:(NSObject *)target</span><br><span class="line">                 params:(NSDictionary *)params</span><br><span class="line">&#123;</span><br><span class="line">    NSMethodSignature* methodSig = [target methodSignatureForSelector:action];</span><br><span class="line">    const char* retType = [methodSig methodReturnType];</span><br><span class="line">    </span><br><span class="line">    //...</span><br><span class="line">    // ME: 对目标组件返回值为非对象类型的情况进行特殊处理</span><br><span class="line"></span><br><span class="line">    if (strcmp(retType, @encode(NSUInteger)) == 0) &#123;</span><br><span class="line">        NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:methodSig];</span><br><span class="line">        [invocation setArgument:&amp;params atIndex:2];</span><br><span class="line">        [invocation setSelector:action];</span><br><span class="line">        [invocation setTarget:target];</span><br><span class="line">        [invocation invoke];</span><br><span class="line">        NSUInteger result = 0;</span><br><span class="line">        [invocation getReturnValue:&amp;result];</span><br><span class="line">        return @(result);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // ME: 返回值是对象类型则直接走此方法</span><br><span class="line">    return [target performSelector:action withObject:params];</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-comment">// CTMediator.m</span><br><br><span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">CTMediator</span></span><br><br><span class="hljs-comment">/* 远程APP调用入口</span><br><span class="hljs-comment"> scheme://[target]/[action]?[params]</span><br><span class="hljs-comment"> url sample:</span><br><span class="hljs-comment"> aaa://targetA/actionB?id=1234</span><br><span class="hljs-comment"> */</span><br><br>- (<span class="hljs-type">id</span>)performActionWithUrl:(<span class="hljs-built_in">NSURL</span> *)url<br>                completion:(<span class="hljs-type">void</span> (^)(<span class="hljs-built_in">NSDictionary</span> *))completion<br>&#123;<br>    <span class="hljs-built_in">NSMutableDictionary</span> *params = [[<span class="hljs-built_in">NSMutableDictionary</span> alloc] init];<br>    <span class="hljs-built_in">NSString</span> *urlString = [url query];<br>    <span class="hljs-keyword">for</span> (<span class="hljs-built_in">NSString</span> *param <span class="hljs-keyword">in</span> [urlString componentsSeparatedByString:<span class="hljs-string">@&quot;&amp;&quot;</span>]) &#123;<br>        <span class="hljs-built_in">NSArray</span> *elts = [param componentsSeparatedByString:<span class="hljs-string">@&quot;=&quot;</span>];<br>        <span class="hljs-keyword">if</span>([elts count] &lt; <span class="hljs-number">2</span>) <span class="hljs-keyword">continue</span>;<br>        [params setObject:[elts lastObject] forKey:[elts firstObject]];<br>    &#125;<br>    <br>    <span class="hljs-comment">/* 这里这么写主要是出于安全考虑，防止黑客通过远程方式调用本地模块。</span><br><span class="hljs-comment">    这里的做法足以应对绝大多数场景，如果要求更加严苛，也可以做更加复杂的安全逻辑。*/</span><br>    <span class="hljs-built_in">NSString</span> *actionName = [url.path stringByReplacingOccurrencesOfString:<span class="hljs-string">@&quot;/&quot;</span> withString:<span class="hljs-string">@&quot;&quot;</span>];<br>    <span class="hljs-keyword">if</span> ([actionName hasPrefix:<span class="hljs-string">@&quot;native&quot;</span>]) &#123;<br>        <span class="hljs-keyword">return</span> @(<span class="hljs-literal">NO</span>);<br>    &#125;<br>    <br>    <span class="hljs-comment">/* 这个demo针对URL的路由处理非常简单，就只是取对应的target名字和method名字，</span><br><span class="hljs-comment">    但这已经足以应对绝大部份需求。如果需要拓展，可以在这个方法调用之前加入完整的路由逻辑</span><br><span class="hljs-comment">    */</span><br>    <span class="hljs-type">id</span> result = [<span class="hljs-keyword">self</span> performTarget:url.host<br>                             action:actionName<br>                             params:params<br>                  shouldCacheTarget:<span class="hljs-literal">NO</span>];<br>    <span class="hljs-keyword">if</span> (completion) &#123;<br>        <span class="hljs-keyword">if</span> (result) &#123;<br>            completion(@&#123;<span class="hljs-string">@&quot;result&quot;</span>:result&#125;);<br>        &#125; <span class="hljs-keyword">else</span> &#123;<br>            completion(<span class="hljs-literal">nil</span>);<br>        &#125;<br>    &#125;<br>    <span class="hljs-keyword">return</span> result;<br>&#125;<br><br><span class="hljs-comment">// ME:本地组件调用入口</span><br>- (<span class="hljs-type">id</span>)performTarget:(<span class="hljs-built_in">NSString</span> *)targetName<br>             action:(<span class="hljs-built_in">NSString</span> *)actionName<br>             params:(<span class="hljs-built_in">NSDictionary</span> *)params<br>  shouldCacheTarget:(<span class="hljs-type">BOOL</span>)shouldCacheTarget<br>&#123;<br>    <span class="hljs-built_in">NSString</span> *swiftModuleName = params[kCTMediatorParamsKeySwiftTargetModuleName];<br>    <br>    <span class="hljs-comment">// 反射target</span><br>    <span class="hljs-built_in">NSString</span> *targetClassString = <span class="hljs-literal">nil</span>;<br>    <span class="hljs-keyword">if</span> (swiftModuleName.length &gt; <span class="hljs-number">0</span>) &#123;<br>        targetClassString = [<span class="hljs-built_in">NSString</span> stringWithFormat:<span class="hljs-string">@&quot;%@.Target_%@&quot;</span>, swiftModuleName, targetName];<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>        <span class="hljs-comment">// NOTICE: 就是这里给类名加了前缀!!!</span><br>        targetClassString = [<span class="hljs-built_in">NSString</span> stringWithFormat:<span class="hljs-string">@&quot;Target_%@&quot;</span>, targetName];<br>    &#125;<br>    <span class="hljs-built_in">NSObject</span> *target = <span class="hljs-keyword">self</span>.cachedTarget[targetClassString];<br>    <span class="hljs-keyword">if</span> (target == <span class="hljs-literal">nil</span>) &#123;<br>        Class targetClass = <span class="hljs-built_in">NSClassFromString</span>(targetClassString);<br>        target = [[targetClass alloc] init];<br>    &#125;<br>    <br>    <span class="hljs-comment">// 反射action</span><br>    <span class="hljs-built_in">NSString</span> *actionString = [<span class="hljs-built_in">NSString</span> stringWithFormat:<span class="hljs-string">@&quot;Action_%@:&quot;</span>, actionName];<br>    SEL action = <span class="hljs-built_in">NSSelectorFromString</span>(actionString);<br>    <br>    <span class="hljs-keyword">if</span> (target == <span class="hljs-literal">nil</span>) &#123;<br>        <span class="hljs-comment">/*这里是处理无响应请求的地方之一，这个demo做得比较简单，如果没有可以响应的target，就直接return了。</span><br><span class="hljs-comment">        实际开发过程中是可以事先给一个固定的target专门用于在这个时候顶上，然后处理这种请求的</span><br><span class="hljs-comment">         */</span><br>        [<span class="hljs-keyword">self</span> NoTargetActionResponseWithTargetString:targetClassString<br>                                      selectorString:actionString<br>                                        originParams:params];<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>;<br>    &#125;<br>    <br>    <span class="hljs-keyword">if</span> (shouldCacheTarget) &#123;<br>        <span class="hljs-keyword">self</span>.cachedTarget[targetClassString] = target;<br>    &#125;<br>    <br>    <span class="hljs-keyword">if</span> ([target respondsToSelector:action]) &#123;<br>        <span class="hljs-comment">// NOTICE: 调用 NSInvocation 进行通信</span><br>        <span class="hljs-keyword">return</span> [<span class="hljs-keyword">self</span> safePerformAction:action target:target params:params];<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>        <span class="hljs-comment">// 这里是处理无响应请求的地方，如果无响应，则尝试调用对应target的notFound方法统一处理</span><br>        SEL action = <span class="hljs-built_in">NSSelectorFromString</span>(<span class="hljs-string">@&quot;notFound:&quot;</span>);<br>        <span class="hljs-keyword">if</span> ([target respondsToSelector:action]) &#123;<br>            <span class="hljs-keyword">return</span> [<span class="hljs-keyword">self</span> safePerformAction:action target:target params:params];<br>        &#125; <span class="hljs-keyword">else</span> &#123;<br>            <span class="hljs-comment">/* 这里也是处理无响应请求的地方，在notFound都没有的时候，这个demo是直接return了。</span><br><span class="hljs-comment">            实际开发过程中，可以用前面提到的固定的target顶上的。</span><br><span class="hljs-comment">             */</span><br>            [<span class="hljs-keyword">self</span> NoTargetActionResponseWithTargetString:targetClassString<br>                                          selectorString:actionString<br>                                            originParams:params];<br>            [<span class="hljs-keyword">self</span>.cachedTarget removeObjectForKey:targetClassString];<br>            <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>;<br>        &#125;<br>    &#125;<br>&#125;<br><br>- (<span class="hljs-type">id</span>)safePerformAction:(SEL)action<br>                 target:(<span class="hljs-built_in">NSObject</span> *)target<br>                 params:(<span class="hljs-built_in">NSDictionary</span> *)params<br>&#123;<br>    <span class="hljs-built_in">NSMethodSignature</span>* methodSig = [target methodSignatureForSelector:action];<br>    <span class="hljs-keyword">const</span> <span class="hljs-type">char</span>* retType = [methodSig methodReturnType];<br>    <br>    <span class="hljs-comment">//...</span><br>    <span class="hljs-comment">// ME: 对目标组件返回值为非对象类型的情况进行特殊处理</span><br><br>    <span class="hljs-keyword">if</span> (strcmp(retType, <span class="hljs-keyword">@encode</span>(<span class="hljs-built_in">NSUInteger</span>)) == <span class="hljs-number">0</span>) &#123;<br>        <span class="hljs-built_in">NSInvocation</span> *invocation = [<span class="hljs-built_in">NSInvocation</span> invocationWithMethodSignature:methodSig];<br>        [invocation setArgument:&amp;params atIndex:<span class="hljs-number">2</span>];<br>        [invocation setSelector:action];<br>        [invocation setTarget:target];<br>        [invocation invoke];<br>        <span class="hljs-built_in">NSUInteger</span> result = <span class="hljs-number">0</span>;<br>        [invocation getReturnValue:&amp;result];<br>        <span class="hljs-keyword">return</span> @(result);<br>    &#125;<br><br>    <span class="hljs-comment">// ME: 返回值是对象类型则直接走此方法</span><br>    <span class="hljs-keyword">return</span> [target performSelector:action withObject:params];<br>&#125;<br><span class="hljs-keyword">@end</span><br></code></pre></td></tr></table></figure>
 
 <p>ps：库的作者提供了详细的注释，<code>// ME:</code>标注的注释是我添加，用来说明其中的业务逻辑。</p>
 <h4 id="4-2-本地调用"><a href="#4-2-本地调用" class="headerlink" title="4.2.本地调用"></a>4.2.本地调用</h4><p>CTMediator主要实现了本地调用功能，即库中的“performTarget:action:params:shouldCacheTarget:”接口。<br><br/></p>
@@ -188,11 +334,11 @@
 <p>基于URL的远程调用有个缺点，即URL中参数的类型将会受到限制，如传递图片、数据、block等类型时将很不方便。</p>
 <h3 id="5-实例"><a href="#5-实例" class="headerlink" title="5.实例"></a>5.实例</h3><p>着手实现章节开始时提出的场景需求：从<code>主页</code>组件跳转到<code>详情</code>组件；返回时更新主页组件的标题。</p>
 <h4 id="5-1-目标组件"><a href="#5-1-目标组件" class="headerlink" title="5.1.目标组件"></a>5.1.目标组件</h4><p><code>详情</code>组件视图控制器：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">@interface DetailViewController : UIViewController</span><br><span class="line">@property (nonatomic, strong) NSDictionary *params;  // 接收外部组件传进来的参数</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">#import &quot;DetailViewController.h&quot;</span><br><span class="line"></span><br><span class="line">@interface DetailViewController ()</span><br><span class="line">@property (weak, nonatomic) IBOutlet UIImageView *mIconImv;</span><br><span class="line">@property (nonatomic, strong) UIImage *image;</span><br><span class="line">@property (nonatomic, copy) DetailCallback callBack; // 回调block</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation DetailViewController</span><br><span class="line"></span><br><span class="line">- (void)viewDidLoad &#123;</span><br><span class="line">    [super viewDidLoad];</span><br><span class="line">    </span><br><span class="line">    // 获取参数</span><br><span class="line">    self.mIconImv.image = self.params[k_Key_Image];</span><br><span class="line">    self.callBack = self.params[k_Key_Block];</span><br><span class="line">    </span><br><span class="line">    UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];</span><br><span class="line">    [btn setTitle:@&quot;返回&quot; forState:UIControlStateNormal];</span><br><span class="line">    [btn addTarget:self action:@selector(onBackWithBlock) forControlEvents:UIControlEventTouchUpInside];</span><br><span class="line">    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:btn];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)onBackWithBlock&#123;</span><br><span class="line">    self.callBack(); //回传信息</span><br><span class="line">    [self.navigationController popViewControllerAnimated:YES];</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">DetailViewController</span> : <span class="hljs-title">UIViewController</span></span><br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">strong</span>) <span class="hljs-built_in">NSDictionary</span> *params;  <span class="hljs-comment">// 接收外部组件传进来的参数</span><br><span class="hljs-keyword">@end</span><br><br><span class="hljs-meta">#import <span class="hljs-string">&quot;DetailViewController.h&quot;</span></span><br><br><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">DetailViewController</span> ()</span><br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">weak</span>, <span class="hljs-keyword">nonatomic</span>) <span class="hljs-keyword">IBOutlet</span> <span class="hljs-built_in">UIImageView</span> *mIconImv;<br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">strong</span>) <span class="hljs-built_in">UIImage</span> *image;<br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">copy</span>) DetailCallback callBack; <span class="hljs-comment">// 回调block</span><br><span class="hljs-keyword">@end</span><br><br><span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">DetailViewController</span></span><br><br>- (<span class="hljs-type">void</span>)viewDidLoad &#123;<br>    [<span class="hljs-variable language_">super</span> viewDidLoad];<br>    <br>    <span class="hljs-comment">// 获取参数</span><br>    <span class="hljs-keyword">self</span>.mIconImv.image = <span class="hljs-keyword">self</span>.params[k_Key_Image];<br>    <span class="hljs-keyword">self</span>.callBack = <span class="hljs-keyword">self</span>.params[k_Key_Block];<br>    <br>    <span class="hljs-built_in">UIButton</span> *btn = [<span class="hljs-built_in">UIButton</span> buttonWithType:<span class="hljs-built_in">UIButtonTypeCustom</span>];<br>    [btn setTitle:<span class="hljs-string">@&quot;返回&quot;</span> forState:<span class="hljs-built_in">UIControlStateNormal</span>];<br>    [btn addTarget:<span class="hljs-keyword">self</span> action:<span class="hljs-keyword">@selector</span>(onBackWithBlock) forControlEvents:<span class="hljs-built_in">UIControlEventTouchUpInside</span>];<br>    <span class="hljs-keyword">self</span>.navigationItem.leftBarButtonItem = [[<span class="hljs-built_in">UIBarButtonItem</span> alloc] initWithCustomView:btn];<br>&#125;<br><br>- (<span class="hljs-type">void</span>)onBackWithBlock&#123;<br>    <span class="hljs-keyword">self</span>.callBack(); <span class="hljs-comment">//回传信息</span><br>    [<span class="hljs-keyword">self</span>.navigationController popViewControllerAnimated:<span class="hljs-literal">YES</span>];<br>&#125;<br><span class="hljs-keyword">@end</span><br></code></pre></td></tr></table></figure>
 
 <p>这是详情所在的视图控制器，其中定义了用于接收外部图片的属性<code>image</code>和处理回调的<code>callBack</code>闭包。视图加载时显示外部传进来的图片；退出详情页时回调<code>callBack</code>闭包以通知上层调用者处理自己的业务。</p>
 <h4 id="5-2-暴露接口"><a href="#5-2-暴露接口" class="headerlink" title="5.2.暴露接口"></a>5.2.暴露接口</h4><p>详情组件<code>对外提供服务的类</code>：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">@interface Target_DetailViewController : NSObject</span><br><span class="line">- (UIViewController*)Action_showDetail:(NSDictionary*)paramDic;</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">#import &quot;Target_DetailViewController.h&quot;</span><br><span class="line">// 导入详情原类</span><br><span class="line">#import &quot;DetailViewController.h&quot; // 服务类可依赖组件原类</span><br><span class="line"></span><br><span class="line">@implementation Target_DetailViewController</span><br><span class="line"></span><br><span class="line">- (UIViewController *)Action_showDetail:(NSDictionary *)paramDic&#123;</span><br><span class="line"></span><br><span class="line">    // 当前为业务实现层 属于组件的一部分，可以引用目标VC</span><br><span class="line">    DetailViewController *controller = [[UIStoryboard storyboardWithName:@&quot;Main&quot; bundle:nil]</span><br><span class="line">                                          instantiateViewControllerWithIdentifier:@&quot;DaDetailViewController&quot;];</span><br><span class="line">    // 给目标传值</span><br><span class="line">    controller.params = paramDic;</span><br><span class="line">    </span><br><span class="line">    return controller;</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">Target_DetailViewController</span> : <span class="hljs-title">NSObject</span></span><br>- (<span class="hljs-built_in">UIViewController</span>*)Action_showDetail:(<span class="hljs-built_in">NSDictionary</span>*)paramDic;<br><span class="hljs-keyword">@end</span><br><br><span class="hljs-meta">#import <span class="hljs-string">&quot;Target_DetailViewController.h&quot;</span></span><br><span class="hljs-comment">// 导入详情原类</span><br><span class="hljs-meta">#import <span class="hljs-string">&quot;DetailViewController.h&quot;</span> <span class="hljs-comment">// 服务类可依赖组件原类</span></span><br><br><span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">Target_DetailViewController</span></span><br><br>- (<span class="hljs-built_in">UIViewController</span> *)Action_showDetail:(<span class="hljs-built_in">NSDictionary</span> *)paramDic&#123;<br><br>    <span class="hljs-comment">// 当前为业务实现层 属于组件的一部分，可以引用目标VC</span><br>    DetailViewController *controller = [[<span class="hljs-built_in">UIStoryboard</span> storyboardWithName:<span class="hljs-string">@&quot;Main&quot;</span> bundle:<span class="hljs-literal">nil</span>]<br>                                          instantiateViewControllerWithIdentifier:<span class="hljs-string">@&quot;DaDetailViewController&quot;</span>];<br>    <span class="hljs-comment">// 给目标传值</span><br>    controller.params = paramDic;<br>    <br>    <span class="hljs-keyword">return</span> controller;<br>&#125;<br><span class="hljs-keyword">@end</span><br></code></pre></td></tr></table></figure>
 
 <p>一些细节：</p>
 <ul>
@@ -203,23 +349,23 @@
 </ul>
 <p>关于最后一条，这是因为接下来使用到的通信类三方库<code>CTMediator</code>中做了特殊处理，所以我们需要按照通信层的要求进行命名，当然，你也可以按照自己的规范在原库中将<code>Target_</code>he和<code>Action_</code>修改为你自己喜欢的前缀。</p>
 <h4 id="5-3-通信类"><a href="#5-3-通信类" class="headerlink" title="5.3.通信类"></a>5.3.通信类</h4><p><code>中间通信层</code>，这是三方库<code>CTMediator</code>的一个分类：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">#import &quot;CTMediator.h&quot;</span><br><span class="line"></span><br><span class="line">@interface CTMediator (Detail)</span><br><span class="line">/**</span><br><span class="line"> 详情中间通信类对外提供的接口</span><br><span class="line"> @param paramDic 参数</span><br><span class="line"> @return 返回值</span><br><span class="line"> */</span><br><span class="line">- (UIViewController*)CTDetail:(NSDictionary*)paramDic;</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">#import &quot;CTMediator+Detail.h&quot;</span><br><span class="line"></span><br><span class="line">@implementation CTMediator (Detail)</span><br><span class="line"></span><br><span class="line">- (UIViewController *)CTDetail:(NSDictionary *)paramDic&#123;</span><br><span class="line">    </span><br><span class="line">    /* 调用CTMediator库的“performTarget”方法;</span><br><span class="line">    使用字符串，结合反射机制，从而避免直接引用目标类，减少依赖</span><br><span class="line">    */</span><br><span class="line">    return [self performTarget:@&quot;DetailViewController&quot;</span><br><span class="line">                        action:@&quot;showDetail&quot;</span><br><span class="line">                        params:paramDic</span><br><span class="line">             shouldCacheTarget:NO];</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-meta">#import <span class="hljs-string">&quot;CTMediator.h&quot;</span></span><br><br><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">CTMediator</span> (<span class="hljs-title">Detail</span>)</span><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> 详情中间通信类对外提供的接口</span><br><span class="hljs-comment"> @param paramDic 参数</span><br><span class="hljs-comment"> @return 返回值</span><br><span class="hljs-comment"> */</span><br>- (<span class="hljs-built_in">UIViewController</span>*)<span class="hljs-built_in">CTDetail</span>:(<span class="hljs-built_in">NSDictionary</span>*)paramDic;<br><span class="hljs-keyword">@end</span><br><br><span class="hljs-meta">#import <span class="hljs-string">&quot;CTMediator+Detail.h&quot;</span></span><br><br><span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">CTMediator</span> (<span class="hljs-title">Detail</span>)</span><br><br>- (<span class="hljs-built_in">UIViewController</span> *)<span class="hljs-built_in">CTDetail</span>:(<span class="hljs-built_in">NSDictionary</span> *)paramDic&#123;<br>    <br>    <span class="hljs-comment">/* 调用CTMediator库的“performTarget”方法;</span><br><span class="hljs-comment">    使用字符串，结合反射机制，从而避免直接引用目标类，减少依赖</span><br><span class="hljs-comment">    */</span><br>    <span class="hljs-keyword">return</span> [<span class="hljs-keyword">self</span> performTarget:<span class="hljs-string">@&quot;DetailViewController&quot;</span><br>                        action:<span class="hljs-string">@&quot;showDetail&quot;</span><br>                        params:paramDic<br>             shouldCacheTarget:<span class="hljs-literal">NO</span>];<br>&#125;<br><span class="hljs-keyword">@end</span><br></code></pre></td></tr></table></figure>
 
 <p><code>-CTDetail:</code>即是详情中间通信类对外暴露的一个接口，其他组件想调用详情组件的服务时从这里找即可~<br><br/></p>
 <p>单独提供这么一层，而非在调用详情组件服务的地方直接执行<code>perform</code>方法，主要是因为这里的类名和方法名都是明文，在没有代码补全功能的情况下，让别的组件的开发者每次调用时都自己写一遍极有可能会出错，也很不方便。这一层对这些操作进行了封装，这样外部调用者就不用再为此挠头。<br><br/></p>
 <p>另外需要注意：这里的明文类名和方法名并没带上一小节提到的前缀，这些是在三方库<code>CTMediator</code>中自动追加的。</p>
 <h4 id="5-4-调用服务"><a href="#5-4-调用服务" class="headerlink" title="5.4.调用服务"></a>5.4.调用服务</h4><p>在主页组件中<code>调用</code>详情组件的服务：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">#import &quot;CTMediator+Detail.h&quot;</span><br><span class="line"></span><br><span class="line">@implementation HomeViewController</span><br><span class="line"></span><br><span class="line">- (IBAction)onShowDetail:(id)sender &#123;</span><br><span class="line">    UIButton *btn = sender;</span><br><span class="line">    </span><br><span class="line">    // 声明回调 从详情页面返回当前页面时更新标题</span><br><span class="line">    DetailCallback block = ^()&#123;</span><br><span class="line">        self.title = @&quot;Info Checked&quot;;</span><br><span class="line">    &#125;;</span><br><span class="line">    </span><br><span class="line">    // 通过中间层调用别的组件，传递参数</span><br><span class="line">    NSDictionary *params = @&#123;k_Key_Image : btn.currentBackgroundImage, k_Key_Block : block&#125;;</span><br><span class="line">    UIViewController *controller = [[CTMediator sharedInstance] CTDetail:params];</span><br><span class="line">    if (controller) &#123;</span><br><span class="line">        [self.navigationController pushViewController:controller animated:YES];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-meta">#import <span class="hljs-string">&quot;CTMediator+Detail.h&quot;</span></span><br><br><span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">HomeViewController</span></span><br><br>- (<span class="hljs-keyword">IBAction</span>)onShowDetail:(<span class="hljs-type">id</span>)sender &#123;<br>    <span class="hljs-built_in">UIButton</span> *btn = sender;<br>    <br>    <span class="hljs-comment">// 声明回调 从详情页面返回当前页面时更新标题</span><br>    DetailCallback block = ^()&#123;<br>        <span class="hljs-keyword">self</span>.title = <span class="hljs-string">@&quot;Info Checked&quot;</span>;<br>    &#125;;<br>    <br>    <span class="hljs-comment">// 通过中间层调用别的组件，传递参数</span><br>    <span class="hljs-built_in">NSDictionary</span> *params = @&#123;k_Key_Image : btn.currentBackgroundImage, k_Key_Block : block&#125;;<br>    <span class="hljs-built_in">UIViewController</span> *controller = [[<span class="hljs-built_in">CTMediator</span> sharedInstance] <span class="hljs-built_in">CTDetail</span>:params];<br>    <span class="hljs-keyword">if</span> (controller) &#123;<br>        [<span class="hljs-keyword">self</span>.navigationController pushViewController:controller animated:<span class="hljs-literal">YES</span>];<br>    &#125;<br>&#125;<br><span class="hljs-keyword">@end</span><br></code></pre></td></tr></table></figure>
 
 <p>在本次调用中，主页组件中并未直接引用详情组件的头文件，只是引用了详情组件的中间通信层<code>CTMediator+Detail.h</code>。主页组件最终通过详情中间通信层提供的接口实现了对详情组件的通信或者说服务的调用。</p>
 <h3 id="6-目录结构"><a href="#6-目录结构" class="headerlink" title="6.目录结构"></a>6.目录结构</h3><p>整个工程的目录结构如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── AppDelegate.h</span><br><span class="line">├── AppDelegate.m</span><br><span class="line">├── Assets.xcassets</span><br><span class="line">│   ├── AppIcon.appiconset</span><br><span class="line">│   │   └── Contents.json</span><br><span class="line">│   └── Contents.json</span><br><span class="line">├── Base.lproj</span><br><span class="line">│   ├── LaunchScreen.storyboard</span><br><span class="line">│   └── Main.storyboard</span><br><span class="line">├── Defines.h</span><br><span class="line">├── Detail</span><br><span class="line">│   ├── Controllers</span><br><span class="line">│   │   ├── DetailViewController.h</span><br><span class="line">│   │   └── DetailViewController.m</span><br><span class="line">│   ├── Mediator</span><br><span class="line">│   │   ├── CTMediator+Detail.h</span><br><span class="line">│   │   └── CTMediator+Detail.m</span><br><span class="line">│   └── Module+API</span><br><span class="line">│       ├── Target_DetailViewController.h</span><br><span class="line">│       └── Target_DetailViewController.m</span><br><span class="line">├── Home</span><br><span class="line">│   ├── HomeViewController.h</span><br><span class="line">│   └── HomeViewController.m</span><br><span class="line">├── Icons</span><br><span class="line">│   ├── 1@2x.png</span><br><span class="line">│   └── 1@3x.png</span><br><span class="line">├── Info.plist</span><br><span class="line">└── main.m</span><br></pre></td></tr></table></figure>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs stylus">.<br>├── AppDelegate<span class="hljs-selector-class">.h</span><br>├── AppDelegate<span class="hljs-selector-class">.m</span><br>├── Assets<span class="hljs-selector-class">.xcassets</span><br>│   ├── AppIcon<span class="hljs-selector-class">.appiconset</span><br>│   │   └── Contents<span class="hljs-selector-class">.json</span><br>│   └── Contents<span class="hljs-selector-class">.json</span><br>├── Base<span class="hljs-selector-class">.lproj</span><br>│   ├── LaunchScreen<span class="hljs-selector-class">.storyboard</span><br>│   └── Main<span class="hljs-selector-class">.storyboard</span><br>├── Defines<span class="hljs-selector-class">.h</span><br>├── Detail<br>│   ├── Controllers<br>│   │   ├── DetailViewController<span class="hljs-selector-class">.h</span><br>│   │   └── DetailViewController<span class="hljs-selector-class">.m</span><br>│   ├── Mediator<br>│   │   ├── CTMediator+Detail<span class="hljs-selector-class">.h</span><br>│   │   └── CTMediator+Detail<span class="hljs-selector-class">.m</span><br>│   └── Module+API<br>│       ├── Target_DetailViewController<span class="hljs-selector-class">.h</span><br>│       └── Target_DetailViewController<span class="hljs-selector-class">.m</span><br>├── Home<br>│   ├── HomeViewController<span class="hljs-selector-class">.h</span><br>│   └── HomeViewController<span class="hljs-selector-class">.m</span><br>├── Icons<br>│   ├── <span class="hljs-number">1</span>@<span class="hljs-number">2</span>x<span class="hljs-selector-class">.png</span><br>│   └── <span class="hljs-number">1</span>@<span class="hljs-number">3</span>x<span class="hljs-selector-class">.png</span><br>├── Info<span class="hljs-selector-class">.plist</span><br>└── <span class="hljs-selector-tag">main</span>.m<br></code></pre></td></tr></table></figure>
 <h3 id="7-流程总结"><a href="#7-流程总结" class="headerlink" title="7.流程总结"></a>7.流程总结</h3><ul>
 <li>定义目标组件；</li>
 <li>定义目标组件的对外服务类和接口；</li>
 <li>定义目标组件的中间通信层；</li>
 <li>发起者与目标组件的中间通信层交互，调用目标组件的接口；</li>
-<li>中间通信层调用CTMediator，通过运行时接口实现通信；<br><img src="https://davidlii.nos-eastchina1.126.net/pic_module_runtime.jpg" alt="组件化-反射方案"></li>
+<li>中间通信层调用CTMediator，通过运行时接口实现通信；<br><img src="https://davidlii.nos-eastchina1.126.net/pic_module_runtime.jpg" srcset="/img/loading.gif" lazyload alt="组件化-反射方案"></li>
 </ul>
 <h3 id="8-方案评价"><a href="#8-方案评价" class="headerlink" title="8.方案评价"></a>8.方案评价</h3><p>优点：</p>
 <ul>
@@ -242,217 +388,346 @@
 <p>#<a target="_blank" rel="noopener" href="https://github.com/davidli-/HelModules-URL">©URL+Block方案demo</a></p>
 <p>#<a target="_blank" rel="noopener" href="https://github.com/davidli-/DaModule-Protocol">©服务协议注册方案demo</a></p>
 <p>#<a target="_blank" rel="noopener" href="https://github.com/youzan/Bifrost">©有赞Bifrost</a></p>
-</section>
-    <!-- Tags START -->
-    
-      <div class="tags">
-        <span>Tags:</span>
-        
-  <a href="/tags#架构" >
-    <span class="tag-code">架构</span>
-  </a>
 
-      </div>
-    
-    <!-- Tags END -->
-    <!-- NAV START -->
-    
-  <div class="nav-container">
-    <!-- reverse left and right to put prev and next in a more logic postition -->
-    
-      <a class="nav-left" href="/2020/09/03/modules-url.html">
-        <span class="nav-arrow">← </span>
-        
-          组件化-URL路由方案
-        
-      </a>
-    
-    
-      <a class="nav-right" href="/2020/12/21/modules-protocol.html">
-        
-          组件化-面向协议方案
-        
-        <span class="nav-arrow"> →</span>
-      </a>
-    
-  </div>
-
-    <!-- NAV END -->
-    <!-- 打赏 START -->
-    
-      <div class="money-like">
-        <div class="reward-btn">
-          赏
-          <span class="money-code">
-            <span class="alipay-code">
-              <div class="code-image"></div>
-              <b>使用支付宝打赏</b>
-            </span>
-            <span class="wechat-code">
-              <div class="code-image"></div>
-              <b>使用微信打赏</b>
-            </span>
-          </span>
-        </div>
-        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
-      </div>
-    
-    <!-- 打赏 END -->
-    <!-- 二维码 START -->
-    
-    <!-- 二维码 END -->
-    
-      <!-- No Comment -->
-    
-  </article>
-  <!-- Article END -->
-  <!-- Catalog START -->
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
   
-    <aside class="catalog-container">
-  <div class="toc-main">
-    <strong class="toc-title">Catalog</strong>
-    
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1-%E5%89%8D%E8%A8%80"><span class="toc-nav-text">1.前言</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-%E5%9C%BA%E6%99%AF"><span class="toc-nav-text">2.场景</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-%E6%80%9D%E8%B7%AF"><span class="toc-nav-text">3.思路</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3-1-%E5%8F%8D%E5%B0%84%E7%B1%BB%E5%90%8D"><span class="toc-nav-text">3.1.反射类名</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3-2-%E5%8F%8D%E5%B0%84%E6%96%B9%E6%B3%95%E5%90%8D"><span class="toc-nav-text">3.2.反射方法名</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3-3-%E8%B0%83%E7%94%A8"><span class="toc-nav-text">3.3.调用</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3-4-%E4%BC%98%E5%8C%96"><span class="toc-nav-text">3.4.优化</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#4-CTMediator"><span class="toc-nav-text">4.CTMediator</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#4-1-%E4%BB%A3%E7%A0%81"><span class="toc-nav-text">4.1.代码</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#4-2-%E6%9C%AC%E5%9C%B0%E8%B0%83%E7%94%A8"><span class="toc-nav-text">4.2.本地调用</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#4-3-%E8%BF%9C%E7%A8%8B%E8%B0%83%E7%94%A8"><span class="toc-nav-text">4.3.远程调用</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#5-%E5%AE%9E%E4%BE%8B"><span class="toc-nav-text">5.实例</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#5-1-%E7%9B%AE%E6%A0%87%E7%BB%84%E4%BB%B6"><span class="toc-nav-text">5.1.目标组件</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#5-2-%E6%9A%B4%E9%9C%B2%E6%8E%A5%E5%8F%A3"><span class="toc-nav-text">5.2.暴露接口</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#5-3-%E9%80%9A%E4%BF%A1%E7%B1%BB"><span class="toc-nav-text">5.3.通信类</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#5-4-%E8%B0%83%E7%94%A8%E6%9C%8D%E5%8A%A1"><span class="toc-nav-text">5.4.调用服务</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#6-%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84"><span class="toc-nav-text">6.目录结构</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#7-%E6%B5%81%E7%A8%8B%E6%80%BB%E7%BB%93"><span class="toc-nav-text">7.流程总结</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#8-%E6%96%B9%E6%A1%88%E8%AF%84%E4%BB%B7"><span class="toc-nav-text">8.方案评价</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#9-%E7%BB%93%E5%B0%BE"><span class="toc-nav-text">9.结尾</span></a></li></ol>
-    
-  </div>
-</aside>
   
-  <!-- Catalog END -->
-</main>
-
-<script>
-  (function () {
-    var url = 'http://yoursite.com/2020/11/12/modules-runtime.html';
-    var banner = ''
-    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
-      $('#article-banner').css({
-        'background-image': 'url(' + banner + ')'
-      })
-    } else {
-      $('#article-banner').geopattern(url)
-    }
-    $('.header').removeClass('fixed-header')
-
-     // error image
-    $(".markdown-content img").on('error', function() {
-      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
-      $(this).css({
-        'cursor': 'default'
-      })
-    })
-
-    // zoom image
-    $(".markdown-content img").on('click', function() {
-      var src = $(this).attr('src')
-      if (src !== 'http://file.muyutech.com/error-img.png') {
-        var imageW = $(this).width()
-        var imageH = $(this).height()
-        
-        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
-        zoom = zoom < 1 ? 1 : zoom
-        zoom = zoom > 2 ? 2 : zoom
-        var transY = (($(window).height() - imageH) / 2).toFixed(2)
-
-        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
-        $('.image-view-wrap').addClass('wrap-active')
-        $('.image-view-wrap img').css({
-          'width': `${imageW}`,
-          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
-        })
-        $('html').css('overflow', 'hidden')
-
-        $('.image-view-wrap').on('click', function() {
-          $(this).remove()
-          $('html').attr('style', '')
-        })
-      }
-    })
-
-    // qrcode
-    var qr = new QRious({
-      element: document.getElementById('share-qrcode'),
-      value: document.location.href
-    });
-
-    // gitment
-    var gitmentConfig = "";
-    if (gitmentConfig !== 'undefined') {
-      var gitment = new Gitment({
-        id: "组件化-反射方案",
-        owner: "",
-        repo: "",
-        oauth: {
-          client_id: "",
-          client_secret: ""
-        },
-        theme: {
-          render(state, instance) {
-            const container = document.createElement('div')
-            container.lang = "en-US"
-            container.className = 'gitment-container gitment-root-container'
-            container.appendChild(instance.renderHeader(state, instance))
-            container.appendChild(instance.renderEditor(state, instance))
-            container.appendChild(instance.renderComments(state, instance))
-            container.appendChild(instance.renderFooter(state, instance))
-            return container;
-          }
-        }
-      })
-      gitment.render(document.getElementById('comments'))
-    }
-  })();
-</script>
-
-    <div class="scroll-top">
-  <span class="arrow-icon"></span>
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%9E%B6%E6%9E%84/">#架构</a>
+      
+    </div>
+  
 </div>
-    <footer class="app-footer">
-  <p class="copyright">
-    &copy; 2022 | <a href="https://github.com/davidlii" target="_blank">Davidli</a>
-    <br>
-    <a href="https://hexo.io" target="_blank">Hexo</a> | Theme-<a target="_blank" rel="noopener" href="https://github.com/yanm1ng">yanm1ng</a>
-  </p>
-</footer>
 
-<script>
-  function async(u, c) {
-    var d = document, t = 'script',
-      o = d.createElement(t),
-      s = d.getElementsByTagName(t)[0];
-    o.src = u;
-    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
-    s.parentNode.insertBefore(o, s);
-  }
-</script>
-<script>
-  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
-    FastClick.attach(document.body);
-  })
-</script>
 
-<script>
-  var hasLine = 'true';
-  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
-    $('figure pre').each(function(i, block) {
-      var figure = $(this).parents('figure');
-      if (hasLine === 'false') {
-        figure.find('.gutter').hide();
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>组件化-反射方案</div>
+      <div>http://yoursite.com/2020/11/12/modules-runtime.html</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>November 12, 2020</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>Licensed under</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/12/21/modules-protocol.html" title="组件化-面向协议方案">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">组件化-面向协议方案</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/09/03/modules-url.html" title="组件化-URL路由方案">
+                        <span class="hidden-mobile">组件化-URL路由方案</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;Table of Contents</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://github.com/davidlii" target="_blank" rel="nofollow noopener"><span>Davidlii</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        Views: 
+        <span id="busuanzi_value_site_pv"></span>
+        
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        Visitors: 
+        <span id="busuanzi_value_site_uv"></span>
+        
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
       }
-      var lang = figure.attr('class').split(' ')[1] || 'code';
-      var codeHtml = $(this).html();
-      var codeTag = document.createElement('code');
-      codeTag.className = lang;
-      codeTag.innerHTML = codeHtml;
-      $(this).attr('class', '').empty().html(codeTag);
-      figure.attr('data-lang', lang.toUpperCase());
-      hljs.highlightBlock(block);
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
     });
-  })
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
 </script>
-<!-- Baidu Tongji -->
 
 
-<script src="/js/script.js"></script>
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
 
-  </body>
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
 </html>

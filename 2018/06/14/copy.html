@@ -1,145 +1,292 @@
+
+
 <!DOCTYPE html>
-<html>
-  <head>
-  <meta http-equiv="content-type" content="text/html; charset=utf-8">
-  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
-  <meta name="description" content="This is Davidli&#39;s blog ~">
-  <meta name="keyword" content="hexo-theme, vuejs">
-  
-    <link rel="shortcut icon" type="image/ico" href="/image/logo.png"/> 
-  
-  <title>
-    
-      拷贝相关知识点 | Davidli
-    
-  </title>
-  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
-  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
-  
-<link rel="stylesheet" href="/css/style.css">
-<link rel="stylesheet" href="/css/plugins/gitment.css">
-
-  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
-  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
-  
-<script src="/js/qrious.js"></script>
-<script src="/js/gitment.js"></script>
-
-  
-  
-    <!-- MathJax support START -->
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      });
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      });
-    </script>
-    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <!-- MathJax support END -->
-  
+<html lang="zh-Hans" data-default-color-scheme=auto>
 
 
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="Davidli">
+  
+    <meta name="description" content="1.拷贝-初探文档摘要：  The exact meaning of “copy” can vary from class to class, but a copy must be a functionally independent object with values identical to the original at the time the copy was made.  上面的摘要">
+<meta property="og:type" content="article">
+<meta property="og:title" content="拷贝相关知识点">
+<meta property="og:url" content="http://yoursite.com/2018/06/14/copy.html">
+<meta property="og:site_name" content="Davidli">
+<meta property="og:description" content="1.拷贝-初探文档摘要：  The exact meaning of “copy” can vary from class to class, but a copy must be a functionally independent object with values identical to the original at the time the copy was made.  上面的摘要">
+<meta property="og:locale">
+<meta property="og:image" content="https://davidlii.nos-eastchina1.126.net/pic_object_ori.png">
+<meta property="og:image" content="https://davidlii.nos-eastchina1.126.net/pic_object_copy.png">
+<meta property="article:published_time" content="2018-06-14T13:12:52.000Z">
+<meta property="article:modified_time" content="2019-09-17T10:01:00.000Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="FQA">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://davidlii.nos-eastchina1.126.net/pic_object_ori.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>拷贝相关知识点 - Davidli</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"yoursite.com","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
 <meta name="generator" content="Hexo 6.2.0"></head>
-<div class="wechat-share">
-  <img src="/css/images/logo.png" />
-</div>
 
-  <body>
-    <header class="header fixed-header">
-  <div class="header-container">
-    <a class="home-link" href="/">
-      <div class="logo"></div>
-      <span>Davidli</span>
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Davidli</strong>
     </a>
-    <ul class="right-list">
-      
-        <li class="list-item">
-          
-            <a href="/" class="item-link">Davidli</a>
-          
-        </li>
-      
-        <li class="list-item">
-          
-            <a href="/archives/" class="item-link">归档</a>
-          
-        </li>
-      
-        <li class="list-item">
-          
-            <a href="/tags/" class="item-link">标签</a>
-          
-        </li>
-      
-        <li class="list-item">
-          
-            <a href="/about/" class="item-link">关于</a>
-          
-        </li>
-      
-    </ul>
-    <div class="menu">
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-    </div>
-    <div class="menu-mask">
-      <ul class="menu-list">
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
         
-          <li class="menu-item">
-            
-              <a href="/" class="menu-link">Davidli</a>
-            
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                Categories
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                Tags
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
           </li>
+          
         
-          <li class="menu-item">
-            
-              <a href="/archives/" class="menu-link">归档</a>
-            
-          </li>
         
-          <li class="menu-item">
-            
-              <a href="/tags/" class="menu-link">标签</a>
-            
-          </li>
-        
-          <li class="menu-item">
-            
-              <a href="/about/" class="menu-link">关于</a>
-            
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
           </li>
         
       </ul>
     </div>
   </div>
-</header>
+</nav>
 
-    <div id="article-banner">
-  <h2>拷贝相关知识点</h2>
-  <p class="post-date">2018-06-14</p>
-  <div class="arrow-down">
-    <a href="javascript:;"></a>
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="拷贝相关知识点"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2018-06-14 21:12" pubdate>
+          June 14, 2018 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          18k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          149 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
   </div>
 </div>
-<main class="app-body flex-box">
-  <!-- Article START -->
-  <article class="post-article">
-    <section class="markdown-content"><h2 id="1-拷贝-初探"><a href="#1-拷贝-初探" class="headerlink" title="1.拷贝-初探"></a>1.拷贝-初探</h2><p><a target="_blank" rel="noopener" href="https://developer.apple.com/library/archive/documentation/LegacyTechnologies/WebObjects/WebObjects_3.5/Reference/Frameworks/ObjC/Foundation/Protocols/NSCopying/Description.html#//apple_ref/occ/intf/NSCopying">文档摘要：</a></p>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">拷贝相关知识点</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="1-拷贝-初探"><a href="#1-拷贝-初探" class="headerlink" title="1.拷贝-初探"></a>1.拷贝-初探</h2><p><a target="_blank" rel="noopener" href="https://developer.apple.com/library/archive/documentation/LegacyTechnologies/WebObjects/WebObjects_3.5/Reference/Frameworks/ObjC/Foundation/Protocols/NSCopying/Description.html#//apple_ref/occ/intf/NSCopying">文档摘要：</a></p>
 <blockquote>
 <p>The exact meaning of “copy” can vary from class to class, but a copy must be a functionally independent object with values identical to the original at the time the copy was made.</p>
 </blockquote>
@@ -152,10 +299,10 @@
 <li>每一份拷贝都是一个独立的对象；</li>
 </ul>
 <p>一个值类型对象被作为方法的参数传递或者作为返回值时，我们通常使用的是它的拷贝，而不是它本身。比如下面的方法中，我们将一个字符串赋值给对象的<code>name</code>实例变量：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">- (void)setName:(NSString *)aName</span><br><span class="line">&#123;</span><br><span class="line">    [name autorelease];</span><br><span class="line">    name = [aName copy];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">- (<span class="hljs-type">void</span>)setName:(NSString *)aName<br>&#123;<br>    [<span class="hljs-type">name</span> autorelease];<br>    <span class="hljs-type">name</span> = [aName <span class="hljs-keyword">copy</span>];<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>保存<code>aName</code>的拷贝产生的效果就是：产生了一个独立的对象，对象的值与原对象一致。后续对原对象的操作不会影响到新对象，对新对象的操作也不会影响到原对象。再比如，我们通常会在一个方法中返回某个对象的拷贝，而不是对象本身：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- (NSString *)name</span><br><span class="line">&#123;</span><br><span class="line">    return [[name copy] autorelease];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">- (NSString *)<span class="hljs-type">name</span><br>&#123;<br>    <span class="hljs-keyword">return</span> [[<span class="hljs-type">name</span> <span class="hljs-keyword">copy</span>] autorelease];<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>这里<code>name</code>的 getter 返回的就是<code>name</code>的一份拷贝~</p>
 <ul>
@@ -163,23 +310,23 @@
 </ul>
 <p>上面说了，拷贝之后，原对象与新对象相互独立，互不影响。新对象的值与发生拷贝时原对象的值保持一致，后续原对象的值怎么变化，并不影响新对象的值。</p>
 <h2 id="2-OC拷贝协议"><a href="#2-OC拷贝协议" class="headerlink" title="2.OC拷贝协议"></a>2.OC拷贝协议</h2><h3 id="2-1-拷贝协议"><a href="#2-1-拷贝协议" class="headerlink" title="2.1.拷贝协议"></a>2.1.拷贝协议</h3><p><code>NSObject.h</code>中定义了两个关于拷贝的实例方法：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (id)copy;</span><br></pre></td></tr></table></figure>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs applescript">- (<span class="hljs-built_in">id</span>)<span class="hljs-keyword">copy</span>;<br></code></pre></td></tr></table></figure>
 
 <blockquote>
 <p>The copy method is defined for all NSObjects and simply invokes copyWithZone: with the default zone.</p>
 </blockquote>
 <p><code>copy</code>方法是一个便利方法，用来调用<code>copyWithZone:</code>方法，返回一个不可变对象。后者是<code>NSCopying</code>协议的协议方法。如果一个继承自 NSObject 的类的实例对象要调用<code>copy</code>时，那么该类就必须实现此协议，否则会报异常。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (id)mutableCopy;</span><br></pre></td></tr></table></figure>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs abnf">- (id)mutableCopy<span class="hljs-comment">;</span><br></code></pre></td></tr></table></figure>
 
 <blockquote>
 <p>Convenience method for classes that adopt the NSMutableCopying protocol. This method just calls the NSMutableCopying protocol method mutableCopyWithZone: with the zone as NULL. An exception is raised if there is no implementation for mutableCopyWithZone:.</p>
 </blockquote>
 <p>与<code>copy</code>一样，<code>mutableCopy</code>也是一个便利方法，用来调用<code>NSMutableCopying</code>协议的协议方法<code>mutableCopyWithZone:</code>。此方法主要用来返回一个可变对象。同样的，对象需要调用<code>mutableCopy</code>时，其所属类必须实现此协议，并在协议方法中返回一个可变对象。只有那些有可变和不可变之分的类才需要实现此协议，否则应该实现<code>NSCopying</code>协议。如果某个类既有可变版本又有不可变版本，那就需要同时实现这两个协议。</p>
 <h3 id="2-2-继承与拷贝协议"><a href="#2-2-继承与拷贝协议" class="headerlink" title="2.2.继承与拷贝协议"></a>2.2.继承与拷贝协议</h3><p>假设有<code>A</code>、<code>B</code>两个类，B 继承自 A，如果 A 中没有实现 NSCopying 或 NSMutableCopying 协议，而 B 实现了，那么在 B 类的协议方法中就既需要拷贝自己声明的属性，又需要拷贝从父类继承而来的属性：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">//父类</span><br><span class="line">@interface Model : NSObject</span><br><span class="line">@property (nonatomic, copy) NSString *name;</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation Model</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">//子类</span><br><span class="line">@interface SubModel : Model&lt;NSCopying&gt;</span><br><span class="line">@property (nonatomic, copy) NSString *subName;</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation SubModel</span><br><span class="line"></span><br><span class="line">-(id)copyWithZone:(NSZone *)zone</span><br><span class="line">&#123;</span><br><span class="line">    SubModel *newSubModel = [[[self class] alloc] init];</span><br><span class="line">    newSubModel.name = [self.name copy];//拷贝父类属性</span><br><span class="line">    newSubModel.subName = [self.subName copy];//拷贝子类属性</span><br><span class="line">    </span><br><span class="line">    return newSubModel;</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-comment">//父类</span><br><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">Model</span> : <span class="hljs-title">NSObject</span></span><br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">copy</span>) <span class="hljs-built_in">NSString</span> *name;<br><span class="hljs-keyword">@end</span><br><br><span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">Model</span></span><br><span class="hljs-keyword">@end</span><br><br><span class="hljs-comment">//子类</span><br><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">SubModel</span> : <span class="hljs-title">Model</span>&lt;<span class="hljs-title">NSCopying</span>&gt;</span><br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">copy</span>) <span class="hljs-built_in">NSString</span> *subName;<br><span class="hljs-keyword">@end</span><br><br><span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">SubModel</span></span><br><br>-(<span class="hljs-type">id</span>)copyWithZone:(<span class="hljs-built_in">NSZone</span> *)zone<br>&#123;<br>    SubModel *newSubModel = [[[<span class="hljs-keyword">self</span> <span class="hljs-keyword">class</span>] alloc] init];<br>    newSubModel.name = [<span class="hljs-keyword">self</span>.name <span class="hljs-keyword">copy</span>];<span class="hljs-comment">//拷贝父类属性</span><br>    newSubModel.subName = [<span class="hljs-keyword">self</span>.subName <span class="hljs-keyword">copy</span>];<span class="hljs-comment">//拷贝子类属性</span><br>    <br>    <span class="hljs-keyword">return</span> newSubModel;<br>&#125;<br><span class="hljs-keyword">@end</span><br></code></pre></td></tr></table></figure>
 
 <p>如果 A 类中实现了拷贝协议，那么作为子类，B 会继承此协议，所以 B 只需在自己的类中重写协议方法，调用 super 实现父类属性的拷贝，并拷贝自己类中声明的属性：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">//父类</span><br><span class="line">@interface Model : NSObject&lt;NSCopying&gt;</span><br><span class="line">@property (nonatomic, copy) NSString *name;</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation Model</span><br><span class="line"></span><br><span class="line">-(id)copyWithZone:(NSZone *)zone</span><br><span class="line">&#123;</span><br><span class="line">    Model *newModel = [[[self class] allocWithZone:zone] init];</span><br><span class="line">    newModel.name = [self.name copy];</span><br><span class="line">    return newModel;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//子类</span><br><span class="line">@interface SubModel : Model</span><br><span class="line">@property (nonatomic, copy) NSString *subName;</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation SubModel</span><br><span class="line"></span><br><span class="line">-(id)copyWithZone:(NSZone *)zone</span><br><span class="line">&#123;</span><br><span class="line">    SubModel *newSubModel = [super copyWithZone:zone];//调用super</span><br><span class="line">    newSubModel.subName = [self.subName copy];//拷贝子类属性</span><br><span class="line">    </span><br><span class="line">    return newSubModel;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-comment">//父类</span><br><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">Model</span> : <span class="hljs-title">NSObject</span>&lt;<span class="hljs-title">NSCopying</span>&gt;</span><br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">copy</span>) <span class="hljs-built_in">NSString</span> *name;<br><span class="hljs-keyword">@end</span><br><br><span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">Model</span></span><br><br>-(<span class="hljs-type">id</span>)copyWithZone:(<span class="hljs-built_in">NSZone</span> *)zone<br>&#123;<br>    Model *newModel = [[[<span class="hljs-keyword">self</span> <span class="hljs-keyword">class</span>] allocWithZone:zone] init];<br>    newModel.name = [<span class="hljs-keyword">self</span>.name <span class="hljs-keyword">copy</span>];<br>    <span class="hljs-keyword">return</span> newModel;<br>&#125;<br><br><span class="hljs-comment">//子类</span><br><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">SubModel</span> : <span class="hljs-title">Model</span></span><br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">copy</span>) <span class="hljs-built_in">NSString</span> *subName;<br><span class="hljs-keyword">@end</span><br><br><span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">SubModel</span></span><br><br>-(<span class="hljs-type">id</span>)copyWithZone:(<span class="hljs-built_in">NSZone</span> *)zone<br>&#123;<br>    SubModel *newSubModel = [<span class="hljs-variable language_">super</span> copyWithZone:zone];<span class="hljs-comment">//调用super</span><br>    newSubModel.subName = [<span class="hljs-keyword">self</span>.subName <span class="hljs-keyword">copy</span>];<span class="hljs-comment">//拷贝子类属性</span><br>    <br>    <span class="hljs-keyword">return</span> newSubModel;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <h3 id="2-3-可-x2F-不可变对象"><a href="#2-3-可-x2F-不可变对象" class="headerlink" title="2.3.可&#x2F;不可变对象"></a>2.3.可&#x2F;不可变对象</h3><p><code>copy</code>返回的是不可变对象，<code>mutableCopy</code>返回的是可变对象。按照 <a target="_blank" rel="noopener" href="https://developer.apple.com/library/archive/documentation/General/Conceptual/CocoaEncyclopedia/ObjectMutability/ObjectMutability.html">Apple文档</a> 的说法，对象默认是可变的。这很好理解，比如你自定义的<code>客户</code>实体，当客户的信息发生变化时，对应的实体对象应该能更新相关字段。大多数的对象都允许你通过 setter 函数修改它内部封装的数据，Foundation 框架也为我们提供了一些可变类型，如：</p>
 <ul>
@@ -211,60 +358,60 @@
 <li><strong>深拷贝</strong>：对象拷贝，即复制指针所指向的数据，并将其赋给副本的实例变量。因此副本和原始对象指向不同的地址，在副本和原对象上的修改互不影响。</li>
 </ul>
 <h3 id="3-2-使用"><a href="#3-2-使用" class="headerlink" title="3.2.使用"></a>3.2.使用</h3><p>对象是深拷贝还是浅拷贝，可以通过其 setter 来反映。如果 setter 中拷贝了一份新的对象，那么此对象应该使用<code>深拷贝</code>：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">- (void)setMyVariable:(id)newValue</span><br><span class="line">&#123;</span><br><span class="line">    [myVariable autorelease];</span><br><span class="line">    myVariable = [newValue copy];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight haxe"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs haxe">- (void)setMyVariable:<span class="hljs-type"></span>(id)<span class="hljs-keyword">new</span><span class="hljs-type">Value</span><br>&#123;<br>    [myVariable autorelease];<br>    myVariable = [<span class="hljs-keyword">new</span><span class="hljs-type">Value</span> copy];<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>如果 setter 中只是<code>retain</code>了新值，则此对象应该使用<code>浅拷贝</code>：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">- (void)setMyVariable:(id)newValue</span><br><span class="line">&#123;</span><br><span class="line">    [myVariable autorelease];</span><br><span class="line">    myVariable = [newValue retain];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight haxe"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs haxe">- (void)setMyVariable:<span class="hljs-type"></span>(id)<span class="hljs-keyword">new</span><span class="hljs-type">Value</span><br>&#123;<br>    [myVariable autorelease];<br>    myVariable = [<span class="hljs-keyword">new</span><span class="hljs-type">Value</span> retain];<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>如果 setter 中只是简单的将新值赋值给原对象，则此对象应该使用<code>浅拷贝</code>：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- (void)setMyVariable:(id)newValue</span><br><span class="line">&#123;</span><br><span class="line">    myVariable = newValue;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight haxe"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs haxe">- (void)setMyVariable:<span class="hljs-type"></span>(id)<span class="hljs-keyword">new</span><span class="hljs-type">Value</span><br>&#123;<br>    myVariable = <span class="hljs-keyword">new</span><span class="hljs-type">Value</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <h3 id="3-3-拷贝深度"><a href="#3-3-拷贝深度" class="headerlink" title="3.3.拷贝深度"></a>3.3.拷贝深度</h3><p>开篇提到了拷贝对象的特点，其中之一就是新对象与原对象相互独立。为了保证新对象的完全独立性，整个对象的都需要深拷贝，包括其中的每个属性和实例变量。如果属性和实例变量又包括了子属性和实例变量，那么这些子属性和实例变量也需要深拷贝，以此类推。这就是单层深拷贝和完全深拷贝。比如一个<code>商铺</code>实体，其中包含了<code>客户</code>实体，而客户实体又包含了<code>账户</code>实体，如果拷贝<code>商铺</code>时只对<code>客户</code>进行了深拷贝（即：重写拷贝协议方法并返回客户对象的一份内容拷贝），那就是单层深拷贝；如果连<code>账户</code>也深拷贝，那就是完全深拷贝。<br><br/></p>
 <p>有些情况下对象进行拷贝时，我们可以混着来，比如对于 int、float 这种纯量类型，直接拷贝其值；对于指针类型的变量，它指向某块数据，我们可以使用深拷贝，拷贝数据而非指针；对于 delegate 这种实例变量，可以使用浅拷贝，即拷贝指针；</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">@interface Product : NSObject &lt;NSCopying&gt;</span><br><span class="line">&#123;</span><br><span class="line">    NSString *productName;</span><br><span class="line">    float price;</span><br><span class="line">    id delegate;</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs angelscript">@<span class="hljs-keyword">interface</span> <span class="hljs-symbol">Product</span> : <span class="hljs-symbol">NSObject</span> &lt;<span class="hljs-symbol">NSCopying</span>&gt;<br>&#123;<br>    NSString *productName;<br>    <span class="hljs-built_in">float</span> price;<br>    id delegate;<br>&#125;<br>@end<br></code></pre></td></tr></table></figure>
 
 <p>如上，对<code>Product</code>对象进行拷贝时，我们可以对<code>productName</code>进行深拷贝，因为它表示一个数据的值；对与<code>delegate</code>，它在两个对象中所起到的作用是一样的，所以应该使用浅拷贝，即两个对象共享同一个指针。下面的表格代表了<code>Product</code>对象和其拷贝在内存中的分布：</p>
-<p><img src="https://davidlii.nos-eastchina1.126.net/pic_object_ori.png" alt="原对象"></p>
-<p><img src="https://davidlii.nos-eastchina1.126.net/pic_object_copy.png" alt="副本"></p>
+<p><img src="https://davidlii.nos-eastchina1.126.net/pic_object_ori.png" srcset="/img/loading.gif" lazyload alt="原对象"></p>
+<p><img src="https://davidlii.nos-eastchina1.126.net/pic_object_copy.png" srcset="/img/loading.gif" lazyload alt="副本"></p>
 <p><code>productName</code>指针的值不同，表示原对象和拷贝对象有各自的 string 类型<code>productName</code>值。<code>delegate</code>的指针相同，它们共享一个代理。</p>
 <h2 id="4-不可变字符串的拷贝"><a href="#4-不可变字符串的拷贝" class="headerlink" title="4.不可变字符串的拷贝"></a>4.不可变字符串的拷贝</h2><p>#示例4.1：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">NSString *str1 = @&quot;hello&quot;;</span><br><span class="line">NSString *str2 = [str1 copy]; // 浅拷贝</span><br><span class="line">NSString *str3 = [str1 mutableCopy]; // 深拷贝</span><br><span class="line"></span><br><span class="line">NSLog(@&quot;str1 = %p&quot;,str1);</span><br><span class="line">NSLog(@&quot;str2 = %p&quot;,str2);</span><br><span class="line">NSLog(@&quot;str3 = %p&quot;,str3);</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-built_in">NSString</span> *str1 = <span class="hljs-string">@&quot;hello&quot;</span>;<br><span class="hljs-built_in">NSString</span> *str2 = [str1 <span class="hljs-keyword">copy</span>]; <span class="hljs-comment">// 浅拷贝</span><br><span class="hljs-built_in">NSString</span> *str3 = [str1 mutableCopy]; <span class="hljs-comment">// 深拷贝</span><br><br><span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;str1 = %p&quot;</span>,str1);<br><span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;str2 = %p&quot;</span>,str2);<br><span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;str3 = %p&quot;</span>,str3);<br></code></pre></td></tr></table></figure>
 
 <p>输出日志如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">str1 = 0x10ae55810</span><br><span class="line">str2 = 0x10ae55810</span><br><span class="line">str3 = 0x600000258ea0</span><br></pre></td></tr></table></figure>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs abnf"><span class="hljs-attribute">str1</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>x10ae55810<br><span class="hljs-attribute">str2</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>x10ae55810<br><span class="hljs-attribute">str3</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>x600000258ea0<br></code></pre></td></tr></table></figure>
 
 <p>从打印出的内存地址分析：str1 与 str2 指向同一片内存区域，也就是说对不可变字符串的 copy 操作只是指针拷贝；而 str3 与 str1 指向了不同的内存区域，说明对不可变字符串的 mutableCopy 产生了新的对象，此对象的内存地址与 str1 指向的地址完全不同。</p>
 <blockquote>
 <p>结论1：对于不可变字符串的 copy 是浅拷贝，mutableCopy 是深拷贝。</p>
 </blockquote>
 <h2 id="5-可变字符串的拷贝"><a href="#5-可变字符串的拷贝" class="headerlink" title="5.可变字符串的拷贝"></a>5.可变字符串的拷贝</h2><p>#示例5.1：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">NSMutableString *str1 = [NSMutableString stringWithString:@&quot;hello&quot;];</span><br><span class="line">NSString *str2 = [str1 copy]; // 深拷贝</span><br><span class="line">NSString *str3 = [str1 mutableCopy]; // 深拷贝</span><br><span class="line"></span><br><span class="line">NSLog(@&quot;str1 = %p&quot;,str1);</span><br><span class="line">NSLog(@&quot;str2 = %p&quot;,str2);</span><br><span class="line">NSLog(@&quot;str3 = %p&quot;,str3);</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-built_in">NSMutableString</span> *str1 = [<span class="hljs-built_in">NSMutableString</span> stringWithString:<span class="hljs-string">@&quot;hello&quot;</span>];<br><span class="hljs-built_in">NSString</span> *str2 = [str1 <span class="hljs-keyword">copy</span>]; <span class="hljs-comment">// 深拷贝</span><br><span class="hljs-built_in">NSString</span> *str3 = [str1 mutableCopy]; <span class="hljs-comment">// 深拷贝</span><br><br><span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;str1 = %p&quot;</span>,str1);<br><span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;str2 = %p&quot;</span>,str2);<br><span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;str3 = %p&quot;</span>,str3);<br></code></pre></td></tr></table></figure>
 
 <p>输出日志如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">str1 = 0x604000451040</span><br><span class="line">str2 = 0xa00006f6c6c65685</span><br><span class="line">str3 = 0x604000450fe0</span><br></pre></td></tr></table></figure>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs abnf"><span class="hljs-attribute">str1</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>x604000451040<br><span class="hljs-attribute">str2</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>xa00006f6c6c65685<br><span class="hljs-attribute">str3</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>x604000450fe0<br></code></pre></td></tr></table></figure>
 
 <p>对可变字符串的两种复制都产生了新的对象，三个对象的地址完全不同。</p>
 <blockquote>
 <p>结论2：对于可变字符串的复制，不论 copy 还是 mutableCopy 都是深拷贝。</p>
 </blockquote>
 <h2 id="6-拷贝与字符串可变性"><a href="#6-拷贝与字符串可变性" class="headerlink" title="6.拷贝与字符串可变性"></a>6.拷贝与字符串可变性</h2><p>#示例6.1：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">NSString *str1 = @&quot;hi&quot;;</span><br><span class="line">NSMutableString *str2 = [str1 mutableCopy];</span><br><span class="line">[str2 appendString:@&quot;xx&quot;];</span><br><span class="line"></span><br><span class="line">NSMutableString *str3 = [NSMutableString stringWithString:@&quot;hello&quot;];</span><br><span class="line">NSMutableString *str4 = [str3 copy]; // 不可变</span><br><span class="line">NSMutableString *str5 = [str3 mutableCopy]; // 可变</span><br><span class="line"></span><br><span class="line">[str4 appendString:@&quot;world&quot;]; //报错</span><br><span class="line">[str5 appendString:@&quot;Kitty&quot;]; //正常</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-built_in">NSString</span> *str1 = <span class="hljs-string">@&quot;hi&quot;</span>;<br><span class="hljs-built_in">NSMutableString</span> *str2 = [str1 mutableCopy];<br>[str2 appendString:<span class="hljs-string">@&quot;xx&quot;</span>];<br><br><span class="hljs-built_in">NSMutableString</span> *str3 = [<span class="hljs-built_in">NSMutableString</span> stringWithString:<span class="hljs-string">@&quot;hello&quot;</span>];<br><span class="hljs-built_in">NSMutableString</span> *str4 = [str3 <span class="hljs-keyword">copy</span>]; <span class="hljs-comment">// 不可变</span><br><span class="hljs-built_in">NSMutableString</span> *str5 = [str3 mutableCopy]; <span class="hljs-comment">// 可变</span><br><br>[str4 appendString:<span class="hljs-string">@&quot;world&quot;</span>]; <span class="hljs-comment">//报错</span><br>[str5 appendString:<span class="hljs-string">@&quot;Kitty&quot;</span>]; <span class="hljs-comment">//正常</span><br></code></pre></td></tr></table></figure>
 
 <p>示例在运行到 [str4 appendString:@”world”] 这一行时会报错“unrecognized selector sent to instance”，这就是说可变字符串在执行 copy 操作后返回的对象不再是可变字符串，因此对其执行 appendString 方法时出现了崩溃。注释掉这一行后，程序正常执行。</p>
 <blockquote>
 <p>结论3：字符串，不论是可变还是不可变，执行 copy 后返回的对象是不可变的；mutableCopy 后返回的对象是可变的。</p>
 </blockquote>
 <h2 id="7-自定义类的拷贝"><a href="#7-自定义类的拷贝" class="headerlink" title="7.自定义类的拷贝"></a>7.自定义类的拷贝</h2><p>#示例7.1：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">@interface Model : NSObject&lt;NSCopying, NSMutableCopying&gt;</span><br><span class="line">@property (nonatomic, copy) NSString *name;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs less"><span class="hljs-variable">@interface</span> <span class="hljs-attribute">Model </span>: NSObject&lt;NSCopying, NSMutableCopying&gt;<br><span class="hljs-variable">@property</span> (nonatomic, copy) NSString *name;<br><span class="hljs-variable">@end</span><br></code></pre></td></tr></table></figure>
 
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">#import &quot;Model.h&quot;</span><br><span class="line">@implementation Model</span><br><span class="line"></span><br><span class="line">- (id)copyWithZone:(NSZone *)zone</span><br><span class="line">&#123;</span><br><span class="line">    /*可返回一份值拷贝，也可以返回一份指针拷贝，这里我返回的是值拷贝；</span><br><span class="line">     *当然，你也可以‘return self’，返回一份self实例的指针，这么做也不会报错，因你的需求而定。</span><br><span class="line">     */ </span><br><span class="line">    Model *newModel = [[[self class] allocWithZone:zone] init];</span><br><span class="line">    newModel.name = [self.name copy]; // 使用copy</span><br><span class="line">    </span><br><span class="line">    return newModel;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (id)mutableCopyWithZone:(NSZone *)zone</span><br><span class="line">&#123;</span><br><span class="line">    Model *newModel = [[[self class] allocWithZone:zone] init];</span><br><span class="line">    newModel.name = [self.name mutableCopy]; // 使用mutableCopy</span><br><span class="line"></span><br><span class="line">    return newModel;</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-meta">#import <span class="hljs-string">&quot;Model.h&quot;</span></span><br><span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">Model</span></span><br><br>- (<span class="hljs-type">id</span>)copyWithZone:(<span class="hljs-built_in">NSZone</span> *)zone<br>&#123;<br>    <span class="hljs-comment">/*可返回一份值拷贝，也可以返回一份指针拷贝，这里我返回的是值拷贝；</span><br><span class="hljs-comment">     *当然，你也可以‘return self’，返回一份self实例的指针，这么做也不会报错，因你的需求而定。</span><br><span class="hljs-comment">     */</span> <br>    Model *newModel = [[[<span class="hljs-keyword">self</span> <span class="hljs-keyword">class</span>] allocWithZone:zone] init];<br>    newModel.name = [<span class="hljs-keyword">self</span>.name <span class="hljs-keyword">copy</span>]; <span class="hljs-comment">// 使用copy</span><br>    <br>    <span class="hljs-keyword">return</span> newModel;<br>&#125;<br><br>- (<span class="hljs-type">id</span>)mutableCopyWithZone:(<span class="hljs-built_in">NSZone</span> *)zone<br>&#123;<br>    Model *newModel = [[[<span class="hljs-keyword">self</span> <span class="hljs-keyword">class</span>] allocWithZone:zone] init];<br>    newModel.name = [<span class="hljs-keyword">self</span>.name mutableCopy]; <span class="hljs-comment">// 使用mutableCopy</span><br><br>    <span class="hljs-keyword">return</span> newModel;<br>&#125;<br><span class="hljs-keyword">@end</span><br></code></pre></td></tr></table></figure>
 
 <p>在自定义的类中实现了可变和不可变拷贝的协议，返回的对象根据自己的需求而定。<br><br/></p>
 <p>调用示例：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Model *model = [Model new];</span><br><span class="line">model.name = @&quot;sakura&quot;;</span><br><span class="line">NSLog(@&quot;++++model = %p;&quot;,model);</span><br><span class="line"></span><br><span class="line">Model *copymodel = [model copy]; // 深拷贝</span><br><span class="line">NSLog(@&quot;++++copymodel = %p&quot;,copymodel);</span><br><span class="line"></span><br><span class="line">Model *mutableCopymodel = [model mutableCopy]; // 深拷贝</span><br><span class="line">NSLog(@&quot;++++mutableCopymodel = %p&quot;,mutableCopymodel);</span><br></pre></td></tr></table></figure>
+<figure class="highlight gams"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs gams"><span class="hljs-keyword">Model</span> *<span class="hljs-keyword">model</span> = [<span class="hljs-keyword">Model</span> new];<br><span class="hljs-keyword">model</span>.name = @<span class="hljs-string">&quot;sakura&quot;</span>;<br>NSLog(@<span class="hljs-string">&quot;++++model = %p;&quot;</span>,<span class="hljs-keyword">model</span>);<br><br><span class="hljs-keyword">Model</span> *copymodel = [<span class="hljs-keyword">model</span> copy]; <span class="hljs-comment">// 深拷贝</span><br>NSLog(@<span class="hljs-string">&quot;++++copymodel = %p&quot;</span>,copymodel);<br><br><span class="hljs-keyword">Model</span> *mutableCopymodel = [<span class="hljs-keyword">model</span> mutableCopy]; <span class="hljs-comment">// 深拷贝</span><br>NSLog(@<span class="hljs-string">&quot;++++mutableCopymodel = %p&quot;</span>,mutableCopymodel);<br></code></pre></td></tr></table></figure>
 
 <p>输出日志：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">++++model = 0x600002748bb0;</span><br><span class="line">++++copymodel = 0x6000027585d0</span><br><span class="line">++++mutableCopymodel = 0x600002748bc0</span><br></pre></td></tr></table></figure>
+<figure class="highlight brainfuck"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs brainfuck"><span class="hljs-literal">++++</span><span class="hljs-comment">model = 0x600002748bb0;</span><br><span class="hljs-literal">++++</span><span class="hljs-comment">copymodel = 0x6000027585d0</span><br><span class="hljs-literal">++++</span><span class="hljs-comment">mutableCopymodel = 0x600002748bc0</span><br></code></pre></td></tr></table></figure>
 
 <blockquote>
 <p>结论4：对于我们自定义的类，其 copy 与 mutableCopy 是深&#x2F;浅拷贝因我们自己的需求而定。</p>
@@ -277,31 +424,31 @@
 <li>集合对象的浅拷贝：</li>
 </ul>
 <p>对OC中集合类对象的拷贝，默认是浅拷贝。集合的浅拷贝会产生新的集合对象，新旧集合内的元素指针相同。原集合中的每个元素会收到一条 retain 消息，引用计数+1，它们的指针会被拷贝到新建的集合中。系统为我们提供了一些方法，以实现集合对象的浅拷贝：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-copyWithZone:（如 [anArr copyWithZone:nil];）</span><br><span class="line">-mutableCopyWithZone:</span><br><span class="line">-initWithArray:copyItems:NO（第二个参数为NO）</span><br><span class="line">-initWithDictionary:copyItems:NO（第二个参数为NO）</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs objectivec">-copyWithZone:（如 [anArr copyWithZone:<span class="hljs-literal">nil</span>];）<br>-mutableCopyWithZone:<br>-initWithArray:copyItems:<span class="hljs-literal">NO</span>（第二个参数为<span class="hljs-literal">NO</span>）<br>-initWithDictionary:copyItems:<span class="hljs-literal">NO</span>（第二个参数为<span class="hljs-literal">NO</span>）<br></code></pre></td></tr></table></figure>
 
 <ul>
 <li>集合对象的深拷贝：</li>
 </ul>
 <p>集合的深拷贝会产生新的集合对象，新旧集合内的元素指针不相同，新集合中的元素是从原集合中的元素拷贝而来。<br><br/></p>
 <p>方案1：（通过集合类对象的实例方法）</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">- initWithArray:copyItems:YES（第二个参数为YES）</span><br><span class="line">- initWithDictionary:copyItems:YES（第二个参数为YES）</span><br></pre></td></tr></table></figure>
+<figure class="highlight gams"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs gams">- initWithArray:copyItems:<span class="hljs-keyword">YES</span>（第二个参数为<span class="hljs-keyword">YES</span>）<br>- initWithDictionary:copyItems:<span class="hljs-keyword">YES</span>（第二个参数为<span class="hljs-keyword">YES</span>）<br></code></pre></td></tr></table></figure>
 
 <p>copyItems 的参数 &#x3D; YES，这种方式下集合中的每个对象都会调用一次 copyWithZone: 方法，如果这些对象实现了 NSCopying 协议，那么这些对象会被深拷贝到新集合中。如果没有实现 NSCopying 协议，则运行时会报错。<br><br/></p>
 <p>方案2：（通过归档解档）</p>
 <blockquote>
 <p>If you need a true deep copy, such as when you have an array of arrays, you can archive and then unarchive the collection, provided the contents all conform to the NSCoding protocol. </p>
 </blockquote>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">NSArray* trueDeepCopyArray = [NSKeyedUnarchiver unarchiveObjectWithData:</span><br><span class="line">                                [NSKeyedArchiver archivedDataWithRootObject:oldArray]];</span><br></pre></td></tr></table></figure>
+<figure class="highlight nsis"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs nsis">NSArray* trueDeepCopyArray = [NSKeyedUn<span class="hljs-params">archive</span>r un<span class="hljs-params">archive</span>ObjectWithData:<br>                                [NSKeyed<span class="hljs-params">Archive</span>r <span class="hljs-params">archive</span>dDataWithRootObject:oldArray]]<span class="hljs-comment">;</span><br></code></pre></td></tr></table></figure>
 
 <p>这是集合真正意义上的深拷贝，这种方式下集合中的所有对象都要实现 NSCoding 协议，不然也会出现崩溃。<br><br/></p>
 <p>#示例8.1：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">@interface Model : NSObject&lt;NSCopying,NSMutableCopying&gt;</span><br><span class="line">@property (nonatomic, copy) NSString *name;</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation Model</span><br><span class="line"></span><br><span class="line">- (id)copyWithZone:(NSZone *)zone</span><br><span class="line">&#123;</span><br><span class="line">    NSLog(@&quot;++++call Model copyWithZone~&quot;);</span><br><span class="line">    </span><br><span class="line">    Model *newModel = [[[self class] allocWithZone:zone] init];</span><br><span class="line">    newModel.name = [self.name copy];</span><br><span class="line">    </span><br><span class="line">    return newModel;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (id)mutableCopyWithZone:(NSZone *)zone</span><br><span class="line">&#123;</span><br><span class="line">    NSLog(@&quot;++++call Model mutableCopyWithZone~&quot;);</span><br><span class="line">    </span><br><span class="line">    Model *newModel = [[[self class] allocWithZone:zone] init];</span><br><span class="line">    newModel.name = [self.name mutableCopy];</span><br><span class="line"></span><br><span class="line">    return newModel;</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">Model</span> : <span class="hljs-title">NSObject</span>&lt;<span class="hljs-title">NSCopying</span>,<span class="hljs-title">NSMutableCopying</span>&gt;</span><br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">copy</span>) <span class="hljs-built_in">NSString</span> *name;<br><span class="hljs-keyword">@end</span><br><br><span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">Model</span></span><br><br>- (<span class="hljs-type">id</span>)copyWithZone:(<span class="hljs-built_in">NSZone</span> *)zone<br>&#123;<br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;++++call Model copyWithZone~&quot;</span>);<br>    <br>    Model *newModel = [[[<span class="hljs-keyword">self</span> <span class="hljs-keyword">class</span>] allocWithZone:zone] init];<br>    newModel.name = [<span class="hljs-keyword">self</span>.name <span class="hljs-keyword">copy</span>];<br>    <br>    <span class="hljs-keyword">return</span> newModel;<br>&#125;<br><br>- (<span class="hljs-type">id</span>)mutableCopyWithZone:(<span class="hljs-built_in">NSZone</span> *)zone<br>&#123;<br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;++++call Model mutableCopyWithZone~&quot;</span>);<br>    <br>    Model *newModel = [[[<span class="hljs-keyword">self</span> <span class="hljs-keyword">class</span>] allocWithZone:zone] init];<br>    newModel.name = [<span class="hljs-keyword">self</span>.name mutableCopy];<br><br>    <span class="hljs-keyword">return</span> newModel;<br>&#125;<br><span class="hljs-keyword">@end</span><br></code></pre></td></tr></table></figure>
 
 <p>调用示例：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Model *model = [[Model alloc] init];</span><br><span class="line">NSArray *array = [NSArray arrayWithObject:model];</span><br><span class="line">NSLog(@&quot;++++model:%p&quot;,model);</span><br><span class="line">NSLog(@&quot;+++array:%p,+++array[0]:%p&quot;,array,array[0]);</span><br><span class="line">    </span><br><span class="line">NSArray *zoneArray = [array copyWithZone:nil];</span><br><span class="line">NSLog(@&quot;+++zoneArray:%p,+++zoneArray[0]:%p&quot;,zoneArray,zoneArray[0]);</span><br><span class="line">    </span><br><span class="line">NSArray *noCopyArr = [[NSArray alloc] initWithArray:array copyItems:NO];</span><br><span class="line">NSLog(@&quot;+++noCopyArr:%p,+++noCopyArr[0]:%p&quot;,noCopyArr,noCopyArr[0]);</span><br><span class="line">    </span><br><span class="line">NSArray *copyArray = [[NSArray alloc] initWithArray:array copyItems:YES];</span><br><span class="line">NSLog(@&quot;+++copyArray:%p,+++copyArray[0]:%p&quot;,copyArray,copyArray[0]);</span><br></pre></td></tr></table></figure>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">Model *model = <span class="hljs-literal">[[M<span class="hljs-identifier">odel</span> <span class="hljs-identifier">alloc</span>]</span> init];<br>NSArray *<span class="hljs-built_in">array</span> = <span class="hljs-literal">[NSA<span class="hljs-identifier">rray</span> <span class="hljs-identifier">arrayWithObject</span>:<span class="hljs-identifier">model</span>]</span>;<br><span class="hljs-constructor">NSLog(@<span class="hljs-string">&quot;++++model:%p&quot;</span>,<span class="hljs-params">model</span>)</span>;<br><span class="hljs-constructor">NSLog(@<span class="hljs-string">&quot;+++array:%p,+++array[0]:%p&quot;</span>,<span class="hljs-params">array</span>,<span class="hljs-params">array</span>[0])</span>;<br>    <br>NSArray *zoneArray = <span class="hljs-literal">[<span class="hljs-identifier">array</span> <span class="hljs-identifier">copyWithZone</span>:<span class="hljs-identifier">nil</span>]</span>;<br><span class="hljs-constructor">NSLog(@<span class="hljs-string">&quot;+++zoneArray:%p,+++zoneArray[0]:%p&quot;</span>,<span class="hljs-params">zoneArray</span>,<span class="hljs-params">zoneArray</span>[0])</span>;<br>    <br>NSArray *noCopyArr = <span class="hljs-literal">[[NSA<span class="hljs-identifier">rray</span> <span class="hljs-identifier">alloc</span>]</span> initWithArray:<span class="hljs-built_in">array</span> copyItems:NO];<br><span class="hljs-constructor">NSLog(@<span class="hljs-string">&quot;+++noCopyArr:%p,+++noCopyArr[0]:%p&quot;</span>,<span class="hljs-params">noCopyArr</span>,<span class="hljs-params">noCopyArr</span>[0])</span>;<br>    <br>NSArray *copyArray = <span class="hljs-literal">[[NSA<span class="hljs-identifier">rray</span> <span class="hljs-identifier">alloc</span>]</span> initWithArray:<span class="hljs-built_in">array</span> copyItems:YES];<br><span class="hljs-constructor">NSLog(@<span class="hljs-string">&quot;+++copyArray:%p,+++copyArray[0]:%p&quot;</span>,<span class="hljs-params">copyArray</span>,<span class="hljs-params">copyArray</span>[0])</span>;<br></code></pre></td></tr></table></figure>
 
 <p>输出日志：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">++++model:0x600003124780</span><br><span class="line">+++array:0x6000031246f0,+++array[0]:0x600003124780</span><br><span class="line">+++zoneArray:0x6000031246f0,+++zoneArray[0]:0x600003124780</span><br><span class="line">+++noCopyArr:0x6000031246e0,+++noCopyArr[0]:0x600003124780</span><br><span class="line">++++call Model copyWithZone~</span><br><span class="line">+++copyArray:0x60000313f550,+++copyArray[0]:0x600003124440</span><br></pre></td></tr></table></figure>
+<figure class="highlight brainfuck"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs brainfuck"><span class="hljs-literal">++++</span><span class="hljs-comment">model:0x600003124780</span><br><span class="hljs-literal">+++</span><span class="hljs-comment">array:0x6000031246f0</span><span class="hljs-string">,</span><span class="hljs-literal">+++</span><span class="hljs-comment">array</span><span class="hljs-title">[</span><span class="hljs-comment">0</span><span class="hljs-title">]</span><span class="hljs-comment">:0x600003124780</span><br><span class="hljs-literal">+++</span><span class="hljs-comment">zoneArray:0x6000031246f0</span><span class="hljs-string">,</span><span class="hljs-literal">+++</span><span class="hljs-comment">zoneArray</span><span class="hljs-title">[</span><span class="hljs-comment">0</span><span class="hljs-title">]</span><span class="hljs-comment">:0x600003124780</span><br><span class="hljs-literal">+++</span><span class="hljs-comment">noCopyArr:0x6000031246e0</span><span class="hljs-string">,</span><span class="hljs-literal">+++</span><span class="hljs-comment">noCopyArr</span><span class="hljs-title">[</span><span class="hljs-comment">0</span><span class="hljs-title">]</span><span class="hljs-comment">:0x600003124780</span><br><span class="hljs-literal">++++</span><span class="hljs-comment">call Model copyWithZone~</span><br><span class="hljs-literal">+++</span><span class="hljs-comment">copyArray:0x60000313f550</span><span class="hljs-string">,</span><span class="hljs-literal">+++</span><span class="hljs-comment">copyArray</span><span class="hljs-title">[</span><span class="hljs-comment">0</span><span class="hljs-title">]</span><span class="hljs-comment">:0x600003124440</span><br></code></pre></td></tr></table></figure>
 
 <p>日志信息显示：</p>
 <ul>
@@ -325,10 +472,10 @@
 </blockquote>
 <p>上层可变性与其初始化时的类型保持一致，其他更深层的可变性与原对象相同。<br><br/></p>
 <p>#示例9.1：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">- (void)testWithNoCopy</span><br><span class="line">&#123;</span><br><span class="line">    NSMutableArray *element = [[NSMutableArray alloc] initWithObjects:@(1), nil];</span><br><span class="line">    NSLog(@&quot;++++element:%p,elementClass:%@&quot;,element,[element class]);</span><br><span class="line">    </span><br><span class="line">    NSMutableArray *mutArr1 = [[NSMutableArray alloc] initWithObjects:element, nil];</span><br><span class="line">    NSLog(@&quot;++++mutArr1:%p&quot;,mutArr1);</span><br><span class="line">    </span><br><span class="line">    NSMutableArray *mutArr2 = [[NSMutableArray alloc] initWithArray:mutArr1 copyItems:NO];</span><br><span class="line">    [mutArr2 addObject:@(2)];</span><br><span class="line">    NSLog(@&quot;++++mutArr2:%p, mutArr2Class:%@, mutArr2.count:%lu&quot;,mutArr2,[mutArr2 class],mutArr2.count);</span><br><span class="line">    </span><br><span class="line">    NSMutableArray *arrAt0 = mutArr2[0];</span><br><span class="line">    NSLog(@&quot;++++arrAt0:%p, arrAt0Class:%@&quot;,arrAt0,[arrAt0 class]);</span><br><span class="line">    </span><br><span class="line">    [arrAt0 addObject:@(3)];</span><br><span class="line">    NSLog(@&quot;++++arrAt0.count:%lu&quot;,(unsigned long)arrAt0.count);</span><br><span class="line">    NSLog(@&quot;++++element.count:%lu&quot;,(unsigned long)element.count);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs objectivec">- (<span class="hljs-type">void</span>)testWithNoCopy<br>&#123;<br>    <span class="hljs-built_in">NSMutableArray</span> *element = [[<span class="hljs-built_in">NSMutableArray</span> alloc] initWithObjects:@(<span class="hljs-number">1</span>), <span class="hljs-literal">nil</span>];<br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;++++element:%p,elementClass:%@&quot;</span>,element,[element <span class="hljs-keyword">class</span>]);<br>    <br>    <span class="hljs-built_in">NSMutableArray</span> *mutArr1 = [[<span class="hljs-built_in">NSMutableArray</span> alloc] initWithObjects:element, <span class="hljs-literal">nil</span>];<br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;++++mutArr1:%p&quot;</span>,mutArr1);<br>    <br>    <span class="hljs-built_in">NSMutableArray</span> *mutArr2 = [[<span class="hljs-built_in">NSMutableArray</span> alloc] initWithArray:mutArr1 copyItems:<span class="hljs-literal">NO</span>];<br>    [mutArr2 addObject:@(<span class="hljs-number">2</span>)];<br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;++++mutArr2:%p, mutArr2Class:%@, mutArr2.count:%lu&quot;</span>,mutArr2,[mutArr2 <span class="hljs-keyword">class</span>],mutArr2.count);<br>    <br>    <span class="hljs-built_in">NSMutableArray</span> *arrAt0 = mutArr2[<span class="hljs-number">0</span>];<br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;++++arrAt0:%p, arrAt0Class:%@&quot;</span>,arrAt0,[arrAt0 <span class="hljs-keyword">class</span>]);<br>    <br>    [arrAt0 addObject:@(<span class="hljs-number">3</span>)];<br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;++++arrAt0.count:%lu&quot;</span>,(<span class="hljs-type">unsigned</span> <span class="hljs-type">long</span>)arrAt0.count);<br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;++++element.count:%lu&quot;</span>,(<span class="hljs-type">unsigned</span> <span class="hljs-type">long</span>)element.count);<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>输出日志：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">++++element:0x60000229de00,elementClass:__NSArrayM</span><br><span class="line">++++mutArr1:0x600002283810</span><br><span class="line">++++mutArr2:0x6000022838d0, mutArr2Class:__NSArrayM, mutArr2.count:2</span><br><span class="line">++++arrAt0:0x60000229de00, arrAt0Class:__NSArrayM</span><br><span class="line">++++arrAt0.count:2</span><br><span class="line">++++element.count:2</span><br></pre></td></tr></table></figure>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs vim">++++elemen<span class="hljs-variable">t:0x60000229de00</span>,elementClas<span class="hljs-variable">s:__NSArrayM</span><br>++++mutArr1:<span class="hljs-number">0</span>x600002283810<br>++++mutArr2:<span class="hljs-number">0</span>x6000022838d0, mutArr2Clas<span class="hljs-variable">s:__NSArrayM</span>, mutArr2.coun<span class="hljs-variable">t:2</span><br>++++arrAt0:<span class="hljs-number">0</span>x60000229de00, arrAt0Clas<span class="hljs-variable">s:__NSArrayM</span><br>++++arrAt0.coun<span class="hljs-variable">t:2</span><br>++++element.coun<span class="hljs-variable">t:2</span><br></code></pre></td></tr></table></figure>
 
 <p>mutArr2 是通过-initWithArray:copyItems:NO 产生的新数组，内部元素从可变数组 mutArr1 中拷贝而来。示例中 [mutArr2 addObject:@(2)] 可以正常执行，说明 initWithArray:copyItems:NO 产生的 mutArr2 正如其创建时声明的那样，是一个可变数组，即：上层可变性与其初始化时的类型保持一致~<br><br/></p>
 <p>arrAt0 作为 mutArr2 的子元素，指针与 element 相同，也就是说在创建 mutArr2 时只是拷贝了 mutArr1 中元素 element 的指针。因此，arrAt0 也是一个可变数组，能正常执行 [arrAt0 addObject:@(3)]，即：其他更深层的可变性与原对象相同。</p>
@@ -340,10 +487,10 @@
 </blockquote>
 <p>上层可变性与其初始化时的类型保持一致，接下来的一层不可变，其他更深层的可变性与原对象相同。<br><br/></p>
 <p>#示例9.2：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">- (void)testWithCopy</span><br><span class="line">&#123;</span><br><span class="line">    NSMutableArray *inArr = [[NSMutableArray alloc] initWithObjects:@(1), nil];</span><br><span class="line">    NSLog(@&quot;++++inArr:%p, inArrClass:%@&quot;,inArr,[inArr class]);</span><br><span class="line">    </span><br><span class="line">    NSMutableArray *element = [[NSMutableArray alloc] initWithObjects:inArr, nil];</span><br><span class="line">    NSLog(@&quot;++++element:%p,elementClass:%@&quot;,element,[element class]);</span><br><span class="line">    </span><br><span class="line">    NSMutableArray *mutArr1 = [[NSMutableArray alloc] initWithObjects:element, nil];</span><br><span class="line">    NSLog(@&quot;++++mutArr1:%p&quot;,mutArr1);</span><br><span class="line">    </span><br><span class="line">    NSMutableArray *mutArr2 = [[NSMutableArray alloc] initWithArray:mutArr1 copyItems:YES];</span><br><span class="line">    [mutArr2 addObject:@(2)];</span><br><span class="line">    NSLog(@&quot;++++mutArr2:%p, mutArr2Class:%@, mutArr2.count:%lu&quot;,mutArr2,[mutArr2 class],mutArr2.count);</span><br><span class="line">    </span><br><span class="line">    NSMutableArray *arrAt0 = mutArr2[0];</span><br><span class="line">    NSLog(@&quot;++++arrAt0:%p, arrAt0Class:%@&quot;,arrAt0,[arrAt0 class]);</span><br><span class="line">    </span><br><span class="line">    NSMutableArray *inArrAt0 = arrAt0[0];</span><br><span class="line">    NSLog(@&quot;++++inArrAt0:%p, inArrAt0Class:%@&quot;,inArrAt0,[inArrAt0 class]);</span><br><span class="line">    </span><br><span class="line">    [inArrAt0 addObject:@(3)];</span><br><span class="line">    NSLog(@&quot;++++inArrAt0.count:%lu&quot;,(unsigned long)inArrAt0.count);</span><br><span class="line">    NSLog(@&quot;++++inArr.count:%lu&quot;,(unsigned long)inArr.count);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs objectivec">- (<span class="hljs-type">void</span>)testWithCopy<br>&#123;<br>    <span class="hljs-built_in">NSMutableArray</span> *inArr = [[<span class="hljs-built_in">NSMutableArray</span> alloc] initWithObjects:@(<span class="hljs-number">1</span>), <span class="hljs-literal">nil</span>];<br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;++++inArr:%p, inArrClass:%@&quot;</span>,inArr,[inArr <span class="hljs-keyword">class</span>]);<br>    <br>    <span class="hljs-built_in">NSMutableArray</span> *element = [[<span class="hljs-built_in">NSMutableArray</span> alloc] initWithObjects:inArr, <span class="hljs-literal">nil</span>];<br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;++++element:%p,elementClass:%@&quot;</span>,element,[element <span class="hljs-keyword">class</span>]);<br>    <br>    <span class="hljs-built_in">NSMutableArray</span> *mutArr1 = [[<span class="hljs-built_in">NSMutableArray</span> alloc] initWithObjects:element, <span class="hljs-literal">nil</span>];<br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;++++mutArr1:%p&quot;</span>,mutArr1);<br>    <br>    <span class="hljs-built_in">NSMutableArray</span> *mutArr2 = [[<span class="hljs-built_in">NSMutableArray</span> alloc] initWithArray:mutArr1 copyItems:<span class="hljs-literal">YES</span>];<br>    [mutArr2 addObject:@(<span class="hljs-number">2</span>)];<br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;++++mutArr2:%p, mutArr2Class:%@, mutArr2.count:%lu&quot;</span>,mutArr2,[mutArr2 <span class="hljs-keyword">class</span>],mutArr2.count);<br>    <br>    <span class="hljs-built_in">NSMutableArray</span> *arrAt0 = mutArr2[<span class="hljs-number">0</span>];<br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;++++arrAt0:%p, arrAt0Class:%@&quot;</span>,arrAt0,[arrAt0 <span class="hljs-keyword">class</span>]);<br>    <br>    <span class="hljs-built_in">NSMutableArray</span> *inArrAt0 = arrAt0[<span class="hljs-number">0</span>];<br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;++++inArrAt0:%p, inArrAt0Class:%@&quot;</span>,inArrAt0,[inArrAt0 <span class="hljs-keyword">class</span>]);<br>    <br>    [inArrAt0 addObject:@(<span class="hljs-number">3</span>)];<br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;++++inArrAt0.count:%lu&quot;</span>,(<span class="hljs-type">unsigned</span> <span class="hljs-type">long</span>)inArrAt0.count);<br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;++++inArr.count:%lu&quot;</span>,(<span class="hljs-type">unsigned</span> <span class="hljs-type">long</span>)inArr.count);<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>输出日志：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">++++inArr:0x6000028a4150, inArrClass:__NSArrayM</span><br><span class="line">++++element:0x6000028bd0b0,elementClass:__NSArrayM</span><br><span class="line">++++mutArr1:0x6000028bd3e0</span><br><span class="line">++++mutArr2:0x6000028bd470, mutArr2Class:__NSArrayM, mutArr2.count:2</span><br><span class="line">++++arrAt0:0x6000024e19d0, arrAt0Class:__NSSingleObjectArrayI</span><br><span class="line">++++inArrAt0:0x6000028a4150, inArrAt0Class:__NSArrayM</span><br><span class="line">++++inArrAt0.count:2</span><br><span class="line">++++inArr.count:2</span><br></pre></td></tr></table></figure>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs vim">++++inArr:<span class="hljs-number">0</span>x6000028a4150, inArrClas<span class="hljs-variable">s:__NSArrayM</span><br>++++elemen<span class="hljs-variable">t:0x6000028bd0b0</span>,elementClas<span class="hljs-variable">s:__NSArrayM</span><br>++++mutArr1:<span class="hljs-number">0</span>x6000028bd3e0<br>++++mutArr2:<span class="hljs-number">0</span>x6000028bd470, mutArr2Clas<span class="hljs-variable">s:__NSArrayM</span>, mutArr2.coun<span class="hljs-variable">t:2</span><br>++++arrAt0:<span class="hljs-number">0</span>x6000024e19d0, arrAt0Clas<span class="hljs-variable">s:__NSSingleObjectArrayI</span><br>++++inArrAt0:<span class="hljs-number">0</span>x6000028a4150, inArrAt0Clas<span class="hljs-variable">s:__NSArrayM</span><br>++++inArrAt0.coun<span class="hljs-variable">t:2</span><br>++++inArr.coun<span class="hljs-variable">t:2</span><br></code></pre></td></tr></table></figure>
 
 <p>可以看到，mutArr2Class:__NSArrayM，说明 mutArr2 仍然是一个可变数组，即：上层可变性与其初始化时的类型保持一致~<br><br/></p>
 <p>arrAt0Class:__NSSingleObjectArrayI，且 arrAt0 与 element 的指针不再相同，说明 arrAt0 是内容拷贝而非指针拷贝，且不可变，即：接下来的一层不可变~<br><br/></p>
@@ -360,20 +507,20 @@
 </blockquote>
 <p>所有层的可变性与原对象完全相同。</p>
 <h2 id="10-集合的copy与mutableCopy"><a href="#10-集合的copy与mutableCopy" class="headerlink" title="10.集合的copy与mutableCopy"></a>10.集合的copy与mutableCopy</h2><p>#示例10.1：对不可变集合类对象的拷贝</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Model *m = [[Model alloc] init];</span><br><span class="line">NSArray *element = @[m];</span><br><span class="line">NSArray *oriArray = @[element];</span><br><span class="line">NSMutableArray *copyArray = [oriArray copy];</span><br><span class="line">NSMutableArray *mutableCopyArray = [oriArray mutableCopy];</span><br><span class="line">    </span><br><span class="line">NSLog(@&quot;+++oriArr:%p,element:%p&quot;,oriArray,element);</span><br><span class="line">NSLog(@&quot;++++copyArr:%p,indexAt0:%p&quot;,copyArray,copyArray[0]);</span><br><span class="line">NSLog(@&quot;++++mutableCopyArr:%p,indexAt0:%p&quot;,mutableCopyArray,mutableCopyArray[0]);</span><br></pre></td></tr></table></figure>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">Model *m = <span class="hljs-literal">[[M<span class="hljs-identifier">odel</span> <span class="hljs-identifier">alloc</span>]</span> init];<br>NSArray *element = @<span class="hljs-literal">[<span class="hljs-identifier">m</span>]</span>;<br>NSArray *oriArray = @<span class="hljs-literal">[<span class="hljs-identifier">element</span>]</span>;<br>NSMutableArray *copyArray = <span class="hljs-literal">[<span class="hljs-identifier">oriArray</span> <span class="hljs-identifier">copy</span>]</span>;<br>NSMutableArray *mutableCopyArray = <span class="hljs-literal">[<span class="hljs-identifier">oriArray</span> <span class="hljs-identifier">mutableCopy</span>]</span>;<br>    <br><span class="hljs-constructor">NSLog(@<span class="hljs-string">&quot;+++oriArr:%p,element:%p&quot;</span>,<span class="hljs-params">oriArray</span>,<span class="hljs-params">element</span>)</span>;<br><span class="hljs-constructor">NSLog(@<span class="hljs-string">&quot;++++copyArr:%p,indexAt0:%p&quot;</span>,<span class="hljs-params">copyArray</span>,<span class="hljs-params">copyArray</span>[0])</span>;<br><span class="hljs-constructor">NSLog(@<span class="hljs-string">&quot;++++mutableCopyArr:%p,indexAt0:%p&quot;</span>,<span class="hljs-params">mutableCopyArray</span>,<span class="hljs-params">mutableCopyArray</span>[0])</span>;<br></code></pre></td></tr></table></figure>
 
 <p>输出日志：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">+++oriArr:0x6000039f0760,element:0x6000039f06b0</span><br><span class="line">++++copyArr:0x6000039f0760,indexAt0:0x6000039f06b0</span><br><span class="line">++++mutableCopyArr:0x6000035a59b0,indexAt0:0x6000039f06b0</span><br></pre></td></tr></table></figure>
+<figure class="highlight dns"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs dns">+++oriArr:<span class="hljs-number">0</span>x60<span class="hljs-number">00039f0760</span>,element:<span class="hljs-number">0</span>x60<span class="hljs-number">00039f06b0</span><br>++++copyArr:<span class="hljs-number">0</span>x60<span class="hljs-number">00039f0760</span>,indexAt0:<span class="hljs-number">0</span>x60<span class="hljs-number">00039f06b0</span><br>++++mutableCopyArr:<span class="hljs-number">0</span>x60<span class="hljs-number">00035a59b0</span>,indexAt0:<span class="hljs-number">0</span>x60<span class="hljs-number">00039f06b0</span><br></code></pre></td></tr></table></figure>
 
 <p>不可变数组 oriArray 中包含了一个数组对象 element 。从日志可以看出，oriArray 与从其 copy 出来的数组 copyArray 指向同一片内存，而与从其 mutableCopy 出来的数组 mutableCopyArray 的内存不同。这与不可变非集合类对象类似，对不可变数组的 copy 只是指针拷贝，不会产生新的集合对象；mutableCopy 是内容拷贝，会产生新的集合对象。</p>
 <blockquote>
 <p>结论6：对于不可变集合对象的 copy 是指针拷贝，不产生新对象；mutableCopy 是内容拷贝，会产生新对象；两种情况下集合内元素都是指针拷贝。</p>
 </blockquote>
 <p>#示例10.2：对可变集合类对象的拷贝</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Model *m = [[Model alloc] init];</span><br><span class="line">NSArray *element = @[m];</span><br><span class="line">NSMutableArray *oriArray = [NSMutableArray arrayWithObject:element];</span><br><span class="line">NSMutableArray *copyArray = [oriArray copy];</span><br><span class="line">NSMutableArray *mutableCopyArray = [oriArray mutableCopy];</span><br><span class="line">    </span><br><span class="line">NSLog(@&quot;+++oriArr:%p,element:%p&quot;,oriArray,element);</span><br><span class="line">NSLog(@&quot;++++copyArr:%p,indexAt0:%p&quot;,copyArray,copyArray[0]);</span><br><span class="line">NSLog(@&quot;++++mutableCopyArr:%p,indexAt0:%p&quot;,mutableCopyArray,mutableCopyArray[0]);</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs objectivec">Model *m = [[Model alloc] init];<br><span class="hljs-built_in">NSArray</span> *element = @[m];<br><span class="hljs-built_in">NSMutableArray</span> *oriArray = [<span class="hljs-built_in">NSMutableArray</span> arrayWithObject:element];<br><span class="hljs-built_in">NSMutableArray</span> *copyArray = [oriArray <span class="hljs-keyword">copy</span>];<br><span class="hljs-built_in">NSMutableArray</span> *mutableCopyArray = [oriArray mutableCopy];<br>    <br><span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;+++oriArr:%p,element:%p&quot;</span>,oriArray,element);<br><span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;++++copyArr:%p,indexAt0:%p&quot;</span>,copyArray,copyArray[<span class="hljs-number">0</span>]);<br><span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;++++mutableCopyArr:%p,indexAt0:%p&quot;</span>,mutableCopyArray,mutableCopyArray[<span class="hljs-number">0</span>]);<br></code></pre></td></tr></table></figure>
 
 <p>输出日志：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">+++oriArr:0x60000102dd10,element:0x600001c64c40</span><br><span class="line">++++copyArr:0x600001c73360,indexAt0:0x600001c64c40</span><br><span class="line">++++mutableCopyArr:0x600001033900,indexAt0:0x600001c64c40</span><br></pre></td></tr></table></figure>
+<figure class="highlight dns"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs dns">+++oriArr:<span class="hljs-number">0</span>x60000102dd10,element:<span class="hljs-number">0</span>x6<span class="hljs-number">00001c64c40</span><br>++++copyArr:<span class="hljs-number">0</span>x6<span class="hljs-number">00001c73360</span>,indexAt0:<span class="hljs-number">0</span>x6<span class="hljs-number">00001c64c40</span><br>++++mutableCopyArr:<span class="hljs-number">0</span>x6<span class="hljs-number">00001033900</span>,indexAt0:<span class="hljs-number">0</span>x6<span class="hljs-number">00001c64c40</span><br></code></pre></td></tr></table></figure>
 
 <p>对可变数组 oriArray 的两种拷贝都是内容拷贝，都产生了新的集合对象。</p>
 <blockquote>
@@ -384,10 +531,10 @@
 <p>结论8：对于可变和不可变集合对象的copy 和 mutableCopy，其内部元素始终都是指针拷贝。</p>
 </blockquote>
 <p>#示例10.3：集合内元素的指针拷贝</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">NSArray *elementArr = [NSMutableArray arrayWithObject:@1];</span><br><span class="line">NSMutableArray *oriArray = [NSMutableArray arrayWithObject:elementArr];</span><br><span class="line">NSMutableArray *mutableCopyArray = [oriArray mutableCopy];</span><br><span class="line">[mutableCopyArray[0] addObject:@2];</span><br><span class="line">NSLog(@&quot;++++objects in element:%p++++&quot;,elementArr);</span><br><span class="line">for (NSNumber *num in elementArr) &#123;</span><br><span class="line">    NSLog(@&quot;++++%d&quot;,[num intValue]);</span><br><span class="line">&#125;</span><br><span class="line">NSLog(@&quot;++++objects in mutableCopyArray[0]:%p++++&quot;,mutableCopyArray[0]);</span><br><span class="line">for (NSNumber *num in mutableCopyArray[0]) &#123;</span><br><span class="line">    NSLog(@&quot;++++%d&quot;,[num intValue]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-built_in">NSArray</span> *elementArr = [<span class="hljs-built_in">NSMutableArray</span> arrayWithObject:@<span class="hljs-number">1</span>];<br><span class="hljs-built_in">NSMutableArray</span> *oriArray = [<span class="hljs-built_in">NSMutableArray</span> arrayWithObject:elementArr];<br><span class="hljs-built_in">NSMutableArray</span> *mutableCopyArray = [oriArray mutableCopy];<br>[mutableCopyArray[<span class="hljs-number">0</span>] addObject:@<span class="hljs-number">2</span>];<br><span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;++++objects in element:%p++++&quot;</span>,elementArr);<br><span class="hljs-keyword">for</span> (<span class="hljs-built_in">NSNumber</span> *num <span class="hljs-keyword">in</span> elementArr) &#123;<br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;++++%d&quot;</span>,[num intValue]);<br>&#125;<br><span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;++++objects in mutableCopyArray[0]:%p++++&quot;</span>,mutableCopyArray[<span class="hljs-number">0</span>]);<br><span class="hljs-keyword">for</span> (<span class="hljs-built_in">NSNumber</span> *num <span class="hljs-keyword">in</span> mutableCopyArray[<span class="hljs-number">0</span>]) &#123;<br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;++++%d&quot;</span>,[num intValue]);<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>输出日志：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">++++objects in element:0x600000249450++++</span><br><span class="line">++++1</span><br><span class="line">++++2</span><br><span class="line">++++objects in mutableCopyArray[0]:0x600000249450++++</span><br><span class="line">++++1</span><br><span class="line">++++2</span><br></pre></td></tr></table></figure>
+<figure class="highlight brainfuck"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs brainfuck"><span class="hljs-literal">++++</span><span class="hljs-comment">objects in element:0x600000249450</span><span class="hljs-literal">++++</span><br><span class="hljs-literal">++++</span><span class="hljs-comment">1</span><br><span class="hljs-literal">++++</span><span class="hljs-comment">2</span><br><span class="hljs-literal">++++</span><span class="hljs-comment">objects in mutableCopyArray</span><span class="hljs-title">[</span><span class="hljs-comment">0</span><span class="hljs-title">]</span><span class="hljs-comment">:0x600000249450</span><span class="hljs-literal">++++</span><br><span class="hljs-literal">++++</span><span class="hljs-comment">1</span><br><span class="hljs-literal">++++</span><span class="hljs-comment">2</span><br></code></pre></td></tr></table></figure>
 
 <p>示例显示，mutableCopyArray 内的元素与 oriArray 内的元素，都是指向同一片地址，也就是 element 的地址。因此，后续对 mutableCopyArray[0] 执行添加数据的操作时，element 数组也受到影响，跟着增加了相同的对象。因此实际开发过程中，需要留意这一点！</p>
 <hr>
@@ -397,217 +544,346 @@
 <p>#<a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/foundation/nsmutablecopying?language=objc">©Apple-Documentation-nsmutablecopying</a></p>
 <p>#<a target="_blank" rel="noopener" href="https://developer.apple.com/library/archive/documentation/General/Conceptual/CocoaEncyclopedia/ObjectMutability/ObjectMutability.html">©Apple-Documentation-Object Mutability</a></p>
 <p>#<a target="_blank" rel="noopener" href="https://www.cnblogs.com/gaoxiao228/archive/2012/04/21/2462561.html">©gaoxiao228-深浅拷贝</a></p>
-</section>
-    <!-- Tags START -->
-    
-      <div class="tags">
-        <span>Tags:</span>
-        
-  <a href="/tags#FQA" >
-    <span class="tag-code">FQA</span>
-  </a>
 
-      </div>
-    
-    <!-- Tags END -->
-    <!-- NAV START -->
-    
-  <div class="nav-container">
-    <!-- reverse left and right to put prev and next in a more logic postition -->
-    
-      <a class="nav-left" href="/2018/04/13/kvo.html">
-        <span class="nav-arrow">← </span>
-        
-          KVO 的底层实现
-        
-      </a>
-    
-    
-      <a class="nav-right" href="/2018/06/15/str-modifier.html">
-        
-          字符串属性的修饰符
-        
-        <span class="nav-arrow"> →</span>
-      </a>
-    
-  </div>
-
-    <!-- NAV END -->
-    <!-- 打赏 START -->
-    
-      <div class="money-like">
-        <div class="reward-btn">
-          赏
-          <span class="money-code">
-            <span class="alipay-code">
-              <div class="code-image"></div>
-              <b>使用支付宝打赏</b>
-            </span>
-            <span class="wechat-code">
-              <div class="code-image"></div>
-              <b>使用微信打赏</b>
-            </span>
-          </span>
-        </div>
-        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
-      </div>
-    
-    <!-- 打赏 END -->
-    <!-- 二维码 START -->
-    
-    <!-- 二维码 END -->
-    
-      <!-- No Comment -->
-    
-  </article>
-  <!-- Article END -->
-  <!-- Catalog START -->
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
   
-    <aside class="catalog-container">
-  <div class="toc-main">
-    <strong class="toc-title">Catalog</strong>
-    
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-%E6%8B%B7%E8%B4%9D-%E5%88%9D%E6%8E%A2"><span class="toc-nav-text">1.拷贝-初探</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-OC%E6%8B%B7%E8%B4%9D%E5%8D%8F%E8%AE%AE"><span class="toc-nav-text">2.OC拷贝协议</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-1-%E6%8B%B7%E8%B4%9D%E5%8D%8F%E8%AE%AE"><span class="toc-nav-text">2.1.拷贝协议</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-2-%E7%BB%A7%E6%89%BF%E4%B8%8E%E6%8B%B7%E8%B4%9D%E5%8D%8F%E8%AE%AE"><span class="toc-nav-text">2.2.继承与拷贝协议</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-3-%E5%8F%AF-x2F-%E4%B8%8D%E5%8F%AF%E5%8F%98%E5%AF%B9%E8%B1%A1"><span class="toc-nav-text">2.3.可&#x2F;不可变对象</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-%E6%B7%B1-x2F-%E6%B5%85%E6%8B%B7%E8%B4%9D"><span class="toc-nav-text">3.深&#x2F;浅拷贝</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-1-%E6%A6%82%E5%BF%B5"><span class="toc-nav-text">3.1.概念</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-2-%E4%BD%BF%E7%94%A8"><span class="toc-nav-text">3.2.使用</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-3-%E6%8B%B7%E8%B4%9D%E6%B7%B1%E5%BA%A6"><span class="toc-nav-text">3.3.拷贝深度</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-%E4%B8%8D%E5%8F%AF%E5%8F%98%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E6%8B%B7%E8%B4%9D"><span class="toc-nav-text">4.不可变字符串的拷贝</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#5-%E5%8F%AF%E5%8F%98%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E6%8B%B7%E8%B4%9D"><span class="toc-nav-text">5.可变字符串的拷贝</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#6-%E6%8B%B7%E8%B4%9D%E4%B8%8E%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%8F%AF%E5%8F%98%E6%80%A7"><span class="toc-nav-text">6.拷贝与字符串可变性</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#7-%E8%87%AA%E5%AE%9A%E4%B9%89%E7%B1%BB%E7%9A%84%E6%8B%B7%E8%B4%9D"><span class="toc-nav-text">7.自定义类的拷贝</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#8-%E9%9B%86%E5%90%88%E7%B1%BB%E5%AF%B9%E8%B1%A1%E7%9A%84%E6%8B%B7%E8%B4%9D"><span class="toc-nav-text">8.集合类对象的拷贝</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#9-%E6%8B%B7%E8%B4%9D%E4%B8%8E%E9%9B%86%E5%90%88%E7%9A%84%E5%8F%AF%E5%8F%98%E6%80%A7"><span class="toc-nav-text">9.拷贝与集合的可变性</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#10-%E9%9B%86%E5%90%88%E7%9A%84copy%E4%B8%8EmutableCopy"><span class="toc-nav-text">10.集合的copy与mutableCopy</span></a></li></ol>
-    
-  </div>
-</aside>
   
-  <!-- Catalog END -->
-</main>
-
-<script>
-  (function () {
-    var url = 'http://yoursite.com/2018/06/14/copy.html';
-    var banner = ''
-    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
-      $('#article-banner').css({
-        'background-image': 'url(' + banner + ')'
-      })
-    } else {
-      $('#article-banner').geopattern(url)
-    }
-    $('.header').removeClass('fixed-header')
-
-     // error image
-    $(".markdown-content img").on('error', function() {
-      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
-      $(this).css({
-        'cursor': 'default'
-      })
-    })
-
-    // zoom image
-    $(".markdown-content img").on('click', function() {
-      var src = $(this).attr('src')
-      if (src !== 'http://file.muyutech.com/error-img.png') {
-        var imageW = $(this).width()
-        var imageH = $(this).height()
-        
-        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
-        zoom = zoom < 1 ? 1 : zoom
-        zoom = zoom > 2 ? 2 : zoom
-        var transY = (($(window).height() - imageH) / 2).toFixed(2)
-
-        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
-        $('.image-view-wrap').addClass('wrap-active')
-        $('.image-view-wrap img').css({
-          'width': `${imageW}`,
-          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
-        })
-        $('html').css('overflow', 'hidden')
-
-        $('.image-view-wrap').on('click', function() {
-          $(this).remove()
-          $('html').attr('style', '')
-        })
-      }
-    })
-
-    // qrcode
-    var qr = new QRious({
-      element: document.getElementById('share-qrcode'),
-      value: document.location.href
-    });
-
-    // gitment
-    var gitmentConfig = "";
-    if (gitmentConfig !== 'undefined') {
-      var gitment = new Gitment({
-        id: "拷贝相关知识点",
-        owner: "",
-        repo: "",
-        oauth: {
-          client_id: "",
-          client_secret: ""
-        },
-        theme: {
-          render(state, instance) {
-            const container = document.createElement('div')
-            container.lang = "en-US"
-            container.className = 'gitment-container gitment-root-container'
-            container.appendChild(instance.renderHeader(state, instance))
-            container.appendChild(instance.renderEditor(state, instance))
-            container.appendChild(instance.renderComments(state, instance))
-            container.appendChild(instance.renderFooter(state, instance))
-            return container;
-          }
-        }
-      })
-      gitment.render(document.getElementById('comments'))
-    }
-  })();
-</script>
-
-    <div class="scroll-top">
-  <span class="arrow-icon"></span>
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/FQA/">#FQA</a>
+      
+    </div>
+  
 </div>
-    <footer class="app-footer">
-  <p class="copyright">
-    &copy; 2022 | <a href="https://github.com/davidlii" target="_blank">Davidli</a>
-    <br>
-    <a href="https://hexo.io" target="_blank">Hexo</a> | Theme-<a target="_blank" rel="noopener" href="https://github.com/yanm1ng">yanm1ng</a>
-  </p>
-</footer>
 
-<script>
-  function async(u, c) {
-    var d = document, t = 'script',
-      o = d.createElement(t),
-      s = d.getElementsByTagName(t)[0];
-    o.src = u;
-    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
-    s.parentNode.insertBefore(o, s);
-  }
-</script>
-<script>
-  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
-    FastClick.attach(document.body);
-  })
-</script>
 
-<script>
-  var hasLine = 'true';
-  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
-    $('figure pre').each(function(i, block) {
-      var figure = $(this).parents('figure');
-      if (hasLine === 'false') {
-        figure.find('.gutter').hide();
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>拷贝相关知识点</div>
+      <div>http://yoursite.com/2018/06/14/copy.html</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>June 14, 2018</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>Licensed under</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2018/06/15/str-modifier.html" title="字符串属性的修饰符">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">字符串属性的修饰符</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2018/04/13/kvo.html" title="KVO 的底层实现">
+                        <span class="hidden-mobile">KVO 的底层实现</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;Table of Contents</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://github.com/davidlii" target="_blank" rel="nofollow noopener"><span>Davidlii</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        Views: 
+        <span id="busuanzi_value_site_pv"></span>
+        
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        Visitors: 
+        <span id="busuanzi_value_site_uv"></span>
+        
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
       }
-      var lang = figure.attr('class').split(' ')[1] || 'code';
-      var codeHtml = $(this).html();
-      var codeTag = document.createElement('code');
-      codeTag.className = lang;
-      codeTag.innerHTML = codeHtml;
-      $(this).attr('class', '').empty().html(codeTag);
-      figure.attr('data-lang', lang.toUpperCase());
-      hljs.highlightBlock(block);
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
     });
-  })
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
 </script>
-<!-- Baidu Tongji -->
 
 
-<script src="/js/script.js"></script>
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
 
-  </body>
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
 </html>

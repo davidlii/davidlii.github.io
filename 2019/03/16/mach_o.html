@@ -1,162 +1,308 @@
+
+
 <!DOCTYPE html>
-<html>
-  <head>
-  <meta http-equiv="content-type" content="text/html; charset=utf-8">
-  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
-  <meta name="description" content="This is Davidli&#39;s blog ~">
-  <meta name="keyword" content="hexo-theme, vuejs">
-  
-    <link rel="shortcut icon" type="image/ico" href="/image/logo.png"/> 
-  
-  <title>
-    
-      Mach-O | Davidli
-    
-  </title>
-  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
-  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
-  
-<link rel="stylesheet" href="/css/style.css">
-<link rel="stylesheet" href="/css/plugins/gitment.css">
-
-  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
-  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
-  
-<script src="/js/qrious.js"></script>
-<script src="/js/gitment.js"></script>
-
-  
-  
-    <!-- MathJax support START -->
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      });
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      });
-    </script>
-    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <!-- MathJax support END -->
-  
+<html lang="zh-Hans" data-default-color-scheme=auto>
 
 
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="Davidli">
+  
+    <meta name="description" content="Xcode 构建一个程序的过程中，会把源文件 (.m 和 .h) 文件转换为一个可执行文件（Mach-O executable）。这个可执行文件中包含的字节码将会被 CPU (iOS 设备中的 ARM 处理器或 Mac 上的 Intel 处理器) 执行。当然，我们也可以不使用 Xcode，而是通过苹果提供的命令行工具（command line tools）来构建一个程序。 #1 不使用 Xcode">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Mach-O">
+<meta property="og:url" content="http://yoursite.com/2019/03/16/mach_o.html">
+<meta property="og:site_name" content="Davidli">
+<meta property="og:description" content="Xcode 构建一个程序的过程中，会把源文件 (.m 和 .h) 文件转换为一个可执行文件（Mach-O executable）。这个可执行文件中包含的字节码将会被 CPU (iOS 设备中的 ARM 处理器或 Mac 上的 Intel 处理器) 执行。当然，我们也可以不使用 Xcode，而是通过苹果提供的命令行工具（command line tools）来构建一个程序。 #1 不使用 Xcode">
+<meta property="og:locale">
+<meta property="og:image" content="https://davidlii.nos-eastchina1.126.net/pic_mach_o.jpg">
+<meta property="article:published_time" content="2019-03-16T13:47:07.000Z">
+<meta property="article:modified_time" content="2018-07-07T13:47:07.000Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="逆向工程">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://davidlii.nos-eastchina1.126.net/pic_mach_o.jpg">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>Mach-O - Davidli</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"yoursite.com","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
 <meta name="generator" content="Hexo 6.2.0"></head>
-<div class="wechat-share">
-  <img src="/css/images/logo.png" />
-</div>
 
-  <body>
-    <header class="header fixed-header">
-  <div class="header-container">
-    <a class="home-link" href="/">
-      <div class="logo"></div>
-      <span>Davidli</span>
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Davidli</strong>
     </a>
-    <ul class="right-list">
-      
-        <li class="list-item">
-          
-            <a href="/" class="item-link">Davidli</a>
-          
-        </li>
-      
-        <li class="list-item">
-          
-            <a href="/archives/" class="item-link">归档</a>
-          
-        </li>
-      
-        <li class="list-item">
-          
-            <a href="/tags/" class="item-link">标签</a>
-          
-        </li>
-      
-        <li class="list-item">
-          
-            <a href="/about/" class="item-link">关于</a>
-          
-        </li>
-      
-    </ul>
-    <div class="menu">
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-    </div>
-    <div class="menu-mask">
-      <ul class="menu-list">
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
         
-          <li class="menu-item">
-            
-              <a href="/" class="menu-link">Davidli</a>
-            
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                Categories
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                Tags
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
           </li>
+          
         
-          <li class="menu-item">
-            
-              <a href="/archives/" class="menu-link">归档</a>
-            
-          </li>
         
-          <li class="menu-item">
-            
-              <a href="/tags/" class="menu-link">标签</a>
-            
-          </li>
-        
-          <li class="menu-item">
-            
-              <a href="/about/" class="menu-link">关于</a>
-            
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
           </li>
         
       </ul>
     </div>
   </div>
-</header>
+</nav>
 
-    <div id="article-banner">
-  <h2>Mach-O</h2>
-  <p class="post-date">2019-03-16</p>
-  <div class="arrow-down">
-    <a href="javascript:;"></a>
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Mach-O"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2019-03-16 21:47" pubdate>
+          March 16, 2019 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          12k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          102 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
   </div>
 </div>
-<main class="app-body flex-box">
-  <!-- Article START -->
-  <article class="post-article">
-    <section class="markdown-content"><p>Xcode 构建一个程序的过程中，会把源文件 (.m 和 .h) 文件转换为一个可执行文件（Mach-O executable）。这个可执行文件中包含的字节码将会被 CPU (iOS 设备中的 ARM 处理器或 Mac 上的 Intel 处理器) 执行。当然，我们也可以不使用 Xcode，而是通过苹果提供的命令行工具（command line tools）来构建一个程序。</p>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Mach-O</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>Xcode 构建一个程序的过程中，会把源文件 (.m 和 .h) 文件转换为一个可执行文件（Mach-O executable）。这个可执行文件中包含的字节码将会被 CPU (iOS 设备中的 ARM 处理器或 Mac 上的 Intel 处理器) 执行。当然，我们也可以不使用 Xcode，而是通过苹果提供的命令行工具（command line tools）来构建一个程序。</p>
 <h2 id="1-不使用-Xcode-的-Hello-World"><a href="#1-不使用-Xcode-的-Hello-World" class="headerlink" title="#1 不使用 Xcode 的 Hello World"></a>#1 不使用 Xcode 的 Hello World</h2><p>通过终端 (Terminal)，创建一个包含一个 C 文件的文件夹：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ mkdir command-line</span><br><span class="line">$ cd !$</span><br><span class="line">$ touch helloworld.c</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash"><span class="hljs-built_in">mkdir</span> command-line</span><br><span class="hljs-meta prompt_">$ </span><span class="language-bash"><span class="hljs-built_in">cd</span> !$</span><br><span class="hljs-meta prompt_">$ </span><span class="language-bash"><span class="hljs-built_in">touch</span> helloworld.c</span><br></code></pre></td></tr></table></figure>
 
 <p>使用文本编辑器来编辑这个文件：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">open -e helloworld.c</span><br></pre></td></tr></table></figure>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs arduino">open -e helloworld.c<br></code></pre></td></tr></table></figure>
 
 <p>输入如下代码：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line">int main(int argc, char *argv[])</span><br><span class="line">&#123;</span><br><span class="line">    printf(&quot;Hello World!\n&quot;);</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span></span><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">(<span class="hljs-type">int</span> argc, <span class="hljs-type">char</span> *argv[])</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Hello World!\n&quot;</span>);<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>保存并返回到终端，然后运行如下命令编译 helloworld.c 文件：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ xcrun clang helloworld.c</span><br></pre></td></tr></table></figure>
+<figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs crystal"><span class="hljs-variable">$ </span>xcrun clang helloworld.c<br></code></pre></td></tr></table></figure>
 
 <p>这里会产生一个名为 a.out 的文件，使用file命令查看其信息:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ file a.out </span><br><span class="line">a.out: Mach-O 64-bit executable x86_64</span><br></pre></td></tr></table></figure>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs stylus">$ file <span class="hljs-selector-tag">a</span><span class="hljs-selector-class">.out</span> <br><span class="hljs-selector-tag">a</span><span class="hljs-selector-class">.out</span>: Mach-O <span class="hljs-number">64</span>-bit executable x86_64<br></code></pre></td></tr></table></figure>
 <p>这个 a.out 文件就是使用 clang 编译器将 helloworld.c 编译后产生的一个 Mach-O 格式的二进制文件。注意，如果没有指定名字，那么编译器会默认的将其指定为 a.out。</p>
 <p>然后我们执行此二进制文件，终端中的输出结果如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ ./a.out </span><br><span class="line">Hello World!</span><br></pre></td></tr></table></figure>
+<figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs crystal"><span class="hljs-variable">$ </span>./a.<span class="hljs-keyword">out</span> <br>Hello World!<br></code></pre></td></tr></table></figure>
 
 <hr>
 <h2 id="2-Mach-O（可执行文件格式）"><a href="#2-Mach-O（可执行文件格式）" class="headerlink" title="#2 Mach-O（可执行文件格式）"></a>#2 Mach-O（可执行文件格式）</h2><p>Mach-O 是 Mach object 文件格式的缩写，类似于 windows 环境下的 PE 格式、Linux 环境下的 ELF 格式。我们平时见到的可执行文件、dSYM符号文件、Dylib动态库、Framework 等使用的都是这种格式。</p>
@@ -167,149 +313,149 @@
 <p>Mach-O应用在基于Mach核心的系统上，目前NeXTSTEP、Darwin、Mac OS X（iPhone）都是使用这种可执行文件格式。</p>
 </blockquote>
 <p>Mach-O 文件的结构由 Header、Load commands、Data（包含Segement的具体数据）组成。</p>
-<p><img src="https://davidlii.nos-eastchina1.126.net/pic_mach_o.jpg" alt="image"></p>
+<p><img src="https://davidlii.nos-eastchina1.126.net/pic_mach_o.jpg" srcset="/img/loading.gif" lazyload alt="image"></p>
 <p>上面我们编译出的可执行文件 a.out 使用的也是这种格式。</p>
 <p>#示例1：使用 otool 命令查看 a.out 文件的内部结构</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br></pre></td><td class="code"><pre><span class="line">$ otool -l a.out </span><br><span class="line">a.out:</span><br><span class="line">Mach header</span><br><span class="line">      magic cputype cpusubtype  caps    filetype ncmds sizeofcmds      flags</span><br><span class="line"> 0xfeedfacf 16777223          3  0x80           2    15       1200 0x00200085</span><br><span class="line">Load command 0</span><br><span class="line">      cmd LC_SEGMENT_64</span><br><span class="line">  cmdsize 72</span><br><span class="line">  segname __PAGEZERO</span><br><span class="line">   vmaddr 0x0000000000000000</span><br><span class="line">   vmsize 0x0000000100000000</span><br><span class="line">  fileoff 0</span><br><span class="line"> filesize 0</span><br><span class="line">  maxprot 0x00000000</span><br><span class="line"> initprot 0x00000000</span><br><span class="line">   nsects 0</span><br><span class="line">    flags 0x0</span><br><span class="line">Load command 1</span><br><span class="line">      cmd LC_SEGMENT_64</span><br><span class="line">  cmdsize 472</span><br><span class="line">  segname __TEXT</span><br><span class="line">   vmaddr 0x0000000100000000</span><br><span class="line">   vmsize 0x0000000000001000</span><br><span class="line">  fileoff 0</span><br><span class="line"> filesize 4096</span><br><span class="line">  maxprot 0x00000007</span><br><span class="line"> initprot 0x00000005</span><br><span class="line">   nsects 5</span><br><span class="line">    flags 0x0</span><br><span class="line">Section</span><br><span class="line">  sectname __text</span><br><span class="line">   segname __TEXT</span><br><span class="line">      addr 0x0000000100000f50</span><br><span class="line">      size 0x0000000000000034</span><br><span class="line">    offset 3920</span><br><span class="line">     align 2^4 (16)</span><br><span class="line">    reloff 0</span><br><span class="line">    nreloc 0</span><br><span class="line">     flags 0x80000400</span><br><span class="line"> reserved1 0</span><br><span class="line"> reserved2 0</span><br><span class="line">Section</span><br><span class="line">  sectname __stubs</span><br><span class="line">   segname __TEXT</span><br><span class="line">      addr 0x0000000100000f84</span><br><span class="line">      size 0x0000000000000006</span><br><span class="line">    offset 3972</span><br><span class="line">     align 2^1 (2)</span><br><span class="line">    reloff 0</span><br><span class="line">    nreloc 0</span><br><span class="line">     flags 0x80000408</span><br><span class="line"> reserved1 0 (index into indirect symbol table)</span><br><span class="line"> reserved2 6 (size of stubs)</span><br><span class="line">Section</span><br><span class="line">  sectname __stub_helper</span><br><span class="line">   segname __TEXT</span><br><span class="line">      addr 0x0000000100000f8c</span><br><span class="line">      size 0x000000000000001a</span><br><span class="line">    offset 3980</span><br><span class="line">     align 2^2 (4)</span><br><span class="line">    reloff 0</span><br><span class="line">    nreloc 0</span><br><span class="line">     flags 0x80000400</span><br><span class="line"> reserved1 0</span><br><span class="line"> reserved2 0</span><br><span class="line">Section</span><br><span class="line">  sectname __cstring</span><br><span class="line">   segname __TEXT</span><br><span class="line">      addr 0x0000000100000fa6</span><br><span class="line">      size 0x000000000000000e</span><br><span class="line">    offset 4006</span><br><span class="line">     align 2^0 (1)</span><br><span class="line">    reloff 0</span><br><span class="line">    nreloc 0</span><br><span class="line">     flags 0x00000002</span><br><span class="line"> reserved1 0</span><br><span class="line"> reserved2 0</span><br><span class="line">Section</span><br><span class="line">  sectname __unwind_info</span><br><span class="line">   segname __TEXT</span><br><span class="line">      addr 0x0000000100000fb4</span><br><span class="line">      size 0x0000000000000048</span><br><span class="line">    offset 4020</span><br><span class="line">     align 2^2 (4)</span><br><span class="line">    reloff 0</span><br><span class="line">    nreloc 0</span><br><span class="line">     flags 0x00000000</span><br><span class="line"> reserved1 0</span><br><span class="line"> reserved2 0</span><br><span class="line">Load command 2</span><br><span class="line">      cmd LC_SEGMENT_64</span><br><span class="line">  cmdsize 232</span><br><span class="line">  segname __DATA</span><br><span class="line">   vmaddr 0x0000000100001000</span><br><span class="line">   vmsize 0x0000000000001000</span><br><span class="line">  fileoff 4096</span><br><span class="line"> filesize 4096</span><br><span class="line">  maxprot 0x00000007</span><br><span class="line"> initprot 0x00000003</span><br><span class="line">   nsects 2</span><br><span class="line">    flags 0x0</span><br><span class="line">Section</span><br><span class="line">  sectname __nl_symbol_ptr</span><br><span class="line">   segname __DATA</span><br><span class="line">      addr 0x0000000100001000</span><br><span class="line">      size 0x0000000000000010</span><br><span class="line">    offset 4096</span><br><span class="line">     align 2^3 (8)</span><br><span class="line">    reloff 0</span><br><span class="line">    nreloc 0</span><br><span class="line">     flags 0x00000006</span><br><span class="line"> reserved1 1 (index into indirect symbol table)</span><br><span class="line"> reserved2 0</span><br><span class="line">Section</span><br><span class="line">  sectname __la_symbol_ptr</span><br><span class="line">   segname __DATA</span><br><span class="line">      addr 0x0000000100001010</span><br><span class="line">      size 0x0000000000000008</span><br><span class="line">    offset 4112</span><br><span class="line">     align 2^3 (8)</span><br><span class="line">    reloff 0</span><br><span class="line">    nreloc 0</span><br><span class="line">     flags 0x00000007</span><br><span class="line"> reserved1 3 (index into indirect symbol table)</span><br><span class="line"> reserved2 0</span><br><span class="line">Load command 3</span><br><span class="line">      cmd LC_SEGMENT_64</span><br><span class="line">  cmdsize 72</span><br><span class="line">  segname __LINKEDIT</span><br><span class="line">   vmaddr 0x0000000100002000</span><br><span class="line">   vmsize 0x0000000000001000</span><br><span class="line">  fileoff 8192</span><br><span class="line"> filesize 240</span><br><span class="line">  maxprot 0x00000007</span><br><span class="line"> initprot 0x00000001</span><br><span class="line">   nsects 0</span><br><span class="line">    flags 0x0</span><br><span class="line">Load command 4</span><br><span class="line">            cmd LC_DYLD_INFO_ONLY</span><br><span class="line">        cmdsize 48</span><br><span class="line">     rebase_off 8192</span><br><span class="line">    rebase_size 8</span><br><span class="line">       bind_off 8200</span><br><span class="line">      bind_size 24</span><br><span class="line">  weak_bind_off 0</span><br><span class="line"> weak_bind_size 0</span><br><span class="line">  lazy_bind_off 8224</span><br><span class="line"> lazy_bind_size 16</span><br><span class="line">     export_off 8240</span><br><span class="line">    export_size 48</span><br><span class="line">Load command 5</span><br><span class="line">     cmd LC_SYMTAB</span><br><span class="line"> cmdsize 24</span><br><span class="line">  symoff 8296</span><br><span class="line">   nsyms 4</span><br><span class="line">  stroff 8376</span><br><span class="line"> strsize 56</span><br><span class="line">Load command 6</span><br><span class="line">            cmd LC_DYSYMTAB</span><br><span class="line">        cmdsize 80</span><br><span class="line">      ilocalsym 0</span><br><span class="line">      nlocalsym 0</span><br><span class="line">     iextdefsym 0</span><br><span class="line">     nextdefsym 2</span><br><span class="line">      iundefsym 2</span><br><span class="line">      nundefsym 2</span><br><span class="line">         tocoff 0</span><br><span class="line">           ntoc 0</span><br><span class="line">      modtaboff 0</span><br><span class="line">        nmodtab 0</span><br><span class="line">   extrefsymoff 0</span><br><span class="line">    nextrefsyms 0</span><br><span class="line"> indirectsymoff 8360</span><br><span class="line">  nindirectsyms 4</span><br><span class="line">      extreloff 0</span><br><span class="line">        nextrel 0</span><br><span class="line">      locreloff 0</span><br><span class="line">        nlocrel 0</span><br><span class="line">Load command 7</span><br><span class="line">          cmd LC_LOAD_DYLINKER</span><br><span class="line">      cmdsize 32</span><br><span class="line">         name /usr/lib/dyld (offset 12)</span><br><span class="line">Load command 8</span><br><span class="line">     cmd LC_UUID</span><br><span class="line"> cmdsize 24</span><br><span class="line">    uuid 6122E2B2-9651-3991-B2BA-15B45ADC0C6B</span><br><span class="line">Load command 9</span><br><span class="line">      cmd LC_VERSION_MIN_MACOSX</span><br><span class="line">  cmdsize 16</span><br><span class="line">  version 10.13</span><br><span class="line">      sdk 10.13</span><br><span class="line">Load command 10</span><br><span class="line">      cmd LC_SOURCE_VERSION</span><br><span class="line">  cmdsize 16</span><br><span class="line">  version 0.0</span><br><span class="line">Load command 11</span><br><span class="line">       cmd LC_MAIN</span><br><span class="line">   cmdsize 24</span><br><span class="line">  entryoff 3920</span><br><span class="line"> stacksize 0</span><br><span class="line">Load command 12</span><br><span class="line">          cmd LC_LOAD_DYLIB</span><br><span class="line">      cmdsize 56</span><br><span class="line">         name /usr/lib/libSystem.B.dylib (offset 24)</span><br><span class="line">   time stamp 2 Thu Jan  1 08:00:02 1970</span><br><span class="line">      current version 1252.50.4</span><br><span class="line">compatibility version 1.0.0</span><br><span class="line">Load command 13</span><br><span class="line">      cmd LC_FUNCTION_STARTS</span><br><span class="line">  cmdsize 16</span><br><span class="line">  dataoff 8288</span><br><span class="line"> datasize 8</span><br><span class="line">Load command 14</span><br><span class="line">      cmd LC_DATA_IN_CODE</span><br><span class="line">  cmdsize 16</span><br><span class="line">  dataoff 8296</span><br><span class="line"> datasize 0</span><br></pre></td></tr></table></figure>
+<figure class="highlight dns"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br></pre></td><td class="code"><pre><code class="hljs dns">$ otool -l a.out <br>a.out:<br>Mach header<br>      magic cputype cpusubtype  caps    filetype ncmds sizeofcmds      flags<br> <span class="hljs-number">0</span>xfeedfacf <span class="hljs-number">16777223</span>          <span class="hljs-number">3</span>  <span class="hljs-number">0</span>x80           <span class="hljs-number">2</span>    <span class="hljs-number">15</span>       <span class="hljs-number">1200</span> <span class="hljs-number">0x00200085</span><br>Load command <span class="hljs-number">0</span><br>      cmd LC_SEGMENT_64<br>  cmdsize <span class="hljs-number">72</span><br>  segname __PAGEZERO<br>   vmaddr <span class="hljs-number">0</span>x00000<span class="hljs-number">00000000000</span><br>   vmsize <span class="hljs-number">0</span>x0000<span class="hljs-number">000100000000</span><br>  fileoff <span class="hljs-number">0</span><br> filesize <span class="hljs-number">0</span><br>  maxprot <span class="hljs-number">0x00000000</span><br> initprot <span class="hljs-number">0x00000000</span><br>   nsects <span class="hljs-number">0</span><br>    flags <span class="hljs-number">0</span>x0<br>Load command <span class="hljs-number">1</span><br>      cmd LC_SEGMENT_64<br>  cmdsize <span class="hljs-number">472</span><br>  segname __TEXT<br>   vmaddr <span class="hljs-number">0</span>x0000<span class="hljs-number">000100000000</span><br>   vmsize <span class="hljs-number">0</span>x00000<span class="hljs-number">00000001000</span><br>  fileoff <span class="hljs-number">0</span><br> filesize <span class="hljs-number">4096</span><br>  maxprot <span class="hljs-number">0x00000007</span><br> initprot <span class="hljs-number">0x00000005</span><br>   nsects <span class="hljs-number">5</span><br>    flags <span class="hljs-number">0</span>x0<br>Section<br>  sectname __text<br>   segname __TEXT<br>      addr <span class="hljs-number">0</span>x0000<span class="hljs-number">000100000f50</span><br>      size <span class="hljs-number">0</span>x00000<span class="hljs-number">00000000034</span><br>    offset <span class="hljs-number">3920</span><br>     align <span class="hljs-number">2</span>^<span class="hljs-number">4</span> (<span class="hljs-number">16</span>)<br>    reloff <span class="hljs-number">0</span><br>    nreloc <span class="hljs-number">0</span><br>     flags <span class="hljs-number">0x80000400</span><br> reserved1 <span class="hljs-number">0</span><br> reserved2 <span class="hljs-number">0</span><br>Section<br>  sectname __stubs<br>   segname __TEXT<br>      addr <span class="hljs-number">0</span>x0000<span class="hljs-number">000100000f84</span><br>      size <span class="hljs-number">0</span>x00000<span class="hljs-number">00000000006</span><br>    offset <span class="hljs-number">3972</span><br>     align <span class="hljs-number">2</span>^<span class="hljs-number">1</span> (<span class="hljs-number">2</span>)<br>    reloff <span class="hljs-number">0</span><br>    nreloc <span class="hljs-number">0</span><br>     flags <span class="hljs-number">0x80000408</span><br> reserved1 <span class="hljs-number">0</span> (index into indirect symbol table)<br> reserved2 <span class="hljs-number">6</span> (size of stubs)<br>Section<br>  sectname __stub_helper<br>   segname __TEXT<br>      addr <span class="hljs-number">0</span>x0000000100000f8c<br>      size <span class="hljs-number">0</span>x000000000000001a<br>    offset <span class="hljs-number">3980</span><br>     align <span class="hljs-number">2</span>^<span class="hljs-number">2</span> (<span class="hljs-number">4</span>)<br>    reloff <span class="hljs-number">0</span><br>    nreloc <span class="hljs-number">0</span><br>     flags <span class="hljs-number">0x80000400</span><br> reserved1 <span class="hljs-number">0</span><br> reserved2 <span class="hljs-number">0</span><br>Section<br>  sectname __cstring<br>   segname __TEXT<br>      addr <span class="hljs-number">0</span>x0000000100000fa6<br>      size <span class="hljs-number">0</span>x000000000000000e<br>    offset <span class="hljs-number">4006</span><br>     align <span class="hljs-number">2</span>^<span class="hljs-number">0</span> (<span class="hljs-number">1</span>)<br>    reloff <span class="hljs-number">0</span><br>    nreloc <span class="hljs-number">0</span><br>     flags <span class="hljs-number">0x00000002</span><br> reserved1 <span class="hljs-number">0</span><br> reserved2 <span class="hljs-number">0</span><br>Section<br>  sectname __unwind_info<br>   segname __TEXT<br>      addr <span class="hljs-number">0</span>x0000000100000fb4<br>      size <span class="hljs-number">0</span>x00000<span class="hljs-number">00000000048</span><br>    offset <span class="hljs-number">4020</span><br>     align <span class="hljs-number">2</span>^<span class="hljs-number">2</span> (<span class="hljs-number">4</span>)<br>    reloff <span class="hljs-number">0</span><br>    nreloc <span class="hljs-number">0</span><br>     flags <span class="hljs-number">0x00000000</span><br> reserved1 <span class="hljs-number">0</span><br> reserved2 <span class="hljs-number">0</span><br>Load command <span class="hljs-number">2</span><br>      cmd LC_SEGMENT_64<br>  cmdsize <span class="hljs-number">232</span><br>  segname __DATA<br>   vmaddr <span class="hljs-number">0</span>x0000<span class="hljs-number">000100001000</span><br>   vmsize <span class="hljs-number">0</span>x00000<span class="hljs-number">00000001000</span><br>  fileoff <span class="hljs-number">4096</span><br> filesize <span class="hljs-number">4096</span><br>  maxprot <span class="hljs-number">0x00000007</span><br> initprot <span class="hljs-number">0x00000003</span><br>   nsects <span class="hljs-number">2</span><br>    flags <span class="hljs-number">0</span>x0<br>Section<br>  sectname __nl_symbol_ptr<br>   segname __DATA<br>      addr <span class="hljs-number">0</span>x0000<span class="hljs-number">000100001000</span><br>      size <span class="hljs-number">0</span>x00000<span class="hljs-number">00000000010</span><br>    offset <span class="hljs-number">4096</span><br>     align <span class="hljs-number">2</span>^<span class="hljs-number">3</span> (<span class="hljs-number">8</span>)<br>    reloff <span class="hljs-number">0</span><br>    nreloc <span class="hljs-number">0</span><br>     flags <span class="hljs-number">0x00000006</span><br> reserved1 <span class="hljs-number">1</span> (index into indirect symbol table)<br> reserved2 <span class="hljs-number">0</span><br>Section<br>  sectname __la_symbol_ptr<br>   segname __DATA<br>      addr <span class="hljs-number">0</span>x0000<span class="hljs-number">000100001010</span><br>      size <span class="hljs-number">0</span>x00000<span class="hljs-number">00000000008</span><br>    offset <span class="hljs-number">4112</span><br>     align <span class="hljs-number">2</span>^<span class="hljs-number">3</span> (<span class="hljs-number">8</span>)<br>    reloff <span class="hljs-number">0</span><br>    nreloc <span class="hljs-number">0</span><br>     flags <span class="hljs-number">0x00000007</span><br> reserved1 <span class="hljs-number">3</span> (index into indirect symbol table)<br> reserved2 <span class="hljs-number">0</span><br>Load command <span class="hljs-number">3</span><br>      cmd LC_SEGMENT_64<br>  cmdsize <span class="hljs-number">72</span><br>  segname __LINKEDIT<br>   vmaddr <span class="hljs-number">0</span>x0000<span class="hljs-number">000100002000</span><br>   vmsize <span class="hljs-number">0</span>x00000<span class="hljs-number">00000001000</span><br>  fileoff <span class="hljs-number">8192</span><br> filesize <span class="hljs-number">240</span><br>  maxprot <span class="hljs-number">0x00000007</span><br> initprot <span class="hljs-number">0x00000001</span><br>   nsects <span class="hljs-number">0</span><br>    flags <span class="hljs-number">0</span>x0<br>Load command <span class="hljs-number">4</span><br>            cmd LC_DYLD_INFO_ONLY<br>        cmdsize <span class="hljs-number">48</span><br>     rebase_off <span class="hljs-number">8192</span><br>    rebase_size <span class="hljs-number">8</span><br>       bind_off <span class="hljs-number">8200</span><br>      bind_size <span class="hljs-number">24</span><br>  weak_bind_off <span class="hljs-number">0</span><br> weak_bind_size <span class="hljs-number">0</span><br>  lazy_bind_off <span class="hljs-number">8224</span><br> lazy_bind_size <span class="hljs-number">16</span><br>     export_off <span class="hljs-number">8240</span><br>    export_size <span class="hljs-number">48</span><br>Load command <span class="hljs-number">5</span><br>     cmd LC_SYMTAB<br> cmdsize <span class="hljs-number">24</span><br>  symoff <span class="hljs-number">8296</span><br>   nsyms <span class="hljs-number">4</span><br>  stroff <span class="hljs-number">8376</span><br> strsize <span class="hljs-number">56</span><br>Load command <span class="hljs-number">6</span><br>            cmd LC_DYSYMTAB<br>        cmdsize <span class="hljs-number">80</span><br>      ilocalsym <span class="hljs-number">0</span><br>      nlocalsym <span class="hljs-number">0</span><br>     iextdefsym <span class="hljs-number">0</span><br>     nextdefsym <span class="hljs-number">2</span><br>      iundefsym <span class="hljs-number">2</span><br>      nundefsym <span class="hljs-number">2</span><br>         tocoff <span class="hljs-number">0</span><br>           ntoc <span class="hljs-number">0</span><br>      modtaboff <span class="hljs-number">0</span><br>        nmodtab <span class="hljs-number">0</span><br>   extrefsymoff <span class="hljs-number">0</span><br>    nextrefsyms <span class="hljs-number">0</span><br> indirectsymoff <span class="hljs-number">8360</span><br>  nindirectsyms <span class="hljs-number">4</span><br>      extreloff <span class="hljs-number">0</span><br>        nextrel <span class="hljs-number">0</span><br>      locreloff <span class="hljs-number">0</span><br>        nlocrel <span class="hljs-number">0</span><br>Load command <span class="hljs-number">7</span><br>          cmd LC_LOAD_DYLINKER<br>      cmdsize <span class="hljs-number">32</span><br>         name /usr/lib/dyld (offset <span class="hljs-number">12</span>)<br>Load command <span class="hljs-number">8</span><br>     cmd LC_UUID<br> cmdsize <span class="hljs-number">24</span><br>    uuid <span class="hljs-number">6122E2B2</span>-<span class="hljs-number">9651-3991</span>-B2BA-<span class="hljs-number">15</span>B45ADC0C6B<br>Load command <span class="hljs-number">9</span><br>      cmd LC_VERSION_MIN_MACOSX<br>  cmdsize <span class="hljs-number">16</span><br>  version <span class="hljs-number">10</span>.<span class="hljs-number">13</span><br>      sdk <span class="hljs-number">10</span>.<span class="hljs-number">13</span><br>Load command <span class="hljs-number">10</span><br>      cmd LC_SOURCE_VERSION<br>  cmdsize <span class="hljs-number">16</span><br>  version <span class="hljs-number">0</span>.<span class="hljs-number">0</span><br>Load command <span class="hljs-number">11</span><br>       cmd LC_MAIN<br>   cmdsize <span class="hljs-number">24</span><br>  entryoff <span class="hljs-number">3920</span><br> stacksize <span class="hljs-number">0</span><br>Load command <span class="hljs-number">12</span><br>          cmd LC_LOAD_DYLIB<br>      cmdsize <span class="hljs-number">56</span><br>         name /usr/lib/libSystem.B.dylib (offset <span class="hljs-number">24</span>)<br>   time stamp <span class="hljs-number">2</span> Thu Jan  <span class="hljs-number">1 08:00:02</span> <span class="hljs-number">1970</span><br>      current version <span class="hljs-number">1252.50.4</span><br>compatibility version <span class="hljs-number">1</span>.<span class="hljs-number">0</span>.<span class="hljs-number">0</span><br>Load command <span class="hljs-number">13</span><br>      cmd LC_FUNCTION_STARTS<br>  cmdsize <span class="hljs-number">16</span><br>  dataoff <span class="hljs-number">8288</span><br> datasize <span class="hljs-number">8</span><br>Load command <span class="hljs-number">14</span><br>      cmd LC_DATA_IN_CODE<br>  cmdsize <span class="hljs-number">16</span><br>  dataoff <span class="hljs-number">8296</span><br> datasize <span class="hljs-number">0</span><br></code></pre></td></tr></table></figure>
 
 <h3 id="2-1-Header"><a href="#2-1-Header" class="headerlink" title="##2.1.Header"></a>##2.1.Header</h3><p>头部主要用来规定这个文件是什么，以及文件是如何被加载的（通过 otool -h 可以打印出头信息）。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ otool -h a.out </span><br><span class="line">Mach header</span><br><span class="line">      magic cputype cpusubtype  caps    filetype ncmds sizeofcmds      flags</span><br><span class="line"> 0xfeedfacf 16777223          3  0x80           2    15       1200 0x00200085</span><br></pre></td></tr></table></figure>
+<figure class="highlight tap"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs tap">$ otool -h a.out <br>Mach header<br>      magic cputype cpusubtype  caps    filetype ncmds sizeofcmds      flags<br> 0xfeedfacf<span class="hljs-number"> 16777223 </span>        <span class="hljs-number"> 3 </span> 0x80          <span class="hljs-number"> 2 </span>  <span class="hljs-number"> 15 </span>     <span class="hljs-number"> 1200 </span>0x00200085<br></code></pre></td></tr></table></figure>
 
 <ul>
 <li>32 位架构下 Header 的数据结构：</li>
 </ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">struct mach_header &#123;</span><br><span class="line">    uint32_t    magic;      /* mach magic number identifier */</span><br><span class="line">    cpu_type_t  cputype;    /* cpu specifier */</span><br><span class="line">    cpu_subtype_t   cpusubtype; /* machine specifier */</span><br><span class="line">    uint32_t    filetype;   /* type of file */</span><br><span class="line">    uint32_t    ncmds;      /* number of load commands */</span><br><span class="line">    uint32_t    sizeofcmds; /* the size of all the load commands */</span><br><span class="line">    uint32_t    flags;      /* flags */</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">struct</span> <span class="hljs-title class_">mach_header</span> &#123;<br>    <span class="hljs-type">uint32_t</span>    magic;      <span class="hljs-comment">/* mach magic number identifier */</span><br>    <span class="hljs-type">cpu_type_t</span>  cputype;    <span class="hljs-comment">/* cpu specifier */</span><br>    <span class="hljs-type">cpu_subtype_t</span>   cpusubtype; <span class="hljs-comment">/* machine specifier */</span><br>    <span class="hljs-type">uint32_t</span>    filetype;   <span class="hljs-comment">/* type of file */</span><br>    <span class="hljs-type">uint32_t</span>    ncmds;      <span class="hljs-comment">/* number of load commands */</span><br>    <span class="hljs-type">uint32_t</span>    sizeofcmds; <span class="hljs-comment">/* the size of all the load commands */</span><br>    <span class="hljs-type">uint32_t</span>    flags;      <span class="hljs-comment">/* flags */</span><br>&#125;;<br></code></pre></td></tr></table></figure>
 
 <ul>
 <li>64 位架构下 Header 的数据结构：</li>
 </ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">struct mach_header &#123;</span><br><span class="line">    uint32_t    magic;      /* mach magic number identifier */</span><br><span class="line">    cpu_type_t  cputype;    /* cpu specifier */</span><br><span class="line">    cpu_subtype_t   cpusubtype; /* machine specifier */</span><br><span class="line">    uint32_t    filetype;   /* type of file */</span><br><span class="line">    uint32_t    ncmds;      /* number of load commands */</span><br><span class="line">    uint32_t    sizeofcmds; /* the size of all the load commands */</span><br><span class="line">    uint32_t    flags;      /* flags */</span><br><span class="line">    uint32_t    reserved;   /* reserved */</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">struct</span> <span class="hljs-title class_">mach_header</span> &#123;<br>    <span class="hljs-type">uint32_t</span>    magic;      <span class="hljs-comment">/* mach magic number identifier */</span><br>    <span class="hljs-type">cpu_type_t</span>  cputype;    <span class="hljs-comment">/* cpu specifier */</span><br>    <span class="hljs-type">cpu_subtype_t</span>   cpusubtype; <span class="hljs-comment">/* machine specifier */</span><br>    <span class="hljs-type">uint32_t</span>    filetype;   <span class="hljs-comment">/* type of file */</span><br>    <span class="hljs-type">uint32_t</span>    ncmds;      <span class="hljs-comment">/* number of load commands */</span><br>    <span class="hljs-type">uint32_t</span>    sizeofcmds; <span class="hljs-comment">/* the size of all the load commands */</span><br>    <span class="hljs-type">uint32_t</span>    flags;      <span class="hljs-comment">/* flags */</span><br>    <span class="hljs-type">uint32_t</span>    reserved;   <span class="hljs-comment">/* reserved */</span><br>&#125;;<br></code></pre></td></tr></table></figure>
 
 <p>64 位架构只比 32 位架构多了一个 reserved 字段。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">参数：magic</span><br></pre></td></tr></table></figure>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs matlab">参数：<span class="hljs-built_in">magic</span><br></code></pre></td></tr></table></figure>
 
 
 <p>表示当前二进制文件的类型，不同类型的二进制文件有自己独特的”魔数值”。加载器通过这个魔数值来判断这是什么样的文件，例如32位 Mach-O 文件的魔术值是 0xfeedface、64位 Mach-O 文件的魔术值是 0xfeedfacf、胖二进制文件的魔数值是 0xcafebabe。所以这个字段也可以用于快速确认该文件用于64位还是32位。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">参数：cputype</span><br></pre></td></tr></table></figure>
+<figure class="highlight elm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs elm">参数：cpu<span class="hljs-keyword">type</span><br></code></pre></td></tr></table></figure>
 
 <p>cup的类型（如 iOS设备的ARM、Mac上的Intel）。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">参数：cpusubtype</span><br></pre></td></tr></table></figure>
+<figure class="highlight elm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs elm">参数：cpusub<span class="hljs-keyword">type</span><br></code></pre></td></tr></table></figure>
 
 
 <p>cup的子类型（如armv7、arm64等）。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">参数：filetype</span><br></pre></td></tr></table></figure>
+<figure class="highlight elm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs elm">参数：file<span class="hljs-keyword">type</span><br></code></pre></td></tr></table></figure>
 
 <p>文件类型（如可执行文件、库文件、dSYM文件等），具体枚举如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">* Constants for the filetype field of the mach_header</span><br><span class="line"> */</span><br><span class="line">#define MH_OBJECT   0x1     /* relocatable object file */</span><br><span class="line">#define MH_EXECUTE  0x2     /* demand paged executable file */</span><br><span class="line">#define MH_FVMLIB   0x3     /* fixed VM shared library file */</span><br><span class="line">#define MH_CORE     0x4     /* core file */</span><br><span class="line">#define MH_PRELOAD  0x5     /* preloaded executable file */</span><br><span class="line">#define MH_DYLIB    0x6     /* dynamically bound shared library */</span><br><span class="line">#define MH_DYLINKER 0x7     /* dynamic link editor */</span><br><span class="line">#define MH_BUNDLE   0x8     /* dynamically bound bundle file */</span><br><span class="line">#define MH_DYLIB_STUB   0x9     /* shared library stub for static */</span><br><span class="line">#define MH_DSYM     0xa     /* companion file with only debug */</span><br><span class="line">#define MH_KEXT_BUNDLE  0xb     /* x86_64 kexts */</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs cpp">* Constants <span class="hljs-keyword">for</span> the filetype field of the mach_header<br> */<br><span class="hljs-meta">#<span class="hljs-keyword">define</span> MH_OBJECT   0x1     <span class="hljs-comment">/* relocatable object file */</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> MH_EXECUTE  0x2     <span class="hljs-comment">/* demand paged executable file */</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> MH_FVMLIB   0x3     <span class="hljs-comment">/* fixed VM shared library file */</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> MH_CORE     0x4     <span class="hljs-comment">/* core file */</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> MH_PRELOAD  0x5     <span class="hljs-comment">/* preloaded executable file */</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> MH_DYLIB    0x6     <span class="hljs-comment">/* dynamically bound shared library */</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> MH_DYLINKER 0x7     <span class="hljs-comment">/* dynamic link editor */</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> MH_BUNDLE   0x8     <span class="hljs-comment">/* dynamically bound bundle file */</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> MH_DYLIB_STUB   0x9     <span class="hljs-comment">/* shared library stub for static */</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> MH_DSYM     0xa     <span class="hljs-comment">/* companion file with only debug */</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> MH_KEXT_BUNDLE  0xb     <span class="hljs-comment">/* x86_64 kexts */</span></span><br></code></pre></td></tr></table></figure>
 
 
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">参数：ncmds</span><br></pre></td></tr></table></figure>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs">参数：ncmds<br></code></pre></td></tr></table></figure>
 <p>指的是加载命令(Load Commands)的数量，如上面#示例1中 a.out 文件的 ncmds 是 15 个，编号为 0-14。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">参数：sizeofcmds</span><br></pre></td></tr></table></figure>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs">参数：sizeofcmds<br></code></pre></td></tr></table></figure>
 
 <p>表示 N 个 Load Commands 的总字节大小， Load Commands 区域是紧接着 Header 区域的。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">参数：flags</span><br></pre></td></tr></table></figure>
+<figure class="highlight oxygene"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs oxygene">参数：<span class="hljs-keyword">flags</span><br></code></pre></td></tr></table></figure>
 
 <p>标志位，具体枚举值定义如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#define MH_NOUNDEFS  0x1 //目前没有未定义的符号，不存在链接依赖</span><br><span class="line">#define MH_DYLDLINK  0x4 //该文件是dyld的输入文件，无法被再次静态链接</span><br><span class="line">#define MH_PIE 0x200000  //加载程序在随机地址空间（ASLR），只在 MH_EXECUTE中使用</span><br><span class="line">#define MH_TWOLEVEL 0x80 // 两级名称空间</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">define</span> MH_NOUNDEFS  0x1 <span class="hljs-comment">//目前没有未定义的符号，不存在链接依赖</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> MH_DYLDLINK  0x4 <span class="hljs-comment">//该文件是dyld的输入文件，无法被再次静态链接</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> MH_PIE 0x200000  <span class="hljs-comment">//加载程序在随机地址空间（ASLR），只在 MH_EXECUTE中使用</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> MH_TWOLEVEL 0x80 <span class="hljs-comment">// 两级名称空间</span></span><br>...<br></code></pre></td></tr></table></figure>
 
 
 
 <h3 id="2-2-Load-commands"><a href="#2-2-Load-commands" class="headerlink" title="##2.2. Load commands"></a>##2.2. Load commands</h3><p>Load commands 跟在 Header 部分的后面，这些加载指令负责在 Mach-O 文件加载解析时告诉加载器如何处理二进制数据：有些命令是由内核处理的，有些是由动态链接器处理的，最终会根据 cmd 字段的不同类型，使用不同的函数来加载。</p>
 <p>Load commands 的结构定义如下:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">struct load_command &#123;</span><br><span class="line">    uint32_t cmd;       /* type of load command */</span><br><span class="line">    uint32_t cmdsize;   /* total size of command in bytes */</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">struct</span> <span class="hljs-title class_">load_command</span> &#123;<br>    <span class="hljs-type">uint32_t</span> cmd;       <span class="hljs-comment">/* type of load command */</span><br>    <span class="hljs-type">uint32_t</span> cmdsize;   <span class="hljs-comment">/* total size of command in bytes */</span><br>&#125;;<br></code></pre></td></tr></table></figure>
 
 
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">参数：cmd</span><br></pre></td></tr></table></figure>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dockerfile">参数：<span class="hljs-keyword">cmd</span><br></code></pre></td></tr></table></figure>
 
 <p>代表 Load commands 的类型，如 LC_SEGMENT_64、LC_UUID、LC-CODE-SIGNATURE 等等。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">参数：cmdsize</span><br></pre></td></tr></table></figure>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs">参数：cmdsize<br></code></pre></td></tr></table></figure>
 
 <p>代表 Load commands 的大小。</p>
 <p>下面列举几个看上去比较熟悉的 Load commands…</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">// 将文件的32位 或 64位的段映射到进程地址空间</span><br><span class="line">#define LC_SEGMENT  0x1 </span><br><span class="line">#define LC_SEGMENT_64   0x19    </span><br><span class="line"></span><br><span class="line">// 唯一的 UUID，标示二进制文件</span><br><span class="line">#define LC_UUID  0x1b    /* the uuid */</span><br><span class="line"></span><br><span class="line">// 启动动态加载连接器</span><br><span class="line">#define LC_LOAD_DYLINKER 0xe /* load a dynamic linker */</span><br><span class="line"></span><br><span class="line">// 代码签名和加密</span><br><span class="line">#define LC_CODE_SIGNATURE 0x1d   /* local of code signature */</span><br><span class="line">#define LC_ENCRYPTION_INFO 0x21 /* encrypted segment information */</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-comment">// 将文件的32位 或 64位的段映射到进程地址空间</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> LC_SEGMENT  0x1 </span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> LC_SEGMENT_64   0x19    </span><br><br><span class="hljs-comment">// 唯一的 UUID，标示二进制文件</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> LC_UUID  0x1b    <span class="hljs-comment">/* the uuid */</span></span><br><br><span class="hljs-comment">// 启动动态加载连接器</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> LC_LOAD_DYLINKER 0xe <span class="hljs-comment">/* load a dynamic linker */</span></span><br><br><span class="hljs-comment">// 代码签名和加密</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> LC_CODE_SIGNATURE 0x1d   <span class="hljs-comment">/* local of code signature */</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> LC_ENCRYPTION_INFO 0x21 <span class="hljs-comment">/* encrypted segment information */</span></span><br></code></pre></td></tr></table></figure>
 <p>以 LC_SEGMENT_64 类型为例，它代表将文件中64位的段映射到进程的地址空间。它的结构定义如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">struct segment_command_64 &#123; /* for 64-bit architectures */</span><br><span class="line">    uint32_t    cmd;        /* LC_SEGMENT_64 */</span><br><span class="line">    uint32_t    cmdsize;    /* includes sizeof section_64 structs */</span><br><span class="line">    char        segname[16];    /* segment name */</span><br><span class="line">    uint64_t    vmaddr;     /* memory address of this segment */</span><br><span class="line">    uint64_t    vmsize;     /* memory size of this segment */</span><br><span class="line">    uint64_t    fileoff;    /* file offset of this segment */</span><br><span class="line">    uint64_t    filesize;   /* amount to map from the file */</span><br><span class="line">    vm_prot_t   maxprot;    /* maximum VM protection */</span><br><span class="line">    vm_prot_t   initprot;   /* initial VM protection */</span><br><span class="line">    uint32_t    nsects;     /* number of sections in segment */</span><br><span class="line">    uint32_t    flags;      /* flags */</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">struct</span> <span class="hljs-title class_">segment_command_64</span> &#123; <span class="hljs-comment">/* for 64-bit architectures */</span><br>    <span class="hljs-type">uint32_t</span>    cmd;        <span class="hljs-comment">/* LC_SEGMENT_64 */</span><br>    <span class="hljs-type">uint32_t</span>    cmdsize;    <span class="hljs-comment">/* includes sizeof section_64 structs */</span><br>    <span class="hljs-type">char</span>        segname[<span class="hljs-number">16</span>];    <span class="hljs-comment">/* segment name */</span><br>    <span class="hljs-type">uint64_t</span>    vmaddr;     <span class="hljs-comment">/* memory address of this segment */</span><br>    <span class="hljs-type">uint64_t</span>    vmsize;     <span class="hljs-comment">/* memory size of this segment */</span><br>    <span class="hljs-type">uint64_t</span>    fileoff;    <span class="hljs-comment">/* file offset of this segment */</span><br>    <span class="hljs-type">uint64_t</span>    filesize;   <span class="hljs-comment">/* amount to map from the file */</span><br>    <span class="hljs-type">vm_prot_t</span>   maxprot;    <span class="hljs-comment">/* maximum VM protection */</span><br>    <span class="hljs-type">vm_prot_t</span>   initprot;   <span class="hljs-comment">/* initial VM protection */</span><br>    <span class="hljs-type">uint32_t</span>    nsects;     <span class="hljs-comment">/* number of sections in segment */</span><br>    <span class="hljs-type">uint32_t</span>    flags;      <span class="hljs-comment">/* flags */</span><br>&#125;;<br></code></pre></td></tr></table></figure>
 <p>下面解释一下各参数的作用。。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">参数：segname</span><br></pre></td></tr></table></figure>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs">参数：segname<br></code></pre></td></tr></table></figure>
 
 <p>段的名称，下面的##2.3小结中有更详细的介绍。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">参数：vmaddr</span><br></pre></td></tr></table></figure>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs">参数：vmaddr<br></code></pre></td></tr></table></figure>
 
 <p>段的虚拟内存地址。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">参数：vmsize</span><br></pre></td></tr></table></figure>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs">参数：vmsize<br></code></pre></td></tr></table></figure>
 
 <p>段的虚拟内存大小</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">参数：fileoff</span><br></pre></td></tr></table></figure>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs">参数：fileoff<br></code></pre></td></tr></table></figure>
 
 <p>段在文件中偏移量。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">参数：filesize</span><br></pre></td></tr></table></figure>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs">参数：filesize<br></code></pre></td></tr></table></figure>
 
 <p>段在文件中的大小。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">参数：nsects</span><br></pre></td></tr></table></figure>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs">参数：nsects<br></code></pre></td></tr></table></figure>
 
 <p>段中有多少 secetion。</p>
 <p>以上面 <strong>#示例1</strong> 中的 Load command 0 为例：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Load command 0</span><br><span class="line">      cmd LC_SEGMENT_64</span><br><span class="line">  cmdsize 72</span><br><span class="line">  segname __PAGEZERO</span><br><span class="line">   vmaddr 0x0000000000000000</span><br><span class="line">   vmsize 0x0000000100000000</span><br><span class="line">  fileoff 0</span><br><span class="line"> filesize 0</span><br><span class="line">  maxprot 0x00000000</span><br><span class="line"> initprot 0x00000000</span><br><span class="line">   nsects 0</span><br><span class="line">    flags 0x0</span><br></pre></td></tr></table></figure>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">Load</span> command <span class="hljs-number">0</span><br>      <span class="hljs-attribute">cmd</span> LC_SEGMENT_64<br>  <span class="hljs-attribute">cmdsize</span> <span class="hljs-number">72</span><br>  <span class="hljs-attribute">segname</span> __PAGEZERO<br>   <span class="hljs-attribute">vmaddr</span> <span class="hljs-number">0</span>x0000000000000000<br>   <span class="hljs-attribute">vmsize</span> <span class="hljs-number">0</span>x0000000100000000<br>  <span class="hljs-attribute">fileoff</span> <span class="hljs-number">0</span><br> <span class="hljs-attribute">filesize</span> <span class="hljs-number">0</span><br>  <span class="hljs-attribute">maxprot</span> <span class="hljs-number">0</span>x00000000<br> <span class="hljs-attribute">initprot</span> <span class="hljs-number">0</span>x00000000<br>   <span class="hljs-attribute">nsects</span> <span class="hljs-number">0</span><br>    <span class="hljs-attribute">flags</span> <span class="hljs-number">0</span>x0<br></code></pre></td></tr></table></figure>
 
 <p>它就是告诉加载器将该段文件的内容加载到内存中：从 fileoff 处加载 filesize 大小到虚拟内存 vmaddr 处。由于这里在内存地址空间中是 _PAGEZERO 段（这个段不具有访问权限，用来处理空指针）所以各参数都是零。</p>
 <h3 id="2-3-Segments（段数据）"><a href="#2-3-Segments（段数据）" class="headerlink" title="##2.3. Segments（段数据）"></a>##2.3. Segments（段数据）</h3><p>Segments 包含了很多 segment，每一个 segment 定义了一些 Mach-O 文件的数据、地址和内存保护属性，这些数据在动态链接器加载程序时被映射到了虚拟内存中。每个段都有不同的功能，一般包括：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">__PAGEZERO</span><br></pre></td></tr></table></figure>
+<figure class="highlight sqf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sqf"><span class="hljs-variable">__PAGEZERO</span><br></code></pre></td></tr></table></figure>
 
 <p>空指针陷阱段，映射到虚拟内存空间的第一页，用于捕捉对NULL指针的引用；</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">__TEXT</span><br></pre></td></tr></table></figure>
+<figure class="highlight excel"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs excel">__<span class="hljs-built_in">TEXT</span><br></code></pre></td></tr></table></figure>
 
 <p>包含了执行代码以及其他只读数据。 为了让内核将它直接从可执行文件映射到共享内存， 静态连接器设置该段的虚拟内存权限为不允许写。当这个段被映射到内存后可以被所有进程共享（这主要用在 Frameworks、 Bundles和共享库等程序中，也可以为同一个可执行文件的多个进程拷贝使用）。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">__DATA</span><br></pre></td></tr></table></figure>
+<figure class="highlight sqf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sqf"><span class="hljs-variable">__DATA</span><br></code></pre></td></tr></table></figure>
 
 <p>包含了程序数据，该段可写；</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">__OBJC</span><br></pre></td></tr></table></figure>
+<figure class="highlight sqf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sqf"><span class="hljs-variable">__OBJC</span><br></code></pre></td></tr></table></figure>
 
 <p>Objective-C运行时支持库；</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">__LINKEDIT</span><br></pre></td></tr></table></figure>
+<figure class="highlight sqf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sqf"><span class="hljs-variable">__LINKEDIT</span><br></code></pre></td></tr></table></figure>
 
 <p>含有为动态链接库使用的原始数据，比如符号，字符串，重定位表条目等等。</p>
 <h3 id="2-4-section（区数据）"><a href="#2-4-section（区数据）" class="headerlink" title="##2.4. section（区数据）"></a>##2.4. section（区数据）</h3><p>一般段又会按不同的功能划分为几个区（section）。区的字母为小写，同样加两个下划线作为前缀。下面列出段中可能包含的 section：</p>
 <ul>
 <li>__TEXT段</li>
 </ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">__text, __cstring, __picsymbol_stub, __symbol_stub, __const, __litera14, __litera18;</span><br></pre></td></tr></table></figure>
+<figure class="highlight sqf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sqf"><span class="hljs-variable">__text</span>, <span class="hljs-variable">__cstring</span>, <span class="hljs-variable">__picsymbol_stub</span>, <span class="hljs-variable">__symbol_stub</span>, <span class="hljs-variable">__const</span>, <span class="hljs-variable">__litera14</span>, <span class="hljs-variable">__litera18</span>;<br></code></pre></td></tr></table></figure>
 
 <ul>
 <li>__DATA段</li>
 </ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">__data, __la_symbol_ptr, __nl_symbol_ptr, __dyld, __const, </span><br><span class="line">__mod_init_func, __mod_term_func, __bss, __commom;</span><br></pre></td></tr></table></figure>
+<figure class="highlight sqf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sqf"><span class="hljs-variable">__data</span>, <span class="hljs-variable">__la_symbol_ptr</span>, <span class="hljs-variable">__nl_symbol_ptr</span>, <span class="hljs-variable">__dyld</span>, <span class="hljs-variable">__const</span>, <br><span class="hljs-variable">__mod_init_func</span>, <span class="hljs-variable">__mod_term_func</span>, <span class="hljs-variable">__bss</span>, <span class="hljs-variable">__commom</span>;<br></code></pre></td></tr></table></figure>
 
 <ul>
 <li>__IMPORT段</li>
 </ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">__jump_table, __pointers;</span><br></pre></td></tr></table></figure>
+<figure class="highlight sqf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sqf"><span class="hljs-variable">__jump_table</span>, <span class="hljs-variable">__pointers</span>;<br></code></pre></td></tr></table></figure>
 
 <p>其中 __TEXT 段中的 __text 是实际上的代码部分；__DATA 段的 __data 是实际的初始数据。</p>
 <p>section 的数据结构：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">struct section &#123; /* for 32-bit architectures */</span><br><span class="line">    char        sectname[16];   /* name of this section */</span><br><span class="line">    char        segname[16];    /* segment this section goes in */</span><br><span class="line">    uint32_t    addr;       /* memory address of this section */</span><br><span class="line">    uint32_t    size;       /* size in bytes of this section */</span><br><span class="line">    uint32_t    offset;     /* file offset of this section */</span><br><span class="line">    uint32_t    align;      /* section alignment (power of 2) */</span><br><span class="line">    uint32_t    reloff;     /* file offset of relocation entries */</span><br><span class="line">    uint32_t    nreloc;     /* number of relocation entries */</span><br><span class="line">    uint32_t    flags;      /* flags (section type and attributes)*/</span><br><span class="line">    uint32_t    reserved1;  /* reserved (for offset or index) */</span><br><span class="line">    uint32_t    reserved2;  /* reserved (for count or sizeof) */</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs arduino"><span class="hljs-keyword">struct</span> <span class="hljs-title class_">section</span> &#123; <span class="hljs-comment">/* for 32-bit architectures */</span><br>    <span class="hljs-type">char</span>        sectname[<span class="hljs-number">16</span>];   <span class="hljs-comment">/* name of this section */</span><br>    <span class="hljs-type">char</span>        segname[<span class="hljs-number">16</span>];    <span class="hljs-comment">/* segment this section goes in */</span><br>    <span class="hljs-type">uint32_t</span>    addr;       <span class="hljs-comment">/* memory address of this section */</span><br>    <span class="hljs-type">uint32_t</span>    size;       <span class="hljs-comment">/* size in bytes of this section */</span><br>    <span class="hljs-type">uint32_t</span>    offset;     <span class="hljs-comment">/* file offset of this section */</span><br>    <span class="hljs-type">uint32_t</span>    align;      <span class="hljs-comment">/* section alignment (power of 2) */</span><br>    <span class="hljs-type">uint32_t</span>    reloff;     <span class="hljs-comment">/* file offset of relocation entries */</span><br>    <span class="hljs-type">uint32_t</span>    nreloc;     <span class="hljs-comment">/* number of relocation entries */</span><br>    <span class="hljs-type">uint32_t</span>    flags;      <span class="hljs-comment">/* flags (section type and attributes)*/</span><br>    <span class="hljs-type">uint32_t</span>    reserved1;  <span class="hljs-comment">/* reserved (for offset or index) */</span><br>    <span class="hljs-type">uint32_t</span>    reserved2;  <span class="hljs-comment">/* reserved (for count or sizeof) */</span><br>&#125;;<br></code></pre></td></tr></table></figure>
 
 <p>其中部分参数的介绍:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">参数：sectname</span><br></pre></td></tr></table></figure>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs">参数：sectname<br></code></pre></td></tr></table></figure>
 
 <p>section 的名字，如上面提到的 __text、__cstring等。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">参数：segname</span><br></pre></td></tr></table></figure>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs">参数：segname<br></code></pre></td></tr></table></figure>
 
 <p>section 所属的 segment，比如 __TEXT。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">参数：addr</span><br></pre></td></tr></table></figure>
+<figure class="highlight nim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs nim">参数：<span class="hljs-keyword">addr</span><br></code></pre></td></tr></table></figure>
 
 <p>section 在内存的起始位置。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">参数：size</span><br></pre></td></tr></table></figure>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs arduino">参数：size<br></code></pre></td></tr></table></figure>
 
 <p>section 的大小。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">参数：offset</span><br></pre></td></tr></table></figure>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs applescript">参数：<span class="hljs-built_in">offset</span><br></code></pre></td></tr></table></figure>
 
 <p>section 的文件偏移量。</p>
 <p>#示例2：通过 otool –s查看某个 section 的信息</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ otool -s __TEXT __text a.out</span><br><span class="line">a.out:</span><br><span class="line">Contents of (__TEXT,__text) section</span><br><span class="line">0000000100000f50  55 48 89 e5 48 83 ec 20 48 8d 05 47 00 00 00 c7 </span><br><span class="line">0000000100000f60  45 fc 00 00 00 00 89 7d f8 48 89 75 f0 48 89 c7 </span><br><span class="line">0000000100000f70  b0 00 e8 0d 00 00 00 31 c9 89 45 ec 89 c8 48 83 </span><br><span class="line">0000000100000f80  c4 20 5d c3 </span><br></pre></td></tr></table></figure>
+<figure class="highlight tap"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs tap">$ otool -s __TEXT __text a.out<br>a.out:<br>Contents of (__TEXT,__text) section<br>0000000100000f50 <span class="hljs-number"> 55 </span>48<span class="hljs-number"> 89 </span>e5<span class="hljs-number"> 48 </span>83 ec<span class="hljs-number"> 20 </span>48 8d<span class="hljs-number"> 05 </span>47<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>c7 <br>0000000100000f60 <span class="hljs-number"> 45 </span>fc<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 89 </span>7d f8<span class="hljs-number"> 48 </span>89<span class="hljs-number"> 75 </span>f0<span class="hljs-number"> 48 </span>89 c7 <br>0000000100000f70  b0<span class="hljs-number"> 00 </span>e8 0d<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>31 c9<span class="hljs-number"> 89 </span>45 ec<span class="hljs-number"> 89 </span>c8<span class="hljs-number"> 48 </span>83 <br>0000000100000f80  c4<span class="hljs-number"> 20 </span>5d c3 <br></code></pre></td></tr></table></figure>
 
 <p>由于-s __TEXT __text 很常见，otool 对其设置了一个缩写 -t 。我们还可以通过添加 -v 来查看反汇编代码：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">$ otool -t -v a.out</span><br><span class="line">a.out:</span><br><span class="line">(__TEXT,__text) section</span><br><span class="line">_main:</span><br><span class="line">0000000100000f50  pushq %rbp</span><br><span class="line">0000000100000f51  movq  %rsp, %rbp</span><br><span class="line">0000000100000f54  subq  $0x20, %rsp</span><br><span class="line">0000000100000f58  leaq  0x47(%rip), %rax</span><br><span class="line">0000000100000f5f  movl  $0x0, -0x4(%rbp)</span><br><span class="line">0000000100000f66  movl  %edi, -0x8(%rbp)</span><br><span class="line">0000000100000f69  movq  %rsi, -0x10(%rbp)</span><br><span class="line">0000000100000f6d  movq  %rax, %rdi</span><br><span class="line">0000000100000f70  movb  $0x0, %al</span><br><span class="line">0000000100000f72  callq 0x100000f84</span><br><span class="line">0000000100000f77  xorl  %ecx, %ecx</span><br><span class="line">0000000100000f79  movl  %eax, -0x14(%rbp)</span><br><span class="line">0000000100000f7c  movl  %ecx, %eax</span><br><span class="line">0000000100000f7e  addq  $0x20, %rsp</span><br><span class="line">0000000100000f82  popq  %rbp</span><br><span class="line">0000000100000f83  retq</span><br></pre></td></tr></table></figure>
+<figure class="highlight llvm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs llvm">$ otool -t -v a.out<br>a.out:<br>(__TEXT<span class="hljs-punctuation">,</span>__text) <span class="hljs-keyword">section</span><br>_main:<br><span class="hljs-number">0000000100000</span>f<span class="hljs-number">50</span>  pushq <span class="hljs-variable">%rbp</span><br><span class="hljs-number">0000000100000</span>f<span class="hljs-number">51</span>  movq  <span class="hljs-variable">%rsp</span><span class="hljs-punctuation">,</span> <span class="hljs-variable">%rbp</span><br><span class="hljs-number">0000000100000</span>f<span class="hljs-number">54</span>  subq  $<span class="hljs-number">0x20</span><span class="hljs-punctuation">,</span> <span class="hljs-variable">%rsp</span><br><span class="hljs-number">0000000100000</span>f<span class="hljs-number">58</span>  leaq  <span class="hljs-number">0x47</span>(<span class="hljs-variable">%rip</span>)<span class="hljs-punctuation">,</span> <span class="hljs-variable">%rax</span><br><span class="hljs-number">0000000100000</span>f<span class="hljs-number">5</span>f  movl  $<span class="hljs-number">0x0</span><span class="hljs-punctuation">,</span> <span class="hljs-number">-0</span><span class="hljs-keyword">x</span><span class="hljs-number">4</span>(<span class="hljs-variable">%rbp</span>)<br><span class="hljs-number">0000000100000</span>f<span class="hljs-number">66</span>  movl  <span class="hljs-variable">%edi</span><span class="hljs-punctuation">,</span> <span class="hljs-number">-0</span><span class="hljs-keyword">x</span><span class="hljs-number">8</span>(<span class="hljs-variable">%rbp</span>)<br><span class="hljs-number">0000000100000</span>f<span class="hljs-number">69</span>  movq  <span class="hljs-variable">%rsi</span><span class="hljs-punctuation">,</span> <span class="hljs-number">-0</span><span class="hljs-keyword">x</span><span class="hljs-number">10</span>(<span class="hljs-variable">%rbp</span>)<br><span class="hljs-number">0000000100000</span>f<span class="hljs-number">6</span>d  movq  <span class="hljs-variable">%rax</span><span class="hljs-punctuation">,</span> <span class="hljs-variable">%rdi</span><br><span class="hljs-number">0000000100000</span>f<span class="hljs-number">70</span>  movb  $<span class="hljs-number">0x0</span><span class="hljs-punctuation">,</span> <span class="hljs-variable">%al</span><br><span class="hljs-number">0000000100000</span>f<span class="hljs-number">72</span>  callq <span class="hljs-number">0x100000f84</span><br><span class="hljs-number">0000000100000</span>f<span class="hljs-number">77</span>  xorl  <span class="hljs-variable">%ecx</span><span class="hljs-punctuation">,</span> <span class="hljs-variable">%ecx</span><br><span class="hljs-number">0000000100000</span>f<span class="hljs-number">79</span>  movl  <span class="hljs-variable">%eax</span><span class="hljs-punctuation">,</span> <span class="hljs-number">-0</span><span class="hljs-keyword">x</span><span class="hljs-number">14</span>(<span class="hljs-variable">%rbp</span>)<br><span class="hljs-number">0000000100000</span>f<span class="hljs-number">7</span><span class="hljs-keyword">c</span>  movl  <span class="hljs-variable">%ecx</span><span class="hljs-punctuation">,</span> <span class="hljs-variable">%eax</span><br><span class="hljs-number">0000000100000</span>f<span class="hljs-number">7</span>e  addq  $<span class="hljs-number">0x20</span><span class="hljs-punctuation">,</span> <span class="hljs-variable">%rsp</span><br><span class="hljs-number">0000000100000</span>f<span class="hljs-number">82</span>  popq  <span class="hljs-variable">%rbp</span><br><span class="hljs-number">0000000100000</span>f<span class="hljs-number">83</span>  retq<br></code></pre></td></tr></table></figure>
 
 
 <hr>
@@ -339,7 +485,7 @@
 </tr>
 </tbody></table>
 <p>其中 fat_header 的数据结构在 mach-o/fat.h 头文件上定义如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">#define FAT_MAGIC   0xcafebabe</span><br><span class="line">#define FAT_CIGAM  0xbebafeca  /* NXSwapLong(FAT_MAGIC) */</span><br><span class="line"> </span><br><span class="line">struct fat_header &#123;</span><br><span class="line">    uint32_t    magic;        /* FAT_MAGIC */</span><br><span class="line">    uint32_t    nfat_arch;    /* number of structs that follow */</span><br><span class="line">&#125;;</span><br><span class="line"> </span><br><span class="line">struct fat_arch &#123;</span><br><span class="line">    cpu_type_t  cputype;  /* cpu specifier (int) */</span><br><span class="line">    cpu_subtype_t   cpusubtype;   /* machine specifier (int) */</span><br><span class="line">    uint32_t    offset;       /* file offset to this object file */</span><br><span class="line">    uint32_t    size;     /* size of this object file */</span><br><span class="line">    uint32_t    align;        /* alignment as a power of 2 */</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs arduino"><span class="hljs-meta">#<span class="hljs-keyword">define</span> FAT_MAGIC   0xcafebabe</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> FAT_CIGAM  0xbebafeca  <span class="hljs-comment">/* NXSwapLong(FAT_MAGIC) */</span></span><br> <br><span class="hljs-keyword">struct</span> <span class="hljs-title class_">fat_header</span> &#123;<br>    <span class="hljs-type">uint32_t</span>    magic;        <span class="hljs-comment">/* FAT_MAGIC */</span><br>    <span class="hljs-type">uint32_t</span>    nfat_arch;    <span class="hljs-comment">/* number of structs that follow */</span><br>&#125;;<br> <br><span class="hljs-keyword">struct</span> <span class="hljs-title class_">fat_arch</span> &#123;<br>    <span class="hljs-type">cpu_type_t</span>  cputype;  <span class="hljs-comment">/* cpu specifier (int) */</span><br>    <span class="hljs-type">cpu_subtype_t</span>   cpusubtype;   <span class="hljs-comment">/* machine specifier (int) */</span><br>    <span class="hljs-type">uint32_t</span>    offset;       <span class="hljs-comment">/* file offset to this object file */</span><br>    <span class="hljs-type">uint32_t</span>    size;     <span class="hljs-comment">/* size of this object file */</span><br>    <span class="hljs-type">uint32_t</span>    align;        <span class="hljs-comment">/* alignment as a power of 2 */</span><br>&#125;;<br></code></pre></td></tr></table></figure>
 
 <p>参数说明:</p>
 <ul>
@@ -352,7 +498,7 @@
 <p>是指当前的胖二进制文件包含了多少个不同架构的 Mach-O 文件。有多少个不同架构的 Mach-O 文件，就有多少个 fat_arch，用于说明对应 Mach-O 文件大小、支持的CPU架构、偏移地址等；</p>
 <p>大部分情况下，xxx.app&#x2F;xxx 文件并不是 Mach-O 格式文件，由于现在需要支持不同 CPU 架构的 iOS 设备，我们编译打包出来的执行文件一般都是胖文件。当然，支持的架构越多，最终打出来的包就会越大，所以项目里的 Architectures 和 Valid Architectures 选项要根据需求来配置哟。</p>
 <p>#示例3：WeChat.app&#x2F;WeChat 文件的信息</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ file WeChat</span><br><span class="line">WeChat: Mach-O universal binary with 2 architectures: </span><br><span class="line">[arm_v7:Mach-O executable arm_v7] [arm64]</span><br><span class="line">WeChat (for architecture armv7):  Mach-O executable arm_v7</span><br><span class="line">WeChat (for architecture arm64):  Mach-O 64-bit executable arm64</span><br></pre></td></tr></table></figure>
+<figure class="highlight vhdl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs vhdl">$ <span class="hljs-keyword">file</span> WeChat<br>WeChat: Mach-O universal binary <span class="hljs-keyword">with</span> <span class="hljs-number">2</span> architectures: <br>[arm_v7:Mach-O executable arm_v7] [arm64]<br>WeChat (<span class="hljs-keyword">for</span> <span class="hljs-keyword">architecture</span> armv7):  Mach-O executable arm_v7<br>WeChat (<span class="hljs-keyword">for</span> <span class="hljs-keyword">architecture</span> arm64):  Mach-O <span class="hljs-number">64</span>-<span class="hljs-built_in">bit</span> executable arm64<br></code></pre></td></tr></table></figure>
 
 <p>最后，了解 Mach-O 文件对于使用 dSYM 解析崩溃日志、逆向工程、bitcode、应用瘦身等会有很大的帮助！更多相关的内容之后继续慢慢研究。。</p>
 <hr>
@@ -361,217 +507,346 @@
 <p>#<a target="_blank" rel="noopener" href="http://wiki.jikexueyuan.com/project/objc/Build-tool/6-3.html">©极客学院</a></p>
 <p>#<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/bcc7ba20f900">©简书1</a></p>
 <p>#<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/54d842db3f69">©简书2</a></p>
-</section>
-    <!-- Tags START -->
-    
-      <div class="tags">
-        <span>Tags:</span>
-        
-  <a href="/tags#逆向工程" >
-    <span class="tag-code">逆向工程</span>
-  </a>
 
-      </div>
-    
-    <!-- Tags END -->
-    <!-- NAV START -->
-    
-  <div class="nav-container">
-    <!-- reverse left and right to put prev and next in a more logic postition -->
-    
-      <a class="nav-left" href="/2019/03/15/resign.html">
-        <span class="nav-arrow">← </span>
-        
-          ipa 重新签名
-        
-      </a>
-    
-    
-      <a class="nav-right" href="/2019/03/22/iosreverse.html">
-        
-          iOS 应用逆向工程
-        
-        <span class="nav-arrow"> →</span>
-      </a>
-    
-  </div>
-
-    <!-- NAV END -->
-    <!-- 打赏 START -->
-    
-      <div class="money-like">
-        <div class="reward-btn">
-          赏
-          <span class="money-code">
-            <span class="alipay-code">
-              <div class="code-image"></div>
-              <b>使用支付宝打赏</b>
-            </span>
-            <span class="wechat-code">
-              <div class="code-image"></div>
-              <b>使用微信打赏</b>
-            </span>
-          </span>
-        </div>
-        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
-      </div>
-    
-    <!-- 打赏 END -->
-    <!-- 二维码 START -->
-    
-    <!-- 二维码 END -->
-    
-      <!-- No Comment -->
-    
-  </article>
-  <!-- Article END -->
-  <!-- Catalog START -->
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
   
-    <aside class="catalog-container">
-  <div class="toc-main">
-    <strong class="toc-title">Catalog</strong>
-    
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-%E4%B8%8D%E4%BD%BF%E7%94%A8-Xcode-%E7%9A%84-Hello-World"><span class="toc-nav-text">#1 不使用 Xcode 的 Hello World</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-Mach-O%EF%BC%88%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F%EF%BC%89"><span class="toc-nav-text">#2 Mach-O（可执行文件格式）</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-1-Header"><span class="toc-nav-text">##2.1.Header</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-2-Load-commands"><span class="toc-nav-text">##2.2. Load commands</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-3-Segments%EF%BC%88%E6%AE%B5%E6%95%B0%E6%8D%AE%EF%BC%89"><span class="toc-nav-text">##2.3. Segments（段数据）</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-4-section%EF%BC%88%E5%8C%BA%E6%95%B0%E6%8D%AE%EF%BC%89"><span class="toc-nav-text">##2.4. section（区数据）</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-Mach-O-amp-%E8%83%96%E6%96%87%E4%BB%B6"><span class="toc-nav-text">#3 Mach-O &amp; 胖文件</span></a></li></ol>
-    
-  </div>
-</aside>
   
-  <!-- Catalog END -->
-</main>
-
-<script>
-  (function () {
-    var url = 'http://yoursite.com/2019/03/16/mach_o.html';
-    var banner = ''
-    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
-      $('#article-banner').css({
-        'background-image': 'url(' + banner + ')'
-      })
-    } else {
-      $('#article-banner').geopattern(url)
-    }
-    $('.header').removeClass('fixed-header')
-
-     // error image
-    $(".markdown-content img").on('error', function() {
-      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
-      $(this).css({
-        'cursor': 'default'
-      })
-    })
-
-    // zoom image
-    $(".markdown-content img").on('click', function() {
-      var src = $(this).attr('src')
-      if (src !== 'http://file.muyutech.com/error-img.png') {
-        var imageW = $(this).width()
-        var imageH = $(this).height()
-        
-        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
-        zoom = zoom < 1 ? 1 : zoom
-        zoom = zoom > 2 ? 2 : zoom
-        var transY = (($(window).height() - imageH) / 2).toFixed(2)
-
-        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
-        $('.image-view-wrap').addClass('wrap-active')
-        $('.image-view-wrap img').css({
-          'width': `${imageW}`,
-          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
-        })
-        $('html').css('overflow', 'hidden')
-
-        $('.image-view-wrap').on('click', function() {
-          $(this).remove()
-          $('html').attr('style', '')
-        })
-      }
-    })
-
-    // qrcode
-    var qr = new QRious({
-      element: document.getElementById('share-qrcode'),
-      value: document.location.href
-    });
-
-    // gitment
-    var gitmentConfig = "";
-    if (gitmentConfig !== 'undefined') {
-      var gitment = new Gitment({
-        id: "Mach-O",
-        owner: "",
-        repo: "",
-        oauth: {
-          client_id: "",
-          client_secret: ""
-        },
-        theme: {
-          render(state, instance) {
-            const container = document.createElement('div')
-            container.lang = "en-US"
-            container.className = 'gitment-container gitment-root-container'
-            container.appendChild(instance.renderHeader(state, instance))
-            container.appendChild(instance.renderEditor(state, instance))
-            container.appendChild(instance.renderComments(state, instance))
-            container.appendChild(instance.renderFooter(state, instance))
-            return container;
-          }
-        }
-      })
-      gitment.render(document.getElementById('comments'))
-    }
-  })();
-</script>
-
-    <div class="scroll-top">
-  <span class="arrow-icon"></span>
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/">#逆向工程</a>
+      
+    </div>
+  
 </div>
-    <footer class="app-footer">
-  <p class="copyright">
-    &copy; 2022 | <a href="https://github.com/davidlii" target="_blank">Davidli</a>
-    <br>
-    <a href="https://hexo.io" target="_blank">Hexo</a> | Theme-<a target="_blank" rel="noopener" href="https://github.com/yanm1ng">yanm1ng</a>
-  </p>
-</footer>
 
-<script>
-  function async(u, c) {
-    var d = document, t = 'script',
-      o = d.createElement(t),
-      s = d.getElementsByTagName(t)[0];
-    o.src = u;
-    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
-    s.parentNode.insertBefore(o, s);
-  }
-</script>
-<script>
-  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
-    FastClick.attach(document.body);
-  })
-</script>
 
-<script>
-  var hasLine = 'true';
-  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
-    $('figure pre').each(function(i, block) {
-      var figure = $(this).parents('figure');
-      if (hasLine === 'false') {
-        figure.find('.gutter').hide();
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Mach-O</div>
+      <div>http://yoursite.com/2019/03/16/mach_o.html</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>March 16, 2019</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>Licensed under</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2019/03/22/iosreverse.html" title="iOS 应用逆向工程">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">iOS 应用逆向工程</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2019/03/15/resign.html" title="ipa 重新签名">
+                        <span class="hidden-mobile">ipa 重新签名</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;Table of Contents</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://github.com/davidlii" target="_blank" rel="nofollow noopener"><span>Davidlii</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        Views: 
+        <span id="busuanzi_value_site_pv"></span>
+        
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        Visitors: 
+        <span id="busuanzi_value_site_uv"></span>
+        
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
       }
-      var lang = figure.attr('class').split(' ')[1] || 'code';
-      var codeHtml = $(this).html();
-      var codeTag = document.createElement('code');
-      codeTag.className = lang;
-      codeTag.innerHTML = codeHtml;
-      $(this).attr('class', '').empty().html(codeTag);
-      figure.attr('data-lang', lang.toUpperCase());
-      hljs.highlightBlock(block);
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
     });
-  })
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
 </script>
-<!-- Baidu Tongji -->
 
 
-<script src="/js/script.js"></script>
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
 
-  </body>
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
 </html>

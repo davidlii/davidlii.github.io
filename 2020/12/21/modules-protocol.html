@@ -1,145 +1,291 @@
+
+
 <!DOCTYPE html>
-<html>
-  <head>
-  <meta http-equiv="content-type" content="text/html; charset=utf-8">
-  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
-  <meta name="description" content="This is Davidli&#39;s blog ~">
-  <meta name="keyword" content="hexo-theme, vuejs">
-  
-    <link rel="shortcut icon" type="image/ico" href="/image/logo.png"/> 
-  
-  <title>
-    
-      组件化-面向协议方案 | Davidli
-    
-  </title>
-  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
-  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
-  
-<link rel="stylesheet" href="/css/style.css">
-<link rel="stylesheet" href="/css/plugins/gitment.css">
-
-  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
-  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
-  
-<script src="/js/qrious.js"></script>
-<script src="/js/gitment.js"></script>
-
-  
-  
-    <!-- MathJax support START -->
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      });
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      });
-    </script>
-    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <!-- MathJax support END -->
-  
+<html lang="zh-Hans" data-default-color-scheme=auto>
 
 
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="Davidli">
+  
+    <meta name="description" content="1.前言URL和反射方案各有自己的局限性：  URL路由方案支持的参数类型不够灵活； 反射方案的中间通信层使用明文类名和接口名，硬编码极容易出错； 两种方案中组件之间传值时需要引用对方的实体文件，这样就依然存在耦合问题；  本篇将要探讨的协议+服务注册+URL+反射方案，其中的协议就很好的解决了这些问题~ 2.思路2.1.本地调用组件将自己对外提供的服务以协议的形式进行声明，对其他所有组件可见；">
+<meta property="og:type" content="article">
+<meta property="og:title" content="组件化-面向协议方案">
+<meta property="og:url" content="http://yoursite.com/2020/12/21/modules-protocol.html">
+<meta property="og:site_name" content="Davidli">
+<meta property="og:description" content="1.前言URL和反射方案各有自己的局限性：  URL路由方案支持的参数类型不够灵活； 反射方案的中间通信层使用明文类名和接口名，硬编码极容易出错； 两种方案中组件之间传值时需要引用对方的实体文件，这样就依然存在耦合问题；  本篇将要探讨的协议+服务注册+URL+反射方案，其中的协议就很好的解决了这些问题~ 2.思路2.1.本地调用组件将自己对外提供的服务以协议的形式进行声明，对其他所有组件可见；">
+<meta property="og:locale">
+<meta property="og:image" content="https://davidlii.nos-eastchina1.126.net/pic_module_protocols.jpg">
+<meta property="article:published_time" content="2020-12-21T11:57:07.000Z">
+<meta property="article:modified_time" content="2019-12-21T11:57:07.000Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="架构">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://davidlii.nos-eastchina1.126.net/pic_module_protocols.jpg">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>组件化-面向协议方案 - Davidli</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"yoursite.com","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
 <meta name="generator" content="Hexo 6.2.0"></head>
-<div class="wechat-share">
-  <img src="/css/images/logo.png" />
-</div>
 
-  <body>
-    <header class="header fixed-header">
-  <div class="header-container">
-    <a class="home-link" href="/">
-      <div class="logo"></div>
-      <span>Davidli</span>
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Davidli</strong>
     </a>
-    <ul class="right-list">
-      
-        <li class="list-item">
-          
-            <a href="/" class="item-link">Davidli</a>
-          
-        </li>
-      
-        <li class="list-item">
-          
-            <a href="/archives/" class="item-link">归档</a>
-          
-        </li>
-      
-        <li class="list-item">
-          
-            <a href="/tags/" class="item-link">标签</a>
-          
-        </li>
-      
-        <li class="list-item">
-          
-            <a href="/about/" class="item-link">关于</a>
-          
-        </li>
-      
-    </ul>
-    <div class="menu">
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-    </div>
-    <div class="menu-mask">
-      <ul class="menu-list">
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
         
-          <li class="menu-item">
-            
-              <a href="/" class="menu-link">Davidli</a>
-            
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                Categories
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                Tags
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
           </li>
+          
         
-          <li class="menu-item">
-            
-              <a href="/archives/" class="menu-link">归档</a>
-            
-          </li>
         
-          <li class="menu-item">
-            
-              <a href="/tags/" class="menu-link">标签</a>
-            
-          </li>
-        
-          <li class="menu-item">
-            
-              <a href="/about/" class="menu-link">关于</a>
-            
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
           </li>
         
       </ul>
     </div>
   </div>
-</header>
+</nav>
 
-    <div id="article-banner">
-  <h2>组件化-面向协议方案</h2>
-  <p class="post-date">2020-12-21</p>
-  <div class="arrow-down">
-    <a href="javascript:;"></a>
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="组件化-面向协议方案"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2020-12-21 19:57" pubdate>
+          December 21, 2020 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          13k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          105 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
   </div>
 </div>
-<main class="app-body flex-box">
-  <!-- Article START -->
-  <article class="post-article">
-    <section class="markdown-content"><h3 id="1-前言"><a href="#1-前言" class="headerlink" title="1.前言"></a>1.前言</h3><p><code>URL</code>和<code>反射</code>方案各有自己的局限性：</p>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">组件化-面向协议方案</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h3 id="1-前言"><a href="#1-前言" class="headerlink" title="1.前言"></a>1.前言</h3><p><code>URL</code>和<code>反射</code>方案各有自己的局限性：</p>
 <ul>
 <li><code>URL路由</code>方案支持的参数类型不够灵活；</li>
 <li><code>反射方案</code>的中间通信层使用明文类名和接口名，硬编码极容易出错；</li>
@@ -156,60 +302,60 @@
 <p>通过实例调用协议方法，由运行时调用具体的实现，从而完成本次服务调用；</p>
 <h3 id="3-示例"><a href="#3-示例" class="headerlink" title="3.示例"></a>3.示例</h3><p>需求：从<code>主页</code>组件跳转到<code>详情</code>组件；返回时更新主页组件的标题。</p>
 <h5 id="3-1-目标组件"><a href="#3-1-目标组件" class="headerlink" title="3.1.目标组件"></a>3.1.目标组件</h5><p>详情组件视图控制器：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">// 头文件</span><br><span class="line">#import &quot;DetailModuleProtocol.h&quot;</span><br><span class="line">@interface DetailViewController : UIViewController</span><br><span class="line">@property (nonatomic, strong) UIImage *image;</span><br><span class="line">@property (nonatomic, copy) void (^detailCallback) (id&lt;DetailModelProtocol&gt;); //回调中回传详情实体</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">// 实现文件</span><br><span class="line">#import &quot;DetailModel.h&quot;</span><br><span class="line">@interface DetailViewController ()</span><br><span class="line">@property (weak, nonatomic) IBOutlet UIImageView *mIconImv;</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation DetailViewController</span><br><span class="line"></span><br><span class="line">- (void)viewDidLoad &#123;</span><br><span class="line">    [super viewDidLoad];</span><br><span class="line">    </span><br><span class="line">    self.mIconImv.image = self.image;</span><br><span class="line">    </span><br><span class="line">    UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];</span><br><span class="line">    [btn setTitle:@&quot;返回&quot; forState:UIControlStateNormal];</span><br><span class="line">    [btn addTarget:self action:@selector(onBackWithBlock) forControlEvents:UIControlEventTouchUpInside];</span><br><span class="line">    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:btn];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)onBackWithBlock&#123;</span><br><span class="line">    // block中回传详情实体</span><br><span class="line">    DetailModel *model = [[DetailModel alloc] init];</span><br><span class="line">    model.name = @&quot;David&quot;;</span><br><span class="line">    model.version = @&quot;1.0&quot;;</span><br><span class="line">    self.detailCallback(model); //回调信息</span><br><span class="line">    </span><br><span class="line">    [self.navigationController popViewControllerAnimated:YES];</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-comment">// 头文件</span><br><span class="hljs-meta">#import <span class="hljs-string">&quot;DetailModuleProtocol.h&quot;</span></span><br><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">DetailViewController</span> : <span class="hljs-title">UIViewController</span></span><br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">strong</span>) <span class="hljs-built_in">UIImage</span> *image;<br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">copy</span>) <span class="hljs-type">void</span> (^detailCallback) (<span class="hljs-type">id</span>&lt;DetailModelProtocol&gt;); <span class="hljs-comment">//回调中回传详情实体</span><br><span class="hljs-keyword">@end</span><br><br><span class="hljs-comment">// 实现文件</span><br><span class="hljs-meta">#import <span class="hljs-string">&quot;DetailModel.h&quot;</span></span><br><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">DetailViewController</span> ()</span><br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">weak</span>, <span class="hljs-keyword">nonatomic</span>) <span class="hljs-keyword">IBOutlet</span> <span class="hljs-built_in">UIImageView</span> *mIconImv;<br><span class="hljs-keyword">@end</span><br><br><span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">DetailViewController</span></span><br><br>- (<span class="hljs-type">void</span>)viewDidLoad &#123;<br>    [<span class="hljs-variable language_">super</span> viewDidLoad];<br>    <br>    <span class="hljs-keyword">self</span>.mIconImv.image = <span class="hljs-keyword">self</span>.image;<br>    <br>    <span class="hljs-built_in">UIButton</span> *btn = [<span class="hljs-built_in">UIButton</span> buttonWithType:<span class="hljs-built_in">UIButtonTypeCustom</span>];<br>    [btn setTitle:<span class="hljs-string">@&quot;返回&quot;</span> forState:<span class="hljs-built_in">UIControlStateNormal</span>];<br>    [btn addTarget:<span class="hljs-keyword">self</span> action:<span class="hljs-keyword">@selector</span>(onBackWithBlock) forControlEvents:<span class="hljs-built_in">UIControlEventTouchUpInside</span>];<br>    <span class="hljs-keyword">self</span>.navigationItem.leftBarButtonItem = [[<span class="hljs-built_in">UIBarButtonItem</span> alloc] initWithCustomView:btn];<br>&#125;<br><br>- (<span class="hljs-type">void</span>)onBackWithBlock&#123;<br>    <span class="hljs-comment">// block中回传详情实体</span><br>    DetailModel *model = [[DetailModel alloc] init];<br>    model.name = <span class="hljs-string">@&quot;David&quot;</span>;<br>    model.version = <span class="hljs-string">@&quot;1.0&quot;</span>;<br>    <span class="hljs-keyword">self</span>.detailCallback(model); <span class="hljs-comment">//回调信息</span><br>    <br>    [<span class="hljs-keyword">self</span>.navigationController popViewControllerAnimated:<span class="hljs-literal">YES</span>];<br>&#125;<br><span class="hljs-keyword">@end</span><br></code></pre></td></tr></table></figure>
 
 <p>详情实体文件：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#import &quot;DetailModuleProtocol.h&quot;</span><br><span class="line"></span><br><span class="line">// 实现DetailModelProtocol协议</span><br><span class="line">@interface DetailModel : NSObject&lt;DetailModelProtocol&gt;</span><br><span class="line"></span><br><span class="line">@property (nonatomic, copy) NSString *name;</span><br><span class="line">@property (nonatomic, copy) NSString *version;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-meta">#import <span class="hljs-string">&quot;DetailModuleProtocol.h&quot;</span></span><br><br><span class="hljs-comment">// 实现DetailModelProtocol协议</span><br><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">DetailModel</span> : <span class="hljs-title">NSObject</span>&lt;<span class="hljs-title">DetailModelProtocol</span>&gt;</span><br><br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">copy</span>) <span class="hljs-built_in">NSString</span> *name;<br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">copy</span>) <span class="hljs-built_in">NSString</span> *version;<br><span class="hljs-keyword">@end</span><br></code></pre></td></tr></table></figure>
 
 <h5 id="3-2-服务协议"><a href="#3-2-服务协议" class="headerlink" title="3.2.服务协议"></a>3.2.服务协议</h5><p>详情组件对外提供服务的协议：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">// DetailModuleProtocol.h</span><br><span class="line"></span><br><span class="line">#ifndef DetailModuleProtocol_h</span><br><span class="line">#define DetailModuleProtocol_h</span><br><span class="line"></span><br><span class="line">#import &lt;UIKit/UIKit.h&gt;</span><br><span class="line"></span><br><span class="line">#pragma mark - Model Protocols</span><br><span class="line"></span><br><span class="line">/// 对应的是详情组件中的DetailModel实体，只不过是将实体的字段以协议方法的形式进行声明</span><br><span class="line">@protocol DetailModelProtocol &lt;NSObject&gt;</span><br><span class="line">- (NSString*)name;</span><br><span class="line">- (NSString*)version;</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> *详情组件对外提供的所有服务，都在这里以协议方法的形式对外曝光；</span><br><span class="line"> *此协议对所有其他组件可见，所以其他组件导入此头文件即可知道详情组件有哪些服务可用；</span><br><span class="line"> *面向协议编程；</span><br><span class="line"> */</span><br><span class="line">@protocol DetailModuleProtocol &lt;NSObject&gt;</span><br><span class="line"></span><br><span class="line">@required</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> 进入详情页</span><br><span class="line"></span><br><span class="line"> @param pic 图片</span><br><span class="line"> @param callback 从详情页返回时的回调</span><br><span class="line"> @return 返回详情页，以便主页调用push进入此页面</span><br><span class="line"> */</span><br><span class="line">- (UIViewController*)detailControllerWithPic:(UIImage*)pic callback:(void(^)(id&lt;DetailModelProtocol&gt;))callback;</span><br><span class="line"></span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">#endif /* DetailModuleProtocol_h */</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-comment">// DetailModuleProtocol.h</span><br><br><span class="hljs-meta">#<span class="hljs-keyword">ifndef</span> DetailModuleProtocol_h</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> DetailModuleProtocol_h</span><br><br><span class="hljs-meta">#import <span class="hljs-string">&lt;UIKit/UIKit.h&gt;</span></span><br><br><span class="hljs-meta">#<span class="hljs-keyword">pragma</span> mark - Model Protocols</span><br><br><span class="hljs-comment">/// 对应的是详情组件中的DetailModel实体，只不过是将实体的字段以协议方法的形式进行声明</span><br><span class="hljs-class"><span class="hljs-keyword">@protocol</span> <span class="hljs-title">DetailModelProtocol</span> &lt;<span class="hljs-title">NSObject</span>&gt;</span><br>- (<span class="hljs-built_in">NSString</span>*)name;<br>- (<span class="hljs-built_in">NSString</span>*)version;<br><span class="hljs-keyword">@end</span><br><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> *详情组件对外提供的所有服务，都在这里以协议方法的形式对外曝光；</span><br><span class="hljs-comment"> *此协议对所有其他组件可见，所以其他组件导入此头文件即可知道详情组件有哪些服务可用；</span><br><span class="hljs-comment"> *面向协议编程；</span><br><span class="hljs-comment"> */</span><br><span class="hljs-class"><span class="hljs-keyword">@protocol</span> <span class="hljs-title">DetailModuleProtocol</span> &lt;<span class="hljs-title">NSObject</span>&gt;</span><br><br><span class="hljs-keyword">@required</span><br><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> 进入详情页</span><br><span class="hljs-comment"></span><br><span class="hljs-comment"> @param pic 图片</span><br><span class="hljs-comment"> @param callback 从详情页返回时的回调</span><br><span class="hljs-comment"> @return 返回详情页，以便主页调用push进入此页面</span><br><span class="hljs-comment"> */</span><br>- (<span class="hljs-built_in">UIViewController</span>*)detailControllerWithPic:(<span class="hljs-built_in">UIImage</span>*)pic callback:(<span class="hljs-type">void</span>(^)(<span class="hljs-type">id</span>&lt;DetailModelProtocol&gt;))callback;<br><br><span class="hljs-keyword">@end</span><br><br><span class="hljs-meta">#<span class="hljs-keyword">endif</span> <span class="hljs-comment">/* DetailModuleProtocol_h */</span></span><br></code></pre></td></tr></table></figure>
 
 <p>其他组件调用详情组件的服务时，只需查看此协议并调用其协议方法即可。为了便于查询，可将此协议导入到公共的协议头文件中：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">// CommonProtocol.h</span><br><span class="line"></span><br><span class="line">#ifndef CommonProtocol_h</span><br><span class="line">#define CommonProtocol_h</span><br><span class="line"></span><br><span class="line">// 导入每个组件中声明对外服务接口的协议头文件</span><br><span class="line"></span><br><span class="line">#import &quot;DetailModuleProtocol.h&quot;</span><br><span class="line"></span><br><span class="line">#endif /* CommonProtocol_h */</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-comment">// CommonProtocol.h</span><br><br><span class="hljs-meta">#<span class="hljs-keyword">ifndef</span> CommonProtocol_h</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> CommonProtocol_h</span><br><br><span class="hljs-comment">// 导入每个组件中声明对外服务接口的协议头文件</span><br><br><span class="hljs-meta">#import <span class="hljs-string">&quot;DetailModuleProtocol.h&quot;</span></span><br><br><span class="hljs-meta">#<span class="hljs-keyword">endif</span> <span class="hljs-comment">/* CommonProtocol_h */</span></span><br></code></pre></td></tr></table></figure>
 
 <p>这样，别的组件调用详情组件的服务时，只需要导入此公共协议头文件即可。</p>
 <h5 id="3-3-服务类"><a href="#3-3-服务类" class="headerlink" title="3.3.服务类"></a>3.3.服务类</h5><p>详情组件中实现了服务协议的类，其中提供了协议方法的具体实现，即组件对外服务的具体内容：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">#import &quot;DetailProtocolImplementor.h&quot;</span><br><span class="line">#import &quot;DetailViewController.h&quot;</span><br><span class="line">#import &quot;ModuleProtocolMediator.h&quot;</span><br><span class="line">#import &quot;DetailModuleProtocol.h&quot;</span><br><span class="line"></span><br><span class="line">// 封装了详情组件对外提供服务的具体实现</span><br><span class="line">@interface DetailProtocolImplementor ()&lt;DetailModuleProtocol&gt;</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation DetailProtocolImplementor</span><br><span class="line"></span><br><span class="line">// 实现协议 提供具体服务</span><br><span class="line">- (UIViewController *)detailControllerWithPic:(UIImage *)pic</span><br><span class="line">                                     callback:(void (^)(id&lt;DetailModelProtocol&gt;))callback</span><br><span class="line">&#123;</span><br><span class="line">    // 具体实现</span><br><span class="line">    DetailViewController *vc = [[UIStoryboard storyboardWithName:@&quot;Main&quot; bundle:nil]</span><br><span class="line">                                  instantiateViewControllerWithIdentifier:@&quot;DetailViewController&quot;];</span><br><span class="line">    vc.image = pic;</span><br><span class="line">    vc.detailCallback = callback;</span><br><span class="line">    </span><br><span class="line">    return vc;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">+ (void)load&#123;</span><br><span class="line">    // 注册协议 将协议与实现了此协议的业务类进行绑定</span><br><span class="line">    [ModuleProtocolMediator registerModuleProtocolImplementor:[self class]</span><br><span class="line">                                                   forProtocol:@protocol(DetailModuleProtocol)];</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-meta">#import <span class="hljs-string">&quot;DetailProtocolImplementor.h&quot;</span></span><br><span class="hljs-meta">#import <span class="hljs-string">&quot;DetailViewController.h&quot;</span></span><br><span class="hljs-meta">#import <span class="hljs-string">&quot;ModuleProtocolMediator.h&quot;</span></span><br><span class="hljs-meta">#import <span class="hljs-string">&quot;DetailModuleProtocol.h&quot;</span></span><br><br><span class="hljs-comment">// 封装了详情组件对外提供服务的具体实现</span><br><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">DetailProtocolImplementor</span> ()&lt;<span class="hljs-title">DetailModuleProtocol</span>&gt;</span><br><span class="hljs-keyword">@end</span><br><br><span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">DetailProtocolImplementor</span></span><br><br><span class="hljs-comment">// 实现协议 提供具体服务</span><br>- (<span class="hljs-built_in">UIViewController</span> *)detailControllerWithPic:(<span class="hljs-built_in">UIImage</span> *)pic<br>                                     callback:(<span class="hljs-type">void</span> (^)(<span class="hljs-type">id</span>&lt;DetailModelProtocol&gt;))callback<br>&#123;<br>    <span class="hljs-comment">// 具体实现</span><br>    DetailViewController *vc = [[<span class="hljs-built_in">UIStoryboard</span> storyboardWithName:<span class="hljs-string">@&quot;Main&quot;</span> bundle:<span class="hljs-literal">nil</span>]<br>                                  instantiateViewControllerWithIdentifier:<span class="hljs-string">@&quot;DetailViewController&quot;</span>];<br>    vc.image = pic;<br>    vc.detailCallback = callback;<br>    <br>    <span class="hljs-keyword">return</span> vc;<br>&#125;<br><br>+ (<span class="hljs-type">void</span>)load&#123;<br>    <span class="hljs-comment">// 注册协议 将协议与实现了此协议的业务类进行绑定</span><br>    [ModuleProtocolMediator registerModuleProtocolImplementor:[<span class="hljs-keyword">self</span> <span class="hljs-keyword">class</span>]<br>                                                   forProtocol:<span class="hljs-class"><span class="hljs-keyword">@protocol</span>(<span class="hljs-title">DetailModuleProtocol</span>)];</span><br>&#125;<br><span class="hljs-keyword">@end</span><br></code></pre></td></tr></table></figure>
 
 <p>注意这里的<code>+load</code>方法，它调用了中间层注册协议，注册操作的具体实现且往下看~</p>
 <h5 id="3-4-注册协议"><a href="#3-4-注册协议" class="headerlink" title="3.4.注册协议"></a>3.4.注册协议</h5><p>这是本方案的核心类，属于中间层，负责本地服务注册、查询、远程调用：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br></pre></td><td class="code"><pre><span class="line">// 头文件</span><br><span class="line">@interface ModuleProtocolMediator : NSObject</span><br><span class="line"></span><br><span class="line">// 单例类</span><br><span class="line">+ (instancetype)shareInstance;</span><br><span class="line"></span><br><span class="line">// 将实现了协议的服务类注册到全局字典中</span><br><span class="line">+ (void)registerModuleProtocolImplementor:(Class)implementor</span><br><span class="line">                      forProtocol:(Protocol*)protocol;</span><br><span class="line"></span><br><span class="line">// 根据协议查询实现了此协议的服务类，并返回它的一个实例</span><br><span class="line">+ (id)protocolImplementorWithProtocol:(Protocol*)protocol;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> 远程调用接口</span><br><span class="line"> @param url 按照约定好的格式传值</span><br><span class="line"> @param completion 回调</span><br><span class="line"> @return 返回值 是否响应此URL</span><br><span class="line"> */</span><br><span class="line">+ (BOOL)performActionWithUrl:(NSURL *)url</span><br><span class="line">                completion:(void(^)(id info))completion;</span><br><span class="line"></span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">// 实现文件</span><br><span class="line">#import &quot;ModuleProtocolMediator.h&quot;</span><br><span class="line">#import &lt;UIKit/UIKit.h&gt;</span><br><span class="line"></span><br><span class="line">struct CallResult &#123;</span><br><span class="line">    BOOL raiseError; // 是否产生异常错误（如target或SEL为nil）</span><br><span class="line">    id result;       // perform 或 invocation 的返回值</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">@interface ModuleProtocolMediator ()</span><br><span class="line">@property (nonatomic, strong) NSMutableDictionary *mProtocolsDic; // 保存协议与实现类的全局容器</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation ModuleProtocolMediator</span><br><span class="line"></span><br><span class="line">+ (instancetype)shareInstance&#123;</span><br><span class="line">    </span><br><span class="line">    static ModuleProtocolMediator *mProtocolManager;</span><br><span class="line">    </span><br><span class="line">    static dispatch_once_t token;</span><br><span class="line">    dispatch_once(&amp;token, ^&#123;</span><br><span class="line">        mProtocolManager = [[ModuleProtocolMediator alloc] init];</span><br><span class="line">    &#125;);</span><br><span class="line">    </span><br><span class="line">    return mProtocolManager;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (instancetype)init&#123;</span><br><span class="line">    if (self = [super init]) &#123;</span><br><span class="line">        _mProtocolsDic = [NSMutableDictionary dictionary];</span><br><span class="line">    &#125;</span><br><span class="line">    return self;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 注册 将协议与实现类进行绑定 以便后续查找此类</span><br><span class="line">+ (void)registerModuleProtocolImplementor:(Class)implementor</span><br><span class="line">                      forProtocol:(Protocol*)protocol&#123;</span><br><span class="line">    </span><br><span class="line">    NSString *key = NSStringFromProtocol(protocol);</span><br><span class="line">    [ModuleProtocolMediator shareInstance].mProtocolsDic[key] = implementor;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 查找实现了此协议的类 生成其实例</span><br><span class="line">+ (id)protocolImplementorWithProtocol:(Protocol*)protocol&#123;</span><br><span class="line">    </span><br><span class="line">    NSString *key = NSStringFromProtocol(protocol);</span><br><span class="line">    Class className = [ModuleProtocolMediator shareInstance].mProtocolsDic[key];</span><br><span class="line">    id obj = [[className alloc] init];</span><br><span class="line">    </span><br><span class="line">    return obj;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/* url示例：@&quot;DaModuleProtocolScheme://DetailModuleProtocol:detailControllerWithPic:callback:&quot;</span><br><span class="line"> * scheme://[protocolName]:[protocolMethod]?key1=value1&amp;key2=value2</span><br><span class="line"> * [scheme]  [host]         [path]           [query]</span><br><span class="line"> */</span><br><span class="line">+ (BOOL)performActionWithUrl:(NSURL *)url</span><br><span class="line">                completion:(void (^)(id info))completion</span><br><span class="line">&#123;</span><br><span class="line">    NSMutableArray *params = [[NSMutableArray alloc] init];</span><br><span class="line">    NSString *urlString = [url query];</span><br><span class="line">    for (NSString *param in [urlString componentsSeparatedByString:@&quot;&amp;&quot;]) &#123;</span><br><span class="line">        NSArray *elts = [param componentsSeparatedByString:@&quot;=&quot;];</span><br><span class="line">        if([elts count] &lt; 2) continue;</span><br><span class="line">        [params addObject:[elts lastObject]];</span><br><span class="line">    &#125;</span><br><span class="line">    // 反射协议对象</span><br><span class="line">    Protocol *protocol = NSProtocolFromString(url.host);</span><br><span class="line">    // 调用本类查询协议的实现类</span><br><span class="line">    NSObject *target = [self protocolImplementorWithProtocol:protocol];</span><br><span class="line">    // 取出想调用的协议方法(URL Decode)</span><br><span class="line">    NSString *protocolMethod = [[url.path stringByRemovingPercentEncoding]</span><br><span class="line">                                stringByReplacingOccurrencesOfString:@&quot;/&quot; withString:@&quot;&quot;];</span><br><span class="line">    // 反射SEL，即协议中定义的方法</span><br><span class="line">    SEL selector = NSSelectorFromString(protocolMethod);</span><br><span class="line">    </span><br><span class="line">    // 调用 perform 方法或者 NSInvocation 实现通信</span><br><span class="line">    struct CallResult retStruct = [self safePerformAction:selector target:target params:params];</span><br><span class="line"></span><br><span class="line">    if (retStruct.raiseError) &#123;</span><br><span class="line">        return NO;</span><br><span class="line">    &#125;else&#123;</span><br><span class="line">        id value = retStruct.result;</span><br><span class="line">        if (completion) &#123;</span><br><span class="line">            completion(value);</span><br><span class="line">        &#125;</span><br><span class="line">        return YES;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">+ (struct CallResult)safePerformAction:(SEL)action</span><br><span class="line">                 target:(NSObject *)target</span><br><span class="line">                 params:(NSArray *)params</span><br><span class="line">&#123;</span><br><span class="line">    NSMethodSignature* methodSig = [target methodSignatureForSelector:action];</span><br><span class="line">    if(methodSig == nil) &#123;</span><br><span class="line">        struct CallResult retStruct = &#123;YES,nil&#125;;</span><br><span class="line">        return retStruct;</span><br><span class="line">    &#125;</span><br><span class="line">    const char* retType = [methodSig methodReturnType];</span><br><span class="line">    </span><br><span class="line">    if (strcmp(retType, @encode(void)) == 0 ||</span><br><span class="line">        strcmp(retType, @encode(BOOL)) == 0 ||</span><br><span class="line">        strcmp(retType, @encode(CGFloat)) == 0 ||</span><br><span class="line">        strcmp(retType, @encode(NSInteger)) == 0 ||</span><br><span class="line">        strcmp(retType, @encode(NSUInteger)) == 0)</span><br><span class="line">    &#123;</span><br><span class="line">        NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:methodSig];</span><br><span class="line">        [invocation setSelector:action];</span><br><span class="line">        [invocation setTarget:target];</span><br><span class="line">        </span><br><span class="line">        NSInteger count = params.count;</span><br><span class="line">        for (int i = 0; i &lt; count; i++) &#123;</span><br><span class="line">            NSObject *value = params[i];</span><br><span class="line">            [invocation setArgument:&amp;value atIndex:i + 2]; // 参数从第二位开始算起</span><br><span class="line">        &#125;</span><br><span class="line">        [invocation invoke];</span><br><span class="line">        </span><br><span class="line">        // 无返回值时，结构体中result字段为nil</span><br><span class="line">        if (strcmp(retType, @encode(void)) == 0) &#123;</span><br><span class="line">            struct CallResult retStruct = &#123;NO,nil&#125;;</span><br><span class="line">            return retStruct;</span><br><span class="line">        &#125;</span><br><span class="line">        else &#123; // 返回值为数值类型时，包装成对象</span><br><span class="line">            NSInteger result = 0;</span><br><span class="line">            [invocation getReturnValue:&amp;result];</span><br><span class="line">            struct CallResult retStruct = &#123;NO,@(result)&#125;;</span><br><span class="line">            return retStruct;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">#pragma clang diagnostic push</span><br><span class="line">#pragma clang diagnostic ignored &quot;-Warc-performSelector-leaks&quot;</span><br><span class="line">    // 返回值为对象类型，直接调用即可</span><br><span class="line">    id result = [target performSelector:action withObject:params];</span><br><span class="line">    struct CallResult retStruct = &#123;NO,result&#125;;</span><br><span class="line">    return retStruct;</span><br><span class="line">#pragma clang diagnostic pop</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-comment">// 头文件</span><br><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">ModuleProtocolMediator</span> : <span class="hljs-title">NSObject</span></span><br><br><span class="hljs-comment">// 单例类</span><br>+ (<span class="hljs-keyword">instancetype</span>)shareInstance;<br><br><span class="hljs-comment">// 将实现了协议的服务类注册到全局字典中</span><br>+ (<span class="hljs-type">void</span>)registerModuleProtocolImplementor:(Class)implementor<br>                      forProtocol:(Protocol*)protocol;<br><br><span class="hljs-comment">// 根据协议查询实现了此协议的服务类，并返回它的一个实例</span><br>+ (<span class="hljs-type">id</span>)protocolImplementorWithProtocol:(Protocol*)protocol;<br><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> 远程调用接口</span><br><span class="hljs-comment"> @param url 按照约定好的格式传值</span><br><span class="hljs-comment"> @param completion 回调</span><br><span class="hljs-comment"> @return 返回值 是否响应此URL</span><br><span class="hljs-comment"> */</span><br>+ (<span class="hljs-type">BOOL</span>)performActionWithUrl:(<span class="hljs-built_in">NSURL</span> *)url<br>                completion:(<span class="hljs-type">void</span>(^)(<span class="hljs-type">id</span> info))completion;<br><br><span class="hljs-keyword">@end</span><br><br><span class="hljs-comment">// 实现文件</span><br><span class="hljs-meta">#import <span class="hljs-string">&quot;ModuleProtocolMediator.h&quot;</span></span><br><span class="hljs-meta">#import <span class="hljs-string">&lt;UIKit/UIKit.h&gt;</span></span><br><br><span class="hljs-keyword">struct</span> CallResult &#123;<br>    <span class="hljs-type">BOOL</span> raiseError; <span class="hljs-comment">// 是否产生异常错误（如target或SEL为nil）</span><br>    <span class="hljs-type">id</span> result;       <span class="hljs-comment">// perform 或 invocation 的返回值</span><br>&#125;;<br><br><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">ModuleProtocolMediator</span> ()</span><br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">strong</span>) <span class="hljs-built_in">NSMutableDictionary</span> *mProtocolsDic; <span class="hljs-comment">// 保存协议与实现类的全局容器</span><br><span class="hljs-keyword">@end</span><br><br><span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">ModuleProtocolMediator</span></span><br><br>+ (<span class="hljs-keyword">instancetype</span>)shareInstance&#123;<br>    <br>    <span class="hljs-keyword">static</span> ModuleProtocolMediator *mProtocolManager;<br>    <br>    <span class="hljs-keyword">static</span> <span class="hljs-built_in">dispatch_once_t</span> token;<br>    <span class="hljs-built_in">dispatch_once</span>(&amp;token, ^&#123;<br>        mProtocolManager = [[ModuleProtocolMediator alloc] init];<br>    &#125;);<br>    <br>    <span class="hljs-keyword">return</span> mProtocolManager;<br>&#125;<br><br>- (<span class="hljs-keyword">instancetype</span>)init&#123;<br>    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">self</span> = [<span class="hljs-variable language_">super</span> init]) &#123;<br>        _mProtocolsDic = [<span class="hljs-built_in">NSMutableDictionary</span> dictionary];<br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">self</span>;<br>&#125;<br><br><span class="hljs-comment">// 注册 将协议与实现类进行绑定 以便后续查找此类</span><br>+ (<span class="hljs-type">void</span>)registerModuleProtocolImplementor:(Class)implementor<br>                      forProtocol:(Protocol*)protocol&#123;<br>    <br>    <span class="hljs-built_in">NSString</span> *key = <span class="hljs-built_in">NSStringFromProtocol</span>(protocol);<br>    [ModuleProtocolMediator shareInstance].mProtocolsDic[key] = implementor;<br>&#125;<br><br><span class="hljs-comment">// 查找实现了此协议的类 生成其实例</span><br>+ (<span class="hljs-type">id</span>)protocolImplementorWithProtocol:(Protocol*)protocol&#123;<br>    <br>    <span class="hljs-built_in">NSString</span> *key = <span class="hljs-built_in">NSStringFromProtocol</span>(protocol);<br>    Class className = [ModuleProtocolMediator shareInstance].mProtocolsDic[key];<br>    <span class="hljs-type">id</span> obj = [[className alloc] init];<br>    <br>    <span class="hljs-keyword">return</span> obj;<br>&#125;<br><br><span class="hljs-comment">/* url示例：@&quot;DaModuleProtocolScheme://DetailModuleProtocol:detailControllerWithPic:callback:&quot;</span><br><span class="hljs-comment"> * scheme://[protocolName]:[protocolMethod]?key1=value1&amp;key2=value2</span><br><span class="hljs-comment"> * [scheme]  [host]         [path]           [query]</span><br><span class="hljs-comment"> */</span><br>+ (<span class="hljs-type">BOOL</span>)performActionWithUrl:(<span class="hljs-built_in">NSURL</span> *)url<br>                completion:(<span class="hljs-type">void</span> (^)(<span class="hljs-type">id</span> info))completion<br>&#123;<br>    <span class="hljs-built_in">NSMutableArray</span> *params = [[<span class="hljs-built_in">NSMutableArray</span> alloc] init];<br>    <span class="hljs-built_in">NSString</span> *urlString = [url query];<br>    <span class="hljs-keyword">for</span> (<span class="hljs-built_in">NSString</span> *param <span class="hljs-keyword">in</span> [urlString componentsSeparatedByString:<span class="hljs-string">@&quot;&amp;&quot;</span>]) &#123;<br>        <span class="hljs-built_in">NSArray</span> *elts = [param componentsSeparatedByString:<span class="hljs-string">@&quot;=&quot;</span>];<br>        <span class="hljs-keyword">if</span>([elts count] &lt; <span class="hljs-number">2</span>) <span class="hljs-keyword">continue</span>;<br>        [params addObject:[elts lastObject]];<br>    &#125;<br>    <span class="hljs-comment">// 反射协议对象</span><br>    Protocol *protocol = <span class="hljs-built_in">NSProtocolFromString</span>(url.host);<br>    <span class="hljs-comment">// 调用本类查询协议的实现类</span><br>    <span class="hljs-built_in">NSObject</span> *target = [<span class="hljs-keyword">self</span> protocolImplementorWithProtocol:protocol];<br>    <span class="hljs-comment">// 取出想调用的协议方法(URL Decode)</span><br>    <span class="hljs-built_in">NSString</span> *protocolMethod = [[url.path stringByRemovingPercentEncoding]<br>                                stringByReplacingOccurrencesOfString:<span class="hljs-string">@&quot;/&quot;</span> withString:<span class="hljs-string">@&quot;&quot;</span>];<br>    <span class="hljs-comment">// 反射SEL，即协议中定义的方法</span><br>    SEL selector = <span class="hljs-built_in">NSSelectorFromString</span>(protocolMethod);<br>    <br>    <span class="hljs-comment">// 调用 perform 方法或者 NSInvocation 实现通信</span><br>    <span class="hljs-keyword">struct</span> CallResult retStruct = [<span class="hljs-keyword">self</span> safePerformAction:selector target:target params:params];<br><br>    <span class="hljs-keyword">if</span> (retStruct.raiseError) &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">NO</span>;<br>    &#125;<span class="hljs-keyword">else</span>&#123;<br>        <span class="hljs-type">id</span> value = retStruct.result;<br>        <span class="hljs-keyword">if</span> (completion) &#123;<br>            completion(value);<br>        &#125;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">YES</span>;<br>    &#125;<br>&#125;<br><br><br>+ (<span class="hljs-keyword">struct</span> CallResult)safePerformAction:(SEL)action<br>                 target:(<span class="hljs-built_in">NSObject</span> *)target<br>                 params:(<span class="hljs-built_in">NSArray</span> *)params<br>&#123;<br>    <span class="hljs-built_in">NSMethodSignature</span>* methodSig = [target methodSignatureForSelector:action];<br>    <span class="hljs-keyword">if</span>(methodSig == <span class="hljs-literal">nil</span>) &#123;<br>        <span class="hljs-keyword">struct</span> CallResult retStruct = &#123;<span class="hljs-literal">YES</span>,<span class="hljs-literal">nil</span>&#125;;<br>        <span class="hljs-keyword">return</span> retStruct;<br>    &#125;<br>    <span class="hljs-keyword">const</span> <span class="hljs-type">char</span>* retType = [methodSig methodReturnType];<br>    <br>    <span class="hljs-keyword">if</span> (strcmp(retType, <span class="hljs-keyword">@encode</span>(<span class="hljs-type">void</span>)) == <span class="hljs-number">0</span> ||<br>        strcmp(retType, <span class="hljs-keyword">@encode</span>(<span class="hljs-type">BOOL</span>)) == <span class="hljs-number">0</span> ||<br>        strcmp(retType, <span class="hljs-keyword">@encode</span>(<span class="hljs-built_in">CGFloat</span>)) == <span class="hljs-number">0</span> ||<br>        strcmp(retType, <span class="hljs-keyword">@encode</span>(<span class="hljs-built_in">NSInteger</span>)) == <span class="hljs-number">0</span> ||<br>        strcmp(retType, <span class="hljs-keyword">@encode</span>(<span class="hljs-built_in">NSUInteger</span>)) == <span class="hljs-number">0</span>)<br>    &#123;<br>        <span class="hljs-built_in">NSInvocation</span> *invocation = [<span class="hljs-built_in">NSInvocation</span> invocationWithMethodSignature:methodSig];<br>        [invocation setSelector:action];<br>        [invocation setTarget:target];<br>        <br>        <span class="hljs-built_in">NSInteger</span> count = params.count;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; count; i++) &#123;<br>            <span class="hljs-built_in">NSObject</span> *value = params[i];<br>            [invocation setArgument:&amp;value atIndex:i + <span class="hljs-number">2</span>]; <span class="hljs-comment">// 参数从第二位开始算起</span><br>        &#125;<br>        [invocation invoke];<br>        <br>        <span class="hljs-comment">// 无返回值时，结构体中result字段为nil</span><br>        <span class="hljs-keyword">if</span> (strcmp(retType, <span class="hljs-keyword">@encode</span>(<span class="hljs-type">void</span>)) == <span class="hljs-number">0</span>) &#123;<br>            <span class="hljs-keyword">struct</span> CallResult retStruct = &#123;<span class="hljs-literal">NO</span>,<span class="hljs-literal">nil</span>&#125;;<br>            <span class="hljs-keyword">return</span> retStruct;<br>        &#125;<br>        <span class="hljs-keyword">else</span> &#123; <span class="hljs-comment">// 返回值为数值类型时，包装成对象</span><br>            <span class="hljs-built_in">NSInteger</span> result = <span class="hljs-number">0</span>;<br>            [invocation getReturnValue:&amp;result];<br>            <span class="hljs-keyword">struct</span> CallResult retStruct = &#123;<span class="hljs-literal">NO</span>,@(result)&#125;;<br>            <span class="hljs-keyword">return</span> retStruct;<br>        &#125;<br>    &#125;<br>    <br>    <br><span class="hljs-meta">#<span class="hljs-keyword">pragma</span> clang diagnostic push</span><br><span class="hljs-meta">#<span class="hljs-keyword">pragma</span> clang diagnostic ignored <span class="hljs-string">&quot;-Warc-performSelector-leaks&quot;</span></span><br>    <span class="hljs-comment">// 返回值为对象类型，直接调用即可</span><br>    <span class="hljs-type">id</span> result = [target performSelector:action withObject:params];<br>    <span class="hljs-keyword">struct</span> CallResult retStruct = &#123;<span class="hljs-literal">NO</span>,result&#125;;<br>    <span class="hljs-keyword">return</span> retStruct;<br><span class="hljs-meta">#<span class="hljs-keyword">pragma</span> clang diagnostic pop</span><br>&#125;<br><span class="hljs-keyword">@end</span><br></code></pre></td></tr></table></figure>
 
 <p>此工具类也提供了<code>本地调用</code>与<code>远程调用</code>两种调用组件的方式。</p>
 <ul>
 <li>本地调用</li>
 </ul>
 <p>本地调用组件时，本类作为中间层通过下面的接口将协议与实现了此协议的服务类进行绑定，并保存到内部的字典中：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">+ (void)registerModuleProtocolImplementor:(Class)implementor</span><br><span class="line">                      forProtocol:(Protocol*)protocol;</span><br></pre></td></tr></table></figure>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs gradle">+ (<span class="hljs-keyword">void</span>)registerModuleProtocolImplementor:(<span class="hljs-keyword">Class</span>)implementor<br>                      forProtocol:(Protocol*)protocol;<br></code></pre></td></tr></table></figure>
 
 <p>在A组件调用B组件的服务时，只需要通过下面的接口，根据B组件提供的协议取出协议实现类，实例化之后调用对应的协议方法即可。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">+ (id)protocolImplementorWithProtocol:(Protocol*)protocol;</span><br></pre></td></tr></table></figure>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs applescript">+ (<span class="hljs-built_in">id</span>)protocolImplementorWithProtocol:(Protocol*)protocol;<br></code></pre></td></tr></table></figure>
 
 <ul>
 <li>远程调用</li>
 </ul>
 <p>此处的远程调用与反射方案中远程调用的方式相同，A应用按照约定的格式组合一个URL并传递给B应用，随后B应用的<code>application:openURL:options:</code>回调中调用以下方法对URL进行解析：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">+ (BOOL)performActionWithUrl:(NSURL *)url</span><br><span class="line">                completion:(void(^)(id info))completion;</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs objectivec">+ (<span class="hljs-type">BOOL</span>)performActionWithUrl:(<span class="hljs-built_in">NSURL</span> *)url<br>                completion:(<span class="hljs-type">void</span>(^)(<span class="hljs-type">id</span> info))completion;<br></code></pre></td></tr></table></figure>
 
 <p>在此方法的实现中解析出协议名和协议方法SEL；以解析出来的协议名作为key，从本工具类中取出实现了此协议的组件服务类；随后创建其实例并通过 perform 或 NSInvocation 调用反射出来的协议方法，完成本次远程调用。可参考我在上面代码中的注释。</p>
 <h5 id="3-5-调用服务"><a href="#3-5-调用服务" class="headerlink" title="3.5.调用服务"></a>3.5.调用服务</h5><ul>
 <li>本地调用</li>
 </ul>
 <p>主页组件中调用详情组件，跳转到返回的详情组件实例：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">#import &quot;HomeViewController.h&quot;</span><br><span class="line">#import &quot;ModuleProtocolMediator.h&quot; // 导入中间层</span><br><span class="line">#import &quot;CommonProtocol.h&quot;  // 导入公共协议头文件</span><br><span class="line"></span><br><span class="line">@implementation HomeViewController</span><br><span class="line"></span><br><span class="line">- (IBAction)onShowDetail:(id)sender &#123;</span><br><span class="line">    </span><br><span class="line">    UIButton *btn = sender;</span><br><span class="line">    </span><br><span class="line">    /* 调用详情组件 因为导入了 ModuleProtocolMediator 和 DetailModuleProtocol，</span><br><span class="line">     *所以当前类中直到详情组件提供了哪些服务接口，调用这些接口即可~</span><br><span class="line">     *当前类只跟ModuleProtocolMediator交互，不与DetailViewController耦合~</span><br><span class="line">     */</span><br><span class="line">    id&lt;DetailModuleProtocol&gt; implementor = [ModuleProtocolMediator protocolImplementorWithProtocol:</span><br><span class="line">                                            @protocol(DetailModuleProtocol)];</span><br><span class="line">    </span><br><span class="line">    // 调用接口 传递参数 获取返回值</span><br><span class="line">    UIViewController *vc = [implementor detailControllerWithPic:btn.currentBackgroundImage</span><br><span class="line">                                                       callback:^(id&lt;DetailModelProtocol&gt; model) &#123;</span><br><span class="line">        self.title = model.name; // 从详情中返回时更新标题(注意，这里并未导入详情实体，而是实体的协议类)</span><br><span class="line">    &#125;];</span><br><span class="line">    [self.navigationController pushViewController:vc animated:YES];</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-meta">#import <span class="hljs-string">&quot;HomeViewController.h&quot;</span></span><br><span class="hljs-meta">#import <span class="hljs-string">&quot;ModuleProtocolMediator.h&quot;</span> <span class="hljs-comment">// 导入中间层</span></span><br><span class="hljs-meta">#import <span class="hljs-string">&quot;CommonProtocol.h&quot;</span>  <span class="hljs-comment">// 导入公共协议头文件</span></span><br><br><span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">HomeViewController</span></span><br><br>- (<span class="hljs-keyword">IBAction</span>)onShowDetail:(<span class="hljs-type">id</span>)sender &#123;<br>    <br>    <span class="hljs-built_in">UIButton</span> *btn = sender;<br>    <br>    <span class="hljs-comment">/* 调用详情组件 因为导入了 ModuleProtocolMediator 和 DetailModuleProtocol，</span><br><span class="hljs-comment">     *所以当前类中直到详情组件提供了哪些服务接口，调用这些接口即可~</span><br><span class="hljs-comment">     *当前类只跟ModuleProtocolMediator交互，不与DetailViewController耦合~</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-type">id</span>&lt;DetailModuleProtocol&gt; implementor = [ModuleProtocolMediator protocolImplementorWithProtocol:<br>                                            <span class="hljs-class"><span class="hljs-keyword">@protocol</span>(<span class="hljs-title">DetailModuleProtocol</span>)];</span><br>    <br>    <span class="hljs-comment">// 调用接口 传递参数 获取返回值</span><br>    <span class="hljs-built_in">UIViewController</span> *vc = [implementor detailControllerWithPic:btn.currentBackgroundImage<br>                                                       callback:^(<span class="hljs-type">id</span>&lt;DetailModelProtocol&gt; model) &#123;<br>        <span class="hljs-keyword">self</span>.title = model.name; <span class="hljs-comment">// 从详情中返回时更新标题(注意，这里并未导入详情实体，而是实体的协议类)</span><br>    &#125;];<br>    [<span class="hljs-keyword">self</span>.navigationController pushViewController:vc animated:<span class="hljs-literal">YES</span>];<br>&#125;<br><span class="hljs-keyword">@end</span><br></code></pre></td></tr></table></figure>
 
 <p>主页组件调用了详情组件但并未引用详情组件的头文件；详情组件的回调中返回了详情实体，但也只是用了协议的形式，并未真的导入<code>DetailModel.h</code>实体。所以从整体上来说，<code>Home</code>组件只导入了中间层和公共协议头文件。</p>
 <ul>
 <li>远程调用</li>
 </ul>
 <p>A应用中按照约定的格式组装URL并跳转：（注意SEL部分要进行编码）</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">NSCharacterSet *allowedCharacters = [[NSCharacterSet characterSetWithCharactersInString:@&quot;:&quot;] invertedSet];</span><br><span class="line">NSString *scheme = @&quot;DaModuleProtocolScheme&quot;;</span><br><span class="line">NSString *protocol = @&quot;DetailModuleProtocol&quot;;</span><br><span class="line">NSString *SELStr = [@&quot;detailControllerWithPic:callback:&quot; </span><br><span class="line">   stringByAddingPercentEncodingWithAllowedCharacters:allowedCharacters];</span><br><span class="line"></span><br><span class="line">NSString *params = [@&quot;k1=1&amp;k2=2&quot; stringByAddingPercentEncodingWithAllowedCharacters:allowedCharacters];</span><br><span class="line">NSString *urlStr = [NSString stringWithFormat:@&quot;%@://%@:/%@?%@&quot;,scheme,protocol,SELStr,params];</span><br><span class="line">// URL示例：@&quot;DaModuleProtocolScheme://DetailModuleProtocol:/detailControllerWithPic:callback:?k1=1&amp;k2=2&quot;;</span><br><span class="line">    </span><br><span class="line">NSURL *url = [NSURL URLWithString:urlStr];</span><br><span class="line">[[UIApplication sharedApplication] openURL:url];</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-built_in">NSCharacterSet</span> *allowedCharacters = [[<span class="hljs-built_in">NSCharacterSet</span> characterSetWithCharactersInString:<span class="hljs-string">@&quot;:&quot;</span>] invertedSet];<br><span class="hljs-built_in">NSString</span> *scheme = <span class="hljs-string">@&quot;DaModuleProtocolScheme&quot;</span>;<br><span class="hljs-built_in">NSString</span> *protocol = <span class="hljs-string">@&quot;DetailModuleProtocol&quot;</span>;<br><span class="hljs-built_in">NSString</span> *SELStr = [<span class="hljs-string">@&quot;detailControllerWithPic:callback:&quot;</span> <br>   stringByAddingPercentEncodingWithAllowedCharacters:allowedCharacters];<br><br><span class="hljs-built_in">NSString</span> *params = [<span class="hljs-string">@&quot;k1=1&amp;k2=2&quot;</span> stringByAddingPercentEncodingWithAllowedCharacters:allowedCharacters];<br><span class="hljs-built_in">NSString</span> *urlStr = [<span class="hljs-built_in">NSString</span> stringWithFormat:<span class="hljs-string">@&quot;%@://%@:/%@?%@&quot;</span>,scheme,protocol,SELStr,params];<br><span class="hljs-comment">// URL示例：@&quot;DaModuleProtocolScheme://DetailModuleProtocol:/detailControllerWithPic:callback:?k1=1&amp;k2=2&quot;;</span><br>    <br><span class="hljs-built_in">NSURL</span> *url = [<span class="hljs-built_in">NSURL</span> URLWithString:urlStr];<br>[[<span class="hljs-built_in">UIApplication</span> sharedApplication] openURL:url];<br></code></pre></td></tr></table></figure>
 
 <p>当前应用的<code>AppDelegate</code>回调中调用注册中心提供的远程调用接口:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">- (BOOL)application:(UIApplication *)app</span><br><span class="line">            openURL:(NSURL *)url</span><br><span class="line">            options:(NSDictionary&lt;UIApplicationOpenURLOptionsKey,id&gt; *)options</span><br><span class="line">&#123;</span><br><span class="line">    return [ModuleProtocolMediator performActionWithUrl:url completion:^(id info) &#123;</span><br><span class="line">        NSLog(@&quot;++++%@&quot;,info);</span><br><span class="line">    &#125;];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs objectivec">- (<span class="hljs-type">BOOL</span>)application:(<span class="hljs-built_in">UIApplication</span> *)app<br>            openURL:(<span class="hljs-built_in">NSURL</span> *)url<br>            options:(<span class="hljs-built_in">NSDictionary</span>&lt;<span class="hljs-built_in">UIApplicationOpenURLOptionsKey</span>,<span class="hljs-type">id</span>&gt; *)options<br>&#123;<br>    <span class="hljs-keyword">return</span> [ModuleProtocolMediator performActionWithUrl:url completion:^(<span class="hljs-type">id</span> info) &#123;<br>        <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;++++%@&quot;</span>,info);<br>    &#125;];<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p><code>performActionWithUrl</code>接口的具体实现可往上翻一翻<code>3.4.注册协议</code>章节中的<code>ModuleProtocolMediator</code>类。此方法借鉴了前两篇文章中分析过的<code>URL</code>和<code>反射</code>原理，反射出协议类名和方法名，再通过注册中心查找并创建实现了此协议的类的实例，最后利用运行时接口调用协议方法，我已在上面的代码中已经做了详细注释。</p>
-<h5 id="3-6-方案总结"><a href="#3-6-方案总结" class="headerlink" title="3.6.方案总结"></a>3.6.方案总结</h5><p><img src="https://davidlii.nos-eastchina1.126.net/pic_module_protocols.jpg" alt="组件化-面向协议"></p>
+<h5 id="3-6-方案总结"><a href="#3-6-方案总结" class="headerlink" title="3.6.方案总结"></a>3.6.方案总结</h5><p><img src="https://davidlii.nos-eastchina1.126.net/pic_module_protocols.jpg" srcset="/img/loading.gif" lazyload alt="组件化-面向协议"></p>
 <p>优点：</p>
 <ul>
 <li>服务协议注册方案体现了面向协议（抽象）的编程思想，组件间通过协议进行通信；</li>
@@ -223,7 +369,7 @@
 <li>A组件向B组件传递N个数据，就需要在B组件的服务协议方法中定义N个参数，这不如传一个实体方便，但A一旦引入B的实体文件就产生了依赖；</li>
 <li>注册服务协议是在组件对外服务类的<code>+load</code>方法中进行的，过多的在<code>+load</code>方法中处理注册事件会影响应用的启动速度。</li>
 </ul>
-<h3 id="4-目录结构"><a href="#4-目录结构" class="headerlink" title="4.目录结构"></a>4.目录结构</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── DaModule+Protocol</span><br><span class="line">│   ├── AppDelegate.h</span><br><span class="line">│   ├── AppDelegate.m</span><br><span class="line">│   ├── Assets.xcassets</span><br><span class="line">│   │   ├── AppIcon.appiconset</span><br><span class="line">│   │   │   └── Contents.json</span><br><span class="line">│   │   └── Contents.json</span><br><span class="line">│   ├── Base.lproj</span><br><span class="line">│   │   ├── LaunchScreen.storyboard</span><br><span class="line">│   │   └── Main.storyboard</span><br><span class="line">│   ├── Detail</span><br><span class="line">│   │   ├── Controllers</span><br><span class="line">│   │   │   ├── DetailViewController.h</span><br><span class="line">│   │   │   └── DetailViewController.m</span><br><span class="line">│   │   ├── Model</span><br><span class="line">│   │   │   ├── DetailModel.h</span><br><span class="line">│   │   │   └── DetailModel.m</span><br><span class="line">│   │   ├── Protocol+IMPer</span><br><span class="line">│   │   │   ├── DetailProtocolImplementor.h</span><br><span class="line">│   │   │   └── DetailProtocolImplementor.m</span><br><span class="line">│   │   └── Protocols</span><br><span class="line">│   │       └── DetailModuleProtocol.h</span><br><span class="line">│   ├── Home</span><br><span class="line">│   │   ├── HomeViewController.h</span><br><span class="line">│   │   └── HomeViewController.m</span><br><span class="line">│   ├── Icons</span><br><span class="line">│   │   ├── 1@2x.png</span><br><span class="line">│   │   └── 1@3x.png</span><br><span class="line">│   ├── Info.plist</span><br><span class="line">│   ├── ProtocolMediator</span><br><span class="line">│   │   ├── CommonProtocol.h</span><br><span class="line">│   │   ├── ModuleProtocolMediator.h</span><br><span class="line">│   │   └── ModuleProtocolMediator.m</span><br><span class="line">│   └── main.m</span><br><span class="line">└── DaModule+Protocol.xcodeproj</span><br></pre></td></tr></table></figure>
+<h3 id="4-目录结构"><a href="#4-目录结构" class="headerlink" title="4.目录结构"></a>4.目录结构</h3><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><code class="hljs stylus">.<br>├── DaModule+Protocol<br>│   ├── AppDelegate<span class="hljs-selector-class">.h</span><br>│   ├── AppDelegate<span class="hljs-selector-class">.m</span><br>│   ├── Assets<span class="hljs-selector-class">.xcassets</span><br>│   │   ├── AppIcon<span class="hljs-selector-class">.appiconset</span><br>│   │   │   └── Contents<span class="hljs-selector-class">.json</span><br>│   │   └── Contents<span class="hljs-selector-class">.json</span><br>│   ├── Base<span class="hljs-selector-class">.lproj</span><br>│   │   ├── LaunchScreen<span class="hljs-selector-class">.storyboard</span><br>│   │   └── Main<span class="hljs-selector-class">.storyboard</span><br>│   ├── Detail<br>│   │   ├── Controllers<br>│   │   │   ├── DetailViewController<span class="hljs-selector-class">.h</span><br>│   │   │   └── DetailViewController<span class="hljs-selector-class">.m</span><br>│   │   ├── Model<br>│   │   │   ├── DetailModel<span class="hljs-selector-class">.h</span><br>│   │   │   └── DetailModel<span class="hljs-selector-class">.m</span><br>│   │   ├── Protocol+IMPer<br>│   │   │   ├── DetailProtocolImplementor<span class="hljs-selector-class">.h</span><br>│   │   │   └── DetailProtocolImplementor<span class="hljs-selector-class">.m</span><br>│   │   └── Protocols<br>│   │       └── DetailModuleProtocol<span class="hljs-selector-class">.h</span><br>│   ├── Home<br>│   │   ├── HomeViewController<span class="hljs-selector-class">.h</span><br>│   │   └── HomeViewController<span class="hljs-selector-class">.m</span><br>│   ├── Icons<br>│   │   ├── <span class="hljs-number">1</span>@<span class="hljs-number">2</span>x<span class="hljs-selector-class">.png</span><br>│   │   └── <span class="hljs-number">1</span>@<span class="hljs-number">3</span>x<span class="hljs-selector-class">.png</span><br>│   ├── Info<span class="hljs-selector-class">.plist</span><br>│   ├── ProtocolMediator<br>│   │   ├── CommonProtocol<span class="hljs-selector-class">.h</span><br>│   │   ├── ModuleProtocolMediator<span class="hljs-selector-class">.h</span><br>│   │   └── ModuleProtocolMediator<span class="hljs-selector-class">.m</span><br>│   └── <span class="hljs-selector-tag">main</span><span class="hljs-selector-class">.m</span><br>└── DaModule+Protocol.xcodeproj<br></code></pre></td></tr></table></figure>
 
 <h3 id="5-结尾"><a href="#5-结尾" class="headerlink" title="5.结尾"></a>5.结尾</h3><p>基于面向协议编程的<code>协议+服务注册+URL+反射</code>方案很好的克服了单纯<code>URL</code>和<code>反射</code>方案的缺点，同时也支持本地和远程调用；当然它也有小缺点，但显然优点大于缺点，所以还是很值得推荐的。目前有赞开源的<code>Bifrost</code>库除了<code>URL</code>路由方案外，也提供了基于协议的组件化方案，后续有时间会单开一篇梳理一下这个库~</p>
 <hr>
@@ -232,217 +378,346 @@
 <p>#<a target="_blank" rel="noopener" href="https://github.com/davidli-/DaModules-Hardcore">©反射方案demo</a></p>
 <p>#<a target="_blank" rel="noopener" href="https://github.com/davidli-/HelModules-URL">©URL+Block方案demo</a></p>
 <p>#<a target="_blank" rel="noopener" href="https://github.com/youzan/Bifrost">©有赞Bifrost</a></p>
-</section>
-    <!-- Tags START -->
-    
-      <div class="tags">
-        <span>Tags:</span>
-        
-  <a href="/tags#架构" >
-    <span class="tag-code">架构</span>
-  </a>
 
-      </div>
-    
-    <!-- Tags END -->
-    <!-- NAV START -->
-    
-  <div class="nav-container">
-    <!-- reverse left and right to put prev and next in a more logic postition -->
-    
-      <a class="nav-left" href="/2020/11/12/modules-runtime.html">
-        <span class="nav-arrow">← </span>
-        
-          组件化-反射方案
-        
-      </a>
-    
-    
-      <a class="nav-right" href="/2021/05/25/RAC-signal.html">
-        
-          RAC-信号与订阅者
-        
-        <span class="nav-arrow"> →</span>
-      </a>
-    
-  </div>
-
-    <!-- NAV END -->
-    <!-- 打赏 START -->
-    
-      <div class="money-like">
-        <div class="reward-btn">
-          赏
-          <span class="money-code">
-            <span class="alipay-code">
-              <div class="code-image"></div>
-              <b>使用支付宝打赏</b>
-            </span>
-            <span class="wechat-code">
-              <div class="code-image"></div>
-              <b>使用微信打赏</b>
-            </span>
-          </span>
-        </div>
-        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
-      </div>
-    
-    <!-- 打赏 END -->
-    <!-- 二维码 START -->
-    
-    <!-- 二维码 END -->
-    
-      <!-- No Comment -->
-    
-  </article>
-  <!-- Article END -->
-  <!-- Catalog START -->
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
   
-    <aside class="catalog-container">
-  <div class="toc-main">
-    <strong class="toc-title">Catalog</strong>
-    
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1-%E5%89%8D%E8%A8%80"><span class="toc-nav-text">1.前言</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-%E6%80%9D%E8%B7%AF"><span class="toc-nav-text">2.思路</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-1-%E6%9C%AC%E5%9C%B0%E8%B0%83%E7%94%A8"><span class="toc-nav-text">2.1.本地调用</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-2-%E8%BF%9C%E7%A8%8B%E8%B0%83%E7%94%A8"><span class="toc-nav-text">2.2.远程调用</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-%E7%A4%BA%E4%BE%8B"><span class="toc-nav-text">3.示例</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#3-1-%E7%9B%AE%E6%A0%87%E7%BB%84%E4%BB%B6"><span class="toc-nav-text">3.1.目标组件</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#3-2-%E6%9C%8D%E5%8A%A1%E5%8D%8F%E8%AE%AE"><span class="toc-nav-text">3.2.服务协议</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#3-3-%E6%9C%8D%E5%8A%A1%E7%B1%BB"><span class="toc-nav-text">3.3.服务类</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#3-4-%E6%B3%A8%E5%86%8C%E5%8D%8F%E8%AE%AE"><span class="toc-nav-text">3.4.注册协议</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#3-5-%E8%B0%83%E7%94%A8%E6%9C%8D%E5%8A%A1"><span class="toc-nav-text">3.5.调用服务</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#3-6-%E6%96%B9%E6%A1%88%E6%80%BB%E7%BB%93"><span class="toc-nav-text">3.6.方案总结</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#4-%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84"><span class="toc-nav-text">4.目录结构</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#5-%E7%BB%93%E5%B0%BE"><span class="toc-nav-text">5.结尾</span></a></li></ol>
-    
-  </div>
-</aside>
   
-  <!-- Catalog END -->
-</main>
-
-<script>
-  (function () {
-    var url = 'http://yoursite.com/2020/12/21/modules-protocol.html';
-    var banner = ''
-    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
-      $('#article-banner').css({
-        'background-image': 'url(' + banner + ')'
-      })
-    } else {
-      $('#article-banner').geopattern(url)
-    }
-    $('.header').removeClass('fixed-header')
-
-     // error image
-    $(".markdown-content img").on('error', function() {
-      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
-      $(this).css({
-        'cursor': 'default'
-      })
-    })
-
-    // zoom image
-    $(".markdown-content img").on('click', function() {
-      var src = $(this).attr('src')
-      if (src !== 'http://file.muyutech.com/error-img.png') {
-        var imageW = $(this).width()
-        var imageH = $(this).height()
-        
-        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
-        zoom = zoom < 1 ? 1 : zoom
-        zoom = zoom > 2 ? 2 : zoom
-        var transY = (($(window).height() - imageH) / 2).toFixed(2)
-
-        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
-        $('.image-view-wrap').addClass('wrap-active')
-        $('.image-view-wrap img').css({
-          'width': `${imageW}`,
-          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
-        })
-        $('html').css('overflow', 'hidden')
-
-        $('.image-view-wrap').on('click', function() {
-          $(this).remove()
-          $('html').attr('style', '')
-        })
-      }
-    })
-
-    // qrcode
-    var qr = new QRious({
-      element: document.getElementById('share-qrcode'),
-      value: document.location.href
-    });
-
-    // gitment
-    var gitmentConfig = "";
-    if (gitmentConfig !== 'undefined') {
-      var gitment = new Gitment({
-        id: "组件化-面向协议方案",
-        owner: "",
-        repo: "",
-        oauth: {
-          client_id: "",
-          client_secret: ""
-        },
-        theme: {
-          render(state, instance) {
-            const container = document.createElement('div')
-            container.lang = "en-US"
-            container.className = 'gitment-container gitment-root-container'
-            container.appendChild(instance.renderHeader(state, instance))
-            container.appendChild(instance.renderEditor(state, instance))
-            container.appendChild(instance.renderComments(state, instance))
-            container.appendChild(instance.renderFooter(state, instance))
-            return container;
-          }
-        }
-      })
-      gitment.render(document.getElementById('comments'))
-    }
-  })();
-</script>
-
-    <div class="scroll-top">
-  <span class="arrow-icon"></span>
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%9E%B6%E6%9E%84/">#架构</a>
+      
+    </div>
+  
 </div>
-    <footer class="app-footer">
-  <p class="copyright">
-    &copy; 2022 | <a href="https://github.com/davidlii" target="_blank">Davidli</a>
-    <br>
-    <a href="https://hexo.io" target="_blank">Hexo</a> | Theme-<a target="_blank" rel="noopener" href="https://github.com/yanm1ng">yanm1ng</a>
-  </p>
-</footer>
 
-<script>
-  function async(u, c) {
-    var d = document, t = 'script',
-      o = d.createElement(t),
-      s = d.getElementsByTagName(t)[0];
-    o.src = u;
-    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
-    s.parentNode.insertBefore(o, s);
-  }
-</script>
-<script>
-  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
-    FastClick.attach(document.body);
-  })
-</script>
 
-<script>
-  var hasLine = 'true';
-  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
-    $('figure pre').each(function(i, block) {
-      var figure = $(this).parents('figure');
-      if (hasLine === 'false') {
-        figure.find('.gutter').hide();
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>组件化-面向协议方案</div>
+      <div>http://yoursite.com/2020/12/21/modules-protocol.html</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>December 21, 2020</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>Licensed under</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/05/25/RAC-signal.html" title="RAC-信号与订阅者">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">RAC-信号与订阅者</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/11/12/modules-runtime.html" title="组件化-反射方案">
+                        <span class="hidden-mobile">组件化-反射方案</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;Table of Contents</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://github.com/davidlii" target="_blank" rel="nofollow noopener"><span>Davidlii</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        Views: 
+        <span id="busuanzi_value_site_pv"></span>
+        
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        Visitors: 
+        <span id="busuanzi_value_site_uv"></span>
+        
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
       }
-      var lang = figure.attr('class').split(' ')[1] || 'code';
-      var codeHtml = $(this).html();
-      var codeTag = document.createElement('code');
-      codeTag.className = lang;
-      codeTag.innerHTML = codeHtml;
-      $(this).attr('class', '').empty().html(codeTag);
-      figure.attr('data-lang', lang.toUpperCase());
-      hljs.highlightBlock(block);
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
     });
-  })
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
 </script>
-<!-- Baidu Tongji -->
 
 
-<script src="/js/script.js"></script>
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
 
-  </body>
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
 </html>

@@ -1,152 +1,300 @@
+
+
 <!DOCTYPE html>
-<html>
-  <head>
-  <meta http-equiv="content-type" content="text/html; charset=utf-8">
-  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
-  <meta name="description" content="This is Davidli&#39;s blog ~">
-  <meta name="keyword" content="hexo-theme, vuejs">
-  
-    <link rel="shortcut icon" type="image/ico" href="/image/logo.png"/> 
-  
-  <title>
-    
-      iOS 应用逆向工程 | Davidli
-    
-  </title>
-  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
-  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
-  
-<link rel="stylesheet" href="/css/style.css">
-<link rel="stylesheet" href="/css/plugins/gitment.css">
-
-  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
-  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
-  
-<script src="/js/qrious.js"></script>
-<script src="/js/gitment.js"></script>
-
-  
-  
-    <!-- MathJax support START -->
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      });
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      });
-    </script>
-    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <!-- MathJax support END -->
-  
+<html lang="zh-Hans" data-default-color-scheme=auto>
 
 
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="Davidli">
+  
+    <meta name="description" content="一般来说，软件逆向工程可以看作系统分析和代码分析两个阶段的有机结合。在系统分析阶段，我们从整体上观察目标程序的行为特征，文件的组织架构，从而找到我们感兴趣的地方。代码分析阶段，利用各种工具对程序本身的二进制文件进行分析，从而了解目标软件的实现，进而借鉴其设计思路、内部算法、反思教训等。 1.设备越狱通过爱思、PP助手、同步助手、unc0ver等工具，对已经备份过的设备进行越狱； 2.安装插件2.1">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS 应用逆向工程">
+<meta property="og:url" content="http://yoursite.com/2019/03/22/iosreverse.html">
+<meta property="og:site_name" content="Davidli">
+<meta property="og:description" content="一般来说，软件逆向工程可以看作系统分析和代码分析两个阶段的有机结合。在系统分析阶段，我们从整体上观察目标程序的行为特征，文件的组织架构，从而找到我们感兴趣的地方。代码分析阶段，利用各种工具对程序本身的二进制文件进行分析，从而了解目标软件的实现，进而借鉴其设计思路、内部算法、反思教训等。 1.设备越狱通过爱思、PP助手、同步助手、unc0ver等工具，对已经备份过的设备进行越狱； 2.安装插件2.1">
+<meta property="og:locale">
+<meta property="og:image" content="https://davidlii.nos-eastchina1.126.net/pic_disassembler1.png">
+<meta property="og:image" content="https://davidlii.nos-eastchina1.126.net/pic_disassembler3.png">
+<meta property="og:image" content="https://davidlii.nos-eastchina1.126.net/pic_disassembler5.png">
+<meta property="article:published_time" content="2019-03-21T16:17:00.000Z">
+<meta property="article:modified_time" content="2019-03-28T17:06:00.000Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="逆向工程">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://davidlii.nos-eastchina1.126.net/pic_disassembler1.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>iOS 应用逆向工程 - Davidli</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"yoursite.com","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
 <meta name="generator" content="Hexo 6.2.0"></head>
-<div class="wechat-share">
-  <img src="/css/images/logo.png" />
-</div>
 
-  <body>
-    <header class="header fixed-header">
-  <div class="header-container">
-    <a class="home-link" href="/">
-      <div class="logo"></div>
-      <span>Davidli</span>
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Davidli</strong>
     </a>
-    <ul class="right-list">
-      
-        <li class="list-item">
-          
-            <a href="/" class="item-link">Davidli</a>
-          
-        </li>
-      
-        <li class="list-item">
-          
-            <a href="/archives/" class="item-link">归档</a>
-          
-        </li>
-      
-        <li class="list-item">
-          
-            <a href="/tags/" class="item-link">标签</a>
-          
-        </li>
-      
-        <li class="list-item">
-          
-            <a href="/about/" class="item-link">关于</a>
-          
-        </li>
-      
-    </ul>
-    <div class="menu">
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-    </div>
-    <div class="menu-mask">
-      <ul class="menu-list">
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
         
-          <li class="menu-item">
-            
-              <a href="/" class="menu-link">Davidli</a>
-            
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                Categories
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                Tags
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
           </li>
+          
         
-          <li class="menu-item">
-            
-              <a href="/archives/" class="menu-link">归档</a>
-            
-          </li>
         
-          <li class="menu-item">
-            
-              <a href="/tags/" class="menu-link">标签</a>
-            
-          </li>
-        
-          <li class="menu-item">
-            
-              <a href="/about/" class="menu-link">关于</a>
-            
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
           </li>
         
       </ul>
     </div>
   </div>
-</header>
+</nav>
 
-    <div id="article-banner">
-  <h2>iOS 应用逆向工程</h2>
-  <p class="post-date">2019-03-22</p>
-  <div class="arrow-down">
-    <a href="javascript:;"></a>
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="iOS 应用逆向工程"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2019-03-22 00:17" pubdate>
+          March 22, 2019 am
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          8.9k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          74 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
   </div>
 </div>
-<main class="app-body flex-box">
-  <!-- Article START -->
-  <article class="post-article">
-    <section class="markdown-content"><p>一般来说，软件逆向工程可以看作<code>系统分析</code>和<code>代码分析</code>两个阶段的有机结合。在<code>系统分析</code>阶段，我们从整体上观察目标程序的行为特征，文件的组织架构，从而找到我们感兴趣的地方。<code>代码分析</code>阶段，利用各种工具对程序本身的二进制文件进行分析，从而了解目标软件的实现，进而借鉴其设计思路、内部算法、反思教训等。</p>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">iOS 应用逆向工程</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>一般来说，软件逆向工程可以看作<code>系统分析</code>和<code>代码分析</code>两个阶段的有机结合。在<code>系统分析</code>阶段，我们从整体上观察目标程序的行为特征，文件的组织架构，从而找到我们感兴趣的地方。<code>代码分析</code>阶段，利用各种工具对程序本身的二进制文件进行分析，从而了解目标软件的实现，进而借鉴其设计思路、内部算法、反思教训等。</p>
 <h3 id="1-设备越狱"><a href="#1-设备越狱" class="headerlink" title="1.设备越狱"></a>1.设备越狱</h3><p>通过<code>爱思</code>、<code>PP助手</code>、<code>同步助手</code>、<code>unc0ver</code>等工具，对已经备份过的设备进行越狱；</p>
 <h3 id="2-安装插件"><a href="#2-安装插件" class="headerlink" title="2.安装插件"></a>2.安装插件</h3><h4 id="2-1-OpenSSH"><a href="#2-1-OpenSSH" class="headerlink" title="2.1.OpenSSH"></a>2.1.OpenSSH</h4><p>OpenSSH 会在 iOS 设备上安装 SSH 服务，从而给外界提供了一个通过 SSH 接入 iOS 设备的途径。常用的有两个命令：<br><br/></p>
 <p><code>ssh</code>，用于远程登录：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ssh root@192.168.31.242</span><br></pre></td></tr></table></figure>
+<figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs crystal"><span class="hljs-variable">$ </span>ssh root<span class="hljs-variable">@192</span>.<span class="hljs-number">168.31</span>.<span class="hljs-number">242</span><br></code></pre></td></tr></table></figure>
 
 <p><code>scp</code>，用于远程拷贝文件：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">//本地拷贝到手机</span><br><span class="line">$ scp /path/localFile root@192.168.31.242:/path/remoteFile </span><br><span class="line">//手机拷贝到本地</span><br><span class="line">$ scp root@192.168.31.242:/path/remoteFile /path/localFile </span><br></pre></td></tr></table></figure>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-regexp">//</span>本地拷贝到手机<br>$ scp <span class="hljs-regexp">/path/</span>localFile root@<span class="hljs-number">192.168</span>.<span class="hljs-number">31.242</span>:<span class="hljs-regexp">/path/</span>remoteFile <br><span class="hljs-regexp">//</span>手机拷贝到本地<br>$ scp root@<span class="hljs-number">192.168</span>.<span class="hljs-number">31.242</span>:<span class="hljs-regexp">/path/</span>remoteFile <span class="hljs-regexp">/path/</span>localFile <br></code></pre></td></tr></table></figure>
 
 <p>使用 Cydia 在线源直接搜索 OpenSSH 即可找到并安装。<br><br/></p>
 <p>注意：iOS设备上有 <code>root</code>和<code>mobile</code>两个用户，在安装完 SSH 后记得修改默认登录密码“alpine”，防止病毒通过 ssh 以 root 用户身份登录设备。安装SSH和修改密码的方法，一般在Cydia的首页都有说明，可按照说明一步步操作即可。</p>
@@ -159,305 +307,434 @@
 <li>安装方法2：</li>
 </ul>
 <p>在 <a target="_blank" rel="noopener" href="http://www.cycript.org/debs/?C=M;O=D">官网</a> 中找到<code>cycript_0.9.501_iphoneos-arm.deb</code>和<code>libffi_1:3.0.10-5_iphoneos-arm.deb</code>这两个安装包，下载到 MacOS 上。用 sftp 上传上面两个文件到设备上：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ sftp root@192.168.31.242</span><br><span class="line">sftp&gt; put cycript_0.9.501_iphoneos-arm.deb</span><br><span class="line">sftp&gt; put libffi_1:3.0.10-5_iphoneos-arm.deb</span><br></pre></td></tr></table></figure>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs vim">$ sftp root@<span class="hljs-number">192.168</span>.<span class="hljs-number">31.242</span><br>sftp&gt; <span class="hljs-keyword">put</span> cycript_0.<span class="hljs-number">9.501</span>_iphoneos-arm.<span class="hljs-keyword">deb</span><br>sftp&gt; <span class="hljs-keyword">put</span> libffi_1:<span class="hljs-number">3.0</span>.<span class="hljs-number">10</span>-<span class="hljs-number">5</span>_iphoneos-arm.<span class="hljs-keyword">deb</span><br></code></pre></td></tr></table></figure>
 <p>上传进度100%后，用 dpkg -i来安装deb包：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ ssh root@192.168.31.242</span><br><span class="line">~ root# dpkg -i cycript_0.9.501_iphoneos-arm.deb</span><br></pre></td></tr></table></figure>
+<figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs crystal"><span class="hljs-variable">$ </span>ssh root<span class="hljs-variable">@192</span>.<span class="hljs-number">168.31</span>.<span class="hljs-number">242</span><br>~ root<span class="hljs-comment"># dpkg -i cycript_0.9.501_iphoneos-arm.deb</span><br></code></pre></td></tr></table></figure>
 
 <ul>
 <li>安装方法3：</li>
 </ul>
 <p>ssh登录后，输入以下命令：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt-get install cycrypt</span><br></pre></td></tr></table></figure>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros">apt-<span class="hljs-built_in">get</span> install cycrypt<br></code></pre></td></tr></table></figure>
 
 <p>执行 cycript，如果出现cy#符号，则安装完毕:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">~ root# cycript</span><br><span class="line">cy#</span><br></pre></td></tr></table></figure>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs applescript">~ root<span class="hljs-comment"># cycript</span><br>cy<span class="hljs-comment">#</span><br></code></pre></td></tr></table></figure>
 
 
 <h3 id="3-dumpdecrypted-dylib"><a href="#3-dumpdecrypted-dylib" class="headerlink" title="3.dumpdecrypted.dylib"></a>3.dumpdecrypted.dylib</h3><p>从 Github 上下载 dumpdecrypted 源码：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ git clone https://github.com/stefanesser/dumpdecrypted.git dumpdecrypted</span><br><span class="line">Cloning into &#x27;dumpdecrypted&#x27;...</span><br><span class="line">remote: Counting objects: 31, done.</span><br><span class="line">remote: Total 31 (delta 0), reused 0 (delta 0), pack-reused 31</span><br><span class="line">Unpacking objects: 100% (31/31), done.</span><br></pre></td></tr></table></figure>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs awk">$ git clone https:<span class="hljs-regexp">//gi</span>thub.com<span class="hljs-regexp">/stefanesser/</span>dumpdecrypted.git dumpdecrypted<br>Cloning into <span class="hljs-string">&#x27;dumpdecrypted&#x27;</span>...<br>remote: Counting objects: <span class="hljs-number">31</span>, done.<br>remote: Total <span class="hljs-number">31</span> (delta <span class="hljs-number">0</span>), reused <span class="hljs-number">0</span> (delta <span class="hljs-number">0</span>), pack-reused <span class="hljs-number">31</span><br>Unpacking objects: <span class="hljs-number">100</span>% (<span class="hljs-number">31</span>/<span class="hljs-number">31</span>), done.<br></code></pre></td></tr></table></figure>
 
 <p>进入<code>dumpdecrypted</code>目录查看有哪些文件：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ cd dumpdecrypted/</span><br><span class="line">$ ls</span><br><span class="line">Makefile    README      dumpdecrypted.c</span><br></pre></td></tr></table></figure>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs powershell"><span class="hljs-variable">$</span> <span class="hljs-built_in">cd</span> dumpdecrypted/<br><span class="hljs-variable">$</span> <span class="hljs-built_in">ls</span><br>Makefile    README      dumpdecrypted.c<br></code></pre></td></tr></table></figure>
 
 <p>编译 dumpdecrypted.dylib</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ make</span><br><span class="line">`xcrun --sdk iphoneos --find gcc` -Os  -Wimplicit -isysroot `xcrun --sdk iphoneos --show-sdk-path` -F`xcrun --sdk iphoneos --show-sdk-path`/System/Library/Frameworks -F`xcrun --sdk iphoneos --show-sdk-path`/System/Library/PrivateFrameworks -arch armv7 -arch armv7s -arch arm64 -c -o dumpdecrypted.o dumpdecrypted.c </span><br><span class="line">2018-07-27 22:09:19.065 xcodebuild[1941:437762] [MT] PluginLoading: Required plug-in compatibility UUID 426A087B-D3AA-431A-AFDF-F135EC00DE1C for plug-in at path &#x27;~/Library/Application Support/Developer/Shared/Xcode/Plug-ins/VVDocumenter-Xcode.xcplugin&#x27; not present in DVTPlugInCompatibilityUUIDs</span><br><span class="line">`xcrun --sdk iphoneos --find gcc` -Os  -Wimplicit -isysroot `xcrun --sdk iphoneos --show-sdk-path` -F`xcrun --sdk iphoneos --show-sdk-path`/System/Library/Frameworks -F`xcrun --sdk iphoneos --show-sdk-path`/System/Library/PrivateFrameworks -arch armv7 -arch armv7s -arch arm64 -dynamiclib -o dumpdecrypted.dylib dumpdecrypted.o</span><br><span class="line">ld: warning: directory not found for option &#x27;-F/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.4.sdk/System/Library/PrivateFrameworks&#x27;</span><br><span class="line">ld: warning: directory not found for option &#x27;-F/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.4.sdk/System/Library/PrivateFrameworks&#x27;</span><br><span class="line">ld: warning: directory not found for option &#x27;-F/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.4.sdk/System/Library/PrivateFrameworks&#x27;</span><br></pre></td></tr></table></figure>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs stylus">$ make<br>`xcrun <span class="hljs-attr">--sdk</span> iphoneos <span class="hljs-attr">--find</span> gcc` -Os  -Wimplicit -isysroot `xcrun <span class="hljs-attr">--sdk</span> iphoneos <span class="hljs-attr">--show-sdk-path</span>` -F`xcrun <span class="hljs-attr">--sdk</span> iphoneos <span class="hljs-attr">--show-sdk-path</span>`/System/Library/Frameworks -F`xcrun <span class="hljs-attr">--sdk</span> iphoneos <span class="hljs-attr">--show-sdk-path</span>`/System/Library/PrivateFrameworks -arch armv7 -arch armv7s -arch arm64 -c -o dumpdecrypted<span class="hljs-selector-class">.o</span> dumpdecrypted<span class="hljs-selector-class">.c</span> <br><span class="hljs-number">2018</span>-<span class="hljs-number">07</span>-<span class="hljs-number">27</span> <span class="hljs-number">22</span>:<span class="hljs-number">09</span>:<span class="hljs-number">19.065</span> xcodebuild<span class="hljs-selector-attr">[1941:437762]</span> <span class="hljs-selector-attr">[MT]</span> PluginLoading: Required plug-<span class="hljs-keyword">in</span> compatibility UUID <span class="hljs-number">426</span>A087B-D3AA-<span class="hljs-number">431</span>A-AFDF-F135EC00DE1C <span class="hljs-keyword">for</span> plug-<span class="hljs-keyword">in</span> at path <span class="hljs-string">&#x27;~/Library/Application Support/Developer/Shared/Xcode/Plug-ins/VVDocumenter-Xcode.xcplugin&#x27;</span> not present <span class="hljs-keyword">in</span> DVTPlugInCompatibilityUUIDs<br>`xcrun <span class="hljs-attr">--sdk</span> iphoneos <span class="hljs-attr">--find</span> gcc` -Os  -Wimplicit -isysroot `xcrun <span class="hljs-attr">--sdk</span> iphoneos <span class="hljs-attr">--show-sdk-path</span>` -F`xcrun <span class="hljs-attr">--sdk</span> iphoneos <span class="hljs-attr">--show-sdk-path</span>`/System/Library/Frameworks -F`xcrun <span class="hljs-attr">--sdk</span> iphoneos <span class="hljs-attr">--show-sdk-path</span>`/System/Library/PrivateFrameworks -arch armv7 -arch armv7s -arch arm64 -dynamiclib -o dumpdecrypted<span class="hljs-selector-class">.dylib</span> dumpdecrypted<span class="hljs-selector-class">.o</span><br>ld: warning: directory not found <span class="hljs-keyword">for</span> option <span class="hljs-string">&#x27;-F/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.4.sdk/System/Library/PrivateFrameworks&#x27;</span><br>ld: warning: directory not found <span class="hljs-keyword">for</span> option <span class="hljs-string">&#x27;-F/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.4.sdk/System/Library/PrivateFrameworks&#x27;</span><br>ld: warning: directory not found <span class="hljs-keyword">for</span> option <span class="hljs-string">&#x27;-F/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.4.sdk/System/Library/PrivateFrameworks&#x27;</span><br></code></pre></td></tr></table></figure>
 
 <p><code>make</code>命令执行完之后会在当前目录下生成一个<code>dumpdecrypted.dylib</code>文件，这就是后面用来砸壳用的榔头。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ ls</span><br><span class="line">Makefile		dumpdecrypted.c		dumpdecrypted.o</span><br><span class="line">README			dumpdecrypted.dylib</span><br></pre></td></tr></table></figure>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs powershell"><span class="hljs-variable">$</span> <span class="hljs-built_in">ls</span><br>Makefile		dumpdecrypted.c		dumpdecrypted.o<br>README			dumpdecrypted.dylib<br></code></pre></td></tr></table></figure>
 
 <h3 id="4-定位进程"><a href="#4-定位进程" class="headerlink" title="4.定位进程"></a>4.定位进程</h3><p>关闭设备中所有的应用，打开<code>央视影音</code>(Cbox)。<br><br/></p>
 <p>通过ssh，以 root 身份登录设备：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ssh root@192.168.31.242</span><br></pre></td></tr></table></figure>
+<figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs crystal"><span class="hljs-variable">$ </span>ssh root<span class="hljs-variable">@192</span>.<span class="hljs-number">168.31</span>.<span class="hljs-number">242</span><br></code></pre></td></tr></table></figure>
 
 <p>用<code>adv-cmds</code>命令行插件自带的<code>ps</code>命令，定位<code>央视影音</code>进程：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">~ root# ps -e | grep /var/</span><br><span class="line"> 5193 ??         0:01.90 /var/containers/Bundle/Application/BE3F444E-5002-40A6-AFF3-71DB398DAB18/MobileMail.app/MobileMail</span><br><span class="line"> 5195 ??         6:05.27 /var/containers/Bundle/Application/B3248F78-A0C2-4965-8E2F-B3CEE38E71C0/DYZB.app/DYZB</span><br><span class="line"> 5218 ??        12:15.94 /var/containers/Bundle/Application/9437BC53-681D-4F41-889C-5DE6DAAD33CD/Cbox.app/Cbox</span><br><span class="line"> 5317 ??         0:40.58 /var/containers/Bundle/Application/6EE6BF3A-94DB-4356-811C-5CD35CEAD4CC/XMFilmTelevision.app/XMFilmTelevision</span><br><span class="line"> 5860 ??         0:00.58 /private/var/containers/Bundle/Application/C73F08EB-2C9B-4169-9C2C-8E933417465B/BlockerTest.app/PlugIns/Blocker.appex/Blocker</span><br><span class="line"> 5861 ??         0:25.78 /private/var/containers/Bundle/Application/EA8607BE-AD62-4179-B060-E939B00FD212/Shadowrocket.app/PlugIns/Today.appex/Today</span><br><span class="line"> 5862 ??         0:00.84 /private/var/containers/Bundle/Application/B6364A33-5BEF-4059-8491-EF8DB484176C/Shortcuts.app/PlugIns/ShortcutsWidget.appex/ShortcutsWidget</span><br><span class="line"> 5863 ??         0:01.37 /private/var/containers/Bundle/Application/B2D9F8D2-3853-4BE6-8500-8D4FE4140A4E/Weather.app/PlugIns/WeatherAppTodayWidget.appex/WeatherAppTodayWidget</span><br><span class="line"> 6034 ??         0:00.16 /private/var/containers/Bundle/Application/C73F08EB-2C9B-4169-9C2C-8E933417465B/BlockerTest.app/PlugIns/Tunnel.appex/Tunnel</span><br><span class="line"> 6247 ttys000    0:00.02 grep /var/</span><br></pre></td></tr></table></figure>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs gradle">~ root# ps -e | <span class="hljs-keyword">grep</span> <span class="hljs-regexp">/var/</span><br> <span class="hljs-number">5193</span> ??         <span class="hljs-number">0</span>:<span class="hljs-number">01.90</span> <span class="hljs-regexp">/var/</span>containers<span class="hljs-regexp">/Bundle/</span>Application<span class="hljs-regexp">/BE3F444E-5002-40A6-AFF3-71DB398DAB18/M</span>obileMail.app/MobileMail<br> <span class="hljs-number">5195</span> ??         <span class="hljs-number">6</span>:<span class="hljs-number">05.27</span> <span class="hljs-regexp">/var/</span>containers<span class="hljs-regexp">/Bundle/</span>Application<span class="hljs-regexp">/B3248F78-A0C2-4965-8E2F-B3CEE38E71C0/</span>DYZB.app/DYZB<br> <span class="hljs-number">5218</span> ??        <span class="hljs-number">12</span>:<span class="hljs-number">15.94</span> <span class="hljs-regexp">/var/</span>containers<span class="hljs-regexp">/Bundle/</span>Application<span class="hljs-regexp">/9437BC53-681D-4F41-889C-5DE6DAAD33CD/</span>Cbox.app/Cbox<br> <span class="hljs-number">5317</span> ??         <span class="hljs-number">0</span>:<span class="hljs-number">40.58</span> <span class="hljs-regexp">/var/</span>containers<span class="hljs-regexp">/Bundle/</span>Application<span class="hljs-regexp">/6EE6BF3A-94DB-4356-811C-5CD35CEAD4CC/</span>XMFilmTelevision.app/XMFilmTelevision<br> <span class="hljs-number">5860</span> ??         <span class="hljs-number">0</span>:<span class="hljs-number">00.58</span> <span class="hljs-regexp">/private/</span>var<span class="hljs-regexp">/containers/</span>Bundle<span class="hljs-regexp">/Application/</span>C73F08EB-<span class="hljs-number">2</span>C9B-<span class="hljs-number">4169</span>-<span class="hljs-number">9</span>C2C-<span class="hljs-number">8</span>E933417465B<span class="hljs-regexp">/BlockerTest.app/</span>PlugIns<span class="hljs-regexp">/Blocker.appex/</span>Blocker<br> <span class="hljs-number">5861</span> ??         <span class="hljs-number">0</span>:<span class="hljs-number">25.78</span> <span class="hljs-regexp">/private/</span>var<span class="hljs-regexp">/containers/</span>Bundle<span class="hljs-regexp">/Application/</span>EA8607BE-AD62-<span class="hljs-number">4179</span>-B060-E939B00FD212<span class="hljs-regexp">/Shadowrocket.app/</span>PlugIns<span class="hljs-regexp">/Today.appex/</span>Today<br> <span class="hljs-number">5862</span> ??         <span class="hljs-number">0</span>:<span class="hljs-number">00.84</span> <span class="hljs-regexp">/private/</span>var<span class="hljs-regexp">/containers/</span>Bundle<span class="hljs-regexp">/Application/</span>B6364A33-<span class="hljs-number">5</span>BEF-<span class="hljs-number">4059</span>-<span class="hljs-number">8491</span>-EF8DB484176C<span class="hljs-regexp">/Shortcuts.app/</span>PlugIns<span class="hljs-regexp">/ShortcutsWidget.appex/</span>ShortcutsWidget<br> <span class="hljs-number">5863</span> ??         <span class="hljs-number">0</span>:<span class="hljs-number">01.37</span> <span class="hljs-regexp">/private/</span>var<span class="hljs-regexp">/containers/</span>Bundle<span class="hljs-regexp">/Application/</span>B2D9F8D2-<span class="hljs-number">3853</span>-<span class="hljs-number">4</span>BE6-<span class="hljs-number">8500</span>-<span class="hljs-number">8</span>D4FE4140A4E<span class="hljs-regexp">/Weather.app/</span>PlugIns<span class="hljs-regexp">/WeatherAppTodayWidget.appex/</span>WeatherAppTodayWidget<br> <span class="hljs-number">6034</span> ??         <span class="hljs-number">0</span>:<span class="hljs-number">00.16</span> <span class="hljs-regexp">/private/</span>var<span class="hljs-regexp">/containers/</span>Bundle<span class="hljs-regexp">/Application/</span>C73F08EB-<span class="hljs-number">2</span>C9B-<span class="hljs-number">4169</span>-<span class="hljs-number">9</span>C2C-<span class="hljs-number">8</span>E933417465B<span class="hljs-regexp">/BlockerTest.app/</span>PlugIns<span class="hljs-regexp">/Tunnel.appex/</span>Tunnel<br> <span class="hljs-number">6247</span> ttys000    <span class="hljs-number">0</span>:<span class="hljs-number">00.02</span> <span class="hljs-keyword">grep</span> <span class="hljs-regexp">/var/</span><br></code></pre></td></tr></table></figure>
 
 <p>第一行的数字是进程对应的PID，最后一行就是进程所在的目录。使用<code>ps -e</code>命令时终端里会列出一堆系统进程和应用，它们往往以<code>/usr/</code>和<code>/System/</code>开头，而我们下载的应用一般以<code>/var/</code>开头，所以这里可以添加一个过滤条件<code>ps -e | grep /var/</code>，这样结果就简化许多。<br><br/></p>
 <p>因为设备上只打开了一个应用，所以含有<code>/var/containers/Bundle/Application/</code>字样的结果就是storeApp可执行文件的全路径，这里我需要记录下来的是<code>央视影音</code>这个进程：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/var/containers/Bundle/Application/9437BC53-681D-4F41-889C-5DE6DAAD33CD/Cbox.app/Cbox</span><br></pre></td></tr></table></figure>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-regexp">/var/</span>containers<span class="hljs-regexp">/Bundle/</span>Application<span class="hljs-regexp">/9437BC53-681D-4F41-889C-5DE6DAAD33CD/</span>Cbox.app/Cbox<br></code></pre></td></tr></table></figure>
 
 <h3 id="5-Documents-目录"><a href="#5-Documents-目录" class="headerlink" title="5.Documents 目录"></a>5.Documents 目录</h3><p>通过<code>cycript -p</code>命令监听 <code>Cbox</code>进程：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">~ root# cycript -p Cbox</span><br></pre></td></tr></table></figure>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs applescript">~ root<span class="hljs-comment"># cycript -p Cbox</span><br></code></pre></td></tr></table></figure>
 
 <p>也可以通过<code>Cbox</code>的<code>PID</code>来监听：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">~ root# cycript -p 5218</span><br></pre></td></tr></table></figure>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs applescript">~ root<span class="hljs-comment"># cycript -p 5218</span><br></code></pre></td></tr></table></figure>
 
 <p>接着在<code>cy#</code>后面输入：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cy# [[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask]</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs objectivec">cy# [[<span class="hljs-built_in">NSFileManager</span> defaultManager] URLsForDirectory:<span class="hljs-built_in">NSDocumentDirectory</span> inDomains:<span class="hljs-built_in">NSUserDomainMask</span>]<br></code></pre></td></tr></table></figure>
 
 <p>这一步是用 Cycript 找出<code>Cbox</code>的<code>Documents</code>目录，输出结果：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#&quot;/var/mobile/Containers/Data/Application/D02582B3-66D3-4EF1-A6C2-6129D4E1B9CA/Documents/&quot;</span><br></pre></td></tr></table></figure>
+<figure class="highlight subunit"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs subunit">#&quot;/var/mobile/Containers/Data/Application/D02582B3<span class="hljs-string">-66</span>D3<span class="hljs-string">-4</span>EF1-A6C2<span class="hljs-string">-6129</span>D4E1B9CA/Documents/&quot;<br></code></pre></td></tr></table></figure>
 
 <p>这里<code>/var/mobile/Containers/Data/Application/D02582B3-66D3-4EF1-A6C2-6129D4E1B9CA/Documents/</code>就是我们要找的目录，<code>Ctrl + D</code>退出 Cycript 模式。</p>
 <h3 id="6-拷贝动态库"><a href="#6-拷贝动态库" class="headerlink" title="6.拷贝动态库"></a>6.拷贝动态库</h3><p>将步骤#3 中编译的<code>dumpdecrypted.dylib</code>拷贝到刚才的<code>Documents</code>目录下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ scp /Users/davidli/Documents/dumpdecrypted/dumpdecrypted.dylib root@192.168.31.242:/var/mobile/Containers/Data/Application/D02582B3-66D3-4EF1-A6C2-6129D4E1B9CA/Documents/</span><br></pre></td></tr></table></figure>
+<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs elixir"><span class="hljs-variable">$ </span>scp /<span class="hljs-title class_">Users</span>/davidli/<span class="hljs-title class_">Documents</span>/dumpdecrypted/dumpdecrypted.dylib root<span class="hljs-variable">@192</span>.<span class="hljs-number">168.31</span>.<span class="hljs-number">242</span><span class="hljs-symbol">:/var/mobile/Containers/Data/Application/D02582B3-</span><span class="hljs-number">66</span>D3<span class="hljs-number">-4</span>EF1-<span class="hljs-title class_">A6C2</span><span class="hljs-number">-6129</span>D4E1B9CA/<span class="hljs-title class_">Documents</span>/<br></code></pre></td></tr></table></figure>
 
 <p>另外，你也可以使用<code>iTools</code>或者<code>iFunBox</code>等工具来完成。</p>
 <h3 id="7-砸壳"><a href="#7-砸壳" class="headerlink" title="7.砸壳"></a>7.砸壳</h3><p>从应用商店下载的应用是被苹果特殊加密过的，可执行文件被套上了一层保护壳，想 dump 出它的头文件等，需要先解密应用的可执行文件，这个过程就被称为<code>砸壳</code>。<br><br/></p>
 <p><code>dumpdecrypted</code>就是一款有名的砸壳软件，其工作原理是：将应用运行起来（iOS系统会先解密应用可执行文件再启动），然后遍历 <code>Load Command</code> 中所有 <code>LC_ENCRYPTION_INFO</code> 或 <code>LC_ENCRYPTION_INFO_64</code>指令的信息，将对应解密后的数据从内存中 dump 出来，复写到 mach-o 文件中，得到一个新的可执行程序。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">~ root# cd /var/mobile/Containers/Data/Application/D02582B3-66D3-4EF1-A6C2-6129D4E1B9CA/Documents/</span><br><span class="line">root# DYLD_INSERT_LIBRARIES=dumpdecrypted.dylib /var/containers/Bundle/Application/9437BC53-681D-4F41-889C-5DE6DAAD33CD/Cbox.app/Cbox</span><br></pre></td></tr></table></figure>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs gradle">~ root# cd <span class="hljs-regexp">/var/m</span>obile<span class="hljs-regexp">/Containers/</span>Data<span class="hljs-regexp">/Application/</span>D02582B3-<span class="hljs-number">66</span>D3-<span class="hljs-number">4</span>EF1-A6C2-<span class="hljs-number">6129</span>D4E1B9CA<span class="hljs-regexp">/Documents/</span><br>root# DYLD_INSERT_LIBRARIES=dumpdecrypted.dylib <span class="hljs-regexp">/var/</span>containers<span class="hljs-regexp">/Bundle/</span>Application<span class="hljs-regexp">/9437BC53-681D-4F41-889C-5DE6DAAD33CD/</span>Cbox.app/Cbox<br></code></pre></td></tr></table></figure>
 
 <p>这里的<code>DYLD_INSERT_LIBRARIES</code>是一个环境变量，我们的<code>dumpdecrypted.dylib</code>就是要通过这个环境变量注入到应用中。<br><br/></p>
 <p>上述命令执行完毕后会在当前目录生成<code>Cbox.decrypted</code>，即砸壳之后 App 的可执行文件。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root# ls</span><br><span class="line">Cbox.decrypted     dumpdecrypted.dylib ...</span><br></pre></td></tr></table></figure>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs jboss-cli">root<span class="hljs-comment"># ls</span><br>Cbox.decrypted     dumpdecrypted.dylib <span class="hljs-string">...</span><br></code></pre></td></tr></table></figure>
 
 <h3 id="8-拷贝-decrypted"><a href="#8-拷贝-decrypted" class="headerlink" title="8.拷贝.decrypted"></a>8.拷贝.decrypted</h3><p>将 Cbox.decrypted 拷贝到自己的电脑上：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ scp root@192.168.31.242:/var/mobile/Containers/Data/Application/D02582B3-66D3-4EF1-A6C2-6129D4E1B9CA/Documents/Cbox.decrypted /Users/davidli/Documents/decrypted</span><br></pre></td></tr></table></figure>
+<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs elixir"><span class="hljs-variable">$ </span>scp root<span class="hljs-variable">@192</span>.<span class="hljs-number">168.31</span>.<span class="hljs-number">242</span><span class="hljs-symbol">:/var/mobile/Containers/Data/Application/D02582B3-</span><span class="hljs-number">66</span>D3<span class="hljs-number">-4</span>EF1-<span class="hljs-title class_">A6C2</span><span class="hljs-number">-6129</span>D4E1B9CA/<span class="hljs-title class_">Documents</span>/<span class="hljs-title class_">Cbox</span>.decrypted /<span class="hljs-title class_">Users</span>/davidli/<span class="hljs-title class_">Documents</span>/decrypted<br></code></pre></td></tr></table></figure>
 
 <h3 id="9-反汇编"><a href="#9-反汇编" class="headerlink" title="9.反汇编"></a>9.反汇编</h3><p>接下来就可以对此砸壳后的文件进行静态分析了，如用<code>class-dump</code>导出 App 的头文件、用 <code>Hopper Disassembler</code>查看伪代码。</p>
 <h4 id="9-1-class-dump"><a href="#9-1-class-dump" class="headerlink" title="9.1.class-dump"></a>9.1.class-dump</h4><p>class-dump 是用来 dump 目标对象的 类、分类、协议信息的工具，这一点与<code>otool</code>类似。它利用 OC 语言的 runtime 特性，将存储在 Mach-O 文件中的头文件信息提取出来，并生成对应的.h文件。在<a target="_blank" rel="noopener" href="http://stevenygard.com/projects/class-dump/"> 传送门 </a>下载最新安装包，然后把<code>class-dump</code>文件放到<code>/usr/local/bin</code>目录下， 在终端输入<code>class-dump</code>，显示<code>class-dump</code>的版本后，就可以正常使用 class-dump 命令了。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">$ class-dump</span><br><span class="line">class-dump 3.5 (64 bit)</span><br><span class="line">Usage: class-dump [options] &lt;mach-o-file&gt;</span><br><span class="line"></span><br><span class="line">  where options are:</span><br><span class="line">        -a             show instance variable offsets</span><br><span class="line">        -A             show implementation addresses</span><br><span class="line">        --arch &lt;arch&gt;  choose a specific architecture from a universal binary (ppc, ppc64, i386, x86_64, armv6, armv7, armv7s, arm64)</span><br><span class="line">        -C &lt;regex&gt;     only display classes matching regular expression</span><br><span class="line">        -f &lt;str&gt;       find string in method name</span><br><span class="line">        -H             generate header files in current directory, or directory specified with -o</span><br><span class="line">        -I             sort classes, categories, and protocols by inheritance (overrides -s)</span><br><span class="line">        -o &lt;dir&gt;       output directory used for -H</span><br><span class="line">        -r             recursively expand frameworks and fixed VM shared libraries</span><br><span class="line">        -s             sort classes and categories by name</span><br><span class="line">        -S             sort methods by name</span><br><span class="line">        -t             suppress header in output, for testing</span><br><span class="line">        --list-arches  list the arches in the file, then exit</span><br><span class="line">        --sdk-ios      specify iOS SDK version (will look in /Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS&lt;version&gt;.sdk</span><br><span class="line">        --sdk-mac      specify Mac OS X version (will look in /Developer/SDKs/MacOSX&lt;version&gt;.sdk</span><br><span class="line">        --sdk-root     specify the full SDK root path (or use --sdk-ios/--sdk-mac for a shortcut)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs stata">$ <span class="hljs-keyword">class</span>-dump<br><span class="hljs-keyword">class</span>-dump 3.5 (64 bit)<br>Usage: <span class="hljs-keyword">class</span>-dump [options] &lt;mach-o-<span class="hljs-keyword">file</span>&gt;<br><br>  where options are:<br>        -a             show instance variable offsets<br>        -A             show implementation addresses<br>        --<span class="hljs-keyword">arch</span> &lt;<span class="hljs-keyword">arch</span>&gt;  choose a specific architecture from a universal binary (ppc, ppc64, i386, x86_64, armv6, armv7, armv7s, arm64)<br>        -C &lt;regex&gt;     only <span class="hljs-keyword">display</span> classes matching regular expression<br>        -f &lt;str&gt;       find string <span class="hljs-keyword">in</span> method name<br>        -<span class="hljs-keyword">H</span>             <span class="hljs-keyword">generate</span> header files <span class="hljs-keyword">in</span> current directory, or directory specified with -o<br>        -I             <span class="hljs-keyword">sort</span> classes, categories, and protocols <span class="hljs-keyword">by</span> inheritance (overrides -s)<br>        -o &lt;<span class="hljs-keyword">dir</span>&gt;       output directory used <span class="hljs-keyword">for</span> -<span class="hljs-keyword">H</span><br>        -r             recursively <span class="hljs-keyword">expand</span> frameworks and fixed VM shared libraries<br>        -s             <span class="hljs-keyword">sort</span> classes and categories <span class="hljs-keyword">by</span> name<br>        -S             <span class="hljs-keyword">sort</span> methods <span class="hljs-keyword">by</span> name<br>        -t             suppress header <span class="hljs-keyword">in</span> output, <span class="hljs-keyword">for</span> testing<br>        --<span class="hljs-keyword">list</span>-arches  <span class="hljs-keyword">list</span> the arches <span class="hljs-keyword">in</span> the <span class="hljs-keyword">file</span>, then <span class="hljs-keyword">exit</span><br>        --sdk-ios      specify iOS SDK <span class="hljs-keyword">version</span> (will look <span class="hljs-keyword">in</span> /Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS&lt;<span class="hljs-keyword">version</span>&gt;.sdk<br>        --sdk-<span class="hljs-keyword">mac</span>      specify <span class="hljs-keyword">Mac</span> OS X <span class="hljs-keyword">version</span> (will look <span class="hljs-keyword">in</span> /Developer/SDKs/MacOSX&lt;<span class="hljs-keyword">version</span>&gt;.sdk<br>        --sdk-root     specify the full SDK root path (or <span class="hljs-keyword">use</span> --sdk-ios/--sdk-<span class="hljs-keyword">mac</span> <span class="hljs-keyword">for</span> a shortcut)<br><br></code></pre></td></tr></table></figure>
 
 <p>使用 class-dump 导出二进制文件中的.h</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">class-dump [--arch armv7] -H -s /目标二进制文件路径 -o /导出目录</span><br></pre></td></tr></table></figure>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs gradle"><span class="hljs-keyword">class</span>-<span class="hljs-keyword">dump</span> [--arch armv7] -H -s <span class="hljs-regexp">/目标二进制文件路径 -o /</span>导出目录<br></code></pre></td></tr></table></figure>
 
 <p>导出的文件列表如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">$ ls</span><br><span class="line">AAAlertItem.h</span><br><span class="line">AACloseNotifyReq.h</span><br><span class="line">AACloseNotifyRes.h</span><br><span class="line">AACloseReq.h</span><br><span class="line">AACloseRes.h</span><br><span class="line">AALaunchByMoneyReq.h</span><br><span class="line">AALaunchByMoneyRes.h</span><br><span class="line">AALaunchByPersonReq.h</span><br><span class="line">AALaunchByPersonRes.h</span><br><span class="line">AALaunchItem.h</span><br><span class="line">AAListRecord.h</span><br><span class="line">AAOperationReq.h</span><br><span class="line">AAOperationRes.h</span><br><span class="line">AAPayReq.h</span><br><span class="line">AAPayRes.h</span><br><span class="line">AAPaySuccReq.h</span><br><span class="line">AAPaySuccRes.h</span><br><span class="line">AAPayUrgeReq.h</span><br><span class="line">AAPayUrgeRes.h</span><br><span class="line">AAPayer.h</span><br><span class="line">AAQueryDetailReq.h</span><br><span class="line">AAQueryDetailRes.h</span><br><span class="line">AAQueryListReq.h</span><br><span class="line">AAQueryListRes.h</span><br><span class="line">AARealNameItem.h</span><br><span class="line">ABNewPersonViewControllerDelegate-Protocol.h</span><br><span class="line">ABPeoplePickerNavigationControllerDelegate-Protocol.h</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">$ ls<br><span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">AAAlertItem</span>.</span></span>h<br><span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">AACloseNotifyReq</span>.</span></span>h<br><span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">AACloseNotifyRes</span>.</span></span>h<br><span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">AACloseReq</span>.</span></span>h<br><span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">AACloseRes</span>.</span></span>h<br><span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">AALaunchByMoneyReq</span>.</span></span>h<br><span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">AALaunchByMoneyRes</span>.</span></span>h<br><span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">AALaunchByPersonReq</span>.</span></span>h<br><span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">AALaunchByPersonRes</span>.</span></span>h<br><span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">AALaunchItem</span>.</span></span>h<br><span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">AAListRecord</span>.</span></span>h<br><span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">AAOperationReq</span>.</span></span>h<br><span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">AAOperationRes</span>.</span></span>h<br><span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">AAPayReq</span>.</span></span>h<br><span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">AAPayRes</span>.</span></span>h<br><span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">AAPaySuccReq</span>.</span></span>h<br><span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">AAPaySuccRes</span>.</span></span>h<br><span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">AAPayUrgeReq</span>.</span></span>h<br><span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">AAPayUrgeRes</span>.</span></span>h<br><span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">AAPayer</span>.</span></span>h<br><span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">AAQueryDetailReq</span>.</span></span>h<br><span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">AAQueryDetailRes</span>.</span></span>h<br><span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">AAQueryListReq</span>.</span></span>h<br><span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">AAQueryListRes</span>.</span></span>h<br><span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">AARealNameItem</span>.</span></span>h<br>ABNewPersonViewControllerDelegate-<span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">Protocol</span>.</span></span>h<br>ABPeoplePickerNavigationControllerDelegate-<span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">Protocol</span>.</span></span>h<br>...<br></code></pre></td></tr></table></figure>
 
 <h4 id="9-2-Hopper"><a href="#9-2-Hopper" class="headerlink" title="9.2.Hopper"></a>9.2.Hopper</h4><p>class-dump 只能查看目标 APP 的头文件，无法查看.m 文件和具体的代码，所以就需要使用到反汇编器。这里介绍的是<code>Hopper Disassembler</code>，它是一款二进制反汇编器，能反编译出二进制文件中的所有函数和实现，包括伪代码以及控制流图(Control Flow Graph)，支持 ARM 指令集并针对 OC 做了优化。官网 <a target="_blank" rel="noopener" href="https://www.hopperapp.com/">传送门</a>，下载试用版就够用了。<br><br/></p>
 <p>将目标二进制文件拖到 <code>Hopper Disassembler</code> 面板中：（如果是第三方市场下载的越狱应用，须将<code>.ipa</code>文件后缀改为<code>.zip</code>，解压后在<code>/Payload</code>目录下找到<code>.app</code>文件，右键 <code>显示包含内容</code> 即可看到目标二进制文件）</p>
-<p><img src="https://davidlii.nos-eastchina1.126.net/pic_disassembler1.png" alt="disassembler1"></p>
+<p><img src="https://davidlii.nos-eastchina1.126.net/pic_disassembler1.png" srcset="/img/loading.gif" lazyload alt="disassembler1"></p>
 <p>选择需要反编译的架构之后点<code>OK</code>，接下来 Hopper 就会自动加载二进制文件的各个<code>segment</code>。加载完成后即可看到如下界面：</p>
-<p><img src="https://davidlii.nos-eastchina1.126.net/pic_disassembler3.png" alt="disassembler3"></p>
+<p><img src="https://davidlii.nos-eastchina1.126.net/pic_disassembler3.png" srcset="/img/loading.gif" lazyload alt="disassembler3"></p>
 <p>左边是符号 Label 等区域，中间是 ARM 的汇编代码，右边是相关信息栏。<br><br/></p>
 <p>在 Label 区搜索栏中输入想要的函数名，双击搜索结果列表中对应的行即可自动跳转到该方法的内存地址处。不过这里显示的都是 ARM 汇编指令，其中还包括了很多<code>r0~r8</code>等寄存器，阅读性不高。所以可以使用上面提到的伪代码功能，快捷键 <code>Option + Enter</code> 或者点击右上角面板中的 <code>if(b)f(x)</code>按钮即可自动弹出伪代码视图，这些就是具体的代码逻辑：</p>
-<p><img src="https://davidlii.nos-eastchina1.126.net/pic_disassembler5.png" alt="disassembler3"></p>
+<p><img src="https://davidlii.nos-eastchina1.126.net/pic_disassembler5.png" srcset="/img/loading.gif" lazyload alt="disassembler3"></p>
 <p><strong>ps:</strong> Hopper 除了可以查看汇编代码以外，还可以直接对 Mach-O 文件进行修改，然后重新生成二进制文件，替换原二进制文件后重新打包即可实现某些特殊目的，如去广告、微信自动抢红包、VIP加速等。这些内容及ARM汇编指令待后面继续研究。。</p>
 <hr>
 <p>相关参考：</p>
 <p>#©沙梓社·吴航【iOS应用逆向工程】</p>
 <p>#<a target="_blank" rel="noopener" href="http://bbs.iosre.com/">©iosre论坛</a></p>
-</section>
-    <!-- Tags START -->
-    
-      <div class="tags">
-        <span>Tags:</span>
-        
-  <a href="/tags#逆向工程" >
-    <span class="tag-code">逆向工程</span>
-  </a>
 
-      </div>
-    
-    <!-- Tags END -->
-    <!-- NAV START -->
-    
-  <div class="nav-container">
-    <!-- reverse left and right to put prev and next in a more logic postition -->
-    
-      <a class="nav-left" href="/2019/03/16/mach_o.html">
-        <span class="nav-arrow">← </span>
-        
-          Mach-O
-        
-      </a>
-    
-    
-      <a class="nav-right" href="/2019/03/23/shell-ipa.html">
-        
-          Shell脚本打包与上传
-        
-        <span class="nav-arrow"> →</span>
-      </a>
-    
-  </div>
-
-    <!-- NAV END -->
-    <!-- 打赏 START -->
-    
-      <div class="money-like">
-        <div class="reward-btn">
-          赏
-          <span class="money-code">
-            <span class="alipay-code">
-              <div class="code-image"></div>
-              <b>使用支付宝打赏</b>
-            </span>
-            <span class="wechat-code">
-              <div class="code-image"></div>
-              <b>使用微信打赏</b>
-            </span>
-          </span>
-        </div>
-        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
-      </div>
-    
-    <!-- 打赏 END -->
-    <!-- 二维码 START -->
-    
-    <!-- 二维码 END -->
-    
-      <!-- No Comment -->
-    
-  </article>
-  <!-- Article END -->
-  <!-- Catalog START -->
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
   
-    <aside class="catalog-container">
-  <div class="toc-main">
-    <strong class="toc-title">Catalog</strong>
-    
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1-%E8%AE%BE%E5%A4%87%E8%B6%8A%E7%8B%B1"><span class="toc-nav-text">1.设备越狱</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-%E5%AE%89%E8%A3%85%E6%8F%92%E4%BB%B6"><span class="toc-nav-text">2.安装插件</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-1-OpenSSH"><span class="toc-nav-text">2.1.OpenSSH</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-2-Cycript"><span class="toc-nav-text">2.2.Cycript</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-dumpdecrypted-dylib"><span class="toc-nav-text">3.dumpdecrypted.dylib</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#4-%E5%AE%9A%E4%BD%8D%E8%BF%9B%E7%A8%8B"><span class="toc-nav-text">4.定位进程</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#5-Documents-%E7%9B%AE%E5%BD%95"><span class="toc-nav-text">5.Documents 目录</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#6-%E6%8B%B7%E8%B4%9D%E5%8A%A8%E6%80%81%E5%BA%93"><span class="toc-nav-text">6.拷贝动态库</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#7-%E7%A0%B8%E5%A3%B3"><span class="toc-nav-text">7.砸壳</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#8-%E6%8B%B7%E8%B4%9D-decrypted"><span class="toc-nav-text">8.拷贝.decrypted</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#9-%E5%8F%8D%E6%B1%87%E7%BC%96"><span class="toc-nav-text">9.反汇编</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#9-1-class-dump"><span class="toc-nav-text">9.1.class-dump</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#9-2-Hopper"><span class="toc-nav-text">9.2.Hopper</span></a></li></ol></li></ol>
-    
-  </div>
-</aside>
   
-  <!-- Catalog END -->
-</main>
-
-<script>
-  (function () {
-    var url = 'http://yoursite.com/2019/03/22/iosreverse.html';
-    var banner = ''
-    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
-      $('#article-banner').css({
-        'background-image': 'url(' + banner + ')'
-      })
-    } else {
-      $('#article-banner').geopattern(url)
-    }
-    $('.header').removeClass('fixed-header')
-
-     // error image
-    $(".markdown-content img").on('error', function() {
-      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
-      $(this).css({
-        'cursor': 'default'
-      })
-    })
-
-    // zoom image
-    $(".markdown-content img").on('click', function() {
-      var src = $(this).attr('src')
-      if (src !== 'http://file.muyutech.com/error-img.png') {
-        var imageW = $(this).width()
-        var imageH = $(this).height()
-        
-        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
-        zoom = zoom < 1 ? 1 : zoom
-        zoom = zoom > 2 ? 2 : zoom
-        var transY = (($(window).height() - imageH) / 2).toFixed(2)
-
-        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
-        $('.image-view-wrap').addClass('wrap-active')
-        $('.image-view-wrap img').css({
-          'width': `${imageW}`,
-          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
-        })
-        $('html').css('overflow', 'hidden')
-
-        $('.image-view-wrap').on('click', function() {
-          $(this).remove()
-          $('html').attr('style', '')
-        })
-      }
-    })
-
-    // qrcode
-    var qr = new QRious({
-      element: document.getElementById('share-qrcode'),
-      value: document.location.href
-    });
-
-    // gitment
-    var gitmentConfig = "";
-    if (gitmentConfig !== 'undefined') {
-      var gitment = new Gitment({
-        id: "iOS 应用逆向工程",
-        owner: "",
-        repo: "",
-        oauth: {
-          client_id: "",
-          client_secret: ""
-        },
-        theme: {
-          render(state, instance) {
-            const container = document.createElement('div')
-            container.lang = "en-US"
-            container.className = 'gitment-container gitment-root-container'
-            container.appendChild(instance.renderHeader(state, instance))
-            container.appendChild(instance.renderEditor(state, instance))
-            container.appendChild(instance.renderComments(state, instance))
-            container.appendChild(instance.renderFooter(state, instance))
-            return container;
-          }
-        }
-      })
-      gitment.render(document.getElementById('comments'))
-    }
-  })();
-</script>
-
-    <div class="scroll-top">
-  <span class="arrow-icon"></span>
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/">#逆向工程</a>
+      
+    </div>
+  
 </div>
-    <footer class="app-footer">
-  <p class="copyright">
-    &copy; 2022 | <a href="https://github.com/davidlii" target="_blank">Davidli</a>
-    <br>
-    <a href="https://hexo.io" target="_blank">Hexo</a> | Theme-<a target="_blank" rel="noopener" href="https://github.com/yanm1ng">yanm1ng</a>
-  </p>
-</footer>
 
-<script>
-  function async(u, c) {
-    var d = document, t = 'script',
-      o = d.createElement(t),
-      s = d.getElementsByTagName(t)[0];
-    o.src = u;
-    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
-    s.parentNode.insertBefore(o, s);
-  }
-</script>
-<script>
-  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
-    FastClick.attach(document.body);
-  })
-</script>
 
-<script>
-  var hasLine = 'true';
-  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
-    $('figure pre').each(function(i, block) {
-      var figure = $(this).parents('figure');
-      if (hasLine === 'false') {
-        figure.find('.gutter').hide();
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>iOS 应用逆向工程</div>
+      <div>http://yoursite.com/2019/03/22/iosreverse.html</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>March 22, 2019</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>Licensed under</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2019/03/23/shell-ipa.html" title="Shell脚本打包与上传">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Shell脚本打包与上传</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2019/03/16/mach_o.html" title="Mach-O">
+                        <span class="hidden-mobile">Mach-O</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;Table of Contents</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://github.com/davidlii" target="_blank" rel="nofollow noopener"><span>Davidlii</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        Views: 
+        <span id="busuanzi_value_site_pv"></span>
+        
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        Visitors: 
+        <span id="busuanzi_value_site_uv"></span>
+        
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
       }
-      var lang = figure.attr('class').split(' ')[1] || 'code';
-      var codeHtml = $(this).html();
-      var codeTag = document.createElement('code');
-      codeTag.className = lang;
-      codeTag.innerHTML = codeHtml;
-      $(this).attr('class', '').empty().html(codeTag);
-      figure.attr('data-lang', lang.toUpperCase());
-      hljs.highlightBlock(block);
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
     });
-  })
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
 </script>
-<!-- Baidu Tongji -->
 
 
-<script src="/js/script.js"></script>
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
 
-  </body>
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
 </html>

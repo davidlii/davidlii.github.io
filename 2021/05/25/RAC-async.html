@@ -1,145 +1,289 @@
+
+
 <!DOCTYPE html>
-<html>
-  <head>
-  <meta http-equiv="content-type" content="text/html; charset=utf-8">
-  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
-  <meta name="description" content="This is Davidli&#39;s blog ~">
-  <meta name="keyword" content="hexo-theme, vuejs">
-  
-    <link rel="shortcut icon" type="image/ico" href="/image/logo.png"/> 
-  
-  <title>
-    
-      RAC-异步行为 | Davidli
-    
-  </title>
-  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
-  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
-  
-<link rel="stylesheet" href="/css/style.css">
-<link rel="stylesheet" href="/css/plugins/gitment.css">
-
-  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
-  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
-  
-<script src="/js/qrious.js"></script>
-<script src="/js/gitment.js"></script>
-
-  
-  
-    <!-- MathJax support START -->
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      });
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      });
-    </script>
-    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <!-- MathJax support END -->
-  
+<html lang="zh-Hans" data-default-color-scheme=auto>
 
 
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="Davidli">
+  
+    <meta name="description" content="前言OC中的异步行为：  block delegate KVO 通知 target-action机制  异步行为的共同点：  何时触发并不确定，观察者需要等待其触发时的回调； 异步行为的创建和触发并不在同一块区域，往往是分开的。  异步行为的缺点：  异步行为的创建和回调相对分散，这不符合代码规范中”高内聚”的要求； 使用不当时，这些行为往往会造成循环引用等问题。  RAC文档 摘要：  One">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RAC-异步行为">
+<meta property="og:url" content="http://yoursite.com/2021/05/25/RAC-async.html">
+<meta property="og:site_name" content="Davidli">
+<meta property="og:description" content="前言OC中的异步行为：  block delegate KVO 通知 target-action机制  异步行为的共同点：  何时触发并不确定，观察者需要等待其触发时的回调； 异步行为的创建和触发并不在同一块区域，往往是分开的。  异步行为的缺点：  异步行为的创建和回调相对分散，这不符合代码规范中”高内聚”的要求； 使用不当时，这些行为往往会造成循环引用等问题。  RAC文档 摘要：  One">
+<meta property="og:locale">
+<meta property="article:published_time" content="2021-05-25T15:41:38.000Z">
+<meta property="article:modified_time" content="2019-06-10T17:06:38.000Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="源码">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>RAC-异步行为 - Davidli</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"yoursite.com","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
 <meta name="generator" content="Hexo 6.2.0"></head>
-<div class="wechat-share">
-  <img src="/css/images/logo.png" />
-</div>
 
-  <body>
-    <header class="header fixed-header">
-  <div class="header-container">
-    <a class="home-link" href="/">
-      <div class="logo"></div>
-      <span>Davidli</span>
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Davidli</strong>
     </a>
-    <ul class="right-list">
-      
-        <li class="list-item">
-          
-            <a href="/" class="item-link">Davidli</a>
-          
-        </li>
-      
-        <li class="list-item">
-          
-            <a href="/archives/" class="item-link">归档</a>
-          
-        </li>
-      
-        <li class="list-item">
-          
-            <a href="/tags/" class="item-link">标签</a>
-          
-        </li>
-      
-        <li class="list-item">
-          
-            <a href="/about/" class="item-link">关于</a>
-          
-        </li>
-      
-    </ul>
-    <div class="menu">
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-    </div>
-    <div class="menu-mask">
-      <ul class="menu-list">
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
         
-          <li class="menu-item">
-            
-              <a href="/" class="menu-link">Davidli</a>
-            
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                Categories
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                Tags
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
           </li>
+          
         
-          <li class="menu-item">
-            
-              <a href="/archives/" class="menu-link">归档</a>
-            
-          </li>
         
-          <li class="menu-item">
-            
-              <a href="/tags/" class="menu-link">标签</a>
-            
-          </li>
-        
-          <li class="menu-item">
-            
-              <a href="/about/" class="menu-link">关于</a>
-            
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
           </li>
         
       </ul>
     </div>
   </div>
-</header>
+</nav>
 
-    <div id="article-banner">
-  <h2>RAC-异步行为</h2>
-  <p class="post-date">2021-05-25</p>
-  <div class="arrow-down">
-    <a href="javascript:;"></a>
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="RAC-异步行为"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2021-05-25 23:41" pubdate>
+          May 25, 2021 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          9k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          76 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
   </div>
 </div>
-<main class="app-body flex-box">
-  <!-- Article START -->
-  <article class="post-article">
-    <section class="markdown-content"><h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>OC中的异步行为：</p>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">RAC-异步行为</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>OC中的异步行为：</p>
 <ul>
 <li>block</li>
 <li>delegate</li>
@@ -169,56 +313,56 @@
 <p>下面将分别介绍它们的使用和实现原理。</p>
 <h3 id="block"><a href="#block" class="headerlink" title="block"></a>block</h3><p>block 创建完成后在随后的某个时间点被调用，从而实现其内部定义好的业务。RAC中 block 的使用如下：<br><br/></p>
 <p>#示例：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">@property (nonatomic, strong) id&lt;RACSubscriber&gt; subscriber;</span><br><span class="line"></span><br><span class="line">- (void)viewDidLoad &#123;</span><br><span class="line">    [super viewDidLoad];</span><br><span class="line">    </span><br><span class="line">    //1.信号的使用</span><br><span class="line">    RACSignal *s1 = [RACSignal createSignal:^RACDisposable *(id&lt;RACSubscriber&gt; subscriber) &#123;</span><br><span class="line">        _subscriber = subscriber;</span><br><span class="line">        return [RACDisposable disposableWithBlock:^&#123;</span><br><span class="line">            NSLog(@&quot;++s1 Disposed~&quot;);</span><br><span class="line">        &#125;];</span><br><span class="line">    &#125;];</span><br><span class="line">    </span><br><span class="line">    //订阅消息，创建block</span><br><span class="line">    [s1 subscribeNext:^(id x) &#123;</span><br><span class="line">        NSLog(@&quot;+++订阅触发:%@&quot;,x);</span><br><span class="line">    &#125;];</span><br><span class="line">    //调用block</span><br><span class="line">    [_subscriber sendNext:@&quot;Hello world~&quot;];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">strong</span>) <span class="hljs-type">id</span>&lt;RACSubscriber&gt; subscriber;<br><br>- (<span class="hljs-type">void</span>)viewDidLoad &#123;<br>    [<span class="hljs-variable language_">super</span> viewDidLoad];<br>    <br>    <span class="hljs-comment">//1.信号的使用</span><br>    RACSignal *s1 = [RACSignal createSignal:^RACDisposable *(<span class="hljs-type">id</span>&lt;RACSubscriber&gt; subscriber) &#123;<br>        _subscriber = subscriber;<br>        <span class="hljs-keyword">return</span> [RACDisposable disposableWithBlock:^&#123;<br>            <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;++s1 Disposed~&quot;</span>);<br>        &#125;];<br>    &#125;];<br>    <br>    <span class="hljs-comment">//订阅消息，创建block</span><br>    [s1 subscribeNext:^(<span class="hljs-type">id</span> x) &#123;<br>        <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;+++订阅触发:%@&quot;</span>,x);<br>    &#125;];<br>    <span class="hljs-comment">//调用block</span><br>    [_subscriber sendNext:<span class="hljs-string">@&quot;Hello world~&quot;</span>];<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>执行[s1 subscribeNext:]订阅信号时，我们传入了一个 nextBlock，它会被保存起来以在后续被调用。subscribeNext:的实现如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">//RACSignal.m</span><br><span class="line">- (RACDisposable *)subscribeNext:(void (^)(id x))nextBlock &#123;</span><br><span class="line">	NSCParameterAssert(nextBlock != NULL);</span><br><span class="line">	//1.创建订阅者</span><br><span class="line">	RACSubscriber *o = [RACSubscriber subscriberWithNext:nextBlock error:NULL completed:NULL];</span><br><span class="line">	return [self subscribe:o];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//RACSubscriber.m</span><br><span class="line">+ (instancetype)subscriberWithNext:(void (^)(id x))next error:(void (^)(NSError *error))error completed:(void (^)(void))completed &#123;</span><br><span class="line">	RACSubscriber *subscriber = [[self alloc] init];</span><br><span class="line"></span><br><span class="line">	//2.保存 block</span><br><span class="line">	subscriber-&gt;_next = [next copy]; </span><br><span class="line">	subscriber-&gt;_error = [error copy];</span><br><span class="line">	subscriber-&gt;_completed = [completed copy];</span><br><span class="line"></span><br><span class="line">	return subscriber;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-comment">//RACSignal.m</span><br>- (RACDisposable *)subscribeNext:(<span class="hljs-type">void</span> (^)(<span class="hljs-type">id</span> x))nextBlock &#123;<br>	<span class="hljs-built_in">NSCParameterAssert</span>(nextBlock != <span class="hljs-literal">NULL</span>);<br>	<span class="hljs-comment">//1.创建订阅者</span><br>	RACSubscriber *o = [RACSubscriber subscriberWithNext:nextBlock error:<span class="hljs-literal">NULL</span> completed:<span class="hljs-literal">NULL</span>];<br>	<span class="hljs-keyword">return</span> [<span class="hljs-keyword">self</span> subscribe:o];<br>&#125;<br><br><span class="hljs-comment">//RACSubscriber.m</span><br>+ (<span class="hljs-keyword">instancetype</span>)subscriberWithNext:(<span class="hljs-type">void</span> (^)(<span class="hljs-type">id</span> x))next error:(<span class="hljs-type">void</span> (^)(<span class="hljs-built_in">NSError</span> *error))error completed:(<span class="hljs-type">void</span> (^)(<span class="hljs-type">void</span>))completed &#123;<br>	RACSubscriber *subscriber = [[<span class="hljs-keyword">self</span> alloc] init];<br><br>	<span class="hljs-comment">//2.保存 block</span><br>	subscriber-&gt;_next = [next <span class="hljs-keyword">copy</span>]; <br>	subscriber-&gt;_error = [error <span class="hljs-keyword">copy</span>];<br>	subscriber-&gt;_completed = [completed <span class="hljs-keyword">copy</span>];<br><br>	<span class="hljs-keyword">return</span> subscriber;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>信号内部自动创建了一个<code>订阅者</code>对象，并将我们传入的 nextBlock 保存了起来。<br><br/></p>
 <p>随后在示例中我们调用了[_subscriber sendNext:]，其实现如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">- (void)sendNext:(id)value &#123;</span><br><span class="line">	@synchronized (self) &#123;</span><br><span class="line">		void (^nextBlock)(id) = [self.next copy];</span><br><span class="line">		if (nextBlock == nil) return;</span><br><span class="line">		nextBlock(value);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs objectivec">- (<span class="hljs-type">void</span>)sendNext:(<span class="hljs-type">id</span>)value &#123;<br>	<span class="hljs-keyword">@synchronized</span> (<span class="hljs-keyword">self</span>) &#123;<br>		<span class="hljs-type">void</span> (^nextBlock)(<span class="hljs-type">id</span>) = [<span class="hljs-keyword">self</span>.next <span class="hljs-keyword">copy</span>];<br>		<span class="hljs-keyword">if</span> (nextBlock == <span class="hljs-literal">nil</span>) <span class="hljs-keyword">return</span>;<br>		nextBlock(value);<br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>即调用 sendNext: 相当于调用了之前保存在订阅者内部的<code>nextBlock</code>并向其输入了一个新值。</p>
 <h3 id="KVO"><a href="#KVO" class="headerlink" title="KVO"></a>KVO</h3><p>#示例：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">@property (nonatomic, copy) NSString *text;</span><br><span class="line"></span><br><span class="line">- (void)viewDidLoad &#123;</span><br><span class="line">    [super viewDidLoad];</span><br><span class="line">    [[self rac_valuesAndChangesForKeyPath:@&quot;text&quot;</span><br><span class="line">                                  options:NSKeyValueObservingOptionNew</span><br><span class="line">                                 observer:self]</span><br><span class="line">     subscribeNext:^(RACTwoTuple&lt;id,NSDictionary *&gt; *x) &#123;</span><br><span class="line">        NSLog(@&quot;++self.text update:%@&quot;,x.first);</span><br><span class="line">    &#125;];</span><br><span class="line">    </span><br><span class="line">    self.text = @&quot;Text1&quot;;</span><br><span class="line">    _text = @&quot;Text2&quot;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">copy</span>) <span class="hljs-built_in">NSString</span> *text;<br><br>- (<span class="hljs-type">void</span>)viewDidLoad &#123;<br>    [<span class="hljs-variable language_">super</span> viewDidLoad];<br>    [[<span class="hljs-keyword">self</span> rac_valuesAndChangesForKeyPath:<span class="hljs-string">@&quot;text&quot;</span><br>                                  options:<span class="hljs-built_in">NSKeyValueObservingOptionNew</span><br>                                 observer:<span class="hljs-keyword">self</span>]<br>     subscribeNext:^(RACTwoTuple&lt;<span class="hljs-type">id</span>,<span class="hljs-built_in">NSDictionary</span> *&gt; *x) &#123;<br>        <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;++self.text update:%@&quot;</span>,x.first);<br>    &#125;];<br>    <br>    <span class="hljs-keyword">self</span>.text = <span class="hljs-string">@&quot;Text1&quot;</span>;<br>    _text = <span class="hljs-string">@&quot;Text2&quot;</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>日志：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">++self.text update:Text1</span><br></pre></td></tr></table></figure>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">++self.text <span class="hljs-keyword">update</span>:Text1<br></code></pre></td></tr></table></figure>
 
 <p>注意：一定要使用<code>self.xxx</code>来赋值，使用下划线的方式是给属性的成员变量赋值，并不会触发KVO回调~~</p>
 <ul>
 <li><strong>RAC的KVO实现原理：</strong></li>
 </ul>
 <p>RAC 版的 KVO 与 OC 版的在调用方法和参数上差别并不大，rac_valuesAndChangesForKeyPath:options:observer:方法是RAC在 NSObject 分类中定义的一个方法。它的返回值是一个信号，供我们订阅并自定义回调block。其内部最终是通过<code>RACKVOTrampoline</code>来管理和实现KVO的。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">//RACKVOTrampoline.m</span><br><span class="line">- (instancetype)initWithTarget:(__weak NSObject *)target </span><br><span class="line">observer:(__weak NSObject *)observer </span><br><span class="line">keyPath:(NSString *)keyPath </span><br><span class="line">options:(NSKeyValueObservingOptions)options </span><br><span class="line">block:(RACKVOBlock)block &#123;</span><br><span class="line"></span><br><span class="line">	NSCParameterAssert(keyPath != nil);</span><br><span class="line">	NSCParameterAssert(block != nil);</span><br><span class="line"></span><br><span class="line">	NSObject *strongTarget = target;</span><br><span class="line">	if (strongTarget == nil) return nil;</span><br><span class="line"></span><br><span class="line">	self = [super init];</span><br><span class="line"></span><br><span class="line">	_keyPath = [keyPath copy];</span><br><span class="line"></span><br><span class="line">	_block = [block copy];</span><br><span class="line">	_weakTarget = target;</span><br><span class="line">	_unsafeTarget = strongTarget;</span><br><span class="line">	_observer = observer;</span><br><span class="line"></span><br><span class="line">	[RACKVOProxy.sharedProxy addObserver:self forContext:(__bridge void *)self];</span><br><span class="line">	[strongTarget addObserver:RACKVOProxy.sharedProxy forKeyPath:self.keyPath options:options context:(__bridge void *)self];</span><br><span class="line"></span><br><span class="line">	[strongTarget.rac_deallocDisposable addDisposable:self];</span><br><span class="line">	[self.observer.rac_deallocDisposable addDisposable:self];</span><br><span class="line"></span><br><span class="line">	return self;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context &#123;</span><br><span class="line">	if (context != (__bridge void *)self) &#123;</span><br><span class="line">		[super observeValueForKeyPath:keyPath ofObject:object change:change context:context];</span><br><span class="line">		return;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	RACKVOBlock block;</span><br><span class="line">	id observer;</span><br><span class="line">	id target;</span><br><span class="line"></span><br><span class="line">	@synchronized (self) &#123;</span><br><span class="line">		block = self.block;</span><br><span class="line">		observer = self.observer;</span><br><span class="line">		target = self.weakTarget;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	if (block == nil || target == nil) return;</span><br><span class="line"></span><br><span class="line">	block(target, observer, change);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-comment">//RACKVOTrampoline.m</span><br>- (<span class="hljs-keyword">instancetype</span>)initWithTarget:(__<span class="hljs-keyword">weak</span> <span class="hljs-built_in">NSObject</span> *)target <br>observer:(__<span class="hljs-keyword">weak</span> <span class="hljs-built_in">NSObject</span> *)observer <br>keyPath:(<span class="hljs-built_in">NSString</span> *)keyPath <br>options:(<span class="hljs-built_in">NSKeyValueObservingOptions</span>)options <br>block:(RACKVOBlock)block &#123;<br><br>	<span class="hljs-built_in">NSCParameterAssert</span>(keyPath != <span class="hljs-literal">nil</span>);<br>	<span class="hljs-built_in">NSCParameterAssert</span>(block != <span class="hljs-literal">nil</span>);<br><br>	<span class="hljs-built_in">NSObject</span> *strongTarget = target;<br>	<span class="hljs-keyword">if</span> (strongTarget == <span class="hljs-literal">nil</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>;<br><br>	<span class="hljs-keyword">self</span> = [<span class="hljs-variable language_">super</span> init];<br><br>	_keyPath = [keyPath <span class="hljs-keyword">copy</span>];<br><br>	_block = [block <span class="hljs-keyword">copy</span>];<br>	_weakTarget = target;<br>	_unsafeTarget = strongTarget;<br>	_observer = observer;<br><br>	[RACKVOProxy.sharedProxy addObserver:<span class="hljs-keyword">self</span> forContext:(__bridge <span class="hljs-type">void</span> *)<span class="hljs-keyword">self</span>];<br>	[strongTarget addObserver:RACKVOProxy.sharedProxy forKeyPath:<span class="hljs-keyword">self</span>.keyPath options:options context:(__bridge <span class="hljs-type">void</span> *)<span class="hljs-keyword">self</span>];<br><br>	[strongTarget.rac_deallocDisposable addDisposable:<span class="hljs-keyword">self</span>];<br>	[<span class="hljs-keyword">self</span>.observer.rac_deallocDisposable addDisposable:<span class="hljs-keyword">self</span>];<br><br>	<span class="hljs-keyword">return</span> <span class="hljs-keyword">self</span>;<br>&#125;<br><br>- (<span class="hljs-type">void</span>)observeValueForKeyPath:(<span class="hljs-built_in">NSString</span> *)keyPath ofObject:(<span class="hljs-type">id</span>)object change:(<span class="hljs-built_in">NSDictionary</span> *)change context:(<span class="hljs-type">void</span> *)context &#123;<br>	<span class="hljs-keyword">if</span> (context != (__bridge <span class="hljs-type">void</span> *)<span class="hljs-keyword">self</span>) &#123;<br>		[<span class="hljs-variable language_">super</span> observeValueForKeyPath:keyPath ofObject:object change:change context:context];<br>		<span class="hljs-keyword">return</span>;<br>	&#125;<br><br>	RACKVOBlock block;<br>	<span class="hljs-type">id</span> observer;<br>	<span class="hljs-type">id</span> target;<br><br>	<span class="hljs-keyword">@synchronized</span> (<span class="hljs-keyword">self</span>) &#123;<br>		block = <span class="hljs-keyword">self</span>.block;<br>		observer = <span class="hljs-keyword">self</span>.observer;<br>		target = <span class="hljs-keyword">self</span>.weakTarget;<br>	&#125;<br><br>	<span class="hljs-keyword">if</span> (block == <span class="hljs-literal">nil</span> || target == <span class="hljs-literal">nil</span>) <span class="hljs-keyword">return</span>;<br><br>	block(target, observer, change);<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p><code>RACKVOTrampoline</code>将我们传入的<code>observer</code>和<code>target</code>及回调<code>block</code>保存了起来。属性变化后KVO代理中回调了 block 并传回变化的信息。</p>
 <h3 id="KVC"><a href="#KVC" class="headerlink" title="KVC"></a>KVC</h3><p>KVC本身不算异步行为，因为OC中通过[self valueForKey:@”text”]，你能立刻得到<code>text</code>属性的值。但是 RAC 还是对其进行了封装和扩展，使得 KVC 既能立刻获取属性的值，又能和 KVO 一样持续收到属性变化的回调。<br><br/></p>
 <p>#示例：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">@property (nonatomic, copy) NSString *text;</span><br><span class="line"></span><br><span class="line">- (void)viewDidLoad &#123;</span><br><span class="line">    [super viewDidLoad];</span><br><span class="line">    [[self rac_valuesForKeyPath:@&quot;text&quot; observer:self] subscribeNext:^(id x) &#123;</span><br><span class="line">        NSLog(@&quot;++++self.text By KVC:%@&quot;,x);</span><br><span class="line">    &#125;];</span><br><span class="line">    </span><br><span class="line">    self.text = @&quot;Text1&quot;;</span><br><span class="line">    _text = @&quot;Text2&quot;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">copy</span>) <span class="hljs-built_in">NSString</span> *text;<br><br>- (<span class="hljs-type">void</span>)viewDidLoad &#123;<br>    [<span class="hljs-variable language_">super</span> viewDidLoad];<br>    [[<span class="hljs-keyword">self</span> rac_valuesForKeyPath:<span class="hljs-string">@&quot;text&quot;</span> observer:<span class="hljs-keyword">self</span>] subscribeNext:^(<span class="hljs-type">id</span> x) &#123;<br>        <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;++++self.text By KVC:%@&quot;</span>,x);<br>    &#125;];<br>    <br>    <span class="hljs-keyword">self</span>.text = <span class="hljs-string">@&quot;Text1&quot;</span>;<br>    _text = <span class="hljs-string">@&quot;Text2&quot;</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>日志：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">++++self.text By KVC:(null)</span><br><span class="line">++++self.text By KVC:Text1</span><br></pre></td></tr></table></figure>
+<figure class="highlight lasso"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs lasso">++++<span class="hljs-built_in">self</span>.text <span class="hljs-keyword">By</span> KVC:(<span class="hljs-built_in">null</span>)<br>++++<span class="hljs-built_in">self</span>.text <span class="hljs-keyword">By</span> KVC:Text1<br></code></pre></td></tr></table></figure>
 
 <p>从日志来看，调用 rac_valuesForKeyPath: 并订阅其返回的信号后，立刻收到了一次回调，返回属性当前的值<code>null</code>；<br><br/></p>
 <p>调用 self.text &#x3D; @”Text1”; 给属性赋值后，订阅者的回调再次触发并传回当前的新值。<br><br/></p>
 <p>再调用 _text &#x3D; @”Text2”; 给属性的成员变量赋值时，并未触发订阅者的回调，这与 RAC 的 KVO 一样。<br><br/></p>
 <p>结合这些情况来看，RAC 的 KVC 似乎与其 KVO 有密切关系，那么我们来看看其方法的实现：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">- (RACSignal *)rac_valuesForKeyPath:(NSString *)keyPath observer:(__weak NSObject *)observer &#123;</span><br><span class="line">	return [[[self</span><br><span class="line">		rac_valuesAndChangesForKeyPath:keyPath options:NSKeyValueObservingOptionInitial observer:observer]</span><br><span class="line">		map:^(RACTuple *value) &#123;</span><br><span class="line">			// -map: because it doesn&#x27;t require the block trampoline that -reduceEach: uses</span><br><span class="line">			return value[0];</span><br><span class="line">		&#125;]</span><br><span class="line">		setNameWithFormat:@&quot;RACObserve(%@, %@)&quot;, RACDescription(self), keyPath];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs objectivec">- (RACSignal *)rac_valuesForKeyPath:(<span class="hljs-built_in">NSString</span> *)keyPath observer:(__<span class="hljs-keyword">weak</span> <span class="hljs-built_in">NSObject</span> *)observer &#123;<br>	<span class="hljs-keyword">return</span> [[[<span class="hljs-keyword">self</span><br>		rac_valuesAndChangesForKeyPath:keyPath options:<span class="hljs-built_in">NSKeyValueObservingOptionInitial</span> observer:observer]<br>		map:^(RACTuple *value) &#123;<br>			<span class="hljs-comment">// -map: because it doesn&#x27;t require the block trampoline that -reduceEach: uses</span><br>			<span class="hljs-keyword">return</span> value[<span class="hljs-number">0</span>];<br>		&#125;]<br>		setNameWithFormat:<span class="hljs-string">@&quot;RACObserve(%@, %@)&quot;</span>, RACDescription(<span class="hljs-keyword">self</span>), keyPath];<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>可以看到，RAC 的 KVC 内部只是调用了其 KVO 方法并返回元组的第一个值。这就不难理解上面的猜测了~</p>
 <h3 id="通知"><a href="#通知" class="headerlink" title="通知"></a>通知</h3><p>#示例：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[[[NSNotificationCenter defaultCenter] rac_addObserverForName:UIKeyboardWillShowNotification</span><br><span class="line">                                                       object:nil]</span><br><span class="line">subscribeNext:^(NSNotification *x) &#123;</span><br><span class="line">     NSLog(@&quot;++通知:%@&quot;,x);</span><br><span class="line">&#125;];</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs objectivec">[[[<span class="hljs-built_in">NSNotificationCenter</span> defaultCenter] rac_addObserverForName:<span class="hljs-built_in">UIKeyboardWillShowNotification</span><br>                                                       object:<span class="hljs-literal">nil</span>]<br>subscribeNext:^(<span class="hljs-built_in">NSNotification</span> *x) &#123;<br>     <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;++通知:%@&quot;</span>,x);<br>&#125;];<br></code></pre></td></tr></table></figure>
 
 <p>监听键盘通知并订阅其返回的信号，待键盘弹出或收回时即可触发订阅者的回调。其实内部实现如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">@implementation NSNotificationCenter (RACSupport)</span><br><span class="line"></span><br><span class="line">- (RACSignal *)rac_addObserverForName:(NSString *)notificationName object:(id)object &#123;</span><br><span class="line">	@unsafeify(object);</span><br><span class="line">	return [[RACSignal createSignal:^(id&lt;RACSubscriber&gt; subscriber) &#123;</span><br><span class="line">		@strongify(object);</span><br><span class="line">		id observer = [self addObserverForName:notificationName object:object queue:nil usingBlock:^(NSNotification *note) &#123;</span><br><span class="line">			[subscriber sendNext:note];</span><br><span class="line">		&#125;];</span><br><span class="line"></span><br><span class="line">		return [RACDisposable disposableWithBlock:^&#123;</span><br><span class="line">			[self removeObserver:observer];</span><br><span class="line">		&#125;];</span><br><span class="line">	&#125;] setNameWithFormat:@&quot;-rac_addObserverForName: %@ object: &lt;%@: %p&gt;&quot;, notificationName, [object class], object];</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-meta">@implementation NSNotificationCenter (<span class="hljs-params">RACSupport</span>)</span><br><br>- (RACSignal *)rac_addObserverForName:(NSString *)notificationName <span class="hljs-built_in">object</span>:(<span class="hljs-built_in">id</span>)<span class="hljs-built_in">object</span> &#123;<br><span class="hljs-meta">	@unsafeify(<span class="hljs-params"><span class="hljs-built_in">object</span></span>);</span><br>	<span class="hljs-keyword">return</span> [[RACSignal createSignal:^(<span class="hljs-built_in">id</span>&lt;RACSubscriber&gt; subscriber) &#123;<br><span class="hljs-meta">		@strongify(<span class="hljs-params"><span class="hljs-built_in">object</span></span>);</span><br>		<span class="hljs-built_in">id</span> observer = [self addObserverForName:notificationName <span class="hljs-built_in">object</span>:<span class="hljs-built_in">object</span> queue:nil usingBlock:^(NSNotification *note) &#123;<br>			[subscriber sendNext:note];<br>		&#125;];<br><br>		<span class="hljs-keyword">return</span> [RACDisposable disposableWithBlock:^&#123;<br>			[self removeObserver:observer];<br>		&#125;];<br>	&#125;] setNameWithFormat:@<span class="hljs-string">&quot;-rac_addObserverForName: %@ object: &lt;%@: %p&gt;&quot;</span>, notificationName, [<span class="hljs-built_in">object</span> <span class="hljs-keyword">class</span>], <span class="hljs-built_in">object</span>];<br>&#125;<br><span class="hljs-meta">@end</span><br></code></pre></td></tr></table></figure>
 
 <p>在RAC对 NSNotificationCenter 的扩展中，监听通知后实际上只是调用了OC原生的通知监听方法，在原生回调中向订阅者发送消息~</p>
 <h3 id="target-action"><a href="#target-action" class="headerlink" title="target-action"></a>target-action</h3><p>#示例:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[[_mBtn1 rac_signalForControlEvents:UIControlEventTouchUpInside] subscribeNext:^(UIControl *x) &#123;</span><br><span class="line">    NSLog(@&quot;++clicked Btn1~&quot;);</span><br><span class="line">&#125;];</span><br></pre></td></tr></table></figure>
+<figure class="highlight scheme"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs scheme">[[<span class="hljs-name">_mBtn1</span> rac_signalForControlEvents:UIControlEventTouchUpInside] subscribeNext:^(<span class="hljs-name">UIControl</span> *x) &#123;<br>    NSLog(<span class="hljs-name">@</span><span class="hljs-string">&quot;++clicked Btn1~&quot;</span>)<span class="hljs-comment">;</span><br>&#125;]<span class="hljs-comment">;</span><br></code></pre></td></tr></table></figure>
 
 <p>其内部实现为：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">@implementation UIControl (RACSignalSupport)</span><br><span class="line"></span><br><span class="line">- (RACSignal *)rac_signalForControlEvents:(UIControlEvents)controlEvents &#123;</span><br><span class="line">	@weakify(self);</span><br><span class="line"></span><br><span class="line">	return [[RACSignal</span><br><span class="line">		createSignal:^(id&lt;RACSubscriber&gt; subscriber) &#123;</span><br><span class="line">			@strongify(self);</span><br><span class="line">			//OC原生方法</span><br><span class="line">			[self addTarget:subscriber action:@selector(sendNext:) forControlEvents:controlEvents];</span><br><span class="line"></span><br><span class="line">			RACDisposable *disposable = [RACDisposable disposableWithBlock:^&#123;</span><br><span class="line">				[subscriber sendCompleted];</span><br><span class="line">			&#125;];</span><br><span class="line">			[self.rac_deallocDisposable addDisposable:disposable];</span><br><span class="line"></span><br><span class="line">			return [RACDisposable disposableWithBlock:^&#123;</span><br><span class="line">				@strongify(self);</span><br><span class="line">				[self.rac_deallocDisposable removeDisposable:disposable];</span><br><span class="line">				[self removeTarget:subscriber action:@selector(sendNext:) forControlEvents:controlEvents];</span><br><span class="line">			&#125;];</span><br><span class="line">		&#125;]</span><br><span class="line">		setNameWithFormat:@&quot;%@ -rac_signalForControlEvents: %lx&quot;, RACDescription(self), (unsigned long)controlEvents];</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs swift"><span class="hljs-meta">@implementation</span> <span class="hljs-type">UIControl</span> (<span class="hljs-type">RACSignalSupport</span>)<br><br><span class="hljs-operator">-</span> (<span class="hljs-type">RACSignal</span> <span class="hljs-operator">*</span>)rac_signalForControlEvents:(<span class="hljs-type">UIControlEvents</span>)controlEvents &#123;<br>	<span class="hljs-meta">@weakify</span>(<span class="hljs-keyword">self</span>);<br><br>	<span class="hljs-keyword">return</span> [[<span class="hljs-type">RACSignal</span><br>		createSignal:<span class="hljs-operator">^</span>(id<span class="hljs-operator">&lt;</span><span class="hljs-type">RACSubscriber</span><span class="hljs-operator">&gt;</span> subscriber) &#123;<br>			<span class="hljs-meta">@strongify</span>(<span class="hljs-keyword">self</span>);<br>			<span class="hljs-comment">//OC原生方法</span><br>			[<span class="hljs-keyword">self</span> addTarget:subscriber action:<span class="hljs-meta">@selector</span>(sendNext:) forControlEvents:controlEvents];<br><br>			<span class="hljs-type">RACDisposable</span> <span class="hljs-operator">*</span>disposable <span class="hljs-operator">=</span> [<span class="hljs-type">RACDisposable</span> disposableWithBlock:<span class="hljs-operator">^</span>&#123;<br>				[subscriber sendCompleted];<br>			&#125;];<br>			[<span class="hljs-keyword">self</span>.rac_deallocDisposable addDisposable:disposable];<br><br>			<span class="hljs-keyword">return</span> [<span class="hljs-type">RACDisposable</span> disposableWithBlock:<span class="hljs-operator">^</span>&#123;<br>				<span class="hljs-meta">@strongify</span>(<span class="hljs-keyword">self</span>);<br>				[<span class="hljs-keyword">self</span>.rac_deallocDisposable removeDisposable:disposable];<br>				[<span class="hljs-keyword">self</span> removeTarget:subscriber action:<span class="hljs-meta">@selector</span>(sendNext:) forControlEvents:controlEvents];<br>			&#125;];<br>		&#125;]<br>		setNameWithFormat:@<span class="hljs-string">&quot;%@ -rac_signalForControlEvents: %lx&quot;</span>, <span class="hljs-type">RACDescription</span>(<span class="hljs-keyword">self</span>), (unsigned long)controlEvents];<br>&#125;<br><span class="hljs-meta">@end</span><br></code></pre></td></tr></table></figure>
 
 <p>RAC在<code>UIControl</code>的分类中返回一个信号，信号中通过OC原生的”addTarget:action:forControlEvents:”添加了<code>subscriber</code>为<code>target</code>，而其响应方法为<code>sendNext:</code>。所以，当按钮被点击后会触发<code>subscriber</code>的<code>sendNext:</code>方法，随即回调订阅者的 block。</p>
 <h3 id="delegate"><a href="#delegate" class="headerlink" title="delegate"></a>delegate</h3><p>RAC中的<code>delegate</code>可以通过<code>RACSubject</code>来实现。官方文档中关于此类的描述如下：</p>
@@ -228,7 +372,7 @@
 <p><code>RACSubject</code>继承自<code>RACSignal</code>，是一种可以由我们控制的信号。<br><br/></p>
 <p>相比于在某个 block 回调中自己处理业务逻辑，RAC 可以让 block 向某个共享的 subject 发送事件并让其处理该业务逻辑。<br><br/></p>
 <p>#示例：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">//HelloRACController.m</span><br><span class="line">- (IBAction)onAction2:(id)sender &#123;</span><br><span class="line">    //push到新界面</span><br><span class="line">    ViewControllerII *controller = [[UIStoryboard storyboardWithName:@&quot;Main&quot; bundle:nil]</span><br><span class="line">                                    instantiateViewControllerWithIdentifier:@&quot;ViewControllerII&quot;];</span><br><span class="line">    //设置代理信号</span><br><span class="line">    controller.delegate = [RACSubject subject];</span><br><span class="line">    </span><br><span class="line">    //订阅代理</span><br><span class="line">    [controller.delegate subscribeNext:^(id x) &#123;</span><br><span class="line">        NSLog(@&quot;%@&quot;,x);</span><br><span class="line">    &#125;];</span><br><span class="line">    [self.navigationController pushViewController:controller animated:YES];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//ViewControllerII.h</span><br><span class="line">@interface ViewControllerII : UIViewController</span><br><span class="line">@property (nonatomic, strong) RACSubject *delegate;</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation ViewControllerII</span><br><span class="line"></span><br><span class="line">- (IBAction)onDismiss:(id)sender</span><br><span class="line">&#123;</span><br><span class="line">    //RAC回调</span><br><span class="line">    [self.delegate sendNext:@&quot;++ViewControllerII Closed~&quot;];</span><br><span class="line">    [self.navigationController popViewControllerAnimated:YES];</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-comment">//HelloRACController.m</span><br>- (<span class="hljs-keyword">IBAction</span>)onAction2:(<span class="hljs-type">id</span>)sender &#123;<br>    <span class="hljs-comment">//push到新界面</span><br>    ViewControllerII *controller = [[<span class="hljs-built_in">UIStoryboard</span> storyboardWithName:<span class="hljs-string">@&quot;Main&quot;</span> bundle:<span class="hljs-literal">nil</span>]<br>                                    instantiateViewControllerWithIdentifier:<span class="hljs-string">@&quot;ViewControllerII&quot;</span>];<br>    <span class="hljs-comment">//设置代理信号</span><br>    controller.delegate = [RACSubject subject];<br>    <br>    <span class="hljs-comment">//订阅代理</span><br>    [controller.delegate subscribeNext:^(<span class="hljs-type">id</span> x) &#123;<br>        <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;%@&quot;</span>,x);<br>    &#125;];<br>    [<span class="hljs-keyword">self</span>.navigationController pushViewController:controller animated:<span class="hljs-literal">YES</span>];<br>&#125;<br><br><span class="hljs-comment">//ViewControllerII.h</span><br><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">ViewControllerII</span> : <span class="hljs-title">UIViewController</span></span><br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">strong</span>) RACSubject *delegate;<br><span class="hljs-keyword">@end</span><br><br><span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">ViewControllerII</span></span><br><br>- (<span class="hljs-keyword">IBAction</span>)onDismiss:(<span class="hljs-type">id</span>)sender<br>&#123;<br>    <span class="hljs-comment">//RAC回调</span><br>    [<span class="hljs-keyword">self</span>.delegate sendNext:<span class="hljs-string">@&quot;++ViewControllerII Closed~&quot;</span>];<br>    [<span class="hljs-keyword">self</span>.navigationController popViewControllerAnimated:<span class="hljs-literal">YES</span>];<br>&#125;<br><span class="hljs-keyword">@end</span><br></code></pre></td></tr></table></figure>
 
 <p><code>RACSubject</code>是信号的子类，我们在 A 中订阅 B 中的信号，并在 B 中向 A 中订阅者发送消息，以此实现代理的功能。</p>
 <h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><p>综上，RAC在对异步行为进行封装时所做的工作主要为：</p>
@@ -241,217 +385,346 @@
 <hr>
 <p>相关参考：</p>
 <p>#<a target="_blank" rel="noopener" href="https://github.com/ReactiveCocoa/ReactiveObjC/blob/master/Documentation/FrameworkOverview.md">©RAC-Github</a></p>
-</section>
-    <!-- Tags START -->
-    
-      <div class="tags">
-        <span>Tags:</span>
-        
-  <a href="/tags#源码" >
-    <span class="tag-code">源码</span>
-  </a>
 
-      </div>
-    
-    <!-- Tags END -->
-    <!-- NAV START -->
-    
-  <div class="nav-container">
-    <!-- reverse left and right to put prev and next in a more logic postition -->
-    
-      <a class="nav-left" href="/2021/05/25/RAC-signal.html">
-        <span class="nav-arrow">← </span>
-        
-          RAC-信号与订阅者
-        
-      </a>
-    
-    
-      <a class="nav-right" href="/2021/06/01/RAC-sig-order.html">
-        
-          RAC-信号的组合
-        
-        <span class="nav-arrow"> →</span>
-      </a>
-    
-  </div>
-
-    <!-- NAV END -->
-    <!-- 打赏 START -->
-    
-      <div class="money-like">
-        <div class="reward-btn">
-          赏
-          <span class="money-code">
-            <span class="alipay-code">
-              <div class="code-image"></div>
-              <b>使用支付宝打赏</b>
-            </span>
-            <span class="wechat-code">
-              <div class="code-image"></div>
-              <b>使用微信打赏</b>
-            </span>
-          </span>
-        </div>
-        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
-      </div>
-    
-    <!-- 打赏 END -->
-    <!-- 二维码 START -->
-    
-    <!-- 二维码 END -->
-    
-      <!-- No Comment -->
-    
-  </article>
-  <!-- Article END -->
-  <!-- Catalog START -->
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
   
-    <aside class="catalog-container">
-  <div class="toc-main">
-    <strong class="toc-title">Catalog</strong>
-    
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-nav-text">前言</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#block"><span class="toc-nav-text">block</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#KVO"><span class="toc-nav-text">KVO</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#KVC"><span class="toc-nav-text">KVC</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E9%80%9A%E7%9F%A5"><span class="toc-nav-text">通知</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#target-action"><span class="toc-nav-text">target-action</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#delegate"><span class="toc-nav-text">delegate</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%B0%8F%E7%BB%93"><span class="toc-nav-text">小结</span></a></li></ol>
-    
-  </div>
-</aside>
   
-  <!-- Catalog END -->
-</main>
-
-<script>
-  (function () {
-    var url = 'http://yoursite.com/2021/05/25/RAC-async.html';
-    var banner = ''
-    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
-      $('#article-banner').css({
-        'background-image': 'url(' + banner + ')'
-      })
-    } else {
-      $('#article-banner').geopattern(url)
-    }
-    $('.header').removeClass('fixed-header')
-
-     // error image
-    $(".markdown-content img").on('error', function() {
-      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
-      $(this).css({
-        'cursor': 'default'
-      })
-    })
-
-    // zoom image
-    $(".markdown-content img").on('click', function() {
-      var src = $(this).attr('src')
-      if (src !== 'http://file.muyutech.com/error-img.png') {
-        var imageW = $(this).width()
-        var imageH = $(this).height()
-        
-        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
-        zoom = zoom < 1 ? 1 : zoom
-        zoom = zoom > 2 ? 2 : zoom
-        var transY = (($(window).height() - imageH) / 2).toFixed(2)
-
-        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
-        $('.image-view-wrap').addClass('wrap-active')
-        $('.image-view-wrap img').css({
-          'width': `${imageW}`,
-          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
-        })
-        $('html').css('overflow', 'hidden')
-
-        $('.image-view-wrap').on('click', function() {
-          $(this).remove()
-          $('html').attr('style', '')
-        })
-      }
-    })
-
-    // qrcode
-    var qr = new QRious({
-      element: document.getElementById('share-qrcode'),
-      value: document.location.href
-    });
-
-    // gitment
-    var gitmentConfig = "";
-    if (gitmentConfig !== 'undefined') {
-      var gitment = new Gitment({
-        id: "RAC-异步行为",
-        owner: "",
-        repo: "",
-        oauth: {
-          client_id: "",
-          client_secret: ""
-        },
-        theme: {
-          render(state, instance) {
-            const container = document.createElement('div')
-            container.lang = "en-US"
-            container.className = 'gitment-container gitment-root-container'
-            container.appendChild(instance.renderHeader(state, instance))
-            container.appendChild(instance.renderEditor(state, instance))
-            container.appendChild(instance.renderComments(state, instance))
-            container.appendChild(instance.renderFooter(state, instance))
-            return container;
-          }
-        }
-      })
-      gitment.render(document.getElementById('comments'))
-    }
-  })();
-</script>
-
-    <div class="scroll-top">
-  <span class="arrow-icon"></span>
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%BA%90%E7%A0%81/">#源码</a>
+      
+    </div>
+  
 </div>
-    <footer class="app-footer">
-  <p class="copyright">
-    &copy; 2022 | <a href="https://github.com/davidlii" target="_blank">Davidli</a>
-    <br>
-    <a href="https://hexo.io" target="_blank">Hexo</a> | Theme-<a target="_blank" rel="noopener" href="https://github.com/yanm1ng">yanm1ng</a>
-  </p>
-</footer>
 
-<script>
-  function async(u, c) {
-    var d = document, t = 'script',
-      o = d.createElement(t),
-      s = d.getElementsByTagName(t)[0];
-    o.src = u;
-    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
-    s.parentNode.insertBefore(o, s);
-  }
-</script>
-<script>
-  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
-    FastClick.attach(document.body);
-  })
-</script>
 
-<script>
-  var hasLine = 'true';
-  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
-    $('figure pre').each(function(i, block) {
-      var figure = $(this).parents('figure');
-      if (hasLine === 'false') {
-        figure.find('.gutter').hide();
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>RAC-异步行为</div>
+      <div>http://yoursite.com/2021/05/25/RAC-async.html</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>May 25, 2021</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>Licensed under</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/06/01/RAC-sig-order.html" title="RAC-信号的组合">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">RAC-信号的组合</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/05/25/RAC-signal.html" title="RAC-信号与订阅者">
+                        <span class="hidden-mobile">RAC-信号与订阅者</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;Table of Contents</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://github.com/davidlii" target="_blank" rel="nofollow noopener"><span>Davidlii</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        Views: 
+        <span id="busuanzi_value_site_pv"></span>
+        
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        Visitors: 
+        <span id="busuanzi_value_site_uv"></span>
+        
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
       }
-      var lang = figure.attr('class').split(' ')[1] || 'code';
-      var codeHtml = $(this).html();
-      var codeTag = document.createElement('code');
-      codeTag.className = lang;
-      codeTag.innerHTML = codeHtml;
-      $(this).attr('class', '').empty().html(codeTag);
-      figure.attr('data-lang', lang.toUpperCase());
-      hljs.highlightBlock(block);
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
     });
-  })
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
 </script>
-<!-- Baidu Tongji -->
 
 
-<script src="/js/script.js"></script>
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
 
-  </body>
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
 </html>

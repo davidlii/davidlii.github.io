@@ -1,145 +1,289 @@
+
+
 <!DOCTYPE html>
-<html>
-  <head>
-  <meta http-equiv="content-type" content="text/html; charset=utf-8">
-  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
-  <meta name="description" content="This is Davidli&#39;s blog ~">
-  <meta name="keyword" content="hexo-theme, vuejs">
-  
-    <link rel="shortcut icon" type="image/ico" href="/image/logo.png"/> 
-  
-  <title>
-    
-      RAC-信号与订阅者 | Davidli
-    
-  </title>
-  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
-  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
-  
-<link rel="stylesheet" href="/css/style.css">
-<link rel="stylesheet" href="/css/plugins/gitment.css">
-
-  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
-  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
-  
-<script src="/js/qrious.js"></script>
-<script src="/js/gitment.js"></script>
-
-  
-  
-    <!-- MathJax support START -->
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      });
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      });
-    </script>
-    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <!-- MathJax support END -->
-  
+<html lang="zh-Hans" data-default-color-scheme=auto>
 
 
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="Davidli">
+  
+    <meta name="description" content="一.信号1.信号是啥RAC文档 中关于RACSignal的描述:  A signal, represented by the RACSignal class, is a push-driven stream.Signals generally represent data that will be delivered in the future. As work is performed or d">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RAC-信号与订阅者">
+<meta property="og:url" content="http://yoursite.com/2021/05/25/RAC-signal.html">
+<meta property="og:site_name" content="Davidli">
+<meta property="og:description" content="一.信号1.信号是啥RAC文档 中关于RACSignal的描述:  A signal, represented by the RACSignal class, is a push-driven stream.Signals generally represent data that will be delivered in the future. As work is performed or d">
+<meta property="og:locale">
+<meta property="article:published_time" content="2021-05-24T18:10:51.000Z">
+<meta property="article:modified_time" content="2019-06-10T17:05:51.000Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="源码">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>RAC-信号与订阅者 - Davidli</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"yoursite.com","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
 <meta name="generator" content="Hexo 6.2.0"></head>
-<div class="wechat-share">
-  <img src="/css/images/logo.png" />
-</div>
 
-  <body>
-    <header class="header fixed-header">
-  <div class="header-container">
-    <a class="home-link" href="/">
-      <div class="logo"></div>
-      <span>Davidli</span>
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Davidli</strong>
     </a>
-    <ul class="right-list">
-      
-        <li class="list-item">
-          
-            <a href="/" class="item-link">Davidli</a>
-          
-        </li>
-      
-        <li class="list-item">
-          
-            <a href="/archives/" class="item-link">归档</a>
-          
-        </li>
-      
-        <li class="list-item">
-          
-            <a href="/tags/" class="item-link">标签</a>
-          
-        </li>
-      
-        <li class="list-item">
-          
-            <a href="/about/" class="item-link">关于</a>
-          
-        </li>
-      
-    </ul>
-    <div class="menu">
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-    </div>
-    <div class="menu-mask">
-      <ul class="menu-list">
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
         
-          <li class="menu-item">
-            
-              <a href="/" class="menu-link">Davidli</a>
-            
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                Categories
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                Tags
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
           </li>
+          
         
-          <li class="menu-item">
-            
-              <a href="/archives/" class="menu-link">归档</a>
-            
-          </li>
         
-          <li class="menu-item">
-            
-              <a href="/tags/" class="menu-link">标签</a>
-            
-          </li>
-        
-          <li class="menu-item">
-            
-              <a href="/about/" class="menu-link">关于</a>
-            
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
           </li>
         
       </ul>
     </div>
   </div>
-</header>
+</nav>
 
-    <div id="article-banner">
-  <h2>RAC-信号与订阅者</h2>
-  <p class="post-date">2021-05-25</p>
-  <div class="arrow-down">
-    <a href="javascript:;"></a>
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="RAC-信号与订阅者"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2021-05-25 02:10" pubdate>
+          May 25, 2021 am
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          20k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          168 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
   </div>
 </div>
-<main class="app-body flex-box">
-  <!-- Article START -->
-  <article class="post-article">
-    <section class="markdown-content"><h3 id="一-信号"><a href="#一-信号" class="headerlink" title="一.信号"></a>一.信号</h3><h4 id="1-信号是啥"><a href="#1-信号是啥" class="headerlink" title="1.信号是啥"></a>1.信号是啥</h4><p><a target="_blank" rel="noopener" href="https://github.com/ReactiveCocoa/ReactiveObjC/blob/master/Documentation/FrameworkOverview.md">RAC文档</a> 中关于<code>RACSignal</code>的描述:</p>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">RAC-信号与订阅者</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h3 id="一-信号"><a href="#一-信号" class="headerlink" title="一.信号"></a>一.信号</h3><h4 id="1-信号是啥"><a href="#1-信号是啥" class="headerlink" title="1.信号是啥"></a>1.信号是啥</h4><p><a target="_blank" rel="noopener" href="https://github.com/ReactiveCocoa/ReactiveObjC/blob/master/Documentation/FrameworkOverview.md">RAC文档</a> 中关于<code>RACSignal</code>的描述:</p>
 <blockquote>
 <p>A signal, represented by the RACSignal class, is a push-driven stream.<br>Signals generally represent data that will be delivered in the future. As work is performed or data is received, values are sent on the signal, which pushes them out to any subscribers. Users must subscribe to a signal in order to access its values.</p>
 </blockquote>
@@ -188,19 +332,19 @@
 <li>iOS设备接收到消息并处理自己的业务（响应）。</li>
 </ul>
 <p>这里，iOS设备就是订阅者，苹果的 APNs 服务作为一个整体而被视为信号流。二者是 N 对 1 的关系。</p>
-<h3 id="三-冷信号解读"><a href="#三-冷信号解读" class="headerlink" title="三.冷信号解读"></a>三.冷信号解读</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">@property (nonatomic, strong) id&lt;RACSubscriber&gt; subscriber;</span><br><span class="line"></span><br><span class="line">- (void)coldSignal &#123;</span><br><span class="line">    //1.创建信号</span><br><span class="line">    RACSignal *s1 = [RACSignal createSignal:^RACDisposable *(id&lt;RACSubscriber&gt; subscriber) &#123;</span><br><span class="line">        //^didSubscribe中执行任务</span><br><span class="line">        </span><br><span class="line">        _subscriber = subscriber;</span><br><span class="line">        //[subscriber sendError:];</span><br><span class="line">        //[subscriber sendCompleted];</span><br><span class="line">        </span><br><span class="line">        return [RACDisposable disposableWithBlock:^&#123;</span><br><span class="line">            //清理资源</span><br><span class="line">        &#125;];</span><br><span class="line">    &#125;];</span><br><span class="line">    //2.订阅信号</span><br><span class="line">    [s1 subscribeNext:^(id x) &#123;</span><br><span class="line">        //4.接收数据</span><br><span class="line">        NSLog(@&quot;+++received value1:%@&quot;,x);</span><br><span class="line">    &#125;];</span><br><span class="line">    //3.订阅信号</span><br><span class="line">    [s1 subscribeNext:^(id x) &#123;</span><br><span class="line">        //5.接收数据</span><br><span class="line">        NSLog(@&quot;+++received value2:%@&quot;,x);</span><br><span class="line">    &#125;];</span><br><span class="line">    [_subscriber sendNext:@&quot;x&quot;];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="三-冷信号解读"><a href="#三-冷信号解读" class="headerlink" title="三.冷信号解读"></a>三.冷信号解读</h3><figure class="highlight wren"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs wren">@<span class="hljs-title function_">property</span> (<span class="hljs-variable">nonatomic</span>, <span class="hljs-variable">strong</span>) <span class="hljs-variable">id</span><span class="hljs-operator">&lt;</span><span class="hljs-title class_">RACSubscriber</span><span class="hljs-operator">&gt;</span> <span class="hljs-variable">subscriber</span>;<br><br><span class="hljs-operator">-</span> (<span class="hljs-variable">void</span>)<span class="hljs-title function_">coldSignal</span> &#123;<br>    <span class="hljs-comment">//1.创建信号</span><br>    <span class="hljs-title class_">RACSignal</span> <span class="hljs-operator">*</span><span class="hljs-variable">s1</span> <span class="hljs-operator">=</span> [<span class="hljs-title class_">RACSignal</span> <span class="hljs-variable">createSignal</span>:<span class="hljs-operator">^</span><span class="hljs-title class_">RACDisposable</span> <span class="hljs-title function_">*</span>(<span class="hljs-params">id</span>&lt;<span class="hljs-params">RACSubscriber</span>&gt; <span class="hljs-params">subscriber</span>) &#123;<br>        <span class="hljs-comment">//^didSubscribe中执行任务</span><br>        <br>        <span class="hljs-variable">_subscriber</span> <span class="hljs-operator">=</span> <span class="hljs-variable">subscriber</span>;<br>        <span class="hljs-comment">//[subscriber sendError:];</span><br>        <span class="hljs-comment">//[subscriber sendCompleted];</span><br>        <br>        <span class="hljs-keyword">return</span> [<span class="hljs-title class_">RACDisposable</span> <span class="hljs-variable">disposableWithBlock</span>:<span class="hljs-operator">^</span>&#123;<br>            <span class="hljs-comment">//清理资源</span><br>        &#125;];<br>    &#125;];<br>    <span class="hljs-comment">//2.订阅信号</span><br>    [<span class="hljs-variable">s1</span> <span class="hljs-variable">subscribeNext</span>:<span class="hljs-title function_">^</span>(<span class="hljs-params">id</span> <span class="hljs-params">x</span>) &#123;<br>        <span class="hljs-comment">//4.接收数据</span><br>        <span class="hljs-title class_">NSLog</span>(@<span class="hljs-string">&quot;+++received value1:%@&quot;</span>,<span class="hljs-variable">x</span>);<br>    &#125;];<br>    <span class="hljs-comment">//3.订阅信号</span><br>    [<span class="hljs-variable">s1</span> <span class="hljs-variable">subscribeNext</span>:<span class="hljs-title function_">^</span>(<span class="hljs-params">id</span> <span class="hljs-params">x</span>) &#123;<br>        <span class="hljs-comment">//5.接收数据</span><br>        <span class="hljs-title class_">NSLog</span>(@<span class="hljs-string">&quot;+++received value2:%@&quot;</span>,<span class="hljs-variable">x</span>);<br>    &#125;];<br>    [<span class="hljs-variable">_subscriber</span> <span class="hljs-variable">sendNext</span>:@<span class="hljs-string">&quot;x&quot;</span>];<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>日志：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">+++received value2:x</span><br></pre></td></tr></table></figure>
+<figure class="highlight brainfuck"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs brainfuck"><span class="hljs-literal">+++</span><span class="hljs-comment">received value2:x</span><br></code></pre></td></tr></table></figure>
 
 <h4 id="1-创建信号"><a href="#1-创建信号" class="headerlink" title="1.创建信号"></a>1.创建信号</h4><p>#1.1.类方法:</p>
 <br/>
 
 <p>调用<code>RACSignal</code>的类方法创建一个信号：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">RACSignal *s1 = [RACSignal createSignal:^RACDisposable *(id&lt;RACSubscriber&gt; subscriber) &#123;</span><br><span class="line">        //^didSubscribe中执行任务</span><br><span class="line">        return [RACDisposable disposableWithBlock:^&#123;</span><br><span class="line">            //清理资源</span><br><span class="line">        &#125;];</span><br><span class="line">    &#125;];</span><br></pre></td></tr></table></figure>
+<figure class="highlight wren"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs wren"><span class="hljs-title class_">RACSignal</span> <span class="hljs-operator">*</span><span class="hljs-variable">s1</span> <span class="hljs-operator">=</span> [<span class="hljs-title class_">RACSignal</span> <span class="hljs-variable">createSignal</span>:<span class="hljs-operator">^</span><span class="hljs-title class_">RACDisposable</span> <span class="hljs-title function_">*</span>(<span class="hljs-params">id</span>&lt;<span class="hljs-params">RACSubscriber</span>&gt; <span class="hljs-params">subscriber</span>) &#123;<br>        <span class="hljs-comment">//^didSubscribe中执行任务</span><br>        <span class="hljs-keyword">return</span> [<span class="hljs-title class_">RACDisposable</span> <span class="hljs-variable">disposableWithBlock</span>:<span class="hljs-operator">^</span>&#123;<br>            <span class="hljs-comment">//清理资源</span><br>        &#125;];<br>    &#125;];<br></code></pre></td></tr></table></figure>
 
 <p>此方法的定义如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">/// Creates a new signal. This is the preferred way to create a new signal</span><br><span class="line">/// operation or behavior.</span><br><span class="line">///</span><br><span class="line">/// Events can be sent to new subscribers immediately in the `didSubscribe`</span><br><span class="line">/// block, but the subscriber will not be able to dispose of the signal until</span><br><span class="line">/// a RACDisposable is returned from `didSubscribe`. In the case of infinite</span><br><span class="line">/// signals, this won&#x27;t _ever_ happen if events are sent immediately.</span><br><span class="line">///</span><br><span class="line">/// To ensure that the signal is disposable, events can be scheduled on the</span><br><span class="line">/// +[RACScheduler currentScheduler] (so that they&#x27;re deferred, not sent</span><br><span class="line">/// immediately), or they can be sent in the background. The RACDisposable</span><br><span class="line">/// returned by the `didSubscribe` block should cancel any such scheduling or</span><br><span class="line">/// asynchronous work.</span><br><span class="line">///</span><br><span class="line">/// didSubscribe - Called when the signal is subscribed to. The new subscriber is</span><br><span class="line">///                passed in. You can then manually control the &lt;RACSubscriber&gt; by</span><br><span class="line">///                sending it -sendNext:, -sendError:, and -sendCompleted,</span><br><span class="line">///                as defined by the operation you&#x27;re implementing. This block</span><br><span class="line">///                should return a RACDisposable which cancels any ongoing work</span><br><span class="line">///                triggered by the subscription, and cleans up any resources or</span><br><span class="line">///                disposables created as part of it. When the disposable is</span><br><span class="line">///                disposed of, the signal must not send any more events to the</span><br><span class="line">///                `subscriber`. If no cleanup is necessary, return nil.</span><br><span class="line">///</span><br><span class="line">/// **Note:** The `didSubscribe` block is called every time a new subscriber</span><br><span class="line">/// subscribes. Any side effects within the block will thus execute once for each</span><br><span class="line">/// subscription, not necessarily on one thread, and possibly even</span><br><span class="line">/// simultaneously!</span><br><span class="line">+ (RACSignal&lt;ValueType&gt; *)createSignal:(RACDisposable * _Nullable (^)(id&lt;RACSubscriber&gt; subscriber))didSubscribe RAC_WARN_UNUSED_RESULT;</span><br></pre></td></tr></table></figure>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs scss"><span class="hljs-comment">/// Creates a new signal. This is the preferred way to create a new signal</span><br><span class="hljs-comment">/// operation or behavior.</span><br><span class="hljs-comment">///</span><br><span class="hljs-comment">/// Events can be sent to new subscribers immediately in the `didSubscribe`</span><br><span class="hljs-comment">/// block, but the subscriber will not be able to dispose of the signal until</span><br><span class="hljs-comment">/// a RACDisposable is returned from `didSubscribe`. In the case of infinite</span><br><span class="hljs-comment">/// signals, this won&#x27;t _ever_ happen if events are sent immediately.</span><br><span class="hljs-comment">///</span><br><span class="hljs-comment">/// To ensure that the signal is disposable, events can be scheduled on the</span><br><span class="hljs-comment">/// +[RACScheduler currentScheduler] (so that they&#x27;re deferred, not sent</span><br><span class="hljs-comment">/// immediately), or they can be sent in the background. The RACDisposable</span><br><span class="hljs-comment">/// returned by the `didSubscribe` block should cancel any such scheduling or</span><br><span class="hljs-comment">/// asynchronous work.</span><br><span class="hljs-comment">///</span><br><span class="hljs-comment">/// didSubscribe - Called when the signal is subscribed to. The new subscriber is</span><br><span class="hljs-comment">///                passed in. You can then manually control the &lt;RACSubscriber&gt; by</span><br><span class="hljs-comment">///                sending it -sendNext:, -sendError:, and -sendCompleted,</span><br><span class="hljs-comment">///                as defined by the operation you&#x27;re implementing. This block</span><br><span class="hljs-comment">///                should return a RACDisposable which cancels any ongoing work</span><br><span class="hljs-comment">///                triggered by the subscription, and cleans up any resources or</span><br><span class="hljs-comment">///                disposables created as part of it. When the disposable is</span><br><span class="hljs-comment">///                disposed of, the signal must not send any more events to the</span><br><span class="hljs-comment">///                `subscriber`. If no cleanup is necessary, return nil.</span><br><span class="hljs-comment">///</span><br><span class="hljs-comment">/// **<span class="hljs-doctag">Note:</span>** The `didSubscribe` block is called every time a new subscriber</span><br><span class="hljs-comment">/// subscribes. Any side effects within the block will thus execute once for each</span><br><span class="hljs-comment">/// subscription, not necessarily on one thread, and possibly even</span><br><span class="hljs-comment">/// simultaneously!</span><br>+ (RACSignal&lt;ValueType&gt; *)createSignal:(RACDisposable * _Nullable (^)(id&lt;RACSubscriber&gt; subscriber))didSubscribe RAC_WARN_UNUSED_RESULT;<br></code></pre></td></tr></table></figure>
 
 <p>方法的参数为<code>didSubscribe</code>，返回值为新的信号。<br><br/></p>
 <p>#1.2.didSubscribe:<br><br/></p>
@@ -208,7 +352,7 @@
 <p><code>didSubscribe</code>的参数为实现了<code>RACSubscriber</code>协议的<code>订阅者</code>，在信号被订阅后可用于向订阅者发送数据；<br><br/></p>
 <p><code>didSubscribe</code>的返回值是一个用于清理资源的<code>RACDisposable</code>对象，当没有资源需要清理时可返回 nil；<br><br/></p>
 <p><code>didSubscribe</code>在创建信号时被作为参数传入并保存在<code>RACSignal</code>实例对象内(属性)：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">// The block to invoke for each subscriber.</span><br><span class="line">@property (nonatomic, copy, readonly) RACDisposable * (^didSubscribe)(id&lt;RACSubscriber&gt; subscriber);</span><br><span class="line"></span><br><span class="line">+ (RACSignal *)createSignal:(RACDisposable * (^)(id&lt;RACSubscriber&gt; subscriber))didSubscribe &#123;</span><br><span class="line"></span><br><span class="line">    RACDynamicSignal *signal = [[self alloc] init];</span><br><span class="line">    // 保存block为属性</span><br><span class="line">    signal-&gt;_didSubscribe = [didSubscribe copy];</span><br><span class="line">	</span><br><span class="line">    return [signal setNameWithFormat:@&quot;+createSignal:&quot;];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight qml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs qml"><span class="hljs-comment">// The block to invoke for each subscriber.</span><br>@<span class="hljs-keyword">property</span><span class="hljs-string"> (nonatomic</span>, copy, readonly) RACDisposable * (^didSubscribe)(id&lt;RACSubscriber&gt; subscriber);<br><br>+ (RACSignal *)<span class="hljs-attribute">createSignal</span>:(RACDisposable * (^)(id&lt;RACSubscriber&gt; subscriber))<span class="hljs-title">didSubscribe</span> &#123;<br><br>    RACDynamicSignal *<span class="hljs-keyword">signal</span><span class="hljs-string"> </span>= [[self alloc] init];<br>    <span class="hljs-comment">// 保存block为属性</span><br>    <span class="hljs-keyword">signal</span><span class="hljs-string">-&gt;_didSubscribe </span>= [didSubscribe copy];<br>	<br>    <span class="hljs-keyword">return</span> [<span class="hljs-keyword">signal</span><span class="hljs-string"> setNameWithFormat</span>:@<span class="hljs-string">&quot;+createSignal:&quot;</span>];<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>#1.3.冷信号<br><br/></p>
 <p>执行完上面的类方法之后，我们已经成功创建了一个<code>信号</code>。但新创建的信号默认是<code>冷</code>信号，还不能立刻用它发送数据，因为：<br><br/></p>
@@ -216,15 +360,15 @@
 <p><code>sendNext</code>方法的调用者为<code>subscriber</code>，即订阅者；<br><br/></p>
 <p>所以，我们还缺少一个订阅者，这就是所谓的<strong>冷信号需要被订阅之后才能发送数据</strong>。</p>
 <h4 id="2-订阅信号"><a href="#2-订阅信号" class="headerlink" title="2.订阅信号"></a>2.订阅信号</h4><p>订阅信号的语句为：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">//2.订阅信号</span><br><span class="line">[s1 subscribeNext:^(id x) &#123;</span><br><span class="line">    NSLog(@&quot;+++received value:%@&quot;,x);</span><br><span class="line">&#125;];</span><br></pre></td></tr></table></figure>
+<figure class="highlight wren"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs wren"><span class="hljs-comment">//2.订阅信号</span><br>[<span class="hljs-variable">s1</span> <span class="hljs-variable">subscribeNext</span>:<span class="hljs-title function_">^</span>(<span class="hljs-params">id</span> <span class="hljs-params">x</span>) &#123;<br>    <span class="hljs-title class_">NSLog</span>(@<span class="hljs-string">&quot;+++received value:%@&quot;</span>,<span class="hljs-variable">x</span>);<br>&#125;];<br></code></pre></td></tr></table></figure>
 
 <p>其中<code>subscribeNext:</code>方法的实现为：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">- (RACDisposable *)subscribeNext:(void (^)(id x))nextBlock &#123;</span><br><span class="line">	NSCParameterAssert(nextBlock != NULL);</span><br><span class="line">	// 1.创建订阅者</span><br><span class="line">	RACSubscriber *o = [RACSubscriber subscriberWithNext:nextBlock error:NULL completed:NULL];</span><br><span class="line">	// 2.调用 ^didSubscribe</span><br><span class="line">	return [self subscribe:o];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs objectivec">- (RACDisposable *)subscribeNext:(<span class="hljs-type">void</span> (^)(<span class="hljs-type">id</span> x))nextBlock &#123;<br>	<span class="hljs-built_in">NSCParameterAssert</span>(nextBlock != <span class="hljs-literal">NULL</span>);<br>	<span class="hljs-comment">// 1.创建订阅者</span><br>	RACSubscriber *o = [RACSubscriber subscriberWithNext:nextBlock error:<span class="hljs-literal">NULL</span> completed:<span class="hljs-literal">NULL</span>];<br>	<span class="hljs-comment">// 2.调用 ^didSubscribe</span><br>	<span class="hljs-keyword">return</span> [<span class="hljs-keyword">self</span> subscribe:o];<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>#2.1.保存事件的block<br><br/></p>
 <p>首先，<code>subscribeNext:</code>内会创建一个订阅者，且冷信号每次被订阅都会创建新的订阅者，<strong>多次订阅只会保留最后一次订阅关系</strong>，即信号被多次订阅后，<code>sendNext:</code>通过订阅者发送数据时，只有最后一个订阅者会收到数据回调；<br><br/></p>
 <p>其次，方法将传进来的<code>next</code>、<code>error</code>、<code>completed</code> 三个 block 保存到此订阅者对象中（属性）：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">@interface RACSubscriber ()</span><br><span class="line"></span><br><span class="line">// These callbacks should only be accessed while synchronized on self.</span><br><span class="line">@property (nonatomic, copy) void (^next)(id value);</span><br><span class="line">@property (nonatomic, copy) void (^error)(NSError *error);</span><br><span class="line">@property (nonatomic, copy) void (^completed)(void);</span><br><span class="line"></span><br><span class="line">@property (nonatomic, strong, readonly) RACCompoundDisposable *disposable;</span><br><span class="line"></span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">+ (instancetype)subscriberWithNext:(void (^)(id x))next</span><br><span class="line">                             error:(void (^)(NSError *error))error</span><br><span class="line">                         completed:(void (^)(void))completed </span><br><span class="line">&#123;</span><br><span class="line">	RACSubscriber *subscriber = [[self alloc] init];</span><br><span class="line"></span><br><span class="line">	subscriber-&gt;_next = [next copy];</span><br><span class="line">	subscriber-&gt;_error = [error copy];</span><br><span class="line">	subscriber-&gt;_completed = [completed copy];</span><br><span class="line"></span><br><span class="line">	return subscriber;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">RACSubscriber</span> ()</span><br><br><span class="hljs-comment">// These callbacks should only be accessed while synchronized on self.</span><br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">copy</span>) <span class="hljs-type">void</span> (^next)(<span class="hljs-type">id</span> value);<br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">copy</span>) <span class="hljs-type">void</span> (^error)(<span class="hljs-built_in">NSError</span> *error);<br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">copy</span>) <span class="hljs-type">void</span> (^completed)(<span class="hljs-type">void</span>);<br><br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">strong</span>, <span class="hljs-keyword">readonly</span>) RACCompoundDisposable *disposable;<br><br><span class="hljs-keyword">@end</span><br><br>+ (<span class="hljs-keyword">instancetype</span>)subscriberWithNext:(<span class="hljs-type">void</span> (^)(<span class="hljs-type">id</span> x))next<br>                             error:(<span class="hljs-type">void</span> (^)(<span class="hljs-built_in">NSError</span> *error))error<br>                         completed:(<span class="hljs-type">void</span> (^)(<span class="hljs-type">void</span>))completed <br>&#123;<br>	RACSubscriber *subscriber = [[<span class="hljs-keyword">self</span> alloc] init];<br><br>	subscriber-&gt;_next = [next <span class="hljs-keyword">copy</span>];<br>	subscriber-&gt;_error = [error <span class="hljs-keyword">copy</span>];<br>	subscriber-&gt;_completed = [completed <span class="hljs-keyword">copy</span>];<br><br>	<span class="hljs-keyword">return</span> subscriber;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>这三个 block 分别代表了信号的三种事件：</p>
 <ul>
@@ -236,7 +380,7 @@
 <p>至此，信号具备了发送数据的完整前提条件!<br><br/></p>
 <p>#2.2.调用didSubscribe block<br><br/></p>
 <p>订阅者创建完成后，方法内部会继续调用 self.didSubscribe(subscriber)，传入刚才的订阅者作为参数。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">- (RACDisposable *)subscribe:(id&lt;RACSubscriber&gt;)subscriber &#123;</span><br><span class="line">	...</span><br><span class="line"></span><br><span class="line">	if (self.didSubscribe != NULL) &#123;</span><br><span class="line">            RACDisposable *schedulingDisposable = [RACScheduler.subscriptionScheduler schedule:^&#123;</span><br><span class="line">                //调用之前创建和保存起来的*didSubscribe* block，传入订阅者参数</span><br><span class="line">                RACDisposable *innerDisposable = self.didSubscribe(subscriber);</span><br><span class="line">                [disposable addDisposable:innerDisposable];</span><br><span class="line">            &#125;];</span><br><span class="line">		[disposable addDisposable:schedulingDisposable];</span><br><span class="line">	&#125;</span><br><span class="line">	return disposable;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight lasso"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs lasso">- (RACDisposable *)subscribe:(id&lt;RACSubscriber&gt;)subscriber &#123;<br>	<span class="hljs-params">...</span><br><br>	<span class="hljs-keyword">if</span> (<span class="hljs-built_in">self</span>.didSubscribe != <span class="hljs-built_in">NULL</span>) &#123;<br>            RACDisposable *schedulingDisposable = <span class="hljs-meta">[</span>RACScheduler.subscriptionScheduler schedule:^&#123;<br>                <span class="hljs-comment">//调用之前创建和保存起来的*didSubscribe* block，传入订阅者参数</span><br>                RACDisposable *innerDisposable = <span class="hljs-built_in">self</span>.didSubscribe(subscriber);<br>                <span class="hljs-meta">[</span>disposable addDisposable:innerDisposable<span class="hljs-meta">]</span>;<br>            &#125;];<br>		<span class="hljs-meta">[</span>disposable addDisposable:schedulingDisposable<span class="hljs-meta">]</span>;<br>	&#125;<br>	return disposable;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>这里 self.didSubscribe 属性指向的正是之前在创建信号时我们自定义的<code>didSubscribe</code>，所以 self.didSubscribe(subscriber) 就是调用我们自己的<code>didSubscribe</code> block。即<strong>订阅信号后，信号的<code>didSubscribe</code>会自动调用一次</strong>。</p>
 <h4 id="3-发送消息"><a href="#3-发送消息" class="headerlink" title="3.发送消息"></a>3.发送消息</h4><p>订阅完成后自动创建了订阅者，接下来就可以向订阅者发送<code>事件</code>和<code>数据</code>了。上面说过信号内有三种消息：</p>
@@ -246,18 +390,18 @@
 <li>completed</li>
 </ul>
 <p>三种消息对应的接口分别为：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">/// Sends the next value to subscribers.</span><br><span class="line">///</span><br><span class="line">/// value - The value to send. This can be `nil`.</span><br><span class="line">- (void)sendNext:(nullable id)value;</span><br><span class="line"></span><br><span class="line">/// Sends the error to subscribers.</span><br><span class="line">///</span><br><span class="line">/// error - The error to send. This can be `nil`.</span><br><span class="line">///</span><br><span class="line">/// This terminates the subscription, and invalidates the subscriber (such that</span><br><span class="line">/// it cannot subscribe to anything else in the future).</span><br><span class="line">- (void)sendError:(nullable NSError *)error;</span><br><span class="line"></span><br><span class="line">/// Sends completed to subscribers.</span><br><span class="line">///</span><br><span class="line">/// This terminates the subscription, and invalidates the subscriber (such that</span><br><span class="line">/// it cannot subscribe to anything else in the future).</span><br><span class="line">- (void)sendCompleted;</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-comment">/// Sends the next value to subscribers.</span><br><span class="hljs-comment">///</span><br><span class="hljs-comment">/// value - The value to send. This can be `nil`.</span><br>- (<span class="hljs-type">void</span>)sendNext:(<span class="hljs-keyword">nullable</span> <span class="hljs-type">id</span>)value;<br><br><span class="hljs-comment">/// Sends the error to subscribers.</span><br><span class="hljs-comment">///</span><br><span class="hljs-comment">/// error - The error to send. This can be `nil`.</span><br><span class="hljs-comment">///</span><br><span class="hljs-comment">/// This terminates the subscription, and invalidates the subscriber (such that</span><br><span class="hljs-comment">/// it cannot subscribe to anything else in the future).</span><br>- (<span class="hljs-type">void</span>)sendError:(<span class="hljs-keyword">nullable</span> <span class="hljs-built_in">NSError</span> *)error;<br><br><span class="hljs-comment">/// Sends completed to subscribers.</span><br><span class="hljs-comment">///</span><br><span class="hljs-comment">/// This terminates the subscription, and invalidates the subscriber (such that</span><br><span class="hljs-comment">/// it cannot subscribe to anything else in the future).</span><br>- (<span class="hljs-type">void</span>)sendCompleted;<br></code></pre></td></tr></table></figure>
 
 <p>其实现为：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">- (void)sendNext:(id)value &#123;</span><br><span class="line">    @synchronized (self) &#123;</span><br><span class="line">        void (^nextBlock)(id) = [self.next copy];</span><br><span class="line">        if (nextBlock == nil) return;</span><br><span class="line"></span><br><span class="line">        nextBlock(value);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">- (void)sendError:(NSError *)e &#123;</span><br><span class="line">    @synchronized (self) &#123;</span><br><span class="line">        void (^errorBlock)(NSError *) = [self.error copy];</span><br><span class="line">        [self.disposable dispose];</span><br><span class="line"></span><br><span class="line">        if (errorBlock == nil) return;</span><br><span class="line">        errorBlock(e);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)sendCompleted &#123;</span><br><span class="line">    @synchronized (self) &#123;</span><br><span class="line">        void (^completedBlock)(void) = [self.completed copy];</span><br><span class="line">        [self.disposable dispose];</span><br><span class="line"></span><br><span class="line">        if (completedBlock == nil) return;</span><br><span class="line">        completedBlock();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs objectivec">- (<span class="hljs-type">void</span>)sendNext:(<span class="hljs-type">id</span>)value &#123;<br>    <span class="hljs-keyword">@synchronized</span> (<span class="hljs-keyword">self</span>) &#123;<br>        <span class="hljs-type">void</span> (^nextBlock)(<span class="hljs-type">id</span>) = [<span class="hljs-keyword">self</span>.next <span class="hljs-keyword">copy</span>];<br>        <span class="hljs-keyword">if</span> (nextBlock == <span class="hljs-literal">nil</span>) <span class="hljs-keyword">return</span>;<br><br>        nextBlock(value);<br>    &#125;<br>&#125;<br>- (<span class="hljs-type">void</span>)sendError:(<span class="hljs-built_in">NSError</span> *)e &#123;<br>    <span class="hljs-keyword">@synchronized</span> (<span class="hljs-keyword">self</span>) &#123;<br>        <span class="hljs-type">void</span> (^errorBlock)(<span class="hljs-built_in">NSError</span> *) = [<span class="hljs-keyword">self</span>.error <span class="hljs-keyword">copy</span>];<br>        [<span class="hljs-keyword">self</span>.disposable dispose];<br><br>        <span class="hljs-keyword">if</span> (errorBlock == <span class="hljs-literal">nil</span>) <span class="hljs-keyword">return</span>;<br>        errorBlock(e);<br>    &#125;<br>&#125;<br><br>- (<span class="hljs-type">void</span>)sendCompleted &#123;<br>    <span class="hljs-keyword">@synchronized</span> (<span class="hljs-keyword">self</span>) &#123;<br>        <span class="hljs-type">void</span> (^completedBlock)(<span class="hljs-type">void</span>) = [<span class="hljs-keyword">self</span>.completed <span class="hljs-keyword">copy</span>];<br>        [<span class="hljs-keyword">self</span>.disposable dispose];<br><br>        <span class="hljs-keyword">if</span> (completedBlock == <span class="hljs-literal">nil</span>) <span class="hljs-keyword">return</span>;<br>        completedBlock();<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>向订阅者发送<code>next</code>、<code>error</code>、<code>completed</code>事件，实际上是调用之前保存在订阅者对象中的三种 block 属性。<br><br/></p>
 <p><strong>注意</strong>：信号向订阅者发送了<code>error</code>或者<code>completed</code>后，订阅关系随即结束，订阅者后续不会再收到任何事件和数据。<br><br/></p>
 <p>#冷信号使用示例:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">@interface HelloRACController ()</span><br><span class="line">@property (nonatomic, strong) id&lt;RACSubscriber&gt; subscriber;</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation HelloRACController</span><br><span class="line"></span><br><span class="line">- (void)viewDidLoad &#123;</span><br><span class="line">    [super viewDidLoad];</span><br><span class="line">    //1.信号的使用</span><br><span class="line">    //1.1.创建信号，此时信号为冷信号，被订阅之后才能发送消息</span><br><span class="line">    RACSignal *s1 = [RACSignal createSignal:^RACDisposable *(id&lt;RACSubscriber&gt; subscriber) &#123;</span><br><span class="line">        </span><br><span class="line">        //当有订阅者订阅信号，就会调用此block</span><br><span class="line">        _subscriber = subscriber;</span><br><span class="line">        </span><br><span class="line">        //1.3.发送信号</span><br><span class="line">        [subscriber sendNext:@&quot;Hello from s1~&quot;];</span><br><span class="line">        </span><br><span class="line">        //回抛错误</span><br><span class="line">        [subscriber sendError:[NSError errorWithDomain:@&quot;NetError&quot; code:1022 userInfo:@&#123;@&quot;code&quot;:@(1022)&#125;]];</span><br><span class="line">        </span><br><span class="line">        //如果不再发送数据，发送信号完成</span><br><span class="line">        [subscriber sendCompleted];</span><br><span class="line">        </span><br><span class="line">        //返回一个信号，内部会自动调用[RACDisposable disposable]取消订阅。</span><br><span class="line">        return [RACDisposable disposableWithBlock:^&#123;</span><br><span class="line">            NSLog(@&quot;++s1 Disposed~&quot;);</span><br><span class="line">        &#125;];</span><br><span class="line">    &#125;];</span><br><span class="line">    </span><br><span class="line">    //1.2.订阅信号(被订阅后，如果向订阅者发送了信号，则此时subscribeNext的block被调用)</span><br><span class="line">    [s1 subscribeNext:^(id x) &#123;</span><br><span class="line">        NSLog(@&quot;~~第1个订阅消息：%@&quot;,x);</span><br><span class="line">    &#125;];</span><br><span class="line">    </span><br><span class="line">    [s1 subscribeNext:^(id x) &#123;</span><br><span class="line">        NSLog(@&quot;~~第2个订阅消息：%@&quot;,x);</span><br><span class="line">    &#125; error:^(NSError * error) &#123;</span><br><span class="line">        NSLog(@&quot;+++error:%@&quot;,error.description);</span><br><span class="line">    &#125; completed:^&#123;</span><br><span class="line">        NSLog(@&quot;++s1 completed&quot;);</span><br><span class="line">    &#125;];</span><br><span class="line">    </span><br><span class="line">    [_subscriber sendNext:@&quot;Hello2 from s1~&quot;];</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">HelloRACController</span> ()</span><br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">strong</span>) <span class="hljs-type">id</span>&lt;RACSubscriber&gt; subscriber;<br><span class="hljs-keyword">@end</span><br><br><span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">HelloRACController</span></span><br><br>- (<span class="hljs-type">void</span>)viewDidLoad &#123;<br>    [<span class="hljs-variable language_">super</span> viewDidLoad];<br>    <span class="hljs-comment">//1.信号的使用</span><br>    <span class="hljs-comment">//1.1.创建信号，此时信号为冷信号，被订阅之后才能发送消息</span><br>    RACSignal *s1 = [RACSignal createSignal:^RACDisposable *(<span class="hljs-type">id</span>&lt;RACSubscriber&gt; subscriber) &#123;<br>        <br>        <span class="hljs-comment">//当有订阅者订阅信号，就会调用此block</span><br>        _subscriber = subscriber;<br>        <br>        <span class="hljs-comment">//1.3.发送信号</span><br>        [subscriber sendNext:<span class="hljs-string">@&quot;Hello from s1~&quot;</span>];<br>        <br>        <span class="hljs-comment">//回抛错误</span><br>        [subscriber sendError:[<span class="hljs-built_in">NSError</span> errorWithDomain:<span class="hljs-string">@&quot;NetError&quot;</span> code:<span class="hljs-number">1022</span> userInfo:@&#123;<span class="hljs-string">@&quot;code&quot;</span>:@(<span class="hljs-number">1022</span>)&#125;]];<br>        <br>        <span class="hljs-comment">//如果不再发送数据，发送信号完成</span><br>        [subscriber sendCompleted];<br>        <br>        <span class="hljs-comment">//返回一个信号，内部会自动调用[RACDisposable disposable]取消订阅。</span><br>        <span class="hljs-keyword">return</span> [RACDisposable disposableWithBlock:^&#123;<br>            <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;++s1 Disposed~&quot;</span>);<br>        &#125;];<br>    &#125;];<br>    <br>    <span class="hljs-comment">//1.2.订阅信号(被订阅后，如果向订阅者发送了信号，则此时subscribeNext的block被调用)</span><br>    [s1 subscribeNext:^(<span class="hljs-type">id</span> x) &#123;<br>        <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;~~第1个订阅消息：%@&quot;</span>,x);<br>    &#125;];<br>    <br>    [s1 subscribeNext:^(<span class="hljs-type">id</span> x) &#123;<br>        <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;~~第2个订阅消息：%@&quot;</span>,x);<br>    &#125; error:^(<span class="hljs-built_in">NSError</span> * error) &#123;<br>        <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;+++error:%@&quot;</span>,error.description);<br>    &#125; completed:^&#123;<br>        <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;++s1 completed&quot;</span>);<br>    &#125;];<br>    <br>    [_subscriber sendNext:<span class="hljs-string">@&quot;Hello2 from s1~&quot;</span>];<br>&#125;<br><span class="hljs-keyword">@end</span><br></code></pre></td></tr></table></figure>
 
 <p>日志：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">~~第1个订阅消息：Hello from s1~</span><br><span class="line">++s1 Disposed~</span><br><span class="line">~~第2个订阅消息：Hello from s1~</span><br><span class="line">+++error:Error Domain=NetError Code=1022 &quot;(null)&quot; UserInfo=&#123;code=1022&#125;</span><br><span class="line">++s1 Disposed~</span><br></pre></td></tr></table></figure>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs routeros">~~第1个订阅消息：Hello <span class="hljs-keyword">from</span> s1~<br>++s1 Disposed~<br>~~第2个订阅消息：Hello <span class="hljs-keyword">from</span> s1~<br>+++error:<span class="hljs-built_in">Error</span> <span class="hljs-attribute">Domain</span>=NetError <span class="hljs-attribute">Code</span>=1022 <span class="hljs-string">&quot;(null)&quot;</span> UserInfo=&#123;<span class="hljs-attribute">code</span>=1022&#125;<br>++s1 Disposed~<br></code></pre></td></tr></table></figure>
 
 <p>结合日志来分析，有几点可以得到印证：<br><br/></p>
 <p>1.调用完 [s1 subscribeNext:] 订阅信号之后，<code>s1</code>的 block 会立刻执行。<br><br/></p>
@@ -265,49 +409,49 @@
 <p>3.block 内调用 [subscriber sendError:] 或者 [subscriber sendCompleted] 之后，信号<code>s1</code>会立刻调用其<code>RACDisposable</code>的 block 清理资源。<br><br/></p>
 <p>4.一旦信号调用<code>RACDisposable</code>之后，它后续将不能再接收任何事件。比如示例中第二个订阅者调用了 <code>sendError</code> 之后，s1 自动调用了<code>RACDisposable</code>，后续调用 <code>setCompleted</code> 时<code>completed</code>回调不再执行，并且后面的 [_subscriber sendNext:] 也不会有任何响应或日志输出。</p>
 <h3 id="四-热信号解读"><a href="#四-热信号解读" class="headerlink" title="四.热信号解读"></a>四.热信号解读</h3><p>热信号本身不需要订阅也能发送消息，主要是因为它们一般都直接或间接地实现了<code>&lt;RACSubscriber&gt;</code>协议，此协议定义了以下方法：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">@protocol RACSubscriber &lt;NSObject&gt;</span><br><span class="line">@required</span><br><span class="line"></span><br><span class="line">/// Sends the next value to subscribers.</span><br><span class="line">///</span><br><span class="line">/// value - The value to send. This can be `nil`.</span><br><span class="line">- (void)sendNext:(nullable id)value;</span><br><span class="line"></span><br><span class="line">/// Sends the error to subscribers.</span><br><span class="line">///</span><br><span class="line">/// error - The error to send. This can be `nil`.</span><br><span class="line">///</span><br><span class="line">/// This terminates the subscription, and invalidates the subscriber (such that</span><br><span class="line">/// it cannot subscribe to anything else in the future).</span><br><span class="line">- (void)sendError:(nullable NSError *)error;</span><br><span class="line"></span><br><span class="line">/// Sends completed to subscribers.</span><br><span class="line">///</span><br><span class="line">/// This terminates the subscription, and invalidates the subscriber (such that</span><br><span class="line">/// it cannot subscribe to anything else in the future).</span><br><span class="line">- (void)sendCompleted;</span><br><span class="line"></span><br><span class="line">/// Sends the subscriber a disposable that represents one of its subscriptions.</span><br><span class="line">///</span><br><span class="line">/// A subscriber may receive multiple disposables if it gets subscribed to</span><br><span class="line">/// multiple signals; however, any error or completed events must terminate _all_</span><br><span class="line">/// subscriptions.</span><br><span class="line">- (void)didSubscribeWithDisposable:(RACCompoundDisposable *)disposable;</span><br></pre></td></tr></table></figure>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs less"><span class="hljs-variable">@protocol</span> RACSubscriber &lt;NSObject&gt;<br><span class="hljs-variable">@required</span><br><br><span class="hljs-comment">/// Sends the next value to subscribers.</span><br><span class="hljs-comment">///</span><br><span class="hljs-comment">/// value - The value to send. This can be `nil`.</span><br>- (void)<span class="hljs-attribute">sendNext</span>:(nullable id)value;<br><br><span class="hljs-comment">/// Sends the error to subscribers.</span><br><span class="hljs-comment">///</span><br><span class="hljs-comment">/// error - The error to send. This can be `nil`.</span><br><span class="hljs-comment">///</span><br><span class="hljs-comment">/// This terminates the subscription, and invalidates the subscriber (such that</span><br><span class="hljs-comment">/// it cannot subscribe to anything else in the future).</span><br><span class="hljs-selector-tag">-</span> (void)<span class="hljs-selector-tag">sendError</span>:(nullable NSError *)<span class="hljs-selector-tag">error</span>;<br><br><span class="hljs-comment">/// Sends completed to subscribers.</span><br><span class="hljs-comment">///</span><br><span class="hljs-comment">/// This terminates the subscription, and invalidates the subscriber (such that</span><br><span class="hljs-comment">/// it cannot subscribe to anything else in the future).</span><br><span class="hljs-selector-tag">-</span> (void)<span class="hljs-selector-tag">sendCompleted</span>;<br><br><span class="hljs-comment">/// Sends the subscriber a disposable that represents one of its subscriptions.</span><br><span class="hljs-comment">///</span><br><span class="hljs-comment">/// A subscriber may receive multiple disposables if it gets subscribed to</span><br><span class="hljs-comment">/// multiple signals; however, any error or completed events must terminate _all_</span><br><span class="hljs-comment">/// subscriptions.</span><br><span class="hljs-selector-tag">-</span> (void)<span class="hljs-selector-tag">didSubscribeWithDisposable</span>:(RACCompoundDisposable *)<span class="hljs-selector-tag">disposable</span>;<br></code></pre></td></tr></table></figure>
 
 <p>以上几个方法主要用来向订阅者发送数据或更新状态。<br><br/></p>
 <p>热信号正是实现了此协议，才能在没有订阅者的情况下也能主动发送数据。以<code>RACSubject</code>为例：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">/// A subject can be thought of as a signal that you can manually control by</span><br><span class="line">/// sending next, completed, and error.</span><br><span class="line">///</span><br><span class="line">/// They&#x27;re most helpful in bridging the non-RAC world to RAC, since they let you</span><br><span class="line">/// manually control the sending of events.</span><br><span class="line">@interface RACSubject&lt;ValueType&gt; : RACSignal&lt;ValueType&gt; &lt;RACSubscriber&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs angelscript"><span class="hljs-comment">/// A subject can be thought of as a signal that you can manually control by</span><br><span class="hljs-comment">/// sending next, completed, and error.</span><br><span class="hljs-comment">///</span><br><span class="hljs-comment">/// They&#x27;re most helpful in bridging the non-RAC world to RAC, since they let you</span><br><span class="hljs-comment">/// manually control the sending of events.</span><br>@<span class="hljs-keyword">interface</span> <span class="hljs-symbol">RACSubject</span>&lt;<span class="hljs-symbol">ValueType</span>&gt; : <span class="hljs-symbol">RACSignal</span>&lt;<span class="hljs-symbol">ValueType</span>&gt; &lt;<span class="hljs-symbol">RACSubscriber</span>&gt;<br></code></pre></td></tr></table></figure>
 
 <p>继承自<code>RACSignal</code>，说明它是一种信号；实现了<code>&lt;RACSubscriber&gt;</code>协议，说明它能在不被订阅的情况下主动发送数据。<br><br/></p>
 <p>#示例：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">- (void)hotSignal &#123;</span><br><span class="line">    RACSubject *sub = [RACSubject subject];</span><br><span class="line">    [sub sendNext:@&quot;1&quot;];</span><br><span class="line">    </span><br><span class="line">    [sub subscribeNext:^(id x) &#123;</span><br><span class="line">        NSLog(@&quot;+++sub1:%@&quot;,x);</span><br><span class="line">    &#125;];</span><br><span class="line">    </span><br><span class="line">    [sub sendNext:@&quot;2&quot;];</span><br><span class="line">    </span><br><span class="line">    [sub subscribeNext:^(id x) &#123;</span><br><span class="line">        NSLog(@&quot;+++sub2:%@&quot;,x);</span><br><span class="line">    &#125;];</span><br><span class="line">    </span><br><span class="line">    [sub sendNext:@&quot;3&quot;];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs perl">- (void)hotSignal &#123;<br>    RACSubject *<span class="hljs-function"><span class="hljs-keyword">sub</span> = [<span class="hljs-title">RACSubject</span> <span class="hljs-title">subject</span>]</span>;<br>    [<span class="hljs-function"><span class="hljs-keyword">sub</span> <span class="hljs-title">sendNext</span>:@&quot;1&quot;]</span>;<br>    <br>    [<span class="hljs-function"><span class="hljs-keyword">sub</span> <span class="hljs-title">subscribeNext</span>:^(<span class="hljs-title">id</span> <span class="hljs-title">x</span>) </span>&#123;<br>        NSLog(@&quot;+++sub1:%@<span class="hljs-string">&quot;,x);</span><br><span class="hljs-string">    &#125;];</span><br><span class="hljs-string">    </span><br><span class="hljs-string">    [sub sendNext:@&quot;2&quot;</span>];<br>    <br>    [<span class="hljs-function"><span class="hljs-keyword">sub</span> <span class="hljs-title">subscribeNext</span>:^(<span class="hljs-title">id</span> <span class="hljs-title">x</span>) </span>&#123;<br>        NSLog(@&quot;+++sub2:%@<span class="hljs-string">&quot;,x);</span><br><span class="hljs-string">    &#125;];</span><br><span class="hljs-string">    </span><br><span class="hljs-string">    [sub sendNext:@&quot;3&quot;</span>];<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>日志：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">+++sub1:2</span><br><span class="line">+++sub1:3</span><br><span class="line">+++sub2:3</span><br></pre></td></tr></table></figure>
+<figure class="highlight brainfuck"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs brainfuck"><span class="hljs-literal">+++</span><span class="hljs-comment">sub1:2</span><br><span class="hljs-literal">+++</span><span class="hljs-comment">sub1:3</span><br><span class="hljs-literal">+++</span><span class="hljs-comment">sub2:3</span><br></code></pre></td></tr></table></figure>
 
 <p>1.从<code>[sub sendNext:@&quot;1&quot;]</code>可以看到，<code>sub</code>对象不需要被订阅也能发送消息，只是此时没订阅者接收消息而已；<br><br/></p>
 <p>2.当订阅了两次之后，发送数据3时收到两次回调，也说明了热信号是1~N的关系，信号与N个订阅者共享信息。<br><br/></p>
 <p>下面将介绍<code>RACSubject</code>的实现：</p>
 <h4 id="1-创建信号-1"><a href="#1-创建信号-1" class="headerlink" title="1.创建信号"></a>1.创建信号</h4><p>创建方法如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RACSubject *sub = [RACSubject subject];</span><br></pre></td></tr></table></figure>
+<figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs perl">RACSubject *<span class="hljs-function"><span class="hljs-keyword">sub</span> = [<span class="hljs-title">RACSubject</span> <span class="hljs-title">subject</span>]</span>;<br></code></pre></td></tr></table></figure>
 
 <p>其实现为：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">+ (instancetype)subject &#123;</span><br><span class="line">    return [[self alloc] init];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (instancetype)init &#123;</span><br><span class="line">    self = [super init];</span><br><span class="line">    if (self == nil) return nil;</span><br><span class="line"></span><br><span class="line">    _disposable = [RACCompoundDisposable compoundDisposable];</span><br><span class="line">    _subscribers = [[NSMutableArray alloc] initWithCapacity:1];</span><br><span class="line">    </span><br><span class="line">    return self;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs swift"><span class="hljs-operator">+</span> (instancetype)subject &#123;<br>    <span class="hljs-keyword">return</span> [[<span class="hljs-keyword">self</span> alloc] <span class="hljs-keyword">init</span>];<br>&#125;<br><br><span class="hljs-operator">-</span> (instancetype)<span class="hljs-keyword">init</span> &#123;<br>    <span class="hljs-keyword">self</span> <span class="hljs-operator">=</span> [<span class="hljs-keyword">super</span> <span class="hljs-keyword">init</span>];<br>    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">self</span> <span class="hljs-operator">==</span> <span class="hljs-literal">nil</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>;<br><br>    _disposable <span class="hljs-operator">=</span> [<span class="hljs-type">RACCompoundDisposable</span> compoundDisposable];<br>    _subscribers <span class="hljs-operator">=</span> [[<span class="hljs-type">NSMutableArray</span> alloc] initWithCapacity:<span class="hljs-number">1</span>];<br>    <br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">self</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>注意这个<code>_subscribers</code>数组，后面会有重要作用。</p>
-<h4 id="2-订阅信号-1"><a href="#2-订阅信号-1" class="headerlink" title="2.订阅信号"></a>2.订阅信号</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[sub subscribeNext:^(id x) &#123;</span><br><span class="line">    NSLog(@&quot;+++sub1:%@&quot;,x);</span><br><span class="line">&#125;];</span><br><span class="line">[sub subscribeNext:^(id x) &#123;</span><br><span class="line">    NSLog(@&quot;+++sub2:%@&quot;,x);</span><br><span class="line">&#125;];</span><br></pre></td></tr></table></figure>
+<h4 id="2-订阅信号-1"><a href="#2-订阅信号-1" class="headerlink" title="2.订阅信号"></a>2.订阅信号</h4><figure class="highlight hy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs hy">[sub subscribeNext:^(<span class="hljs-name"><span class="hljs-built_in">id</span></span> x) &#123;<br>    NSLog(@<span class="hljs-string">&quot;+++sub1:%@&quot;</span>,x)<span class="hljs-comment">;</span><br>&#125;]<span class="hljs-comment">;</span><br>[sub subscribeNext:^(<span class="hljs-name"><span class="hljs-built_in">id</span></span> x) &#123;<br>    NSLog(@<span class="hljs-string">&quot;+++sub2:%@&quot;</span>,x)<span class="hljs-comment">;</span><br>&#125;]<span class="hljs-comment">;</span><br></code></pre></td></tr></table></figure>
 
 <p><code>subscribeNext:</code>的实现为：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">- (RACDisposable *)subscribeNext:(void (^)(id x))nextBlock &#123;</span><br><span class="line">    NSCParameterAssert(nextBlock != NULL);</span><br><span class="line">    </span><br><span class="line">    RACSubscriber *o = [RACSubscriber subscriberWithNext:nextBlock error:NULL completed:NULL];</span><br><span class="line">    return [self subscribe:o];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs objectivec">- (RACDisposable *)subscribeNext:(<span class="hljs-type">void</span> (^)(<span class="hljs-type">id</span> x))nextBlock &#123;<br>    <span class="hljs-built_in">NSCParameterAssert</span>(nextBlock != <span class="hljs-literal">NULL</span>);<br>    <br>    RACSubscriber *o = [RACSubscriber subscriberWithNext:nextBlock error:<span class="hljs-literal">NULL</span> completed:<span class="hljs-literal">NULL</span>];<br>    <span class="hljs-keyword">return</span> [<span class="hljs-keyword">self</span> subscribe:o];<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>和冷信号一样，这里会先创建一个订阅者对象，随后调用<code>subscribe:</code>方法：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">- (RACDisposable *)subscribe:(id&lt;RACSubscriber&gt;)subscriber &#123;</span><br><span class="line">    NSCParameterAssert(subscriber != nil);</span><br><span class="line"></span><br><span class="line">    RACCompoundDisposable *disposable = [RACCompoundDisposable compoundDisposable];</span><br><span class="line">    subscriber = [[RACPassthroughSubscriber alloc] initWithSubscriber:subscriber signal:self disposable:disposable];</span><br><span class="line"></span><br><span class="line">    NSMutableArray *subscribers = self.subscribers;</span><br><span class="line">    @synchronized (subscribers) &#123;</span><br><span class="line">        // 将订阅者添加进数组</span><br><span class="line">        [subscribers addObject:subscriber];</span><br><span class="line">    &#125;</span><br><span class="line">    // 略。。</span><br><span class="line">    return disposable;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs objectivec">- (RACDisposable *)subscribe:(<span class="hljs-type">id</span>&lt;RACSubscriber&gt;)subscriber &#123;<br>    <span class="hljs-built_in">NSCParameterAssert</span>(subscriber != <span class="hljs-literal">nil</span>);<br><br>    RACCompoundDisposable *disposable = [RACCompoundDisposable compoundDisposable];<br>    subscriber = [[RACPassthroughSubscriber alloc] initWithSubscriber:subscriber signal:<span class="hljs-keyword">self</span> disposable:disposable];<br><br>    <span class="hljs-built_in">NSMutableArray</span> *subscribers = <span class="hljs-keyword">self</span>.subscribers;<br>    <span class="hljs-keyword">@synchronized</span> (subscribers) &#123;<br>        <span class="hljs-comment">// 将订阅者添加进数组</span><br>        [subscribers addObject:subscriber];<br>    &#125;<br>    <span class="hljs-comment">// 略。。</span><br>    <span class="hljs-keyword">return</span> disposable;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>方法将传进来的订阅者添加进之前提到的<code>subscribers</code>数组中，等待随后的调用。</p>
-<h4 id="3-发送消息-1"><a href="#3-发送消息-1" class="headerlink" title="3.发送消息"></a>3.发送消息</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[sub sendNext:@&quot;1&quot;];</span><br></pre></td></tr></table></figure>
+<h4 id="3-发送消息-1"><a href="#3-发送消息-1" class="headerlink" title="3.发送消息"></a>3.发送消息</h4><figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs perl">[<span class="hljs-function"><span class="hljs-keyword">sub</span> <span class="hljs-title">sendNext</span>:@&quot;1&quot;]</span>;<br></code></pre></td></tr></table></figure>
 
 <p><code>sendNext:</code>的实现：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">- (void)sendNext:(id)value &#123;</span><br><span class="line">    [self enumerateSubscribersUsingBlock:^(id&lt;RACSubscriber&gt; subscriber) &#123;</span><br><span class="line">        [subscriber sendNext:value];</span><br><span class="line">    &#125;];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)enumerateSubscribersUsingBlock:(void (^)(id&lt;RACSubscriber&gt; subscriber))block &#123;</span><br><span class="line">    NSArray *subscribers;</span><br><span class="line">    @synchronized (self.subscribers) &#123;</span><br><span class="line">        subscribers = [self.subscribers copy];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    for (id&lt;RACSubscriber&gt; subscriber in subscribers) &#123;</span><br><span class="line">        block(subscriber);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm">- (void)sendNext:(id)value &#123;<br>    [self enumerateSubscribersUsingBlock:^(id&lt;RACSubscriber&gt; <span class="hljs-keyword">subscriber) </span>&#123;<br>        [<span class="hljs-keyword">subscriber </span>sendNext:value];<br>    &#125;];<br>&#125;<br><br>- (void)enumerateSubscribersUsingBlock:(void (^)(id&lt;RACSubscriber&gt; <span class="hljs-keyword">subscriber))block </span>&#123;<br>    NSArray *<span class="hljs-keyword">subscribers;</span><br><span class="hljs-keyword"></span>    @<span class="hljs-keyword">synchronized </span>(self.<span class="hljs-keyword">subscribers) </span>&#123;<br>        <span class="hljs-keyword">subscribers </span>= [self.<span class="hljs-keyword">subscribers </span>copy];<br>    &#125;<br><br>    for (id&lt;RACSubscriber&gt; <span class="hljs-keyword">subscriber </span>in <span class="hljs-keyword">subscribers) </span>&#123;<br>        <span class="hljs-keyword">block(subscriber);</span><br><span class="hljs-keyword"></span>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p><code>sub</code>对象从<code>subscribers</code>数组中取出所有的订阅者，依次向其发送数据~</p>
 <h4 id="4-用作代理"><a href="#4-用作代理" class="headerlink" title="4.用作代理"></a>4.用作代理</h4><p><code>RACSubject</code>的实现并不难理解，它与订阅者之间是<code>1~N</code>的关系并可主动发送消息，常用来代替OC中的<code>delegate</code>。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">@interface ViewControllerII : UIViewController</span><br><span class="line"></span><br><span class="line">@property (nonatomic, strong) RACSubject *delegate;</span><br><span class="line"></span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation ViewControllerII</span><br><span class="line"></span><br><span class="line">- (void)viewDidLoad &#123;</span><br><span class="line">    [super viewDidLoad];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (IBAction)onDismiss:(id)sender</span><br><span class="line">&#123;</span><br><span class="line">    //RAC回调</span><br><span class="line">    if (self.delegate) &#123;</span><br><span class="line">        [self.delegate sendNext:@&quot;++ViewControllerII Closed~&quot;];</span><br><span class="line">    &#125;</span><br><span class="line">    //关闭</span><br><span class="line">    [self.navigationController popViewControllerAnimated:YES];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs less"><span class="hljs-variable">@interface</span> <span class="hljs-attribute">ViewControllerII </span>: UIViewController<br><br><span class="hljs-variable">@property</span> (nonatomic, strong) RACSubject *delegate;<br><br><span class="hljs-variable">@end</span><br><br><span class="hljs-variable">@implementation</span> ViewControllerII<br><br>- (void)viewDidLoad &#123;<br>    <span class="hljs-selector-attr">[super viewDidLoad]</span>;<br>&#125;<br><br>- (IBAction)<span class="hljs-attribute">onDismiss</span>:(id)sender<br>&#123;<br>    <span class="hljs-comment">//RAC回调</span><br>    <span class="hljs-selector-tag">if</span> (self.delegate) &#123;<br>        <span class="hljs-selector-attr">[self.delegate sendNext:@<span class="hljs-string">&quot;++ViewControllerII Closed~&quot;</span>]</span>;<br>    &#125;<br>    <span class="hljs-comment">//关闭</span><br>    [self.navigationController <span class="hljs-attribute">popViewControllerAnimated</span>:YES];<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>在某个页面设置代理：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">- (IBAction)onAction2:(id)sender &#123;</span><br><span class="line">    ViewControllerII *controller = [[UIStoryboard storyboardWithName:@&quot;Main&quot; bundle:nil]</span><br><span class="line">                                    instantiateViewControllerWithIdentifier:@&quot;ViewControllerII&quot;];</span><br><span class="line">    //设置代理信号</span><br><span class="line">    controller.delegate = [RACSubject subject];</span><br><span class="line">    </span><br><span class="line">    //订阅代理</span><br><span class="line">    [controller.delegate subscribeNext:^(id x) &#123;</span><br><span class="line">        NSLog(@&quot;%@&quot;,x);</span><br><span class="line">    &#125;];</span><br><span class="line">    [self.navigationController pushViewController:controller animated:YES];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs objectivec">- (<span class="hljs-keyword">IBAction</span>)onAction2:(<span class="hljs-type">id</span>)sender &#123;<br>    ViewControllerII *controller = [[<span class="hljs-built_in">UIStoryboard</span> storyboardWithName:<span class="hljs-string">@&quot;Main&quot;</span> bundle:<span class="hljs-literal">nil</span>]<br>                                    instantiateViewControllerWithIdentifier:<span class="hljs-string">@&quot;ViewControllerII&quot;</span>];<br>    <span class="hljs-comment">//设置代理信号</span><br>    controller.delegate = [RACSubject subject];<br>    <br>    <span class="hljs-comment">//订阅代理</span><br>    [controller.delegate subscribeNext:^(<span class="hljs-type">id</span> x) &#123;<br>        <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;%@&quot;</span>,x);<br>    &#125;];<br>    [<span class="hljs-keyword">self</span>.navigationController pushViewController:controller animated:<span class="hljs-literal">YES</span>];<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <h3 id="五-组播"><a href="#五-组播" class="headerlink" title="五.组播"></a>五.组播</h3><blockquote>
 <p>Signals are cold by default, meaning that they start doing work each time a new subscription is added. This behavior is usually desirable, because it means that data will be freshly recalculated for each subscriber, but it can be problematic if the signal has side effects or the work is expensive (for example, sending a network request).</p>
@@ -317,49 +461,49 @@
 <p>A multicast connection encapsulates the idea of sharing one subscription to a signal to many subscribers. This is most often needed if the subscription to the underlying signal involves side-effects or shouldn’t be called more than once.</p>
 </blockquote>
 <p>组播，用于在多个订阅者之间共享对某个信号的订阅，在发送者和每一订阅者之间实现<code>1~N</code>的连接。</p>
-<h4 id="1-示例"><a href="#1-示例" class="headerlink" title="1.示例"></a>1.示例</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">- (void)viewDidLoad &#123;</span><br><span class="line">    [super viewDidLoad];</span><br><span class="line">    </span><br><span class="line">    RACSignal *s2 = [RACSignal createSignal:^RACDisposable *(id&lt;RACSubscriber&gt; subscriber) &#123;</span><br><span class="line">        [subscriber sendNext:@&quot;Hello from s2~&quot;];</span><br><span class="line">        [subscriber sendCompleted];</span><br><span class="line">        return [RACDisposable disposableWithBlock:^&#123;</span><br><span class="line">            NSLog(@&quot;++s2 Disposed~&quot;);</span><br><span class="line">        &#125;];</span><br><span class="line">    &#125;];</span><br><span class="line">    </span><br><span class="line">    //连接类(单次订阅之后不会立刻收到回调，所有订阅完成后调用 connect 时才会先后触发)</span><br><span class="line">    RACMulticastConnection *cnn = [s2 publish];</span><br><span class="line">    </span><br><span class="line">    //订阅连接类信号</span><br><span class="line">    [cnn.signal subscribeNext:^(id x) &#123;</span><br><span class="line">        NSLog(@&quot;~~第1个订阅消息：%@&quot;,x);</span><br><span class="line">    &#125;];</span><br><span class="line"></span><br><span class="line">    [cnn.signal subscribeNext:^(id x) &#123;</span><br><span class="line">        NSLog(@&quot;~~第2个订阅消息：%@&quot;,x);</span><br><span class="line">    &#125;];</span><br><span class="line"></span><br><span class="line">    [cnn.signal subscribeNext:^(id x) &#123;</span><br><span class="line">        NSLog(@&quot;~~第3个订阅消息：%@&quot;,x);</span><br><span class="line">    &#125;];</span><br><span class="line"></span><br><span class="line">    [cnn connect];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="1-示例"><a href="#1-示例" class="headerlink" title="1.示例"></a>1.示例</h4><figure class="highlight wren"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs wren"><span class="hljs-operator">-</span> (<span class="hljs-variable">void</span>)<span class="hljs-title function_">viewDidLoad</span> &#123;<br>    [<span class="hljs-variable language_">super</span> <span class="hljs-variable">viewDidLoad</span>];<br>    <br>    <span class="hljs-title class_">RACSignal</span> <span class="hljs-operator">*</span><span class="hljs-variable">s2</span> <span class="hljs-operator">=</span> [<span class="hljs-title class_">RACSignal</span> <span class="hljs-variable">createSignal</span>:<span class="hljs-operator">^</span><span class="hljs-title class_">RACDisposable</span> <span class="hljs-title function_">*</span>(<span class="hljs-params">id</span>&lt;<span class="hljs-params">RACSubscriber</span>&gt; <span class="hljs-params">subscriber</span>) &#123;<br>        [<span class="hljs-variable">subscriber</span> <span class="hljs-variable">sendNext</span>:@<span class="hljs-string">&quot;Hello from s2~&quot;</span>];<br>        [<span class="hljs-variable">subscriber</span> <span class="hljs-variable">sendCompleted</span>];<br>        <span class="hljs-keyword">return</span> [<span class="hljs-title class_">RACDisposable</span> <span class="hljs-variable">disposableWithBlock</span>:<span class="hljs-operator">^</span>&#123;<br>            <span class="hljs-title class_">NSLog</span>(@<span class="hljs-string">&quot;++s2 Disposed~&quot;</span>);<br>        &#125;];<br>    &#125;];<br>    <br>    <span class="hljs-comment">//连接类(单次订阅之后不会立刻收到回调，所有订阅完成后调用 connect 时才会先后触发)</span><br>    <span class="hljs-title class_">RACMulticastConnection</span> <span class="hljs-operator">*</span><span class="hljs-variable">cnn</span> <span class="hljs-operator">=</span> [<span class="hljs-variable">s2</span> <span class="hljs-variable">publish</span>];<br>    <br>    <span class="hljs-comment">//订阅连接类信号</span><br>    [<span class="hljs-variable">cnn</span>.<span class="hljs-property">signal</span> <span class="hljs-variable">subscribeNext</span>:<span class="hljs-title function_">^</span>(<span class="hljs-params">id</span> <span class="hljs-params">x</span>) &#123;<br>        <span class="hljs-title class_">NSLog</span>(@<span class="hljs-string">&quot;~~第1个订阅消息：%@&quot;</span>,<span class="hljs-variable">x</span>);<br>    &#125;];<br><br>    [<span class="hljs-variable">cnn</span>.<span class="hljs-property">signal</span> <span class="hljs-variable">subscribeNext</span>:<span class="hljs-title function_">^</span>(<span class="hljs-params">id</span> <span class="hljs-params">x</span>) &#123;<br>        <span class="hljs-title class_">NSLog</span>(@<span class="hljs-string">&quot;~~第2个订阅消息：%@&quot;</span>,<span class="hljs-variable">x</span>);<br>    &#125;];<br><br>    [<span class="hljs-variable">cnn</span>.<span class="hljs-property">signal</span> <span class="hljs-variable">subscribeNext</span>:<span class="hljs-title function_">^</span>(<span class="hljs-params">id</span> <span class="hljs-params">x</span>) &#123;<br>        <span class="hljs-title class_">NSLog</span>(@<span class="hljs-string">&quot;~~第3个订阅消息：%@&quot;</span>,<span class="hljs-variable">x</span>);<br>    &#125;];<br><br>    [<span class="hljs-variable">cnn</span> <span class="hljs-variable">connect</span>];<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>输出日志：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">~~第1个订阅消息：Hello from s2~</span><br><span class="line">~~第2个订阅消息：Hello from s2~</span><br><span class="line">~~第3个订阅消息：Hello from s2~</span><br><span class="line">++s2 Disposed~</span><br></pre></td></tr></table></figure>
+<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs armasm">~~第<span class="hljs-number">1</span>个订阅消息：Hello from <span class="hljs-built_in">s2</span>~<br>~~第<span class="hljs-number">2</span>个订阅消息：Hello from <span class="hljs-built_in">s2</span>~<br>~~第<span class="hljs-number">3</span>个订阅消息：Hello from <span class="hljs-built_in">s2</span>~<br>++<span class="hljs-built_in">s2</span> Disposed~<br></code></pre></td></tr></table></figure>
 
 <p>如果在订阅者的回调中打断点你就会发现，调用<code>[cnn connect]</code>后三个 block 都触发了且依次触发。</p>
 <h4 id="2-实现"><a href="#2-实现" class="headerlink" title="2.实现"></a>2.实现</h4><ul>
 <li>创建多播实例</li>
 </ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RACMulticastConnection *cnn = [s2 publish];</span><br></pre></td></tr></table></figure>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs abnf">RACMulticastConnection *cnn <span class="hljs-operator">=</span> [s2 publish]<span class="hljs-comment">;</span><br></code></pre></td></tr></table></figure>
 
 <p>来看看<code>publish</code>都做了什么：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">- (RACMulticastConnection *)publish &#123;</span><br><span class="line">    RACSubject *subject = [[RACSubject subject] setNameWithFormat:@&quot;[%@] -publish&quot;, self.name];</span><br><span class="line">    RACMulticastConnection *connection = [self multicast:subject];</span><br><span class="line">    return connection;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (RACMulticastConnection *)multicast:(RACSubject *)subject &#123;</span><br><span class="line">    [subject setNameWithFormat:@&quot;[%@] -multicast: %@&quot;, self.name, subject.name];</span><br><span class="line">    RACMulticastConnection *connection = [[RACMulticastConnection alloc] initWithSourceSignal:self subject:subject];</span><br><span class="line">    return connection;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">- (RACMulticastConnection *)publish &#123;<br>    RACSubject *subject = [[RACSubject subject] setNameWithFormat:@&quot;[%@] -publish&quot;, self.name];<br>    RACMulticastConnection *<span class="hljs-keyword">connection</span> = [self multicast:subject];<br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">connection</span>;<br>&#125;<br><br>- (RACMulticastConnection *)multicast:(RACSubject *)subject &#123;<br>    [subject setNameWithFormat:@&quot;[%@] -multicast: %@&quot;, self.name, subject.name];<br>    RACMulticastConnection *<span class="hljs-keyword">connection</span> = [[RACMulticastConnection alloc] initWithSourceSignal:self subject:subject];<br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">connection</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p><code>publish</code>内创建了一个<code>RACSubject</code>对象，随后将其作为参数传入<code>RACMulticastConnection</code>的构造函数中：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">@interface RACMulticastConnection () &#123;</span><br><span class="line">    RACSubject *_signal;</span><br><span class="line">    int32_t volatile _hasConnected;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@property (nonatomic, readonly, strong) RACSignal *sourceSignal;</span><br><span class="line">@property (strong) RACSerialDisposable *serialDisposable;</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">- (instancetype)initWithSourceSignal:(RACSignal *)source subject:(RACSubject *)subject &#123;</span><br><span class="line">    NSCParameterAssert(source != nil);</span><br><span class="line">    NSCParameterAssert(subject != nil);</span><br><span class="line"></span><br><span class="line">    self = [super init];</span><br><span class="line"></span><br><span class="line">    _sourceSignal = source;</span><br><span class="line">    _serialDisposable = [[RACSerialDisposable alloc] init];</span><br><span class="line">    _signal = subject;</span><br><span class="line">    </span><br><span class="line">    return self;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">RACMulticastConnection</span> () </span>&#123;<br>    RACSubject *_signal;<br>    int32_t <span class="hljs-keyword">volatile</span> _hasConnected;<br>&#125;<br><br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">readonly</span>, <span class="hljs-keyword">strong</span>) RACSignal *sourceSignal;<br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">strong</span>) RACSerialDisposable *serialDisposable;<br><span class="hljs-keyword">@end</span><br><br>- (<span class="hljs-keyword">instancetype</span>)initWithSourceSignal:(RACSignal *)source subject:(RACSubject *)subject &#123;<br>    <span class="hljs-built_in">NSCParameterAssert</span>(source != <span class="hljs-literal">nil</span>);<br>    <span class="hljs-built_in">NSCParameterAssert</span>(subject != <span class="hljs-literal">nil</span>);<br><br>    <span class="hljs-keyword">self</span> = [<span class="hljs-variable language_">super</span> init];<br><br>    _sourceSignal = source;<br>    _serialDisposable = [[RACSerialDisposable alloc] init];<br>    _signal = subject;<br>    <br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">self</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>构造函数将源信号<code>s2</code>保存为<code>sourceSignal</code>，将刚才创建的<code>subject</code>保存为<code>signal</code>，之后返回一个多播实例。</p>
 <ul>
 <li>订阅信号</li>
 </ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[cnn.signal subscribeNext:^(id x) &#123;</span><br><span class="line">    NSLog(@&quot;~~第1个订阅消息：%@&quot;,x);</span><br><span class="line">&#125;];</span><br><span class="line">    </span><br><span class="line">[cnn.signal subscribeNext:^(id x) &#123;</span><br><span class="line">    NSLog(@&quot;~~第2个订阅消息：%@&quot;,x);</span><br><span class="line">&#125;];</span><br><span class="line">    </span><br><span class="line">[cnn.signal subscribeNext:^(id x) &#123;</span><br><span class="line">    NSLog(@&quot;~~第3个订阅消息：%@&quot;,x);</span><br><span class="line">&#125;];</span><br></pre></td></tr></table></figure>
+<figure class="highlight hy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs hy">[cnn.signal subscribeNext:^(<span class="hljs-name"><span class="hljs-built_in">id</span></span> x) &#123;<br>    NSLog(@<span class="hljs-string">&quot;~~第1个订阅消息：%@&quot;</span>,x)<span class="hljs-comment">;</span><br>&#125;]<span class="hljs-comment">;</span><br>    <br>[cnn.signal subscribeNext:^(<span class="hljs-name"><span class="hljs-built_in">id</span></span> x) &#123;<br>    NSLog(@<span class="hljs-string">&quot;~~第2个订阅消息：%@&quot;</span>,x)<span class="hljs-comment">;</span><br>&#125;]<span class="hljs-comment">;</span><br>    <br>[cnn.signal subscribeNext:^(<span class="hljs-name"><span class="hljs-built_in">id</span></span> x) &#123;<br>    NSLog(@<span class="hljs-string">&quot;~~第3个订阅消息：%@&quot;</span>,x)<span class="hljs-comment">;</span><br>&#125;]<span class="hljs-comment">;</span><br></code></pre></td></tr></table></figure>
 
 <p>这里订阅的不再是<code>s2</code>，而是刚才的<code>RACSubject</code>类型属性<code>signal</code>，此订阅的内部实现为：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">// RACSignal.m</span><br><span class="line">- (RACDisposable *)subscribeNext:(void (^)(id x))nextBlock &#123;</span><br><span class="line">    NSCParameterAssert(nextBlock != NULL);</span><br><span class="line">    </span><br><span class="line">    RACSubscriber *o = [RACSubscriber subscriberWithNext:nextBlock error:NULL completed:NULL];</span><br><span class="line">    return [self subscribe:o];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// RACSubject.m</span><br><span class="line">- (RACDisposable *)subscribe:(id&lt;RACSubscriber&gt;)subscriber &#123;</span><br><span class="line">    NSCParameterAssert(subscriber != nil);</span><br><span class="line"></span><br><span class="line">    RACCompoundDisposable *disposable = [RACCompoundDisposable compoundDisposable];</span><br><span class="line">    subscriber = [[RACPassthroughSubscriber alloc] initWithSubscriber:subscriber signal:self disposable:disposable];</span><br><span class="line"></span><br><span class="line">    NSMutableArray *subscribers = self.subscribers;</span><br><span class="line">    @synchronized (subscribers) &#123;</span><br><span class="line">        // 将订阅者保存到数组中</span><br><span class="line">        [subscribers addObject:subscriber];</span><br><span class="line">    &#125;</span><br><span class="line">    // 略。。。</span><br><span class="line"></span><br><span class="line">    return disposable;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-comment">// RACSignal.m</span><br>- (RACDisposable *)subscribeNext:(<span class="hljs-type">void</span> (^)(<span class="hljs-type">id</span> x))nextBlock &#123;<br>    <span class="hljs-built_in">NSCParameterAssert</span>(nextBlock != <span class="hljs-literal">NULL</span>);<br>    <br>    RACSubscriber *o = [RACSubscriber subscriberWithNext:nextBlock error:<span class="hljs-literal">NULL</span> completed:<span class="hljs-literal">NULL</span>];<br>    <span class="hljs-keyword">return</span> [<span class="hljs-keyword">self</span> subscribe:o];<br>&#125;<br><br><span class="hljs-comment">// RACSubject.m</span><br>- (RACDisposable *)subscribe:(<span class="hljs-type">id</span>&lt;RACSubscriber&gt;)subscriber &#123;<br>    <span class="hljs-built_in">NSCParameterAssert</span>(subscriber != <span class="hljs-literal">nil</span>);<br><br>    RACCompoundDisposable *disposable = [RACCompoundDisposable compoundDisposable];<br>    subscriber = [[RACPassthroughSubscriber alloc] initWithSubscriber:subscriber signal:<span class="hljs-keyword">self</span> disposable:disposable];<br><br>    <span class="hljs-built_in">NSMutableArray</span> *subscribers = <span class="hljs-keyword">self</span>.subscribers;<br>    <span class="hljs-keyword">@synchronized</span> (subscribers) &#123;<br>        <span class="hljs-comment">// 将订阅者保存到数组中</span><br>        [subscribers addObject:subscriber];<br>    &#125;<br>    <span class="hljs-comment">// 略。。。</span><br><br>    <span class="hljs-keyword">return</span> disposable;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>即订阅<code>signal</code>时，先创建新的订阅者，随后将订阅者添加到多播实例的数组<code>subscribers</code>中。此时还没有调用<code>s2</code>的<code>didSubscribe</code>!</p>
 <ul>
 <li>连接 connect</li>
 </ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[cnn connect];</span><br></pre></td></tr></table></figure>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-section">[cnn connect]</span><span class="hljs-comment">;</span><br></code></pre></td></tr></table></figure>
 
 <p><code>connect</code>的内部实现：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">- (RACDisposable *)connect &#123;</span><br><span class="line">    BOOL shouldConnect = OSAtomicCompareAndSwap32Barrier(0, 1, &amp;_hasConnected);</span><br><span class="line"></span><br><span class="line">    if (shouldConnect) &#123;</span><br><span class="line">        // 这里的</span><br><span class="line">        self.serialDisposable.disposable = [self.sourceSignal subscribe:_signal];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return self.serialDisposable;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs objectivec">- (RACDisposable *)connect &#123;<br>    <span class="hljs-type">BOOL</span> shouldConnect = OSAtomicCompareAndSwap32Barrier(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, &amp;_hasConnected);<br><br>    <span class="hljs-keyword">if</span> (shouldConnect) &#123;<br>        <span class="hljs-comment">// 这里的</span><br>        <span class="hljs-keyword">self</span>.serialDisposable.disposable = [<span class="hljs-keyword">self</span>.sourceSignal subscribe:_signal];<br>    &#125;<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">self</span>.serialDisposable;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>调用了<code>self.sourceSignal</code>的<code>subscribe</code>，参数为之前 RACSubject 类型的属性<code>_signal</code>（信号订阅了信号）：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">- (RACDisposable *)subscribe:(id&lt;RACSubscriber&gt;)subscriber &#123;</span><br><span class="line">    NSCParameterAssert(subscriber != nil);</span><br><span class="line"></span><br><span class="line">    RACCompoundDisposable *disposable = [RACCompoundDisposable compoundDisposable];</span><br><span class="line">    // 对subscriber做了变换</span><br><span class="line">    subscriber = [[RACPassthroughSubscriber alloc] initWithSubscriber:subscriber signal:self disposable:disposable];</span><br><span class="line"></span><br><span class="line">    if (self.didSubscribe != NULL) &#123;</span><br><span class="line">        RACDisposable *schedulingDisposable = [RACScheduler.subscriptionScheduler schedule:^&#123;</span><br><span class="line">            // 回调s2的^didSubscribe</span><br><span class="line">            RACDisposable *innerDisposable = self.didSubscribe(subscriber);</span><br><span class="line">            [disposable addDisposable:innerDisposable];</span><br><span class="line">        &#125;];</span><br><span class="line"></span><br><span class="line">        [disposable addDisposable:schedulingDisposable];</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    return disposable;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs lisp">- (<span class="hljs-name">RACDisposable</span> *)subscribe:(id&lt;RACSubscriber&gt;)subscriber &#123;<br>    NSCParameterAssert(subscriber != nil);<br><br>    RACCompoundDisposable *disposable = [RACCompoundDisposable compoundDisposable]<span class="hljs-comment">;</span><br>    // 对subscriber做了变换<br>    subscriber = [[RACPassthroughSubscriber alloc] initWithSubscriber<span class="hljs-symbol">:subscriber</span> signal<span class="hljs-symbol">:self</span> disposable<span class="hljs-symbol">:disposable</span>]<span class="hljs-comment">;</span><br><br>    if (<span class="hljs-name">self</span>.didSubscribe != NULL) &#123;<br>        RACDisposable *schedulingDisposable = [RACScheduler.subscriptionScheduler schedule:^&#123;<br>            // 回调s2的^didSubscribe<br>            RACDisposable *innerDisposable = self.didSubscribe(<span class="hljs-name">subscriber</span>)<span class="hljs-comment">;</span><br>            [disposable addDisposable<span class="hljs-symbol">:innerDisposable</span>]<span class="hljs-comment">;</span><br>        &#125;]<span class="hljs-comment">;</span><br><br>        [disposable addDisposable<span class="hljs-symbol">:schedulingDisposable</span>]<span class="hljs-comment">;</span><br>    &#125;<br>    <br>    return disposable<span class="hljs-comment">;</span><br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p><code>subscribe:</code>内对<code>_signal</code>做了变换，调了<code>self.didSubscribe(subscriber)</code>回调了<code>s2</code>的<code>didSubscribe</code>：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">RACSignal *s2 = [RACSignal createSignal:^RACDisposable *(id&lt;RACSubscriber&gt; subscriber) &#123;</span><br><span class="line">        // 此 subscriber 为 RACSubject 类型</span><br><span class="line">        [subscriber sendNext:@&quot;Hello from s2~&quot;];</span><br><span class="line">        [subscriber sendCompleted];</span><br><span class="line">        </span><br><span class="line">        return [RACDisposable disposableWithBlock:^&#123;</span><br><span class="line">            NSLog(@&quot;++s2 Disposed~&quot;);</span><br><span class="line">        &#125;];</span><br><span class="line">    &#125;];</span><br></pre></td></tr></table></figure>
+<figure class="highlight wren"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs wren"><span class="hljs-title class_">RACSignal</span> <span class="hljs-operator">*</span><span class="hljs-variable">s2</span> <span class="hljs-operator">=</span> [<span class="hljs-title class_">RACSignal</span> <span class="hljs-variable">createSignal</span>:<span class="hljs-operator">^</span><span class="hljs-title class_">RACDisposable</span> <span class="hljs-title function_">*</span>(<span class="hljs-params">id</span>&lt;<span class="hljs-params">RACSubscriber</span>&gt; <span class="hljs-params">subscriber</span>) &#123;<br>        <span class="hljs-comment">// 此 subscriber 为 RACSubject 类型</span><br>        [<span class="hljs-variable">subscriber</span> <span class="hljs-variable">sendNext</span>:@<span class="hljs-string">&quot;Hello from s2~&quot;</span>];<br>        [<span class="hljs-variable">subscriber</span> <span class="hljs-variable">sendCompleted</span>];<br>        <br>        <span class="hljs-keyword">return</span> [<span class="hljs-title class_">RACDisposable</span> <span class="hljs-variable">disposableWithBlock</span>:<span class="hljs-operator">^</span>&#123;<br>            <span class="hljs-title class_">NSLog</span>(@<span class="hljs-string">&quot;++s2 Disposed~&quot;</span>);<br>        &#125;];<br>    &#125;];<br></code></pre></td></tr></table></figure>
 
 <p><code>didSubscribe</code>内随即通过<code>sendNext:</code>向订阅者（即<code>_signal</code>）发送数据:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">- (void)sendNext:(id)value &#123;</span><br><span class="line">    [self enumerateSubscribersUsingBlock:^(id&lt;RACSubscriber&gt; subscriber) &#123;</span><br><span class="line">        [subscriber sendNext:value];</span><br><span class="line">    &#125;];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)enumerateSubscribersUsingBlock:(void (^)(id&lt;RACSubscriber&gt; subscriber))block &#123;</span><br><span class="line">    NSArray *subscribers;</span><br><span class="line">    @synchronized (self.subscribers) &#123;</span><br><span class="line">        subscribers = [self.subscribers copy];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    for (id&lt;RACSubscriber&gt; subscriber in subscribers) &#123;</span><br><span class="line">        block(subscriber);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm">- (void)sendNext:(id)value &#123;<br>    [self enumerateSubscribersUsingBlock:^(id&lt;RACSubscriber&gt; <span class="hljs-keyword">subscriber) </span>&#123;<br>        [<span class="hljs-keyword">subscriber </span>sendNext:value];<br>    &#125;];<br>&#125;<br><br>- (void)enumerateSubscribersUsingBlock:(void (^)(id&lt;RACSubscriber&gt; <span class="hljs-keyword">subscriber))block </span>&#123;<br>    NSArray *<span class="hljs-keyword">subscribers;</span><br><span class="hljs-keyword"></span>    @<span class="hljs-keyword">synchronized </span>(self.<span class="hljs-keyword">subscribers) </span>&#123;<br>        <span class="hljs-keyword">subscribers </span>= [self.<span class="hljs-keyword">subscribers </span>copy];<br>    &#125;<br><br>    for (id&lt;RACSubscriber&gt; <span class="hljs-keyword">subscriber </span>in <span class="hljs-keyword">subscribers) </span>&#123;<br>        <span class="hljs-keyword">block(subscriber);</span><br><span class="hljs-keyword"></span>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p><code>_signal</code> 的<code>sendNext:</code>方法遍历之前保存在<code>subscribers</code>数组中的订阅者，向其一一发送数据，三个订阅者依次收到回调~<br><br/></p>
 <p><strong>小结</strong>：多播主要是在内部产生<code>RACSubject</code>类型的热信号<code>_signal</code>，进而将多个订阅者保存在其数组中并最终一一向其发送数据。</p>
@@ -367,217 +511,346 @@
 <hr>
 <p>相关参考：</p>
 <p>#<a target="_blank" rel="noopener" href="https://github.com/ReactiveCocoa/ReactiveObjC/blob/master/Documentation/FrameworkOverview.md">©RAC-Github</a></p>
-</section>
-    <!-- Tags START -->
-    
-      <div class="tags">
-        <span>Tags:</span>
-        
-  <a href="/tags#源码" >
-    <span class="tag-code">源码</span>
-  </a>
 
-      </div>
-    
-    <!-- Tags END -->
-    <!-- NAV START -->
-    
-  <div class="nav-container">
-    <!-- reverse left and right to put prev and next in a more logic postition -->
-    
-      <a class="nav-left" href="/2020/12/21/modules-protocol.html">
-        <span class="nav-arrow">← </span>
-        
-          组件化-面向协议方案
-        
-      </a>
-    
-    
-      <a class="nav-right" href="/2021/05/25/RAC-async.html">
-        
-          RAC-异步行为
-        
-        <span class="nav-arrow"> →</span>
-      </a>
-    
-  </div>
-
-    <!-- NAV END -->
-    <!-- 打赏 START -->
-    
-      <div class="money-like">
-        <div class="reward-btn">
-          赏
-          <span class="money-code">
-            <span class="alipay-code">
-              <div class="code-image"></div>
-              <b>使用支付宝打赏</b>
-            </span>
-            <span class="wechat-code">
-              <div class="code-image"></div>
-              <b>使用微信打赏</b>
-            </span>
-          </span>
-        </div>
-        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
-      </div>
-    
-    <!-- 打赏 END -->
-    <!-- 二维码 START -->
-    
-    <!-- 二维码 END -->
-    
-      <!-- No Comment -->
-    
-  </article>
-  <!-- Article END -->
-  <!-- Catalog START -->
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
   
-    <aside class="catalog-container">
-  <div class="toc-main">
-    <strong class="toc-title">Catalog</strong>
-    
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E4%B8%80-%E4%BF%A1%E5%8F%B7"><span class="toc-nav-text">一.信号</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#1-%E4%BF%A1%E5%8F%B7%E6%98%AF%E5%95%A5"><span class="toc-nav-text">1.信号是啥</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-%E5%86%B7%E7%83%AD%E4%BF%A1%E5%8F%B7"><span class="toc-nav-text">2.冷热信号</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#2-1-%E5%86%B7%E4%BF%A1%E5%8F%B7"><span class="toc-nav-text">#2.1.冷信号</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#2-2-%E7%83%AD%E4%BF%A1%E5%8F%B7"><span class="toc-nav-text">#2.2.热信号</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E4%BA%8C-%E8%AE%A2%E9%98%85%E8%80%85"><span class="toc-nav-text">二.订阅者</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E4%B8%89-%E5%86%B7%E4%BF%A1%E5%8F%B7%E8%A7%A3%E8%AF%BB"><span class="toc-nav-text">三.冷信号解读</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#1-%E5%88%9B%E5%BB%BA%E4%BF%A1%E5%8F%B7"><span class="toc-nav-text">1.创建信号</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-%E8%AE%A2%E9%98%85%E4%BF%A1%E5%8F%B7"><span class="toc-nav-text">2.订阅信号</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3-%E5%8F%91%E9%80%81%E6%B6%88%E6%81%AF"><span class="toc-nav-text">3.发送消息</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%9B%9B-%E7%83%AD%E4%BF%A1%E5%8F%B7%E8%A7%A3%E8%AF%BB"><span class="toc-nav-text">四.热信号解读</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#1-%E5%88%9B%E5%BB%BA%E4%BF%A1%E5%8F%B7-1"><span class="toc-nav-text">1.创建信号</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-%E8%AE%A2%E9%98%85%E4%BF%A1%E5%8F%B7-1"><span class="toc-nav-text">2.订阅信号</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3-%E5%8F%91%E9%80%81%E6%B6%88%E6%81%AF-1"><span class="toc-nav-text">3.发送消息</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#4-%E7%94%A8%E4%BD%9C%E4%BB%A3%E7%90%86"><span class="toc-nav-text">4.用作代理</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E4%BA%94-%E7%BB%84%E6%92%AD"><span class="toc-nav-text">五.组播</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#1-%E7%A4%BA%E4%BE%8B"><span class="toc-nav-text">1.示例</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-%E5%AE%9E%E7%8E%B0"><span class="toc-nav-text">2.实现</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%85%AD-%E7%BB%93%E6%9D%9F%E8%AF%AD"><span class="toc-nav-text">六.结束语</span></a></li></ol>
-    
-  </div>
-</aside>
   
-  <!-- Catalog END -->
-</main>
-
-<script>
-  (function () {
-    var url = 'http://yoursite.com/2021/05/25/RAC-signal.html';
-    var banner = ''
-    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
-      $('#article-banner').css({
-        'background-image': 'url(' + banner + ')'
-      })
-    } else {
-      $('#article-banner').geopattern(url)
-    }
-    $('.header').removeClass('fixed-header')
-
-     // error image
-    $(".markdown-content img").on('error', function() {
-      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
-      $(this).css({
-        'cursor': 'default'
-      })
-    })
-
-    // zoom image
-    $(".markdown-content img").on('click', function() {
-      var src = $(this).attr('src')
-      if (src !== 'http://file.muyutech.com/error-img.png') {
-        var imageW = $(this).width()
-        var imageH = $(this).height()
-        
-        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
-        zoom = zoom < 1 ? 1 : zoom
-        zoom = zoom > 2 ? 2 : zoom
-        var transY = (($(window).height() - imageH) / 2).toFixed(2)
-
-        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
-        $('.image-view-wrap').addClass('wrap-active')
-        $('.image-view-wrap img').css({
-          'width': `${imageW}`,
-          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
-        })
-        $('html').css('overflow', 'hidden')
-
-        $('.image-view-wrap').on('click', function() {
-          $(this).remove()
-          $('html').attr('style', '')
-        })
-      }
-    })
-
-    // qrcode
-    var qr = new QRious({
-      element: document.getElementById('share-qrcode'),
-      value: document.location.href
-    });
-
-    // gitment
-    var gitmentConfig = "";
-    if (gitmentConfig !== 'undefined') {
-      var gitment = new Gitment({
-        id: "RAC-信号与订阅者",
-        owner: "",
-        repo: "",
-        oauth: {
-          client_id: "",
-          client_secret: ""
-        },
-        theme: {
-          render(state, instance) {
-            const container = document.createElement('div')
-            container.lang = "en-US"
-            container.className = 'gitment-container gitment-root-container'
-            container.appendChild(instance.renderHeader(state, instance))
-            container.appendChild(instance.renderEditor(state, instance))
-            container.appendChild(instance.renderComments(state, instance))
-            container.appendChild(instance.renderFooter(state, instance))
-            return container;
-          }
-        }
-      })
-      gitment.render(document.getElementById('comments'))
-    }
-  })();
-</script>
-
-    <div class="scroll-top">
-  <span class="arrow-icon"></span>
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%BA%90%E7%A0%81/">#源码</a>
+      
+    </div>
+  
 </div>
-    <footer class="app-footer">
-  <p class="copyright">
-    &copy; 2022 | <a href="https://github.com/davidlii" target="_blank">Davidli</a>
-    <br>
-    <a href="https://hexo.io" target="_blank">Hexo</a> | Theme-<a target="_blank" rel="noopener" href="https://github.com/yanm1ng">yanm1ng</a>
-  </p>
-</footer>
 
-<script>
-  function async(u, c) {
-    var d = document, t = 'script',
-      o = d.createElement(t),
-      s = d.getElementsByTagName(t)[0];
-    o.src = u;
-    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
-    s.parentNode.insertBefore(o, s);
-  }
-</script>
-<script>
-  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
-    FastClick.attach(document.body);
-  })
-</script>
 
-<script>
-  var hasLine = 'true';
-  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
-    $('figure pre').each(function(i, block) {
-      var figure = $(this).parents('figure');
-      if (hasLine === 'false') {
-        figure.find('.gutter').hide();
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>RAC-信号与订阅者</div>
+      <div>http://yoursite.com/2021/05/25/RAC-signal.html</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>May 25, 2021</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>Licensed under</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/05/25/RAC-async.html" title="RAC-异步行为">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">RAC-异步行为</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/12/21/modules-protocol.html" title="组件化-面向协议方案">
+                        <span class="hidden-mobile">组件化-面向协议方案</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;Table of Contents</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://github.com/davidlii" target="_blank" rel="nofollow noopener"><span>Davidlii</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        Views: 
+        <span id="busuanzi_value_site_pv"></span>
+        
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        Visitors: 
+        <span id="busuanzi_value_site_uv"></span>
+        
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
       }
-      var lang = figure.attr('class').split(' ')[1] || 'code';
-      var codeHtml = $(this).html();
-      var codeTag = document.createElement('code');
-      codeTag.className = lang;
-      codeTag.innerHTML = codeHtml;
-      $(this).attr('class', '').empty().html(codeTag);
-      figure.attr('data-lang', lang.toUpperCase());
-      hljs.highlightBlock(block);
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
     });
-  })
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
 </script>
-<!-- Baidu Tongji -->
 
 
-<script src="/js/script.js"></script>
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
 
-  </body>
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
 </html>

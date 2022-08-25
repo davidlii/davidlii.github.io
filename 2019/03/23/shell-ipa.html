@@ -1,172 +1,316 @@
+
+
 <!DOCTYPE html>
-<html>
-  <head>
-  <meta http-equiv="content-type" content="text/html; charset=utf-8">
-  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
-  <meta name="description" content="This is Davidli&#39;s blog ~">
-  <meta name="keyword" content="hexo-theme, vuejs">
-  
-    <link rel="shortcut icon" type="image/ico" href="/image/logo.png"/> 
-  
-  <title>
-    
-      Shell脚本打包与上传 | Davidli
-    
-  </title>
-  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
-  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
-  
-<link rel="stylesheet" href="/css/style.css">
-<link rel="stylesheet" href="/css/plugins/gitment.css">
-
-  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
-  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
-  
-<script src="/js/qrious.js"></script>
-<script src="/js/gitment.js"></script>
-
-  
-  
-    <!-- MathJax support START -->
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      });
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      });
-    </script>
-    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <!-- MathJax support END -->
-  
+<html lang="zh-Hans" data-default-color-scheme=auto>
 
 
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="Davidli">
+  
+    <meta name="description" content="打包流程： 编译.xcarchive包； 生成.ipa文件； 上传到苹果商店或第三方平台。  自动化：这里所说的自动化，主要是通过shell脚本，利用 Command Line Tools 提供的 xcodebuild 命令来编译和导出 ipa，再通过 Application Loader 提供的 altool 命令行工具，或者其他三方平台提供的命令行工具上传 ipa 和 dSYM 文件。 清理构">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Shell脚本打包与上传">
+<meta property="og:url" content="http://yoursite.com/2019/03/23/shell-ipa.html">
+<meta property="og:site_name" content="Davidli">
+<meta property="og:description" content="打包流程： 编译.xcarchive包； 生成.ipa文件； 上传到苹果商店或第三方平台。  自动化：这里所说的自动化，主要是通过shell脚本，利用 Command Line Tools 提供的 xcodebuild 命令来编译和导出 ipa，再通过 Application Loader 提供的 altool 命令行工具，或者其他三方平台提供的命令行工具上传 ipa 和 dSYM 文件。 清理构">
+<meta property="og:locale">
+<meta property="article:published_time" content="2019-03-23T11:44:42.000Z">
+<meta property="article:modified_time" content="2018-10-14T11:44:42.000Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="效率">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>Shell脚本打包与上传 - Davidli</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"yoursite.com","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
 <meta name="generator" content="Hexo 6.2.0"></head>
-<div class="wechat-share">
-  <img src="/css/images/logo.png" />
-</div>
 
-  <body>
-    <header class="header fixed-header">
-  <div class="header-container">
-    <a class="home-link" href="/">
-      <div class="logo"></div>
-      <span>Davidli</span>
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Davidli</strong>
     </a>
-    <ul class="right-list">
-      
-        <li class="list-item">
-          
-            <a href="/" class="item-link">Davidli</a>
-          
-        </li>
-      
-        <li class="list-item">
-          
-            <a href="/archives/" class="item-link">归档</a>
-          
-        </li>
-      
-        <li class="list-item">
-          
-            <a href="/tags/" class="item-link">标签</a>
-          
-        </li>
-      
-        <li class="list-item">
-          
-            <a href="/about/" class="item-link">关于</a>
-          
-        </li>
-      
-    </ul>
-    <div class="menu">
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-    </div>
-    <div class="menu-mask">
-      <ul class="menu-list">
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
         
-          <li class="menu-item">
-            
-              <a href="/" class="menu-link">Davidli</a>
-            
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                Categories
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                Tags
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
           </li>
+          
         
-          <li class="menu-item">
-            
-              <a href="/archives/" class="menu-link">归档</a>
-            
-          </li>
         
-          <li class="menu-item">
-            
-              <a href="/tags/" class="menu-link">标签</a>
-            
-          </li>
-        
-          <li class="menu-item">
-            
-              <a href="/about/" class="menu-link">关于</a>
-            
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
           </li>
         
       </ul>
     </div>
   </div>
-</header>
+</nav>
 
-    <div id="article-banner">
-  <h2>Shell脚本打包与上传</h2>
-  <p class="post-date">2019-03-23</p>
-  <div class="arrow-down">
-    <a href="javascript:;"></a>
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Shell脚本打包与上传"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2019-03-23 19:44" pubdate>
+          March 23, 2019 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          8.1k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          68 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
   </div>
 </div>
-<main class="app-body flex-box">
-  <!-- Article START -->
-  <article class="post-article">
-    <section class="markdown-content"><h3 id="打包流程："><a href="#打包流程：" class="headerlink" title="打包流程："></a>打包流程：</h3><ol>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Shell脚本打包与上传</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h3 id="打包流程："><a href="#打包流程：" class="headerlink" title="打包流程："></a>打包流程：</h3><ol>
 <li>编译.xcarchive包；</li>
 <li>生成.ipa文件；</li>
 <li>上传到苹果商店或第三方平台。</li>
 </ol>
 <h3 id="自动化："><a href="#自动化：" class="headerlink" title="自动化："></a>自动化：</h3><p>这里所说的自动化，主要是通过shell脚本，利用 Command Line Tools 提供的 <code>xcodebuild</code> 命令来编译和导出 ipa，再通过 Application Loader 提供的 <code>altool</code> 命令行工具，或者其他三方平台提供的命令行工具上传 ipa 和 dSYM 文件。</p>
 <h4 id="清理构建目录"><a href="#清理构建目录" class="headerlink" title="清理构建目录"></a>清理构建目录</h4><p>编译前先clean，相当于在 Xcode 进行 Product -&gt; clean。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">xcodebuild \</span><br><span class="line">clean -configuration $&#123;development_mode&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-attribute">xcodebuild</span> \<br>clean -configuration <span class="hljs-variable">$&#123;development_mode&#125;</span><br></code></pre></td></tr></table></figure>
 
 <p><code>-configuration</code> 用来表示打包的方式，相当于打包前配置 Edit scheme -&gt; info -&gt; Build configuration，告诉编译器打出来的包是何种包，比如 Release、InHouse等。</p>
-<h4 id="编译xcarchive包"><a href="#编译xcarchive包" class="headerlink" title="编译xcarchive包"></a>编译xcarchive包</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">xcodebuild archive \</span><br><span class="line">-workspace $&#123;project_path&#125;/$&#123;project_name&#125;.xcworkspace \</span><br><span class="line">-scheme $&#123;scheme_name&#125; \</span><br><span class="line">-configuration $&#123;development_mode&#125; \</span><br><span class="line">-archivePath $&#123;build_path&#125;/$&#123;project_name&#125;.xcarchive</span><br></pre></td></tr></table></figure>
+<h4 id="编译xcarchive包"><a href="#编译xcarchive包" class="headerlink" title="编译xcarchive包"></a>编译xcarchive包</h4><figure class="highlight nsis"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs nsis">xcodebuild <span class="hljs-params">archive</span> \<br>-workspace <span class="hljs-variable">$&#123;project_path&#125;</span>/<span class="hljs-variable">$&#123;project_name&#125;</span>.xcworkspace \<br>-scheme <span class="hljs-variable">$&#123;scheme_name&#125;</span> \<br>-configuration <span class="hljs-variable">$&#123;development_mode&#125;</span> \<br>-<span class="hljs-params">archive</span>Path <span class="hljs-variable">$&#123;build_path&#125;</span>/<span class="hljs-variable">$&#123;project_name&#125;</span>.xc<span class="hljs-params">archive</span><br></code></pre></td></tr></table></figure>
 
 <p><code>-workspace</code>表示工作空间，一个项目中有多个<code>project</code>时，比如通过 pod 集成了三方库后都会自动创建一个新的工作空间。如果没有，可以不加这个参数。<code>-archivePath</code>，用来配置生成的.xcarchive的路径。</p>
-<h4 id="导出ipa文件"><a href="#导出ipa文件" class="headerlink" title="导出ipa文件"></a>导出ipa文件</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">xcodebuild -exportArchive -archivePath $&#123;build_path&#125;/$&#123;project_name&#125;.xcarchive \</span><br><span class="line">-configuration $&#123;development_mode&#125; \</span><br><span class="line">-exportPath $&#123;exportIpaPath&#125; \</span><br><span class="line">-exportOptionsPlist $&#123;exportOptionsPlistPath&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="导出ipa文件"><a href="#导出ipa文件" class="headerlink" title="导出ipa文件"></a>导出ipa文件</h4><figure class="highlight nsis"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs nsis">xcodebuild -export<span class="hljs-params">Archive</span> -<span class="hljs-params">archive</span>Path <span class="hljs-variable">$&#123;build_path&#125;</span>/<span class="hljs-variable">$&#123;project_name&#125;</span>.xc<span class="hljs-params">archive</span> \<br>-configuration <span class="hljs-variable">$&#123;development_mode&#125;</span> \<br>-exportPath <span class="hljs-variable">$&#123;exportIpaPath&#125;</span> \<br>-exportOptionsPlist <span class="hljs-variable">$&#123;exportOptionsPlistPath&#125;</span><br></code></pre></td></tr></table></figure>
 
 <p><code>-exportPath</code>表示 ipa 文件的输出路径；<br><br/></p>
 <p><code>-exportOptionsPlist</code>表示 ExportOptions.plist 配置文件的路径。此 plist 是打包时必须的文件，在手动打包并 export 出 ipa 包时，可以在 ipa 包的同级目录下找到，可以拿过来用，或者通过 Xcode 手动创建一份。如果有多个渠道包，也可以通过脚本生成对应的 plist。</p>
 <p>#示例：ExportOptions.plist</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;!DOCTYPE plist PUBLIC &quot;-//Apple//DTD PLIST 1.0//EN&quot; &quot;http://www.apple.com/DTDs/PropertyList-1.0.dtd&quot;&gt;</span><br><span class="line">&lt;plist version=&quot;1.0&quot;&gt;</span><br><span class="line">&lt;dict&gt;</span><br><span class="line">&lt;key&gt;teamID&lt;/key&gt;</span><br><span class="line">&lt;string&gt;略略略&lt;/string&gt;</span><br><span class="line">&lt;key&gt;method&lt;/key&gt;</span><br><span class="line">&lt;string&gt;enterprise&lt;/string&gt;</span><br><span class="line">&lt;key&gt;uploadSymbols&lt;/key&gt;</span><br><span class="line">&lt;true/&gt;</span><br><span class="line">&lt;/dict&gt;</span><br><span class="line">&lt;/plist&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=<span class="hljs-string">&quot;1.0&quot;</span> encoding=<span class="hljs-string">&quot;UTF-8&quot;</span>?&gt;</span><br><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">plist</span> <span class="hljs-keyword">PUBLIC</span> <span class="hljs-string">&quot;-//Apple//DTD PLIST 1.0//EN&quot;</span> <span class="hljs-string">&quot;http://www.apple.com/DTDs/PropertyList-1.0.dtd&quot;</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">plist</span> <span class="hljs-attr">version</span>=<span class="hljs-string">&quot;1.0&quot;</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">dict</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>teamID<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>略略略<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>method<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>enterprise<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>uploadSymbols<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">true</span>/&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dict</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">plist</span>&gt;</span><br></code></pre></td></tr></table></figure>
 
 <p>注意：Xcode9 之后，ExportOptions.plist 需要指定的信息有变，具体可以参考 <a target="_blank" rel="noopener" href="https://blog.csdn.net/andanlan/article/details/78113330?locationNum=9&fps=1">这里</a>~<br><br/></p>
 <p><strong>#完整示例</strong><br><br/></p>
 <p>下面是完整的 shell 脚本，实现了编译.xcarchive、导出 ipa 与 dSYM，命名为<code>autobuild.sh</code>，放在工程根目录下。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/sh</span><br><span class="line"></span><br><span class="line">#works for  Xcode 7.0+ only</span><br><span class="line"></span><br><span class="line">echo &quot;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; Start at $(date) &lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&quot;</span><br><span class="line"></span><br><span class="line">PROJECT_ROOT_PATH=$PWD</span><br><span class="line">AUTOBUILD_PATH=&quot;$PROJECT_ROOT_PATH/AutoBuild&quot;</span><br><span class="line"></span><br><span class="line">CURRENT_DATE=$(date +%Y_%m%d_%H%M)</span><br><span class="line">WORKSPACE_NAME=&quot;Demo.xcworkspace&quot;</span><br><span class="line"></span><br><span class="line">#导出配置</span><br><span class="line">HEADER_PLIST=&quot;$AUTOBUILD_PATH/Header.plist&quot;</span><br><span class="line">EXPORT_PLIST=&quot;$AUTOBUILD_PATH/ExportOptions.plist&quot;</span><br><span class="line"></span><br><span class="line">#Info key</span><br><span class="line">KEY_SCHEME=&quot;KEY_SCHEME&quot;</span><br><span class="line">KEY_APP_NAME=&quot;KEY_APP_NAME&quot;</span><br><span class="line">KEY_TEAM_ID=&quot;KEY_TEAM_ID&quot;</span><br><span class="line">KEY_DEV_ID=&quot;KEY_DEV_ID&quot;</span><br><span class="line"></span><br><span class="line">#Flavors</span><br><span class="line">DemoInHouse=&#123;$KEY_SCHEME:&quot;DemoInHouse&quot;,$KEY_APP_NAME:&quot;InHouse&quot;,$KEY_TEAM_ID:&quot;xxxxxxxxxx&quot;,$KEY_DEV_ID:&quot;xxx&quot;&#125;</span><br><span class="line">DemoRelease=&#123;$KEY_SCHEME:&quot;DemoRelease&quot;,$KEY_APP_NAME:&quot;Release&quot;,$KEY_TEAM_ID:&quot;xxxxxxxxxx&quot;,$KEY_DEV_ID:&quot;xxx&quot;&#125;</span><br><span class="line"></span><br><span class="line">FLAVORS=($DemoInHouse)</span><br><span class="line"></span><br><span class="line">#Parse method</span><br><span class="line">parse_json()&#123;</span><br><span class="line">echo $1 | sed &#x27;s/.*&#x27;$2&#x27;:\([^,&#125;]*\).*/\1/&#x27;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#build release apps directory</span><br><span class="line">BUILD_DIR=&quot;$PROJECT_ROOT_PATH/Build&quot;</span><br><span class="line">RELEASE_DIR=&quot;$BUILD_DIR/Products&quot;</span><br><span class="line"></span><br><span class="line">rm -rdf $BUILD_DIR</span><br><span class="line"></span><br><span class="line">#final binarys&#x27; directory</span><br><span class="line">OUT_BINARY_DIR=&quot;$PROJECT_ROOT_PATH/binarys_$CURRENT_DATE&quot;</span><br><span class="line"></span><br><span class="line">if [ ! -d $OUT_BINARY_DIR ]; then</span><br><span class="line">	mkdir $OUT_BINARY_DIR</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line">for ((i = 0; i &lt; $&#123;#FLAVORS[@]&#125;; i++))</span><br><span class="line">do	</span><br><span class="line">	#parse elements</span><br><span class="line">	TARGET_SCHEMES=$(parse_json $&#123;FLAVORS[$i]&#125; $KEY_SCHEME)</span><br><span class="line">	TARGET_APP_NAMES=$(parse_json $&#123;FLAVORS[$i]&#125; $KEY_APP_NAME)</span><br><span class="line">	TARGET_TEAM_IDS=$(parse_json $&#123;FLAVORS[$i]&#125; $KEY_TEAM_ID)</span><br><span class="line">	TARGET_DEV_IDS=$(parse_json $&#123;FLAVORS[$i]&#125; $KEY_DEV_ID)</span><br><span class="line"></span><br><span class="line">	#reset export options plist</span><br><span class="line">	rm $EXPORT_PLIST</span><br><span class="line">	</span><br><span class="line">	cat $HEADER_PLIST &gt;&gt; $EXPORT_PLIST</span><br><span class="line">	</span><br><span class="line">	echo &quot;&lt;plist version=\&quot;1.0\&quot;&gt;&quot; &gt;&gt; $EXPORT_PLIST</span><br><span class="line">	echo &quot;&lt;dict&gt;&quot; &gt;&gt; $EXPORT_PLIST</span><br><span class="line">	echo &quot;&lt;key&gt;teamID&lt;/key&gt;&quot; &gt;&gt; $EXPORT_PLIST</span><br><span class="line">	echo &quot;&lt;string&gt;$TARGET_TEAM_IDS&lt;/string&gt;&quot; &gt;&gt; $EXPORT_PLIST</span><br><span class="line">	echo &quot;&lt;key&gt;method&lt;/key&gt;&quot; &gt;&gt; $EXPORT_PLIST</span><br><span class="line">	</span><br><span class="line">	echo &quot;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; target scheme $TARGET_SCHEMES&quot;</span><br><span class="line">	</span><br><span class="line">	if [ $TARGET_SCHEMES = &quot;DemoInHouse&quot; ]; then</span><br><span class="line">		echo &quot;&lt;string&gt;enterprise&lt;/string&gt;&quot; &gt;&gt; $EXPORT_PLIST</span><br><span class="line">		echo &quot;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; enterprise Done&quot;</span><br><span class="line">	else</span><br><span class="line">		echo &quot;&lt;string&gt;app-store&lt;/string&gt;&quot; &gt;&gt; $EXPORT_PLIST</span><br><span class="line">		echo &quot;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; app-store Done&quot;</span><br><span class="line">	fi</span><br><span class="line">	</span><br><span class="line">	echo &quot;&lt;key&gt;uploadSymbols&lt;/key&gt;&quot; &gt;&gt; $EXPORT_PLIST</span><br><span class="line">	echo &quot;&lt;true/&gt;&quot; &gt;&gt; $EXPORT_PLIST</span><br><span class="line">	echo &quot;&lt;/dict&gt;&quot; &gt;&gt; $EXPORT_PLIST</span><br><span class="line">	echo &quot;&lt;/plist&gt;&quot; &gt;&gt; $EXPORT_PLIST</span><br><span class="line">	</span><br><span class="line">	echo &quot;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; Reset export options Done&quot;</span><br><span class="line"></span><br><span class="line">	#替换素材</span><br><span class="line">	cd $AUTOBUILD_PATH</span><br><span class="line">	./replace_res.sh $TARGET_SCHEMES</span><br><span class="line"></span><br><span class="line">	# return root</span><br><span class="line">	cd $PROJECT_ROOT_PATH</span><br><span class="line">	echo &quot;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; Reset res Done&quot;</span><br><span class="line">	</span><br><span class="line">	#export files</span><br><span class="line">	ARCHIVE_FILE=&quot;$OUT_BINARY_DIR/$TARGET_APP_NAMES.xcarchive&quot;</span><br><span class="line">	DSYMS_FILE=&quot;$TARGET_APP_NAMES.dSYMs.zip&quot;</span><br><span class="line">	</span><br><span class="line">	#clean prject</span><br><span class="line">	xcodebuild -workspace $WORKSPACE_NAME -scheme $TARGET_SCHEMES -configuration $TARGET_APP_NAMES clean</span><br><span class="line">	</span><br><span class="line">	#build &amp; archive</span><br><span class="line">	xcodebuild archive -workspace $WORKSPACE_NAME -scheme $TARGET_SCHEMES -configuration $TARGET_APP_NAMES -archivePath $ARCHIVE_FILE</span><br><span class="line">	</span><br><span class="line">	cd $ARCHIVE_FILE</span><br><span class="line">	zip -r $DSYMS_FILE &quot;dSYMs&quot;</span><br><span class="line">	mv $DSYMS_FILE $OUT_BINARY_DIR</span><br><span class="line">	</span><br><span class="line">	# return root</span><br><span class="line">	cd $PROJECT_ROOT_PATH</span><br><span class="line">	</span><br><span class="line">	#export</span><br><span class="line">	xcodebuild -exportArchive -archivePath $ARCHIVE_FILE -exportPath $OUT_BINARY_DIR -exportOptionsPlist $EXPORT_PLIST</span><br><span class="line">	</span><br><span class="line">	#rename ipa file failed since creating ipa file is asynchronized</span><br><span class="line">	echo &quot;apple id paired&quot; &gt;&gt; &quot;$OUT_BINARY_DIR/$TARGET_APP_NAMES_$TARGET_DEV_IDS&quot;</span><br><span class="line">	</span><br><span class="line">	echo &quot;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; $TARGET_SCHEMES single loop Done&quot;</span><br><span class="line">	</span><br><span class="line">done</span><br><span class="line"></span><br><span class="line">echo &quot;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; Finish at $(date) &lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&quot;</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-meta">#!/bin/sh</span><br><br><span class="hljs-comment">#works for  Xcode 7.0+ only</span><br><br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; Start at <span class="hljs-subst">$(date)</span> &lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&quot;</span><br><br>PROJECT_ROOT_PATH=<span class="hljs-variable">$PWD</span><br>AUTOBUILD_PATH=<span class="hljs-string">&quot;<span class="hljs-variable">$PROJECT_ROOT_PATH</span>/AutoBuild&quot;</span><br><br>CURRENT_DATE=$(<span class="hljs-built_in">date</span> +%Y_%m%d_%H%M)<br>WORKSPACE_NAME=<span class="hljs-string">&quot;Demo.xcworkspace&quot;</span><br><br><span class="hljs-comment">#导出配置</span><br>HEADER_PLIST=<span class="hljs-string">&quot;<span class="hljs-variable">$AUTOBUILD_PATH</span>/Header.plist&quot;</span><br>EXPORT_PLIST=<span class="hljs-string">&quot;<span class="hljs-variable">$AUTOBUILD_PATH</span>/ExportOptions.plist&quot;</span><br><br><span class="hljs-comment">#Info key</span><br>KEY_SCHEME=<span class="hljs-string">&quot;KEY_SCHEME&quot;</span><br>KEY_APP_NAME=<span class="hljs-string">&quot;KEY_APP_NAME&quot;</span><br>KEY_TEAM_ID=<span class="hljs-string">&quot;KEY_TEAM_ID&quot;</span><br>KEY_DEV_ID=<span class="hljs-string">&quot;KEY_DEV_ID&quot;</span><br><br><span class="hljs-comment">#Flavors</span><br>DemoInHouse=&#123;<span class="hljs-variable">$KEY_SCHEME</span>:<span class="hljs-string">&quot;DemoInHouse&quot;</span>,<span class="hljs-variable">$KEY_APP_NAME</span>:<span class="hljs-string">&quot;InHouse&quot;</span>,<span class="hljs-variable">$KEY_TEAM_ID</span>:<span class="hljs-string">&quot;xxxxxxxxxx&quot;</span>,<span class="hljs-variable">$KEY_DEV_ID</span>:<span class="hljs-string">&quot;xxx&quot;</span>&#125;<br>DemoRelease=&#123;<span class="hljs-variable">$KEY_SCHEME</span>:<span class="hljs-string">&quot;DemoRelease&quot;</span>,<span class="hljs-variable">$KEY_APP_NAME</span>:<span class="hljs-string">&quot;Release&quot;</span>,<span class="hljs-variable">$KEY_TEAM_ID</span>:<span class="hljs-string">&quot;xxxxxxxxxx&quot;</span>,<span class="hljs-variable">$KEY_DEV_ID</span>:<span class="hljs-string">&quot;xxx&quot;</span>&#125;<br><br>FLAVORS=(<span class="hljs-variable">$DemoInHouse</span>)<br><br><span class="hljs-comment">#Parse method</span><br><span class="hljs-function"><span class="hljs-title">parse_json</span></span>()&#123;<br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$1</span> | sed <span class="hljs-string">&#x27;s/.*&#x27;</span><span class="hljs-variable">$2</span><span class="hljs-string">&#x27;:\([^,&#125;]*\).*/\1/&#x27;</span><br>&#125;<br><br><span class="hljs-comment">#build release apps directory</span><br>BUILD_DIR=<span class="hljs-string">&quot;<span class="hljs-variable">$PROJECT_ROOT_PATH</span>/Build&quot;</span><br>RELEASE_DIR=<span class="hljs-string">&quot;<span class="hljs-variable">$BUILD_DIR</span>/Products&quot;</span><br><br><span class="hljs-built_in">rm</span> -rdf <span class="hljs-variable">$BUILD_DIR</span><br><br><span class="hljs-comment">#final binarys&#x27; directory</span><br>OUT_BINARY_DIR=<span class="hljs-string">&quot;<span class="hljs-variable">$PROJECT_ROOT_PATH</span>/binarys_<span class="hljs-variable">$CURRENT_DATE</span>&quot;</span><br><br><span class="hljs-keyword">if</span> [ ! -d <span class="hljs-variable">$OUT_BINARY_DIR</span> ]; <span class="hljs-keyword">then</span><br>	<span class="hljs-built_in">mkdir</span> <span class="hljs-variable">$OUT_BINARY_DIR</span><br><span class="hljs-keyword">fi</span><br><br><span class="hljs-keyword">for</span> ((i = 0; i &lt; <span class="hljs-variable">$&#123;#FLAVORS[@]&#125;</span>; i++))<br><span class="hljs-keyword">do</span>	<br>	<span class="hljs-comment">#parse elements</span><br>	TARGET_SCHEMES=$(parse_json <span class="hljs-variable">$&#123;FLAVORS[$i]&#125;</span> <span class="hljs-variable">$KEY_SCHEME</span>)<br>	TARGET_APP_NAMES=$(parse_json <span class="hljs-variable">$&#123;FLAVORS[$i]&#125;</span> <span class="hljs-variable">$KEY_APP_NAME</span>)<br>	TARGET_TEAM_IDS=$(parse_json <span class="hljs-variable">$&#123;FLAVORS[$i]&#125;</span> <span class="hljs-variable">$KEY_TEAM_ID</span>)<br>	TARGET_DEV_IDS=$(parse_json <span class="hljs-variable">$&#123;FLAVORS[$i]&#125;</span> <span class="hljs-variable">$KEY_DEV_ID</span>)<br><br>	<span class="hljs-comment">#reset export options plist</span><br>	<span class="hljs-built_in">rm</span> <span class="hljs-variable">$EXPORT_PLIST</span><br>	<br>	<span class="hljs-built_in">cat</span> <span class="hljs-variable">$HEADER_PLIST</span> &gt;&gt; <span class="hljs-variable">$EXPORT_PLIST</span><br>	<br>	<span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;&lt;plist version=\&quot;1.0\&quot;&gt;&quot;</span> &gt;&gt; <span class="hljs-variable">$EXPORT_PLIST</span><br>	<span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;&lt;dict&gt;&quot;</span> &gt;&gt; <span class="hljs-variable">$EXPORT_PLIST</span><br>	<span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;&lt;key&gt;teamID&lt;/key&gt;&quot;</span> &gt;&gt; <span class="hljs-variable">$EXPORT_PLIST</span><br>	<span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;&lt;string&gt;<span class="hljs-variable">$TARGET_TEAM_IDS</span>&lt;/string&gt;&quot;</span> &gt;&gt; <span class="hljs-variable">$EXPORT_PLIST</span><br>	<span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;&lt;key&gt;method&lt;/key&gt;&quot;</span> &gt;&gt; <span class="hljs-variable">$EXPORT_PLIST</span><br>	<br>	<span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; target scheme <span class="hljs-variable">$TARGET_SCHEMES</span>&quot;</span><br>	<br>	<span class="hljs-keyword">if</span> [ <span class="hljs-variable">$TARGET_SCHEMES</span> = <span class="hljs-string">&quot;DemoInHouse&quot;</span> ]; <span class="hljs-keyword">then</span><br>		<span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;&lt;string&gt;enterprise&lt;/string&gt;&quot;</span> &gt;&gt; <span class="hljs-variable">$EXPORT_PLIST</span><br>		<span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; enterprise Done&quot;</span><br>	<span class="hljs-keyword">else</span><br>		<span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;&lt;string&gt;app-store&lt;/string&gt;&quot;</span> &gt;&gt; <span class="hljs-variable">$EXPORT_PLIST</span><br>		<span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; app-store Done&quot;</span><br>	<span class="hljs-keyword">fi</span><br>	<br>	<span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;&lt;key&gt;uploadSymbols&lt;/key&gt;&quot;</span> &gt;&gt; <span class="hljs-variable">$EXPORT_PLIST</span><br>	<span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;&lt;true/&gt;&quot;</span> &gt;&gt; <span class="hljs-variable">$EXPORT_PLIST</span><br>	<span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;&lt;/dict&gt;&quot;</span> &gt;&gt; <span class="hljs-variable">$EXPORT_PLIST</span><br>	<span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;&lt;/plist&gt;&quot;</span> &gt;&gt; <span class="hljs-variable">$EXPORT_PLIST</span><br>	<br>	<span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; Reset export options Done&quot;</span><br><br>	<span class="hljs-comment">#替换素材</span><br>	<span class="hljs-built_in">cd</span> <span class="hljs-variable">$AUTOBUILD_PATH</span><br>	./replace_res.sh <span class="hljs-variable">$TARGET_SCHEMES</span><br><br>	<span class="hljs-comment"># return root</span><br>	<span class="hljs-built_in">cd</span> <span class="hljs-variable">$PROJECT_ROOT_PATH</span><br>	<span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; Reset res Done&quot;</span><br>	<br>	<span class="hljs-comment">#export files</span><br>	ARCHIVE_FILE=<span class="hljs-string">&quot;<span class="hljs-variable">$OUT_BINARY_DIR</span>/<span class="hljs-variable">$TARGET_APP_NAMES</span>.xcarchive&quot;</span><br>	DSYMS_FILE=<span class="hljs-string">&quot;<span class="hljs-variable">$TARGET_APP_NAMES</span>.dSYMs.zip&quot;</span><br>	<br>	<span class="hljs-comment">#clean prject</span><br>	xcodebuild -workspace <span class="hljs-variable">$WORKSPACE_NAME</span> -scheme <span class="hljs-variable">$TARGET_SCHEMES</span> -configuration <span class="hljs-variable">$TARGET_APP_NAMES</span> clean<br>	<br>	<span class="hljs-comment">#build &amp; archive</span><br>	xcodebuild archive -workspace <span class="hljs-variable">$WORKSPACE_NAME</span> -scheme <span class="hljs-variable">$TARGET_SCHEMES</span> -configuration <span class="hljs-variable">$TARGET_APP_NAMES</span> -archivePath <span class="hljs-variable">$ARCHIVE_FILE</span><br>	<br>	<span class="hljs-built_in">cd</span> <span class="hljs-variable">$ARCHIVE_FILE</span><br>	zip -r <span class="hljs-variable">$DSYMS_FILE</span> <span class="hljs-string">&quot;dSYMs&quot;</span><br>	<span class="hljs-built_in">mv</span> <span class="hljs-variable">$DSYMS_FILE</span> <span class="hljs-variable">$OUT_BINARY_DIR</span><br>	<br>	<span class="hljs-comment"># return root</span><br>	<span class="hljs-built_in">cd</span> <span class="hljs-variable">$PROJECT_ROOT_PATH</span><br>	<br>	<span class="hljs-comment">#export</span><br>	xcodebuild -exportArchive -archivePath <span class="hljs-variable">$ARCHIVE_FILE</span> -exportPath <span class="hljs-variable">$OUT_BINARY_DIR</span> -exportOptionsPlist <span class="hljs-variable">$EXPORT_PLIST</span><br>	<br>	<span class="hljs-comment">#rename ipa file failed since creating ipa file is asynchronized</span><br>	<span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;apple id paired&quot;</span> &gt;&gt; <span class="hljs-string">&quot;<span class="hljs-variable">$OUT_BINARY_DIR</span>/$TARGET_APP_NAMES_<span class="hljs-variable">$TARGET_DEV_IDS</span>&quot;</span><br>	<br>	<span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; <span class="hljs-variable">$TARGET_SCHEMES</span> single loop Done&quot;</span><br>	<br><span class="hljs-keyword">done</span><br><br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; Finish at <span class="hljs-subst">$(date)</span> &lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&quot;</span><br></code></pre></td></tr></table></figure>
 
 <p>使用时先根据需要打包的版本，修改<code>FLAVORS=($DemoInHouse)</code>中的内容。如果只打一个包，更换$后的命名即可；如果需要打多个包，则在输入多个包名，以逗号隔开，如:<code>FLAVORS=($DemoInHouse,$DemoRelease)</code>。最后，在终端中<code>./autobuild.sh</code>，直接执行脚本即可。</p>
 <h4 id="验证并上传到商店"><a href="#验证并上传到商店" class="headerlink" title="验证并上传到商店"></a>验证并上传到商店</h4><p>Xcode 集成了 Application Loader，你可以用它来手动上传 App 的二进制文件。这里继续使用脚本的方式，通过 Application Loader 的命令行工具 altool 来验证二进制文件并上传到商店。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">//altool工具路径</span><br><span class="line">altoolPath=&quot;/Applications/Xcode.app/Contents/Applications/Application Loader.app/Contents/Frameworks/ITunesSoftwareService.framework/Versions/A/Support/altool&quot;</span><br><span class="line">//验证</span><br><span class="line">&quot;$altoolPath&quot; --validate-app -f $&#123;exportIpaPath&#125;/$&#123;scheme_name&#125;.ipa -u appleID -p password -t ios --output-format xml</span><br><span class="line">//上传</span><br><span class="line">&quot;$altoolPath&quot; --upload-app -f $&#123;exportIpaPath&#125;/$&#123;scheme_name&#125;.ipa -u appleID -p password -t ios --output-format xml</span><br></pre></td></tr></table></figure>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs stylus"><span class="hljs-comment">//altool工具路径</span><br>altoolPath=<span class="hljs-string">&quot;/Applications/Xcode.app/Contents/Applications/Application Loader.app/Contents/Frameworks/ITunesSoftwareService.framework/Versions/A/Support/altool&quot;</span><br><span class="hljs-comment">//验证</span><br><span class="hljs-string">&quot;$altoolPath&quot;</span> <span class="hljs-attr">--validate-app</span> -f $&#123;exportIpaPath&#125;/$&#123;scheme_name&#125;<span class="hljs-selector-class">.ipa</span> -u appleID -<span class="hljs-selector-tag">p</span> password -t ios <span class="hljs-attr">--output-format</span> xml<br><span class="hljs-comment">//上传</span><br><span class="hljs-string">&quot;$altoolPath&quot;</span> <span class="hljs-attr">--upload-app</span> -f $&#123;exportIpaPath&#125;/$&#123;scheme_name&#125;<span class="hljs-selector-class">.ipa</span> -u appleID -<span class="hljs-selector-tag">p</span> password -t ios <span class="hljs-attr">--output-format</span> xml<br></code></pre></td></tr></table></figure>
 
 <table>
 <thead>
@@ -200,16 +344,16 @@
 <td>您想让 Application Loader 以结构化的 XML 格式还是非结构化的文本格式返回输出信息。默认情况下，Application Loader 以文本格式返回输出信息。</td>
 </tr>
 </tbody></table>
-<h4 id="上传到Fir"><a href="#上传到Fir" class="headerlink" title="上传到Fir"></a>上传到Fir</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">firApiToken=&quot;xxxxxxxxxxx&quot;</span><br><span class="line">fir publish $exportIpaPath/$scheme_name.ipa -T &quot;$firApiToken&quot;</span><br></pre></td></tr></table></figure>
+<h4 id="上传到Fir"><a href="#上传到Fir" class="headerlink" title="上传到Fir"></a>上传到Fir</h4><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs routeros"><span class="hljs-attribute">firApiToken</span>=<span class="hljs-string">&quot;xxxxxxxxxxx&quot;</span><br>fir publish <span class="hljs-variable">$exportIpaPath</span>/<span class="hljs-variable">$scheme_name</span>.ipa -T <span class="hljs-string">&quot;<span class="hljs-variable">$firApiToken</span>&quot;</span><br></code></pre></td></tr></table></figure>
 
 <p>注意：使用脚本上传到Fir平台前，需要先安装 fir-cli：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gem install fir-cli</span><br></pre></td></tr></table></figure>
+<figure class="highlight avrasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs avrasm">gem install fir-<span class="hljs-keyword">cli</span><br></code></pre></td></tr></table></figure>
 
-<h4 id="上传到蒲公英"><a href="#上传到蒲公英" class="headerlink" title="上传到蒲公英"></a>上传到蒲公英</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -F &quot;file=@$exportIpaPath/$scheme_name.ipa&quot; -F &quot;uKey=xxx&quot; -F &quot;_api_key=xxx https://qiniu-storage.pgyer.com/apiv1/app/upload</span><br></pre></td></tr></table></figure>
+<h4 id="上传到蒲公英"><a href="#上传到蒲公英" class="headerlink" title="上传到蒲公英"></a>上传到蒲公英</h4><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs powershell"><span class="hljs-built_in">curl</span> <span class="hljs-operator">-F</span> <span class="hljs-string">&quot;file=@<span class="hljs-variable">$exportIpaPath</span>/<span class="hljs-variable">$scheme_name</span>.ipa&quot;</span> <span class="hljs-operator">-F</span> <span class="hljs-string">&quot;uKey=xxx&quot;</span> <span class="hljs-operator">-F</span> <span class="hljs-string">&quot;_api_key=xxx https://qiniu-storage.pgyer.com/apiv1/app/upload</span><br></code></pre></td></tr></table></figure>
 
 <p>请根据开发者自己的账号，将其中的 uKey 和 _api_key 的值替换为相应的值。完整的使用规则请看 <a target="_blank" rel="noopener" href="https://www.pgyer.com/doc/api">这里</a>~</p>
 <h4 id="上传符号表"><a href="#上传符号表" class="headerlink" title="上传符号表"></a>上传符号表</h4><p>如果应用接入了崩溃分析工具，会要求将dSYM文件上传到对应平台的后台中，比如接入bugly时，可以通过以下脚本上传符号表文件：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -jar buglySymboliOS.jar -d -i $dSYM -u -id &quot;xx&quot; -key &quot;xx&quot; -package &quot;com.xx.xx&quot; -version &quot;$version&quot; -o &quot;xx.zip&quot;</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">java -jar buglySymboliOS.jar -d -i <span class="hljs-variable">$dSYM</span> -u -<span class="hljs-built_in">id</span> <span class="hljs-string">&quot;xx&quot;</span> -key <span class="hljs-string">&quot;xx&quot;</span> -package <span class="hljs-string">&quot;com.xx.xx&quot;</span> -version <span class="hljs-string">&quot;<span class="hljs-variable">$version</span>&quot;</span> -o <span class="hljs-string">&quot;xx.zip&quot;</span><br></code></pre></td></tr></table></figure>
 
 <p>bugly 上传 dSYM 文件需要事先下载一个工具包，具体的配置和使用方法可以参考 <a target="_blank" rel="noopener" href="https://bugly.qq.com/docs/user-guide/symbol-configuration-ios/?v=20180709165613#_4">这里</a>~</p>
 <h3 id="其他工具"><a href="#其他工具" class="headerlink" title="其他工具"></a>其他工具</h3><p>当然，还有一些更专业化的自动化部署和发布工具，如：</p>
@@ -226,217 +370,346 @@
 <p>#<a target="_blank" rel="noopener" href="https://blog.csdn.net/cdut100/article/details/76381605">©FastLane-自动化打包发布</a></p>
 <p>#<a target="_blank" rel="noopener" href="https://help.apple.com/itc/apploader/#/apdATD1E53-D1E1A1303-D1E53A1126">©Application Loader-altool工具</a></p>
 <p>#<a target="_blank" rel="noopener" href="https://blog.csdn.net/andanlan/article/details/78113330?locationNum=9&fps=1">©树叶有砖攻-Xcode9 xcodebuild export plist 配置</a></p>
-</section>
-    <!-- Tags START -->
-    
-      <div class="tags">
-        <span>Tags:</span>
-        
-  <a href="/tags#效率" >
-    <span class="tag-code">效率</span>
-  </a>
 
-      </div>
-    
-    <!-- Tags END -->
-    <!-- NAV START -->
-    
-  <div class="nav-container">
-    <!-- reverse left and right to put prev and next in a more logic postition -->
-    
-      <a class="nav-left" href="/2019/03/22/iosreverse.html">
-        <span class="nav-arrow">← </span>
-        
-          iOS 应用逆向工程
-        
-      </a>
-    
-    
-      <a class="nav-right" href="/2019/03/25/code_confusion.html">
-        
-          代码混淆、shell 脚本自动替换
-        
-        <span class="nav-arrow"> →</span>
-      </a>
-    
-  </div>
-
-    <!-- NAV END -->
-    <!-- 打赏 START -->
-    
-      <div class="money-like">
-        <div class="reward-btn">
-          赏
-          <span class="money-code">
-            <span class="alipay-code">
-              <div class="code-image"></div>
-              <b>使用支付宝打赏</b>
-            </span>
-            <span class="wechat-code">
-              <div class="code-image"></div>
-              <b>使用微信打赏</b>
-            </span>
-          </span>
-        </div>
-        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
-      </div>
-    
-    <!-- 打赏 END -->
-    <!-- 二维码 START -->
-    
-    <!-- 二维码 END -->
-    
-      <!-- No Comment -->
-    
-  </article>
-  <!-- Article END -->
-  <!-- Catalog START -->
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
   
-    <aside class="catalog-container">
-  <div class="toc-main">
-    <strong class="toc-title">Catalog</strong>
-    
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E6%89%93%E5%8C%85%E6%B5%81%E7%A8%8B%EF%BC%9A"><span class="toc-nav-text">打包流程：</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E8%87%AA%E5%8A%A8%E5%8C%96%EF%BC%9A"><span class="toc-nav-text">自动化：</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%B8%85%E7%90%86%E6%9E%84%E5%BB%BA%E7%9B%AE%E5%BD%95"><span class="toc-nav-text">清理构建目录</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E7%BC%96%E8%AF%91xcarchive%E5%8C%85"><span class="toc-nav-text">编译xcarchive包</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%AF%BC%E5%87%BAipa%E6%96%87%E4%BB%B6"><span class="toc-nav-text">导出ipa文件</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E9%AA%8C%E8%AF%81%E5%B9%B6%E4%B8%8A%E4%BC%A0%E5%88%B0%E5%95%86%E5%BA%97"><span class="toc-nav-text">验证并上传到商店</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E4%B8%8A%E4%BC%A0%E5%88%B0Fir"><span class="toc-nav-text">上传到Fir</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E4%B8%8A%E4%BC%A0%E5%88%B0%E8%92%B2%E5%85%AC%E8%8B%B1"><span class="toc-nav-text">上传到蒲公英</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E4%B8%8A%E4%BC%A0%E7%AC%A6%E5%8F%B7%E8%A1%A8"><span class="toc-nav-text">上传符号表</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%85%B6%E4%BB%96%E5%B7%A5%E5%85%B7"><span class="toc-nav-text">其他工具</span></a></li></ol>
-    
-  </div>
-</aside>
   
-  <!-- Catalog END -->
-</main>
-
-<script>
-  (function () {
-    var url = 'http://yoursite.com/2019/03/23/shell-ipa.html';
-    var banner = ''
-    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
-      $('#article-banner').css({
-        'background-image': 'url(' + banner + ')'
-      })
-    } else {
-      $('#article-banner').geopattern(url)
-    }
-    $('.header').removeClass('fixed-header')
-
-     // error image
-    $(".markdown-content img").on('error', function() {
-      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
-      $(this).css({
-        'cursor': 'default'
-      })
-    })
-
-    // zoom image
-    $(".markdown-content img").on('click', function() {
-      var src = $(this).attr('src')
-      if (src !== 'http://file.muyutech.com/error-img.png') {
-        var imageW = $(this).width()
-        var imageH = $(this).height()
-        
-        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
-        zoom = zoom < 1 ? 1 : zoom
-        zoom = zoom > 2 ? 2 : zoom
-        var transY = (($(window).height() - imageH) / 2).toFixed(2)
-
-        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
-        $('.image-view-wrap').addClass('wrap-active')
-        $('.image-view-wrap img').css({
-          'width': `${imageW}`,
-          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
-        })
-        $('html').css('overflow', 'hidden')
-
-        $('.image-view-wrap').on('click', function() {
-          $(this).remove()
-          $('html').attr('style', '')
-        })
-      }
-    })
-
-    // qrcode
-    var qr = new QRious({
-      element: document.getElementById('share-qrcode'),
-      value: document.location.href
-    });
-
-    // gitment
-    var gitmentConfig = "";
-    if (gitmentConfig !== 'undefined') {
-      var gitment = new Gitment({
-        id: "Shell脚本打包与上传",
-        owner: "",
-        repo: "",
-        oauth: {
-          client_id: "",
-          client_secret: ""
-        },
-        theme: {
-          render(state, instance) {
-            const container = document.createElement('div')
-            container.lang = "en-US"
-            container.className = 'gitment-container gitment-root-container'
-            container.appendChild(instance.renderHeader(state, instance))
-            container.appendChild(instance.renderEditor(state, instance))
-            container.appendChild(instance.renderComments(state, instance))
-            container.appendChild(instance.renderFooter(state, instance))
-            return container;
-          }
-        }
-      })
-      gitment.render(document.getElementById('comments'))
-    }
-  })();
-</script>
-
-    <div class="scroll-top">
-  <span class="arrow-icon"></span>
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%95%88%E7%8E%87/">#效率</a>
+      
+    </div>
+  
 </div>
-    <footer class="app-footer">
-  <p class="copyright">
-    &copy; 2022 | <a href="https://github.com/davidlii" target="_blank">Davidli</a>
-    <br>
-    <a href="https://hexo.io" target="_blank">Hexo</a> | Theme-<a target="_blank" rel="noopener" href="https://github.com/yanm1ng">yanm1ng</a>
-  </p>
-</footer>
 
-<script>
-  function async(u, c) {
-    var d = document, t = 'script',
-      o = d.createElement(t),
-      s = d.getElementsByTagName(t)[0];
-    o.src = u;
-    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
-    s.parentNode.insertBefore(o, s);
-  }
-</script>
-<script>
-  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
-    FastClick.attach(document.body);
-  })
-</script>
 
-<script>
-  var hasLine = 'true';
-  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
-    $('figure pre').each(function(i, block) {
-      var figure = $(this).parents('figure');
-      if (hasLine === 'false') {
-        figure.find('.gutter').hide();
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Shell脚本打包与上传</div>
+      <div>http://yoursite.com/2019/03/23/shell-ipa.html</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>March 23, 2019</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>Licensed under</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2019/03/25/code_confusion.html" title="代码混淆、shell 脚本自动替换">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">代码混淆、shell 脚本自动替换</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2019/03/22/iosreverse.html" title="iOS 应用逆向工程">
+                        <span class="hidden-mobile">iOS 应用逆向工程</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;Table of Contents</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://github.com/davidlii" target="_blank" rel="nofollow noopener"><span>Davidlii</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        Views: 
+        <span id="busuanzi_value_site_pv"></span>
+        
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        Visitors: 
+        <span id="busuanzi_value_site_uv"></span>
+        
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
       }
-      var lang = figure.attr('class').split(' ')[1] || 'code';
-      var codeHtml = $(this).html();
-      var codeTag = document.createElement('code');
-      codeTag.className = lang;
-      codeTag.innerHTML = codeHtml;
-      $(this).attr('class', '').empty().html(codeTag);
-      figure.attr('data-lang', lang.toUpperCase());
-      hljs.highlightBlock(block);
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
     });
-  })
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
 </script>
-<!-- Baidu Tongji -->
 
 
-<script src="/js/script.js"></script>
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
 
-  </body>
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
 </html>

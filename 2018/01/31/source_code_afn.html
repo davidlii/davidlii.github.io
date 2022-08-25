@@ -1,146 +1,290 @@
+
+
 <!DOCTYPE html>
-<html>
-  <head>
-  <meta http-equiv="content-type" content="text/html; charset=utf-8">
-  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
-  <meta name="description" content="This is Davidli&#39;s blog ~">
-  <meta name="keyword" content="hexo-theme, vuejs">
-  
-    <link rel="shortcut icon" type="image/ico" href="/image/logo.png"/> 
-  
-  <title>
-    
-      AFNetworking | Davidli
-    
-  </title>
-  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
-  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
-  
-<link rel="stylesheet" href="/css/style.css">
-<link rel="stylesheet" href="/css/plugins/gitment.css">
-
-  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
-  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
-  
-<script src="/js/qrious.js"></script>
-<script src="/js/gitment.js"></script>
-
-  
-  
-    <!-- MathJax support START -->
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      });
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      });
-    </script>
-    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <!-- MathJax support END -->
-  
+<html lang="zh-Hans" data-default-color-scheme=auto>
 
 
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="Davidli">
+  
+    <meta name="description" content="一、导入库导入 AFN 的 Podfile： 12345source &amp;#x27;https:&#x2F;&#x2F;github.com&#x2F;CocoaPods&#x2F;Specs.git&amp;#x27;platform :ios, &amp;#x27;8.0&amp;#x27;target &amp;#x27;TargetName&amp;#x27; dopod &amp;#x27;AFNetworking&amp;#x27;, &amp;#x27;~&gt; 3.0&amp;#x27;en">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AFNetworking">
+<meta property="og:url" content="http://yoursite.com/2018/01/31/source_code_afn.html">
+<meta property="og:site_name" content="Davidli">
+<meta property="og:description" content="一、导入库导入 AFN 的 Podfile： 12345source &amp;#x27;https:&#x2F;&#x2F;github.com&#x2F;CocoaPods&#x2F;Specs.git&amp;#x27;platform :ios, &amp;#x27;8.0&amp;#x27;target &amp;#x27;TargetName&amp;#x27; dopod &amp;#x27;AFNetworking&amp;#x27;, &amp;#x27;~&gt; 3.0&amp;#x27;en">
+<meta property="og:locale">
+<meta property="article:published_time" content="2018-01-30T17:44:07.000Z">
+<meta property="article:modified_time" content="2019-06-27T14:05:07.000Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="源码">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>AFNetworking - Davidli</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"yoursite.com","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
 <meta name="generator" content="Hexo 6.2.0"></head>
-<div class="wechat-share">
-  <img src="/css/images/logo.png" />
-</div>
 
-  <body>
-    <header class="header fixed-header">
-  <div class="header-container">
-    <a class="home-link" href="/">
-      <div class="logo"></div>
-      <span>Davidli</span>
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Davidli</strong>
     </a>
-    <ul class="right-list">
-      
-        <li class="list-item">
-          
-            <a href="/" class="item-link">Davidli</a>
-          
-        </li>
-      
-        <li class="list-item">
-          
-            <a href="/archives/" class="item-link">归档</a>
-          
-        </li>
-      
-        <li class="list-item">
-          
-            <a href="/tags/" class="item-link">标签</a>
-          
-        </li>
-      
-        <li class="list-item">
-          
-            <a href="/about/" class="item-link">关于</a>
-          
-        </li>
-      
-    </ul>
-    <div class="menu">
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-    </div>
-    <div class="menu-mask">
-      <ul class="menu-list">
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
         
-          <li class="menu-item">
-            
-              <a href="/" class="menu-link">Davidli</a>
-            
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                Categories
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                Tags
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
           </li>
+          
         
-          <li class="menu-item">
-            
-              <a href="/archives/" class="menu-link">归档</a>
-            
-          </li>
         
-          <li class="menu-item">
-            
-              <a href="/tags/" class="menu-link">标签</a>
-            
-          </li>
-        
-          <li class="menu-item">
-            
-              <a href="/about/" class="menu-link">关于</a>
-            
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
           </li>
         
       </ul>
     </div>
   </div>
-</header>
+</nav>
 
-    <div id="article-banner">
-  <h2>AFNetworking</h2>
-  <p class="post-date">2018-01-31</p>
-  <div class="arrow-down">
-    <a href="javascript:;"></a>
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="AFNetworking"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2018-01-31 01:44" pubdate>
+          January 31, 2018 am
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          18k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          154 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
   </div>
 </div>
-<main class="app-body flex-box">
-  <!-- Article START -->
-  <article class="post-article">
-    <section class="markdown-content"><h3 id="一、导入库"><a href="#一、导入库" class="headerlink" title="一、导入库"></a>一、导入库</h3><p>导入 AFN 的 Podfile：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">source &#x27;https://github.com/CocoaPods/Specs.git&#x27;</span><br><span class="line">platform :ios, &#x27;8.0&#x27;</span><br><span class="line">target &#x27;TargetName&#x27; do</span><br><span class="line">pod &#x27;AFNetworking&#x27;, &#x27;~&gt; 3.0&#x27;</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">AFNetworking</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h3 id="一、导入库"><a href="#一、导入库" class="headerlink" title="一、导入库"></a>一、导入库</h3><p>导入 AFN 的 Podfile：</p>
+<figure class="highlight delphi"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs delphi">source <span class="hljs-string">&#x27;https://github.com/CocoaPods/Specs.git&#x27;</span><br><span class="hljs-keyword">platform</span> :ios, <span class="hljs-string">&#x27;8.0&#x27;</span><br>target <span class="hljs-string">&#x27;TargetName&#x27;</span> <span class="hljs-keyword">do</span><br>pod <span class="hljs-string">&#x27;AFNetworking&#x27;</span>, <span class="hljs-string">&#x27;~&gt; 3.0&#x27;</span><br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
 
 <p>写这篇文章时最新的版本是AFNetworking (3.1.0)。</p>
 <h3 id="二、模块划分"><a href="#二、模块划分" class="headerlink" title="二、模块划分"></a>二、模块划分</h3><table>
@@ -175,7 +319,7 @@
 <ul>
 <li><strong>Init &amp; 网络请求相关配置</strong>（安全策略、队列、锁）。</li>
 </ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">- (instancetype)initWithSessionConfiguration:</span><br><span class="line">(NSURLSessionConfiguration *)configuration </span><br><span class="line">&#123;</span><br><span class="line">    //略..</span><br><span class="line">    if (!configuration) &#123;</span><br><span class="line">        configuration = [NSURLSessionConfiguration defaultSessionConfiguration];</span><br><span class="line">    &#125;</span><br><span class="line">    self.sessionConfiguration = configuration;</span><br><span class="line"></span><br><span class="line">    //回调所在队列</span><br><span class="line">    self.operationQueue = [[NSOperationQueue alloc] init];</span><br><span class="line">    //并发数 = 1（串行）</span><br><span class="line">    /*按照URLSession接口的要求，其回调所在队列必须是一个串行队列，</span><br><span class="line">     *所以队列的并发数须是1，这是为了保证回调的顺序。*/</span><br><span class="line">    self.operationQueue.maxConcurrentOperationCount = 1;</span><br><span class="line"></span><br><span class="line">    self.session = [NSURLSession sessionWithConfiguration:self.sessionConfiguration </span><br><span class="line">    delegate:self </span><br><span class="line">    delegateQueue:self.operationQueue];</span><br><span class="line"></span><br><span class="line">    self.responseSerializer = [AFJSONResponseSerializer serializer];</span><br><span class="line">    self.securityPolicy = [AFSecurityPolicy defaultPolicy];</span><br><span class="line">    </span><br><span class="line">    //字典：映射 NSURLSessionTask 与 AFURLSessionManagerTaskDelegate</span><br><span class="line">    self.mutableTaskDelegatesKeyedByTaskIdentifier = [[NSMutableDictionary alloc] init];</span><br><span class="line"></span><br><span class="line">    self.lock = [[NSLock alloc] init];</span><br><span class="line">    self.lock.name = AFURLSessionManagerLockName;</span><br><span class="line">    </span><br><span class="line">    //遍历当前正在执行的网络任务，根据任务标识符将各个 block 置为 nil</span><br><span class="line">    [self.session getTasksWithCompletionHandler:^(</span><br><span class="line">    NSArray *dataTasks, NSArray *uploadTasks, NSArray *downloadTasks) &#123;</span><br><span class="line">        for (NSURLSessionDataTask *task in dataTasks) &#123;</span><br><span class="line">            [self addDelegateForDataTask:task </span><br><span class="line">            uploadProgress:nil </span><br><span class="line">            downloadProgress:nil </span><br><span class="line">            completionHandler:nil];</span><br><span class="line">        &#125;</span><br><span class="line">    //略..</span><br><span class="line">    &#125;];</span><br><span class="line">    return self;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><code class="hljs swift"><span class="hljs-operator">-</span> (instancetype)initWithSessionConfiguration:<br>(<span class="hljs-type">NSURLSessionConfiguration</span> <span class="hljs-operator">*</span>)configuration <br>&#123;<br>    <span class="hljs-comment">//略..</span><br>    <span class="hljs-keyword">if</span> (<span class="hljs-operator">!</span>configuration) &#123;<br>        configuration <span class="hljs-operator">=</span> [<span class="hljs-type">NSURLSessionConfiguration</span> defaultSessionConfiguration];<br>    &#125;<br>    <span class="hljs-keyword">self</span>.sessionConfiguration <span class="hljs-operator">=</span> configuration;<br><br>    <span class="hljs-comment">//回调所在队列</span><br>    <span class="hljs-keyword">self</span>.operationQueue <span class="hljs-operator">=</span> [[<span class="hljs-type">NSOperationQueue</span> alloc] <span class="hljs-keyword">init</span>];<br>    <span class="hljs-comment">//并发数 = 1（串行）</span><br>    <span class="hljs-comment">/*按照URLSession接口的要求，其回调所在队列必须是一个串行队列，</span><br><span class="hljs-comment">     *所以队列的并发数须是1，这是为了保证回调的顺序。*/</span><br>    <span class="hljs-keyword">self</span>.operationQueue.maxConcurrentOperationCount <span class="hljs-operator">=</span> <span class="hljs-number">1</span>;<br><br>    <span class="hljs-keyword">self</span>.session <span class="hljs-operator">=</span> [<span class="hljs-type">NSURLSession</span> sessionWithConfiguration:<span class="hljs-keyword">self</span>.sessionConfiguration <br>    delegate:<span class="hljs-keyword">self</span> <br>    delegateQueue:<span class="hljs-keyword">self</span>.operationQueue];<br><br>    <span class="hljs-keyword">self</span>.responseSerializer <span class="hljs-operator">=</span> [<span class="hljs-type">AFJSONResponseSerializer</span> serializer];<br>    <span class="hljs-keyword">self</span>.securityPolicy <span class="hljs-operator">=</span> [<span class="hljs-type">AFSecurityPolicy</span> defaultPolicy];<br>    <br>    <span class="hljs-comment">//字典：映射 NSURLSessionTask 与 AFURLSessionManagerTaskDelegate</span><br>    <span class="hljs-keyword">self</span>.mutableTaskDelegatesKeyedByTaskIdentifier <span class="hljs-operator">=</span> [[<span class="hljs-type">NSMutableDictionary</span> alloc] <span class="hljs-keyword">init</span>];<br><br>    <span class="hljs-keyword">self</span>.lock <span class="hljs-operator">=</span> [[<span class="hljs-type">NSLock</span> alloc] <span class="hljs-keyword">init</span>];<br>    <span class="hljs-keyword">self</span>.lock.name <span class="hljs-operator">=</span> <span class="hljs-type">AFURLSessionManagerLockName</span>;<br>    <br>    <span class="hljs-comment">//遍历当前正在执行的网络任务，根据任务标识符将各个 block 置为 nil</span><br>    [<span class="hljs-keyword">self</span>.session getTasksWithCompletionHandler:<span class="hljs-operator">^</span>(<br>    <span class="hljs-type">NSArray</span> <span class="hljs-operator">*</span>dataTasks, <span class="hljs-type">NSArray</span> <span class="hljs-operator">*</span>uploadTasks, <span class="hljs-type">NSArray</span> <span class="hljs-operator">*</span>downloadTasks) &#123;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">NSURLSessionDataTask</span> <span class="hljs-operator">*</span>task <span class="hljs-keyword">in</span> dataTasks) &#123;<br>            [<span class="hljs-keyword">self</span> addDelegateForDataTask:task <br>            uploadProgress:<span class="hljs-literal">nil</span> <br>            downloadProgress:<span class="hljs-literal">nil</span> <br>            completionHandler:<span class="hljs-literal">nil</span>];<br>        &#125;<br>    <span class="hljs-comment">//略..</span><br>    &#125;];<br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">self</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>这里self.operationQueue是请求回调时所在的队列，而非发起请求时的队列。其中<code>maxConcurrentOperationCount</code>为1，这是因为 NSURLSession 为了保证其回调的顺序，要求其<code>delegateQueue</code>必须是一个串行队列：</p>
 <blockquote>
@@ -184,12 +328,12 @@
 <ul>
 <li><strong>发起网络请</strong>（NSURLSession 支持的数据 &#x2F; 上传 &#x2F; 下载任务）。</li>
 </ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">//数据任务</span><br><span class="line">- (NSURLSessionDataTask *)dataTaskWithRequest:completionHandler:</span><br><span class="line">//上传任务</span><br><span class="line">- (NSURLSessionUploadTask *)uploadTaskWithRequest:fromFile:progress:completionHandler:</span><br><span class="line">//下载任务</span><br><span class="line">- (NSURLSessionDownloadTask *)downloadTaskWithRequest:progress:destination:completionHandler:</span><br></pre></td></tr></table></figure>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-regexp">//</span>数据任务<br>- (NSURLSessionDataTask *)dataTaskWithRequest:completionHandler:<br><span class="hljs-regexp">//</span>上传任务<br>- (NSURLSessionUploadTask *)uploadTaskWithRequest:fromFile:progress:completionHandler:<br><span class="hljs-regexp">//</span>下载任务<br>- (NSURLSessionDownloadTask *)downloadTaskWithRequest:progress:destination:completionHandler:<br></code></pre></td></tr></table></figure>
 
 <ul>
 <li><strong>接收数据 &amp; 处理回调</strong>（URLSession 的开始、进度、完成等相关回调）。</li>
 </ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">#pragma mark - NSURLSessionDataDelegate</span><br><span class="line">- (void)URLSession:(NSURLSession *)session</span><br><span class="line">dataTask:(NSURLSessionDataTask *)dataTask</span><br><span class="line">didReceiveData:(NSData *)data</span><br><span class="line">&#123;</span><br><span class="line">    //取出字典中的 Delegate 对象，让它处理后续的业务逻辑。</span><br><span class="line">    AFURLSessionManagerTaskDelegate *delegate = [self delegateForTask:dataTask];</span><br><span class="line">    [delegate URLSession:session </span><br><span class="line">    dataTask:dataTask </span><br><span class="line">    didReceiveData:data];</span><br><span class="line">    //略。。。</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#pragma mark - NSURLSessionDownloadDelegate</span><br><span class="line">- (void)URLSession:(NSURLSession *)session</span><br><span class="line">      downloadTask:(NSURLSessionDownloadTask *)downloadTask</span><br><span class="line">didFinishDownloadingToURL:(NSURL *)location</span><br><span class="line">&#123;</span><br><span class="line">    AFURLSessionManagerTaskDelegate *delegate = [self delegateForTask:downloadTask];</span><br><span class="line">    //略。。。</span><br><span class="line">    [delegate URLSession:session </span><br><span class="line">    downloadTask:downloadTask </span><br><span class="line">    didFinishDownloadingToURL:location];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-meta">#<span class="hljs-keyword">pragma</span> mark - NSURLSessionDataDelegate</span><br>- (<span class="hljs-type">void</span>)URLSession:(<span class="hljs-built_in">NSURLSession</span> *)session<br>dataTask:(<span class="hljs-built_in">NSURLSessionDataTask</span> *)dataTask<br>didReceiveData:(<span class="hljs-built_in">NSData</span> *)data<br>&#123;<br>    <span class="hljs-comment">//取出字典中的 Delegate 对象，让它处理后续的业务逻辑。</span><br>    AFURLSessionManagerTaskDelegate *delegate = [<span class="hljs-keyword">self</span> delegateForTask:dataTask];<br>    [delegate URLSession:session <br>    dataTask:dataTask <br>    didReceiveData:data];<br>    <span class="hljs-comment">//略。。。</span><br>&#125;<br><br><span class="hljs-meta">#<span class="hljs-keyword">pragma</span> mark - NSURLSessionDownloadDelegate</span><br>- (<span class="hljs-type">void</span>)URLSession:(<span class="hljs-built_in">NSURLSession</span> *)session<br>      downloadTask:(<span class="hljs-built_in">NSURLSessionDownloadTask</span> *)downloadTask<br>didFinishDownloadingToURL:(<span class="hljs-built_in">NSURL</span> *)location<br>&#123;<br>    AFURLSessionManagerTaskDelegate *delegate = [<span class="hljs-keyword">self</span> delegateForTask:downloadTask];<br>    <span class="hljs-comment">//略。。。</span><br>    [delegate URLSession:session <br>    downloadTask:downloadTask <br>    didFinishDownloadingToURL:location];<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <h4 id="3-2-AFHTTPSessionManager"><a href="#3-2-AFHTTPSessionManager" class="headerlink" title="3.2.AFHTTPSessionManager"></a>3.2.AFHTTPSessionManager</h4><p>继承自 AFURLSessionManager 并将其中的任务进一步封装为 6 大类：</p>
 <hr>
@@ -227,58 +371,58 @@
 </tbody></table>
 <hr>
 <p>接口定义如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">- (NSURLSessionDataTask*)GET:parameters:progress:success:failure:</span><br><span class="line"></span><br><span class="line">- (NSURLSessionDataTask*)POST:parameters:...progress:success:failure:</span><br><span class="line"></span><br><span class="line">- (NSURLSessionDataTask*)PUT:parameters:success:failure:</span><br><span class="line"></span><br><span class="line">- (NSURLSessionDataTask*)DELETE:parameters:success:failure:</span><br><span class="line"></span><br><span class="line">- (NSURLSessionDataTask*)HEAD:parameters:success:failure:</span><br><span class="line"></span><br><span class="line">- (NSURLSessionDataTask*)PATCH:parameters:success:failure:</span><br></pre></td></tr></table></figure>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs ruby">- (NSURLSessionDataTask*)<span class="hljs-variable constant_">GET</span><span class="hljs-symbol">:parameters</span><span class="hljs-symbol">:progress</span><span class="hljs-symbol">:success</span><span class="hljs-symbol">:failure</span>:<br><br>- (NSURLSessionDataTask*)<span class="hljs-variable constant_">POST</span><span class="hljs-symbol">:parameters</span><span class="hljs-symbol">:</span>...<span class="hljs-symbol">progress:</span><span class="hljs-symbol">success:</span><span class="hljs-symbol">failure:</span><br><br>- (NSURLSessionDataTask*)<span class="hljs-variable constant_">PUT</span><span class="hljs-symbol">:parameters</span><span class="hljs-symbol">:success</span><span class="hljs-symbol">:failure</span>:<br><br>- (NSURLSessionDataTask*)<span class="hljs-variable constant_">DELETE</span><span class="hljs-symbol">:parameters</span><span class="hljs-symbol">:success</span><span class="hljs-symbol">:failure</span>:<br><br>- (NSURLSessionDataTask*)<span class="hljs-variable constant_">HEAD</span><span class="hljs-symbol">:parameters</span><span class="hljs-symbol">:success</span><span class="hljs-symbol">:failure</span>:<br><br>- (NSURLSessionDataTask*)<span class="hljs-variable constant_">PATCH</span><span class="hljs-symbol">:parameters</span><span class="hljs-symbol">:success</span><span class="hljs-symbol">:failure</span><span class="hljs-symbol">:</span><br></code></pre></td></tr></table></figure>
 
 <p>上面 6 种任务最终都会通过下面这个统一的入口函数调用父类中对应的方法发起网络任务。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">//AFHTTPSessionManager.m</span><br><span class="line">- (NSURLSessionDataTask *)dataTaskWithHTTPMethod:</span><br><span class="line">URLString:parameters:uploadProgress:downloadProgress:success:failure:</span><br><span class="line">&#123;</span><br><span class="line">    //拼接request参数</span><br><span class="line">    NSMutableURLRequest *request = [self.requestSerializer</span><br><span class="line">    requestWithMethod:method </span><br><span class="line">    URLString:[[NSURL URLWithString:URLString </span><br><span class="line">    relativeToURL:self.baseURL] absoluteString] </span><br><span class="line">    parameters:parameters </span><br><span class="line">    error:&amp;serializationError];</span><br><span class="line">    /***略***/</span><br><span class="line">    __block NSURLSessionDataTask *dataTask = nil;</span><br><span class="line">    //调用父类 AFURLSessionManager 中的方法发起请求</span><br><span class="line">    dataTask = [self dataTaskWithRequest:request</span><br><span class="line">                          uploadProgress:uploadProgress</span><br><span class="line">                        downloadProgress:downloadProgress</span><br><span class="line">                       completionHandler:^(/../) &#123;</span><br><span class="line">    /**略**/</span><br><span class="line">    &#125;];</span><br><span class="line">    return dataTask;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs dts"><span class="hljs-comment">//AFHTTPSessionManager.m</span><br>- (NSURLSessionDataTask *)dataTaskWithHTTPMethod:<br><span class="hljs-symbol">URLString:</span>parameters:uploadProgress:downloadProgress:success:failure:<br><span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-comment">//拼接request参数</span><br>    NSMutableURLRequest *<span class="hljs-attr">request</span> <span class="hljs-operator">=</span> [self.requestSerializer<br><span class="hljs-symbol">    requestWithMethod:</span>method <br><span class="hljs-symbol">    URLString:</span>[[NSURL URLWithString:URLString <br><span class="hljs-symbol">    relativeToURL:</span>self.baseURL] absoluteString] <br><span class="hljs-symbol">    parameters:</span>parameters <br><span class="hljs-symbol">    error:</span><span class="hljs-variable">&amp;</span>serializationError]<span class="hljs-punctuation">;</span><br>    <span class="hljs-comment">/***略***/</span><br>    __block NSURLSessionDataTask *dataT<span class="hljs-attr">ask</span> <span class="hljs-operator">=</span> <span class="hljs-attr">nil</span><span class="hljs-punctuation">;</span><br>    <span class="hljs-comment">//调用父类 AFURLSessionManager 中的方法发起请求</span><br>    dataT<span class="hljs-attr">ask</span> <span class="hljs-operator">=</span> [self dataTaskWithRequest:request<br><span class="hljs-symbol">                          uploadProgress:</span>uploadProgress<br><span class="hljs-symbol">                        downloadProgress:</span>downloadProgress<br><span class="hljs-symbol">                       completionHandler:</span>^(/../) <span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-comment">/**略**/</span><br>    <span class="hljs-punctuation">&#125;</span>]<span class="hljs-punctuation">;</span><br>    return dataT<span class="hljs-attr">ask</span><span class="hljs-punctuation">;</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
 
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">//AFURLSessionManager.m</span><br><span class="line">- (NSURLSessionDataTask *)dataTaskWithRequest:</span><br><span class="line">uploadProgress:downloadProgress:completionHandler:</span><br><span class="line">&#123;</span><br><span class="line">    __block NSURLSessionDataTask *dataTask = nil;</span><br><span class="line">    //修复iOS8以下并发队列中任务标识符不唯一的问题（串行+同步）</span><br><span class="line">    url_session_manager_create_task_safely(^&#123;</span><br><span class="line">        dataTask = [self.session dataTaskWithRequest:request];//发起请求</span><br><span class="line">    &#125;);</span><br><span class="line">    //绑定 AFURLSessionManagerTaskDelegate 对象</span><br><span class="line">    [self addDelegateForDataTask:dataTask </span><br><span class="line">    uploadProgress:uploadProgressBlock </span><br><span class="line">    downloadProgress:downloadProgressBlock </span><br><span class="line">    completionHandler:completionHandler];</span><br><span class="line">    return dataTask;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-comment">//AFURLSessionManager.m</span><br>- (<span class="hljs-built_in">NSURLSessionDataTask</span> *)dataTaskWithRequest:<br>uploadProgress:downloadProgress:completionHandler:<br>&#123;<br>    __block <span class="hljs-built_in">NSURLSessionDataTask</span> *dataTask = <span class="hljs-literal">nil</span>;<br>    <span class="hljs-comment">//修复iOS8以下并发队列中任务标识符不唯一的问题（串行+同步）</span><br>    url_session_manager_create_task_safely(^&#123;<br>        dataTask = [<span class="hljs-keyword">self</span>.session dataTaskWithRequest:request];<span class="hljs-comment">//发起请求</span><br>    &#125;);<br>    <span class="hljs-comment">//绑定 AFURLSessionManagerTaskDelegate 对象</span><br>    [<span class="hljs-keyword">self</span> addDelegateForDataTask:dataTask <br>    uploadProgress:uploadProgressBlock <br>    downloadProgress:downloadProgressBlock <br>    completionHandler:completionHandler];<br>    <span class="hljs-keyword">return</span> dataTask;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>这里，发起请求的操作被放在一个名为 url_session_manager_create_task_safely 的 block 里，其定义如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">static void url_session_manager_create_task_safely(</span><br><span class="line">dispatch_block_t block) &#123;</span><br><span class="line">    if (NSFoundationVersionNumber &lt; </span><br><span class="line">    NSFoundationVersionNumber_With_Fixed_5871104061079552_bug) &#123;</span><br><span class="line">        dispatch_sync(url_session_manager_creation_queue(), block);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        block();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">static dispatch_queue_t url_session_manager_creation_queue() &#123;</span><br><span class="line">    static dispatch_queue_t af_url_session_manager_creation_queue;</span><br><span class="line">    static dispatch_once_t onceToken;</span><br><span class="line">    dispatch_once(&amp;onceToken, ^&#123;</span><br><span class="line">        af_url_session_manager_creation_queue = dispatch_queue_create(</span><br><span class="line">        &quot;com.alamofire.networking.session.manager.creation&quot;, </span><br><span class="line">        DISPATCH_QUEUE_SERIAL);</span><br><span class="line">    &#125;);</span><br><span class="line">    return af_url_session_manager_creation_queue;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs scss">static void <span class="hljs-built_in">url_session_manager_create_task_safely</span>(<br>dispatch_block_t block) &#123;<br>    if (NSFoundationVersionNumber &lt; <br>    NSFoundationVersionNumber_With_Fixed_5871104061079552_bug) &#123;<br>        <span class="hljs-built_in">dispatch_sync</span>(url_session_manager_creation_queue(), block);<br>    &#125; else &#123;<br>        block();<br>    &#125;<br>&#125;<br>static dispatch_queue_t <span class="hljs-built_in">url_session_manager_creation_queue</span>() &#123;<br>    static dispatch_queue_t af_url_session_manager_creation_queue;<br>    static dispatch_once_t onceToken;<br>    <span class="hljs-built_in">dispatch_once</span>(&amp;onceToken, ^&#123;<br>        af_url_session_manager_creation_queue = dispatch_queue_create(<br>        &quot;com.alamofire.networking.session.manager.creation&quot;, <br>        DISPATCH_QUEUE_SERIAL);<br>    &#125;);<br>    return af_url_session_manager_creation_queue;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>这个 block 主要是用来修复 iOS8 以下创建 NSURLSession 时 taskIdentifier 不唯一的问题。taskIdentifier 在后面会被作为保存 AFURLSessionManagerTaskDelegate 对象的 key。所以在多个 NSURLSession 时，如果此值不唯一，那么 AFURLSessionManagerTaskDelegate 对象与 dataTask 的映射就会出问题。修复此问题的方法就是在iOS8以下使用“串行 + 同步”的方式发起请求。</p>
 <h4 id="3-3-TaskDelegate"><a href="#3-3-TaskDelegate" class="headerlink" title="3.3.TaskDelegate"></a>3.3.TaskDelegate</h4><p>这是一个定义在<code>AFURLSessionManager.m</code>内部的类，内容如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">@interface AFURLSessionManagerTaskDelegate : NSObject </span><br><span class="line"></span><br><span class="line">&lt;NSURLSessionTaskDelegate, </span><br><span class="line">NSURLSessionDataDelegate, </span><br><span class="line">NSURLSessionDownloadDelegate&gt;</span><br><span class="line"></span><br><span class="line">@property (nonatomic, weak) AFURLSessionManager *manager;</span><br><span class="line">@property (nonatomic, strong) NSMutableData *mutableData;</span><br><span class="line">@property (nonatomic, strong) NSProgress *uploadProgress;</span><br><span class="line">@property (nonatomic, strong) NSProgress *downloadProgress;</span><br><span class="line">@property (nonatomic, copy) NSURL *downloadFileURL;</span><br><span class="line">@property (nonatomic, copy) AFURLSessionDownloadTaskDidFinishDownloadingBlock </span><br><span class="line">downloadTaskDidFinishDownloading;</span><br><span class="line">@property (nonatomic, copy) AFURLSessionTaskProgressBlock uploadProgressBlock;</span><br><span class="line">@property (nonatomic, copy) AFURLSessionTaskProgressBlock downloadProgressBlock;</span><br><span class="line">@property (nonatomic, copy) AFURLSessionTaskCompletionHandler completionHandler;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">AFURLSessionManagerTaskDelegate</span> : <span class="hljs-title">NSObject</span> </span><br><br>&lt;<span class="hljs-built_in">NSURLSessionTaskDelegate</span>, <br><span class="hljs-built_in">NSURLSessionDataDelegate</span>, <br><span class="hljs-built_in">NSURLSessionDownloadDelegate</span>&gt;<br><br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">weak</span>) AFURLSessionManager *manager;<br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">strong</span>) <span class="hljs-built_in">NSMutableData</span> *mutableData;<br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">strong</span>) <span class="hljs-built_in">NSProgress</span> *uploadProgress;<br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">strong</span>) <span class="hljs-built_in">NSProgress</span> *downloadProgress;<br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">copy</span>) <span class="hljs-built_in">NSURL</span> *downloadFileURL;<br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">copy</span>) AFURLSessionDownloadTaskDidFinishDownloadingBlock <br>downloadTaskDidFinishDownloading;<br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">copy</span>) AFURLSessionTaskProgressBlock uploadProgressBlock;<br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">copy</span>) AFURLSessionTaskProgressBlock downloadProgressBlock;<br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">copy</span>) AFURLSessionTaskCompletionHandler completionHandler;<br><span class="hljs-keyword">@end</span><br></code></pre></td></tr></table></figure>
 
 <p>作用：作为工具类，处理 NSURLSession 的数据代理，如：持有返回的数据、监听进度、回到主线程等。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">#pragma mark - NSURLSessionDataTaskDelegate</span><br><span class="line">- (void)URLSession:(NSURLSession *)session</span><br><span class="line">dataTask:(NSURLSessionDataTask *)dataTask</span><br><span class="line">didReceiveData:(NSData *)data</span><br><span class="line">&#123;</span><br><span class="line">    [self.mutableData appendData:data];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#pragma mark - NSURLSessionTaskDelegate</span><br><span class="line">- (void)URLSession:(__unused NSURLSession *)session</span><br><span class="line">task:(NSURLSessionTask *)task</span><br><span class="line">didCompleteWithError:(NSError *)error</span><br><span class="line">&#123;</span><br><span class="line">    //略..</span><br><span class="line">    //dispatch_group 的方式回到主线程执行 block</span><br><span class="line">    if (error) &#123;</span><br><span class="line">        dispatch_group_async(</span><br><span class="line">                manager.completionGroup ?: </span><br><span class="line">                url_session_manager_completion_group(),</span><br><span class="line">                manager.completionQueue ?: </span><br><span class="line">                dispatch_get_main_queue(), ^&#123;</span><br><span class="line">            if (self.completionHandler) &#123;</span><br><span class="line">                self.completionHandler(task.response, responseObject, error);</span><br><span class="line">            &#125;</span><br><span class="line">            //略..</span><br><span class="line">            dispatch_async(dispatch_get_main_queue(), ^&#123;</span><br><span class="line">                [[NSNotificationCenter defaultCenter] </span><br><span class="line">                postNotificationName:AFNetworkingTaskDidCompleteNotification </span><br><span class="line">                object:task </span><br><span class="line">                userInfo:userInfo];//发送通知</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    else &#123;</span><br><span class="line">        dispatch_async(url_session_manager_processing_queue(), ^&#123;</span><br><span class="line">            //执行回调&amp;发送通知 代码略..</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-meta">#<span class="hljs-keyword">pragma</span> mark - NSURLSessionDataTaskDelegate</span><br>- (<span class="hljs-type">void</span>)URLSession:(<span class="hljs-built_in">NSURLSession</span> *)session<br>dataTask:(<span class="hljs-built_in">NSURLSessionDataTask</span> *)dataTask<br>didReceiveData:(<span class="hljs-built_in">NSData</span> *)data<br>&#123;<br>    [<span class="hljs-keyword">self</span>.mutableData appendData:data];<br>&#125;<br><br><span class="hljs-meta">#<span class="hljs-keyword">pragma</span> mark - NSURLSessionTaskDelegate</span><br>- (<span class="hljs-type">void</span>)URLSession:(__unused <span class="hljs-built_in">NSURLSession</span> *)session<br>task:(<span class="hljs-built_in">NSURLSessionTask</span> *)task<br>didCompleteWithError:(<span class="hljs-built_in">NSError</span> *)error<br>&#123;<br>    <span class="hljs-comment">//略..</span><br>    <span class="hljs-comment">//dispatch_group 的方式回到主线程执行 block</span><br>    <span class="hljs-keyword">if</span> (error) &#123;<br>        dispatch_group_async(<br>                manager.completionGroup ?: <br>                url_session_manager_completion_group(),<br>                manager.completionQueue ?: <br>                dispatch_get_main_queue(), ^&#123;<br>            <span class="hljs-keyword">if</span> (<span class="hljs-keyword">self</span>.completionHandler) &#123;<br>                <span class="hljs-keyword">self</span>.completionHandler(task.response, responseObject, error);<br>            &#125;<br>            <span class="hljs-comment">//略..</span><br>            <span class="hljs-built_in">dispatch_async</span>(dispatch_get_main_queue(), ^&#123;<br>                [[<span class="hljs-built_in">NSNotificationCenter</span> defaultCenter] <br>                postNotificationName:AFNetworkingTaskDidCompleteNotification <br>                object:task <br>                userInfo:userInfo];<span class="hljs-comment">//发送通知</span><br>            &#125;);<br>        &#125;);<br>    &#125;<br>    <span class="hljs-keyword">else</span> &#123;<br>        <span class="hljs-built_in">dispatch_async</span>(url_session_manager_processing_queue(), ^&#123;<br>            <span class="hljs-comment">//执行回调&amp;发送通知 代码略..</span><br>            &#125;);<br>        &#125;);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>那么它是如何与 AFURLSessionManager 类关联起来的呢？<br><br/></p>
 <p><code>#1.2</code>章节中说到，AFURLSessionManager 最终会通过统一的入口调用父类中的方法发起请求。在父类发起网络请求后，紧接着就会调用到 - addDelegateForDataTask:uploadProgress:downloadProgress:completionHandler:函数，跟踪代码进来，如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">- (void)addDelegateForDataTask:(NSURLSessionDataTask *)dataTask</span><br><span class="line">uploadProgress:(void (^)(NSProgress *uploadProgress)) uploadProgressBlock</span><br><span class="line">downloadProgress:(void (^)(NSProgress *downloadProgress))</span><br><span class="line">downloadProgressBlock</span><br><span class="line">completionHandler:(void (^)(</span><br><span class="line">NSURLResponse *response, id responseObject, NSError *error))completionHandler</span><br><span class="line">&#123;</span><br><span class="line">    AFURLSessionManagerTaskDelegate *delegate = [[AFURLSessionManagerTaskDelegate </span><br><span class="line">    alloc] init];</span><br><span class="line">    delegate.manager = self;</span><br><span class="line">    delegate.completionHandler = completionHandler;</span><br><span class="line"></span><br><span class="line">    dataTask.taskDescription = self.taskDescriptionForSessionTasks;</span><br><span class="line">    [self setDelegate:delegate forTask:dataTask];</span><br><span class="line"></span><br><span class="line">    delegate.uploadProgressBlock = uploadProgressBlock;</span><br><span class="line">    delegate.downloadProgressBlock = downloadProgressBlock;</span><br><span class="line">&#125;</span><br><span class="line">- (void)setDelegate:(AFURLSessionManagerTaskDelegate *)delegate</span><br><span class="line">forTask:(NSURLSessionTask *)task</span><br><span class="line">&#123;</span><br><span class="line">    [self.lock lock];//保证读写操作的线程安全</span><br><span class="line">    self.mutableTaskDelegatesKeyedByTaskIdentifier</span><br><span class="line">    [@(task.taskIdentifier)] = delegate; //以task的标识符为键，与delegate进行映射</span><br><span class="line">    </span><br><span class="line">    [delegate setupProgressForTask:task];</span><br><span class="line">    [self addNotificationObserverForTask:task];</span><br><span class="line">    [self.lock unlock];</span><br><span class="line">&#125;</span><br><span class="line">- (AFURLSessionManagerTaskDelegate *)delegateForTask:</span><br><span class="line">(NSURLSessionTask *)task </span><br><span class="line">&#123;</span><br><span class="line">    AFURLSessionManagerTaskDelegate *delegate = nil;</span><br><span class="line">    [self.lock lock];</span><br><span class="line">    delegate = self.mutableTaskDelegatesKeyedByTaskIdentifier[@(task.taskIdentifier)];</span><br><span class="line">    [self.lock unlock];</span><br><span class="line">    return delegate;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight fsharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><code class="hljs fsharp"><span class="hljs-operator">-</span> (<span class="hljs-keyword">void</span>)addDelegateForDataTask<span class="hljs-operator">:</span>(NSURLSessionDataTask <span class="hljs-operator">*</span>)dataTask<br>uploadProgress<span class="hljs-operator">:</span>(<span class="hljs-keyword">void</span> (<span class="hljs-operator">^</span>)(NSProgress <span class="hljs-operator">*</span>uploadProgress)) uploadProgressBlock<br>downloadProgress<span class="hljs-operator">:</span>(<span class="hljs-keyword">void</span> (<span class="hljs-operator">^</span>)(NSProgress <span class="hljs-operator">*</span>downloadProgress))<br>downloadProgressBlock<br>completionHandler<span class="hljs-operator">:</span>(<span class="hljs-keyword">void</span> (<span class="hljs-operator">^</span>)(<br>NSURLResponse <span class="hljs-operator">*</span>response, <span class="hljs-built_in">id</span> responseObject, NSError <span class="hljs-operator">*</span>error))<span class="hljs-keyword">completionHandler</span><br>&#123;<br>    AFURLSessionManagerTaskDelegate <span class="hljs-operator">*</span><span class="hljs-keyword">delegate</span> <span class="hljs-operator">=</span> [[AFURLSessionManagerTaskDelegate <br>    alloc] init];<br>    <span class="hljs-keyword">delegate</span>.manager <span class="hljs-operator">=</span> self;<br>    <span class="hljs-keyword">delegate</span>.completionHandler <span class="hljs-operator">=</span> completionHandler;<br><br>    dataTask.taskDescription <span class="hljs-operator">=</span> self.taskDescriptionForSessionTasks;<br>    [self setDelegate<span class="hljs-operator">:</span><span class="hljs-keyword">delegate</span> forTask<span class="hljs-operator">:</span>dataTask];<br><br>    <span class="hljs-keyword">delegate</span>.uploadProgressBlock <span class="hljs-operator">=</span> uploadProgressBlock;<br>    <span class="hljs-keyword">delegate</span>.downloadProgressBlock <span class="hljs-operator">=</span> downloadProgressBlock;<br>&#125;<br><span class="hljs-operator">-</span> (<span class="hljs-keyword">void</span>)setDelegate<span class="hljs-operator">:</span>(AFURLSessionManagerTaskDelegate <span class="hljs-operator">*</span>)<span class="hljs-keyword">delegate</span><br>forTask<span class="hljs-operator">:</span>(NSURLSessionTask <span class="hljs-operator">*</span>)task<br>&#123;<br>    [self.<span class="hljs-built_in">lock</span> <span class="hljs-built_in">lock</span>];<span class="hljs-comment">//保证读写操作的线程安全</span><br>    self.mutableTaskDelegatesKeyedByTaskIdentifier<br>    [<span class="hljs-operator">@</span>(task.taskIdentifier)] <span class="hljs-operator">=</span> <span class="hljs-keyword">delegate</span>; <span class="hljs-comment">//以task的标识符为键，与delegate进行映射</span><br>    <br>    [<span class="hljs-keyword">delegate</span> setupProgressForTask<span class="hljs-operator">:</span>task];<br>    [self addNotificationObserverForTask<span class="hljs-operator">:</span>task];<br>    [self.<span class="hljs-built_in">lock</span> unlock];<br>&#125;<br><span class="hljs-operator">-</span> (AFURLSessionManagerTaskDelegate <span class="hljs-operator">*</span>)delegateForTask<span class="hljs-operator">:</span><br>(NSURLSessionTask <span class="hljs-operator">*</span>)<span class="hljs-keyword">task</span> <br>&#123;<br>    AFURLSessionManagerTaskDelegate <span class="hljs-operator">*</span><span class="hljs-keyword">delegate</span> <span class="hljs-operator">=</span> nil;<br>    [self.<span class="hljs-built_in">lock</span> <span class="hljs-built_in">lock</span>];<br>    <span class="hljs-keyword">delegate</span> <span class="hljs-operator">=</span> self.mutableTaskDelegatesKeyedByTaskIdentifier[<span class="hljs-operator">@</span>(task.taskIdentifier)];<br>    [self.<span class="hljs-built_in">lock</span> unlock];<br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">delegate</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>所以，AFURLSessionManagerTaskDelegate 是通过 -setDelegate:forTask: 方法，作为 AFURLSessionManager 中 NSMutableDictionary *mutableTaskDelegatesKeyedByTaskIdentifier 字典属性的 value 被保存起来的，key 则是 NSURLSessionTask 的任务标识符。后面用到时又通过-delegateForTask: 根据标识符取出task对应的代理。<br><br/></p>
 <p>ps：AFURLSessionManagerTaskDelegate 定义里有个属性：AFURLSessionManager *manager，在函数 -addDelegateForDataTask:uploadProgress:downloadProgress:completionHandler: 里这个 manager 被设置为 self。那么这里存在一个引用链：AFURLSessionManager -&gt; mutableTaskDelegatesKeyedByTaskIdentifier -&gt; AFURLSessionManagerTaskDelegate -&gt; AFURLSessionManager。<br><br/></p>
 <p>这里看似有个相互引用问题，AFN 的处理是使用 weak 声明 manager 属性（见上面的定义），并且在请求执行完成后的回调函数里做了如下处理：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">- (void)URLSession:(NSURLSession *)session</span><br><span class="line">task:(NSURLSessionTask *)task</span><br><span class="line">didCompleteWithError:(NSError *)error</span><br><span class="line">&#123;</span><br><span class="line">    AFURLSessionManagerTaskDelegate *delegate = [self delegateForTask:task];</span><br><span class="line">    if (delegate) &#123;</span><br><span class="line">        [delegate URLSession:session task:task didCompleteWithError:error];</span><br><span class="line">        [self removeDelegateForTask:task];//注意 就是这一个操作</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">- (void)removeDelegateForTask:(NSURLSessionTask *)task </span><br><span class="line">&#123;</span><br><span class="line">    //。。。</span><br><span class="line">    [self.lock lock];</span><br><span class="line">    //移除 AFURLSessionManagerTaskDelegate 对象</span><br><span class="line">    [self.mutableTaskDelegatesKeyedByTaskIdentifier </span><br><span class="line">    removeObjectForKey:@(task.taskIdentifier)];</span><br><span class="line">    [self.lock unlock];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs objectivec">- (<span class="hljs-type">void</span>)URLSession:(<span class="hljs-built_in">NSURLSession</span> *)session<br>task:(<span class="hljs-built_in">NSURLSessionTask</span> *)task<br>didCompleteWithError:(<span class="hljs-built_in">NSError</span> *)error<br>&#123;<br>    AFURLSessionManagerTaskDelegate *delegate = [<span class="hljs-keyword">self</span> delegateForTask:task];<br>    <span class="hljs-keyword">if</span> (delegate) &#123;<br>        [delegate URLSession:session task:task didCompleteWithError:error];<br>        [<span class="hljs-keyword">self</span> removeDelegateForTask:task];<span class="hljs-comment">//注意 就是这一个操作</span><br>    &#125;<br>&#125;<br>- (<span class="hljs-type">void</span>)removeDelegateForTask:(<span class="hljs-built_in">NSURLSessionTask</span> *)task <br>&#123;<br>    <span class="hljs-comment">//。。。</span><br>    [<span class="hljs-keyword">self</span>.lock lock];<br>    <span class="hljs-comment">//移除 AFURLSessionManagerTaskDelegate 对象</span><br>    [<span class="hljs-keyword">self</span>.mutableTaskDelegatesKeyedByTaskIdentifier <br>    removeObjectForKey:@(task.taskIdentifier)];<br>    [<span class="hljs-keyword">self</span>.lock unlock];<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>AFURLSessionManagerTaskDelegate 对象被从 mutableTaskDelegatesKeyedByTaskIdentifier 字典中移除。那么这个引用链就被打破，也就不存在相互引用问题了。</p>
 <h4 id="3-4-进度的监听"><a href="#3-4-进度的监听" class="headerlink" title="3.4.进度的监听"></a>3.4.进度的监听</h4><p>TaskDelegate 作为“代理”会监听任务的进度。其内部是通过 KVO 监听 NSURLSessionTask 的 countOfBytesSent 等字段实现的：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">- (void)setupProgressForTask:(NSURLSessionTask *)task </span><br><span class="line">&#123;</span><br><span class="line">    //。。。</span><br><span class="line">    [task addObserver:self</span><br><span class="line">           forKeyPath:NSStringFromSelector(@selector(countOfBytesReceived))</span><br><span class="line">              options:NSKeyValueObservingOptionNew</span><br><span class="line">              context:NULL];</span><br><span class="line">    [task addObserver:self</span><br><span class="line">           forKeyPath:NSStringFromSelector(@selector(countOfBytesExpectedToReceive))</span><br><span class="line">              options:NSKeyValueObservingOptionNew</span><br><span class="line">              context:NULL];</span><br><span class="line"></span><br><span class="line">    [task addObserver:self</span><br><span class="line">           forKeyPath:NSStringFromSelector(@selector(countOfBytesSent))</span><br><span class="line">              options:NSKeyValueObservingOptionNew</span><br><span class="line">              context:NULL];</span><br><span class="line">    [task addObserver:self</span><br><span class="line">           forKeyPath:NSStringFromSelector(@selector(countOfBytesExpectedToSend))</span><br><span class="line">              options:NSKeyValueObservingOptionNew</span><br><span class="line">              context:NULL];</span><br><span class="line">    //。。。</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)observeValueForKeyPath:(NSString *)keyPath </span><br><span class="line">ofObject:(id)object </span><br><span class="line">change:(NSDictionary *)change </span><br><span class="line">context:(void *)context </span><br><span class="line">&#123;</span><br><span class="line">    if ([object isKindOfClass:[NSURLSessionTask class]] || </span><br><span class="line">    [object isKindOfClass:[NSURLSessionDownloadTask class]]) &#123;</span><br><span class="line">        if ([keyPath isEqualToString:</span><br><span class="line">        NSStringFromSelector(@selector(countOfBytesReceived))]) &#123;</span><br><span class="line">            self.downloadProgress.completedUnitCount = </span><br><span class="line">            [change[NSKeyValueChangeNewKey] longLongValue];</span><br><span class="line">        &#125;</span><br><span class="line">        //。。。</span><br><span class="line">    &#125;</span><br><span class="line">    else if ([object isEqual:self.downloadProgress]) &#123;</span><br><span class="line">        if (self.downloadProgressBlock) &#123;</span><br><span class="line">            self.downloadProgressBlock(object);//下载回调</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    else if ([object isEqual:self.uploadProgress]) &#123;</span><br><span class="line">        if (self.uploadProgressBlock) &#123;</span><br><span class="line">            self.uploadProgressBlock(object);//上传回调</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><code class="hljs objectivec">- (<span class="hljs-type">void</span>)setupProgressForTask:(<span class="hljs-built_in">NSURLSessionTask</span> *)task <br>&#123;<br>    <span class="hljs-comment">//。。。</span><br>    [task addObserver:<span class="hljs-keyword">self</span><br>           forKeyPath:<span class="hljs-built_in">NSStringFromSelector</span>(<span class="hljs-keyword">@selector</span>(countOfBytesReceived))<br>              options:<span class="hljs-built_in">NSKeyValueObservingOptionNew</span><br>              context:<span class="hljs-literal">NULL</span>];<br>    [task addObserver:<span class="hljs-keyword">self</span><br>           forKeyPath:<span class="hljs-built_in">NSStringFromSelector</span>(<span class="hljs-keyword">@selector</span>(countOfBytesExpectedToReceive))<br>              options:<span class="hljs-built_in">NSKeyValueObservingOptionNew</span><br>              context:<span class="hljs-literal">NULL</span>];<br><br>    [task addObserver:<span class="hljs-keyword">self</span><br>           forKeyPath:<span class="hljs-built_in">NSStringFromSelector</span>(<span class="hljs-keyword">@selector</span>(countOfBytesSent))<br>              options:<span class="hljs-built_in">NSKeyValueObservingOptionNew</span><br>              context:<span class="hljs-literal">NULL</span>];<br>    [task addObserver:<span class="hljs-keyword">self</span><br>           forKeyPath:<span class="hljs-built_in">NSStringFromSelector</span>(<span class="hljs-keyword">@selector</span>(countOfBytesExpectedToSend))<br>              options:<span class="hljs-built_in">NSKeyValueObservingOptionNew</span><br>              context:<span class="hljs-literal">NULL</span>];<br>    <span class="hljs-comment">//。。。</span><br>&#125;<br><br>- (<span class="hljs-type">void</span>)observeValueForKeyPath:(<span class="hljs-built_in">NSString</span> *)keyPath <br>ofObject:(<span class="hljs-type">id</span>)object <br>change:(<span class="hljs-built_in">NSDictionary</span> *)change <br>context:(<span class="hljs-type">void</span> *)context <br>&#123;<br>    <span class="hljs-keyword">if</span> ([object isKindOfClass:[<span class="hljs-built_in">NSURLSessionTask</span> <span class="hljs-keyword">class</span>]] || <br>    [object isKindOfClass:[<span class="hljs-built_in">NSURLSessionDownloadTask</span> <span class="hljs-keyword">class</span>]]) &#123;<br>        <span class="hljs-keyword">if</span> ([keyPath isEqualToString:<br>        <span class="hljs-built_in">NSStringFromSelector</span>(<span class="hljs-keyword">@selector</span>(countOfBytesReceived))]) &#123;<br>            <span class="hljs-keyword">self</span>.downloadProgress.completedUnitCount = <br>            [change[<span class="hljs-built_in">NSKeyValueChangeNewKey</span>] longLongValue];<br>        &#125;<br>        <span class="hljs-comment">//。。。</span><br>    &#125;<br>    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> ([object isEqual:<span class="hljs-keyword">self</span>.downloadProgress]) &#123;<br>        <span class="hljs-keyword">if</span> (<span class="hljs-keyword">self</span>.downloadProgressBlock) &#123;<br>            <span class="hljs-keyword">self</span>.downloadProgressBlock(object);<span class="hljs-comment">//下载回调</span><br>        &#125;<br>    &#125;<br>    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> ([object isEqual:<span class="hljs-keyword">self</span>.uploadProgress]) &#123;<br>        <span class="hljs-keyword">if</span> (<span class="hljs-keyword">self</span>.uploadProgressBlock) &#123;<br>            <span class="hljs-keyword">self</span>.uploadProgressBlock(object);<span class="hljs-comment">//上传回调</span><br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <h3 id="四、Serialization"><a href="#四、Serialization" class="headerlink" title="四、Serialization"></a>四、Serialization</h3><h4 id="4-1-AFURLRequestSerialization"><a href="#4-1-AFURLRequestSerialization" class="headerlink" title="4.1.AFURLRequestSerialization"></a>4.1.AFURLRequestSerialization</h4><p>根据用户设置的请求类型，设置 NSURLRequest 的各项参数。</p>
 <ul>
 <li>自定义属性参数：</li>
 </ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">@property (nonatomic, assign) NSStringEncoding stringEncoding;</span><br><span class="line">@property (nonatomic, assign) BOOL allowsCellularAccess;</span><br><span class="line">@property (nonatomic, assign) NSURLRequestCachePolicy cachePolicy;</span><br><span class="line">@property (nonatomic, assign) BOOL HTTPShouldHandleCookies;</span><br><span class="line">@property (nonatomic, assign) BOOL HTTPShouldUsePipelining;</span><br><span class="line">@property (nonatomic, assign) NSURLRequestNetworkServiceType networkServiceType;</span><br><span class="line">@property (nonatomic, assign) NSTimeInterval timeoutInterval;</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">assign</span>) <span class="hljs-built_in">NSStringEncoding</span> stringEncoding;<br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">assign</span>) <span class="hljs-type">BOOL</span> allowsCellularAccess;<br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">assign</span>) <span class="hljs-built_in">NSURLRequestCachePolicy</span> cachePolicy;<br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">assign</span>) <span class="hljs-type">BOOL</span> HTTPShouldHandleCookies;<br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">assign</span>) <span class="hljs-type">BOOL</span> HTTPShouldUsePipelining;<br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">assign</span>) <span class="hljs-built_in">NSURLRequestNetworkServiceType</span> networkServiceType;<br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">assign</span>) <span class="hljs-built_in">NSTimeInterval</span> timeoutInterval;<br></code></pre></td></tr></table></figure>
 
 <ul>
 <li>设置请求方法、请求头、请求体：</li>
 </ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line">- (NSMutableURLRequest *)requestWithMethod:(NSString *)method</span><br><span class="line">URLString:(NSString *)URLString</span><br><span class="line">parameters:(id)parameters</span><br><span class="line">error:(NSError *)error</span><br><span class="line">&#123;</span><br><span class="line">    NSURL *url = [NSURL URLWithString:URLString];</span><br><span class="line">    NSMutableURLRequest *mutableRequest = [[NSMutableURLRequest </span><br><span class="line">    alloc] initWithURL:url];</span><br><span class="line">    //设置HTTPMethod（GET POST等）</span><br><span class="line">    mutableRequest.HTTPMethod = method;</span><br><span class="line">    //。。</span><br><span class="line">    mutableRequest = [[self requestBySerializingRequest:mutableRequest </span><br><span class="line">    withParameters:parameters </span><br><span class="line">    error:error] mutableCopy];</span><br><span class="line">    return mutableRequest;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (NSURLRequest *)requestBySerializingRequest:(NSURLRequest *)request</span><br><span class="line">withParameters:(id)parameters</span><br><span class="line">error:(NSError *)error</span><br><span class="line">&#123;</span><br><span class="line">    //。。。</span><br><span class="line">    if (parameters) &#123;</span><br><span class="line">        if (self.queryStringSerialization) &#123;//如果有自定义的解析方式</span><br><span class="line">            NSError *serializationError;</span><br><span class="line">            query = self.queryStringSerialization(</span><br><span class="line">            request, parameters, &amp;serializationError);</span><br><span class="line">            //...</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; else &#123;//默认的解析方式</span><br><span class="line">            switch (self.queryStringSerializationStyle) &#123;</span><br><span class="line">                case AFHTTPRequestQueryStringDefaultStyle:</span><br><span class="line">                    query = AFQueryStringFromParameters(parameters);</span><br><span class="line">                    break;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    //如果是GET、HEAD、DELETE方法，参数追加到 URL 尾部</span><br><span class="line">    if ([self.HTTPMethodsEncodingParametersInURI containsObject:</span><br><span class="line">        [[request HTTPMethod] uppercaseString]]) &#123;</span><br><span class="line">        if (query &amp;&amp; query.length &gt; 0) &#123;</span><br><span class="line">            mutableRequest.URL = [NSURL URLWithString:</span><br><span class="line">            [[mutableRequest.URL absoluteString] </span><br><span class="line">            stringByAppendingFormat:mutableRequest.URL.query </span><br><span class="line">            ? @&quot;&amp;%@&quot; : @&quot;?%@&quot;, query]];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; else &#123;//POST、PUT方法的参数会放到 HTTPBody 里</span><br><span class="line">        if (![mutableRequest valueForHTTPHeaderField:@&quot;Content-Type&quot;]) &#123;</span><br><span class="line">            [mutableRequest setValue:</span><br><span class="line">            @&quot;application/x-www-form-urlencoded&quot; </span><br><span class="line">            forHTTPHeaderField:@&quot;Content-Type&quot;];</span><br><span class="line">        &#125;</span><br><span class="line">        //设置HTTPBody</span><br><span class="line">        [mutableRequest setHTTPBody:</span><br><span class="line">        [query dataUsingEncoding:self.stringEncoding]];</span><br><span class="line">    &#125;</span><br><span class="line">    return mutableRequest;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><code class="hljs objectivec">- (<span class="hljs-built_in">NSMutableURLRequest</span> *)requestWithMethod:(<span class="hljs-built_in">NSString</span> *)method<br>URLString:(<span class="hljs-built_in">NSString</span> *)URLString<br>parameters:(<span class="hljs-type">id</span>)parameters<br>error:(<span class="hljs-built_in">NSError</span> *)error<br>&#123;<br>    <span class="hljs-built_in">NSURL</span> *url = [<span class="hljs-built_in">NSURL</span> URLWithString:URLString];<br>    <span class="hljs-built_in">NSMutableURLRequest</span> *mutableRequest = [[<span class="hljs-built_in">NSMutableURLRequest</span> <br>    alloc] initWithURL:url];<br>    <span class="hljs-comment">//设置HTTPMethod（GET POST等）</span><br>    mutableRequest.HTTPMethod = method;<br>    <span class="hljs-comment">//。。</span><br>    mutableRequest = [[<span class="hljs-keyword">self</span> requestBySerializingRequest:mutableRequest <br>    withParameters:parameters <br>    error:error] mutableCopy];<br>    <span class="hljs-keyword">return</span> mutableRequest;<br>&#125;<br><br>- (<span class="hljs-built_in">NSURLRequest</span> *)requestBySerializingRequest:(<span class="hljs-built_in">NSURLRequest</span> *)request<br>withParameters:(<span class="hljs-type">id</span>)parameters<br>error:(<span class="hljs-built_in">NSError</span> *)error<br>&#123;<br>    <span class="hljs-comment">//。。。</span><br>    <span class="hljs-keyword">if</span> (parameters) &#123;<br>        <span class="hljs-keyword">if</span> (<span class="hljs-keyword">self</span>.queryStringSerialization) &#123;<span class="hljs-comment">//如果有自定义的解析方式</span><br>            <span class="hljs-built_in">NSError</span> *serializationError;<br>            query = <span class="hljs-keyword">self</span>.queryStringSerialization(<br>            request, parameters, &amp;serializationError);<br>            <span class="hljs-comment">//...</span><br>            &#125;<br>        &#125; <span class="hljs-keyword">else</span> &#123;<span class="hljs-comment">//默认的解析方式</span><br>            <span class="hljs-keyword">switch</span> (<span class="hljs-keyword">self</span>.queryStringSerializationStyle) &#123;<br>                <span class="hljs-keyword">case</span> AFHTTPRequestQueryStringDefaultStyle:<br>                    query = AFQueryStringFromParameters(parameters);<br>                    <span class="hljs-keyword">break</span>;<br>            &#125;<br>        &#125;<br>    &#125;<br>    <span class="hljs-comment">//如果是GET、HEAD、DELETE方法，参数追加到 URL 尾部</span><br>    <span class="hljs-keyword">if</span> ([<span class="hljs-keyword">self</span>.HTTPMethodsEncodingParametersInURI containsObject:<br>        [[request HTTPMethod] uppercaseString]]) &#123;<br>        <span class="hljs-keyword">if</span> (query &amp;&amp; query.length &gt; <span class="hljs-number">0</span>) &#123;<br>            mutableRequest.URL = [<span class="hljs-built_in">NSURL</span> URLWithString:<br>            [[mutableRequest.URL absoluteString] <br>            stringByAppendingFormat:mutableRequest.URL.query <br>            ? <span class="hljs-string">@&quot;&amp;%@&quot;</span> : <span class="hljs-string">@&quot;?%@&quot;</span>, query]];<br>        &#125;<br>    &#125; <span class="hljs-keyword">else</span> &#123;<span class="hljs-comment">//POST、PUT方法的参数会放到 HTTPBody 里</span><br>        <span class="hljs-keyword">if</span> (![mutableRequest valueForHTTPHeaderField:<span class="hljs-string">@&quot;Content-Type&quot;</span>]) &#123;<br>            [mutableRequest setValue:<br>            <span class="hljs-string">@&quot;application/x-www-form-urlencoded&quot;</span> <br>            forHTTPHeaderField:<span class="hljs-string">@&quot;Content-Type&quot;</span>];<br>        &#125;<br>        <span class="hljs-comment">//设置HTTPBody</span><br>        [mutableRequest setHTTPBody:<br>        [query dataUsingEncoding:<span class="hljs-keyword">self</span>.stringEncoding]];<br>    &#125;<br>    <span class="hljs-keyword">return</span> mutableRequest;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <h4 id="4-2-AFHTTPResponseSerializer"><a href="#4-2-AFHTTPResponseSerializer" class="headerlink" title="4.2.AFHTTPResponseSerializer"></a>4.2.AFHTTPResponseSerializer</h4><p>校验返回的<code>response</code>和<code>data</code>。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">- (BOOL)validateResponse:(NSHTTPURLResponse *)response</span><br><span class="line">                    data:(NSData *)data</span><br><span class="line">                   error:(NSError * __autoreleasing *)error</span><br><span class="line">&#123;</span><br><span class="line">    BOOL responseIsValid = YES;</span><br><span class="line">    NSError *validationError = nil;</span><br><span class="line"></span><br><span class="line">    if (response &amp;&amp; [response isKindOfClass:[NSHTTPURLResponse class]]) &#123;</span><br><span class="line">        if (self.acceptableContentTypes &amp;&amp; </span><br><span class="line">            ![self.acceptableContentTypes containsObject:[response MIMEType]] &amp;&amp;</span><br><span class="line">            !([response MIMEType] == nil &amp;&amp; [data length] == 0)) &#123;</span><br><span class="line"></span><br><span class="line">            if ([data length] &gt; 0 &amp;&amp; [response URL]) &#123;</span><br><span class="line">                //不支持的 content-type</span><br><span class="line">                //...略</span><br><span class="line">                responseIsValid = NO;</span><br><span class="line">            &#125;</span><br><span class="line">            responseIsValid = NO;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        if (self.acceptableStatusCodes &amp;&amp; </span><br><span class="line">            ![self.acceptableStatusCodes containsIndex:(NSUInteger)response.statusCode] &amp;&amp; </span><br><span class="line">            [response URL]) &#123;</span><br><span class="line">                //返回了不支持的状态码</span><br><span class="line">                //...略</span><br><span class="line">            responseIsValid = NO;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    if (error &amp;&amp; !responseIsValid) &#123;</span><br><span class="line">        *error = validationError;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return responseIsValid;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><code class="hljs objectivec">- (<span class="hljs-type">BOOL</span>)validateResponse:(<span class="hljs-built_in">NSHTTPURLResponse</span> *)response<br>                    data:(<span class="hljs-built_in">NSData</span> *)data<br>                   error:(<span class="hljs-built_in">NSError</span> * __autoreleasing *)error<br>&#123;<br>    <span class="hljs-type">BOOL</span> responseIsValid = <span class="hljs-literal">YES</span>;<br>    <span class="hljs-built_in">NSError</span> *validationError = <span class="hljs-literal">nil</span>;<br><br>    <span class="hljs-keyword">if</span> (response &amp;&amp; [response isKindOfClass:[<span class="hljs-built_in">NSHTTPURLResponse</span> <span class="hljs-keyword">class</span>]]) &#123;<br>        <span class="hljs-keyword">if</span> (<span class="hljs-keyword">self</span>.acceptableContentTypes &amp;&amp; <br>            ![<span class="hljs-keyword">self</span>.acceptableContentTypes containsObject:[response MIMEType]] &amp;&amp;<br>            !([response MIMEType] == <span class="hljs-literal">nil</span> &amp;&amp; [data length] == <span class="hljs-number">0</span>)) &#123;<br><br>            <span class="hljs-keyword">if</span> ([data length] &gt; <span class="hljs-number">0</span> &amp;&amp; [response URL]) &#123;<br>                <span class="hljs-comment">//不支持的 content-type</span><br>                <span class="hljs-comment">//...略</span><br>                responseIsValid = <span class="hljs-literal">NO</span>;<br>            &#125;<br>            responseIsValid = <span class="hljs-literal">NO</span>;<br>        &#125;<br><br>        <span class="hljs-keyword">if</span> (<span class="hljs-keyword">self</span>.acceptableStatusCodes &amp;&amp; <br>            ![<span class="hljs-keyword">self</span>.acceptableStatusCodes containsIndex:(<span class="hljs-built_in">NSUInteger</span>)response.statusCode] &amp;&amp; <br>            [response URL]) &#123;<br>                <span class="hljs-comment">//返回了不支持的状态码</span><br>                <span class="hljs-comment">//...略</span><br>            responseIsValid = <span class="hljs-literal">NO</span>;<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-keyword">if</span> (error &amp;&amp; !responseIsValid) &#123;<br>        *error = validationError;<br>    &#125;<br><br>    <span class="hljs-keyword">return</span> responseIsValid;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <h3 id="五、Reachability"><a href="#五、Reachability" class="headerlink" title="五、Reachability"></a>五、Reachability</h3><p>使用 SystemConfiguration.framework 中的 SCNetworkReachability 类，监听网络状态，主要属性：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> The current network reachability status.</span><br><span class="line"> */</span><br><span class="line">@property (readonly, nonatomic, assign) AFNetworkReachabilityStatus networkReachabilityStatus;</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> The current network reachability status.</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">readonly</span>, <span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">assign</span>) AFNetworkReachabilityStatus networkReachabilityStatus;<br></code></pre></td></tr></table></figure>
 
 <p>对应的网络状况枚举定义如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">typedef NS_ENUM(NSInteger, AFNetworkReachabilityStatus) &#123;</span><br><span class="line">    AFNetworkReachabilityStatusUnknown          = -1,//未知</span><br><span class="line">    AFNetworkReachabilityStatusNotReachable     = 0, //未联网</span><br><span class="line">    AFNetworkReachabilityStatusReachableViaWWAN = 1, //蜂窝网络</span><br><span class="line">    AFNetworkReachabilityStatusReachableViaWiFi = 2, //WIFI</span><br><span class="line">    AFNetworkReachabilityStatusReachableVia2G = 3,   //2G</span><br><span class="line">    AFNetworkReachabilityStatusReachableVia3G = 4,   //3G</span><br><span class="line">    AFNetworkReachabilityStatusReachableVia4G = 5,   //4G</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs awk">typedef NS_ENUM(NSInteger, AFNetworkReachabilityStatus) &#123;<br>    AFNetworkReachabilityStatusUnknown          = -<span class="hljs-number">1</span>,<span class="hljs-regexp">//</span>未知<br>    AFNetworkReachabilityStatusNotReachable     = <span class="hljs-number">0</span>, <span class="hljs-regexp">//</span>未联网<br>    AFNetworkReachabilityStatusReachableViaWWAN = <span class="hljs-number">1</span>, <span class="hljs-regexp">//</span>蜂窝网络<br>    AFNetworkReachabilityStatusReachableViaWiFi = <span class="hljs-number">2</span>, <span class="hljs-regexp">//</span>WIFI<br>    AFNetworkReachabilityStatusReachableVia2G = <span class="hljs-number">3</span>,   <span class="hljs-regexp">//</span><span class="hljs-number">2</span>G<br>    AFNetworkReachabilityStatusReachableVia3G = <span class="hljs-number">4</span>,   <span class="hljs-regexp">//</span><span class="hljs-number">3</span>G<br>    AFNetworkReachabilityStatusReachableVia4G = <span class="hljs-number">5</span>,   <span class="hljs-regexp">//</span><span class="hljs-number">4</span>G<br>&#125;;<br></code></pre></td></tr></table></figure>
 
 <p>可在 AppDelegate 中开启网络状态的监听：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">- (BOOL)application:(UIApplication *)application </span><br><span class="line">didFinishLaunchingWithOptions:(NSDictionary *)launchOptions</span><br><span class="line">&#123;</span><br><span class="line">    //开启AFNetworking网络监测</span><br><span class="line">    AFNetworkReachabilityManager *shareMana = [AFNetworkReachabilityManager sharedManager];</span><br><span class="line">    [shareMana startMonitoring];</span><br><span class="line">    [shareMana setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) &#123;</span><br><span class="line">        dispatch_async(dispatch_get_main_queue(), ^&#123;</span><br><span class="line">            // ...</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;];</span><br><span class="line">    return YES;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs objectivec">- (<span class="hljs-type">BOOL</span>)application:(<span class="hljs-built_in">UIApplication</span> *)application <br>didFinishLaunchingWithOptions:(<span class="hljs-built_in">NSDictionary</span> *)launchOptions<br>&#123;<br>    <span class="hljs-comment">//开启AFNetworking网络监测</span><br>    AFNetworkReachabilityManager *shareMana = [AFNetworkReachabilityManager sharedManager];<br>    [shareMana startMonitoring];<br>    [shareMana setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) &#123;<br>        <span class="hljs-built_in">dispatch_async</span>(dispatch_get_main_queue(), ^&#123;<br>            <span class="hljs-comment">// ...</span><br>        &#125;);<br>    &#125;];<br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">YES</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <h3 id="六、Security"><a href="#六、Security" class="headerlink" title="六、Security"></a>六、Security</h3><p>处理与服务器交互时的验证问题，保证应用与服务器通信时的SSL连接安全。<br><br/></p>
 <p>客户端与服务器进行通信时，服务器会返回一个SSL证书，客户端需要验证证书的颁发机构、公钥、是否过期等信息。SSL Pinning 就是iOS中用来处理此类事务的，它可以按照你的设置，将服务器下发的证书与本地保存的证书进行对比，验证通过才能继续通信。这些设置在 AFN 中分三类：</p>
@@ -309,10 +453,10 @@
 <li><strong>具体实践</strong>：</li>
 </ul>
 <p>AFN的 AFHTTPSessionManager 类中有个<code>securityPolicy</code>属性：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> The security policy used by created session to evaluate server trust for secure connections. </span><br><span class="line"> *`AFURLSessionManager` uses the `defaultPolicy` unless otherwise specified.</span><br><span class="line"> */</span><br><span class="line">@property (nonatomic, strong) AFSecurityPolicy *securityPolicy;</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> The security policy used by created session to evaluate server trust for secure connections. </span><br><span class="hljs-comment"> *`AFURLSessionManager` uses the `defaultPolicy` unless otherwise specified.</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">strong</span>) AFSecurityPolicy *securityPolicy;<br></code></pre></td></tr></table></figure>
 
 <p>一般我们是在基于 AFHTTPSessionManager 的单例类中给 securityPolicy 属性指定一个验证模式：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">@interface TLHttpAPIClient : AFHTTPSessionManager</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation TLHttpAPIClient</span><br><span class="line">+ (instancetype)sharedClient &#123;</span><br><span class="line">    static TLHttpAPIClient *sharedClient = nil;</span><br><span class="line">    static dispatch_once_t onceToken;</span><br><span class="line">    dispatch_once(&amp;onceToken, ^&#123;</span><br><span class="line">        sharedClient = [TLHttpAPIClient new];</span><br><span class="line">        </span><br><span class="line">        // 设置证书验证模式</span><br><span class="line">        AFSecurityPolicy *securityPolicy = [AFSecurityPolicy policyWithPinningMode:</span><br><span class="line">                                                        AFSSLPinningModeCertificate];</span><br><span class="line">        // 证书在bundle中的路径</span><br><span class="line">        NSString *cerPath = [[NSBundle mainBundle] pathForResource:@&quot;Demo&quot; ofType:@&quot;cer&quot;];</span><br><span class="line">        NSData *cerData  = [NSData dataWithContentsOfFile:cerPath];</span><br><span class="line">        [securityPolicy setPinnedCertificates:@[cerData]];</span><br><span class="line">        </span><br><span class="line">        sharedClient.securityPolicy = securityPolicy;</span><br><span class="line">    &#125;);</span><br><span class="line">    return sharedClient;</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">TLHttpAPIClient</span> : <span class="hljs-title">AFHTTPSessionManager</span></span><br><span class="hljs-keyword">@end</span><br><br><span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">TLHttpAPIClient</span></span><br>+ (<span class="hljs-keyword">instancetype</span>)sharedClient &#123;<br>    <span class="hljs-keyword">static</span> TLHttpAPIClient *sharedClient = <span class="hljs-literal">nil</span>;<br>    <span class="hljs-keyword">static</span> <span class="hljs-built_in">dispatch_once_t</span> onceToken;<br>    <span class="hljs-built_in">dispatch_once</span>(&amp;onceToken, ^&#123;<br>        sharedClient = [TLHttpAPIClient new];<br>        <br>        <span class="hljs-comment">// 设置证书验证模式</span><br>        AFSecurityPolicy *securityPolicy = [AFSecurityPolicy policyWithPinningMode:<br>                                                        AFSSLPinningModeCertificate];<br>        <span class="hljs-comment">// 证书在bundle中的路径</span><br>        <span class="hljs-built_in">NSString</span> *cerPath = [[<span class="hljs-built_in">NSBundle</span> mainBundle] pathForResource:<span class="hljs-string">@&quot;Demo&quot;</span> ofType:<span class="hljs-string">@&quot;cer&quot;</span>];<br>        <span class="hljs-built_in">NSData</span> *cerData  = [<span class="hljs-built_in">NSData</span> dataWithContentsOfFile:cerPath];<br>        [securityPolicy setPinnedCertificates:@[cerData]];<br>        <br>        sharedClient.securityPolicy = securityPolicy;<br>    &#125;);<br>    <span class="hljs-keyword">return</span> sharedClient;<br>&#125;<br><span class="hljs-keyword">@end</span><br></code></pre></td></tr></table></figure>
 
 <p>若使用 AFSSLPinningModeNone 模式，则不用设置证书路径。使用证书进行验证时，注意证书是否过期。</p>
 <h3 id="七、小结"><a href="#七、小结" class="headerlink" title="七、小结"></a>七、小结</h3><p>源码部分暂时先写到这，UIKit+AFNetworking 部分及其他细节待续~~说说目前对AFN的感受吧。</p>
@@ -324,217 +468,346 @@
 <li>使用 defaultSessionConfiguration 时 HTTPMaximumConnectionsPerHost 属性默认为4 ，即每个主机默认同时并发请求数为4个；必要时也可自己提供额外的 OperationManager 控制并发；</li>
 </ul>
 <p>多翻翻 AFN 在Github上的 <a target="_blank" rel="noopener" href="https://github.com/AFNetworking/AFNetworking/issues">issue</a> 和解决方案，看人家是怎么解决问题的，会有很多收获~</p>
-</section>
-    <!-- Tags START -->
-    
-      <div class="tags">
-        <span>Tags:</span>
-        
-  <a href="/tags#源码" >
-    <span class="tag-code">源码</span>
-  </a>
 
-      </div>
-    
-    <!-- Tags END -->
-    <!-- NAV START -->
-    
-  <div class="nav-container">
-    <!-- reverse left and right to put prev and next in a more logic postition -->
-    
-      <a class="nav-left" href="/2018/01/28/source_code_sd.html">
-        <span class="nav-arrow">← </span>
-        
-          SDWebImage
-        
-      </a>
-    
-    
-      <a class="nav-right" href="/2018/03/15/block.html">
-        
-          block的实现
-        
-        <span class="nav-arrow"> →</span>
-      </a>
-    
-  </div>
-
-    <!-- NAV END -->
-    <!-- 打赏 START -->
-    
-      <div class="money-like">
-        <div class="reward-btn">
-          赏
-          <span class="money-code">
-            <span class="alipay-code">
-              <div class="code-image"></div>
-              <b>使用支付宝打赏</b>
-            </span>
-            <span class="wechat-code">
-              <div class="code-image"></div>
-              <b>使用微信打赏</b>
-            </span>
-          </span>
-        </div>
-        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
-      </div>
-    
-    <!-- 打赏 END -->
-    <!-- 二维码 START -->
-    
-    <!-- 二维码 END -->
-    
-      <!-- No Comment -->
-    
-  </article>
-  <!-- Article END -->
-  <!-- Catalog START -->
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
   
-    <aside class="catalog-container">
-  <div class="toc-main">
-    <strong class="toc-title">Catalog</strong>
-    
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E4%B8%80%E3%80%81%E5%AF%BC%E5%85%A5%E5%BA%93"><span class="toc-nav-text">一、导入库</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E4%BA%8C%E3%80%81%E6%A8%A1%E5%9D%97%E5%88%92%E5%88%86"><span class="toc-nav-text">二、模块划分</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E4%B8%89%E3%80%81NSURLSession"><span class="toc-nav-text">三、NSURLSession</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3-1-AFURLSessionManager"><span class="toc-nav-text">3.1.AFURLSessionManager</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3-2-AFHTTPSessionManager"><span class="toc-nav-text">3.2.AFHTTPSessionManager</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3-3-TaskDelegate"><span class="toc-nav-text">3.3.TaskDelegate</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3-4-%E8%BF%9B%E5%BA%A6%E7%9A%84%E7%9B%91%E5%90%AC"><span class="toc-nav-text">3.4.进度的监听</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%9B%9B%E3%80%81Serialization"><span class="toc-nav-text">四、Serialization</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#4-1-AFURLRequestSerialization"><span class="toc-nav-text">4.1.AFURLRequestSerialization</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#4-2-AFHTTPResponseSerializer"><span class="toc-nav-text">4.2.AFHTTPResponseSerializer</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E4%BA%94%E3%80%81Reachability"><span class="toc-nav-text">五、Reachability</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%85%AD%E3%80%81Security"><span class="toc-nav-text">六、Security</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E4%B8%83%E3%80%81%E5%B0%8F%E7%BB%93"><span class="toc-nav-text">七、小结</span></a></li></ol>
-    
-  </div>
-</aside>
   
-  <!-- Catalog END -->
-</main>
-
-<script>
-  (function () {
-    var url = 'http://yoursite.com/2018/01/31/source_code_afn.html';
-    var banner = ''
-    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
-      $('#article-banner').css({
-        'background-image': 'url(' + banner + ')'
-      })
-    } else {
-      $('#article-banner').geopattern(url)
-    }
-    $('.header').removeClass('fixed-header')
-
-     // error image
-    $(".markdown-content img").on('error', function() {
-      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
-      $(this).css({
-        'cursor': 'default'
-      })
-    })
-
-    // zoom image
-    $(".markdown-content img").on('click', function() {
-      var src = $(this).attr('src')
-      if (src !== 'http://file.muyutech.com/error-img.png') {
-        var imageW = $(this).width()
-        var imageH = $(this).height()
-        
-        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
-        zoom = zoom < 1 ? 1 : zoom
-        zoom = zoom > 2 ? 2 : zoom
-        var transY = (($(window).height() - imageH) / 2).toFixed(2)
-
-        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
-        $('.image-view-wrap').addClass('wrap-active')
-        $('.image-view-wrap img').css({
-          'width': `${imageW}`,
-          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
-        })
-        $('html').css('overflow', 'hidden')
-
-        $('.image-view-wrap').on('click', function() {
-          $(this).remove()
-          $('html').attr('style', '')
-        })
-      }
-    })
-
-    // qrcode
-    var qr = new QRious({
-      element: document.getElementById('share-qrcode'),
-      value: document.location.href
-    });
-
-    // gitment
-    var gitmentConfig = "";
-    if (gitmentConfig !== 'undefined') {
-      var gitment = new Gitment({
-        id: "AFNetworking",
-        owner: "",
-        repo: "",
-        oauth: {
-          client_id: "",
-          client_secret: ""
-        },
-        theme: {
-          render(state, instance) {
-            const container = document.createElement('div')
-            container.lang = "en-US"
-            container.className = 'gitment-container gitment-root-container'
-            container.appendChild(instance.renderHeader(state, instance))
-            container.appendChild(instance.renderEditor(state, instance))
-            container.appendChild(instance.renderComments(state, instance))
-            container.appendChild(instance.renderFooter(state, instance))
-            return container;
-          }
-        }
-      })
-      gitment.render(document.getElementById('comments'))
-    }
-  })();
-</script>
-
-    <div class="scroll-top">
-  <span class="arrow-icon"></span>
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%BA%90%E7%A0%81/">#源码</a>
+      
+    </div>
+  
 </div>
-    <footer class="app-footer">
-  <p class="copyright">
-    &copy; 2022 | <a href="https://github.com/davidlii" target="_blank">Davidli</a>
-    <br>
-    <a href="https://hexo.io" target="_blank">Hexo</a> | Theme-<a target="_blank" rel="noopener" href="https://github.com/yanm1ng">yanm1ng</a>
-  </p>
-</footer>
 
-<script>
-  function async(u, c) {
-    var d = document, t = 'script',
-      o = d.createElement(t),
-      s = d.getElementsByTagName(t)[0];
-    o.src = u;
-    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
-    s.parentNode.insertBefore(o, s);
-  }
-</script>
-<script>
-  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
-    FastClick.attach(document.body);
-  })
-</script>
 
-<script>
-  var hasLine = 'true';
-  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
-    $('figure pre').each(function(i, block) {
-      var figure = $(this).parents('figure');
-      if (hasLine === 'false') {
-        figure.find('.gutter').hide();
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>AFNetworking</div>
+      <div>http://yoursite.com/2018/01/31/source_code_afn.html</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>January 31, 2018</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>Licensed under</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2018/03/15/block.html" title="block的实现">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">block的实现</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2018/01/28/source_code_sd.html" title="SDWebImage">
+                        <span class="hidden-mobile">SDWebImage</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;Table of Contents</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://github.com/davidlii" target="_blank" rel="nofollow noopener"><span>Davidlii</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        Views: 
+        <span id="busuanzi_value_site_pv"></span>
+        
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        Visitors: 
+        <span id="busuanzi_value_site_uv"></span>
+        
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
       }
-      var lang = figure.attr('class').split(' ')[1] || 'code';
-      var codeHtml = $(this).html();
-      var codeTag = document.createElement('code');
-      codeTag.className = lang;
-      codeTag.innerHTML = codeHtml;
-      $(this).attr('class', '').empty().html(codeTag);
-      figure.attr('data-lang', lang.toUpperCase());
-      hljs.highlightBlock(block);
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
     });
-  })
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
 </script>
-<!-- Baidu Tongji -->
 
 
-<script src="/js/script.js"></script>
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
 
-  </body>
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
 </html>

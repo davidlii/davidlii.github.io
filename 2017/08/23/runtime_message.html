@@ -1,156 +1,300 @@
+
+
 <!DOCTYPE html>
-<html>
-  <head>
-  <meta http-equiv="content-type" content="text/html; charset=utf-8">
-  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
-  <meta name="description" content="This is Davidli&#39;s blog ~">
-  <meta name="keyword" content="hexo-theme, vuejs">
-  
-    <link rel="shortcut icon" type="image/ico" href="/image/logo.png"/> 
-  
-  <title>
-    
-      Runtime：消息机制 | Davidli
-    
-  </title>
-  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
-  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
-  
-<link rel="stylesheet" href="/css/style.css">
-<link rel="stylesheet" href="/css/plugins/gitment.css">
-
-  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
-  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
-  
-<script src="/js/qrious.js"></script>
-<script src="/js/gitment.js"></script>
-
-  
-  
-    <!-- MathJax support START -->
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      });
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      });
-    </script>
-    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <!-- MathJax support END -->
-  
+<html lang="zh-Hans" data-default-color-scheme=auto>
 
 
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="Davidli">
+  
+    <meta name="description" content="1.id在objc&#x2F;objc.h中，id的定义如下： 12345678&#x2F;&#x2F;&#x2F; Represents an instance of a class.struct objc_object &amp;#123;Class isa  OBJC_ISA_AVAILABILITY;&amp;#125;;&#x2F;&#x2F;&#x2F; A pointer to an instance of a class.typedef struct objc_ob">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Runtime：消息机制">
+<meta property="og:url" content="http://yoursite.com/2017/08/23/runtime_message.html">
+<meta property="og:site_name" content="Davidli">
+<meta property="og:description" content="1.id在objc&#x2F;objc.h中，id的定义如下： 12345678&#x2F;&#x2F;&#x2F; Represents an instance of a class.struct objc_object &amp;#123;Class isa  OBJC_ISA_AVAILABILITY;&amp;#125;;&#x2F;&#x2F;&#x2F; A pointer to an instance of a class.typedef struct objc_ob">
+<meta property="og:locale">
+<meta property="article:published_time" content="2017-08-23T11:55:33.000Z">
+<meta property="article:modified_time" content="2019-09-28T16:05:33.000Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="runtime">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>Runtime：消息机制 - Davidli</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"yoursite.com","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
 <meta name="generator" content="Hexo 6.2.0"></head>
-<div class="wechat-share">
-  <img src="/css/images/logo.png" />
-</div>
 
-  <body>
-    <header class="header fixed-header">
-  <div class="header-container">
-    <a class="home-link" href="/">
-      <div class="logo"></div>
-      <span>Davidli</span>
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Davidli</strong>
     </a>
-    <ul class="right-list">
-      
-        <li class="list-item">
-          
-            <a href="/" class="item-link">Davidli</a>
-          
-        </li>
-      
-        <li class="list-item">
-          
-            <a href="/archives/" class="item-link">归档</a>
-          
-        </li>
-      
-        <li class="list-item">
-          
-            <a href="/tags/" class="item-link">标签</a>
-          
-        </li>
-      
-        <li class="list-item">
-          
-            <a href="/about/" class="item-link">关于</a>
-          
-        </li>
-      
-    </ul>
-    <div class="menu">
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-    </div>
-    <div class="menu-mask">
-      <ul class="menu-list">
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
         
-          <li class="menu-item">
-            
-              <a href="/" class="menu-link">Davidli</a>
-            
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                Categories
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                Tags
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
           </li>
+          
         
-          <li class="menu-item">
-            
-              <a href="/archives/" class="menu-link">归档</a>
-            
-          </li>
         
-          <li class="menu-item">
-            
-              <a href="/tags/" class="menu-link">标签</a>
-            
-          </li>
-        
-          <li class="menu-item">
-            
-              <a href="/about/" class="menu-link">关于</a>
-            
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
           </li>
         
       </ul>
     </div>
   </div>
-</header>
+</nav>
 
-    <div id="article-banner">
-  <h2>Runtime：消息机制</h2>
-  <p class="post-date">2017-08-23</p>
-  <div class="arrow-down">
-    <a href="javascript:;"></a>
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Runtime：消息机制"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2017-08-23 19:55" pubdate>
+          August 23, 2017 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          11k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          94 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
   </div>
 </div>
-<main class="app-body flex-box">
-  <!-- Article START -->
-  <article class="post-article">
-    <section class="markdown-content"><h3 id="1-id"><a href="#1-id" class="headerlink" title="1.id"></a>1.id</h3><p>在<code>objc/objc.h</code>中，id的定义如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">/// Represents an instance of a class.</span><br><span class="line">struct objc_object &#123;</span><br><span class="line">Class isa  OBJC_ISA_AVAILABILITY;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">/// A pointer to an instance of a class.</span><br><span class="line">typedef struct objc_object *id;</span><br><span class="line">#endif</span><br></pre></td></tr></table></figure>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Runtime：消息机制</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h3 id="1-id"><a href="#1-id" class="headerlink" title="1.id"></a>1.id</h3><p>在<code>objc/objc.h</code>中，id的定义如下：</p>
+<figure class="highlight smali"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs smali">/// Represents an<span class="hljs-built_in"> instance </span>of a class.<br>struct objc_object &#123;<br>Class isa  OBJC_ISA_AVAI<span class="hljs-class">LABILITY;</span><br>&#125;;<br><br>/// A pointer to an<span class="hljs-built_in"> instance </span>of a class.<br>typedef struct objc_object *id;<br><span class="hljs-comment">#endif</span><br></code></pre></td></tr></table></figure>
 
 <p>id是一个结构体指针类型，它指向OC中的任何对象。</p>
 <h3 id="2-类（class）"><a href="#2-类（class）" class="headerlink" title="2.类（class）"></a>2.类（class）</h3><p>在<code>objc/runtime.h</code>中，类的定义如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">struct objc_class &#123;</span><br><span class="line">Class isa  OBJC_ISA_AVAILABILITY;       //指针</span><br><span class="line"></span><br><span class="line">#if !__OBJC2__</span><br><span class="line">Class super_class                       //父类;</span><br><span class="line">const char *name                        //类名;</span><br><span class="line">long version                                             //类的版本信息，默认为0;</span><br><span class="line">long info                               //位标识;</span><br><span class="line">long instance_size                      //类的实例变量大小;</span><br><span class="line">struct objc_ivar_list *ivars            //类的成员变量链表;</span><br><span class="line">struct objc_method_list **methodLists   //方法定义的链表;</span><br><span class="line">struct objc_cache *cache                //方法缓存;</span><br><span class="line">struct objc_protocol_list *protocols    //协议链表;</span><br><span class="line">#endif</span><br><span class="line"></span><br><span class="line">&#125; OBJC2_UNAVAILABLE;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">struct</span> <span class="hljs-title class_">objc_class</span> &#123;<br>Class isa  OBJC_ISA_AVAILABILITY;       <span class="hljs-comment">//指针</span><br><br><span class="hljs-meta">#<span class="hljs-keyword">if</span> !__OBJC2__</span><br>Class super_class                       <span class="hljs-comment">//父类;</span><br><span class="hljs-type">const</span> <span class="hljs-type">char</span> *name                        <span class="hljs-comment">//类名;</span><br><span class="hljs-type">long</span> version                                             <span class="hljs-comment">//类的版本信息，默认为0;</span><br><span class="hljs-type">long</span> info                               <span class="hljs-comment">//位标识;</span><br><span class="hljs-type">long</span> instance_size                      <span class="hljs-comment">//类的实例变量大小;</span><br><span class="hljs-keyword">struct</span> <span class="hljs-title class_">objc_ivar_list</span> *ivars            <span class="hljs-comment">//类的成员变量链表;</span><br><span class="hljs-keyword">struct</span> <span class="hljs-title class_">objc_method_list</span> **methodLists   <span class="hljs-comment">//方法定义的链表;</span><br><span class="hljs-keyword">struct</span> <span class="hljs-title class_">objc_cache</span> *cache                <span class="hljs-comment">//方法缓存;</span><br><span class="hljs-keyword">struct</span> <span class="hljs-title class_">objc_protocol_list</span> *protocols    <span class="hljs-comment">//协议链表;</span><br><span class="hljs-meta">#<span class="hljs-keyword">endif</span></span><br><br>&#125; OBJC2_UNAVAILABLE;<br></code></pre></td></tr></table></figure>
 
 <h3 id="3-Method"><a href="#3-Method" class="headerlink" title="3.Method"></a>3.Method</h3><p><code>Method</code>即方法，class 结构体内定义了<code>objc_method_list</code>链表，其中保存的正是<code>objc_method</code> 对象:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">struct objc_method &#123;</span><br><span class="line">    SEL _Nonnull method_name        //方法名称</span><br><span class="line">    char * _Nullable method_types   //方法的参数类型和返回值类型</span><br><span class="line">    IMP _Nonnull method_imp         //指向该方法的具体实现的函数指针</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs awk">struct objc_method &#123;<br>    SEL _Nonnull method_name        <span class="hljs-regexp">//</span>方法名称<br>    char * _Nullable method_types   <span class="hljs-regexp">//</span>方法的参数类型和返回值类型<br>    IMP _Nonnull method_imp         <span class="hljs-regexp">//</span>指向该方法的具体实现的函数指针<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>示例：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">- (NSString *)methodNameWithParam1:(int)intValue param2:(BOOL)boolvalue</span><br><span class="line">&#123;</span><br><span class="line">    NSString *result = [NSString stringWithFormat:@&quot;param1:%d, param2:%d&quot;,intValue,boolvalue];</span><br><span class="line">    NSLog(@&quot;+++result:%@&quot;,result);</span><br><span class="line">    return result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs objectivec">- (<span class="hljs-built_in">NSString</span> *)methodNameWithParam1:(<span class="hljs-type">int</span>)intValue param2:(<span class="hljs-type">BOOL</span>)boolvalue<br>&#123;<br>    <span class="hljs-built_in">NSString</span> *result = [<span class="hljs-built_in">NSString</span> stringWithFormat:<span class="hljs-string">@&quot;param1:%d, param2:%d&quot;</span>,intValue,boolvalue];<br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;+++result:%@&quot;</span>,result);<br>    <span class="hljs-keyword">return</span> result;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>结合示例来看三个字段的含义：<br><br/></p>
 <p>#<strong>SEL:</strong><br><br/></p>
@@ -181,19 +325,19 @@
 </ul>
 <p>相同命名的方法有着相同的selector。</p>
 <h3 id="5-SEL"><a href="#5-SEL" class="headerlink" title="5.SEL"></a>5.SEL</h3><p>在<code>objc/objc.h</code>中，SEL的定义如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/// An opaque type that represents a method selector.</span><br><span class="line">typedef struct objc_selector *SEL;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-comment">/// An opaque type that represents a method selector.</span><br><span class="hljs-keyword">typedef</span> <span class="hljs-keyword">struct</span> <span class="hljs-title class_">objc_selector</span> *SEL;<br></code></pre></td></tr></table></figure>
 <blockquote>
 <p>Compiled selectors are assigned to a special type, SEL.</p>
 </blockquote>
 <p><code>SEL</code>是方法名经过编译后，在运行时中的表示形式。<strong>需要注意的是：</strong><br><br/></p>
 <p>1、同一个类中，不能同时存在名称和参数个数都相同的两个方法，即使它们的参数类型和返回值类型不同。<br><br/></p>
 <p>这是因为参数类型和返回值类型信息都保存在<code>Method</code>结构体的<code>*method_types</code>字段中，如上面提到的“@@:iB”；而SEL是<code>Method</code>的<code>method_name</code>字段，无关参数和返回值的类型。运行时只认SEL，名称相同且参数个数相同的两个方法对应同一个<code>SEL</code>，一旦相同它就不知道该选哪个。为防止这种情况，Xcode在编译时会报错；</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">- (void)methodName&#123; //实例方法</span><br><span class="line">    NSLog(@&quot;+++&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)sameName&#123; //原方法</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)sameName:(int)p1&#123; //正常（方法、返回值类型名相同，参数个数不同）</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (int)sameName:(int)p1&#123; //报错（方法名、参数类型和个数相同，返回值不同）</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (int)sameName:(int)p1 param2:(int)p2&#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (int)sameName:(int)p1 param2:(NSString*)p3&#123; // 报错（方法名、返回值类型、参数个数相同，只是参数类型不同）</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs objectivec">- (<span class="hljs-type">void</span>)methodName&#123; <span class="hljs-comment">//实例方法</span><br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;+++&quot;</span>);<br>&#125;<br><br>- (<span class="hljs-type">void</span>)sameName&#123; <span class="hljs-comment">//原方法</span><br>&#125;<br><br>- (<span class="hljs-type">void</span>)sameName:(<span class="hljs-type">int</span>)p1&#123; <span class="hljs-comment">//正常（方法、返回值类型名相同，参数个数不同）</span><br>&#125;<br><br>- (<span class="hljs-type">int</span>)sameName:(<span class="hljs-type">int</span>)p1&#123; <span class="hljs-comment">//报错（方法名、参数类型和个数相同，返回值不同）</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br><br>- (<span class="hljs-type">int</span>)sameName:(<span class="hljs-type">int</span>)p1 param2:(<span class="hljs-type">int</span>)p2&#123;<br>&#125;<br><br>- (<span class="hljs-type">int</span>)sameName:(<span class="hljs-type">int</span>)p1 param2:(<span class="hljs-built_in">NSString</span>*)p3&#123; <span class="hljs-comment">// 报错（方法名、返回值类型、参数个数相同，只是参数类型不同）</span><br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>2、同一个类中，允许存在一对方法名相同的实例方法与类方法。<br><br/></p>
 <p>因为虽然二者的SEL相同，但实例方法保存在其类对象中，类方法保存在其元类对象中，运行时能分清；<br><br/></p>
 <p>3、不同的类中，可以存在两个名称相同的方法，这对多态机制和动态绑定至关重要；</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">@interface AppDelegate : UIResponder &lt;UIApplicationDelegate&gt;</span><br><span class="line"></span><br><span class="line">// 类方法和实例方法名相同</span><br><span class="line">+ (void)methodName;</span><br><span class="line">- (void)methodName;</span><br><span class="line"></span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">@implementation AppDelegate</span><br><span class="line"></span><br><span class="line">//MARK: 允许类方法和实例方法同名</span><br><span class="line">- (BOOL)application:(UIApplication *)application</span><br><span class="line">didFinishLaunchingWithOptions:(NSDictionary *)launchOptions</span><br><span class="line">&#123;</span><br><span class="line">    SEL aSEL = @selector(methodName);</span><br><span class="line"></span><br><span class="line">    // 调用相同的SEL</span><br><span class="line">    [AppDelegate performSelector:aSEL withObject:nil]; // 调用类方法</span><br><span class="line">    [self performSelector:aSEL withObject:nil]; // 调用实例方法</span><br><span class="line">    return YES;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">+ (void)methodName&#123; //类方法</span><br><span class="line">    NSLog(@&quot;+++&quot;);</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">AppDelegate</span> : <span class="hljs-title">UIResponder</span> &lt;<span class="hljs-title">UIApplicationDelegate</span>&gt;</span><br><br><span class="hljs-comment">// 类方法和实例方法名相同</span><br>+ (<span class="hljs-type">void</span>)methodName;<br>- (<span class="hljs-type">void</span>)methodName;<br><br><span class="hljs-keyword">@end</span><br><br><br><span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">AppDelegate</span></span><br><br><span class="hljs-comment">//MARK: 允许类方法和实例方法同名</span><br>- (<span class="hljs-type">BOOL</span>)application:(<span class="hljs-built_in">UIApplication</span> *)application<br>didFinishLaunchingWithOptions:(<span class="hljs-built_in">NSDictionary</span> *)launchOptions<br>&#123;<br>    SEL aSEL = <span class="hljs-keyword">@selector</span>(methodName);<br><br>    <span class="hljs-comment">// 调用相同的SEL</span><br>    [AppDelegate performSelector:aSEL withObject:<span class="hljs-literal">nil</span>]; <span class="hljs-comment">// 调用类方法</span><br>    [<span class="hljs-keyword">self</span> performSelector:aSEL withObject:<span class="hljs-literal">nil</span>]; <span class="hljs-comment">// 调用实例方法</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">YES</span>;<br>&#125;<br><br>+ (<span class="hljs-type">void</span>)methodName&#123; <span class="hljs-comment">//类方法</span><br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;+++&quot;</span>);<br>&#125;<br><span class="hljs-keyword">@end</span><br></code></pre></td></tr></table></figure>
 
 <h3 id="6-映射关系"><a href="#6-映射关系" class="headerlink" title="6.映射关系"></a>6.映射关系</h3><blockquote>
 <p>For efficiency, full ASCII names are not used as method selectors in compiled code. Instead, the compiler writes each method name into a table, then pairs the name with a unique identifier that represents the method at runtime. The runtime system makes sure each identifier is unique: No two selectors are the same, and all methods with the same name have the same selector.</p>
@@ -206,7 +350,7 @@
 <li>找到了方法即可调用其结构体中的IMP；</li>
 </ul>
 <h3 id="7-IMP"><a href="#7-IMP" class="headerlink" title="7.IMP"></a>7.IMP</h3><p>在<code>objc/objc.h</code>中，IMP的定义如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">/// A pointer to the function of a method implementation. </span><br><span class="line">#if !OBJC_OLD_DISPATCH_PROTOTYPES</span><br><span class="line">typedef void (*IMP)(void /* id, SEL, ... */ ); </span><br><span class="line">#else</span><br><span class="line">typedef id (*IMP)(id, SEL, ...); </span><br><span class="line">#endif</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-comment">/// A pointer to the function of a method implementation. </span><br><span class="hljs-meta">#<span class="hljs-keyword">if</span> !OBJC_OLD_DISPATCH_PROTOTYPES</span><br><span class="hljs-function"><span class="hljs-keyword">typedef</span> <span class="hljs-title">void</span> <span class="hljs-params">(*IMP)</span><span class="hljs-params">(<span class="hljs-type">void</span> <span class="hljs-comment">/* id, SEL, ... */</span> )</span></span>; <br><span class="hljs-meta">#<span class="hljs-keyword">else</span></span><br><span class="hljs-function"><span class="hljs-keyword">typedef</span> <span class="hljs-title">id</span> <span class="hljs-params">(*IMP)</span><span class="hljs-params">(id, SEL, ...)</span></span>; <br><span class="hljs-meta">#<span class="hljs-keyword">endif</span></span><br></code></pre></td></tr></table></figure>
 
 <p><code>IMP</code>是一个函数指针，这个被指向的函数包含一个接收消息的对象<code>id</code>, 调用方法的选择器<code>SEL</code>，以及不定个数的方法参数，并返回一个<code>id</code>。<code>IMP</code>是消息最终调用的执行代码，是方法真正的实现。</p>
 <h3 id="8-消息"><a href="#8-消息" class="headerlink" title="8.消息"></a>8.消息</h3><p>在C语言中，函数的调用在编译时就已经决定了。而OC是一种动态语言。对于OC的函数，在编译时并不能决定真正调用哪个函数，只有在真正运行的时候才会根据函数的名称找到对应的函数来调用。所以，你会发现：在编译阶段，只要声明过，OC可以调用任何函数且不会报错，即使这个函数并未实现。相反，编译阶段C语言调用未实现的函数时会报错。</p>
@@ -214,7 +358,7 @@
 <p>OC中，方法调用的本质，就是向对象发送一条消息。</p>
 </blockquote>
 <p>打开<code>objc/message.h</code>文件，可见如下定义：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">OBJC_EXPORT void objc_msgSend(void /* id self, SEL op, ... */ )</span><br></pre></td></tr></table></figure>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">OBJC_EXPORT void objc<span class="hljs-constructor">_msgSend(<span class="hljs-params">void</span> <span class="hljs-operator">/</span><span class="hljs-operator">*</span> <span class="hljs-params">id</span> <span class="hljs-params">self</span>, SEL <span class="hljs-params">op</span>, <span class="hljs-operator">...</span> <span class="hljs-operator">*</span><span class="hljs-operator">/</span> )</span><br></code></pre></td></tr></table></figure>
 
 <h3 id="9-方法调用的过程"><a href="#9-方法调用的过程" class="headerlink" title="9.方法调用的过程"></a>9.方法调用的过程</h3><p>1、调用方法时runtime把方法的调用转化为<code>消息发送</code>，即<code>objc_msgSend(id self, SEL selector, [参数]...)</code>；<br><br/></p>
 <p>2、其中<code>SEL</code>是运行时根据方法名转化而来的，<code>SEL</code>与调用者一起作为参数传递给<code>objc_msgSend()</code>，后续就是根据<code>SEL</code>来查找方法及其<code>IMP</code>；<br><br/></p>
@@ -223,7 +367,7 @@
 <p>4、若未找到该方法，则通过<code>super_class</code>往上一级父类查找，重复第2、3步；<br><br/></p>
 <p>5、如果一直找到<code>NSObject</code>都没有找到该方法时，在不做特殊处理的情况下（如消息转发），应用会报运行时错误：unrecognized selector sent to instance xxx）；</p>
 <h3 id="10-动态方法决议"><a href="#10-动态方法决议" class="headerlink" title="10.动态方法决议"></a>10.动态方法决议</h3><p>为防止上述第5种情况下发生的crash，OC提供了动态方法决议，在运行时动态地为一个 <code>selector</code> 提供实现。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">+ (BOOL)resolveClassMethod:(SEL)name;    //类方法</span><br><span class="line">+ (BOOL)resolveInstanceMethod:(SEL)name; //实例方法</span><br></pre></td></tr></table></figure>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs awk">+ (BOOL)resolveClassMethod:(SEL)name;    <span class="hljs-regexp">//</span>类方法<br>+ (BOOL)resolveInstanceMethod:(SEL)name; <span class="hljs-regexp">//</span>实例方法<br></code></pre></td></tr></table></figure>
 
 <ul>
 <li>name参数，表示需要被动态决议的selector；</li>
@@ -236,12 +380,12 @@
 <li>若上述两函数内并没有为selector提供实现，无论返回YES或NO，编译运行都会crash；</li>
 </ul>
 <p>#示例1：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">//DynamicTool头文件如下：</span><br><span class="line"></span><br><span class="line">#import &lt;Foundation/Foundation.h&gt;</span><br><span class="line"></span><br><span class="line">@interface DynamicTool : NSObject</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs angelscript"><span class="hljs-comment">//DynamicTool头文件如下：</span><br><br>#<span class="hljs-keyword">import</span> &lt;Foundation/Foundation.h&gt;<br><br>@<span class="hljs-keyword">interface</span> <span class="hljs-symbol">DynamicTool</span> : <span class="hljs-symbol">NSObject</span><br><br>@<span class="hljs-symbol">end</span><br></code></pre></td></tr></table></figure>
 
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">//DynamicTool实现文件如下：</span><br><span class="line"></span><br><span class="line">#import &quot;DynamicTool.h&quot;</span><br><span class="line">#import &lt;objc/runtime.h&gt;</span><br><span class="line"></span><br><span class="line">void instanceMethod(id self,SEL sel)</span><br><span class="line">&#123;</span><br><span class="line">    NSLog(@&quot;instance method&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void classMethod(id self,SEL sel,NSString* str1,NSString* str2)</span><br><span class="line">&#123;</span><br><span class="line">    NSLog(@&quot;class method param1:%@,param2:%@&quot;,str1,str2);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@implementation DynamicTool</span><br><span class="line"></span><br><span class="line">#pragma mark -动态决议</span><br><span class="line">//实例方法</span><br><span class="line">+ (BOOL)resolveInstanceMethod:(SEL)sel</span><br><span class="line">&#123;</span><br><span class="line">    if (sel == @selector(instanceMethodSelector)) &#123;</span><br><span class="line">        class_addMethod([self class], sel, (IMP)instanceMethod, &quot;v@:&quot;);</span><br><span class="line">        /*每个方法都有 self 和_cmd 两个默认的隐藏参数，</span><br><span class="line">        self 即接收消息的对象本身，_cmd 即是 selector 选择器；</span><br><span class="line">        v表示void返回值；@表示一个对象，这里指self；&quot;:&quot;表示SEL，即_cmd。</span><br><span class="line">        其他符号的意义可参考文章底部链接</span><br><span class="line">        */</span><br><span class="line">    &#125;</span><br><span class="line">    return NO;</span><br><span class="line">&#125;</span><br><span class="line">//类方法</span><br><span class="line">+(BOOL)resolveClassMethod:(SEL)sel</span><br><span class="line">&#123;</span><br><span class="line">    if (sel == @selector(classMethodSelector)) &#123;</span><br><span class="line">        class_addMethod(objc_getMetaClass(&quot;DynamicTool&quot;), sel,</span><br><span class="line">        (IMP)classMethod, &quot;s#:@@&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    return YES;</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-comment">//DynamicTool实现文件如下：</span><br><br><span class="hljs-meta">#import <span class="hljs-string">&quot;DynamicTool.h&quot;</span></span><br><span class="hljs-meta">#import <span class="hljs-string">&lt;objc/runtime.h&gt;</span></span><br><br><span class="hljs-type">void</span> instanceMethod(<span class="hljs-type">id</span> <span class="hljs-keyword">self</span>,SEL sel)<br>&#123;<br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;instance method&quot;</span>);<br>&#125;<br><br><span class="hljs-type">void</span> classMethod(<span class="hljs-type">id</span> <span class="hljs-keyword">self</span>,SEL sel,<span class="hljs-built_in">NSString</span>* str1,<span class="hljs-built_in">NSString</span>* str2)<br>&#123;<br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;class method param1:%@,param2:%@&quot;</span>,str1,str2);<br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">DynamicTool</span></span><br><br><span class="hljs-meta">#<span class="hljs-keyword">pragma</span> mark -动态决议</span><br><span class="hljs-comment">//实例方法</span><br>+ (<span class="hljs-type">BOOL</span>)resolveInstanceMethod:(SEL)sel<br>&#123;<br>    <span class="hljs-keyword">if</span> (sel == <span class="hljs-keyword">@selector</span>(instanceMethodSelector)) &#123;<br>        class_addMethod([<span class="hljs-keyword">self</span> <span class="hljs-keyword">class</span>], sel, (IMP)instanceMethod, <span class="hljs-string">&quot;v@:&quot;</span>);<br>        <span class="hljs-comment">/*每个方法都有 self 和_cmd 两个默认的隐藏参数，</span><br><span class="hljs-comment">        self 即接收消息的对象本身，_cmd 即是 selector 选择器；</span><br><span class="hljs-comment">        v表示void返回值；@表示一个对象，这里指self；&quot;:&quot;表示SEL，即_cmd。</span><br><span class="hljs-comment">        其他符号的意义可参考文章底部链接</span><br><span class="hljs-comment">        */</span><br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">NO</span>;<br>&#125;<br><span class="hljs-comment">//类方法</span><br>+(<span class="hljs-type">BOOL</span>)resolveClassMethod:(SEL)sel<br>&#123;<br>    <span class="hljs-keyword">if</span> (sel == <span class="hljs-keyword">@selector</span>(classMethodSelector)) &#123;<br>        class_addMethod(objc_getMetaClass(<span class="hljs-string">&quot;DynamicTool&quot;</span>), sel,<br>        (IMP)classMethod, <span class="hljs-string">&quot;s#:@@&quot;</span>);<br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">YES</span>;<br>&#125;<br><span class="hljs-keyword">@end</span><br></code></pre></td></tr></table></figure>
 
 <p>调用示例：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">DynamicTool *insObj = [DynamicTool new];</span><br><span class="line">Class classObj = NSClassFromString(@&quot;DynamicTool&quot;);</span><br><span class="line"></span><br><span class="line">[insObj performSelector:@selector(instanceMethodSelector)];</span><br><span class="line"></span><br><span class="line">[classObj performSelector:@selector(classMethodSelector) </span><br><span class="line">withObject:@&quot;A&quot; withObject:@&quot;B&quot;];</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs java">DynamicTool *insObj = [DynamicTool <span class="hljs-keyword">new</span>];<br><span class="hljs-type">Class</span> <span class="hljs-variable">classObj</span> <span class="hljs-operator">=</span> NSClassFromString(@<span class="hljs-string">&quot;DynamicTool&quot;</span>);<br><br>[insObj performSelector:<span class="hljs-meta">@selector(instanceMethodSelector)</span>];<br><br>[classObj performSelector:<span class="hljs-meta">@selector(classMethodSelector)</span> <br>withObject:@<span class="hljs-string">&quot;A&quot;</span> withObject:@<span class="hljs-string">&quot;B&quot;</span>];<br></code></pre></td></tr></table></figure>
 
 <p>DynamicTool 的头文件并未定义实例方法<code>instanceMethodSelector</code> 和类方法<code>classMethodSelector</code>。因此通过 performSelector 调用时，runtime会按照上一小结所述流程从类中查找该方法，因为未定义，所以查找失败并走动态方法决议流程，分别通过<code>resolveInstanceMethod</code>与 <code>resolveClassMethod</code>查找具体的方法实现。</p>
 <h3 id="11-消息转发机制"><a href="#11-消息转发机制" class="headerlink" title="11.消息转发机制"></a>11.消息转发机制</h3><p>如果没有实现动态方法决议机制，或者在动态方法决议时并未为selector提供实现，那么就会发生crash。为防止这种崩溃，OC还提供了消息转发机制，以将消息转发给其他对象。<br><br/></p>
@@ -249,7 +393,7 @@
 <ul>
 <li>第一次转发机会</li>
 </ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (id)forwardingTargetForSelector:(SEL)sel;</span><br></pre></td></tr></table></figure>
+<figure class="highlight erlang"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs erlang">- <span class="hljs-params">(id)</span>forwardingTargetForSelector:<span class="hljs-params">(SEL)</span>sel;<br></code></pre></td></tr></table></figure>
 
 <blockquote>
 <p>Returns the object to which unrecognized messages should first be directed.</p>
@@ -262,20 +406,20 @@
 <ul>
 <li>第二次转发机会</li>
 </ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">- (NSMethodSignature *)methodSignatureForSelector:(SEL)sel；</span><br><span class="line">- (void)forwardInvocation:(NSInvocation *)invo;</span><br></pre></td></tr></table></figure>
+<figure class="highlight erlang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs erlang">- <span class="hljs-params">(NSMethodSignature *)</span>methodSignatureForSelector:<span class="hljs-params">(SEL)</span>sel；<br>- <span class="hljs-params">(void)</span>forwardInvocation:<span class="hljs-params">(NSInvocation *)</span>invo;<br></code></pre></td></tr></table></figure>
 
 <blockquote>
 <p>When an object is sent a message for which it has no corresponding method, the runtime system gives the receiver an opportunity to delegate the message to another receiver. It delegates the message by creating an NSInvocation object representing the message and sending the receiver a forwardInvocation: message containing this NSInvocation object as the argument. The receiver’s forwardInvocation: method can then choose to forward the message to another object. (If that object can’t respond to the message either, it too will be given a chance to forward it.)</p>
 </blockquote>
 <p>如果消息的接收者不能响应消息，则运行时会再给接收者一次将消息代理给其他对象的机会。运行时会为消息创建一个<code>NSInvocation</code>对象，随后调用原接收者的forwardInvocation:方法，并传入此<code>NSInvocation</code>作为参数。forwardInvocation:中将此方法转发给其他对象。<br><br/></p>
 <p>#示例2：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line">//DynamicTool实现文件如下：</span><br><span class="line"></span><br><span class="line">#import &quot;DynamicTool.h&quot;</span><br><span class="line">#import &lt;objc/runtime.h&gt;</span><br><span class="line">#import &quot;ForwardTool.h&quot;</span><br><span class="line"></span><br><span class="line">@implementation DynamicTool</span><br><span class="line"></span><br><span class="line">#pragma mark -动态决议</span><br><span class="line">//实例方法</span><br><span class="line">+ (BOOL)resolveInstanceMethod:(SEL)sel</span><br><span class="line">&#123;</span><br><span class="line">    // 注意：为了展示消息转发的实现，这里没有给SEL提供具体的实现</span><br><span class="line">    return NO;</span><br><span class="line">&#125;</span><br><span class="line">//类方法</span><br><span class="line">+(BOOL)resolveClassMethod:(SEL)sel</span><br><span class="line">&#123;</span><br><span class="line">    // 注意：为了展示消息转发的实现，这里没有给SEL提供具体的实现</span><br><span class="line">    return YES;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#pragma mark -消息转发</span><br><span class="line">- (id)forwardingTargetForSelector:(SEL)sel</span><br><span class="line">&#123;</span><br><span class="line">    //if (sel == @selector(unknownSelector)) &#123;</span><br><span class="line">    //    return [ForwardTool new];</span><br><span class="line">    //&#125;</span><br><span class="line">    return nil;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector</span><br><span class="line">&#123;</span><br><span class="line">    NSMethodSignature *methodSignature = [super methodSignatureForSelector:aSelector];</span><br><span class="line">    if (!methodSignature) &#123;</span><br><span class="line">        methodSignature = [NSMethodSignature signatureWithObjCTypes:&quot;v@:*&quot;];</span><br><span class="line">    &#125;</span><br><span class="line">    return methodSignature;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)forwardInvocation:(NSInvocation *)anInvocation</span><br><span class="line">&#123;</span><br><span class="line">    // 创建一个或多个对象 将消息转发给它们</span><br><span class="line">    ForwardTool *forwardTool = [ForwardTool new];</span><br><span class="line">    if ([forwardTool respondsToSelector:@selector(unknownSelector)]) &#123;</span><br><span class="line">        //这里可以转发给多个对象，最终的返回值以最后一个调用的返回值为准</span><br><span class="line">        [anInvocation invokeWithTarget:forwardTool];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-comment">//DynamicTool实现文件如下：</span><br><br><span class="hljs-meta">#import <span class="hljs-string">&quot;DynamicTool.h&quot;</span></span><br><span class="hljs-meta">#import <span class="hljs-string">&lt;objc/runtime.h&gt;</span></span><br><span class="hljs-meta">#import <span class="hljs-string">&quot;ForwardTool.h&quot;</span></span><br><br><span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">DynamicTool</span></span><br><br><span class="hljs-meta">#<span class="hljs-keyword">pragma</span> mark -动态决议</span><br><span class="hljs-comment">//实例方法</span><br>+ (<span class="hljs-type">BOOL</span>)resolveInstanceMethod:(SEL)sel<br>&#123;<br>    <span class="hljs-comment">// 注意：为了展示消息转发的实现，这里没有给SEL提供具体的实现</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">NO</span>;<br>&#125;<br><span class="hljs-comment">//类方法</span><br>+(<span class="hljs-type">BOOL</span>)resolveClassMethod:(SEL)sel<br>&#123;<br>    <span class="hljs-comment">// 注意：为了展示消息转发的实现，这里没有给SEL提供具体的实现</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">YES</span>;<br>&#125;<br><br><span class="hljs-meta">#<span class="hljs-keyword">pragma</span> mark -消息转发</span><br>- (<span class="hljs-type">id</span>)forwardingTargetForSelector:(SEL)sel<br>&#123;<br>    <span class="hljs-comment">//if (sel == @selector(unknownSelector)) &#123;</span><br>    <span class="hljs-comment">//    return [ForwardTool new];</span><br>    <span class="hljs-comment">//&#125;</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>;<br>&#125;<br><br>- (<span class="hljs-built_in">NSMethodSignature</span> *)methodSignatureForSelector:(SEL)aSelector<br>&#123;<br>    <span class="hljs-built_in">NSMethodSignature</span> *methodSignature = [<span class="hljs-variable language_">super</span> methodSignatureForSelector:aSelector];<br>    <span class="hljs-keyword">if</span> (!methodSignature) &#123;<br>        methodSignature = [<span class="hljs-built_in">NSMethodSignature</span> signatureWithObjCTypes:<span class="hljs-string">&quot;v@:*&quot;</span>];<br>    &#125;<br>    <span class="hljs-keyword">return</span> methodSignature;<br>&#125;<br><br>- (<span class="hljs-type">void</span>)forwardInvocation:(<span class="hljs-built_in">NSInvocation</span> *)anInvocation<br>&#123;<br>    <span class="hljs-comment">// 创建一个或多个对象 将消息转发给它们</span><br>    ForwardTool *forwardTool = [ForwardTool new];<br>    <span class="hljs-keyword">if</span> ([forwardTool respondsToSelector:<span class="hljs-keyword">@selector</span>(unknownSelector)]) &#123;<br>        <span class="hljs-comment">//这里可以转发给多个对象，最终的返回值以最后一个调用的返回值为准</span><br>        [anInvocation invokeWithTarget:forwardTool];<br>    &#125;<br>&#125;<br><span class="hljs-keyword">@end</span><br></code></pre></td></tr></table></figure>
 
 <p><code>ForwardTool</code>类的实现如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">#import &lt;Foundation/Foundation.h&gt;</span><br><span class="line"></span><br><span class="line">@interface ForwardTool : NSObject</span><br><span class="line">- (void)unknownSelector;</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">//ForwardTool实现文件如下：</span><br><span class="line"></span><br><span class="line">#import &quot;ForwardTool.h&quot;</span><br><span class="line"></span><br><span class="line">@implementation ForwardTool</span><br><span class="line"></span><br><span class="line">- (void)unknownSelector</span><br><span class="line">&#123;</span><br><span class="line">    NSLog(@&quot;消息转发&quot;);</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-meta">#import <span class="hljs-string">&lt;Foundation/Foundation.h&gt;</span></span><br><br><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">ForwardTool</span> : <span class="hljs-title">NSObject</span></span><br>- (<span class="hljs-type">void</span>)unknownSelector;<br><span class="hljs-keyword">@end</span><br><br><span class="hljs-comment">//ForwardTool实现文件如下：</span><br><br><span class="hljs-meta">#import <span class="hljs-string">&quot;ForwardTool.h&quot;</span></span><br><br><span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">ForwardTool</span></span><br><br>- (<span class="hljs-type">void</span>)unknownSelector<br>&#123;<br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;消息转发&quot;</span>);<br>&#125;<br><span class="hljs-keyword">@end</span><br></code></pre></td></tr></table></figure>
 
 <p>调用示例：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">DynamicTool *insObj = [DynamicTool new];</span><br><span class="line">Class classObj = NSClassFromString(@&quot;DynamicTool&quot;);</span><br><span class="line">[insObj performSelector:@selector(unknownSelector)];</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java">DynamicTool *insObj = [DynamicTool <span class="hljs-keyword">new</span>];<br><span class="hljs-type">Class</span> <span class="hljs-variable">classObj</span> <span class="hljs-operator">=</span> NSClassFromString(@<span class="hljs-string">&quot;DynamicTool&quot;</span>);<br>[insObj performSelector:<span class="hljs-meta">@selector(unknownSelector)</span>];<br></code></pre></td></tr></table></figure>
 
 <h3 id="12-消息转发的过程"><a href="#12-消息转发的过程" class="headerlink" title="12.消息转发的过程"></a>12.消息转发的过程</h3><p>1、动态方法决议进入<code>resolveInstanceMethod</code>方法时，指定是否动态添加方法。若指定了实现函数，则通过<code>class_addMethod</code>函数动态地添加方法，并正常执行作为替代的C函数，如上面示例中的<code>dynamicResolution</code>方法；否则，进入第2步；<br><br/></p>
 <p>2、<code>resolveInstanceMethod</code>方法中未指定实现函数时，不论返回YES或NO，都会进入消息转发流程，调用<code>forwardingTargetForSelector</code>方法，这是runtime给我们的第二次机会，用于指定哪个对象响应这个selector。若返回某个对象，则会调用该对象的方法；若返回nil，进入第3步;<br><br/></p>
@@ -288,224 +432,353 @@
 </ul>
 <p>第一种适合处理参数较少的方法调用；当有多个参数时，就需要使用第二种方式。<br><br/></p>
 <p>#示例3：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">- (BOOL)application:(UIApplication *)application</span><br><span class="line">didFinishLaunchingWithOptions:(NSDictionary *)launchOptions</span><br><span class="line">&#123;</span><br><span class="line">    NSMethodSignature *signature = [NSMethodSignature signatureWithObjCTypes:&quot;@@:@B&quot;];</span><br><span class="line">    NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];</span><br><span class="line">    invocation.target = self;</span><br><span class="line">    invocation.selector = @selector(onSendMessageWithParam1:param2:);//方法必须和签名中的方法一致</span><br><span class="line">    </span><br><span class="line">    NSString*str1 = @&quot;THIS IS A STR~&quot;;</span><br><span class="line">    BOOL boolValue = YES;</span><br><span class="line"></span><br><span class="line">    //第一个参数为参数对象的指针；</span><br><span class="line">    //第二个参数为参数的索引，注意不能从0开始，因为0已经被self占用，1已经被_cmd占用</span><br><span class="line">    [invocation setArgument:&amp;str1 atIndex:2];</span><br><span class="line">    [invocation setArgument:&amp;boolValue atIndex:3];</span><br><span class="line">    </span><br><span class="line">    [invocation invoke];//执行方法</span><br><span class="line">    id retLoc = nil;</span><br><span class="line">    [invocation getReturnValue:&amp;retLoc];//获取返回值</span><br><span class="line"></span><br><span class="line">    return YES;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (NSString *)onSendMessageWithParam1:(NSString*)str1 param2:(BOOL)boolvalue</span><br><span class="line">&#123;</span><br><span class="line">    NSLog(@&quot;+++%@++++%d&quot;,str1,boolvalue);</span><br><span class="line">    return str1;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs objectivec">- (<span class="hljs-type">BOOL</span>)application:(<span class="hljs-built_in">UIApplication</span> *)application<br>didFinishLaunchingWithOptions:(<span class="hljs-built_in">NSDictionary</span> *)launchOptions<br>&#123;<br>    <span class="hljs-built_in">NSMethodSignature</span> *signature = [<span class="hljs-built_in">NSMethodSignature</span> signatureWithObjCTypes:<span class="hljs-string">&quot;@@:@B&quot;</span>];<br>    <span class="hljs-built_in">NSInvocation</span> *invocation = [<span class="hljs-built_in">NSInvocation</span> invocationWithMethodSignature:signature];<br>    invocation.target = <span class="hljs-keyword">self</span>;<br>    invocation.selector = <span class="hljs-keyword">@selector</span>(onSendMessageWithParam1:param2:);<span class="hljs-comment">//方法必须和签名中的方法一致</span><br>    <br>    <span class="hljs-built_in">NSString</span>*str1 = <span class="hljs-string">@&quot;THIS IS A STR~&quot;</span>;<br>    <span class="hljs-type">BOOL</span> boolValue = <span class="hljs-literal">YES</span>;<br><br>    <span class="hljs-comment">//第一个参数为参数对象的指针；</span><br>    <span class="hljs-comment">//第二个参数为参数的索引，注意不能从0开始，因为0已经被self占用，1已经被_cmd占用</span><br>    [invocation setArgument:&amp;str1 atIndex:<span class="hljs-number">2</span>];<br>    [invocation setArgument:&amp;boolValue atIndex:<span class="hljs-number">3</span>];<br>    <br>    [invocation invoke];<span class="hljs-comment">//执行方法</span><br>    <span class="hljs-type">id</span> retLoc = <span class="hljs-literal">nil</span>;<br>    [invocation getReturnValue:&amp;retLoc];<span class="hljs-comment">//获取返回值</span><br><br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">YES</span>;<br>&#125;<br><br>- (<span class="hljs-built_in">NSString</span> *)onSendMessageWithParam1:(<span class="hljs-built_in">NSString</span>*)str1 param2:(<span class="hljs-type">BOOL</span>)boolvalue<br>&#123;<br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;+++%@++++%d&quot;</span>,str1,boolvalue);<br>    <span class="hljs-keyword">return</span> str1;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <hr>
 <p>相关参考：</p>
 <p>#<a target="_blank" rel="noopener" href="https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/ObjectiveC/Chapters/ocSelectors.html#//apple_ref/doc/uid/TP30001163-CH23-SW1">©Apple-Selectors</a></p>
 <p>#<a target="_blank" rel="noopener" href="https://blog.csdn.net/zhaochen_009/article/details/54602930">©WoodBear009-forwardInvocation</a></p>
 <p>#<a target="_blank" rel="noopener" href="https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/ObjCRuntimeGuide/Articles/ocrtTypeEncodings.html#//apple_ref/doc/uid/TP40008048-CH100-SW1">©Apple-Type Encodings</a></p>
-</section>
-    <!-- Tags START -->
-    
-      <div class="tags">
-        <span>Tags:</span>
-        
-  <a href="/tags#runtime" >
-    <span class="tag-code">runtime</span>
-  </a>
 
-      </div>
-    
-    <!-- Tags END -->
-    <!-- NAV START -->
-    
-  <div class="nav-container">
-    <!-- reverse left and right to put prev and next in a more logic postition -->
-    
-      <a class="nav-left" href="/2017/08/22/runtime_metaclass.html">
-        <span class="nav-arrow">← </span>
-        
-          Runtime：元类
-        
-      </a>
-    
-    
-      <a class="nav-right" href="/2017/08/25/runtime_ivar.html">
-        
-          Runtime：成员变量、属性及其应用
-        
-        <span class="nav-arrow"> →</span>
-      </a>
-    
-  </div>
-
-    <!-- NAV END -->
-    <!-- 打赏 START -->
-    
-      <div class="money-like">
-        <div class="reward-btn">
-          赏
-          <span class="money-code">
-            <span class="alipay-code">
-              <div class="code-image"></div>
-              <b>使用支付宝打赏</b>
-            </span>
-            <span class="wechat-code">
-              <div class="code-image"></div>
-              <b>使用微信打赏</b>
-            </span>
-          </span>
-        </div>
-        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
-      </div>
-    
-    <!-- 打赏 END -->
-    <!-- 二维码 START -->
-    
-    <!-- 二维码 END -->
-    
-      <!-- No Comment -->
-    
-  </article>
-  <!-- Article END -->
-  <!-- Catalog START -->
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
   
-    <aside class="catalog-container">
-  <div class="toc-main">
-    <strong class="toc-title">Catalog</strong>
-    
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1-id"><span class="toc-nav-text">1.id</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-%E7%B1%BB%EF%BC%88class%EF%BC%89"><span class="toc-nav-text">2.类（class）</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-Method"><span class="toc-nav-text">3.Method</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#4-Selectors"><span class="toc-nav-text">4.Selectors</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#5-SEL"><span class="toc-nav-text">5.SEL</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#6-%E6%98%A0%E5%B0%84%E5%85%B3%E7%B3%BB"><span class="toc-nav-text">6.映射关系</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#7-IMP"><span class="toc-nav-text">7.IMP</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#8-%E6%B6%88%E6%81%AF"><span class="toc-nav-text">8.消息</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#9-%E6%96%B9%E6%B3%95%E8%B0%83%E7%94%A8%E7%9A%84%E8%BF%87%E7%A8%8B"><span class="toc-nav-text">9.方法调用的过程</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#10-%E5%8A%A8%E6%80%81%E6%96%B9%E6%B3%95%E5%86%B3%E8%AE%AE"><span class="toc-nav-text">10.动态方法决议</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#11-%E6%B6%88%E6%81%AF%E8%BD%AC%E5%8F%91%E6%9C%BA%E5%88%B6"><span class="toc-nav-text">11.消息转发机制</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#12-%E6%B6%88%E6%81%AF%E8%BD%AC%E5%8F%91%E7%9A%84%E8%BF%87%E7%A8%8B"><span class="toc-nav-text">12.消息转发的过程</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#13-NSInvocation"><span class="toc-nav-text">13.NSInvocation</span></a></li></ol>
-    
-  </div>
-</aside>
   
-  <!-- Catalog END -->
-</main>
-
-<script>
-  (function () {
-    var url = 'http://yoursite.com/2017/08/23/runtime_message.html';
-    var banner = ''
-    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
-      $('#article-banner').css({
-        'background-image': 'url(' + banner + ')'
-      })
-    } else {
-      $('#article-banner').geopattern(url)
-    }
-    $('.header').removeClass('fixed-header')
-
-     // error image
-    $(".markdown-content img").on('error', function() {
-      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
-      $(this).css({
-        'cursor': 'default'
-      })
-    })
-
-    // zoom image
-    $(".markdown-content img").on('click', function() {
-      var src = $(this).attr('src')
-      if (src !== 'http://file.muyutech.com/error-img.png') {
-        var imageW = $(this).width()
-        var imageH = $(this).height()
-        
-        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
-        zoom = zoom < 1 ? 1 : zoom
-        zoom = zoom > 2 ? 2 : zoom
-        var transY = (($(window).height() - imageH) / 2).toFixed(2)
-
-        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
-        $('.image-view-wrap').addClass('wrap-active')
-        $('.image-view-wrap img').css({
-          'width': `${imageW}`,
-          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
-        })
-        $('html').css('overflow', 'hidden')
-
-        $('.image-view-wrap').on('click', function() {
-          $(this).remove()
-          $('html').attr('style', '')
-        })
-      }
-    })
-
-    // qrcode
-    var qr = new QRious({
-      element: document.getElementById('share-qrcode'),
-      value: document.location.href
-    });
-
-    // gitment
-    var gitmentConfig = "";
-    if (gitmentConfig !== 'undefined') {
-      var gitment = new Gitment({
-        id: "Runtime：消息机制",
-        owner: "",
-        repo: "",
-        oauth: {
-          client_id: "",
-          client_secret: ""
-        },
-        theme: {
-          render(state, instance) {
-            const container = document.createElement('div')
-            container.lang = "en-US"
-            container.className = 'gitment-container gitment-root-container'
-            container.appendChild(instance.renderHeader(state, instance))
-            container.appendChild(instance.renderEditor(state, instance))
-            container.appendChild(instance.renderComments(state, instance))
-            container.appendChild(instance.renderFooter(state, instance))
-            return container;
-          }
-        }
-      })
-      gitment.render(document.getElementById('comments'))
-    }
-  })();
-</script>
-
-    <div class="scroll-top">
-  <span class="arrow-icon"></span>
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/runtime/">#runtime</a>
+      
+    </div>
+  
 </div>
-    <footer class="app-footer">
-  <p class="copyright">
-    &copy; 2022 | <a href="https://github.com/davidlii" target="_blank">Davidli</a>
-    <br>
-    <a href="https://hexo.io" target="_blank">Hexo</a> | Theme-<a target="_blank" rel="noopener" href="https://github.com/yanm1ng">yanm1ng</a>
-  </p>
-</footer>
 
-<script>
-  function async(u, c) {
-    var d = document, t = 'script',
-      o = d.createElement(t),
-      s = d.getElementsByTagName(t)[0];
-    o.src = u;
-    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
-    s.parentNode.insertBefore(o, s);
-  }
-</script>
-<script>
-  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
-    FastClick.attach(document.body);
-  })
-</script>
 
-<script>
-  var hasLine = 'true';
-  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
-    $('figure pre').each(function(i, block) {
-      var figure = $(this).parents('figure');
-      if (hasLine === 'false') {
-        figure.find('.gutter').hide();
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Runtime：消息机制</div>
+      <div>http://yoursite.com/2017/08/23/runtime_message.html</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>August 23, 2017</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>Licensed under</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2017/08/25/runtime_ivar.html" title="Runtime：成员变量、属性及其应用">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Runtime：成员变量、属性及其应用</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2017/08/22/runtime_metaclass.html" title="Runtime：元类">
+                        <span class="hidden-mobile">Runtime：元类</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;Table of Contents</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://github.com/davidlii" target="_blank" rel="nofollow noopener"><span>Davidlii</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        Views: 
+        <span id="busuanzi_value_site_pv"></span>
+        
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        Visitors: 
+        <span id="busuanzi_value_site_uv"></span>
+        
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
       }
-      var lang = figure.attr('class').split(' ')[1] || 'code';
-      var codeHtml = $(this).html();
-      var codeTag = document.createElement('code');
-      codeTag.className = lang;
-      codeTag.innerHTML = codeHtml;
-      $(this).attr('class', '').empty().html(codeTag);
-      figure.attr('data-lang', lang.toUpperCase());
-      hljs.highlightBlock(block);
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
     });
-  })
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
 </script>
-<!-- Baidu Tongji -->
 
 
-<script src="/js/script.js"></script>
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
 
-  </body>
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
 </html>

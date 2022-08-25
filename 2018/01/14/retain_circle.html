@@ -1,145 +1,291 @@
+
+
 <!DOCTYPE html>
-<html>
-  <head>
-  <meta http-equiv="content-type" content="text/html; charset=utf-8">
-  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
-  <meta name="description" content="This is Davidli&#39;s blog ~">
-  <meta name="keyword" content="hexo-theme, vuejs">
-  
-    <link rel="shortcut icon" type="image/ico" href="/image/logo.png"/> 
-  
-  <title>
-    
-      循环引用问题 | Davidli
-    
-  </title>
-  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
-  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
-  
-<link rel="stylesheet" href="/css/style.css">
-<link rel="stylesheet" href="/css/plugins/gitment.css">
-
-  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
-  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
-  
-<script src="/js/qrious.js"></script>
-<script src="/js/gitment.js"></script>
-
-  
-  
-    <!-- MathJax support START -->
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      });
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      });
-    </script>
-    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <!-- MathJax support END -->
-  
+<html lang="zh-Hans" data-default-color-scheme=auto>
 
 
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="Davidli">
+  
+    <meta name="description" content="1.概念循环引用可以简单理解为 A 强引用 B，B 又强引用了 A，双方同时保持对方的一个引用，导致引用计数不为0，始终无法释放。 影响？ 导致对象无法释放，造成内存泄露。如果是 ViewController 内出现循环引用，在反复 push &amp; pop 后，ViewController 释放不掉，导致内存激增，甚至引发crash。 2.场景2.1.block下面是一段关于 block 的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="循环引用问题">
+<meta property="og:url" content="http://yoursite.com/2018/01/14/retain_circle.html">
+<meta property="og:site_name" content="Davidli">
+<meta property="og:description" content="1.概念循环引用可以简单理解为 A 强引用 B，B 又强引用了 A，双方同时保持对方的一个引用，导致引用计数不为0，始终无法释放。 影响？ 导致对象无法释放，造成内存泄露。如果是 ViewController 内出现循环引用，在反复 push &amp; pop 后，ViewController 释放不掉，导致内存激增，甚至引发crash。 2.场景2.1.block下面是一段关于 block 的">
+<meta property="og:locale">
+<meta property="article:published_time" content="2018-01-13T16:27:18.000Z">
+<meta property="article:modified_time" content="2019-01-17T13:28:18.000Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="内存管理">
+<meta property="article:tag" content="block">
+<meta property="article:tag" content="循环引用">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>循环引用问题 - Davidli</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"yoursite.com","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
 <meta name="generator" content="Hexo 6.2.0"></head>
-<div class="wechat-share">
-  <img src="/css/images/logo.png" />
-</div>
 
-  <body>
-    <header class="header fixed-header">
-  <div class="header-container">
-    <a class="home-link" href="/">
-      <div class="logo"></div>
-      <span>Davidli</span>
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Davidli</strong>
     </a>
-    <ul class="right-list">
-      
-        <li class="list-item">
-          
-            <a href="/" class="item-link">Davidli</a>
-          
-        </li>
-      
-        <li class="list-item">
-          
-            <a href="/archives/" class="item-link">归档</a>
-          
-        </li>
-      
-        <li class="list-item">
-          
-            <a href="/tags/" class="item-link">标签</a>
-          
-        </li>
-      
-        <li class="list-item">
-          
-            <a href="/about/" class="item-link">关于</a>
-          
-        </li>
-      
-    </ul>
-    <div class="menu">
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-    </div>
-    <div class="menu-mask">
-      <ul class="menu-list">
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
         
-          <li class="menu-item">
-            
-              <a href="/" class="menu-link">Davidli</a>
-            
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                Categories
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                Tags
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
           </li>
+          
         
-          <li class="menu-item">
-            
-              <a href="/archives/" class="menu-link">归档</a>
-            
-          </li>
         
-          <li class="menu-item">
-            
-              <a href="/tags/" class="menu-link">标签</a>
-            
-          </li>
-        
-          <li class="menu-item">
-            
-              <a href="/about/" class="menu-link">关于</a>
-            
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
           </li>
         
       </ul>
     </div>
   </div>
-</header>
+</nav>
 
-    <div id="article-banner">
-  <h2>循环引用问题</h2>
-  <p class="post-date">2018-01-14</p>
-  <div class="arrow-down">
-    <a href="javascript:;"></a>
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="循环引用问题"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2018-01-14 00:27" pubdate>
+          January 14, 2018 am
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          5.1k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          43 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
   </div>
 </div>
-<main class="app-body flex-box">
-  <!-- Article START -->
-  <article class="post-article">
-    <section class="markdown-content"><h3 id="1-概念"><a href="#1-概念" class="headerlink" title="1.概念"></a>1.概念</h3><p>循环引用可以简单理解为 A 强引用 B，B 又强引用了 A，双方同时保持对方的一个引用，导致引用计数不为0，始终无法释放。<br><br/></p>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">循环引用问题</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h3 id="1-概念"><a href="#1-概念" class="headerlink" title="1.概念"></a>1.概念</h3><p>循环引用可以简单理解为 A 强引用 B，B 又强引用了 A，双方同时保持对方的一个引用，导致引用计数不为0，始终无法释放。<br><br/></p>
 <p><strong>影响？</strong><br><br/></p>
 <p>导致对象无法释放，造成内存泄露。如果是 ViewController 内出现循环引用，在反复 push &amp; pop 后，ViewController 释放不掉，导致内存激增，甚至引发crash。</p>
 <h3 id="2-场景"><a href="#2-场景" class="headerlink" title="2.场景"></a>2.场景</h3><h4 id="2-1-block"><a href="#2-1-block" class="headerlink" title="2.1.block"></a>2.1.block</h4><p>下面是一段关于 block 的描述：</p>
@@ -159,29 +305,29 @@
 </ul>
 <p>block 的循环引用一般表现为，某个类将 block 作为自己的属性变量，然后该类在 block 的方法体里面又使用了该类本身。<code>self -&gt; block -&gt; self</code>。编写代码时，这种循环引用编译器能捕捉到并给出提醒：“Capturing ‘self’ strongly in this block is likely to lead to a retain cycle”。</p>
 <h5 id="示例1"><a href="#示例1" class="headerlink" title="#示例1"></a>#示例1</h5><p>自定义的一个<code>Student</code>类：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">//.h文件</span><br><span class="line">typedef void(^StudentBlock)();</span><br><span class="line"></span><br><span class="line">@interface Student : NSObject</span><br><span class="line"></span><br><span class="line">@property (copy , nonatomic) NSString *name;</span><br><span class="line">@property (copy , nonatomic) StudentBlock block;</span><br><span class="line"></span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">//.m文件</span><br><span class="line">@implementation Student</span><br><span class="line"></span><br><span class="line">- (void)dealloc&#123;</span><br><span class="line">    NSLog(@&quot;++%@ dealloced~&quot;,[self class]);</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-comment">//.h文件</span><br><span class="hljs-keyword">typedef</span> <span class="hljs-type">void</span>(^StudentBlock)();<br><br><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">Student</span> : <span class="hljs-title">NSObject</span></span><br><br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">copy</span> , <span class="hljs-keyword">nonatomic</span>) <span class="hljs-built_in">NSString</span> *name;<br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">copy</span> , <span class="hljs-keyword">nonatomic</span>) StudentBlock block;<br><br><span class="hljs-keyword">@end</span><br><br><span class="hljs-comment">//.m文件</span><br><span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">Student</span></span><br><br>- (<span class="hljs-type">void</span>)dealloc&#123;<br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;++%@ dealloced~&quot;</span>,[<span class="hljs-keyword">self</span> <span class="hljs-keyword">class</span>]);<br>&#125;<br><span class="hljs-keyword">@end</span><br></code></pre></td></tr></table></figure>
 
 <p>在某个VC中调用：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">- (void)viewDidLoad &#123;</span><br><span class="line">    [super viewDidLoad];</span><br><span class="line">    Student *student = [[Student alloc] init];</span><br><span class="line">    student.name = @&quot;D&quot;;</span><br><span class="line">    student.block = ^&#123;</span><br><span class="line">        NSLog(@&quot;Hello %@ ~&quot;,student.name);</span><br><span class="line">    &#125;;</span><br><span class="line">    student.block();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight xl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs xl">- (void)viewDidLoad &#123;<br>    [super viewDidLoad];<br>    Student *student = [[Student alloc] init];<br>    student.<span class="hljs-keyword">name</span> = @<span class="hljs-string">&quot;D&quot;</span>;<br>    student.<span class="hljs-keyword">block</span> = ^&#123;<br>        NSLog(@<span class="hljs-string">&quot;Hello %@ ~&quot;</span>,student.<span class="hljs-keyword">name</span>);<br>    &#125;;<br>    student.<span class="hljs-keyword">block</span>();<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>此示例中，<code>student</code>中有个<code>block</code>属性，<code>block</code>内强引用了<code>student</code>对象本身，这就造成循环引用，导致<code>student</code>无法释放。</p>
 <ul>
 <li><strong>解决办法</strong></li>
 </ul>
 <p>在对象的 block 内访问<code>__block</code> 修饰的变量代替原对象，并在调用完之后将<code>__block</code>变量或 block 本身置为<code>nil</code>。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">- (void)viewDidLoad &#123;</span><br><span class="line">    [super viewDidLoad];</span><br><span class="line">    Student *student = [[Student alloc] init];</span><br><span class="line">    student.name = @&quot;D&quot;;</span><br><span class="line">    //创建__block修饰的变量</span><br><span class="line">    __block Student *st = student;</span><br><span class="line">    student.block = ^&#123;</span><br><span class="line">        NSLog(@&quot;Hello %@ ~&quot;,st.name);//访问__block变量</span><br><span class="line">        //case1：置为nil</span><br><span class="line">        st = nil;</span><br><span class="line">    &#125;;</span><br><span class="line">    student.block();</span><br><span class="line">    //case2：student.block = nil;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight xl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs xl">- (void)viewDidLoad &#123;<br>    [super viewDidLoad];<br>    Student *student = [[Student alloc] init];<br>    student.<span class="hljs-keyword">name</span> = @<span class="hljs-string">&quot;D&quot;</span>;<br>    <span class="hljs-comment">//创建__block修饰的变量</span><br>    __<span class="hljs-keyword">block</span> Student *st = student;<br>    student.<span class="hljs-keyword">block</span> = ^&#123;<br>        NSLog(@<span class="hljs-string">&quot;Hello %@ ~&quot;</span>,st.<span class="hljs-keyword">name</span>);<span class="hljs-comment">//访问__block变量</span><br>        <span class="hljs-comment">//case1：置为nil</span><br>        st = <span class="hljs-literal">nil</span>;<br>    &#125;;<br>    student.<span class="hljs-keyword">block</span>();<br>    <span class="hljs-comment">//case2：student.block = nil;</span><br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>这种办法的缺点很明显：如果不调用此 block 或没将其置为 nil，那么<code>st</code>就不被置为 nil，依然强引用<code>student</code>，循环引用依然存在。</p>
-<h5 id="示例2"><a href="#示例2" class="headerlink" title="#示例2"></a>#示例2</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">#import &quot;AppDelegate.h&quot;</span><br><span class="line"></span><br><span class="line">@interface AppDelegate()</span><br><span class="line">@property (nonatomic, copy) void (^aBlock)(void);</span><br><span class="line">@property (nonatomic, copy) NSString *aName;</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation AppDelegate</span><br><span class="line"></span><br><span class="line">- (BOOL)application:(UIApplication *)application</span><br><span class="line">didFinishLaunchingWithOptions:(NSDictionary *)launchOptions</span><br><span class="line">&#123;</span><br><span class="line">    self.aBlock = ^&#123;</span><br><span class="line">        self.aName = @&quot;THIS IS A NAME&quot;;//有警告</span><br><span class="line">    &#125;;</span><br><span class="line">    return YES;</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<h5 id="示例2"><a href="#示例2" class="headerlink" title="#示例2"></a>#示例2</h5><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-meta">#import <span class="hljs-string">&quot;AppDelegate.h&quot;</span></span><br><br><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">AppDelegate</span>()</span><br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">copy</span>) <span class="hljs-type">void</span> (^aBlock)(<span class="hljs-type">void</span>);<br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">copy</span>) <span class="hljs-built_in">NSString</span> *aName;<br><span class="hljs-keyword">@end</span><br><br><span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">AppDelegate</span></span><br><br>- (<span class="hljs-type">BOOL</span>)application:(<span class="hljs-built_in">UIApplication</span> *)application<br>didFinishLaunchingWithOptions:(<span class="hljs-built_in">NSDictionary</span> *)launchOptions<br>&#123;<br>    <span class="hljs-keyword">self</span>.aBlock = ^&#123;<br>        <span class="hljs-keyword">self</span>.aName = <span class="hljs-string">@&quot;THIS IS A NAME&quot;</span>;<span class="hljs-comment">//有警告</span><br>    &#125;;<br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">YES</span>;<br>&#125;<br><span class="hljs-keyword">@end</span><br></code></pre></td></tr></table></figure>
 
 <ul>
 <li><strong>解决办法1：</strong></li>
 </ul>
 <p>通过<code>__weak</code>修饰符，先弱引用<code>self</code>，再通过<code>__strong</code>强引用<code>weakSelf</code>，然后在 block 里使用<code>strongSelf</code>即可。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">- (BOOL)application:(UIApplication *)application</span><br><span class="line">didFinishLaunchingWithOptions:(NSDictionary *)launchOptions</span><br><span class="line">&#123;</span><br><span class="line">    NSLog(@&quot;+++self.rfc:%ld&quot;,(long)CFGetRetainCount((__bridge CFTypeRef)(self)));</span><br><span class="line">    __weak typeof(self) weakSelf = self;</span><br><span class="line">    NSLog(@&quot;+++self.rfc:%ld,weakSelf.rfc:%ld&quot;,(long)CFGetRetainCount((__bridge CFTypeRef)(self)),CFGetRetainCount((__bridge CFTypeRef)(weakSelf)));</span><br><span class="line">    self.aBlock = ^&#123;</span><br><span class="line">        __strong typeof(weakSelf) strongSelf = weakSelf;</span><br><span class="line">        NSLog(@&quot;+++weakself.rfc:%ld&quot;,(long)CFGetRetainCount((__bridge CFTypeRef)(weakSelf)));</span><br><span class="line">        strongSelf.aName = @&quot;THIS IS A NAME&quot;;</span><br><span class="line">    &#125;;</span><br><span class="line">    self.aBlock();</span><br><span class="line"></span><br><span class="line">    return YES;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs objectivec">- (<span class="hljs-type">BOOL</span>)application:(<span class="hljs-built_in">UIApplication</span> *)application<br>didFinishLaunchingWithOptions:(<span class="hljs-built_in">NSDictionary</span> *)launchOptions<br>&#123;<br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;+++self.rfc:%ld&quot;</span>,(<span class="hljs-type">long</span>)<span class="hljs-built_in">CFGetRetainCount</span>((__bridge <span class="hljs-built_in">CFTypeRef</span>)(<span class="hljs-keyword">self</span>)));<br>    __<span class="hljs-keyword">weak</span> <span class="hljs-keyword">typeof</span>(<span class="hljs-keyword">self</span>) weakSelf = <span class="hljs-keyword">self</span>;<br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;+++self.rfc:%ld,weakSelf.rfc:%ld&quot;</span>,(<span class="hljs-type">long</span>)<span class="hljs-built_in">CFGetRetainCount</span>((__bridge <span class="hljs-built_in">CFTypeRef</span>)(<span class="hljs-keyword">self</span>)),<span class="hljs-built_in">CFGetRetainCount</span>((__bridge <span class="hljs-built_in">CFTypeRef</span>)(weakSelf)));<br>    <span class="hljs-keyword">self</span>.aBlock = ^&#123;<br>        __<span class="hljs-keyword">strong</span> <span class="hljs-keyword">typeof</span>(weakSelf) strongSelf = weakSelf;<br>        <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;+++weakself.rfc:%ld&quot;</span>,(<span class="hljs-type">long</span>)<span class="hljs-built_in">CFGetRetainCount</span>((__bridge <span class="hljs-built_in">CFTypeRef</span>)(weakSelf)));<br>        strongSelf.aName = <span class="hljs-string">@&quot;THIS IS A NAME&quot;</span>;<br>    &#125;;<br>    <span class="hljs-keyword">self</span>.aBlock();<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">YES</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>输出日志：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">+++self.rfc:1</span><br><span class="line">+++self.rfc:1,weakSelf.rfc:2</span><br><span class="line">+++执行block</span><br><span class="line">+++weakself.rfc:3</span><br></pre></td></tr></table></figure>
+<figure class="highlight brainfuck"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs brainfuck"><span class="hljs-literal">+++</span><span class="hljs-comment">self</span><span class="hljs-string">.</span><span class="hljs-comment">rfc:1</span><br><span class="hljs-literal">+++</span><span class="hljs-comment">self</span><span class="hljs-string">.</span><span class="hljs-comment">rfc:1</span><span class="hljs-string">,</span><span class="hljs-comment">weakSelf</span><span class="hljs-string">.</span><span class="hljs-comment">rfc:2</span><br><span class="hljs-literal">+++</span><span class="hljs-comment">执行block</span><br><span class="hljs-literal">+++</span><span class="hljs-comment">weakself</span><span class="hljs-string">.</span><span class="hljs-comment">rfc:3</span><br></code></pre></td></tr></table></figure>
 
 <p>原理：<code>__weak</code>修饰的<code>weakSelf</code>是一个弱引用，它指向<code>self</code>但不会增加<code>self</code>的引用计数，从而打破<code>self</code>与<code>block</code>之间的循环引用。<br><br/></p>
 <p><strong>ps：</strong> 这里之所以再强引用一下 weakSelf，是因为<code>__weak</code>修饰的对象都是弱引用，随时可能会被系统释放，造成后面调用 weakSelf 时 weakSelf 可能已经是nil了。<code>__strong</code>修饰的<code>strongSelf</code>是一个强引用，保证了<code>weakSelf</code>在 block 声明周期内不会被销毁，而且<code>strongSelf</code>是一个自动变量，在 block 执行完毕后会自动释放。</p>
@@ -189,233 +335,358 @@
 <li><strong>解决办法2：</strong></li>
 </ul>
 <p>将在 block 内要使用到的对象（一般为self对象），以 block 参数的形式传入，block 就不会捕获该对象，而是将其作为参数使用，其生命周期由系统的栈自动管理，也不会造成内存泄露。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">@interface AppDelegate()</span><br><span class="line">@property (nonatomic, copy) void (^aBlock)(AppDelegate *delSelf);//将本类作为参数</span><br><span class="line">@property (nonatomic, copy) NSString *aName;</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation AppDelegate</span><br><span class="line"></span><br><span class="line">- (BOOL)application:(UIApplication *)application</span><br><span class="line">didFinishLaunchingWithOptions:(NSDictionary *)launchOptions</span><br><span class="line">&#123;</span><br><span class="line">    self.aBlock = ^(AppDelegate *delSelf)&#123;</span><br><span class="line">        delSelf.aName = @&quot;THIS IS A NAME&quot;;</span><br><span class="line">    &#125;;</span><br><span class="line">    return YES;</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">AppDelegate</span>()</span><br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">copy</span>) <span class="hljs-type">void</span> (^aBlock)(AppDelegate *delSelf);<span class="hljs-comment">//将本类作为参数</span><br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">copy</span>) <span class="hljs-built_in">NSString</span> *aName;<br><span class="hljs-keyword">@end</span><br><br><span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">AppDelegate</span></span><br><br>- (<span class="hljs-type">BOOL</span>)application:(<span class="hljs-built_in">UIApplication</span> *)application<br>didFinishLaunchingWithOptions:(<span class="hljs-built_in">NSDictionary</span> *)launchOptions<br>&#123;<br>    <span class="hljs-keyword">self</span>.aBlock = ^(AppDelegate *delSelf)&#123;<br>        delSelf.aName = <span class="hljs-string">@&quot;THIS IS A NAME&quot;</span>;<br>    &#125;;<br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">YES</span>;<br>&#125;<br><span class="hljs-keyword">@end</span><br></code></pre></td></tr></table></figure>
 
 <h4 id="2-2-NSTimer"><a href="#2-2-NSTimer" class="headerlink" title="2.2.NSTimer"></a>2.2.NSTimer</h4><p>一般是 NSTimer 被作为类的成员变量，在期望类销毁时，NSTimer 尚处于 validate 状态。此时不管 NSTimer 对象是否被置为nil，类都无法正常销毁。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">@interface ViewController ()</span><br><span class="line">@property (nonatomic, strong) NSTimer *aTimer;</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation ViewController</span><br><span class="line"></span><br><span class="line">- (void)viewDidLoad</span><br><span class="line">&#123;</span><br><span class="line">    [super viewDidLoad];</span><br><span class="line">    _aTimer = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(action) userInfo:nil repeats:YES];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)dealloc&#123;</span><br><span class="line">    NSLog(@&quot;dealloced!!!&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)viewWillDisappear:(BOOL)animated</span><br><span class="line">&#123;</span><br><span class="line">    [super viewWillDisappear:animated];</span><br><span class="line">    _aTimer = nil;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)action&#123;</span><br><span class="line">    NSLog(@&quot;a Timer action!&quot;);</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">ViewController</span> ()</span><br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">strong</span>) <span class="hljs-built_in">NSTimer</span> *aTimer;<br><span class="hljs-keyword">@end</span><br><br><span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">ViewController</span></span><br><br>- (<span class="hljs-type">void</span>)viewDidLoad<br>&#123;<br>    [<span class="hljs-variable language_">super</span> viewDidLoad];<br>    _aTimer = [<span class="hljs-built_in">NSTimer</span> scheduledTimerWithTimeInterval:<span class="hljs-number">2</span> target:<span class="hljs-keyword">self</span> selector:<span class="hljs-keyword">@selector</span>(action) userInfo:<span class="hljs-literal">nil</span> repeats:<span class="hljs-literal">YES</span>];<br>&#125;<br><br>- (<span class="hljs-type">void</span>)dealloc&#123;<br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;dealloced!!!&quot;</span>);<br>&#125;<br><br>- (<span class="hljs-type">void</span>)viewWillDisappear:(<span class="hljs-type">BOOL</span>)animated<br>&#123;<br>    [<span class="hljs-variable language_">super</span> viewWillDisappear:animated];<br>    _aTimer = <span class="hljs-literal">nil</span>;<br>&#125;<br><br>- (<span class="hljs-type">void</span>)action&#123;<br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;a Timer action!&quot;</span>);<br>&#125;<br><span class="hljs-keyword">@end</span><br></code></pre></td></tr></table></figure>
 
 <p>上面的示例中， ViewController 出现后过段时间退出，dealloc 不会执行。这是因为 NSTimer 创建后被加入到 NSRunloop 中，失效之前会一直持有 self 作为 target。需要在合适的时机执行 invalidate 来打破这个循环引用即可。如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">- (void)viewWillDisappear:(BOOL)animated</span><br><span class="line">&#123;</span><br><span class="line">    [super viewWillDisappear:animated];</span><br><span class="line">    [_aTimer invalidate];//敲黑板 划重点!!</span><br><span class="line">    _aTimer = nil;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs objectivec">- (<span class="hljs-type">void</span>)viewWillDisappear:(<span class="hljs-type">BOOL</span>)animated<br>&#123;<br>    [<span class="hljs-variable language_">super</span> viewWillDisappear:animated];<br>    [_aTimer invalidate];<span class="hljs-comment">//敲黑板 划重点!!</span><br>    _aTimer = <span class="hljs-literal">nil</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
 <h4 id="2-3-delegate"><a href="#2-3-delegate" class="headerlink" title="2.3.delegate"></a>2.3.delegate</h4><p>一般是 A 类中声明了一个 strong 的 delegate，B 类强引用 A 类，同时把 A 类的 delegate 指向 B 自己。B -&gt; A -&gt; delegate -&gt; B。解决办法：声明 delegate 时，使用 weak 修饰符。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">//ClassA</span><br><span class="line">#import &lt;UIKit/UIKit.h&gt;</span><br><span class="line">@protocol CustomDelegate &lt;NSObject&gt;</span><br><span class="line">- (void)onDelegateCallback;</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@interface ClassA : NSObject</span><br><span class="line">@property (nonatomic, weak) id &lt;CustomDelegate&gt; delegate;</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">//ClassB</span><br><span class="line">@interface ClassB ()</span><br><span class="line">@property (nonatomic, strong) ClassA *classA;</span><br><span class="line">@end</span><br><span class="line">@implementation ClassB</span><br><span class="line">－ (void)viewDidLoad </span><br><span class="line">&#123;</span><br><span class="line">    [super viewDidLoad]; </span><br><span class="line">    self.classA = [[ClassA alloc] init];</span><br><span class="line">    self.classA.delegate = self;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></section>
-    <!-- Tags START -->
-    
-      <div class="tags">
-        <span>Tags:</span>
-        
-  <a href="/tags#内存管理" >
-    <span class="tag-code">内存管理</span>
-  </a>
-
-  <a href="/tags#block" >
-    <span class="tag-code">block</span>
-  </a>
-
-  <a href="/tags#循环引用" >
-    <span class="tag-code">循环引用</span>
-  </a>
-
-      </div>
-    
-    <!-- Tags END -->
-    <!-- NAV START -->
-    
-  <div class="nav-container">
-    <!-- reverse left and right to put prev and next in a more logic postition -->
-    
-      <a class="nav-left" href="/2018/01/09/framework.html">
-        <span class="nav-arrow">← </span>
-        
-          静态库 &amp; 动态库、.a &amp; .framework、制作库
-        
-      </a>
-    
-    
-      <a class="nav-right" href="/2018/01/20/reuse_cell.html">
-        
-          Cell重用、卡顿、离屏渲染
-        
-        <span class="nav-arrow"> →</span>
-      </a>
-    
-  </div>
-
-    <!-- NAV END -->
-    <!-- 打赏 START -->
-    
-      <div class="money-like">
-        <div class="reward-btn">
-          赏
-          <span class="money-code">
-            <span class="alipay-code">
-              <div class="code-image"></div>
-              <b>使用支付宝打赏</b>
-            </span>
-            <span class="wechat-code">
-              <div class="code-image"></div>
-              <b>使用微信打赏</b>
-            </span>
-          </span>
-        </div>
-        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
-      </div>
-    
-    <!-- 打赏 END -->
-    <!-- 二维码 START -->
-    
-    <!-- 二维码 END -->
-    
-      <!-- No Comment -->
-    
-  </article>
-  <!-- Article END -->
-  <!-- Catalog START -->
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-comment">//ClassA</span><br><span class="hljs-meta">#import <span class="hljs-string">&lt;UIKit/UIKit.h&gt;</span></span><br><span class="hljs-class"><span class="hljs-keyword">@protocol</span> <span class="hljs-title">CustomDelegate</span> &lt;<span class="hljs-title">NSObject</span>&gt;</span><br>- (<span class="hljs-type">void</span>)onDelegateCallback;<br><span class="hljs-keyword">@end</span><br><br><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">ClassA</span> : <span class="hljs-title">NSObject</span></span><br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">weak</span>) <span class="hljs-type">id</span> &lt;CustomDelegate&gt; delegate;<br><span class="hljs-keyword">@end</span><br><br><span class="hljs-comment">//ClassB</span><br><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">ClassB</span> ()</span><br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">strong</span>) ClassA *classA;<br><span class="hljs-keyword">@end</span><br><span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">ClassB</span></span><br>－ (<span class="hljs-type">void</span>)viewDidLoad <br>&#123;<br>    [<span class="hljs-variable language_">super</span> viewDidLoad]; <br>    <span class="hljs-keyword">self</span>.classA = [[ClassA alloc] init];<br>    <span class="hljs-keyword">self</span>.classA.delegate = <span class="hljs-keyword">self</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
   
-    <aside class="catalog-container">
-  <div class="toc-main">
-    <strong class="toc-title">Catalog</strong>
-    
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1-%E6%A6%82%E5%BF%B5"><span class="toc-nav-text">1.概念</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-%E5%9C%BA%E6%99%AF"><span class="toc-nav-text">2.场景</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-1-block"><span class="toc-nav-text">2.1.block</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E7%A4%BA%E4%BE%8B1"><span class="toc-nav-text">#示例1</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E7%A4%BA%E4%BE%8B2"><span class="toc-nav-text">#示例2</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-2-NSTimer"><span class="toc-nav-text">2.2.NSTimer</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-3-delegate"><span class="toc-nav-text">2.3.delegate</span></a></li></ol></li></ol>
-    
-  </div>
-</aside>
   
-  <!-- Catalog END -->
-</main>
-
-<script>
-  (function () {
-    var url = 'http://yoursite.com/2018/01/14/retain_circle.html';
-    var banner = ''
-    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
-      $('#article-banner').css({
-        'background-image': 'url(' + banner + ')'
-      })
-    } else {
-      $('#article-banner').geopattern(url)
-    }
-    $('.header').removeClass('fixed-header')
-
-     // error image
-    $(".markdown-content img").on('error', function() {
-      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
-      $(this).css({
-        'cursor': 'default'
-      })
-    })
-
-    // zoom image
-    $(".markdown-content img").on('click', function() {
-      var src = $(this).attr('src')
-      if (src !== 'http://file.muyutech.com/error-img.png') {
-        var imageW = $(this).width()
-        var imageH = $(this).height()
-        
-        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
-        zoom = zoom < 1 ? 1 : zoom
-        zoom = zoom > 2 ? 2 : zoom
-        var transY = (($(window).height() - imageH) / 2).toFixed(2)
-
-        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
-        $('.image-view-wrap').addClass('wrap-active')
-        $('.image-view-wrap img').css({
-          'width': `${imageW}`,
-          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
-        })
-        $('html').css('overflow', 'hidden')
-
-        $('.image-view-wrap').on('click', function() {
-          $(this).remove()
-          $('html').attr('style', '')
-        })
-      }
-    })
-
-    // qrcode
-    var qr = new QRious({
-      element: document.getElementById('share-qrcode'),
-      value: document.location.href
-    });
-
-    // gitment
-    var gitmentConfig = "";
-    if (gitmentConfig !== 'undefined') {
-      var gitment = new Gitment({
-        id: "循环引用问题",
-        owner: "",
-        repo: "",
-        oauth: {
-          client_id: "",
-          client_secret: ""
-        },
-        theme: {
-          render(state, instance) {
-            const container = document.createElement('div')
-            container.lang = "en-US"
-            container.className = 'gitment-container gitment-root-container'
-            container.appendChild(instance.renderHeader(state, instance))
-            container.appendChild(instance.renderEditor(state, instance))
-            container.appendChild(instance.renderComments(state, instance))
-            container.appendChild(instance.renderFooter(state, instance))
-            return container;
-          }
-        }
-      })
-      gitment.render(document.getElementById('comments'))
-    }
-  })();
-</script>
-
-    <div class="scroll-top">
-  <span class="arrow-icon"></span>
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">#内存管理</a>
+      
+        <a href="/tags/block/">#block</a>
+      
+        <a href="/tags/%E5%BE%AA%E7%8E%AF%E5%BC%95%E7%94%A8/">#循环引用</a>
+      
+    </div>
+  
 </div>
-    <footer class="app-footer">
-  <p class="copyright">
-    &copy; 2022 | <a href="https://github.com/davidlii" target="_blank">Davidli</a>
-    <br>
-    <a href="https://hexo.io" target="_blank">Hexo</a> | Theme-<a target="_blank" rel="noopener" href="https://github.com/yanm1ng">yanm1ng</a>
-  </p>
-</footer>
 
-<script>
-  function async(u, c) {
-    var d = document, t = 'script',
-      o = d.createElement(t),
-      s = d.getElementsByTagName(t)[0];
-    o.src = u;
-    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
-    s.parentNode.insertBefore(o, s);
-  }
-</script>
-<script>
-  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
-    FastClick.attach(document.body);
-  })
-</script>
 
-<script>
-  var hasLine = 'true';
-  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
-    $('figure pre').each(function(i, block) {
-      var figure = $(this).parents('figure');
-      if (hasLine === 'false') {
-        figure.find('.gutter').hide();
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>循环引用问题</div>
+      <div>http://yoursite.com/2018/01/14/retain_circle.html</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>January 14, 2018</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>Licensed under</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2018/01/20/reuse_cell.html" title="Cell重用、卡顿、离屏渲染">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Cell重用、卡顿、离屏渲染</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2018/01/09/framework.html" title="静态库 &amp; 动态库、.a &amp; .framework、制作库">
+                        <span class="hidden-mobile">静态库 &amp; 动态库、.a &amp; .framework、制作库</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;Table of Contents</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://github.com/davidlii" target="_blank" rel="nofollow noopener"><span>Davidlii</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        Views: 
+        <span id="busuanzi_value_site_pv"></span>
+        
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        Visitors: 
+        <span id="busuanzi_value_site_uv"></span>
+        
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
       }
-      var lang = figure.attr('class').split(' ')[1] || 'code';
-      var codeHtml = $(this).html();
-      var codeTag = document.createElement('code');
-      codeTag.className = lang;
-      codeTag.innerHTML = codeHtml;
-      $(this).attr('class', '').empty().html(codeTag);
-      figure.attr('data-lang', lang.toUpperCase());
-      hljs.highlightBlock(block);
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
     });
-  })
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
 </script>
-<!-- Baidu Tongji -->
 
 
-<script src="/js/script.js"></script>
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
 
-  </body>
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
 </html>

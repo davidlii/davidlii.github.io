@@ -1,390 +1,663 @@
+
+
 <!DOCTYPE html>
-<html>
-  <head>
-  <meta http-equiv="content-type" content="text/html; charset=utf-8">
-  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
-  <meta name="description" content="This is Davidli&#39;s blog ~">
-  <meta name="keyword" content="hexo-theme, vuejs">
-  
-    <link rel="shortcut icon" type="image/ico" href="/image/logo.png"/> 
-  
-  <title>
-    
-      Runtime：动态增加新类、方法、属性 | Davidli
-    
-  </title>
-  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
-  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
-  
-<link rel="stylesheet" href="/css/style.css">
-<link rel="stylesheet" href="/css/plugins/gitment.css">
-
-  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
-  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
-  
-<script src="/js/qrious.js"></script>
-<script src="/js/gitment.js"></script>
-
-  
-  
-    <!-- MathJax support START -->
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      });
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      });
-    </script>
-    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <!-- MathJax support END -->
-  
+<html lang="zh-Hans" data-default-color-scheme=auto>
 
 
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="Davidli">
+  
+    <meta name="description" content="1.API To create a new class, start by calling objc_allocateClassPair. Then set the class’s attributes with functions like class_addMethod and class_addIvar. When you are done building the class, call">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Runtime：动态增加新类、方法、属性">
+<meta property="og:url" content="http://yoursite.com/2017/09/01/runtime_addClass.html">
+<meta property="og:site_name" content="Davidli">
+<meta property="og:description" content="1.API To create a new class, start by calling objc_allocateClassPair. Then set the class’s attributes with functions like class_addMethod and class_addIvar. When you are done building the class, call">
+<meta property="og:locale">
+<meta property="article:published_time" content="2017-09-01T12:02:28.000Z">
+<meta property="article:modified_time" content="2019-09-30T02:15:28.000Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="runtime">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>Runtime：动态增加新类、方法、属性 - Davidli</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"yoursite.com","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
 <meta name="generator" content="Hexo 6.2.0"></head>
-<div class="wechat-share">
-  <img src="/css/images/logo.png" />
-</div>
 
-  <body>
-    <header class="header fixed-header">
-  <div class="header-container">
-    <a class="home-link" href="/">
-      <div class="logo"></div>
-      <span>Davidli</span>
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Davidli</strong>
     </a>
-    <ul class="right-list">
-      
-        <li class="list-item">
-          
-            <a href="/" class="item-link">Davidli</a>
-          
-        </li>
-      
-        <li class="list-item">
-          
-            <a href="/archives/" class="item-link">归档</a>
-          
-        </li>
-      
-        <li class="list-item">
-          
-            <a href="/tags/" class="item-link">标签</a>
-          
-        </li>
-      
-        <li class="list-item">
-          
-            <a href="/about/" class="item-link">关于</a>
-          
-        </li>
-      
-    </ul>
-    <div class="menu">
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-    </div>
-    <div class="menu-mask">
-      <ul class="menu-list">
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
         
-          <li class="menu-item">
-            
-              <a href="/" class="menu-link">Davidli</a>
-            
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                Categories
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                Tags
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
           </li>
+          
         
-          <li class="menu-item">
-            
-              <a href="/archives/" class="menu-link">归档</a>
-            
-          </li>
         
-          <li class="menu-item">
-            
-              <a href="/tags/" class="menu-link">标签</a>
-            
-          </li>
-        
-          <li class="menu-item">
-            
-              <a href="/about/" class="menu-link">关于</a>
-            
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
           </li>
         
       </ul>
     </div>
   </div>
-</header>
+</nav>
 
-    <div id="article-banner">
-  <h2>Runtime：动态增加新类、方法、属性</h2>
-  <p class="post-date">2017-09-01</p>
-  <div class="arrow-down">
-    <a href="javascript:;"></a>
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Runtime：动态增加新类、方法、属性"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2017-09-01 20:02" pubdate>
+          September 1, 2017 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          7.8k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          65 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
   </div>
 </div>
-<main class="app-body flex-box">
-  <!-- Article START -->
-  <article class="post-article">
-    <section class="markdown-content"><h3 id="1-API"><a href="#1-API" class="headerlink" title="1.API"></a>1.API</h3><blockquote>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Runtime：动态增加新类、方法、属性</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h3 id="1-API"><a href="#1-API" class="headerlink" title="1.API"></a>1.API</h3><blockquote>
 <p>To create a new class, start by calling objc_allocateClassPair. Then set the class’s attributes with functions like class_addMethod and class_addIvar. When you are done building the class, call objc_registerClassPair. The new class is now ready for use.<br>Instance methods and instance variables should be added to the class itself. Class methods should be added to the metaclass.</p>
 </blockquote>
-<h4 id="1-1-增加类"><a href="#1-1-增加类" class="headerlink" title="1.1.增加类"></a>1.1.增加类</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Class objc_allocateClassPair(Class superclass, const char *name, size_t extraBytes);</span><br><span class="line">void objc_registerClassPair(Class cls)</span><br></pre></td></tr></table></figure>
+<h4 id="1-1-增加类"><a href="#1-1-增加类" class="headerlink" title="1.1.增加类"></a>1.1.增加类</h4><figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">Class objc<span class="hljs-constructor">_allocateClassPair(Class <span class="hljs-params">superclass</span>, <span class="hljs-params">const</span> <span class="hljs-params">char</span> <span class="hljs-operator">*</span><span class="hljs-params">name</span>, <span class="hljs-params">size_t</span> <span class="hljs-params">extraBytes</span>)</span>;<br>void objc<span class="hljs-constructor">_registerClassPair(Class <span class="hljs-params">cls</span>)</span><br></code></pre></td></tr></table></figure>
 
 <p>这两个方法应该配对使用，在二者之间增加成员变量、属性、实例方法和类方法等。调用第二个方法即注册类，这之后类的结构也就固定下来，不能再向类中增加新的成员变量，但是可以增加属性和方法。其中后续增加的属性不会自动生成<code>_属性名</code>成员变量，也不会提供属性的setter与getter函数及其实现。</p>
-<h4 id="1-2-增加方法"><a href="#1-2-增加方法" class="headerlink" title="1.2.增加方法"></a>1.2.增加方法</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">BOOL class_addMethod(Class cls, SEL name, IMP imp, const char *types);</span><br></pre></td></tr></table></figure>
+<h4 id="1-2-增加方法"><a href="#1-2-增加方法" class="headerlink" title="1.2.增加方法"></a>1.2.增加方法</h4><figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">BOOL <span class="hljs-keyword">class</span><span class="hljs-constructor">_addMethod(Class <span class="hljs-params">cls</span>, SEL <span class="hljs-params">name</span>, IMP <span class="hljs-params">imp</span>, <span class="hljs-params">const</span> <span class="hljs-params">char</span> <span class="hljs-operator">*</span><span class="hljs-params">types</span>)</span>;<br></code></pre></td></tr></table></figure>
 
 <ul>
 <li>实例方法应该加到当前实例的isa指向的类中；</li>
 <li>类方法则应该加到当前类的元类中；</li>
 </ul>
-<h4 id="1-3-增加成员变量"><a href="#1-3-增加成员变量" class="headerlink" title="1.3.增加成员变量"></a>1.3.增加成员变量</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">BOOL class_addIvar(Class cls, const char *name, size_t size, uint8_t alignment, const char *types);</span><br></pre></td></tr></table></figure>
+<h4 id="1-3-增加成员变量"><a href="#1-3-增加成员变量" class="headerlink" title="1.3.增加成员变量"></a>1.3.增加成员变量</h4><figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">BOOL <span class="hljs-keyword">class</span><span class="hljs-constructor">_addIvar(Class <span class="hljs-params">cls</span>, <span class="hljs-params">const</span> <span class="hljs-params">char</span> <span class="hljs-operator">*</span><span class="hljs-params">name</span>, <span class="hljs-params">size_t</span> <span class="hljs-params">size</span>, <span class="hljs-params">uint8_t</span> <span class="hljs-params">alignment</span>, <span class="hljs-params">const</span> <span class="hljs-params">char</span> <span class="hljs-operator">*</span><span class="hljs-params">types</span>)</span>;<br></code></pre></td></tr></table></figure>
 
 <blockquote>
 <p>This function may only be called after objc_allocateClassPair and before objc_registerClassPair. Adding an instance variable to an existing class is not supported.<br>The class must not be a metaclass. Adding an instance variable to a metaclass is not supported.</p>
 </blockquote>
 <p>新增成员变量应该在类注册完成之前进行，类注册完成之后类结构已固定，实例的内存空间已经确定，不能再增加新的成员变量。<br><br/></p>
 <p>新增加的成员变量应该加到实例对象所属的类中，而不能加到其所属类的元类中。</p>
-<h4 id="1-4-增加属性"><a href="#1-4-增加属性" class="headerlink" title="1.4.增加属性"></a>1.4.增加属性</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">BOOL class_addProperty(Class cls, const char *name, const objc_property_attribute_t *attributes, unsigned int attributeCount);</span><br></pre></td></tr></table></figure>
+<h4 id="1-4-增加属性"><a href="#1-4-增加属性" class="headerlink" title="1.4.增加属性"></a>1.4.增加属性</h4><figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">BOOL <span class="hljs-keyword">class</span><span class="hljs-constructor">_addProperty(Class <span class="hljs-params">cls</span>, <span class="hljs-params">const</span> <span class="hljs-params">char</span> <span class="hljs-operator">*</span><span class="hljs-params">name</span>, <span class="hljs-params">const</span> <span class="hljs-params">objc_property_attribute_t</span> <span class="hljs-operator">*</span><span class="hljs-params">attributes</span>, <span class="hljs-params">unsigned</span> <span class="hljs-params">int</span> <span class="hljs-params">attributeCount</span>)</span>;<br></code></pre></td></tr></table></figure>
 
-<h3 id="2-示例"><a href="#2-示例" class="headerlink" title="2.示例"></a>2.示例</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br></pre></td><td class="code"><pre><span class="line">#import &quot;AppDelegate.h&quot;</span><br><span class="line">#import &lt;objc/message.h&gt;</span><br><span class="line">#import &lt;objc/runtime.h&gt;</span><br><span class="line"></span><br><span class="line">@implementation AppDelegate</span><br><span class="line"></span><br><span class="line">void learnOnTV(id self,SEL _cmd)</span><br><span class="line">&#123;</span><br><span class="line">    NSLog(@&quot;++++执行learnOnTV方法&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void learOnBook(id self,SEL _cmd)</span><br><span class="line">&#123;</span><br><span class="line">    NSLog(@&quot;++++执行learOnBook方法&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (BOOL)application:(UIApplication *)application</span><br><span class="line">didFinishLaunchingWithOptions:(NSDictionary *)launchOptions</span><br><span class="line">&#123;</span><br><span class="line">    //创建新的类</span><br><span class="line">    Class ASDClass = objc_allocateClassPair([NSObject class], &quot;ASDClass&quot;, 0);</span><br><span class="line">    </span><br><span class="line">    //增加成员变量</span><br><span class="line">    const char *height = &quot;height&quot;;</span><br><span class="line">    BOOL status1 = class_addIvar(ASDClass, height, sizeof(id), rint(log2(sizeof(id))), @encode(id));</span><br><span class="line">    if (status1) &#123;</span><br><span class="line">        NSLog(@&quot;+++++成功添加成员变量&#x27;height&#x27;~&quot;);</span><br><span class="line">    &#125;else&#123;</span><br><span class="line">        NSLog(@&quot;+++++添加成员变量&#x27;height&#x27;失败~&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    //为类增加属性</span><br><span class="line">    objc_property_attribute_t type  = &#123;&quot;T&quot;,&quot;@\&quot;NSString\&quot;&quot;&#125;;</span><br><span class="line">    objc_property_attribute_t ownership1 = &#123;&quot;C&quot;,&quot;&quot;&#125;;      // C = copy</span><br><span class="line">    objc_property_attribute_t ownership2 = &#123; &quot;N&quot;, &quot;&quot; &#125;;   // N = nonatomic</span><br><span class="line">    objc_property_attribute_t backIvars  = &#123;&quot;V&quot;,&quot;_name&quot;&#125;; //属性名</span><br><span class="line">    objc_property_attribute_t atts[] = &#123;type,ownership1,ownership2,backIvars&#125;;</span><br><span class="line">    BOOL status2 = class_addProperty(ASDClass, &quot;name&quot;, atts, 4);</span><br><span class="line">    if (status2) &#123;</span><br><span class="line">        NSLog(@&quot;+++++成功添加属性&#x27;name&#x27;~&quot;);</span><br><span class="line">    &#125;else&#123;</span><br><span class="line">        NSLog(@&quot;+++++添加属性&#x27;name&#x27;失败~&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    //为类增加方法</span><br><span class="line">    class_addMethod(ASDClass, @selector(learn), (IMP)learnOnTV, &quot;v@:&quot;);</span><br><span class="line">    //&quot;v@:&quot;字符，依次表示函数返回值类型和每个参数的类型，这里v表示返回值void，@表示调用者，：表示SEL</span><br><span class="line">    </span><br><span class="line">    //注册类</span><br><span class="line">    objc_registerClassPair(ASDClass);</span><br><span class="line">    </span><br><span class="line">    //增加成员变量(！！会失败，因为类结构已固定，实例大小已确定)</span><br><span class="line">    const char *width = &quot;width&quot;;</span><br><span class="line">    BOOL status3 = class_addIvar(ASDClass, width, sizeof(id), rint(log2(sizeof(id))), @encode(id));</span><br><span class="line">    if (status3) &#123;</span><br><span class="line">        NSLog(@&quot;+++++成功添加成员变量&#x27;width&#x27;~&quot;);</span><br><span class="line">    &#125;else&#123;</span><br><span class="line">        NSLog(@&quot;+++++添加成员变量&#x27;width&#x27;失败~&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    //为类增加属性(会成功)</span><br><span class="line">    objc_property_attribute_t type2  = &#123;&quot;T&quot;,&quot;@\&quot;NSString\&quot;&quot;&#125;;</span><br><span class="line">    objc_property_attribute_t ownership3 = &#123;&quot;C&quot;,&quot;&quot;&#125;;      // C = copy</span><br><span class="line">    objc_property_attribute_t ownership4 = &#123; &quot;N&quot;, &quot;&quot; &#125;;   // N = nonatomic</span><br><span class="line">    objc_property_attribute_t backIvars2  = &#123;&quot;V&quot;,&quot;_name&quot;&#125;; //属性名</span><br><span class="line">    objc_property_attribute_t atts2[] = &#123;type2,ownership3,ownership4,backIvars2&#125;;</span><br><span class="line">    BOOL status4 = class_addProperty(ASDClass, &quot;nick&quot;, atts2, 4);</span><br><span class="line">    if (status4) &#123;</span><br><span class="line">        NSLog(@&quot;+++++成功添加属性&#x27;nick&#x27;~&quot;);</span><br><span class="line">    &#125;else&#123;</span><br><span class="line">        NSLog(@&quot;+++++添加属性&#x27;nick&#x27;失败~&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    NSArray *ivarsArr = [RuntimeTool ivarListWithClass:ASDClass];</span><br><span class="line">    NSArray *propsArr  = [RuntimeTool propertyListWithClass:ASDClass];</span><br><span class="line">    NSArray *methodArr = [RuntimeTool methodListWithClass:ASDClass];</span><br><span class="line">    </span><br><span class="line">    NSLog(@&quot;++++所有成员变量:%@&quot;,ivarsArr);</span><br><span class="line">    NSLog(@&quot;++++所有属性:%@&quot;,propsArr);</span><br><span class="line">    NSLog(@&quot;++++所有方法:%@&quot;,methodArr);</span><br><span class="line">    </span><br><span class="line">    //调用learn方法</span><br><span class="line">    objc_msgSend([ASDClass new],@selector(learn));</span><br><span class="line">    </span><br><span class="line">    //替换learn方法的实现函数为learOnBook</span><br><span class="line">    class_replaceMethod(ASDClass, @selector(learn), (IMP)learOnBook, &quot;v@:&quot;);</span><br><span class="line">    </span><br><span class="line">    //再次调用learn方法</span><br><span class="line">    objc_msgSend([ASDClass new],@selector(learn));</span><br><span class="line">    </span><br><span class="line">    return YES;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="2-示例"><a href="#2-示例" class="headerlink" title="2.示例"></a>2.示例</h3><figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">#import <span class="hljs-string">&quot;AppDelegate.h&quot;</span><br>#import &lt;objc/message.h&gt;<br>#import &lt;objc/runtime.h&gt;<br><br>@implementation AppDelegate<br><br>void learn<span class="hljs-constructor">OnTV(<span class="hljs-params">id</span> <span class="hljs-params">self</span>,SEL <span class="hljs-params">_cmd</span>)</span><br>&#123;<br>    <span class="hljs-constructor">NSLog(@<span class="hljs-string">&quot;++++执行learnOnTV方法&quot;</span>)</span>;<br>&#125;<br><br>void lear<span class="hljs-constructor">OnBook(<span class="hljs-params">id</span> <span class="hljs-params">self</span>,SEL <span class="hljs-params">_cmd</span>)</span><br>&#123;<br>    <span class="hljs-constructor">NSLog(@<span class="hljs-string">&quot;++++执行learOnBook方法&quot;</span>)</span>;<br>&#125;<br><br>- (BOOL)application:(UIApplication *)application<br>didFinishLaunchingWithOptions:(NSDictionary *)launchOptions<br>&#123;<br>    <span class="hljs-comment">//创建新的类</span><br>    Class ASDClass = objc<span class="hljs-constructor">_allocateClassPair([NSObject <span class="hljs-params">class</span>], <span class="hljs-string">&quot;ASDClass&quot;</span>, 0)</span>;<br>    <br>    <span class="hljs-comment">//增加成员变量</span><br>    const <span class="hljs-built_in">char</span> *height = <span class="hljs-string">&quot;height&quot;</span>;<br>    BOOL status1 = <span class="hljs-keyword">class</span><span class="hljs-constructor">_addIvar(ASDClass, <span class="hljs-params">height</span>, <span class="hljs-params">sizeof</span>(<span class="hljs-params">id</span>)</span>, rint(log2(sizeof(id))), @encode(id));<br>    <span class="hljs-keyword">if</span> (status1) &#123;<br>        <span class="hljs-constructor">NSLog(@<span class="hljs-string">&quot;+++++成功添加成员变量&#x27;height&#x27;~&quot;</span>)</span>;<br>    &#125;<span class="hljs-keyword">else</span>&#123;<br>        <span class="hljs-constructor">NSLog(@<span class="hljs-string">&quot;+++++添加成员变量&#x27;height&#x27;失败~&quot;</span>)</span>;<br>    &#125;<br>    <br>    <span class="hljs-comment">//为类增加属性</span><br>    objc_property_attribute_t <span class="hljs-keyword">type</span>  = &#123;<span class="hljs-string">&quot;T&quot;</span>,<span class="hljs-string">&quot;@\&quot;NSString\&quot;&quot;</span>&#125;;<br>    objc_property_attribute_t ownership1 = &#123;<span class="hljs-string">&quot;C&quot;</span>,<span class="hljs-string">&quot;&quot;</span>&#125;;      <span class="hljs-comment">// C = copy</span><br>    objc_property_attribute_t ownership2 = &#123; <span class="hljs-string">&quot;N&quot;</span>, <span class="hljs-string">&quot;&quot;</span> &#125;;   <span class="hljs-comment">// N = nonatomic</span><br>    objc_property_attribute_t backIvars  = &#123;<span class="hljs-string">&quot;V&quot;</span>,<span class="hljs-string">&quot;_name&quot;</span>&#125;; <span class="hljs-comment">//属性名</span><br>    objc_property_attribute_t atts<span class="hljs-literal">[]</span> = &#123;<span class="hljs-keyword">type</span>,ownership1,ownership2,backIvars&#125;;<br>    BOOL status2 = <span class="hljs-keyword">class</span><span class="hljs-constructor">_addProperty(ASDClass, <span class="hljs-string">&quot;name&quot;</span>, <span class="hljs-params">atts</span>, 4)</span>;<br>    <span class="hljs-keyword">if</span> (status2) &#123;<br>        <span class="hljs-constructor">NSLog(@<span class="hljs-string">&quot;+++++成功添加属性&#x27;name&#x27;~&quot;</span>)</span>;<br>    &#125;<span class="hljs-keyword">else</span>&#123;<br>        <span class="hljs-constructor">NSLog(@<span class="hljs-string">&quot;+++++添加属性&#x27;name&#x27;失败~&quot;</span>)</span>;<br>    &#125;<br>    <br>    <span class="hljs-comment">//为类增加方法</span><br>    <span class="hljs-keyword">class</span><span class="hljs-constructor">_addMethod(ASDClass, @<span class="hljs-params">selector</span>(<span class="hljs-params">learn</span>)</span>, (IMP)learnOnTV, <span class="hljs-string">&quot;v@:&quot;</span>);<br>    <span class="hljs-comment">//&quot;v@:&quot;字符，依次表示函数返回值类型和每个参数的类型，这里v表示返回值void，@表示调用者，：表示SEL</span><br>    <br>    <span class="hljs-comment">//注册类</span><br>    objc<span class="hljs-constructor">_registerClassPair(ASDClass)</span>;<br>    <br>    <span class="hljs-comment">//增加成员变量(！！会失败，因为类结构已固定，实例大小已确定)</span><br>    const <span class="hljs-built_in">char</span> *width = <span class="hljs-string">&quot;width&quot;</span>;<br>    BOOL status3 = <span class="hljs-keyword">class</span><span class="hljs-constructor">_addIvar(ASDClass, <span class="hljs-params">width</span>, <span class="hljs-params">sizeof</span>(<span class="hljs-params">id</span>)</span>, rint(log2(sizeof(id))), @encode(id));<br>    <span class="hljs-keyword">if</span> (status3) &#123;<br>        <span class="hljs-constructor">NSLog(@<span class="hljs-string">&quot;+++++成功添加成员变量&#x27;width&#x27;~&quot;</span>)</span>;<br>    &#125;<span class="hljs-keyword">else</span>&#123;<br>        <span class="hljs-constructor">NSLog(@<span class="hljs-string">&quot;+++++添加成员变量&#x27;width&#x27;失败~&quot;</span>)</span>;<br>    &#125;<br>    <br>    <span class="hljs-comment">//为类增加属性(会成功)</span><br>    objc_property_attribute_t type2  = &#123;<span class="hljs-string">&quot;T&quot;</span>,<span class="hljs-string">&quot;@\&quot;NSString\&quot;&quot;</span>&#125;;<br>    objc_property_attribute_t ownership3 = &#123;<span class="hljs-string">&quot;C&quot;</span>,<span class="hljs-string">&quot;&quot;</span>&#125;;      <span class="hljs-comment">// C = copy</span><br>    objc_property_attribute_t ownership4 = &#123; <span class="hljs-string">&quot;N&quot;</span>, <span class="hljs-string">&quot;&quot;</span> &#125;;   <span class="hljs-comment">// N = nonatomic</span><br>    objc_property_attribute_t backIvars2  = &#123;<span class="hljs-string">&quot;V&quot;</span>,<span class="hljs-string">&quot;_name&quot;</span>&#125;; <span class="hljs-comment">//属性名</span><br>    objc_property_attribute_t atts2<span class="hljs-literal">[]</span> = &#123;type2,ownership3,ownership4,backIvars2&#125;;<br>    BOOL status4 = <span class="hljs-keyword">class</span><span class="hljs-constructor">_addProperty(ASDClass, <span class="hljs-string">&quot;nick&quot;</span>, <span class="hljs-params">atts2</span>, 4)</span>;<br>    <span class="hljs-keyword">if</span> (status4) &#123;<br>        <span class="hljs-constructor">NSLog(@<span class="hljs-string">&quot;+++++成功添加属性&#x27;nick&#x27;~&quot;</span>)</span>;<br>    &#125;<span class="hljs-keyword">else</span>&#123;<br>        <span class="hljs-constructor">NSLog(@<span class="hljs-string">&quot;+++++添加属性&#x27;nick&#x27;失败~&quot;</span>)</span>;<br>    &#125;<br>    NSArray *ivarsArr = <span class="hljs-literal">[R<span class="hljs-identifier">untimeTool</span> <span class="hljs-identifier">ivarListWithClass</span>:ASDC<span class="hljs-identifier">lass</span>]</span>;<br>    NSArray *propsArr  = <span class="hljs-literal">[R<span class="hljs-identifier">untimeTool</span> <span class="hljs-identifier">propertyListWithClass</span>:ASDC<span class="hljs-identifier">lass</span>]</span>;<br>    NSArray *methodArr = <span class="hljs-literal">[R<span class="hljs-identifier">untimeTool</span> <span class="hljs-identifier">methodListWithClass</span>:ASDC<span class="hljs-identifier">lass</span>]</span>;<br>    <br>    <span class="hljs-constructor">NSLog(@<span class="hljs-string">&quot;++++所有成员变量:%@&quot;</span>,<span class="hljs-params">ivarsArr</span>)</span>;<br>    <span class="hljs-constructor">NSLog(@<span class="hljs-string">&quot;++++所有属性:%@&quot;</span>,<span class="hljs-params">propsArr</span>)</span>;<br>    <span class="hljs-constructor">NSLog(@<span class="hljs-string">&quot;++++所有方法:%@&quot;</span>,<span class="hljs-params">methodArr</span>)</span>;<br>    <br>    <span class="hljs-comment">//调用learn方法</span><br>    objc<span class="hljs-constructor">_msgSend([ASDClass <span class="hljs-params">new</span>],@<span class="hljs-params">selector</span>(<span class="hljs-params">learn</span>)</span>);<br>    <br>    <span class="hljs-comment">//替换learn方法的实现函数为learOnBook</span><br>    <span class="hljs-keyword">class</span><span class="hljs-constructor">_replaceMethod(ASDClass, @<span class="hljs-params">selector</span>(<span class="hljs-params">learn</span>)</span>, (IMP)learOnBook, <span class="hljs-string">&quot;v@:&quot;</span>);<br>    <br>    <span class="hljs-comment">//再次调用learn方法</span><br>    objc<span class="hljs-constructor">_msgSend([ASDClass <span class="hljs-params">new</span>],@<span class="hljs-params">selector</span>(<span class="hljs-params">learn</span>)</span>);<br>    <br>    return YES;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>其中<code>RuntimeTool</code>是工具类，用来获取成员变量、属性和方法列表，实现代码如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br></pre></td><td class="code"><pre><span class="line">#import &quot;RuntimeTool.h&quot;</span><br><span class="line">#import &lt;objc/runtime.h&gt; //包含对类、成员变量、属性、方法的操作</span><br><span class="line">#import &lt;objc/message.h&gt; //包含消息机制</span><br><span class="line"></span><br><span class="line">@implementation RuntimeTool</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line">获取类中所有成员变量的名称与类型</span><br><span class="line"></span><br><span class="line">@param aClass 目标类名</span><br><span class="line">@return 返回一个数组，&#123;键：变量名，值：类型&#125;</span><br><span class="line">*/</span><br><span class="line">+ (NSArray *)ivarListWithClass:(Class)aClass</span><br><span class="line">&#123;</span><br><span class="line">    if (!object_isClass(aClass))&#123;</span><br><span class="line">        return nil;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    unsigned int count = 0;</span><br><span class="line">    NSMutableArray *resultArr = [NSMutableArray array];</span><br><span class="line"></span><br><span class="line">    Ivar *ivars = class_copyIvarList([aClass class], &amp;count);</span><br><span class="line"></span><br><span class="line">    for (int i = 0; i&lt;count; i++)&#123;</span><br><span class="line">        Ivar ivar = ivars[i];</span><br><span class="line">        const char *charName = ivar_getName(ivar);</span><br><span class="line">        const char *charType = ivar_getTypeEncoding(ivar);</span><br><span class="line"></span><br><span class="line">        NSString *name = [NSString stringWithCString:charName encoding:NSUTF8StringEncoding];</span><br><span class="line"></span><br><span class="line">        NSString *type = [NSString stringWithCString:charType encoding:NSUTF8StringEncoding];</span><br><span class="line"></span><br><span class="line">        NSDictionary *dic = @&#123;@&quot;ivar_name&quot;:name,@&quot;objc_type&quot;:type&#125;;</span><br><span class="line"></span><br><span class="line">        [resultArr addObject:dic];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    free(ivars);</span><br><span class="line"></span><br><span class="line">    return resultArr;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line">获取类中所有属性的名称与类型</span><br><span class="line"></span><br><span class="line">@param aClass 目标类名</span><br><span class="line">@return 返回一个数组，&#123;键：属性名，值：类型&#125;</span><br><span class="line">*/</span><br><span class="line">+ (NSArray *)propertyListWithClass:(Class)aClass</span><br><span class="line">&#123;</span><br><span class="line">    if (!object_isClass(aClass))&#123;</span><br><span class="line">        return nil;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    unsigned int count = 0;</span><br><span class="line">    NSMutableArray *resultArr = [NSMutableArray array];</span><br><span class="line"></span><br><span class="line">    objc_property_t *properties = class_copyPropertyList([aClass class], &amp;count);</span><br><span class="line"></span><br><span class="line">    for (int i = 0; i&lt;count; i++)&#123;</span><br><span class="line">        objc_property_t aProperty = properties[i];</span><br><span class="line">        const char *charName = property_getName(aProperty);</span><br><span class="line">        const char *charType = property_getAttributes(aProperty);</span><br><span class="line"></span><br><span class="line">        NSString *name = [NSString stringWithCString:charName encoding:NSUTF8StringEncoding];</span><br><span class="line"></span><br><span class="line">        NSString *type = [NSString stringWithCString:charType encoding:NSUTF8StringEncoding];</span><br><span class="line"></span><br><span class="line">        NSDictionary *dic = @&#123;@&quot;property_name&quot;:name,@&quot;objc_type&quot;:type&#125;;</span><br><span class="line"></span><br><span class="line">        [resultArr addObject:dic];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    free(properties);</span><br><span class="line"></span><br><span class="line">    return resultArr;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line">获取类中所有方法名</span><br><span class="line"></span><br><span class="line">@param aClass 目标类</span><br><span class="line">@return 返回所有方法名组成的一个数组</span><br><span class="line">*/</span><br><span class="line">+ (NSArray *)methodListWithClass:(Class)aClass</span><br><span class="line">&#123;</span><br><span class="line">    if (!object_isClass(aClass))&#123;</span><br><span class="line">        return nil;</span><br><span class="line">    &#125;</span><br><span class="line">    NSMutableArray *methodArr = [NSMutableArray array];</span><br><span class="line"></span><br><span class="line">    unsigned int count = 0;</span><br><span class="line">    Method *methods = class_copyMethodList(aClass, &amp;count);</span><br><span class="line"></span><br><span class="line">    for (int i = 0; i &lt; count; i++) &#123;</span><br><span class="line">        SEL sel_name = method_getName(methods[i]);</span><br><span class="line">        NSString *name = [NSString stringWithCString:sel_getName(sel_name) encoding:NSUTF8StringEncoding];</span><br><span class="line"></span><br><span class="line">        [methodArr addObject:name];</span><br><span class="line">    &#125;</span><br><span class="line">    free(methods);</span><br><span class="line"></span><br><span class="line">    return methodArr;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-meta">#import <span class="hljs-string">&quot;RuntimeTool.h&quot;</span></span><br><span class="hljs-meta">#import <span class="hljs-string">&lt;objc/runtime.h&gt; //包含对类、成员变量、属性、方法的操作</span></span><br><span class="hljs-meta">#import <span class="hljs-string">&lt;objc/message.h&gt; //包含消息机制</span></span><br><br><span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">RuntimeTool</span></span><br><br><span class="hljs-comment">/**</span><br><span class="hljs-comment">获取类中所有成员变量的名称与类型</span><br><span class="hljs-comment"></span><br><span class="hljs-comment">@param aClass 目标类名</span><br><span class="hljs-comment">@return 返回一个数组，&#123;键：变量名，值：类型&#125;</span><br><span class="hljs-comment">*/</span><br>+ (<span class="hljs-built_in">NSArray</span> *)ivarListWithClass:(Class)aClass<br>&#123;<br>    <span class="hljs-keyword">if</span> (!object_isClass(aClass))&#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>;<br>    &#125;<br><br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> count = <span class="hljs-number">0</span>;<br>    <span class="hljs-built_in">NSMutableArray</span> *resultArr = [<span class="hljs-built_in">NSMutableArray</span> array];<br><br>    Ivar *ivars = class_copyIvarList([aClass <span class="hljs-keyword">class</span>], &amp;count);<br><br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i&lt;count; i++)&#123;<br>        Ivar ivar = ivars[i];<br>        <span class="hljs-keyword">const</span> <span class="hljs-type">char</span> *charName = ivar_getName(ivar);<br>        <span class="hljs-keyword">const</span> <span class="hljs-type">char</span> *charType = ivar_getTypeEncoding(ivar);<br><br>        <span class="hljs-built_in">NSString</span> *name = [<span class="hljs-built_in">NSString</span> stringWithCString:charName encoding:<span class="hljs-built_in">NSUTF8StringEncoding</span>];<br><br>        <span class="hljs-built_in">NSString</span> *type = [<span class="hljs-built_in">NSString</span> stringWithCString:charType encoding:<span class="hljs-built_in">NSUTF8StringEncoding</span>];<br><br>        <span class="hljs-built_in">NSDictionary</span> *dic = @&#123;<span class="hljs-string">@&quot;ivar_name&quot;</span>:name,<span class="hljs-string">@&quot;objc_type&quot;</span>:type&#125;;<br><br>        [resultArr addObject:dic];<br>    &#125;<br><br>    free(ivars);<br><br>    <span class="hljs-keyword">return</span> resultArr;<br>&#125;<br><br><span class="hljs-comment">/**</span><br><span class="hljs-comment">获取类中所有属性的名称与类型</span><br><span class="hljs-comment"></span><br><span class="hljs-comment">@param aClass 目标类名</span><br><span class="hljs-comment">@return 返回一个数组，&#123;键：属性名，值：类型&#125;</span><br><span class="hljs-comment">*/</span><br>+ (<span class="hljs-built_in">NSArray</span> *)propertyListWithClass:(Class)aClass<br>&#123;<br>    <span class="hljs-keyword">if</span> (!object_isClass(aClass))&#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>;<br>    &#125;<br><br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> count = <span class="hljs-number">0</span>;<br>    <span class="hljs-built_in">NSMutableArray</span> *resultArr = [<span class="hljs-built_in">NSMutableArray</span> array];<br><br>    objc_property_t *properties = class_copyPropertyList([aClass <span class="hljs-keyword">class</span>], &amp;count);<br><br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i&lt;count; i++)&#123;<br>        objc_property_t aProperty = properties[i];<br>        <span class="hljs-keyword">const</span> <span class="hljs-type">char</span> *charName = property_getName(aProperty);<br>        <span class="hljs-keyword">const</span> <span class="hljs-type">char</span> *charType = property_getAttributes(aProperty);<br><br>        <span class="hljs-built_in">NSString</span> *name = [<span class="hljs-built_in">NSString</span> stringWithCString:charName encoding:<span class="hljs-built_in">NSUTF8StringEncoding</span>];<br><br>        <span class="hljs-built_in">NSString</span> *type = [<span class="hljs-built_in">NSString</span> stringWithCString:charType encoding:<span class="hljs-built_in">NSUTF8StringEncoding</span>];<br><br>        <span class="hljs-built_in">NSDictionary</span> *dic = @&#123;<span class="hljs-string">@&quot;property_name&quot;</span>:name,<span class="hljs-string">@&quot;objc_type&quot;</span>:type&#125;;<br><br>        [resultArr addObject:dic];<br>    &#125;<br><br>    free(properties);<br><br>    <span class="hljs-keyword">return</span> resultArr;<br>&#125;<br><br><span class="hljs-comment">/**</span><br><span class="hljs-comment">获取类中所有方法名</span><br><span class="hljs-comment"></span><br><span class="hljs-comment">@param aClass 目标类</span><br><span class="hljs-comment">@return 返回所有方法名组成的一个数组</span><br><span class="hljs-comment">*/</span><br>+ (<span class="hljs-built_in">NSArray</span> *)methodListWithClass:(Class)aClass<br>&#123;<br>    <span class="hljs-keyword">if</span> (!object_isClass(aClass))&#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>;<br>    &#125;<br>    <span class="hljs-built_in">NSMutableArray</span> *methodArr = [<span class="hljs-built_in">NSMutableArray</span> array];<br><br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> count = <span class="hljs-number">0</span>;<br>    Method *methods = class_copyMethodList(aClass, &amp;count);<br><br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; count; i++) &#123;<br>        SEL sel_name = method_getName(methods[i]);<br>        <span class="hljs-built_in">NSString</span> *name = [<span class="hljs-built_in">NSString</span> stringWithCString:sel_getName(sel_name) encoding:<span class="hljs-built_in">NSUTF8StringEncoding</span>];<br><br>        [methodArr addObject:name];<br>    &#125;<br>    free(methods);<br><br>    <span class="hljs-keyword">return</span> methodArr;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>注意：直接调用<code>objc_msgSend</code>在编译时会报错，需要在 “Build Setting”中，把“ Enable Strict Checking of objc_msgSend Calls” 关掉。<br><br/></p>
 <p>示例运行后输出日志：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">+++++成功添加成员变量&#x27;height&#x27;~</span><br><span class="line">+++++成功添加属性&#x27;name&#x27;~</span><br><span class="line">+++++添加成员变量&#x27;width&#x27;失败~</span><br><span class="line">+++++成功添加属性&#x27;nick&#x27;~</span><br><span class="line">++++所有成员变量:(</span><br><span class="line">        &#123;</span><br><span class="line">        &quot;ivar_name&quot; = height;</span><br><span class="line">        &quot;objc_type&quot; = &quot;@&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">)</span><br><span class="line">++++所有属性:(</span><br><span class="line">        &#123;</span><br><span class="line">        &quot;objc_type&quot; = &quot;T@\&quot;NSString\&quot;,C,N,V_name&quot;;</span><br><span class="line">        &quot;property_name&quot; = nick;</span><br><span class="line">    &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">        &quot;objc_type&quot; = &quot;T@\&quot;NSString\&quot;,C,N,V_name&quot;;</span><br><span class="line">        &quot;property_name&quot; = name;</span><br><span class="line">    &#125;</span><br><span class="line">)</span><br><span class="line">++++所有方法:(</span><br><span class="line">    learn</span><br><span class="line">)</span><br><span class="line">++++执行learnOnTV方法</span><br><span class="line">++++执行learOnBook方法</span><br></pre></td></tr></table></figure>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">+++++成功添加成员变量<span class="hljs-string">&#x27;height&#x27;</span>~<br>+++++成功添加属性<span class="hljs-string">&#x27;name&#x27;</span>~<br>+++++添加成员变量<span class="hljs-string">&#x27;width&#x27;</span>失败~<br>+++++成功添加属性<span class="hljs-string">&#x27;nick&#x27;</span>~<br>++++所有成员变量:(<br>        &#123;<br>        &quot;ivar_name&quot; = height;<br>        &quot;objc_type&quot; = &quot;@&quot;;<br>    &#125;<br>)<br>++++所有属性:(<br>        &#123;<br>        &quot;objc_type&quot; = &quot;T@\&quot;NSString\&quot;,C,N,V_name&quot;;<br>        &quot;property_name&quot; = nick;<br>    &#125;,<br>        &#123;<br>        &quot;objc_type&quot; = &quot;T@\&quot;NSString\&quot;,C,N,V_name&quot;;<br>        &quot;property_name&quot; = <span class="hljs-type">name</span>;<br>    &#125;<br>)<br>++++所有方法:(<br>    learn<br>)<br>++++执行learnOnTV方法<br>++++执行learOnBook方法<br></code></pre></td></tr></table></figure>
 
 <p>从日志中也可以得出结论：<br><br/></p>
 <p>1、在类<code>allocate</code>与<code>register</code>之间可以添加<code>成员变量</code>、<code>属性</code>和<code>方法</code>；<br><br/></p>
 <p>2、在<code>register</code>之后，即类结构固定之后<code>不能</code>再添加<code>成员变量</code>，但可以继续添加<code>属性</code>和<code>方法</code>；<br><br/></p>
 <p>3、动态添加的属性，并不会创建其对应的以<code>_</code>开头的成员变量，实际上这一步需要由编译器来完成。<br><br/></p>
 <p>ps: 热更新<code>JSPatch</code>就是在OC的 runtime 基础上实现的，大致原理是：JS传递字符串给OC，OC通过 Runtime 的运行时函数，调用和替换相应的OC方法。待后期慢慢研究。。</p>
-</section>
-    <!-- Tags START -->
-    
-      <div class="tags">
-        <span>Tags:</span>
-        
-  <a href="/tags#runtime" >
-    <span class="tag-code">runtime</span>
-  </a>
 
-      </div>
-    
-    <!-- Tags END -->
-    <!-- NAV START -->
-    
-  <div class="nav-container">
-    <!-- reverse left and right to put prev and next in a more logic postition -->
-    
-      <a class="nav-left" href="/2017/09/01/runtime_swizzle.html">
-        <span class="nav-arrow">← </span>
-        
-          Runtime：黑魔法：方法交换、数组对对象检测
-        
-      </a>
-    
-    
-      <a class="nav-right" href="/2017/09/09/runloop.html">
-        
-          Runloop
-        
-        <span class="nav-arrow"> →</span>
-      </a>
-    
-  </div>
-
-    <!-- NAV END -->
-    <!-- 打赏 START -->
-    
-      <div class="money-like">
-        <div class="reward-btn">
-          赏
-          <span class="money-code">
-            <span class="alipay-code">
-              <div class="code-image"></div>
-              <b>使用支付宝打赏</b>
-            </span>
-            <span class="wechat-code">
-              <div class="code-image"></div>
-              <b>使用微信打赏</b>
-            </span>
-          </span>
-        </div>
-        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
-      </div>
-    
-    <!-- 打赏 END -->
-    <!-- 二维码 START -->
-    
-    <!-- 二维码 END -->
-    
-      <!-- No Comment -->
-    
-  </article>
-  <!-- Article END -->
-  <!-- Catalog START -->
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
   
-    <aside class="catalog-container">
-  <div class="toc-main">
-    <strong class="toc-title">Catalog</strong>
-    
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1-API"><span class="toc-nav-text">1.API</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#1-1-%E5%A2%9E%E5%8A%A0%E7%B1%BB"><span class="toc-nav-text">1.1.增加类</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#1-2-%E5%A2%9E%E5%8A%A0%E6%96%B9%E6%B3%95"><span class="toc-nav-text">1.2.增加方法</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#1-3-%E5%A2%9E%E5%8A%A0%E6%88%90%E5%91%98%E5%8F%98%E9%87%8F"><span class="toc-nav-text">1.3.增加成员变量</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#1-4-%E5%A2%9E%E5%8A%A0%E5%B1%9E%E6%80%A7"><span class="toc-nav-text">1.4.增加属性</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-%E7%A4%BA%E4%BE%8B"><span class="toc-nav-text">2.示例</span></a></li></ol>
-    
-  </div>
-</aside>
   
-  <!-- Catalog END -->
-</main>
-
-<script>
-  (function () {
-    var url = 'http://yoursite.com/2017/09/01/runtime_addClass.html';
-    var banner = ''
-    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
-      $('#article-banner').css({
-        'background-image': 'url(' + banner + ')'
-      })
-    } else {
-      $('#article-banner').geopattern(url)
-    }
-    $('.header').removeClass('fixed-header')
-
-     // error image
-    $(".markdown-content img").on('error', function() {
-      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
-      $(this).css({
-        'cursor': 'default'
-      })
-    })
-
-    // zoom image
-    $(".markdown-content img").on('click', function() {
-      var src = $(this).attr('src')
-      if (src !== 'http://file.muyutech.com/error-img.png') {
-        var imageW = $(this).width()
-        var imageH = $(this).height()
-        
-        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
-        zoom = zoom < 1 ? 1 : zoom
-        zoom = zoom > 2 ? 2 : zoom
-        var transY = (($(window).height() - imageH) / 2).toFixed(2)
-
-        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
-        $('.image-view-wrap').addClass('wrap-active')
-        $('.image-view-wrap img').css({
-          'width': `${imageW}`,
-          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
-        })
-        $('html').css('overflow', 'hidden')
-
-        $('.image-view-wrap').on('click', function() {
-          $(this).remove()
-          $('html').attr('style', '')
-        })
-      }
-    })
-
-    // qrcode
-    var qr = new QRious({
-      element: document.getElementById('share-qrcode'),
-      value: document.location.href
-    });
-
-    // gitment
-    var gitmentConfig = "";
-    if (gitmentConfig !== 'undefined') {
-      var gitment = new Gitment({
-        id: "Runtime：动态增加新类、方法、属性",
-        owner: "",
-        repo: "",
-        oauth: {
-          client_id: "",
-          client_secret: ""
-        },
-        theme: {
-          render(state, instance) {
-            const container = document.createElement('div')
-            container.lang = "en-US"
-            container.className = 'gitment-container gitment-root-container'
-            container.appendChild(instance.renderHeader(state, instance))
-            container.appendChild(instance.renderEditor(state, instance))
-            container.appendChild(instance.renderComments(state, instance))
-            container.appendChild(instance.renderFooter(state, instance))
-            return container;
-          }
-        }
-      })
-      gitment.render(document.getElementById('comments'))
-    }
-  })();
-</script>
-
-    <div class="scroll-top">
-  <span class="arrow-icon"></span>
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/runtime/">#runtime</a>
+      
+    </div>
+  
 </div>
-    <footer class="app-footer">
-  <p class="copyright">
-    &copy; 2022 | <a href="https://github.com/davidlii" target="_blank">Davidli</a>
-    <br>
-    <a href="https://hexo.io" target="_blank">Hexo</a> | Theme-<a target="_blank" rel="noopener" href="https://github.com/yanm1ng">yanm1ng</a>
-  </p>
-</footer>
 
-<script>
-  function async(u, c) {
-    var d = document, t = 'script',
-      o = d.createElement(t),
-      s = d.getElementsByTagName(t)[0];
-    o.src = u;
-    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
-    s.parentNode.insertBefore(o, s);
-  }
-</script>
-<script>
-  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
-    FastClick.attach(document.body);
-  })
-</script>
 
-<script>
-  var hasLine = 'true';
-  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
-    $('figure pre').each(function(i, block) {
-      var figure = $(this).parents('figure');
-      if (hasLine === 'false') {
-        figure.find('.gutter').hide();
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Runtime：动态增加新类、方法、属性</div>
+      <div>http://yoursite.com/2017/09/01/runtime_addClass.html</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>September 1, 2017</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>Licensed under</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2017/09/09/runloop.html" title="Runloop">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Runloop</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2017/09/01/runtime_swizzle.html" title="Runtime：黑魔法：方法交换、数组对对象检测">
+                        <span class="hidden-mobile">Runtime：黑魔法：方法交换、数组对对象检测</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;Table of Contents</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://github.com/davidlii" target="_blank" rel="nofollow noopener"><span>Davidlii</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        Views: 
+        <span id="busuanzi_value_site_pv"></span>
+        
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        Visitors: 
+        <span id="busuanzi_value_site_uv"></span>
+        
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
       }
-      var lang = figure.attr('class').split(' ')[1] || 'code';
-      var codeHtml = $(this).html();
-      var codeTag = document.createElement('code');
-      codeTag.className = lang;
-      codeTag.innerHTML = codeHtml;
-      $(this).attr('class', '').empty().html(codeTag);
-      figure.attr('data-lang', lang.toUpperCase());
-      hljs.highlightBlock(block);
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
     });
-  })
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
 </script>
-<!-- Baidu Tongji -->
 
 
-<script src="/js/script.js"></script>
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
 
-  </body>
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
 </html>

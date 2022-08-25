@@ -1,372 +1,645 @@
+
+
 <!DOCTYPE html>
-<html>
-  <head>
-  <meta http-equiv="content-type" content="text/html; charset=utf-8">
-  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
-  <meta name="description" content="This is Davidli&#39;s blog ~">
-  <meta name="keyword" content="hexo-theme, vuejs">
-  
-    <link rel="shortcut icon" type="image/ico" href="/image/logo.png"/> 
-  
-  <title>
-    
-      Swift-@objc\@objcMember\dynamic | Davidli
-    
-  </title>
-  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
-  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
-  
-<link rel="stylesheet" href="/css/style.css">
-<link rel="stylesheet" href="/css/plugins/gitment.css">
-
-  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
-  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
-  
-<script src="/js/qrious.js"></script>
-<script src="/js/gitment.js"></script>
-
-  
-  
-    <!-- MathJax support START -->
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      });
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      });
-    </script>
-    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <!-- MathJax support END -->
-  
+<html lang="zh-Hans" data-default-color-scheme=auto>
 
 
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="Davidli">
+  
+    <meta name="description" content="1.@objc将Swift中的元素暴露给OC运行时，以便在OC中调用Swift代码。 常见的，如Swift中给按钮添加点击事件时，需要给selector添加@objc标记。因为SEL是OC运行时中的特性，runtime根据SEL查找函数的实现。要将按钮回调函数暴露给OC运行时，需要将其标记为@objc，从而让OC运行时进行消息派发。 1234567891011class A: UIViewCont">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Swift-@objc\@objcMember\dynamic">
+<meta property="og:url" content="http://yoursite.com/2018/09/15/swift-dynamic.html">
+<meta property="og:site_name" content="Davidli">
+<meta property="og:description" content="1.@objc将Swift中的元素暴露给OC运行时，以便在OC中调用Swift代码。 常见的，如Swift中给按钮添加点击事件时，需要给selector添加@objc标记。因为SEL是OC运行时中的特性，runtime根据SEL查找函数的实现。要将按钮回调函数暴露给OC运行时，需要将其标记为@objc，从而让OC运行时进行消息派发。 1234567891011class A: UIViewCont">
+<meta property="og:locale">
+<meta property="article:published_time" content="2018-09-15T12:16:04.000Z">
+<meta property="article:modified_time" content="2022-08-01T12:16:04.000Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Swift">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>Swift-@objc\@objcMember\dynamic - Davidli</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"yoursite.com","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
 <meta name="generator" content="Hexo 6.2.0"></head>
-<div class="wechat-share">
-  <img src="/css/images/logo.png" />
-</div>
 
-  <body>
-    <header class="header fixed-header">
-  <div class="header-container">
-    <a class="home-link" href="/">
-      <div class="logo"></div>
-      <span>Davidli</span>
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Davidli</strong>
     </a>
-    <ul class="right-list">
-      
-        <li class="list-item">
-          
-            <a href="/" class="item-link">Davidli</a>
-          
-        </li>
-      
-        <li class="list-item">
-          
-            <a href="/archives/" class="item-link">归档</a>
-          
-        </li>
-      
-        <li class="list-item">
-          
-            <a href="/tags/" class="item-link">标签</a>
-          
-        </li>
-      
-        <li class="list-item">
-          
-            <a href="/about/" class="item-link">关于</a>
-          
-        </li>
-      
-    </ul>
-    <div class="menu">
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-    </div>
-    <div class="menu-mask">
-      <ul class="menu-list">
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
         
-          <li class="menu-item">
-            
-              <a href="/" class="menu-link">Davidli</a>
-            
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                Categories
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                Tags
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
           </li>
+          
         
-          <li class="menu-item">
-            
-              <a href="/archives/" class="menu-link">归档</a>
-            
-          </li>
         
-          <li class="menu-item">
-            
-              <a href="/tags/" class="menu-link">标签</a>
-            
-          </li>
-        
-          <li class="menu-item">
-            
-              <a href="/about/" class="menu-link">关于</a>
-            
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
           </li>
         
       </ul>
     </div>
   </div>
-</header>
+</nav>
 
-    <div id="article-banner">
-  <h2>Swift-@objc\@objcMember\dynamic</h2>
-  <p class="post-date">2018-09-15</p>
-  <div class="arrow-down">
-    <a href="javascript:;"></a>
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Swift-@objc\@objcMember\dynamic"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2018-09-15 20:16" pubdate>
+          September 15, 2018 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.2k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          27 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
   </div>
 </div>
-<main class="app-body flex-box">
-  <!-- Article START -->
-  <article class="post-article">
-    <section class="markdown-content"><h4 id="1-objc"><a href="#1-objc" class="headerlink" title="1.@objc"></a>1.@objc</h4><p>将Swift中的元素暴露给OC运行时，以便在OC中调用Swift代码。</p>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Swift-@objc\@objcMember\dynamic</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h4 id="1-objc"><a href="#1-objc" class="headerlink" title="1.@objc"></a>1.@objc</h4><p>将Swift中的元素暴露给OC运行时，以便在OC中调用Swift代码。</p>
 <p>常见的，如Swift中给按钮添加点击事件时，需要给selector添加@objc标记。因为SEL是OC运行时中的特性，runtime根据SEL查找函数的实现。要将按钮回调函数暴露给OC运行时，需要将其标记为<code>@objc</code>，从而让OC运行时进行消息派发。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">class A: UIViewController &#123;</span><br><span class="line">    </span><br><span class="line">    override func viewDidLoad() &#123;</span><br><span class="line">        let btn = UIButton.init(type: .custom)</span><br><span class="line">        btn.addTarget(self, action: #selector(btnCallback), for: .touchUpInside)</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    @objc func btnCallback()&#123;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs swift"><span class="hljs-keyword">class</span> <span class="hljs-title class_">A</span>: <span class="hljs-title class_">UIViewController</span> &#123;<br>    <br>    <span class="hljs-keyword">override</span> <span class="hljs-keyword">func</span> <span class="hljs-title function_">viewDidLoad</span>() &#123;<br>        <span class="hljs-keyword">let</span> btn <span class="hljs-operator">=</span> <span class="hljs-type">UIButton</span>.<span class="hljs-keyword">init</span>(type: .custom)<br>        btn.addTarget(<span class="hljs-keyword">self</span>, action: <span class="hljs-keyword">#selector</span>(btnCallback), for: .touchUpInside)<br>    &#125;<br>    <br>    <span class="hljs-keyword">@objc</span> <span class="hljs-keyword">func</span> <span class="hljs-title function_">btnCallback</span>()&#123;<br>        <br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>OC工程中调用Swift代码时，也需要将Swift代码标记为@objc：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">// OC中定义SWift类 编译后会生成”工程名-Swift.h“头文件，里面包括了自动生成的OC版代码</span><br><span class="line">import Foundation</span><br><span class="line"></span><br><span class="line">class SwiftFile : NSObject &#123;</span><br><span class="line">    @objc var name : String?</span><br><span class="line">    @objc let nick : String</span><br><span class="line">    </span><br><span class="line">    @objc init(name:String,nick:String) &#123;</span><br><span class="line">        self.name = name</span><br><span class="line">        self.nick = nick</span><br><span class="line">        super.init()</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    @objc func swiftInstanceMethod(name:String) -&gt; String &#123;</span><br><span class="line">        self.name = name</span><br><span class="line">        print(&quot;name is:\(name)&quot;)</span><br><span class="line">        return name;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    @objc class func swiftClassMethod(nick:String) -&gt; String &#123;</span><br><span class="line">        print(&quot;nick is:\(nick)&quot;)</span><br><span class="line">        return nick</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">// OC工程引用swift代码</span><br><span class="line">#import &quot;AppDelegate.h&quot;</span><br><span class="line">#import &quot;ASDF-Swift.h&quot; //导入 swift 文件对应的 OC 版头文件</span><br><span class="line"></span><br><span class="line">@implementation AppDelegate</span><br><span class="line"></span><br><span class="line">- (BOOL)application:(UIApplication *)application</span><br><span class="line">didFinishLaunchingWithOptions:(NSDictionary *)launchOptions</span><br><span class="line">&#123;</span><br><span class="line">    SwiftFile *sf = [[SwiftFile alloc] initWithName:@&quot;swift&quot; nick:@&quot;sf&quot;];</span><br><span class="line">    sf.name = @&quot;Swift4.1&quot;;</span><br><span class="line">    [sf swiftInstanceMethodWithName:@&quot;Hello&quot;];</span><br><span class="line">    [SwiftFile swiftClassMethodWithNick:@&quot;newNick&quot;];</span><br><span class="line">    </span><br><span class="line">    return YES;</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><code class="hljs swift"><span class="hljs-comment">// OC中定义SWift类 编译后会生成”工程名-Swift.h“头文件，里面包括了自动生成的OC版代码</span><br><span class="hljs-keyword">import</span> Foundation<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">SwiftFile</span> : <span class="hljs-title class_">NSObject</span> &#123;<br>    <span class="hljs-keyword">@objc</span> <span class="hljs-keyword">var</span> name : <span class="hljs-type">String</span>?<br>    <span class="hljs-keyword">@objc</span> <span class="hljs-keyword">let</span> nick : <span class="hljs-type">String</span><br>    <br>    <span class="hljs-keyword">@objc</span> <span class="hljs-keyword">init</span>(<span class="hljs-params">name</span>:<span class="hljs-type">String</span>,<span class="hljs-params">nick</span>:<span class="hljs-type">String</span>) &#123;<br>        <span class="hljs-keyword">self</span>.name <span class="hljs-operator">=</span> name<br>        <span class="hljs-keyword">self</span>.nick <span class="hljs-operator">=</span> nick<br>        <span class="hljs-keyword">super</span>.<span class="hljs-keyword">init</span>()<br>    &#125;<br>    <br>    <span class="hljs-keyword">@objc</span> <span class="hljs-keyword">func</span> <span class="hljs-title function_">swiftInstanceMethod</span>(<span class="hljs-params">name</span>:<span class="hljs-type">String</span>) -&gt; <span class="hljs-type">String</span> &#123;<br>        <span class="hljs-keyword">self</span>.name <span class="hljs-operator">=</span> name<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;name is:<span class="hljs-subst">\(name)</span>&quot;</span>)<br>        <span class="hljs-keyword">return</span> name;<br>    &#125;<br>    <br>    <span class="hljs-keyword">@objc</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">func</span> <span class="hljs-title class_">swiftClassMethod</span>(<span class="hljs-title class_">nick</span>:<span class="hljs-title class_">String</span>) -&gt; <span class="hljs-title class_">String</span> &#123;<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;nick is:<span class="hljs-subst">\(nick)</span>&quot;</span>)<br>        <span class="hljs-keyword">return</span> nick<br>    &#125;<br>&#125;<br><br><br><span class="hljs-comment">// OC工程引用swift代码</span><br>#<span class="hljs-keyword">import</span> &quot;AppDelegate.h&quot;<br>#<span class="hljs-keyword">import</span> &quot;ASDF-Swift.h&quot; <span class="hljs-comment">//导入 swift 文件对应的 OC 版头文件</span><br><br><span class="hljs-meta">@implementation</span> <span class="hljs-type">AppDelegate</span><br><br><span class="hljs-operator">-</span> (<span class="hljs-type">BOOL</span>)application:(<span class="hljs-type">UIApplication</span> <span class="hljs-operator">*</span>)application<br>didFinishLaunchingWithOptions:(<span class="hljs-type">NSDictionary</span> <span class="hljs-operator">*</span>)launchOptions<br>&#123;<br>    <span class="hljs-type">SwiftFile</span> <span class="hljs-operator">*</span>sf <span class="hljs-operator">=</span> [[<span class="hljs-type">SwiftFile</span> alloc] initWithName:@<span class="hljs-string">&quot;swift&quot;</span> nick:@<span class="hljs-string">&quot;sf&quot;</span>];<br>    sf.name <span class="hljs-operator">=</span> @<span class="hljs-string">&quot;Swift4.1&quot;</span>;<br>    [sf swiftInstanceMethodWithName:@<span class="hljs-string">&quot;Hello&quot;</span>];<br>    [<span class="hljs-type">SwiftFile</span> swiftClassMethodWithNick:@<span class="hljs-string">&quot;newNick&quot;</span>];<br>    <br>    <span class="hljs-keyword">return</span> <span class="hljs-type">YES</span>;<br>&#125;<br><span class="hljs-meta">@end</span><br></code></pre></td></tr></table></figure>
 
 <h4 id="2-objcMember"><a href="#2-objcMember" class="headerlink" title="2.@objcMember"></a>2.@objcMember</h4><p>标记Swift中的类，将其所有元素都暴露给OC，等同于为所有元素加上<code>@objc</code>。</p>
 <p>注意：这些元素不包括Swift独有而OC中没有与之对应的元素类型，如Tuple。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">@objcMembers</span><br><span class="line">class Animal : NSObject &#123;</span><br><span class="line">    func eat() &#123; &#125; // 隐式添加了 @objc</span><br><span class="line">    </span><br><span class="line">    // 不会添加 @objc, 因为OC中没有元组</span><br><span class="line">    func drink() -&gt; (Int, Int)? &#123;</span><br><span class="line">        return nil</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">extension Animal &#123;</span><br><span class="line">    func call() &#123; &#125;   // 隐式添加了 @objc</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">class Cat : Animal &#123;</span><br><span class="line">    func miao() &#123; &#125;   // 隐式添加了 @objc</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">extension Cat &#123;</span><br><span class="line">  func paw() &#123; &#125;   // 隐式添加了 @objc</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs swift"><span class="hljs-keyword">@objc</span>Members<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Animal</span> : <span class="hljs-title class_">NSObject</span> &#123;<br>    <span class="hljs-keyword">func</span> <span class="hljs-title function_">eat</span>() &#123; &#125; <span class="hljs-comment">// 隐式添加了 @objc</span><br>    <br>    <span class="hljs-comment">// 不会添加 @objc, 因为OC中没有元组</span><br>    <span class="hljs-keyword">func</span> <span class="hljs-title function_">drink</span>() -&gt; (<span class="hljs-type">Int</span>, <span class="hljs-type">Int</span>)<span class="hljs-operator">?</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span><br>    &#125;<br>&#125;<br> <br><span class="hljs-keyword">extension</span> <span class="hljs-title class_">Animal</span> &#123;<br>    <span class="hljs-keyword">func</span> <span class="hljs-title function_">call</span>() &#123; &#125;   <span class="hljs-comment">// 隐式添加了 @objc</span><br>&#125;<br> <br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Cat</span> : <span class="hljs-title class_">Animal</span> &#123;<br>    <span class="hljs-keyword">func</span> <span class="hljs-title function_">miao</span>() &#123; &#125;   <span class="hljs-comment">// 隐式添加了 @objc</span><br>&#125;<br> <br><span class="hljs-keyword">extension</span> <span class="hljs-title class_">Cat</span> &#123;<br>  <span class="hljs-keyword">func</span> <span class="hljs-title function_">paw</span>() &#123; &#125;   <span class="hljs-comment">// 隐式添加了 @objc</span><br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>为何有这个关键字呢？Swift3及其之前版本中继承自NSObject的类，编译器会给所有的非private类及其成员加上@objc。swift4之后苹果不再默认这么做，但提供了@objcMember关键字作为替代方案，给被其标记的类及其成员添加@objc关键字。</p>
 <h4 id="3-dynamic"><a href="#3-dynamic" class="headerlink" title="3.dynamic"></a>3.dynamic</h4><p>标记类的成员，使其属性方法等进行动态派发。</p>
 <p>被标记为@objc的元素不一定会变成动态派发，Swift依然可能会将其优化为静态调用。如果在Swift中确实需要用到动态派发机制，比如KVO或者方法交换等特性时，则需要将其标记为 dynamic。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">class People: NSObject &#123;  //需要继承自NSObject</span><br><span class="line">    @objc dynamic var name = &quot;&quot; //@objc在Swift4之后必须要添加</span><br><span class="line">    @objc dynamic var age = 20</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class ViewController: UIViewController &#123;</span><br><span class="line"></span><br><span class="line">    let p = People.init()</span><br><span class="line">    </span><br><span class="line">    override func viewDidLoad() &#123;</span><br><span class="line">        p.addObserver(self, forKeyPath: #keyPath(People.name), options: [.new], context: nil)</span><br><span class="line">        p.addObserver(self, forKeyPath: &quot;age&quot;, options: [.new], context: nil)</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    override func viewWillAppear(_ animated: Bool) &#123;</span><br><span class="line">        p.name = &quot;kitt&quot;</span><br><span class="line">        p.age = 21</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    //监听回调</span><br><span class="line">    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) &#123;</span><br><span class="line">        if keyPath == &quot;name&quot; &#123;</span><br><span class="line">            print(&quot;new Name:\(change![NSKeyValueChangeKey.newKey] ?? &quot;Default&quot;)&quot;)</span><br><span class="line">        &#125;</span><br><span class="line">        else if keyPath == &quot;age&quot; &#123;</span><br><span class="line">            print(&quot;new age:\(change![NSKeyValueChangeKey.newKey] ?? &quot;Default&quot;)&quot;)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    deinit &#123;</span><br><span class="line">        print(&quot;Deinit&quot;)</span><br><span class="line">        p.removeObserver(self, forKeyPath: &quot;name&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><code class="hljs swift"><span class="hljs-keyword">class</span> <span class="hljs-title class_">People</span>: <span class="hljs-title class_">NSObject</span> &#123;  <span class="hljs-comment">//需要继承自NSObject</span><br>    <span class="hljs-keyword">@objc</span> <span class="hljs-keyword">dynamic</span> <span class="hljs-keyword">var</span> name <span class="hljs-operator">=</span> <span class="hljs-string">&quot;&quot;</span> <span class="hljs-comment">//@objc在Swift4之后必须要添加</span><br>    <span class="hljs-keyword">@objc</span> <span class="hljs-keyword">dynamic</span> <span class="hljs-keyword">var</span> age <span class="hljs-operator">=</span> <span class="hljs-number">20</span><br>&#125;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">ViewController</span>: <span class="hljs-title class_">UIViewController</span> &#123;<br><br>    <span class="hljs-keyword">let</span> p <span class="hljs-operator">=</span> <span class="hljs-type">People</span>.<span class="hljs-keyword">init</span>()<br>    <br>    <span class="hljs-keyword">override</span> <span class="hljs-keyword">func</span> <span class="hljs-title function_">viewDidLoad</span>() &#123;<br>        p.addObserver(<span class="hljs-keyword">self</span>, forKeyPath: <span class="hljs-keyword">#keyPath</span>(<span class="hljs-type">People</span>.name), options: [.new], context: <span class="hljs-literal">nil</span>)<br>        p.addObserver(<span class="hljs-keyword">self</span>, forKeyPath: <span class="hljs-string">&quot;age&quot;</span>, options: [.new], context: <span class="hljs-literal">nil</span>)<br>    &#125;<br>    <br>    <span class="hljs-keyword">override</span> <span class="hljs-keyword">func</span> <span class="hljs-title function_">viewWillAppear</span>(<span class="hljs-keyword">_</span> <span class="hljs-params">animated</span>: <span class="hljs-type">Bool</span>) &#123;<br>        p.name <span class="hljs-operator">=</span> <span class="hljs-string">&quot;kitt&quot;</span><br>        p.age <span class="hljs-operator">=</span> <span class="hljs-number">21</span><br>    &#125;<br>    <br>    <span class="hljs-comment">//监听回调</span><br>    <span class="hljs-keyword">override</span> <span class="hljs-keyword">func</span> <span class="hljs-title function_">observeValue</span>(<span class="hljs-params">forKeyPath</span> <span class="hljs-params">keyPath</span>: <span class="hljs-type">String</span>?, <span class="hljs-params">of</span> <span class="hljs-params">object</span>: <span class="hljs-keyword">Any</span><span class="hljs-operator">?</span>, <span class="hljs-params">change</span>: [<span class="hljs-params">NSKeyValueChangeKey</span> : <span class="hljs-keyword">Any</span>]<span class="hljs-operator">?</span>, <span class="hljs-params">context</span>: <span class="hljs-type">UnsafeMutableRawPointer</span>?) &#123;<br>        <span class="hljs-keyword">if</span> keyPath <span class="hljs-operator">==</span> <span class="hljs-string">&quot;name&quot;</span> &#123;<br>            <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;new Name:<span class="hljs-subst">\(change<span class="hljs-operator">!</span>[NSKeyValueChangeKey.newKey] <span class="hljs-operator">??</span> <span class="hljs-string">&quot;Default&quot;</span>)</span>&quot;</span>)<br>        &#125;<br>        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> keyPath <span class="hljs-operator">==</span> <span class="hljs-string">&quot;age&quot;</span> &#123;<br>            <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;new age:<span class="hljs-subst">\(change<span class="hljs-operator">!</span>[NSKeyValueChangeKey.newKey] <span class="hljs-operator">??</span> <span class="hljs-string">&quot;Default&quot;</span>)</span>&quot;</span>)<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-keyword">deinit</span> &#123;<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Deinit&quot;</span>)<br>        p.removeObserver(<span class="hljs-keyword">self</span>, forKeyPath: <span class="hljs-string">&quot;name&quot;</span>)<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>如果People类中去掉dynamic关键字，则给属性赋值时<code>p.age = 21</code>不会触发监听的回调。</p>
-</section>
-    <!-- Tags START -->
-    
-      <div class="tags">
-        <span>Tags:</span>
-        
-  <a href="/tags#Swift" >
-    <span class="tag-code">Swift</span>
-  </a>
 
-      </div>
-    
-    <!-- Tags END -->
-    <!-- NAV START -->
-    
-  <div class="nav-container">
-    <!-- reverse left and right to put prev and next in a more logic postition -->
-    
-      <a class="nav-left" href="/2018/09/14/swift-map.html">
-        <span class="nav-arrow">← </span>
-        
-          Swift高阶函数
-        
-      </a>
-    
-    
-      <a class="nav-right" href="/2018/10/09/algorithm.html">
-        
-          常用排序算法
-        
-        <span class="nav-arrow"> →</span>
-      </a>
-    
-  </div>
-
-    <!-- NAV END -->
-    <!-- 打赏 START -->
-    
-      <div class="money-like">
-        <div class="reward-btn">
-          赏
-          <span class="money-code">
-            <span class="alipay-code">
-              <div class="code-image"></div>
-              <b>使用支付宝打赏</b>
-            </span>
-            <span class="wechat-code">
-              <div class="code-image"></div>
-              <b>使用微信打赏</b>
-            </span>
-          </span>
-        </div>
-        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
-      </div>
-    
-    <!-- 打赏 END -->
-    <!-- 二维码 START -->
-    
-    <!-- 二维码 END -->
-    
-      <!-- No Comment -->
-    
-  </article>
-  <!-- Article END -->
-  <!-- Catalog START -->
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
   
-    <aside class="catalog-container">
-  <div class="toc-main">
-    <strong class="toc-title">Catalog</strong>
-    
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#1-objc"><span class="toc-nav-text">1.@objc</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-objcMember"><span class="toc-nav-text">2.@objcMember</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3-dynamic"><span class="toc-nav-text">3.dynamic</span></a></li></ol>
-    
-  </div>
-</aside>
   
-  <!-- Catalog END -->
-</main>
-
-<script>
-  (function () {
-    var url = 'http://yoursite.com/2018/09/15/swift-dynamic.html';
-    var banner = ''
-    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
-      $('#article-banner').css({
-        'background-image': 'url(' + banner + ')'
-      })
-    } else {
-      $('#article-banner').geopattern(url)
-    }
-    $('.header').removeClass('fixed-header')
-
-     // error image
-    $(".markdown-content img").on('error', function() {
-      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
-      $(this).css({
-        'cursor': 'default'
-      })
-    })
-
-    // zoom image
-    $(".markdown-content img").on('click', function() {
-      var src = $(this).attr('src')
-      if (src !== 'http://file.muyutech.com/error-img.png') {
-        var imageW = $(this).width()
-        var imageH = $(this).height()
-        
-        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
-        zoom = zoom < 1 ? 1 : zoom
-        zoom = zoom > 2 ? 2 : zoom
-        var transY = (($(window).height() - imageH) / 2).toFixed(2)
-
-        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
-        $('.image-view-wrap').addClass('wrap-active')
-        $('.image-view-wrap img').css({
-          'width': `${imageW}`,
-          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
-        })
-        $('html').css('overflow', 'hidden')
-
-        $('.image-view-wrap').on('click', function() {
-          $(this).remove()
-          $('html').attr('style', '')
-        })
-      }
-    })
-
-    // qrcode
-    var qr = new QRious({
-      element: document.getElementById('share-qrcode'),
-      value: document.location.href
-    });
-
-    // gitment
-    var gitmentConfig = "";
-    if (gitmentConfig !== 'undefined') {
-      var gitment = new Gitment({
-        id: "Swift-@objc\@objcMember\dynamic",
-        owner: "",
-        repo: "",
-        oauth: {
-          client_id: "",
-          client_secret: ""
-        },
-        theme: {
-          render(state, instance) {
-            const container = document.createElement('div')
-            container.lang = "en-US"
-            container.className = 'gitment-container gitment-root-container'
-            container.appendChild(instance.renderHeader(state, instance))
-            container.appendChild(instance.renderEditor(state, instance))
-            container.appendChild(instance.renderComments(state, instance))
-            container.appendChild(instance.renderFooter(state, instance))
-            return container;
-          }
-        }
-      })
-      gitment.render(document.getElementById('comments'))
-    }
-  })();
-</script>
-
-    <div class="scroll-top">
-  <span class="arrow-icon"></span>
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Swift/">#Swift</a>
+      
+    </div>
+  
 </div>
-    <footer class="app-footer">
-  <p class="copyright">
-    &copy; 2022 | <a href="https://github.com/davidlii" target="_blank">Davidli</a>
-    <br>
-    <a href="https://hexo.io" target="_blank">Hexo</a> | Theme-<a target="_blank" rel="noopener" href="https://github.com/yanm1ng">yanm1ng</a>
-  </p>
-</footer>
 
-<script>
-  function async(u, c) {
-    var d = document, t = 'script',
-      o = d.createElement(t),
-      s = d.getElementsByTagName(t)[0];
-    o.src = u;
-    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
-    s.parentNode.insertBefore(o, s);
-  }
-</script>
-<script>
-  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
-    FastClick.attach(document.body);
-  })
-</script>
 
-<script>
-  var hasLine = 'true';
-  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
-    $('figure pre').each(function(i, block) {
-      var figure = $(this).parents('figure');
-      if (hasLine === 'false') {
-        figure.find('.gutter').hide();
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Swift-@objc\@objcMember\dynamic</div>
+      <div>http://yoursite.com/2018/09/15/swift-dynamic.html</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>September 15, 2018</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>Licensed under</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2018/10/09/algorithm.html" title="常用排序算法">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">常用排序算法</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2018/09/14/swift-map.html" title="Swift高阶函数">
+                        <span class="hidden-mobile">Swift高阶函数</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;Table of Contents</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://github.com/davidlii" target="_blank" rel="nofollow noopener"><span>Davidlii</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        Views: 
+        <span id="busuanzi_value_site_pv"></span>
+        
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        Visitors: 
+        <span id="busuanzi_value_site_uv"></span>
+        
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
       }
-      var lang = figure.attr('class').split(' ')[1] || 'code';
-      var codeHtml = $(this).html();
-      var codeTag = document.createElement('code');
-      codeTag.className = lang;
-      codeTag.innerHTML = codeHtml;
-      $(this).attr('class', '').empty().html(codeTag);
-      figure.attr('data-lang', lang.toUpperCase());
-      hljs.highlightBlock(block);
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
     });
-  })
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
 </script>
-<!-- Baidu Tongji -->
 
 
-<script src="/js/script.js"></script>
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
 
-  </body>
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
 </html>

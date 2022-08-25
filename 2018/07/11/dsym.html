@@ -1,166 +1,310 @@
+
+
 <!DOCTYPE html>
-<html>
-  <head>
-  <meta http-equiv="content-type" content="text/html; charset=utf-8">
-  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
-  <meta name="description" content="This is Davidli&#39;s blog ~">
-  <meta name="keyword" content="hexo-theme, vuejs">
-  
-    <link rel="shortcut icon" type="image/ico" href="/image/logo.png"/> 
-  
-  <title>
-    
-      结合dSYM文件分析crash日志 | Davidli
-    
-  </title>
-  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
-  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
-  
-<link rel="stylesheet" href="/css/style.css">
-<link rel="stylesheet" href="/css/plugins/gitment.css">
-
-  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
-  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
-  
-<script src="/js/qrious.js"></script>
-<script src="/js/gitment.js"></script>
-
-  
-  
-    <!-- MathJax support START -->
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      });
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      });
-    </script>
-    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <!-- MathJax support END -->
-  
+<html lang="zh-Hans" data-default-color-scheme=auto>
 
 
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="Davidli">
+  
+    <meta name="description" content="一、dSYM1.1.dSYM调试符号表，是苹果为调试和定位问题而使用的一种调试文件。调试符号信息在构建应用时就保存在Mach-O文件中了，而.dSYM就是从Mach-O文件中抽取调试信息而得到的一个单独的文件目录。它使用的是 DWARF 结构，在 .xcarchive 目录中其层次结构如下： 123456.xcarchive--dSYMs  |--Your.app.dSYM    |--Conte">
+<meta property="og:type" content="article">
+<meta property="og:title" content="结合dSYM文件分析crash日志">
+<meta property="og:url" content="http://yoursite.com/2018/07/11/dsym.html">
+<meta property="og:site_name" content="Davidli">
+<meta property="og:description" content="一、dSYM1.1.dSYM调试符号表，是苹果为调试和定位问题而使用的一种调试文件。调试符号信息在构建应用时就保存在Mach-O文件中了，而.dSYM就是从Mach-O文件中抽取调试信息而得到的一个单独的文件目录。它使用的是 DWARF 结构，在 .xcarchive 目录中其层次结构如下： 123456.xcarchive--dSYMs  |--Your.app.dSYM    |--Conte">
+<meta property="og:locale">
+<meta property="article:published_time" content="2018-07-11T13:00:57.000Z">
+<meta property="article:modified_time" content="2018-11-30T13:00:57.000Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="异常">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>结合dSYM文件分析crash日志 - Davidli</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"yoursite.com","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
 <meta name="generator" content="Hexo 6.2.0"></head>
-<div class="wechat-share">
-  <img src="/css/images/logo.png" />
-</div>
 
-  <body>
-    <header class="header fixed-header">
-  <div class="header-container">
-    <a class="home-link" href="/">
-      <div class="logo"></div>
-      <span>Davidli</span>
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Davidli</strong>
     </a>
-    <ul class="right-list">
-      
-        <li class="list-item">
-          
-            <a href="/" class="item-link">Davidli</a>
-          
-        </li>
-      
-        <li class="list-item">
-          
-            <a href="/archives/" class="item-link">归档</a>
-          
-        </li>
-      
-        <li class="list-item">
-          
-            <a href="/tags/" class="item-link">标签</a>
-          
-        </li>
-      
-        <li class="list-item">
-          
-            <a href="/about/" class="item-link">关于</a>
-          
-        </li>
-      
-    </ul>
-    <div class="menu">
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-    </div>
-    <div class="menu-mask">
-      <ul class="menu-list">
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
         
-          <li class="menu-item">
-            
-              <a href="/" class="menu-link">Davidli</a>
-            
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                Categories
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                Tags
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
           </li>
+          
         
-          <li class="menu-item">
-            
-              <a href="/archives/" class="menu-link">归档</a>
-            
-          </li>
         
-          <li class="menu-item">
-            
-              <a href="/tags/" class="menu-link">标签</a>
-            
-          </li>
-        
-          <li class="menu-item">
-            
-              <a href="/about/" class="menu-link">关于</a>
-            
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
           </li>
         
       </ul>
     </div>
   </div>
-</header>
+</nav>
 
-    <div id="article-banner">
-  <h2>结合dSYM文件分析crash日志</h2>
-  <p class="post-date">2018-07-11</p>
-  <div class="arrow-down">
-    <a href="javascript:;"></a>
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="结合dSYM文件分析crash日志"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2018-07-11 21:00" pubdate>
+          July 11, 2018 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          13k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          112 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
   </div>
 </div>
-<main class="app-body flex-box">
-  <!-- Article START -->
-  <article class="post-article">
-    <section class="markdown-content"><h2 id="一、dSYM"><a href="#一、dSYM" class="headerlink" title="一、dSYM"></a>一、<strong>dSYM</strong></h2><h4 id="1-1-dSYM"><a href="#1-1-dSYM" class="headerlink" title="1.1.dSYM"></a>1.1.dSYM</h4><p>调试符号表，是苹果为调试和定位问题而使用的一种调试文件。调试符号信息在构建应用时就保存在<code>Mach-O</code>文件中了，而<code>.dSYM</code>就是从<code>Mach-O</code>文件中抽取调试信息而得到的一个单独的文件目录。它使用的是 DWARF 结构，在 .xcarchive 目录中其层次结构如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">.xcarchive</span><br><span class="line">--dSYMs</span><br><span class="line">  |--Your.app.dSYM</span><br><span class="line">    |--Contents</span><br><span class="line">      |--Resources</span><br><span class="line">        |--DWARF</span><br></pre></td></tr></table></figure>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">结合dSYM文件分析crash日志</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="一、dSYM"><a href="#一、dSYM" class="headerlink" title="一、dSYM"></a>一、<strong>dSYM</strong></h2><h4 id="1-1-dSYM"><a href="#1-1-dSYM" class="headerlink" title="1.1.dSYM"></a>1.1.dSYM</h4><p>调试符号表，是苹果为调试和定位问题而使用的一种调试文件。调试符号信息在构建应用时就保存在<code>Mach-O</code>文件中了，而<code>.dSYM</code>就是从<code>Mach-O</code>文件中抽取调试信息而得到的一个单独的文件目录。它使用的是 DWARF 结构，在 .xcarchive 目录中其层次结构如下：</p>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs jboss-cli"><span class="hljs-string">.xcarchive</span><br><span class="hljs-params">--dSYMs</span><br>  |<span class="hljs-params">--Your</span>.app.dSYM<br>    |<span class="hljs-params">--Contents</span><br>      |<span class="hljs-params">--Resources</span><br>        |<span class="hljs-params">--DWARF</span><br></code></pre></td></tr></table></figure>
 
 <p>要生成 dSYM 文件，你可以在 Xcode 的<code>Build Settings</code>中这样设置：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Generate Debug Symbols = YES</span><br><span class="line">Debug Information Format = &quot;DWARF with dSYM File&quot;</span><br></pre></td></tr></table></figure>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs routeros">Generate <span class="hljs-built_in">Debug</span> Symbols = <span class="hljs-literal">YES</span><br><span class="hljs-built_in">Debug</span> Information Format = <span class="hljs-string">&quot;DWARF with dSYM File&quot;</span><br></code></pre></td></tr></table></figure>
 
 <p>反之，如果你不想生成 dSYM 文件，则可以这样配置：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Generate Debug Symbols = NO</span><br><span class="line">或者</span><br><span class="line">Debug Information Format = &quot;DWARF&quot;</span><br></pre></td></tr></table></figure>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs routeros">Generate <span class="hljs-built_in">Debug</span> Symbols = <span class="hljs-literal">NO</span><br>或者<br><span class="hljs-built_in">Debug</span> Information Format = <span class="hljs-string">&quot;DWARF&quot;</span><br></code></pre></td></tr></table></figure>
 
 <h4 id="1-2-DWARF"><a href="#1-2-DWARF" class="headerlink" title="1.2.DWARF"></a>1.2.DWARF</h4><p>DWARF（DebuggingWith Arbitrary Record Formats），是 ELF 和 Mach-O 等文件格式中用来存储和处理调试信息的标准格式，.dSYM中真正保存符号表数据的是 DWARF 文件。DWARF 中不同的数据都保存在相应的 section（节）中，ELF 文件里所有的 section 名称都以”.debug_”开头，如下表所示：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">| Section Name         | Contents                                          |</span><br><span class="line">| -------------------- | ------------------------------------------------  |</span><br><span class="line">| .debug_abbrev        | Abbreviations used in the .debug_info section     |</span><br><span class="line">| .debug_aranges       | A mapping between memory address and compilation  |</span><br><span class="line">| .debug_frame         | Call Frame Information                            |</span><br><span class="line">| .debug_info          | The core DWARF data containing DIEs               |</span><br><span class="line">| .debug_line          | Line Number Program                               |</span><br><span class="line">| .debug_loc           | Macro descriptions                                |</span><br><span class="line">| .debug_macinfo       | A lookup table for global objects and functions   |</span><br><span class="line">| .debug_pubnames      | A lookup table for global objects and functions   | </span><br><span class="line">| .debug_pubtypes      | A lookup table for global types                   |</span><br><span class="line">| .debug_ranges        | Address ranges referenced by DIEs                 |</span><br><span class="line">| .debug_str           | String table used by .debug_info</span><br></pre></td></tr></table></figure>
+<figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs gherkin">|<span class="hljs-string"> Section Name         </span>|<span class="hljs-string"> Contents                                          </span>|<br>|<span class="hljs-string"> -------------------- </span>|<span class="hljs-string"> ------------------------------------------------  </span>|<br>|<span class="hljs-string"> .debug_abbrev        </span>|<span class="hljs-string"> Abbreviations used in the .debug_info section     </span>|<br>|<span class="hljs-string"> .debug_aranges       </span>|<span class="hljs-string"> A mapping between memory address and compilation  </span>|<br>|<span class="hljs-string"> .debug_frame         </span>|<span class="hljs-string"> Call Frame Information                            </span>|<br>|<span class="hljs-string"> .debug_info          </span>|<span class="hljs-string"> The core DWARF data containing DIEs               </span>|<br>|<span class="hljs-string"> .debug_line          </span>|<span class="hljs-string"> Line Number Program                               </span>|<br>|<span class="hljs-string"> .debug_loc           </span>|<span class="hljs-string"> Macro descriptions                                </span>|<br>|<span class="hljs-string"> .debug_macinfo       </span>|<span class="hljs-string"> A lookup table for global objects and functions   </span>|<br>|<span class="hljs-string"> .debug_pubnames      </span>|<span class="hljs-string"> A lookup table for global objects and functions   </span>|<span class="hljs-string"> </span><br><span class="hljs-string"></span>|<span class="hljs-string"> .debug_pubtypes      </span>|<span class="hljs-string"> A lookup table for global types                   </span>|<br>|<span class="hljs-string"> .debug_ranges        </span>|<span class="hljs-string"> Address ranges referenced by DIEs                 </span>|<br>|<span class="hljs-string"> .debug_str           </span>|<span class="hljs-string"> String table used by .debug_info</span><br></code></pre></td></tr></table></figure>
 
 <p>Mach-O中关于 section 的命名和ELF稍有区别，把名称前的.换成了_，例如.debug_info变成了_debug_info。</p>
 <p>保存在 DAWARF 中的信息是高度压缩的，可以通过 dwarfdump 命令从中提取出可读信息。前文所述的那些 section 中，定位 CrashLog 只需要用到.debug_info 和 .debug_line。由于解析出来的数据量较大，为了方便查看，就将其保存在文本中。两个 section 的数据提取方式如下：</p>
 <ul>
 <li>.debug_info</li>
 </ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ dwarfdump -e --debug-info YourApp.dSYM/Contents/Resources/DWARF &gt; info-e.txt</span><br></pre></td></tr></table></figure>
+<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs armasm">$ dwarfdump -e --debug-<span class="hljs-meta">info</span> YourApp.dSYM/Contents/Resources/DWARF &gt; <span class="hljs-meta">info</span>-e.txt<br></code></pre></td></tr></table></figure>
 <ul>
 <li>.debug_line</li>
 </ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ dwarfdump -e --debug-line YourApp.dSYM/Contents/Resources/DWARF &gt; line-e.txt</span><br></pre></td></tr></table></figure>
+<figure class="highlight gauss"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs gauss">$ dwarfdump -e --<span class="hljs-keyword">debug</span>-<span class="hljs-keyword">line</span> YourApp.dSYM/Contents/Resources/DWARF &gt; <span class="hljs-keyword">line</span>-e.txt<br></code></pre></td></tr></table></figure>
 
 <h4 id="1-3-崩溃解析过程"><a href="#1-3-崩溃解析过程" class="headerlink" title="1.3.崩溃解析过程"></a>1.3.崩溃解析过程</h4><ul>
 <li>计算崩溃地址对应符号表中的地址</li>
@@ -170,7 +314,7 @@
 <li>.debug_info</li>
 </ul>
 <p>.debug_info 中最基本的描述单元为DIE（Debug Information Entry），详情请参考 DWARF 官方网站，首先我们要根据符号表崩溃地址 0x52846 从.debug_info 中取出包含这个地址的DIE单元。为了简单起见，直接贴出了从 info-e.txt 中取出的对应DIE，其部分内容如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">0x00062112:     function [99] *</span><br><span class="line">                low pc( 0x000502e0 )</span><br><span class="line">                high pc( 0x00053730 )</span><br><span class="line">                frame base( r7 )</span><br><span class="line">                object pointer( &#123;0x0006212a&#125; )</span><br><span class="line">                name( &quot;-[OBDFirstConnectViewController showOilPricePickerView]&quot; )</span><br><span class="line">                decl file( &quot;/YourSourcePath/OBDFirstConnectViewController.m&quot; )</span><br><span class="line">                decl line( 870 )</span><br><span class="line">                prototyped( 0x01 )</span><br><span class="line">                APPLE instruction set architecture( 0x01 )</span><br></pre></td></tr></table></figure>
+<figure class="highlight isbl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs isbl"><span class="hljs-number">0</span><span class="hljs-variable">x00062112</span>:     <span class="hljs-variable">function</span> [<span class="hljs-number">99</span>] *<br>                <span class="hljs-variable">low</span> <span class="hljs-function"><span class="hljs-title">pc</span>( <span class="hljs-number">0</span><span class="hljs-variable">x000502e0</span> )</span><br>                <span class="hljs-variable">high</span> <span class="hljs-function"><span class="hljs-title">pc</span>( <span class="hljs-number">0</span><span class="hljs-variable">x00053730</span> )</span><br>                <span class="hljs-variable">frame</span> <span class="hljs-function"><span class="hljs-title">base</span>( <span class="hljs-variable">r7</span> )</span><br>                <span class="hljs-variable"><span class="hljs-class">object</span></span> <span class="hljs-function"><span class="hljs-title">pointer</span>( &#123;<span class="hljs-number">0</span><span class="hljs-variable">x0006212a</span>&#125; )</span><br>                <span class="hljs-function"><span class="hljs-title">name</span>( <span class="hljs-string">&quot;-[OBDFirstConnectViewController showOilPricePickerView]&quot;</span> )</span><br>                <span class="hljs-variable">decl</span> <span class="hljs-function"><span class="hljs-title">file</span>( <span class="hljs-string">&quot;/YourSourcePath/OBDFirstConnectViewController.m&quot;</span> )</span><br>                <span class="hljs-variable">decl</span> <span class="hljs-function"><span class="hljs-title">line</span>( <span class="hljs-number">870</span> )</span><br>                <span class="hljs-function"><span class="hljs-title">prototyped</span>( <span class="hljs-number">0</span><span class="hljs-variable">x01</span> )</span><br>                <span class="hljs-variable">APPLE</span> <span class="hljs-variable">instruction</span> <span class="hljs-variable">set</span> <span class="hljs-function"><span class="hljs-title">architecture</span>( <span class="hljs-number">0</span><span class="hljs-variable">x01</span> )</span><br></code></pre></td></tr></table></figure>
 
 <p>可以看出，该DIE包含的是方法-[OBDFirstConnectViewController showOilPricePickerView]的内容，其地址范围是 0x000502e0–0x00053730，我们的目标地址 0x52846 正是在这个范围内，所以可以判定崩溃发生在该方法的某一行中。<br><br/></p>
 <p>需要指出的是，上面这段DIE是为了介绍方便直接贴出来的，实际应用的时候需要通过搜索算法找出包含目标符号表崩溃地址（这里是0x52846）的DIE。<br><br/></p>
@@ -185,7 +329,7 @@
 </ul>
 <p>截止目前，我们可以获取到发生了崩溃的方法的相关信息，但要想确定崩溃发生的具体行号，还需要.debug_line 的帮助。<br><br/></p>
 <p>.debug_line 以一个方法为基本块，记了该方法中每一行对应的符号表地址。通过.debug_info 得知崩溃发生的方法地址范围是 0x000502e0–0x00053730，通过起始地址 0x000502e0 再解析. debug_line 得到的 line-e.txt 中直接搜索即可得到崩溃所在方法的. debug_line 数据，其中部分内容如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">0x00000000000502e0    870 /YourSourcePath/OBDFirstConnectViewController.m</span><br><span class="line">0x00000000000502e0      0</span><br><span class="line">0x00000000000502f0    872</span><br><span class="line">0x000000000005033c    873</span><br><span class="line">0x0000000000050374    874</span><br><span class="line">0x000000000005039e    875</span><br><span class="line">0x00000000000503c8    876</span><br><span class="line">...</span><br><span class="line">0x0000000000052812    880</span><br><span class="line">0x000000000005283e    881</span><br><span class="line">0x0000000000052846    882</span><br><span class="line">0x00000000000528c8    883</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<figure class="highlight dns"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs dns"><span class="hljs-number">0</span>x000000<span class="hljs-number">00000502e0</span>    <span class="hljs-number">870</span> /YourSourcePath/OBDFirstConnectViewController.m<br><span class="hljs-number">0</span>x000000<span class="hljs-number">00000502e0</span>      <span class="hljs-number">0</span><br><span class="hljs-number">0</span>x000000<span class="hljs-number">00000502f0</span>    <span class="hljs-number">872</span><br><span class="hljs-number">0</span>x000000000005033c    <span class="hljs-number">873</span><br><span class="hljs-number">0</span>x00000<span class="hljs-number">00000050374</span>    <span class="hljs-number">874</span><br><span class="hljs-number">0</span>x000000000005039e    <span class="hljs-number">875</span><br><span class="hljs-number">0</span>x000000<span class="hljs-number">00000503c8</span>    <span class="hljs-number">876</span><br>...<br><span class="hljs-number">0</span>x00000<span class="hljs-number">00000052812</span>    <span class="hljs-number">880</span><br><span class="hljs-number">0</span>x000000000005283e    <span class="hljs-number">881</span><br><span class="hljs-number">0</span>x00000<span class="hljs-number">00000052846</span>    <span class="hljs-number">882</span><br><span class="hljs-number">0</span>x000000<span class="hljs-number">00000528c8</span>    <span class="hljs-number">883</span><br>...<br></code></pre></td></tr></table></figure>
 
 <p>. debug_line 段的第一行内容标识了该方法的起始符号表地址，行号及方法所在文件路径，通过之前得到的崩溃地址 0x52846 即可得知崩溃发生在 882 行。<br><br/></p>
 <p>至此我们已经根据崩溃地址解析出了崩溃发生位置的详细信息：</p>
@@ -195,31 +339,31 @@
 <li>发生崩溃的方法在源文件中的行号：870；</li>
 <li>崩溃发生在源文件中得行号：882。</li>
 </ol>
-<h2 id="二、-crash-日志文件"><a href="#二、-crash-日志文件" class="headerlink" title="二、**.crash 日志文件**"></a>二、**.crash 日志文件**</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">Incident Identifier: 28593639-9021-4BF9-A730-0A4E644EE52E</span><br><span class="line">CrashReporter Key:   cf719616d48fff95262c17eaf002e4de3d3f9842</span><br><span class="line">Hardware Model:      iPhone8,1</span><br><span class="line">Process:             WeChat [25431]</span><br><span class="line">Path:                /var/../WeChat.app/WeChat</span><br><span class="line">Identifier:          com.tencent.xin</span><br><span class="line">Version:             6.5.7.32 (6.5.7)</span><br><span class="line">Code Type:           ARM-64 (Native)</span><br><span class="line">Parent Process:      launchd [1]</span><br><span class="line"></span><br><span class="line">Date/Time:           2017-04-29 14:12:13.13 +0800</span><br><span class="line">Launch Time:         2017-04-26 03:26:06.06 +0800</span><br><span class="line">OS Version:          iOS 9.3.5 (13G36)</span><br><span class="line">Report Version:      105</span><br><span class="line"></span><br><span class="line">Exception Type:  00000020</span><br><span class="line">Exception Codes: 0x000000008badf00d</span><br><span class="line">Exception Note:  SIMULATED (this is NOT a crash)</span><br><span class="line">Highlighted by Thread:  0</span><br><span class="line"></span><br><span class="line">Thread 0 name:  Dispatch queue: com.apple.main-thread</span><br><span class="line">Thread 0:</span><br><span class="line">0   libsystem_kernel.dylib            0x0000000180f99014 0x180f98000 + 4116</span><br><span class="line">1   libdispatch.dylib                 0x0000000180e763e8 0x180e64000 + 74728</span><br><span class="line">2   FrontBoardServices                0x0000000182db63d4 0x182d94000 + 140244</span><br><span class="line">3   FrontBoardServices                0x0000000182d9e910 0x182d94000 + 43280</span><br><span class="line">15  GraphicsServices                  0x0000000182be0088 0x182bd4000 + 49288</span><br><span class="line">16  UIKit                             0x00000001865e6088 0x186568000 + 516232</span><br><span class="line">17  WeChat                            0x00000001000fbea4 0x100058000 + 671396</span><br><span class="line"></span><br><span class="line">Binary Images:</span><br><span class="line">0x100058000 - 0x1033c3fff WeChat arm64  &lt;8b7a21136f4434dfb2771b8a4218a0f1&gt; </span><br><span class="line">/var/containers/Bundle/Application/26524DA8-D1E8-430D-8ECA-9D5ABE3CE3CA/WeChat.app/WeChat</span><br><span class="line">..</span><br></pre></td></tr></table></figure>
+<h2 id="二、-crash-日志文件"><a href="#二、-crash-日志文件" class="headerlink" title="二、**.crash 日志文件**"></a>二、**.crash 日志文件**</h2><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">Incident Identifier:</span> <span class="hljs-number">28593639</span><span class="hljs-number">-9021</span><span class="hljs-string">-4BF9-A730-0A4E644EE52E</span><br><span class="hljs-attr">CrashReporter Key:</span>   <span class="hljs-string">cf719616d48fff95262c17eaf002e4de3d3f9842</span><br><span class="hljs-attr">Hardware Model:</span>      <span class="hljs-string">iPhone8,1</span><br><span class="hljs-attr">Process:</span>             <span class="hljs-string">WeChat</span> [<span class="hljs-number">25431</span>]<br><span class="hljs-attr">Path:</span>                <span class="hljs-string">/var/../WeChat.app/WeChat</span><br><span class="hljs-attr">Identifier:</span>          <span class="hljs-string">com.tencent.xin</span><br><span class="hljs-attr">Version:</span>             <span class="hljs-number">6.5</span><span class="hljs-number">.7</span><span class="hljs-number">.32</span> <span class="hljs-string">(6.5.7)</span><br><span class="hljs-attr">Code Type:</span>           <span class="hljs-string">ARM-64</span> <span class="hljs-string">(Native)</span><br><span class="hljs-attr">Parent Process:</span>      <span class="hljs-string">launchd</span> [<span class="hljs-number">1</span>]<br><br><span class="hljs-attr">Date/Time:</span>           <span class="hljs-number">2017-04-29 14:12:13.13</span> <span class="hljs-string">+0800</span><br><span class="hljs-attr">Launch Time:</span>         <span class="hljs-number">2017-04-26 03:26:06.06</span> <span class="hljs-string">+0800</span><br><span class="hljs-attr">OS Version:</span>          <span class="hljs-string">iOS</span> <span class="hljs-number">9.3</span><span class="hljs-number">.5</span> <span class="hljs-string">(13G36)</span><br><span class="hljs-attr">Report Version:</span>      <span class="hljs-number">105</span><br><br><span class="hljs-attr">Exception Type:</span>  <span class="hljs-number">00000020</span><br><span class="hljs-attr">Exception Codes:</span> <span class="hljs-number">0x000000008badf00d</span><br><span class="hljs-attr">Exception Note:</span>  <span class="hljs-string">SIMULATED</span> <span class="hljs-string">(this</span> <span class="hljs-string">is</span> <span class="hljs-string">NOT</span> <span class="hljs-string">a</span> <span class="hljs-string">crash)</span><br><span class="hljs-attr">Highlighted by Thread:</span>  <span class="hljs-number">0</span><br><br><span class="hljs-attr">Thread 0 name:  Dispatch queue:</span> <span class="hljs-string">com.apple.main-thread</span><br><span class="hljs-attr">Thread 0:</span><br><span class="hljs-number">0</span>   <span class="hljs-string">libsystem_kernel.dylib</span>            <span class="hljs-number">0x0000000180f99014</span> <span class="hljs-number">0x180f98000</span> <span class="hljs-string">+</span> <span class="hljs-number">4116</span><br><span class="hljs-number">1</span>   <span class="hljs-string">libdispatch.dylib</span>                 <span class="hljs-number">0x0000000180e763e8</span> <span class="hljs-number">0x180e64000</span> <span class="hljs-string">+</span> <span class="hljs-number">74728</span><br><span class="hljs-number">2</span>   <span class="hljs-string">FrontBoardServices</span>                <span class="hljs-number">0x0000000182db63d4</span> <span class="hljs-number">0x182d94000</span> <span class="hljs-string">+</span> <span class="hljs-number">140244</span><br><span class="hljs-number">3</span>   <span class="hljs-string">FrontBoardServices</span>                <span class="hljs-number">0x0000000182d9e910</span> <span class="hljs-number">0x182d94000</span> <span class="hljs-string">+</span> <span class="hljs-number">43280</span><br><span class="hljs-number">15</span>  <span class="hljs-string">GraphicsServices</span>                  <span class="hljs-number">0x0000000182be0088</span> <span class="hljs-number">0x182bd4000</span> <span class="hljs-string">+</span> <span class="hljs-number">49288</span><br><span class="hljs-number">16</span>  <span class="hljs-string">UIKit</span>                             <span class="hljs-number">0x00000001865e6088</span> <span class="hljs-number">0x186568000</span> <span class="hljs-string">+</span> <span class="hljs-number">516232</span><br><span class="hljs-number">17</span>  <span class="hljs-string">WeChat</span>                            <span class="hljs-number">0x00000001000fbea4</span> <span class="hljs-number">0x100058000</span> <span class="hljs-string">+</span> <span class="hljs-number">671396</span><br><br><span class="hljs-attr">Binary Images:</span><br><span class="hljs-number">0x100058000</span> <span class="hljs-bullet">-</span> <span class="hljs-number">0x1033c3fff</span> <span class="hljs-string">WeChat</span> <span class="hljs-string">arm64</span>  <span class="hljs-string">&lt;8b7a21136f4434dfb2771b8a4218a0f1&gt;</span> <br><span class="hljs-string">/var/containers/Bundle/Application/26524DA8-D1E8-430D-8ECA-9D5ABE3CE3CA/WeChat.app/WeChat</span><br><span class="hljs-string">..</span><br></code></pre></td></tr></table></figure>
 <p>（上面是一个crash文件的大致内容，为了简洁删除了一部分）</p>
 <h4 id="2-1-参数"><a href="#2-1-参数" class="headerlink" title="2.1.参数"></a>2.1.参数</h4><ul>
 <li><strong>uuid：</strong></li>
 </ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Incident Identifier: 28593639-9021-4BF9-A730-0A4E644EE52E</span><br></pre></td></tr></table></figure>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">Incident</span> Identifier: <span class="hljs-number">28593639</span>-<span class="hljs-number">9021</span>-<span class="hljs-number">4</span>BF9-A730-<span class="hljs-number">0</span>A4E644EE52E<br></code></pre></td></tr></table></figure>
 
 <p>这是崩溃文件中的 uuid ，根据这个 uuid 可确定与 dSYM 文件是否匹配，方法如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dwarfdump --uuid appName.app.dSYM/</span><br></pre></td></tr></table></figure>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs stylus">dwarfdump <span class="hljs-attr">--uuid</span> appName<span class="hljs-selector-class">.app</span>.dSYM/<br></code></pre></td></tr></table></figure>
 
 <p>这个命令行会打印出该 dSYM 文件内所有架构的 uuid。</p>
 <ul>
 <li><strong>进程名[ID]</strong></li>
 </ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Process:             WeChat [25431]</span><br></pre></td></tr></table></figure>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">Process</span>:             WeChat<span class="hljs-meta"> [25431]</span><br></code></pre></td></tr></table></figure>
 
 <p>上面 “WeChat” 表示的是崩溃所在进程的名字，括号中的数字即为此进程的ID。</p>
 <ul>
 <li><strong>CPU架构：</strong></li>
 </ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Code Type:           ARM-64 (Native)</span><br></pre></td></tr></table></figure>
+<figure class="highlight gauss"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs gauss"><span class="hljs-built_in">Code</span> <span class="hljs-built_in">Type</span>:           ARM<span class="hljs-number">-64</span> (Native)<br></code></pre></td></tr></table></figure>
 <ul>
 <li><strong>程序运行时的映射信息:（Binary Images）</strong></li>
 </ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Binary Images:</span><br><span class="line">0x100058000 - 0x1033c3fff WeChat arm64  &lt;8b7a21136f4434dfb2771b8a4218a0f1&gt; </span><br><span class="line">/var/containers/Bundle/Application/26524DA8-D1E8-430D-8ECA-9D5ABE3CE3CA/WeChat.app/WeChat</span><br></pre></td></tr></table></figure>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs awk">Binary Images:<br><span class="hljs-number">0</span>x100058000 - <span class="hljs-number">0</span>x1033c3fff WeChat arm64  &lt;<span class="hljs-number">8</span>b7a21136f4434dfb2771b8a4218a0f1&gt; <br><span class="hljs-regexp">/var/</span>containers<span class="hljs-regexp">/Bundle/</span>Application<span class="hljs-regexp">/26524DA8-D1E8-430D-8ECA-9D5ABE3CE3CA/</span>WeChat.app/WeChat<br></code></pre></td></tr></table></figure>
 
 <ol>
 <li>第一列，应用二进制文件中代码段的起始地址~终止地址；（0x100058000 - 0x1033c3fff）</li>
@@ -230,7 +374,7 @@
 <ul>
 <li><strong>崩溃的堆栈信息（Thread Backtrace）：</strong></li>
 </ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">0   libsystem_kernel.dylib            0x0000000180f99014 0x180f98000 + 4116</span><br><span class="line">1   libdispatch.dylib                 0x0000000180e763e8 0x180e64000 + 74728</span><br><span class="line">2   FrontBoardServices                0x0000000182db63d4 0x182d94000 + 140244</span><br><span class="line">3   FrontBoardServices                0x0000000182d9e910 0x182d94000 + 43280</span><br><span class="line">..</span><br><span class="line">15  GraphicsServices                  0x0000000182be0088 0x182bd4000 + 49288</span><br><span class="line">16  UIKit                             0x00000001865e6088 0x186568000 + 516232</span><br><span class="line">17  WeChat                            0x00000001000fbea4 0x100058000 + 671396</span><br></pre></td></tr></table></figure>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs x86asm"><span class="hljs-number">0</span>   libsystem_kernel<span class="hljs-number">.</span>dylib            <span class="hljs-number">0x0000000180f99014</span> <span class="hljs-number">0x180f98000</span> + <span class="hljs-number">4116</span><br><span class="hljs-number">1</span>   libdispatch<span class="hljs-number">.</span>dylib                 <span class="hljs-number">0x0000000180e763e8</span> <span class="hljs-number">0x180e64000</span> + <span class="hljs-number">74728</span><br><span class="hljs-number">2</span>   FrontBoardServices                <span class="hljs-number">0x0000000182db63d4</span> <span class="hljs-number">0x182d94000</span> + <span class="hljs-number">140244</span><br><span class="hljs-number">3</span>   FrontBoardServices                <span class="hljs-number">0x0000000182d9e910</span> <span class="hljs-number">0x182d94000</span> + <span class="hljs-number">43280</span><br>..<br><span class="hljs-number">15</span>  GraphicsServices                  <span class="hljs-number">0x0000000182be0088</span> <span class="hljs-number">0x182bd4000</span> + <span class="hljs-number">49288</span><br><span class="hljs-number">16</span>  UIKit                             <span class="hljs-number">0x00000001865e6088</span> <span class="hljs-number">0x186568000</span> + <span class="hljs-number">516232</span><br><span class="hljs-number">17</span>  WeChat                            <span class="hljs-number">0x00000001000fbea4</span> <span class="hljs-number">0x100058000</span> + <span class="hljs-number">671396</span><br></code></pre></td></tr></table></figure>
 
 
 <ol>
@@ -243,39 +387,39 @@
 <p>注意！！这里的 “stack address” 与 “load address” 都是16进制的，而 “slide” 则是10进制的。</p>
 <hr>
 <h4 id="2-2-stack-address"><a href="#2-2-stack-address" class="headerlink" title="2.2.stack address"></a>2.2.stack address</h4><p>计算一下你就会发现，上面堆栈信息中，第四列+第五列 的内容与第三列在实质上是一样的。以下面的崩溃堆栈信息的第 9 行为例：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Thread 0:</span><br><span class="line">0   libobjc.A.dylib         0x33f10f60 0x33efe000 + 77664</span><br><span class="line">1   Foundation              0x273526ac 0x2734a000 + 34476</span><br><span class="line">9   Your                    0x000f0846 0xa2000 + 321606</span><br><span class="line">28  Your                    0x0024643a 0xa2000 + 1721402</span><br><span class="line">29  libdyld.dylib           0x34484aac 0x34483000 + 6828</span><br><span class="line"></span><br><span class="line">Binary Images:</span><br><span class="line">0xa2000 - 0x541fff Your armv7</span><br><span class="line">/var/mobile/Containers/Bundle/Application/645D3184-4C20-4161-924B-BDE170FA64CC/Your.app/Your</span><br></pre></td></tr></table></figure>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs x86asm">Thread <span class="hljs-number">0</span>:<br><span class="hljs-number">0</span>   libobjc<span class="hljs-number">.</span>A<span class="hljs-number">.</span>dylib         <span class="hljs-number">0x33f10f60</span> <span class="hljs-number">0x33efe000</span> + <span class="hljs-number">77664</span><br><span class="hljs-number">1</span>   Foundation              <span class="hljs-number">0x273526ac</span> <span class="hljs-number">0x2734a000</span> + <span class="hljs-number">34476</span><br><span class="hljs-number">9</span>   Your                    <span class="hljs-number">0x000f0846</span> <span class="hljs-number">0xa2000</span> + <span class="hljs-number">321606</span><br><span class="hljs-number">28</span>  Your                    <span class="hljs-number">0x0024643a</span> <span class="hljs-number">0xa2000</span> + <span class="hljs-number">1721402</span><br><span class="hljs-number">29</span>  libdyld<span class="hljs-number">.</span>dylib           <span class="hljs-number">0x34484aac</span> <span class="hljs-number">0x34483000</span> + <span class="hljs-number">6828</span><br><br>Binary Images:<br><span class="hljs-number">0xa2000</span> - <span class="hljs-number">0x541fff</span> Your armv7<br>/var/mobile/Containers/Bundle/Application/645D3184-4C20-<span class="hljs-number">4161</span>-924B-BDE170FA64CC/Your<span class="hljs-number">.</span>app/Your<br></code></pre></td></tr></table></figure>
 
 
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">stack address = 0x000f0846;</span><br><span class="line">load address = 0xa2000;</span><br><span class="line">slide = 321606;</span><br></pre></td></tr></table></figure>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs abnf">stack address <span class="hljs-operator">=</span> <span class="hljs-number">0</span>x000f0846<span class="hljs-comment">;</span><br>load address <span class="hljs-operator">=</span> <span class="hljs-number">0</span>xa2000<span class="hljs-comment">;</span><br><span class="hljs-attribute">slide</span> <span class="hljs-operator">=</span> <span class="hljs-number">321606</span><span class="hljs-comment">;</span><br></code></pre></td></tr></table></figure>
 
 <p>将 slide 转换为 16 进制后（即 0x4E846）与 load address 相加：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0x000f0846 = 0xa2000 + 0x4E846;</span><br></pre></td></tr></table></figure>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-attr">0x000f0846</span> = <span class="hljs-number">0</span>xa2000 + <span class="hljs-number">0</span>x4E846<span class="hljs-comment">;</span><br></code></pre></td></tr></table></figure>
 
 <p>所以，我们可以得出这么一个公式：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">stack address = load address + slide;</span><br></pre></td></tr></table></figure>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ebnf"><span class="hljs-attribute">stack address</span> = load address + slide;<br></code></pre></td></tr></table></figure>
 
 <p>注意！！这里 “stack address” 和 “load address” 均为程序在运行时的地址。要想利用符号表解析出崩溃对应位置，需要计算出符号表中对应的崩溃堆栈地址（symbol address）。</p>
 <h4 id="2-3-symbol-address"><a href="#2-3-symbol-address" class="headerlink" title="2.3.symbol address"></a>2.3.symbol address</h4><p>我们打开一个应用时，内核会为该应用创建一个新的进程，并把应用的二进制文件加载到一片虚拟地址空间中。iOS4.3 后为了阻止内存溢出攻击苹果在iOS中使用了 <a target="_blank" rel="noopener" href="https://ctinusdev.github.io/2017/08/20/Mach-OBasis_ASLR/">ASLR</a> 技术。这样进程每次启动时，地址空间都会被简单地随机化，所以每次加载时地址都不一样。这里的随机只是偏移不是搅乱，实现方式是通过内核将 Mach-O 的段“平移”某个随机数。<br><br/></p>
 <p>根据虚拟内存偏移量不变原理，只要提供了符号表 __TEXT 段的起始地址(vmaddr)，再加上偏移量（这里为0x4E846）就能得到符号表中的堆栈地址（symbol address），计算方法为：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">symbol address = vmaddr + slide;</span><br></pre></td></tr></table></figure>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ebnf"><span class="hljs-attribute">symbol address</span> = vmaddr + slide;<br></code></pre></td></tr></table></figure>
 
 <p>如何获取符号表中的 __TEXT 段起始地址呢?</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$otool -l xx.app.dSYM/Contents/Resources/DWARF/xx</span><br></pre></td></tr></table></figure>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-variable">$otool</span> -l xx.app.dSYM<span class="hljs-regexp">/Contents/</span>Resources<span class="hljs-regexp">/DWARF/</span>xx<br></code></pre></td></tr></table></figure>
 
 <p>注意把 xx 替换为你自己的应用名。运行结果中的片段如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Load command 3</span><br><span class="line">      cmd LC_SEGMENT</span><br><span class="line">  cmdsize 736</span><br><span class="line">  segname __TEXT</span><br><span class="line">   vmaddr 0x00004000</span><br><span class="line">   vmsize 0x00700000</span><br><span class="line">  fileoff 0</span><br><span class="line"> filesize 0</span><br><span class="line">  maxprot 0x00000005</span><br><span class="line"> initprot 0x00000005</span><br><span class="line">   nsects 10</span><br><span class="line">    flags 0x0</span><br></pre></td></tr></table></figure>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">Load</span> command <span class="hljs-number">3</span><br>      <span class="hljs-attribute">cmd</span> LC_SEGMENT<br>  <span class="hljs-attribute">cmdsize</span> <span class="hljs-number">736</span><br>  <span class="hljs-attribute">segname</span> __TEXT<br>   <span class="hljs-attribute">vmaddr</span> <span class="hljs-number">0</span>x00004000<br>   <span class="hljs-attribute">vmsize</span> <span class="hljs-number">0</span>x00700000<br>  <span class="hljs-attribute">fileoff</span> <span class="hljs-number">0</span><br> <span class="hljs-attribute">filesize</span> <span class="hljs-number">0</span><br>  <span class="hljs-attribute">maxprot</span> <span class="hljs-number">0</span>x00000005<br> <span class="hljs-attribute">initprot</span> <span class="hljs-number">0</span>x00000005<br>   <span class="hljs-attribute">nsects</span> <span class="hljs-number">10</span><br>    <span class="hljs-attribute">flags</span> <span class="hljs-number">0</span>x0<br></code></pre></td></tr></table></figure>
 
 <p>其中的 vmaddr 0x00004000 字段即为 __TEXT 段的起始地址。</p>
 <p>由公式：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">symbol address = vmaddr + slide;</span><br></pre></td></tr></table></figure>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ebnf"><span class="hljs-attribute">symbol address</span> = vmaddr + slide;<br></code></pre></td></tr></table></figure>
 
 <p>可得出：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0x52846 = 0x4000 + 0x4E846;</span><br></pre></td></tr></table></figure>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-attr">0x52846</span> = <span class="hljs-number">0</span>x4000 + <span class="hljs-number">0</span>x4E846<span class="hljs-comment">;</span><br></code></pre></td></tr></table></figure>
 
 <p>即符号表中的崩溃地址 &#x3D; 0x52846，接下来就可以根据这个地址解析出崩溃位置了。</p>
 <hr>
 <h2 id="三、解析方案"><a href="#三、解析方案" class="headerlink" title="三、解析方案"></a>三、解析方案</h2><h3 id="dwarfdump"><a href="#dwarfdump" class="headerlink" title="dwarfdump"></a>dwarfdump</h3><p>命令如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$dwarfdump --arch armv7 Your.app.dSYM --lookup 0x52846 | grep &#x27;Line table&#x27;</span><br></pre></td></tr></table></figure>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs stata"><span class="hljs-variable">$dwarfdump</span> --<span class="hljs-keyword">arch</span> armv7 Your.<span class="hljs-keyword">app</span>.dSYM --<span class="hljs-keyword">lookup</span> 0x52846 | grep &#x27;<span class="hljs-keyword">Line</span> <span class="hljs-keyword">table</span>&#x27;<br></code></pre></td></tr></table></figure>
 
 <p>需要注意的是：这里的 armv7 是运行设备的 CPU 指令集，而不是二进制文件的指令集。比如 armv7 指令集的二进制文件运行在 arm64 指令集的设备上，这个地方应该写 arm64。</p>
 <ul>
@@ -283,36 +427,36 @@
 <li>使用 dwarfdump 解析的结果较杂乱，因此使用 grep 命令抓取其中关键点展示出来</li>
 </ul>
 <p>运行结果如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Line table dir : &#x27;/data/.../Src/OBDConnectSetting/Controller&#x27;</span><br><span class="line">Line table file: &#x27;OBDFirstConnectViewController.m&#x27; line 882, column 5 with start address 0x000000000052768</span><br></pre></td></tr></table></figure>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs pgsql"><span class="hljs-type">Line</span> <span class="hljs-keyword">table</span> dir : <span class="hljs-string">&#x27;/data/.../Src/OBDConnectSetting/Controller&#x27;</span><br><span class="hljs-type">Line</span> <span class="hljs-keyword">table</span> file: <span class="hljs-string">&#x27;OBDFirstConnectViewController.m&#x27;</span> <span class="hljs-type">line</span> <span class="hljs-number">882</span>, <span class="hljs-keyword">column</span> <span class="hljs-number">5</span> <span class="hljs-keyword">with</span> <span class="hljs-keyword">start</span> address <span class="hljs-number">0x000000000052768</span><br></code></pre></td></tr></table></figure>
 
 <p>其中第一行是编译时文件目录，第二行包含了崩溃发生的文件名称以及文件中具体行号等信息，有了这些信息就能准确定位崩溃原因啦。</p>
 <hr>
 <h3 id="atos"><a href="#atos" class="headerlink" title="atos"></a>atos</h3><p>atos 命令可以解析出指定某一行的堆栈，使用方式如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$atos -o /Users/xxx/crash/AppName.app/AppName -arch armv7 0x52846</span><br></pre></td></tr></table></figure>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-variable">$atos</span> -o <span class="hljs-regexp">/Users/</span>xxx<span class="hljs-regexp">/crash/</span>AppName.app/AppName -arch armv7 <span class="hljs-number">0</span>x52846<br></code></pre></td></tr></table></figure>
 
 <p>其执行结果如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-[OBDFirstConnectViewController showOilPricePickerView] (in Your) (OBDFirstConnectViewController.m:882)</span><br></pre></td></tr></table></figure>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs scss">-<span class="hljs-selector-attr">[OBDFirstConnectViewController showOilPricePickerView]</span> (in Your) (OBDFirstConnectViewController.m:<span class="hljs-number">882</span>)<br></code></pre></td></tr></table></figure>
 
 <hr>
 <h3 id="无需计算崩溃地址"><a href="#无需计算崩溃地址" class="headerlink" title="无需计算崩溃地址"></a>无需计算崩溃地址</h3><p>atos 还提供了另外一种无需计算崩溃地址对应的符号表地址的方式，命令格式如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$atos -o Your.app.dSYM/Contents/Resources/DWARF/Your -arch armv7 -l [load address] [stack address]</span><br></pre></td></tr></table></figure>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-variable">$atos</span> -o Your.app.dSYM<span class="hljs-regexp">/Contents/</span>Resources<span class="hljs-regexp">/DWARF/</span>Your -arch armv7 -l [load address] [stack address]<br></code></pre></td></tr></table></figure>
 
 <p>其中 -l 选项指定了二进制文件在运行时的 <strong>load address</strong> (0xa2000)，后面跟的是崩溃发生时的 <strong>stack address</strong> (0x000f0846)。解析结果：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-[OBDFirstConnectViewController showOilPricePickerView] (in Your) (OBDFirstConnectViewController.m:882)</span><br></pre></td></tr></table></figure>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs scss">-<span class="hljs-selector-attr">[OBDFirstConnectViewController showOilPricePickerView]</span> (in Your) (OBDFirstConnectViewController.m:<span class="hljs-number">882</span>)<br></code></pre></td></tr></table></figure>
 
 <h3 id="shell脚本"><a href="#shell脚本" class="headerlink" title="shell脚本"></a>shell脚本</h3><p>桌面新建一个crash文件夹，把dSYM文件、友盟日志txt 及 shell 脚本放进来。</p>
 <ul>
 <li>友盟日志内容：</li>
 </ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">Application received signal SIGSEGV</span><br><span class="line">(null)</span><br><span class="line">((</span><br><span class="line">0 CoreFoundation	0x0000000190f311b8 0x0000000190e01000 + 1245624</span><br><span class="line">1 libobjc.A.dylib	0x000000018f96855c objc_exception_throw + 56</span><br><span class="line">2 CoreFoundation	0x0000000190f3108c 0x0000000190e01000 + 1245324</span><br><span class="line">3 Foundation		0x00000001919e902c 0x000000019193b000 + 712748</span><br><span class="line">4 UIKit			0x00000001976c5704 0x0000000196dd7000 + 9365252</span><br><span class="line">5 UIKit			0x00000001976c5afc 0x0000000196dd7000 + 9366268</span><br><span class="line">6 UIKit			0x00000001976c6f0c 0x0000000196dd7000 + 9371404</span><br><span class="line">7 UIKit			0x00000001975f1c10 0x0000000196dd7000 + 8498192</span><br><span class="line">8 UIKit			0x00000001975f1e28 0x0000000196dd7000 + 8498728</span><br><span class="line">9 MyApp			0x0000000100223668 0x00000001000ac000 + 1537640</span><br><span class="line">10 MyApp		0x00000001001e1588 0x00000001000ac000 + 1267080</span><br><span class="line">11 UIKit		0x00000001973aef80 0x0000000196dd7000 + 6127488</span><br><span class="line">12 UIKit		0x00000001973b2748 0x0000000196dd7000 + 6141768</span><br><span class="line">13 UIKit		0x0000000196f7973c 0x0000000196dd7000 + 1713980</span><br><span class="line">14 UIKit		0x0000000196e180f0 0x0000000196dd7000 + 266480</span><br><span class="line">15 UIKit		0x00000001973a2680 0x0000000196dd7000 + 6076032</span><br><span class="line">16 UIKit		0x00000001973a21e0 0x0000000196dd7000 + 6074848</span><br><span class="line">17 UIKit		0x00000001973a149c 0x0000000196dd7000 + 6071452</span><br><span class="line">18 UIKit		0x0000000196e1630c 0x0000000196dd7000 + 258828</span><br><span class="line">19 UIKit		0x0000000196de6da0 0x0000000196dd7000 + 64928</span><br><span class="line">20 MyApp		0x00000001005b01b4 __cxa_throw + 2250128</span><br><span class="line">21 UIKit		0x00000001975d075c 0x0000000196dd7000 + 8361820</span><br><span class="line">22 UIKit		0x00000001975ca130 0x0000000196dd7000 + 8335664</span><br><span class="line">23 CoreFoundation	0x0000000190edeb5c 0x0000000190e01000 + 908124</span><br><span class="line">24 CoreFoundation	0x0000000190ede4a4 0x0000000190e01000 + 906404</span><br><span class="line">25 CoreFoundation	0x0000000190edc0a4 0x0000000190e01000 + 897188</span><br><span class="line">26 CoreFoundation	0x0000000190e0a2b8 CFRunLoopRunSpecific + 444</span><br><span class="line">27 GraphicsServices	0x00000001928be198 GSEventRunModal + 180</span><br><span class="line">28 UIKit		0x0000000196e517fc 0x0000000196dd7000 + 501756</span><br><span class="line">29 UIKit		0x0000000196e4c534 UIApplicationMain + 208</span><br><span class="line">30 MyApp		0x00000001001b5804 0x00000001000ac000 + 1087492</span><br><span class="line">31 libdyld.dylib	0x000000018fded5b8 0x000000018fde9000 + 17848</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">dSYM UUID: 1852C4B7-8391-3615-ADA5-2EE58D11DDED</span><br><span class="line">CPU Type: armv7</span><br><span class="line">Slide Address: 0x00004000</span><br><span class="line">Binary Image: MyApp</span><br><span class="line">Base Address: 0x000ca000</span><br></pre></td></tr></table></figure>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><code class="hljs x86asm">Application received signal SIGSEGV<br>(null)<br>((<br><span class="hljs-number">0</span> CoreFoundation	<span class="hljs-number">0x0000000190f311b8</span> <span class="hljs-number">0x0000000190e01000</span> + <span class="hljs-number">1245624</span><br><span class="hljs-number">1</span> libobjc<span class="hljs-number">.</span>A<span class="hljs-number">.</span>dylib	<span class="hljs-number">0x000000018f96855c</span> objc_exception_throw + <span class="hljs-number">56</span><br><span class="hljs-number">2</span> CoreFoundation	<span class="hljs-number">0x0000000190f3108c</span> <span class="hljs-number">0x0000000190e01000</span> + <span class="hljs-number">1245324</span><br><span class="hljs-number">3</span> Foundation		<span class="hljs-number">0x00000001919e902c</span> <span class="hljs-number">0x000000019193b000</span> + <span class="hljs-number">712748</span><br><span class="hljs-number">4</span> UIKit			<span class="hljs-number">0x00000001976c5704</span> <span class="hljs-number">0x0000000196dd7000</span> + <span class="hljs-number">9365252</span><br><span class="hljs-number">5</span> UIKit			<span class="hljs-number">0x00000001976c5afc</span> <span class="hljs-number">0x0000000196dd7000</span> + <span class="hljs-number">9366268</span><br><span class="hljs-number">6</span> UIKit			<span class="hljs-number">0x00000001976c6f0c</span> <span class="hljs-number">0x0000000196dd7000</span> + <span class="hljs-number">9371404</span><br><span class="hljs-number">7</span> UIKit			<span class="hljs-number">0x00000001975f1c10</span> <span class="hljs-number">0x0000000196dd7000</span> + <span class="hljs-number">8498192</span><br><span class="hljs-number">8</span> UIKit			<span class="hljs-number">0x00000001975f1e28</span> <span class="hljs-number">0x0000000196dd7000</span> + <span class="hljs-number">8498728</span><br><span class="hljs-number">9</span> MyApp			<span class="hljs-number">0x0000000100223668</span> <span class="hljs-number">0x00000001000ac000</span> + <span class="hljs-number">1537640</span><br><span class="hljs-number">10</span> MyApp		<span class="hljs-number">0x00000001001e1588</span> <span class="hljs-number">0x00000001000ac000</span> + <span class="hljs-number">1267080</span><br><span class="hljs-number">11</span> UIKit		<span class="hljs-number">0x00000001973aef80</span> <span class="hljs-number">0x0000000196dd7000</span> + <span class="hljs-number">6127488</span><br><span class="hljs-number">12</span> UIKit		<span class="hljs-number">0x00000001973b2748</span> <span class="hljs-number">0x0000000196dd7000</span> + <span class="hljs-number">6141768</span><br><span class="hljs-number">13</span> UIKit		<span class="hljs-number">0x0000000196f7973c</span> <span class="hljs-number">0x0000000196dd7000</span> + <span class="hljs-number">1713980</span><br><span class="hljs-number">14</span> UIKit		<span class="hljs-number">0x0000000196e180f0</span> <span class="hljs-number">0x0000000196dd7000</span> + <span class="hljs-number">266480</span><br><span class="hljs-number">15</span> UIKit		<span class="hljs-number">0x00000001973a2680</span> <span class="hljs-number">0x0000000196dd7000</span> + <span class="hljs-number">6076032</span><br><span class="hljs-number">16</span> UIKit		<span class="hljs-number">0x00000001973a21e0</span> <span class="hljs-number">0x0000000196dd7000</span> + <span class="hljs-number">6074848</span><br><span class="hljs-number">17</span> UIKit		<span class="hljs-number">0x00000001973a149c</span> <span class="hljs-number">0x0000000196dd7000</span> + <span class="hljs-number">6071452</span><br><span class="hljs-number">18</span> UIKit		<span class="hljs-number">0x0000000196e1630c</span> <span class="hljs-number">0x0000000196dd7000</span> + <span class="hljs-number">258828</span><br><span class="hljs-number">19</span> UIKit		<span class="hljs-number">0x0000000196de6da0</span> <span class="hljs-number">0x0000000196dd7000</span> + <span class="hljs-number">64928</span><br><span class="hljs-number">20</span> MyApp		<span class="hljs-number">0x00000001005b01b4</span> __cxa_throw + <span class="hljs-number">2250128</span><br><span class="hljs-number">21</span> UIKit		<span class="hljs-number">0x00000001975d075c</span> <span class="hljs-number">0x0000000196dd7000</span> + <span class="hljs-number">8361820</span><br><span class="hljs-number">22</span> UIKit		<span class="hljs-number">0x00000001975ca130</span> <span class="hljs-number">0x0000000196dd7000</span> + <span class="hljs-number">8335664</span><br><span class="hljs-number">23</span> CoreFoundation	<span class="hljs-number">0x0000000190edeb5c</span> <span class="hljs-number">0x0000000190e01000</span> + <span class="hljs-number">908124</span><br><span class="hljs-number">24</span> CoreFoundation	<span class="hljs-number">0x0000000190ede4a4</span> <span class="hljs-number">0x0000000190e01000</span> + <span class="hljs-number">906404</span><br><span class="hljs-number">25</span> CoreFoundation	<span class="hljs-number">0x0000000190edc0a4</span> <span class="hljs-number">0x0000000190e01000</span> + <span class="hljs-number">897188</span><br><span class="hljs-number">26</span> CoreFoundation	<span class="hljs-number">0x0000000190e0a2b8</span> CFRunLoopRunSpecific + <span class="hljs-number">444</span><br><span class="hljs-number">27</span> GraphicsServices	<span class="hljs-number">0x00000001928be198</span> GSEventRunModal + <span class="hljs-number">180</span><br><span class="hljs-number">28</span> UIKit		<span class="hljs-number">0x0000000196e517fc</span> <span class="hljs-number">0x0000000196dd7000</span> + <span class="hljs-number">501756</span><br><span class="hljs-number">29</span> UIKit		<span class="hljs-number">0x0000000196e4c534</span> UIApplicationMain + <span class="hljs-number">208</span><br><span class="hljs-number">30</span> MyApp		<span class="hljs-number">0x00000001001b5804</span> <span class="hljs-number">0x00000001000ac000</span> + <span class="hljs-number">1087492</span><br><span class="hljs-number">31</span> libdyld<span class="hljs-number">.</span>dylib	<span class="hljs-number">0x000000018fded5b8</span> <span class="hljs-number">0x000000018fde9000</span> + <span class="hljs-number">17848</span><br>)<br><br>dSYM UUID: 1852C4B7-<span class="hljs-number">8391</span>-<span class="hljs-number">3615</span>-ADA5-2EE58D11DDED<br><span class="hljs-meta">CPU</span> Type: armv7<br>Slide Address: <span class="hljs-number">0x00004000</span><br>Binary Image: MyApp<br>Base Address: <span class="hljs-number">0x000ca000</span><br></code></pre></td></tr></table></figure>
 
 <ul>
 <li>shell脚本</li>
 </ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br></pre></td><td class="code"><pre><span class="line">DSYM=$1</span><br><span class="line">LOGFILE=$2</span><br><span class="line"></span><br><span class="line">if [ ! -n &quot;$DSYM&quot; ]; then</span><br><span class="line">  echo &quot;&gt;&gt;&gt;&gt; DSYM is missing!!!&quot;</span><br><span class="line">  exit</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line">if [ ! -n &quot;$LOGFILE&quot; ]; then</span><br><span class="line">  echo &quot;&gt;&gt;&gt;&gt; log file is missing!!!&quot;</span><br><span class="line">  exit</span><br><span class="line">fi </span><br><span class="line"></span><br><span class="line">echo &quot;&quot;</span><br><span class="line">echo &quot;/////////////////////&quot;</span><br><span class="line">echo &quot; Info get... &quot;</span><br><span class="line">echo &quot;/////////////////////&quot;</span><br><span class="line">echo &quot;&quot;</span><br><span class="line"></span><br><span class="line">DSYM_UUID_KEY=&quot;dSYM UUID: &quot;</span><br><span class="line">DSYM_CPUTYPE_KEY=&quot;CPU Type: &quot;</span><br><span class="line">DSYM_BINARY_KEY=&quot;Binary Image: &quot;</span><br><span class="line"></span><br><span class="line"># first loop get uuid, cpu, binary</span><br><span class="line">while read singleLine</span><br><span class="line">do</span><br><span class="line">	str=&quot;$singleLine&quot;</span><br><span class="line"></span><br><span class="line">	if [[ $str == $DSYM_UUID_KEY* ]]; then</span><br><span class="line">		UUID=$&#123;str#*&quot;$DSYM_UUID_KEY&quot;&#125;;</span><br><span class="line">		echo &quot;Log UUID: &quot;$UUID; </span><br><span class="line">	elif [[ $str == $DSYM_CPUTYPE_KEY* ]]; then</span><br><span class="line">		CPU=$&#123;str#*&quot;$DSYM_CPUTYPE_KEY&quot;&#125;;</span><br><span class="line">		echo &quot;Log CPU: &quot;$CPU; </span><br><span class="line">	elif [[ $str == $DSYM_BINARY_KEY* ]]; then</span><br><span class="line">		BINARY=$&#123;str#*&quot;$DSYM_BINARY_KEY&quot;&#125;;</span><br><span class="line">		echo &quot;Log BINARY: &quot;$BINARY; </span><br><span class="line">	fi</span><br><span class="line">	</span><br><span class="line">done &lt; $LOGFILE</span><br><span class="line"></span><br><span class="line">echo &quot;&quot;</span><br><span class="line">echo &quot;/////////////////////&quot;</span><br><span class="line">echo &quot; Info check... &quot;</span><br><span class="line">echo &quot;/////////////////////&quot;</span><br><span class="line">echo &quot;&quot;</span><br><span class="line"></span><br><span class="line">checkUUID=`dwarfdump --uuid $DSYM -arch $CPU`</span><br><span class="line">checkUUID=$&#123;checkUUID#*&quot;UUID: &quot;&#125;</span><br><span class="line">checkUUID=$&#123;checkUUID%&quot; ($CPU)&quot;*&#125;</span><br><span class="line">echo &quot;DSYM UUID: $checkUUID&quot;</span><br><span class="line"></span><br><span class="line">if [[ &quot;$UUID&quot; == &quot;$checkUUID&quot; ]]; then</span><br><span class="line">	echo &quot;UUID check passed.&quot;</span><br><span class="line">else</span><br><span class="line">	echo &quot;Warning!!!!!! UUID is not the same.. even though the code could be.&quot;</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line">echo &quot;&quot;</span><br><span class="line">echo &quot;/////////////////////&quot;</span><br><span class="line">echo &quot; Log trace... &quot;</span><br><span class="line">echo &quot;/////////////////////&quot;</span><br><span class="line">echo &quot;&quot;</span><br><span class="line"></span><br><span class="line">#final loop get trace</span><br><span class="line">while read singleLine</span><br><span class="line">do</span><br><span class="line">	str=&quot;$singleLine&quot;</span><br><span class="line"> 	if [[ $str == $DSYM_BINARY_KEY* ]]; then</span><br><span class="line">		#delete image</span><br><span class="line">		echo &quot;&quot;</span><br><span class="line">	else</span><br><span class="line"></span><br><span class="line">		str=$&#123;str#*&quot; &quot;&#125;</span><br><span class="line">		fuck=&quot; $BINARY&quot;</span><br><span class="line">		# fuck space - -</span><br><span class="line">		if [[ $str == *$BINARY* ]]; then</span><br><span class="line">			str=$&#123;str#*&quot;$BINARY &quot;&#125;;</span><br><span class="line">			str=$&#123;str%&quot; &quot;*&#125;</span><br><span class="line">			# echo &quot;adrress: &quot;$str; </span><br><span class="line">			echo `atos -o $DSYM/Contents/Resources/DWARF/$BINARY -arch $CPU $str`</span><br><span class="line">		fi</span><br><span class="line">	fi</span><br><span class="line">	</span><br><span class="line">done &lt; $LOGFILE</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br></pre></td><td class="code"><pre><code class="hljs bash">DSYM=<span class="hljs-variable">$1</span><br>LOGFILE=<span class="hljs-variable">$2</span><br><br><span class="hljs-keyword">if</span> [ ! -n <span class="hljs-string">&quot;<span class="hljs-variable">$DSYM</span>&quot;</span> ]; <span class="hljs-keyword">then</span><br>  <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;&gt;&gt;&gt;&gt; DSYM is missing!!!&quot;</span><br>  <span class="hljs-built_in">exit</span><br><span class="hljs-keyword">fi</span><br><br><span class="hljs-keyword">if</span> [ ! -n <span class="hljs-string">&quot;<span class="hljs-variable">$LOGFILE</span>&quot;</span> ]; <span class="hljs-keyword">then</span><br>  <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;&gt;&gt;&gt;&gt; log file is missing!!!&quot;</span><br>  <span class="hljs-built_in">exit</span><br><span class="hljs-keyword">fi</span> <br><br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;&quot;</span><br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;/////////////////////&quot;</span><br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot; Info get... &quot;</span><br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;/////////////////////&quot;</span><br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;&quot;</span><br><br>DSYM_UUID_KEY=<span class="hljs-string">&quot;dSYM UUID: &quot;</span><br>DSYM_CPUTYPE_KEY=<span class="hljs-string">&quot;CPU Type: &quot;</span><br>DSYM_BINARY_KEY=<span class="hljs-string">&quot;Binary Image: &quot;</span><br><br><span class="hljs-comment"># first loop get uuid, cpu, binary</span><br><span class="hljs-keyword">while</span> <span class="hljs-built_in">read</span> singleLine<br><span class="hljs-keyword">do</span><br>	str=<span class="hljs-string">&quot;<span class="hljs-variable">$singleLine</span>&quot;</span><br><br>	<span class="hljs-keyword">if</span> [[ <span class="hljs-variable">$str</span> == <span class="hljs-variable">$DSYM_UUID_KEY</span>* ]]; <span class="hljs-keyword">then</span><br>		UUID=<span class="hljs-variable">$&#123;str#*&quot;$DSYM_UUID_KEY&quot;&#125;</span>;<br>		<span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Log UUID: &quot;</span><span class="hljs-variable">$UUID</span>; <br>	<span class="hljs-keyword">elif</span> [[ <span class="hljs-variable">$str</span> == <span class="hljs-variable">$DSYM_CPUTYPE_KEY</span>* ]]; <span class="hljs-keyword">then</span><br>		CPU=<span class="hljs-variable">$&#123;str#*&quot;$DSYM_CPUTYPE_KEY&quot;&#125;</span>;<br>		<span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Log CPU: &quot;</span><span class="hljs-variable">$CPU</span>; <br>	<span class="hljs-keyword">elif</span> [[ <span class="hljs-variable">$str</span> == <span class="hljs-variable">$DSYM_BINARY_KEY</span>* ]]; <span class="hljs-keyword">then</span><br>		BINARY=<span class="hljs-variable">$&#123;str#*&quot;$DSYM_BINARY_KEY&quot;&#125;</span>;<br>		<span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Log BINARY: &quot;</span><span class="hljs-variable">$BINARY</span>; <br>	<span class="hljs-keyword">fi</span><br>	<br><span class="hljs-keyword">done</span> &lt; <span class="hljs-variable">$LOGFILE</span><br><br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;&quot;</span><br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;/////////////////////&quot;</span><br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot; Info check... &quot;</span><br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;/////////////////////&quot;</span><br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;&quot;</span><br><br>checkUUID=`dwarfdump --uuid <span class="hljs-variable">$DSYM</span> -<span class="hljs-built_in">arch</span> <span class="hljs-variable">$CPU</span>`<br>checkUUID=<span class="hljs-variable">$&#123;checkUUID#*&quot;UUID: &quot;&#125;</span><br>checkUUID=<span class="hljs-variable">$&#123;checkUUID%&quot; ($CPU)&quot;*&#125;</span><br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;DSYM UUID: <span class="hljs-variable">$checkUUID</span>&quot;</span><br><br><span class="hljs-keyword">if</span> [[ <span class="hljs-string">&quot;<span class="hljs-variable">$UUID</span>&quot;</span> == <span class="hljs-string">&quot;<span class="hljs-variable">$checkUUID</span>&quot;</span> ]]; <span class="hljs-keyword">then</span><br>	<span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;UUID check passed.&quot;</span><br><span class="hljs-keyword">else</span><br>	<span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Warning!!!!!! UUID is not the same.. even though the code could be.&quot;</span><br><span class="hljs-keyword">fi</span><br><br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;&quot;</span><br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;/////////////////////&quot;</span><br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot; Log trace... &quot;</span><br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;/////////////////////&quot;</span><br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;&quot;</span><br><br><span class="hljs-comment">#final loop get trace</span><br><span class="hljs-keyword">while</span> <span class="hljs-built_in">read</span> singleLine<br><span class="hljs-keyword">do</span><br>	str=<span class="hljs-string">&quot;<span class="hljs-variable">$singleLine</span>&quot;</span><br> 	<span class="hljs-keyword">if</span> [[ <span class="hljs-variable">$str</span> == <span class="hljs-variable">$DSYM_BINARY_KEY</span>* ]]; <span class="hljs-keyword">then</span><br>		<span class="hljs-comment">#delete image</span><br>		<span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;&quot;</span><br>	<span class="hljs-keyword">else</span><br><br>		str=<span class="hljs-variable">$&#123;str#*&quot; &quot;&#125;</span><br>		fuck=<span class="hljs-string">&quot; <span class="hljs-variable">$BINARY</span>&quot;</span><br>		<span class="hljs-comment"># fuck space - -</span><br>		<span class="hljs-keyword">if</span> [[ <span class="hljs-variable">$str</span> == *<span class="hljs-variable">$BINARY</span>* ]]; <span class="hljs-keyword">then</span><br>			str=<span class="hljs-variable">$&#123;str#*&quot;$BINARY &quot;&#125;</span>;<br>			str=<span class="hljs-variable">$&#123;str%&quot; &quot;*&#125;</span><br>			<span class="hljs-comment"># echo &quot;adrress: &quot;$str; </span><br>			<span class="hljs-built_in">echo</span> `atos -o <span class="hljs-variable">$DSYM</span>/Contents/Resources/DWARF/<span class="hljs-variable">$BINARY</span> -<span class="hljs-built_in">arch</span> <span class="hljs-variable">$CPU</span> <span class="hljs-variable">$str</span>`<br>		<span class="hljs-keyword">fi</span><br>	<span class="hljs-keyword">fi</span><br>	<br><span class="hljs-keyword">done</span> &lt; <span class="hljs-variable">$LOGFILE</span><br></code></pre></td></tr></table></figure>
 
 <p>执行脚本:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./trace_dsyms.sh Release.dSYM/ crash</span><br></pre></td></tr></table></figure>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">.<span class="hljs-regexp">/trace_dsyms.sh Release.dSYM/</span> crash<br></code></pre></td></tr></table></figure>
 
 <hr>
 <h3 id="symbolicatecrash"><a href="#symbolicatecrash" class="headerlink" title="symbolicatecrash"></a>symbolicatecrash</h3><p><strong>symbolicatecrash</strong> 是Xcode自带的一个分析工具，可以通过机器上的崩溃日志和应用的.dSYM文件定位发生崩溃的位置，把crash日志中的地址替换成代码相应位置。<br><br/></p>
@@ -326,30 +470,30 @@
 <ul>
 <li>终端中执行下面命令：</li>
 </ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find /Applications/Xcode.app -name symbolicatecrash -type f</span><br></pre></td></tr></table></figure>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs gradle"><span class="hljs-keyword">find</span> <span class="hljs-regexp">/Applications/</span>Xcode.app -name symbolicatecrash -type f<br></code></pre></td></tr></table></figure>
 
 <ul>
 <li>稍等就会输出symbolicatecrash路径</li>
 </ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/Applications/Xcode.app/Contents/SharedFrameworks/DVTFoundation.framework/Versions/A/Resources/symbolicatecrash</span><br></pre></td></tr></table></figure>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-regexp">/Applications/</span>Xcode.app<span class="hljs-regexp">/Contents/</span>SharedFrameworks<span class="hljs-regexp">/DVTFoundation.framework/</span>Versions<span class="hljs-regexp">/A/</span>Resources/symbolicatecrash<br></code></pre></td></tr></table></figure>
 
 <ul>
 <li>拷贝symbolicatecrash到crash目录中，与上面俩文件放到一起。</li>
 </ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cp /Applications/Xcode.app/Contents/SharedFrameworks/DVTFoundation.framework/Versions/A/Resources/symbolicatecrash /Users/xxx/Desktop/crash</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs awk">cp <span class="hljs-regexp">/Applications/</span>Xcode.app<span class="hljs-regexp">/Contents/</span>SharedFrameworks<span class="hljs-regexp">/DVTFoundation.framework/</span>Versions<span class="hljs-regexp">/A/</span>Resources<span class="hljs-regexp">/symbolicatecrash /</span>Users<span class="hljs-regexp">/xxx/</span>Desktop/crash<br><br></code></pre></td></tr></table></figure>
 
 <p>3、执行symbolicatecrash</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd /Users/xxx/Desktop/crash</span><br></pre></td></tr></table></figure>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">cd <span class="hljs-regexp">/Users/</span>xxx<span class="hljs-regexp">/Desktop/</span>crash<br></code></pre></td></tr></table></figure>
 
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./symbolicatecrash /Users/xxx/Desktop/crash/xxx.crash /Users/xxx/Desktop/crash/xxx.app.dSYM &gt; new_symbol.crash</span><br></pre></td></tr></table></figure>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">.<span class="hljs-regexp">/symbolicatecrash /</span>Users<span class="hljs-regexp">/xxx/</span>Desktop<span class="hljs-regexp">/crash/</span>xxx.crash <span class="hljs-regexp">/Users/</span>xxx<span class="hljs-regexp">/Desktop/</span>crash/xxx.app.dSYM &gt; new_symbol.crash<br></code></pre></td></tr></table></figure>
 <ul>
 <li>这时候终端有可能会出现：</li>
 </ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Error: &quot;DEVELOPER_DIR&quot; is not defined at ./symbolicatecrash line 69.</span><br></pre></td></tr></table></figure>
+<figure class="highlight subunit"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs subunit"><span class="hljs-keyword">Error: </span>&quot;DEVELOPER_DIR&quot; is not defined at ./symbolicatecrash line 69.<br></code></pre></td></tr></table></figure>
 <ul>
 <li>输入命令：</li>
 </ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export DEVELOPER_DIR=&quot;/Applications/XCode.app/Contents/Developer&quot;</span><br></pre></td></tr></table></figure>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros"><span class="hljs-built_in">export</span> <span class="hljs-attribute">DEVELOPER_DIR</span>=<span class="hljs-string">&quot;/Applications/XCode.app/Contents/Developer&quot;</span><br></code></pre></td></tr></table></figure>
 
 <ul>
 <li><p>再执行，这时候终端将会进行处理了。</p>
@@ -362,217 +506,346 @@
 <p>#<a target="_blank" rel="noopener" href="http://foggry.com/blog/2015/07/27/ru-he-shou-dong-jie-xi-crashlog/">©王中周-手动解析CrashLog之—-方法篇</a></p>
 <p>#<a target="_blank" rel="noopener" href="http://foggry.com/blog/2015/08/10/ru-he-shou-dong-jie-xi-crashlogzhi-yuan-li-pian/">©王中周-手动解析CrashLog之—-原理篇</a></p>
 <p>#<a target="_blank" rel="noopener" href="https://ctinusdev.github.io/2017/08/20/Mach-OBasis_ASLR/">©ctinusdev-Mach-O文件介绍之ASLR</a></p>
-</section>
-    <!-- Tags START -->
-    
-      <div class="tags">
-        <span>Tags:</span>
-        
-  <a href="/tags#异常" >
-    <span class="tag-code">异常</span>
-  </a>
 
-      </div>
-    
-    <!-- Tags END -->
-    <!-- NAV START -->
-    
-  <div class="nav-container">
-    <!-- reverse left and right to put prev and next in a more logic postition -->
-    
-      <a class="nav-left" href="/2018/06/22/autolayout.html">
-        <span class="nav-arrow">← </span>
-        
-          约束与布局
-        
-      </a>
-    
-    
-      <a class="nav-right" href="/2018/07/23/fast-github.html">
-        
-          Github 访问慢的解决方案
-        
-        <span class="nav-arrow"> →</span>
-      </a>
-    
-  </div>
-
-    <!-- NAV END -->
-    <!-- 打赏 START -->
-    
-      <div class="money-like">
-        <div class="reward-btn">
-          赏
-          <span class="money-code">
-            <span class="alipay-code">
-              <div class="code-image"></div>
-              <b>使用支付宝打赏</b>
-            </span>
-            <span class="wechat-code">
-              <div class="code-image"></div>
-              <b>使用微信打赏</b>
-            </span>
-          </span>
-        </div>
-        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
-      </div>
-    
-    <!-- 打赏 END -->
-    <!-- 二维码 START -->
-    
-    <!-- 二维码 END -->
-    
-      <!-- No Comment -->
-    
-  </article>
-  <!-- Article END -->
-  <!-- Catalog START -->
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
   
-    <aside class="catalog-container">
-  <div class="toc-main">
-    <strong class="toc-title">Catalog</strong>
-    
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E4%B8%80%E3%80%81dSYM"><span class="toc-nav-text">一、dSYM</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#1-1-dSYM"><span class="toc-nav-text">1.1.dSYM</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#1-2-DWARF"><span class="toc-nav-text">1.2.DWARF</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#1-3-%E5%B4%A9%E6%BA%83%E8%A7%A3%E6%9E%90%E8%BF%87%E7%A8%8B"><span class="toc-nav-text">1.3.崩溃解析过程</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E4%BA%8C%E3%80%81-crash-%E6%97%A5%E5%BF%97%E6%96%87%E4%BB%B6"><span class="toc-nav-text">二、**.crash 日志文件**</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-1-%E5%8F%82%E6%95%B0"><span class="toc-nav-text">2.1.参数</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-2-stack-address"><span class="toc-nav-text">2.2.stack address</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-3-symbol-address"><span class="toc-nav-text">2.3.symbol address</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E4%B8%89%E3%80%81%E8%A7%A3%E6%9E%90%E6%96%B9%E6%A1%88"><span class="toc-nav-text">三、解析方案</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#dwarfdump"><span class="toc-nav-text">dwarfdump</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#atos"><span class="toc-nav-text">atos</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E6%97%A0%E9%9C%80%E8%AE%A1%E7%AE%97%E5%B4%A9%E6%BA%83%E5%9C%B0%E5%9D%80"><span class="toc-nav-text">无需计算崩溃地址</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#shell%E8%84%9A%E6%9C%AC"><span class="toc-nav-text">shell脚本</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#symbolicatecrash"><span class="toc-nav-text">symbolicatecrash</span></a></li></ol></li></ol>
-    
-  </div>
-</aside>
   
-  <!-- Catalog END -->
-</main>
-
-<script>
-  (function () {
-    var url = 'http://yoursite.com/2018/07/11/dsym.html';
-    var banner = ''
-    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
-      $('#article-banner').css({
-        'background-image': 'url(' + banner + ')'
-      })
-    } else {
-      $('#article-banner').geopattern(url)
-    }
-    $('.header').removeClass('fixed-header')
-
-     // error image
-    $(".markdown-content img").on('error', function() {
-      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
-      $(this).css({
-        'cursor': 'default'
-      })
-    })
-
-    // zoom image
-    $(".markdown-content img").on('click', function() {
-      var src = $(this).attr('src')
-      if (src !== 'http://file.muyutech.com/error-img.png') {
-        var imageW = $(this).width()
-        var imageH = $(this).height()
-        
-        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
-        zoom = zoom < 1 ? 1 : zoom
-        zoom = zoom > 2 ? 2 : zoom
-        var transY = (($(window).height() - imageH) / 2).toFixed(2)
-
-        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
-        $('.image-view-wrap').addClass('wrap-active')
-        $('.image-view-wrap img').css({
-          'width': `${imageW}`,
-          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
-        })
-        $('html').css('overflow', 'hidden')
-
-        $('.image-view-wrap').on('click', function() {
-          $(this).remove()
-          $('html').attr('style', '')
-        })
-      }
-    })
-
-    // qrcode
-    var qr = new QRious({
-      element: document.getElementById('share-qrcode'),
-      value: document.location.href
-    });
-
-    // gitment
-    var gitmentConfig = "";
-    if (gitmentConfig !== 'undefined') {
-      var gitment = new Gitment({
-        id: "结合dSYM文件分析crash日志",
-        owner: "",
-        repo: "",
-        oauth: {
-          client_id: "",
-          client_secret: ""
-        },
-        theme: {
-          render(state, instance) {
-            const container = document.createElement('div')
-            container.lang = "en-US"
-            container.className = 'gitment-container gitment-root-container'
-            container.appendChild(instance.renderHeader(state, instance))
-            container.appendChild(instance.renderEditor(state, instance))
-            container.appendChild(instance.renderComments(state, instance))
-            container.appendChild(instance.renderFooter(state, instance))
-            return container;
-          }
-        }
-      })
-      gitment.render(document.getElementById('comments'))
-    }
-  })();
-</script>
-
-    <div class="scroll-top">
-  <span class="arrow-icon"></span>
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%BC%82%E5%B8%B8/">#异常</a>
+      
+    </div>
+  
 </div>
-    <footer class="app-footer">
-  <p class="copyright">
-    &copy; 2022 | <a href="https://github.com/davidlii" target="_blank">Davidli</a>
-    <br>
-    <a href="https://hexo.io" target="_blank">Hexo</a> | Theme-<a target="_blank" rel="noopener" href="https://github.com/yanm1ng">yanm1ng</a>
-  </p>
-</footer>
 
-<script>
-  function async(u, c) {
-    var d = document, t = 'script',
-      o = d.createElement(t),
-      s = d.getElementsByTagName(t)[0];
-    o.src = u;
-    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
-    s.parentNode.insertBefore(o, s);
-  }
-</script>
-<script>
-  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
-    FastClick.attach(document.body);
-  })
-</script>
 
-<script>
-  var hasLine = 'true';
-  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
-    $('figure pre').each(function(i, block) {
-      var figure = $(this).parents('figure');
-      if (hasLine === 'false') {
-        figure.find('.gutter').hide();
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>结合dSYM文件分析crash日志</div>
+      <div>http://yoursite.com/2018/07/11/dsym.html</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>July 11, 2018</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>Licensed under</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2018/07/23/fast-github.html" title="Github 访问慢的解决方案">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Github 访问慢的解决方案</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2018/06/22/autolayout.html" title="约束与布局">
+                        <span class="hidden-mobile">约束与布局</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;Table of Contents</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://github.com/davidlii" target="_blank" rel="nofollow noopener"><span>Davidlii</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        Views: 
+        <span id="busuanzi_value_site_pv"></span>
+        
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        Visitors: 
+        <span id="busuanzi_value_site_uv"></span>
+        
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
       }
-      var lang = figure.attr('class').split(' ')[1] || 'code';
-      var codeHtml = $(this).html();
-      var codeTag = document.createElement('code');
-      codeTag.className = lang;
-      codeTag.innerHTML = codeHtml;
-      $(this).attr('class', '').empty().html(codeTag);
-      figure.attr('data-lang', lang.toUpperCase());
-      hljs.highlightBlock(block);
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
     });
-  })
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
 </script>
-<!-- Baidu Tongji -->
 
 
-<script src="/js/script.js"></script>
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
 
-  </body>
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
 </html>

@@ -1,429 +1,777 @@
+
+
 <!DOCTYPE html>
-<html>
-  <head>
-  <meta http-equiv="content-type" content="text/html; charset=utf-8">
-  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
-  <meta name="description" content="This is Davidli&#39;s blog ~">
-  <meta name="keyword" content="hexo-theme, vuejs">
-  
-    <link rel="shortcut icon" type="image/ico" href="/image/logo.png"/> 
-  
-  <title>
-    
-      Davidli
-    
-  </title>
-  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
-  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
-  
-<link rel="stylesheet" href="/css/style.css">
-<link rel="stylesheet" href="/css/plugins/gitment.css">
-
-  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
-  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
-  
-<script src="/js/qrious.js"></script>
-<script src="/js/gitment.js"></script>
-
-  
-  
-    <!-- MathJax support START -->
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      });
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      });
-    </script>
-    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <!-- MathJax support END -->
-  
+<html lang="zh-Hans" data-default-color-scheme=auto>
 
 
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="Davidli">
+  
+    <meta name="description" content="This is Davidli&#39;s blog ~">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Davidli">
+<meta property="og:url" content="http://yoursite.com/page/4/index.html">
+<meta property="og:site_name" content="Davidli">
+<meta property="og:description" content="This is Davidli&#39;s blog ~">
+<meta property="og:locale">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Davidli">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>Davidli</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"yoursite.com","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
 <meta name="generator" content="Hexo 6.2.0"></head>
-<div class="wechat-share">
-  <img src="/css/images/logo.png" />
-</div>
 
-  <body>
-    <header class="header fixed-header">
-  <div class="header-container">
-    <a class="home-link" href="/">
-      <div class="logo"></div>
-      <span>Davidli</span>
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 100vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Davidli</strong>
     </a>
-    <ul class="right-list">
-      
-        <li class="list-item">
-          
-            <a href="/" class="item-link active">Davidli</a>
-          
-        </li>
-      
-        <li class="list-item">
-          
-            <a href="/archives/" class="item-link">归档</a>
-          
-        </li>
-      
-        <li class="list-item">
-          
-            <a href="/tags/" class="item-link">标签</a>
-          
-        </li>
-      
-        <li class="list-item">
-          
-            <a href="/about/" class="item-link">关于</a>
-          
-        </li>
-      
-    </ul>
-    <div class="menu">
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-    </div>
-    <div class="menu-mask">
-      <ul class="menu-list">
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
         
-          <li class="menu-item">
-            
-              <a href="/" class="menu-link mobile-active">Davidli</a>
-            
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                Categories
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                Tags
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
           </li>
+          
         
-          <li class="menu-item">
-            
-              <a href="/archives/" class="menu-link">归档</a>
-            
-          </li>
         
-          <li class="menu-item">
-            
-              <a href="/tags/" class="menu-link">标签</a>
-            
-          </li>
-        
-          <li class="menu-item">
-            
-              <a href="/about/" class="menu-link">关于</a>
-            
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
           </li>
         
       </ul>
     </div>
   </div>
-</header>
+</nav>
 
-    <main class="app-body">
   
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2018/08/18/swift-error.html">Swift中Error异常</a>
-      </h2>
-      <p class="article-date">August 18, 2018</p>
-      
-        
-  <a href="/tags#Swift" >
-    <span class="tag-code">Swift</span>
-  </a>
 
-      
-      <div class="article-summary">
-        
-          1.异常的表示Swift中用实现了Error协议的类型表示异常，通常用枚举来表示一组错误信息。
-12345enum VendingMachineError: Error &#123;    case invalidSelection    case insufficientFunds(coi ...
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="好记性不如烂笔头"></span>
+          
+        </div>
+
         
       </div>
-      <a class="more" href="/2018/08/18/swift-error.html">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2018/08/16/swift-as.html">Swift-is/as类型检查</a>
-      </h2>
-      <p class="article-date">August 16, 2018</p>
-      
-        
-  <a href="/tags#Swift" >
-    <span class="tag-code">Swift</span>
-  </a>
 
       
-      <div class="article-summary">
+        <div class="scroll-down-bar">
+          <i class="iconfont icon-arrowdown"></i>
+        </div>
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      <div class="container nopadding-x-md">
+        <div id="board"
+          style="margin-top: 0">
+          
+          <div class="container">
+            <div class="row">
+              <div class="col-12 col-md-10 m-auto">
+                
+
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
         
-          一、前言作为面向对象的语言，OC 与 Swift 都具有多态性，有时会大量使用类簇，因此描述对象的信息成为了常见需求。
+        <a href="/2018/08/18/swift-error.html" target="_blank">
+          Swift中Error异常
+        </a>
+      </h1>
 
-判断对象在继承树上的位置；
-判断对象是否遵守了某个协议；
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2018/08/18/swift-error.html" target="_blank">
+        <div>
+          1.异常的表示Swift中用实现了Error协议的类型表示异常，通常用枚举来表示一组错误信息。 12345enum VendingMachineError: Error &amp;#123;    case invalidSelection    case insufficientFunds(coinsNeeded: Int)    case outOfStock&amp;#125;  2.抛出异常在方法的参数后
+        </div>
+      </a>
 
-这些都是对象内省能力的一部分，本文将尝试对 OC 和 Swift 中这些场景的实现做一次整理。
-二、OC版NS ...
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2018-08-18 18:45" pubdate>
+              2018-08-18
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Swift/">#Swift</a>
+            
+          </div>
         
       </div>
-      <a class="more" href="/2018/08/16/swift-as.html">Read more</a>
     </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2018/08/15/swift-unwrap.html">Swift可选拆包</a>
-      </h2>
-      <p class="article-date">August 15, 2018</p>
-      
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
         
-  <a href="/tags#Swift" >
-    <span class="tag-code">Swift</span>
-  </a>
+        <a href="/2018/08/16/swift-as.html" target="_blank">
+          Swift-is/as类型检查
+        </a>
+      </h1>
 
       
-      <div class="article-summary">
+      <a class="index-excerpt index-excerpt__noimg" href="/2018/08/16/swift-as.html" target="_blank">
+        <div>
+          一、前言作为面向对象的语言，OC 与 Swift 都具有多态性，有时会大量使用类簇，因此描述对象的信息成为了常见需求。  判断对象在继承树上的位置； 判断对象是否遵守了某个协议；  这些都是对象内省能力的一部分，本文将尝试对 OC 和 Swift 中这些场景的实现做一次整理。 二、OC版NSObject协议中提供了诸多内省方法，本文主要讨论以下三个： 12345678&#x2F;&#x2F;NSObject.h@pr
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
         
-          前言
-You use optionals in situations where a value may be absent. An optional represents two possibilities: Either there is a value, and you can unw ...
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2018-08-16 20:16" pubdate>
+              2018-08-16
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Swift/">#Swift</a>
+            
+          </div>
         
       </div>
-      <a class="more" href="/2018/08/15/swift-unwrap.html">Read more</a>
     </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2018/07/23/fast-github.html">Github 访问慢的解决方案</a>
-      </h2>
-      <p class="article-date">July 23, 2018</p>
-      
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
         
-  <a href="/tags#FQA" >
-    <span class="tag-code">FQA</span>
-  </a>
+        <a href="/2018/08/15/swift-unwrap.html" target="_blank">
+          Swift可选拆包
+        </a>
+      </h1>
 
       
-      <div class="article-summary">
+      <a class="index-excerpt index-excerpt__noimg" href="/2018/08/15/swift-unwrap.html" target="_blank">
+        <div>
+          前言 You use optionals in situations where a value may be absent. An optional represents two possibilities: Either there is a value, and you can unwrap the optional to access that value, or there isn’t
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
         
-          Github为国外网站，所以域名解析时速度慢的。。解决此问题有俩方法：
-
-挂VPN
-修改hosts配置
-
-本文讲的是第二种，修改hosts文件，具体步骤如下：
-#1、打开host文件
-直接通过Finder
-
-快捷键 command + shift + G，输入“&#x2F;etc”，回车即可 ...
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2018-08-15 20:16" pubdate>
+              2018-08-15
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Swift/">#Swift</a>
+            
+          </div>
         
       </div>
-      <a class="more" href="/2018/07/23/fast-github.html">Read more</a>
     </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2018/07/11/dsym.html">结合dSYM文件分析crash日志</a>
-      </h2>
-      <p class="article-date">July 11, 2018</p>
-      
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
         
-  <a href="/tags#异常" >
-    <span class="tag-code">异常</span>
-  </a>
+        <a href="/2018/07/23/fast-github.html" target="_blank">
+          Github 访问慢的解决方案
+        </a>
+      </h1>
 
       
-      <div class="article-summary">
+      <a class="index-excerpt index-excerpt__noimg" href="/2018/07/23/fast-github.html" target="_blank">
+        <div>
+          Github为国外网站，所以域名解析时速度慢的。。解决此问题有俩方法：  挂VPN 修改hosts配置  本文讲的是第二种，修改hosts文件，具体步骤如下： #1、打开host文件 直接通过Finder  快捷键 command + shift + G，输入“&#x2F;etc”，回车即可进入etc文件夹，找到hosts文件，直接通过系统的“文本编辑”打开即可。  使用终端打开  1sudo v
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
         
-          一、dSYM1.1.dSYM调试符号表，是苹果为调试和定位问题而使用的一种调试文件。调试符号信息在构建应用时就保存在Mach-O文件中了，而.dSYM就是从Mach-O文件中抽取调试信息而得到的一个单独的文件目录。它使用的是 DWARF 结构，在 .xcarchive 目录中其层次结构如下： ...
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2018-07-23 19:03" pubdate>
+              2018-07-23
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/FQA/">#FQA</a>
+            
+          </div>
         
       </div>
-      <a class="more" href="/2018/07/11/dsym.html">Read more</a>
     </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2018/06/22/autolayout.html">约束与布局</a>
-      </h2>
-      <p class="article-date">June 22, 2018</p>
-      
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
         
-  <a href="/tags#FQA" >
-    <span class="tag-code">FQA</span>
-  </a>
+        <a href="/2018/07/11/dsym.html" target="_blank">
+          结合dSYM文件分析crash日志
+        </a>
+      </h1>
 
       
-      <div class="article-summary">
+      <a class="index-excerpt index-excerpt__noimg" href="/2018/07/11/dsym.html" target="_blank">
+        <div>
+          一、dSYM1.1.dSYM调试符号表，是苹果为调试和定位问题而使用的一种调试文件。调试符号信息在构建应用时就保存在Mach-O文件中了，而.dSYM就是从Mach-O文件中抽取调试信息而得到的一个单独的文件目录。它使用的是 DWARF 结构，在 .xcarchive 目录中其层次结构如下： 123456.xcarchive--dSYMs  |--Your.app.dSYM    |--Conte
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
         
-          #1.AutoresizingAutoresizing是苹果早期的界面适配方案，那时苹果的设备还不算多，iPhone 只有 4s 及其之前的产品，都是3.5英寸屏幕；iPad 也只有 iPad1、iPad2，都是9.7英寸。并且当时 iOS 上的应用很少需要适配横屏，所以Autoresizi ...
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2018-07-11 21:00" pubdate>
+              2018-07-11
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E5%BC%82%E5%B8%B8/">#异常</a>
+            
+          </div>
         
       </div>
-      <a class="more" href="/2018/06/22/autolayout.html">Read more</a>
     </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2018/06/15/str-modifier.html">字符串属性的修饰符</a>
-      </h2>
-      <p class="article-date">June 15, 2018</p>
-      
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
         
-  <a href="/tags#内存管理" >
-    <span class="tag-code">内存管理</span>
-  </a>
+        <a href="/2018/06/22/autolayout.html" target="_blank">
+          约束与布局
+        </a>
+      </h1>
 
       
-      <div class="article-summary">
+      <a class="index-excerpt index-excerpt__noimg" href="/2018/06/22/autolayout.html" target="_blank">
+        <div>
+          #1.AutoresizingAutoresizing是苹果早期的界面适配方案，那时苹果的设备还不算多，iPhone 只有 4s 及其之前的产品，都是3.5英寸屏幕；iPad 也只有 iPad1、iPad2，都是9.7英寸。并且当时 iOS 上的应用很少需要适配横屏，所以Autoresizing能够满足绝大部分的适配需求。 1.1.xib或者故事板(iOS5)中的6条线：  1.2.代码中的6个枚
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
         
-          日常实践中，我们经常要声明一些字符串属性，包括NSString和NSMutableString，而字符串最常用的修饰符就要数strong和copy了。这两个修饰符对字符串有什么影响呢？
-1.不可变源字符串#示例1：用 NSString 赋值
-1234567891011121314151617 ...
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2018-06-22 21:39" pubdate>
+              2018-06-22
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/FQA/">#FQA</a>
+            
+          </div>
         
       </div>
-      <a class="more" href="/2018/06/15/str-modifier.html">Read more</a>
     </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2018/06/14/copy.html">拷贝相关知识点</a>
-      </h2>
-      <p class="article-date">June 14, 2018</p>
-      
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
         
-  <a href="/tags#FQA" >
-    <span class="tag-code">FQA</span>
-  </a>
+        <a href="/2018/06/15/str-modifier.html" target="_blank">
+          字符串属性的修饰符
+        </a>
+      </h1>
 
       
-      <div class="article-summary">
-        
-          1.拷贝-初探文档摘要：
+      <a class="index-excerpt index-excerpt__noimg" href="/2018/06/15/str-modifier.html" target="_blank">
+        <div>
+          日常实践中，我们经常要声明一些字符串属性，包括NSString和NSMutableString，而字符串最常用的修饰符就要数strong和copy了。这两个修饰符对字符串有什么影响呢？ 1.不可变源字符串#示例1：用 NSString 赋值 123456789101112131415161718192021222324252627@interface AppDelegate()@property
+        </div>
+      </a>
 
-The exact meaning of “copy” can vary from class to class, but a copy must be a functionally independent object with values identical ...
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2018-06-15 01:13" pubdate>
+              2018-06-15
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">#内存管理</a>
+            
+          </div>
         
       </div>
-      <a class="more" href="/2018/06/14/copy.html">Read more</a>
     </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2018/04/13/kvo.html">KVO 的底层实现</a>
-      </h2>
-      <p class="article-date">April 13, 2018</p>
-      
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
         
-  <a href="/tags#机制" >
-    <span class="tag-code">机制</span>
-  </a>
+        <a href="/2018/06/14/copy.html" target="_blank">
+          拷贝相关知识点
+        </a>
+      </h1>
 
       
-      <div class="article-summary">
-        
-          #是啥?KVO 是通过一个 key 来找到某个属性并监听其值的改变。其实这也是一种典型的观察者模式。
-#咋用?
-添加观察者
-在观察者中实现监听方法：-observeValueForKeyPath: ofObject: change: context:。
-移除观察者
+      <a class="index-excerpt index-excerpt__noimg" href="/2018/06/14/copy.html" target="_blank">
+        <div>
+          1.拷贝-初探文档摘要：  The exact meaning of “copy” can vary from class to class, but a copy must be a functionally independent object with values identical to the original at the time the copy was made.  上面的摘要
+        </div>
+      </a>
 
-#示例：
-1234567 ...
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2018-06-14 21:12" pubdate>
+              2018-06-14
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/FQA/">#FQA</a>
+            
+          </div>
         
       </div>
-      <a class="more" href="/2018/04/13/kvo.html">Read more</a>
     </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2018/04/12/kvc.html">KVC 的底层实现</a>
-      </h2>
-      <p class="article-date">April 12, 2018</p>
-      
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
         
-  <a href="/tags#机制" >
-    <span class="tag-code">机制</span>
-  </a>
+        <a href="/2018/04/13/kvo.html" target="_blank">
+          KVO 的底层实现
+        </a>
+      </h1>
 
       
-      <div class="article-summary">
+      <a class="index-excerpt index-excerpt__noimg" href="/2018/04/13/kvo.html" target="_blank">
+        <div>
+          #是啥?KVO 是通过一个 key 来找到某个属性并监听其值的改变。其实这也是一种典型的观察者模式。 #咋用? 添加观察者 在观察者中实现监听方法：-observeValueForKeyPath: ofObject: change: context:。 移除观察者  #示例： 1234567891011121314151617&#x2F;&#x2F;Person.h#import &quot;Model.h&amp;quot
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
         
-          1.KVC是啥?键值编码（key value coding）是一种可以通过字符串的名字（key）来访问类属性的机制。区别于通过调用Setter、Getter来访问属性的方法。
-2.啥用?通常我们要访问一个类中属性的值时，可以使用点语法（如 people.name）。但当你想访问私有属性或成员 ...
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2018-04-13 22:01" pubdate>
+              2018-04-13
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%9C%BA%E5%88%B6/">#机制</a>
+            
+          </div>
         
       </div>
-      <a class="more" href="/2018/04/12/kvc.html">Read more</a>
     </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2018/04/12/kvc.html" target="_blank">
+          KVC 的底层实现
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2018/04/12/kvc.html" target="_blank">
+        <div>
+          1.KVC是啥?键值编码（key value coding）是一种可以通过字符串的名字（key）来访问类属性的机制。区别于通过调用Setter、Getter来访问属性的方法。 2.啥用?通常我们要访问一个类中属性的值时，可以使用点语法（如 people.name）。但当你想访问私有属性或成员变量时，点语法就没用了。而有了 KVC 问题就迎刃而解。  常用方法?  NSKeyValueCoding.
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2018-04-12 23:17" pubdate>
+              2018-04-12
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%9C%BA%E5%88%B6/">#机制</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+
+
+  <nav aria-label="navigation">
+    <span class="pagination" id="pagination">
+      <a class="extend prev" rel="prev" href="/page/3/#board"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/#board">2</a><a class="page-number" href="/page/3/#board">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/#board">5</a><a class="page-number" href="/page/6/#board">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/#board">8</a><a class="extend next" rel="next" href="/page/5/#board"><i class="iconfont icon-arrowright"></i></a>
+    </span>
+  </nav>
+
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://github.com/davidlii" target="_blank" rel="nofollow noopener"><span>Davidlii</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
   
 
   
-    <div class="guide-pager">
-  
-    <a href="/page/3/"><span class="page-arrow">← </span>Prev</a>
-  
-  
-    <a href="/page/5/">Next<span class="page-arrow"> →</span></a>
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        Views: 
+        <span id="busuanzi_value_site_pv"></span>
+        
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        Visitors: 
+        <span id="busuanzi_value_site_uv"></span>
+        
+      </span>
+    
+    
   
 </div>
+
   
-</main>
-
-
-    <div class="scroll-top">
-  <span class="arrow-icon"></span>
+  
+  
 </div>
-    <footer class="app-footer">
-  <p class="copyright">
-    &copy; 2022 | <a href="https://github.com/davidlii" target="_blank">Davidli</a>
-    <br>
-    <a href="https://hexo.io" target="_blank">Hexo</a> | Theme-<a target="_blank" rel="noopener" href="https://github.com/yanm1ng">yanm1ng</a>
-  </p>
-</footer>
 
-<script>
-  function async(u, c) {
-    var d = document, t = 'script',
-      o = d.createElement(t),
-      s = d.getElementsByTagName(t)[0];
-    o.src = u;
-    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
-    s.parentNode.insertBefore(o, s);
-  }
-</script>
-<script>
-  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
-    FastClick.attach(document.body);
-  })
-</script>
+  </footer>
 
-<script>
-  var hasLine = 'true';
-  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
-    $('figure pre').each(function(i, block) {
-      var figure = $(this).parents('figure');
-      if (hasLine === 'false') {
-        figure.find('.gutter').hide();
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
       }
-      var lang = figure.attr('class').split(' ')[1] || 'code';
-      var codeHtml = $(this).html();
-      var codeTag = document.createElement('code');
-      codeTag.className = lang;
-      codeTag.innerHTML = codeHtml;
-      $(this).attr('class', '').empty().html(codeTag);
-      figure.attr('data-lang', lang.toUpperCase());
-      hljs.highlightBlock(block);
-    });
-  })
-</script>
-<!-- Baidu Tongji -->
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
 
 
-<script src="/js/script.js"></script>
 
-  </body>
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
 </html>

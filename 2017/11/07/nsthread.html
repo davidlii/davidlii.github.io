@@ -1,145 +1,289 @@
+
+
 <!DOCTYPE html>
-<html>
-  <head>
-  <meta http-equiv="content-type" content="text/html; charset=utf-8">
-  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
-  <meta name="description" content="This is Davidli&#39;s blog ~">
-  <meta name="keyword" content="hexo-theme, vuejs">
-  
-    <link rel="shortcut icon" type="image/ico" href="/image/logo.png"/> 
-  
-  <title>
-    
-      多线程：NSThread | Davidli
-    
-  </title>
-  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
-  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
-  
-<link rel="stylesheet" href="/css/style.css">
-<link rel="stylesheet" href="/css/plugins/gitment.css">
-
-  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
-  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
-  
-<script src="/js/qrious.js"></script>
-<script src="/js/gitment.js"></script>
-
-  
-  
-    <!-- MathJax support START -->
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      });
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      });
-    </script>
-    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <!-- MathJax support END -->
-  
+<html lang="zh-Hans" data-default-color-scheme=auto>
 
 
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="Davidli">
+  
+    <meta name="description" content="1、进程 &amp; 线程#定义与划分尺度：  程序的一次执行过程就是进程，它是系统进行资源分配和调度的一个独立单位。 线程是进程的一个实体，是进程内的一个执行单元，一个进程至少有一个线程。  #地址空间：  进程有自己独立的虚拟地址空间，而线程共享进程的地址空间。  #拥有的资源：  进程是资源分配和拥有的单位；同一个进程内的线程共享进程资源。  #执行单位：  线程是CPU调度和分派的基本单位">
+<meta property="og:type" content="article">
+<meta property="og:title" content="多线程：NSThread">
+<meta property="og:url" content="http://yoursite.com/2017/11/07/nsthread.html">
+<meta property="og:site_name" content="Davidli">
+<meta property="og:description" content="1、进程 &amp; 线程#定义与划分尺度：  程序的一次执行过程就是进程，它是系统进行资源分配和调度的一个独立单位。 线程是进程的一个实体，是进程内的一个执行单元，一个进程至少有一个线程。  #地址空间：  进程有自己独立的虚拟地址空间，而线程共享进程的地址空间。  #拥有的资源：  进程是资源分配和拥有的单位；同一个进程内的线程共享进程资源。  #执行单位：  线程是CPU调度和分派的基本单位">
+<meta property="og:locale">
+<meta property="article:published_time" content="2017-11-07T12:17:01.000Z">
+<meta property="article:modified_time" content="2019-09-26T00:47:00.000Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="多线程">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>多线程：NSThread - Davidli</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"yoursite.com","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
 <meta name="generator" content="Hexo 6.2.0"></head>
-<div class="wechat-share">
-  <img src="/css/images/logo.png" />
-</div>
 
-  <body>
-    <header class="header fixed-header">
-  <div class="header-container">
-    <a class="home-link" href="/">
-      <div class="logo"></div>
-      <span>Davidli</span>
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Davidli</strong>
     </a>
-    <ul class="right-list">
-      
-        <li class="list-item">
-          
-            <a href="/" class="item-link">Davidli</a>
-          
-        </li>
-      
-        <li class="list-item">
-          
-            <a href="/archives/" class="item-link">归档</a>
-          
-        </li>
-      
-        <li class="list-item">
-          
-            <a href="/tags/" class="item-link">标签</a>
-          
-        </li>
-      
-        <li class="list-item">
-          
-            <a href="/about/" class="item-link">关于</a>
-          
-        </li>
-      
-    </ul>
-    <div class="menu">
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-    </div>
-    <div class="menu-mask">
-      <ul class="menu-list">
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
         
-          <li class="menu-item">
-            
-              <a href="/" class="menu-link">Davidli</a>
-            
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                Categories
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                Tags
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
           </li>
+          
         
-          <li class="menu-item">
-            
-              <a href="/archives/" class="menu-link">归档</a>
-            
-          </li>
         
-          <li class="menu-item">
-            
-              <a href="/tags/" class="menu-link">标签</a>
-            
-          </li>
-        
-          <li class="menu-item">
-            
-              <a href="/about/" class="menu-link">关于</a>
-            
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
           </li>
         
       </ul>
     </div>
   </div>
-</header>
+</nav>
 
-    <div id="article-banner">
-  <h2>多线程：NSThread</h2>
-  <p class="post-date">2017-11-07</p>
-  <div class="arrow-down">
-    <a href="javascript:;"></a>
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="多线程：NSThread"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2017-11-07 20:17" pubdate>
+          November 7, 2017 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          6.3k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          53 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
   </div>
 </div>
-<main class="app-body flex-box">
-  <!-- Article START -->
-  <article class="post-article">
-    <section class="markdown-content"><h3 id="1、进程-amp-线程"><a href="#1、进程-amp-线程" class="headerlink" title="1、进程 &amp; 线程"></a>1、进程 &amp; 线程</h3><p>#定义与划分尺度：</p>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">多线程：NSThread</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h3 id="1、进程-amp-线程"><a href="#1、进程-amp-线程" class="headerlink" title="1、进程 &amp; 线程"></a>1、进程 &amp; 线程</h3><p>#定义与划分尺度：</p>
 <ul>
 <li>程序的一次执行过程就是进程，它是系统进行资源分配和调度的一个独立单位。</li>
 <li>线程是进程的一个实体，是进程内的一个执行单元，一个进程至少有一个线程。</li>
@@ -194,24 +338,24 @@
 <ul>
 <li>实例方法：创建后需要手动调用start函数来启动线程；</li>
 </ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">- (instancetype)initWithTarget:(id)target </span><br><span class="line">selector:(SEL)selector </span><br><span class="line">object:(id)argument;</span><br><span class="line"></span><br><span class="line">- (instancetype)initWithBlock:(void (^)(void))block ;</span><br></pre></td></tr></table></figure>
+<figure class="highlight erlang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs erlang">- <span class="hljs-params">(instancetype)</span>initWithTarget:<span class="hljs-params">(id)</span>target <br>selector:<span class="hljs-params">(SEL)</span>selector <br>object:<span class="hljs-params">(id)</span>argument;<br><br>- <span class="hljs-params">(instancetype)</span>initWithBlock:<span class="hljs-params">(void (^)</span><span class="hljs-params">(void)</span>)block ;<br></code></pre></td></tr></table></figure>
 
 <p>第一种实例化方法中，参数selector会在刚创建的线程对象执行<code>start</code>方法之后被调用，且是在当前新线程中调用。</p>
 <ul>
 <li>类方法：自动启动线程，无需手动调用start函数。</li>
 </ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">+ (void)detachNewThreadWithBlock:(void (^)(void))block ;</span><br><span class="line"></span><br><span class="line">+ (void)detachNewThreadSelector:(SEL)selector </span><br><span class="line">toTarget:(id)target </span><br><span class="line">withObject:(id)argument;</span><br></pre></td></tr></table></figure>
+<figure class="highlight fsharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs fsharp"><span class="hljs-operator">+</span> (<span class="hljs-keyword">void</span>)detachNewThreadWithBlock<span class="hljs-operator">:</span>(<span class="hljs-keyword">void</span> (<span class="hljs-operator">^</span>)(<span class="hljs-keyword">void</span>))block ;<br><br><span class="hljs-operator">+</span> (<span class="hljs-keyword">void</span>)detachNewThreadSelector<span class="hljs-operator">:</span>(SEL)selector <br>toTarget<span class="hljs-operator">:</span>(<span class="hljs-built_in">id</span>)target <br>withObject<span class="hljs-operator">:</span>(<span class="hljs-built_in">id</span>)argument;<br></code></pre></td></tr></table></figure>
 
 <ul>
 <li>分类创建：NSObject(NSThreadPerformAdditions)</li>
 </ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">- (void)performSelectorInBackground:(SEL)aSelector </span><br><span class="line">withObject:(id)arg;</span><br></pre></td></tr></table></figure>
+<figure class="highlight erlang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs erlang">- <span class="hljs-params">(void)</span>performSelectorInBackground:<span class="hljs-params">(SEL)</span>aSelector <br>withObject:<span class="hljs-params">(id)</span>arg;<br></code></pre></td></tr></table></figure>
 
 <p>#就绪</p>
 <ul>
 <li>将线程放进可调度线程池,等待被CPU调度:</li>
 </ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[threadObj start]；//注意：同一个线程对象不能连续调用start方法！</span><br></pre></td></tr></table></figure>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs angelscript"><span class="hljs-string">[threadObj start]</span>；<span class="hljs-comment">//注意：同一个线程对象不能连续调用start方法！</span><br></code></pre></td></tr></table></figure>
 
 <p>#运行</p>
 <ul>
@@ -221,265 +365,394 @@
 <ul>
 <li>正在运行的线程,可以用休眠或者锁来阻塞线程的执行。</li>
 </ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">+ (void)sleepUntilDate:(NSDate *)date;</span><br><span class="line">+ (void)sleepForTimeInterval:(NSTimeInterval)ti;</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs objectivec">+ (<span class="hljs-type">void</span>)sleepUntilDate:(<span class="hljs-built_in">NSDate</span> *)date;<br>+ (<span class="hljs-type">void</span>)sleepForTimeInterval:(<span class="hljs-built_in">NSTimeInterval</span>)ti;<br></code></pre></td></tr></table></figure>
 
 <ul>
 <li>互斥锁</li>
 </ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@synchronized(self)</span><br></pre></td></tr></table></figure>
+<figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs crystal"><span class="hljs-variable">@synchronized</span>(<span class="hljs-keyword">self</span>)<br></code></pre></td></tr></table></figure>
 
 <p>#死亡<br><br/></p>
 <p>一般情况下（不考虑引用、runloop），线程执行完任务后会自动销毁。也可以在满足某条件后调用exit方法，强制线程退出。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[NSThread exit];</span><br></pre></td></tr></table></figure>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">[NSThread <span class="hljs-keyword">exit</span>];<br></code></pre></td></tr></table></figure>
 
 
 <h4 id="4-2-线程间通信"><a href="#4-2-线程间通信" class="headerlink" title="4.2.线程间通信"></a>4.2.线程间通信</h4><ul>
 <li>指定当前线程执行操作</li>
 </ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[self performSelector:@selector(run)];</span><br><span class="line">[self performSelector:@selector(run) withObject:nil];</span><br><span class="line">[self performSelector:@selector(run) withObject:nil afterDelay:5.0];</span><br></pre></td></tr></table></figure>
+<figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs crystal">[<span class="hljs-keyword">self</span> <span class="hljs-symbol">performSelector:</span><span class="hljs-variable">@selector</span>(run)];<br>[<span class="hljs-keyword">self</span> <span class="hljs-symbol">performSelector:</span><span class="hljs-variable">@selector</span>(run) <span class="hljs-symbol">withObject:</span><span class="hljs-literal">nil</span>];<br>[<span class="hljs-keyword">self</span> <span class="hljs-symbol">performSelector:</span><span class="hljs-variable">@selector</span>(run) <span class="hljs-symbol">withObject:</span><span class="hljs-literal">nil</span> <span class="hljs-symbol">afterDelay:</span><span class="hljs-number">5.0</span>];<br></code></pre></td></tr></table></figure>
 
 <ul>
 <li>在主线程指定其他线程执行操作</li>
 </ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[self performSelector:@selector(run) onThread:newThread withObject:nil waitUntilDone:YES]; </span><br><span class="line">[self performSelectorInBackground:@selector(run) withObject:nil];</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs objectivec">[<span class="hljs-keyword">self</span> performSelector:<span class="hljs-keyword">@selector</span>(run) onThread:newThread withObject:<span class="hljs-literal">nil</span> waitUntilDone:<span class="hljs-literal">YES</span>]; <br>[<span class="hljs-keyword">self</span> performSelectorInBackground:<span class="hljs-keyword">@selector</span>(run) withObject:<span class="hljs-literal">nil</span>];<br></code></pre></td></tr></table></figure>
 
 <ul>
 <li>在其他线程中指定主线程执行操作</li>
 </ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[self performSelectorOnMainThread:@selector(run) withObject:nil waitUntilDone:YES];</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs objectivec">[<span class="hljs-keyword">self</span> performSelectorOnMainThread:<span class="hljs-keyword">@selector</span>(run) withObject:<span class="hljs-literal">nil</span> waitUntilDone:<span class="hljs-literal">YES</span>];<br></code></pre></td></tr></table></figure>
 
 <h4 id="4-3-线程同步"><a href="#4-3-线程同步" class="headerlink" title="4.3.线程同步"></a>4.3.线程同步</h4><p>多个线程同时读写同一份共享资源时，可能会引起冲突。线程同步是指是指在一定的时间内只允许某一个线程访问某个资源。OC 中实现线程加锁有 NSLock 和 @synchronized 等方式。</p>
 <ul>
 <li>NSLock 创建锁对象、加锁和解锁:</li>
 </ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">NSLock * lock = [[NSLock alloc]init];</span><br><span class="line">  </span><br><span class="line">dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^&#123;</span><br><span class="line">    [lock lock];</span><br><span class="line">    // do work</span><br><span class="line">    [lock unlock];</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">NSLock * <span class="hljs-keyword">lock</span> = [[NSLock alloc]init];<br>  <br>dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, <span class="hljs-number">0</span>), ^&#123;<br>    [<span class="hljs-keyword">lock</span> <span class="hljs-keyword">lock</span>];<br>    // <span class="hljs-keyword">do</span> <span class="hljs-keyword">work</span><br>    [<span class="hljs-keyword">lock</span> unlock];<br>&#125;);<br></code></pre></td></tr></table></figure>
 <ul>
 <li>@synchronized()指令对一段代码进行加锁。它需要一个参数，该参数可以是任何的OC对象，包括self。这个对象就是互斥信号量。</li>
 </ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">@synchronized(self)  &#123;</span><br><span class="line">    // do work</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs ruby"><span class="hljs-variable">@synchronized</span>(<span class="hljs-variable language_">self</span>)  &#123;<br>    <span class="hljs-regexp">//</span> <span class="hljs-keyword">do</span> work<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <h3 id="5、线程保活"><a href="#5、线程保活" class="headerlink" title="5、线程保活"></a>5、线程保活</h3><p>默认情况下，子线程在执行完任务之后，会自动销毁。如果想复用此线程或者继续在此线程上执行其他任务，则需要让此线程一直活着而不被销毁；<br><br/></p>
 <p>思路：给子线程所在runloop添加事件源，如端口或自定义source，保证此runloop不退出。需要停止子线程时，停止线程所在runloop即可~</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">// 自定义线程</span><br><span class="line">@interface HelThread : NSThread</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">// 线程生命周期管理类</span><br><span class="line">@interface HelThreadHelper : NSObject</span><br><span class="line"></span><br><span class="line">/// 线程初始化</span><br><span class="line">/// @param name 线程名</span><br><span class="line">-(instancetype)initWithName:(NSString*)name;</span><br><span class="line"></span><br><span class="line">/// 开启线程</span><br><span class="line">- (void)start;</span><br><span class="line"></span><br><span class="line">/// 停止当前线程</span><br><span class="line">- (void)stop;</span><br><span class="line"></span><br><span class="line">/// 获取线程</span><br><span class="line">-(NSThread *)getThread;</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs less"><span class="hljs-comment">// 自定义线程</span><br><span class="hljs-variable">@interface</span> <span class="hljs-attribute">HelThread </span>: NSThread<br><span class="hljs-variable">@end</span><br><br><br><span class="hljs-comment">// 线程生命周期管理类</span><br><span class="hljs-variable">@interface</span> <span class="hljs-attribute">HelThreadHelper </span>: NSObject<br><br><span class="hljs-comment">/// 线程初始化</span><br><span class="hljs-comment">/// @param name 线程名</span><br><span class="hljs-built_in">-</span>(instancetype)<span class="hljs-attribute">initWithName</span>:(NSString*)name;<br><br><span class="hljs-comment">/// 开启线程</span><br><span class="hljs-selector-tag">-</span> (void)<span class="hljs-selector-tag">start</span>;<br><br><span class="hljs-comment">/// 停止当前线程</span><br><span class="hljs-selector-tag">-</span> (void)<span class="hljs-selector-tag">stop</span>;<br><br><span class="hljs-comment">/// 获取线程</span><br><span class="hljs-selector-tag">-</span>(NSThread *)<span class="hljs-selector-tag">getThread</span>;<br><br>@<span class="hljs-selector-tag">end</span><br></code></pre></td></tr></table></figure>
 
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br></pre></td><td class="code"><pre><span class="line">#import &quot;HelThreadHelper.h&quot;</span><br><span class="line"></span><br><span class="line">//MAKR: -HelThread</span><br><span class="line">@implementation HelThread</span><br><span class="line"></span><br><span class="line">- (void)dealloc&#123;</span><br><span class="line">    NSLog(@&quot;++++THREAD IS DEALLOCED~&quot;);</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">//MAKR: -HelThreadHelper</span><br><span class="line"></span><br><span class="line">@interface HelThreadHelper()</span><br><span class="line">@property (nonatomic, strong) HelThread *mThread;</span><br><span class="line">@property (nonatomic, strong) NSCondition *mConditionLock;</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation HelThreadHelper</span><br><span class="line"></span><br><span class="line">//MARK: -APIs</span><br><span class="line">-(instancetype)initWithName:(NSString*)name&#123;</span><br><span class="line">    self = [super init];</span><br><span class="line">    if (self) &#123;</span><br><span class="line">        _mConditionLock = [[NSCondition alloc] init];</span><br><span class="line">        _mThread = [[HelThread alloc] initWithTarget:self selector:@selector(onThreadInit:) object:nil];</span><br><span class="line">        _mThread.name = name;</span><br><span class="line">    &#125;</span><br><span class="line">    return self;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)start&#123;</span><br><span class="line">    NSLog(@&quot;+++call Start:%@&quot;, [NSThread currentThread]);</span><br><span class="line">    [_mConditionLock lock];</span><br><span class="line">    [_mThread start];</span><br><span class="line">    [_mConditionLock wait]; // 防止多线程环境下onThreadInit中尚未设置runloop就开始在_mThread上执行任务的情况</span><br><span class="line">    NSLog(@&quot;++runloop Set finised~&quot;);</span><br><span class="line">    [_mConditionLock unlock];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)stop&#123;</span><br><span class="line">    // 回到所在线程 停止其runloop</span><br><span class="line">    [self performSelector:@selector(finish) onThread:_mThread withObject:nil waitUntilDone:NO];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">-(NSThread *)getThread&#123;</span><br><span class="line">    return _mThread;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//MARK: -Self Business</span><br><span class="line">- (void)onThreadInit:(id)obj&#123;</span><br><span class="line">    </span><br><span class="line">    NSLog(@&quot;+++runloop Start:%@&quot;, [NSThread currentThread]);</span><br><span class="line">    </span><br><span class="line">    // 线程保活</span><br><span class="line">    CFRunLoopSourceContext context = &#123;0&#125;;</span><br><span class="line">    context.perform = DoNothingRunLoopCallback;</span><br><span class="line">    </span><br><span class="line">    CFRunLoopSourceRef source = CFRunLoopSourceCreate(NULL, 0, &amp;context);</span><br><span class="line">    CFRunLoopAddSource(CFRunLoopGetCurrent(), source, kCFRunLoopCommonModes);</span><br><span class="line">    </span><br><span class="line">    [_mConditionLock lock];</span><br><span class="line">    [_mConditionLock signal]; // 线程创建和设置已完成，告诉调用者可以在_mThread上执行任务了</span><br><span class="line">    [_mConditionLock unlock];</span><br><span class="line">    </span><br><span class="line">    // 开启runloop，开始处理任务</span><br><span class="line">    CFRunLoopRun(); // 开启循环，在被停止前会一直运行在这一行，不执行后面一行代码</span><br><span class="line">    </span><br><span class="line">    // runloop已被停止 执行清理任务</span><br><span class="line">    CFRunLoopRemoveSource(CFRunLoopGetCurrent(), source, kCFRunLoopCommonModes);</span><br><span class="line">    CFRelease(source);</span><br><span class="line">    </span><br><span class="line">    NSLog(@&quot;+++runloop stop:%@&quot;, [NSThread currentThread]);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)finish&#123;</span><br><span class="line">    CFRunLoopStop(CFRunLoopGetCurrent()); // 结束runloop</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">static void DoNothingRunLoopCallback(void *info)&#123;</span><br><span class="line">    NSLog(@&quot;+++runloop 回调~&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-meta">#import <span class="hljs-string">&quot;HelThreadHelper.h&quot;</span></span><br><br><span class="hljs-comment">//MAKR: -HelThread</span><br><span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">HelThread</span></span><br><br>- (<span class="hljs-type">void</span>)dealloc&#123;<br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;++++THREAD IS DEALLOCED~&quot;</span>);<br>&#125;<br><span class="hljs-keyword">@end</span><br><br><br><span class="hljs-comment">//MAKR: -HelThreadHelper</span><br><br><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">HelThreadHelper</span>()</span><br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">strong</span>) HelThread *mThread;<br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">strong</span>) <span class="hljs-built_in">NSCondition</span> *mConditionLock;<br><span class="hljs-keyword">@end</span><br><br><span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">HelThreadHelper</span></span><br><br><span class="hljs-comment">//MARK: -APIs</span><br>-(<span class="hljs-keyword">instancetype</span>)initWithName:(<span class="hljs-built_in">NSString</span>*)name&#123;<br>    <span class="hljs-keyword">self</span> = [<span class="hljs-variable language_">super</span> init];<br>    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">self</span>) &#123;<br>        _mConditionLock = [[<span class="hljs-built_in">NSCondition</span> alloc] init];<br>        _mThread = [[HelThread alloc] initWithTarget:<span class="hljs-keyword">self</span> selector:<span class="hljs-keyword">@selector</span>(onThreadInit:) object:<span class="hljs-literal">nil</span>];<br>        _mThread.name = name;<br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">self</span>;<br>&#125;<br><br>- (<span class="hljs-type">void</span>)start&#123;<br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;+++call Start:%@&quot;</span>, [<span class="hljs-built_in">NSThread</span> currentThread]);<br>    [_mConditionLock lock];<br>    [_mThread start];<br>    [_mConditionLock wait]; <span class="hljs-comment">// 防止多线程环境下onThreadInit中尚未设置runloop就开始在_mThread上执行任务的情况</span><br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;++runloop Set finised~&quot;</span>);<br>    [_mConditionLock unlock];<br>&#125;<br><br>- (<span class="hljs-type">void</span>)stop&#123;<br>    <span class="hljs-comment">// 回到所在线程 停止其runloop</span><br>    [<span class="hljs-keyword">self</span> performSelector:<span class="hljs-keyword">@selector</span>(finish) onThread:_mThread withObject:<span class="hljs-literal">nil</span> waitUntilDone:<span class="hljs-literal">NO</span>];<br>&#125;<br><br>-(<span class="hljs-built_in">NSThread</span> *)getThread&#123;<br>    <span class="hljs-keyword">return</span> _mThread;<br>&#125;<br><br><span class="hljs-comment">//MARK: -Self Business</span><br>- (<span class="hljs-type">void</span>)onThreadInit:(<span class="hljs-type">id</span>)obj&#123;<br>    <br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;+++runloop Start:%@&quot;</span>, [<span class="hljs-built_in">NSThread</span> currentThread]);<br>    <br>    <span class="hljs-comment">// 线程保活</span><br>    <span class="hljs-built_in">CFRunLoopSourceContext</span> context = &#123;<span class="hljs-number">0</span>&#125;;<br>    context.perform = DoNothingRunLoopCallback;<br>    <br>    <span class="hljs-built_in">CFRunLoopSourceRef</span> source = <span class="hljs-built_in">CFRunLoopSourceCreate</span>(<span class="hljs-literal">NULL</span>, <span class="hljs-number">0</span>, &amp;context);<br>    <span class="hljs-built_in">CFRunLoopAddSource</span>(<span class="hljs-built_in">CFRunLoopGetCurrent</span>(), source, kCFRunLoopCommonModes);<br>    <br>    [_mConditionLock lock];<br>    [_mConditionLock signal]; <span class="hljs-comment">// 线程创建和设置已完成，告诉调用者可以在_mThread上执行任务了</span><br>    [_mConditionLock unlock];<br>    <br>    <span class="hljs-comment">// 开启runloop，开始处理任务</span><br>    <span class="hljs-built_in">CFRunLoopRun</span>(); <span class="hljs-comment">// 开启循环，在被停止前会一直运行在这一行，不执行后面一行代码</span><br>    <br>    <span class="hljs-comment">// runloop已被停止 执行清理任务</span><br>    <span class="hljs-built_in">CFRunLoopRemoveSource</span>(<span class="hljs-built_in">CFRunLoopGetCurrent</span>(), source, kCFRunLoopCommonModes);<br>    <span class="hljs-built_in">CFRelease</span>(source);<br>    <br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;+++runloop stop:%@&quot;</span>, [<span class="hljs-built_in">NSThread</span> currentThread]);<br>&#125;<br><br>- (<span class="hljs-type">void</span>)finish&#123;<br>    <span class="hljs-built_in">CFRunLoopStop</span>(<span class="hljs-built_in">CFRunLoopGetCurrent</span>()); <span class="hljs-comment">// 结束runloop</span><br>&#125;<br><br><span class="hljs-keyword">static</span> <span class="hljs-type">void</span> DoNothingRunLoopCallback(<span class="hljs-type">void</span> *info)&#123;<br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;+++runloop 回调~&quot;</span>);<br>&#125;<br><br><span class="hljs-keyword">@end</span><br></code></pre></td></tr></table></figure>
 
 <p>调用示例：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">#import &quot;HelThreadHelper.h&quot;</span><br><span class="line"></span><br><span class="line">@interface ViewController ()</span><br><span class="line">@property (nonatomic, strong) HelThreadHelper *mHelper;</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation ViewController</span><br><span class="line"></span><br><span class="line">- (void)viewDidLoad &#123;</span><br><span class="line">    [super viewDidLoad];</span><br><span class="line">    _mHelper = [[HelThreadHelper alloc] initWithName:@&quot;com.Hel.MyThread&quot;];</span><br><span class="line">    [_mHelper start];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 触发任务</span><br><span class="line">- (IBAction)onClick:(id)sender &#123;</span><br><span class="line">    [self performSelector:@selector(onSel:)</span><br><span class="line">      onThread:[_mHelper getThread]</span><br><span class="line">    withObject:nil waitUntilDone:NO];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 结束线程</span><br><span class="line">- (IBAction)onStop:(id)sender &#123;</span><br><span class="line">    [_mHelper stop];</span><br><span class="line">    _mHelper = nil; // _mHelper置为nil后，其中被强引用的_mThread线程才会销毁</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)onSel:(id)obj&#123;</span><br><span class="line">    NSLog(@&quot;+++call onSel: THREAD:%@&quot;,[NSThread currentThread]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-meta">#import <span class="hljs-string">&quot;HelThreadHelper.h&quot;</span></span><br><br><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">ViewController</span> ()</span><br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">strong</span>) HelThreadHelper *mHelper;<br><span class="hljs-keyword">@end</span><br><br><span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">ViewController</span></span><br><br>- (<span class="hljs-type">void</span>)viewDidLoad &#123;<br>    [<span class="hljs-variable language_">super</span> viewDidLoad];<br>    _mHelper = [[HelThreadHelper alloc] initWithName:<span class="hljs-string">@&quot;com.Hel.MyThread&quot;</span>];<br>    [_mHelper start];<br>&#125;<br><br><span class="hljs-comment">// 触发任务</span><br>- (<span class="hljs-keyword">IBAction</span>)onClick:(<span class="hljs-type">id</span>)sender &#123;<br>    [<span class="hljs-keyword">self</span> performSelector:<span class="hljs-keyword">@selector</span>(onSel:)<br>      onThread:[_mHelper getThread]<br>    withObject:<span class="hljs-literal">nil</span> waitUntilDone:<span class="hljs-literal">NO</span>];<br>&#125;<br><br><span class="hljs-comment">// 结束线程</span><br>- (<span class="hljs-keyword">IBAction</span>)onStop:(<span class="hljs-type">id</span>)sender &#123;<br>    [_mHelper stop];<br>    _mHelper = <span class="hljs-literal">nil</span>; <span class="hljs-comment">// _mHelper置为nil后，其中被强引用的_mThread线程才会销毁</span><br>&#125;<br><br>- (<span class="hljs-type">void</span>)onSel:(<span class="hljs-type">id</span>)obj&#123;<br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;+++call onSel: THREAD:%@&quot;</span>,[<span class="hljs-built_in">NSThread</span> currentThread]);<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>分别点击开始和结束按钮，执行任务和结束线程：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">+++call Start:&lt;NSThread: 0x600003000040&gt;&#123;number = 1, name = main&#125;</span><br><span class="line">+++runloop Start:&lt;HelThread: 0x6000030602c0&gt;&#123;number = 5, name = com.Hel.MyThread&#125;</span><br><span class="line">++runloop Set finised~</span><br><span class="line">+++call onSel: THREAD:&lt;HelThread: 0x6000030602c0&gt;&#123;number = 5, name = com.Hel.MyThread&#125;</span><br><span class="line">+++runloop stop:&lt;HelThread: 0x6000030602c0&gt;&#123;number = 5, name = com.Hel.MyThread&#125;</span><br><span class="line">++++THREAD IS DEALLOCED~</span><br></pre></td></tr></table></figure>
-</section>
-    <!-- Tags START -->
-    
-      <div class="tags">
-        <span>Tags:</span>
-        
-  <a href="/tags#多线程" >
-    <span class="tag-code">多线程</span>
-  </a>
+<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs fortran">+++<span class="hljs-keyword">call</span> Start:&lt;NSThread: <span class="hljs-number">0</span>x600003000040&gt;&#123;<span class="hljs-keyword">number</span> = <span class="hljs-number">1</span>, <span class="hljs-keyword">name</span> = main&#125;<br>+++runloop Start:&lt;HelThread: <span class="hljs-number">0</span>x6000030602c0&gt;&#123;<span class="hljs-keyword">number</span> = <span class="hljs-number">5</span>, <span class="hljs-keyword">name</span> = com.Hel.MyThread&#125;<br>++runloop Set finised~<br>+++<span class="hljs-keyword">call</span> onSel: THREAD:&lt;HelThread: <span class="hljs-number">0</span>x6000030602c0&gt;&#123;<span class="hljs-keyword">number</span> = <span class="hljs-number">5</span>, <span class="hljs-keyword">name</span> = com.Hel.MyThread&#125;<br>+++runloop <span class="hljs-keyword">stop</span>:&lt;HelThread: <span class="hljs-number">0</span>x6000030602c0&gt;&#123;<span class="hljs-keyword">number</span> = <span class="hljs-number">5</span>, <span class="hljs-keyword">name</span> = com.Hel.MyThread&#125;<br>++++THREAD IS DEALLOCED~<br></code></pre></td></tr></table></figure>
 
-      </div>
-    
-    <!-- Tags END -->
-    <!-- NAV START -->
-    
-  <div class="nav-container">
-    <!-- reverse left and right to put prev and next in a more logic postition -->
-    
-      <a class="nav-left" href="/2017/09/09/runloop.html">
-        <span class="nav-arrow">← </span>
-        
-          Runloop
-        
-      </a>
-    
-    
-      <a class="nav-right" href="/2017/11/08/gcd.html">
-        
-          多线程：GCD
-        
-        <span class="nav-arrow"> →</span>
-      </a>
-    
-  </div>
-
-    <!-- NAV END -->
-    <!-- 打赏 START -->
-    
-      <div class="money-like">
-        <div class="reward-btn">
-          赏
-          <span class="money-code">
-            <span class="alipay-code">
-              <div class="code-image"></div>
-              <b>使用支付宝打赏</b>
-            </span>
-            <span class="wechat-code">
-              <div class="code-image"></div>
-              <b>使用微信打赏</b>
-            </span>
-          </span>
-        </div>
-        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
-      </div>
-    
-    <!-- 打赏 END -->
-    <!-- 二维码 START -->
-    
-    <!-- 二维码 END -->
-    
-      <!-- No Comment -->
-    
-  </article>
-  <!-- Article END -->
-  <!-- Catalog START -->
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
   
-    <aside class="catalog-container">
-  <div class="toc-main">
-    <strong class="toc-title">Catalog</strong>
-    
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1%E3%80%81%E8%BF%9B%E7%A8%8B-amp-%E7%BA%BF%E7%A8%8B"><span class="toc-nav-text">1、进程 &amp; 线程</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2%E3%80%81%E5%B9%B6%E5%8F%91-amp-%E5%B9%B6%E8%A1%8C"><span class="toc-nav-text">2、并发 &amp; 并行</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3%E3%80%81%E5%A4%9A%E7%BA%BF%E7%A8%8B"><span class="toc-nav-text">3、多线程</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#4%E3%80%81NSThread"><span class="toc-nav-text">4、NSThread</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#4-1-%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="toc-nav-text">4.1.生命周期</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#4-2-%E7%BA%BF%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1"><span class="toc-nav-text">4.2.线程间通信</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#4-3-%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5"><span class="toc-nav-text">4.3.线程同步</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#5%E3%80%81%E7%BA%BF%E7%A8%8B%E4%BF%9D%E6%B4%BB"><span class="toc-nav-text">5、线程保活</span></a></li></ol>
-    
-  </div>
-</aside>
   
-  <!-- Catalog END -->
-</main>
-
-<script>
-  (function () {
-    var url = 'http://yoursite.com/2017/11/07/nsthread.html';
-    var banner = ''
-    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
-      $('#article-banner').css({
-        'background-image': 'url(' + banner + ')'
-      })
-    } else {
-      $('#article-banner').geopattern(url)
-    }
-    $('.header').removeClass('fixed-header')
-
-     // error image
-    $(".markdown-content img").on('error', function() {
-      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
-      $(this).css({
-        'cursor': 'default'
-      })
-    })
-
-    // zoom image
-    $(".markdown-content img").on('click', function() {
-      var src = $(this).attr('src')
-      if (src !== 'http://file.muyutech.com/error-img.png') {
-        var imageW = $(this).width()
-        var imageH = $(this).height()
-        
-        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
-        zoom = zoom < 1 ? 1 : zoom
-        zoom = zoom > 2 ? 2 : zoom
-        var transY = (($(window).height() - imageH) / 2).toFixed(2)
-
-        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
-        $('.image-view-wrap').addClass('wrap-active')
-        $('.image-view-wrap img').css({
-          'width': `${imageW}`,
-          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
-        })
-        $('html').css('overflow', 'hidden')
-
-        $('.image-view-wrap').on('click', function() {
-          $(this).remove()
-          $('html').attr('style', '')
-        })
-      }
-    })
-
-    // qrcode
-    var qr = new QRious({
-      element: document.getElementById('share-qrcode'),
-      value: document.location.href
-    });
-
-    // gitment
-    var gitmentConfig = "";
-    if (gitmentConfig !== 'undefined') {
-      var gitment = new Gitment({
-        id: "多线程：NSThread",
-        owner: "",
-        repo: "",
-        oauth: {
-          client_id: "",
-          client_secret: ""
-        },
-        theme: {
-          render(state, instance) {
-            const container = document.createElement('div')
-            container.lang = "en-US"
-            container.className = 'gitment-container gitment-root-container'
-            container.appendChild(instance.renderHeader(state, instance))
-            container.appendChild(instance.renderEditor(state, instance))
-            container.appendChild(instance.renderComments(state, instance))
-            container.appendChild(instance.renderFooter(state, instance))
-            return container;
-          }
-        }
-      })
-      gitment.render(document.getElementById('comments'))
-    }
-  })();
-</script>
-
-    <div class="scroll-top">
-  <span class="arrow-icon"></span>
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/">#多线程</a>
+      
+    </div>
+  
 </div>
-    <footer class="app-footer">
-  <p class="copyright">
-    &copy; 2022 | <a href="https://github.com/davidlii" target="_blank">Davidli</a>
-    <br>
-    <a href="https://hexo.io" target="_blank">Hexo</a> | Theme-<a target="_blank" rel="noopener" href="https://github.com/yanm1ng">yanm1ng</a>
-  </p>
-</footer>
 
-<script>
-  function async(u, c) {
-    var d = document, t = 'script',
-      o = d.createElement(t),
-      s = d.getElementsByTagName(t)[0];
-    o.src = u;
-    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
-    s.parentNode.insertBefore(o, s);
-  }
-</script>
-<script>
-  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
-    FastClick.attach(document.body);
-  })
-</script>
 
-<script>
-  var hasLine = 'true';
-  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
-    $('figure pre').each(function(i, block) {
-      var figure = $(this).parents('figure');
-      if (hasLine === 'false') {
-        figure.find('.gutter').hide();
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>多线程：NSThread</div>
+      <div>http://yoursite.com/2017/11/07/nsthread.html</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>November 7, 2017</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>Licensed under</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2017/11/08/gcd.html" title="多线程：GCD">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">多线程：GCD</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2017/09/09/runloop.html" title="Runloop">
+                        <span class="hidden-mobile">Runloop</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;Table of Contents</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://github.com/davidlii" target="_blank" rel="nofollow noopener"><span>Davidlii</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        Views: 
+        <span id="busuanzi_value_site_pv"></span>
+        
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        Visitors: 
+        <span id="busuanzi_value_site_uv"></span>
+        
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
       }
-      var lang = figure.attr('class').split(' ')[1] || 'code';
-      var codeHtml = $(this).html();
-      var codeTag = document.createElement('code');
-      codeTag.className = lang;
-      codeTag.innerHTML = codeHtml;
-      $(this).attr('class', '').empty().html(codeTag);
-      figure.attr('data-lang', lang.toUpperCase());
-      hljs.highlightBlock(block);
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
     });
-  })
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
 </script>
-<!-- Baidu Tongji -->
 
 
-<script src="/js/script.js"></script>
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
 
-  </body>
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
 </html>

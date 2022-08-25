@@ -1,452 +1,779 @@
+
+
 <!DOCTYPE html>
-<html>
-  <head>
-  <meta http-equiv="content-type" content="text/html; charset=utf-8">
-  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
-  <meta name="description" content="This is Davidli&#39;s blog ~">
-  <meta name="keyword" content="hexo-theme, vuejs">
-  
-    <link rel="shortcut icon" type="image/ico" href="/image/logo.png"/> 
-  
-  <title>
-    
-      Davidli
-    
-  </title>
-  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
-  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
-  
-<link rel="stylesheet" href="/css/style.css">
-<link rel="stylesheet" href="/css/plugins/gitment.css">
-
-  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
-  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
-  
-<script src="/js/qrious.js"></script>
-<script src="/js/gitment.js"></script>
-
-  
-  
-    <!-- MathJax support START -->
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      });
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      });
-    </script>
-    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <!-- MathJax support END -->
-  
+<html lang="zh-Hans" data-default-color-scheme=auto>
 
 
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="Davidli">
+  
+    <meta name="description" content="This is Davidli&#39;s blog ~">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Davidli">
+<meta property="og:url" content="http://yoursite.com/page/3/index.html">
+<meta property="og:site_name" content="Davidli">
+<meta property="og:description" content="This is Davidli&#39;s blog ~">
+<meta property="og:locale">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Davidli">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>Davidli</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"yoursite.com","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
 <meta name="generator" content="Hexo 6.2.0"></head>
-<div class="wechat-share">
-  <img src="/css/images/logo.png" />
-</div>
 
-  <body>
-    <header class="header fixed-header">
-  <div class="header-container">
-    <a class="home-link" href="/">
-      <div class="logo"></div>
-      <span>Davidli</span>
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 100vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Davidli</strong>
     </a>
-    <ul class="right-list">
-      
-        <li class="list-item">
-          
-            <a href="/" class="item-link active">Davidli</a>
-          
-        </li>
-      
-        <li class="list-item">
-          
-            <a href="/archives/" class="item-link">归档</a>
-          
-        </li>
-      
-        <li class="list-item">
-          
-            <a href="/tags/" class="item-link">标签</a>
-          
-        </li>
-      
-        <li class="list-item">
-          
-            <a href="/about/" class="item-link">关于</a>
-          
-        </li>
-      
-    </ul>
-    <div class="menu">
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-    </div>
-    <div class="menu-mask">
-      <ul class="menu-list">
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
         
-          <li class="menu-item">
-            
-              <a href="/" class="menu-link mobile-active">Davidli</a>
-            
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                Categories
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                Tags
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
           </li>
+          
         
-          <li class="menu-item">
-            
-              <a href="/archives/" class="menu-link">归档</a>
-            
-          </li>
         
-          <li class="menu-item">
-            
-              <a href="/tags/" class="menu-link">标签</a>
-            
-          </li>
-        
-          <li class="menu-item">
-            
-              <a href="/about/" class="menu-link">关于</a>
-            
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
           </li>
         
       </ul>
     </div>
   </div>
-</header>
+</nav>
 
-    <main class="app-body">
   
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2019/02/25/launch.html">App 的启动过程</a>
-      </h2>
-      <p class="article-date">February 25, 2019</p>
-      
-        
-  <a href="/tags#编译与启动" >
-    <span class="tag-code">编译与启动</span>
-  </a>
 
-      
-      <div class="article-summary">
-        
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
           
-文章整理自 头条技术 和 DevilH 等的博客，具体请看最后的参考链接。
+            <span id="subtitle" data-typed-text="好记性不如烂笔头"></span>
+          
+        </div>
 
-启动过程分解应用启动的过程可分为两步：
-
-t（总）&#x3D; t1（main函数之前） + t2（main函数之后）
-
-t1：加载系统动态库和应用可执行文件；
-t2：构建界面并完成渲染和展示：main函数到-a ...
         
       </div>
-      <a class="more" href="/2019/02/25/launch.html">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2019/02/15/compile.html">编译器</a>
-      </h2>
-      <p class="article-date">February 15, 2019</p>
-      
-        
-  <a href="/tags#编译与启动" >
-    <span class="tag-code">编译与启动</span>
-  </a>
 
       
-      <div class="article-summary">
+        <div class="scroll-down-bar">
+          <i class="iconfont icon-arrowdown"></i>
+        </div>
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      <div class="container nopadding-x-md">
+        <div id="board"
+          style="margin-top: 0">
+          
+          <div class="container">
+            <div class="row">
+              <div class="col-12 col-md-10 m-auto">
+                
+
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
         
-          1.编译&#x2F;解释型语言
-编译型语言
+        <a href="/2019/02/25/launch.html" target="_blank">
+          App 的启动过程
+        </a>
+      </h1>
 
-代码须编译成机器码才能在CPU上执行的语言，如OC和Swift，其优点是代码执行效率高。
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2019/02/25/launch.html" target="_blank">
+        <div>
+          文章整理自 头条技术 和 DevilH 等的博客，具体请看最后的参考链接。  启动过程分解应用启动的过程可分为两步：  t（总）&#x3D; t1（main函数之前） + t2（main函数之后）  t1：加载系统动态库和应用可执行文件； t2：构建界面并完成渲染和展示：main函数到-application:didFinishLaunchingWithOptions:回调执行结束； #1、ma
+        </div>
+      </a>
 
-解释型语言
-
-解释型语言，如 JavaScript 和 Python，代码不需要经过编译器，而是通过解释器直接将代码解释成CPU可以执行的代码。编写灵活， ...
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-02-25 00:20" pubdate>
+              2019-02-25
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E7%BC%96%E8%AF%91%E4%B8%8E%E5%90%AF%E5%8A%A8/">#编译与启动</a>
+            
+          </div>
         
       </div>
-      <a class="more" href="/2019/02/15/compile.html">Read more</a>
     </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2018/12/12/static-dynamic.html">派发机制</a>
-      </h2>
-      <p class="article-date">December 12, 2018</p>
-      
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
         
-  <a href="/tags#runtime" >
-    <span class="tag-code">runtime</span>
-  </a>
+        <a href="/2019/02/15/compile.html" target="_blank">
+          编译器
+        </a>
+      </h1>
 
       
-      <div class="article-summary">
+      <a class="index-excerpt index-excerpt__noimg" href="/2019/02/15/compile.html" target="_blank">
+        <div>
+          1.编译&#x2F;解释型语言 编译型语言  代码须编译成机器码才能在CPU上执行的语言，如OC和Swift，其优点是代码执行效率高。  解释型语言  解释型语言，如 JavaScript 和 Python，代码不需要经过编译器，而是通过解释器直接将代码解释成CPU可以执行的代码。编写灵活，但执行效率低一些~ 本篇主要关注编译型语言。编译过程可以划分为前端和后端两部分： 2.编译器前端：Clang
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
         
-          函数&#x2F;方法把代码内聚到一处并对外暴露函数名，这提高了代码的复用性，也对外隐藏了具体的实现过程。根据函数名找到具体的函数实现，这就是函数派发的过程。函数派发的机制分两种：
-
-静态派发
-动态派发
-
-
-一、静态派发
-static dispatch is a form of polymor ...
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-02-15 00:20" pubdate>
+              2019-02-15
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E7%BC%96%E8%AF%91%E4%B8%8E%E5%90%AF%E5%8A%A8/">#编译与启动</a>
+            
+          </div>
         
       </div>
-      <a class="more" href="/2018/12/12/static-dynamic.html">Read more</a>
     </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2018/10/09/algorithm.html">常用排序算法</a>
-      </h2>
-      <p class="article-date">October 9, 2018</p>
-      
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
         
-  <a href="/tags#FQA" >
-    <span class="tag-code">FQA</span>
-  </a>
+        <a href="/2018/12/12/static-dynamic.html" target="_blank">
+          派发机制
+        </a>
+      </h1>
 
       
-      <div class="article-summary">
-        
-          冒泡排序
-它重复地走访过要排序的元素列，依次比较两个相邻的元素，如果他们的顺序（如从大到小、首字母从A到Z）错误就把他们交换过来。走访元素的工作是重复地进行直到没有相邻元素需要交换，也就是说该元素已经排序完成。
+      <a class="index-excerpt index-excerpt__noimg" href="/2018/12/12/static-dynamic.html" target="_blank">
+        <div>
+          函数&#x2F;方法把代码内聚到一处并对外暴露函数名，这提高了代码的复用性，也对外隐藏了具体的实现过程。根据函数名找到具体的函数实现，这就是函数派发的过程。函数派发的机制分两种：  静态派发 动态派发   一、静态派发 static dispatch is a form of polymorphism fully resolved during compile time. It is a form
+        </div>
+      </a>
 
-这个算法的名字由来是因为越大的元素会经由交换慢慢“浮”到数列的顶端（升序或降序 ...
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2018-12-12 01:13" pubdate>
+              2018-12-12
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/runtime/">#runtime</a>
+            
+          </div>
         
       </div>
-      <a class="more" href="/2018/10/09/algorithm.html">Read more</a>
     </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2018/09/15/swift-dynamic.html">Swift-@objc\@objcMember\dynamic</a>
-      </h2>
-      <p class="article-date">September 15, 2018</p>
-      
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
         
-  <a href="/tags#Swift" >
-    <span class="tag-code">Swift</span>
-  </a>
+        <a href="/2018/10/09/algorithm.html" target="_blank">
+          常用排序算法
+        </a>
+      </h1>
 
       
-      <div class="article-summary">
+      <a class="index-excerpt index-excerpt__noimg" href="/2018/10/09/algorithm.html" target="_blank">
+        <div>
+          冒泡排序 它重复地走访过要排序的元素列，依次比较两个相邻的元素，如果他们的顺序（如从大到小、首字母从A到Z）错误就把他们交换过来。走访元素的工作是重复地进行直到没有相邻元素需要交换，也就是说该元素已经排序完成。  这个算法的名字由来是因为越大的元素会经由交换慢慢“浮”到数列的顶端（升序或降序排列），就如同碳酸饮料中二氧化碳的气泡最终会上浮到顶端一样，故名“冒泡排序”。 #冒泡排序的Swift示例：
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
         
-          1.@objc将Swift中的元素暴露给OC运行时，以便在OC中调用Swift代码。
-常见的，如Swift中给按钮添加点击事件时，需要给selector添加@objc标记。因为SEL是OC运行时中的特性，runtime根据SEL查找函数的实现。要将按钮回调函数暴露给OC运行时，需要将其标记为 ...
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2018-10-09 22:47" pubdate>
+              2018-10-09
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/FQA/">#FQA</a>
+            
+          </div>
         
       </div>
-      <a class="more" href="/2018/09/15/swift-dynamic.html">Read more</a>
     </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2018/09/14/swift-map.html">Swift高阶函数</a>
-      </h2>
-      <p class="article-date">September 14, 2018</p>
-      
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
         
-  <a href="/tags#Swift" >
-    <span class="tag-code">Swift</span>
-  </a>
+        <a href="/2018/09/15/swift-dynamic.html" target="_blank">
+          Swift-@objc\@objcMember\dynamic
+        </a>
+      </h1>
 
       
-      <div class="article-summary">
+      <a class="index-excerpt index-excerpt__noimg" href="/2018/09/15/swift-dynamic.html" target="_blank">
+        <div>
+          1.@objc将Swift中的元素暴露给OC运行时，以便在OC中调用Swift代码。 常见的，如Swift中给按钮添加点击事件时，需要给selector添加@objc标记。因为SEL是OC运行时中的特性，runtime根据SEL查找函数的实现。要将按钮回调函数暴露给OC运行时，需要将其标记为@objc，从而让OC运行时进行消息派发。 1234567891011class A: UIViewCont
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
         
-          1.map遍历集合并对每个元素执行相同的操作，从而将元素映射成新值并放在数组中返回，新值可以是原类型也可以是新的类型。
-
-对数组
-
-1234//将元素映射成string类型let intArr = [0,1,2]let newArr = intArr.map &#123; &quot;\($ ...
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2018-09-15 20:16" pubdate>
+              2018-09-15
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Swift/">#Swift</a>
+            
+          </div>
         
       </div>
-      <a class="more" href="/2018/09/14/swift-map.html">Read more</a>
     </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2018/09/13/swift-faq.html">Swift 中的常见问题</a>
-      </h2>
-      <p class="article-date">September 13, 2018</p>
-      
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
         
-  <a href="/tags#Swift" >
-    <span class="tag-code">Swift</span>
-  </a>
+        <a href="/2018/09/14/swift-map.html" target="_blank">
+          Swift高阶函数
+        </a>
+      </h1>
 
       
-      <div class="article-summary">
+      <a class="index-excerpt index-excerpt__noimg" href="/2018/09/14/swift-map.html" target="_blank">
+        <div>
+          1.map遍历集合并对每个元素执行相同的操作，从而将元素映射成新值并放在数组中返回，新值可以是原类型也可以是新的类型。  对数组  1234&#x2F;&#x2F;将元素映射成string类型let intArr &#x3D; [0,1,2]let newArr &#x3D; intArr.map &amp;#123; &quot;\($0)&quot; &amp;#125;print(newArr)  &#x2F;&#x2F;打印结果：[&quot;0&quot;, &amp;
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
         
-          1.Struct 与 Class相同点：
-
-定义属性和方法；
-使用下标语法subscript syntax；
-定义初始化器设置初始状态；
-添加扩展、实现协议；
-
-class 独有的特性：
-
-继承
-类型转换Type casting
-析构
-class 的实例可被多个对象引用
-
-最大的不同：str ...
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2018-09-14 22:58" pubdate>
+              2018-09-14
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Swift/">#Swift</a>
+            
+          </div>
         
       </div>
-      <a class="more" href="/2018/09/13/swift-faq.html">Read more</a>
     </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2018/09/02/swift-mixmatch.html">Swift 与 OC 的混编</a>
-      </h2>
-      <p class="article-date">September 2, 2018</p>
-      
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
         
-  <a href="/tags#Swift" >
-    <span class="tag-code">Swift</span>
-  </a>
+        <a href="/2018/09/13/swift-faq.html" target="_blank">
+          Swift 中的常见问题
+        </a>
+      </h1>
 
       
-      <div class="article-summary">
+      <a class="index-excerpt index-excerpt__noimg" href="/2018/09/13/swift-faq.html" target="_blank">
+        <div>
+          1.Struct 与 Class相同点：  定义属性和方法； 使用下标语法subscript syntax； 定义初始化器设置初始状态； 添加扩展、实现协议；  class 独有的特性：  继承 类型转换Type casting 析构 class 的实例可被多个对象引用  最大的不同：struct 是值类型，class 是引用类型。 2.比较符：&#x3D;&#x3D;与&#x3D;&#x3D;&#x3D; Note that identical
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
         
-          混编的两种情况：①Swift 工程中使用 Objective-C 文件；
-②Objective-C 工程中使用 Swift 文件。
-本文所用 Xcode 版本：9.4.1
-1.Swift 中混编 OCSwift 工程中使用 OC 文件时需要依赖 桥接头文件 将 OC 中的属性、接口等暴露给  ...
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2018-09-13 22:58" pubdate>
+              2018-09-13
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Swift/">#Swift</a>
+            
+          </div>
         
       </div>
-      <a class="more" href="/2018/09/02/swift-mixmatch.html">Read more</a>
     </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2018/08/31/swift-kvo-observer.html">Swift 中监听属性变化</a>
-      </h2>
-      <p class="article-date">August 31, 2018</p>
-      
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
         
-  <a href="/tags#Swift" >
-    <span class="tag-code">Swift</span>
-  </a>
+        <a href="/2018/09/02/swift-mixmatch.html" target="_blank">
+          Swift 与 OC 的混编
+        </a>
+      </h1>
 
       
-      <div class="article-summary">
+      <a class="index-excerpt index-excerpt__noimg" href="/2018/09/02/swift-mixmatch.html" target="_blank">
+        <div>
+          混编的两种情况：①Swift 工程中使用 Objective-C 文件； ②Objective-C 工程中使用 Swift 文件。 本文所用 Xcode 版本：9.4.1 1.Swift 中混编 OCSwift 工程中使用 OC 文件时需要依赖 桥接头文件 将 OC 中的属性、接口等暴露给 Swift。默认情况下，在 Swift 工程中首次创建 OC 文件时，Xcode 会自动提示你是否创建桥接头
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
         
-          1、属性观察器Swift 提供了属性观察器来监听自身存储属性的变化。观察器只能用于监听非lazy存储属性。对于计算属性，它已经内含了get&#123;&#125;和set&#123;&#125;，闭包内已经知道属性的变化，不需要再提供观察器。对于从父类继承下来的存储属性或计算属性，我们可以在 ...
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2018-09-02 00:43" pubdate>
+              2018-09-02
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Swift/">#Swift</a>
+            
+          </div>
         
       </div>
-      <a class="more" href="/2018/08/31/swift-kvo-observer.html">Read more</a>
     </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2018/08/20/swift-refcycle.html">Swift闭包捕获变量&循环引用</a>
-      </h2>
-      <p class="article-date">August 20, 2018</p>
-      
-        
-  <a href="/tags#循环引用" >
-    <span class="tag-code">循环引用</span>
-  </a>
+  </div>
 
-  <a href="/tags#Swift" >
-    <span class="tag-code">Swift</span>
-  </a>
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2018/08/31/swift-kvo-observer.html" target="_blank">
+          Swift 中监听属性变化
+        </a>
+      </h1>
 
       
-      <div class="article-summary">
+      <a class="index-excerpt index-excerpt__noimg" href="/2018/08/31/swift-kvo-observer.html" target="_blank">
+        <div>
+          1、属性观察器Swift 提供了属性观察器来监听自身存储属性的变化。观察器只能用于监听非lazy存储属性。对于计算属性，它已经内含了get&amp;#123;&amp;#125;和set&amp;#123;&amp;#125;，闭包内已经知道属性的变化，不需要再提供观察器。对于从父类继承下来的存储属性或计算属性，我们可以在子类中重写属性的getter和setter来为它们添加属性观察器。 1234567891011121314c
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
         
-          1.闭包中的变量捕获1.1.闭包默认引用变量
-A closure can capture constants and variables from the surrounding context in which it is defined. The closure can then ref ...
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2018-08-31 00:19" pubdate>
+              2018-08-31
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Swift/">#Swift</a>
+            
+          </div>
         
       </div>
-      <a class="more" href="/2018/08/20/swift-refcycle.html">Read more</a>
     </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2018/08/20/swift-refcycle.html" target="_blank">
+          Swift闭包捕获变量&amp;循环引用
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2018/08/20/swift-refcycle.html" target="_blank">
+        <div>
+          1.闭包中的变量捕获1.1.闭包默认引用变量 A closure can capture constants and variables from the surrounding context in which it is defined. The closure can then refer to and modify the values of those constants and var
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2018-08-20 22:02" pubdate>
+              2018-08-20
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E5%BE%AA%E7%8E%AF%E5%BC%95%E7%94%A8/">#循环引用</a>
+            
+              <a href="/tags/Swift/">#Swift</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+
+
+  <nav aria-label="navigation">
+    <span class="pagination" id="pagination">
+      <a class="extend prev" rel="prev" href="/page/2/#board"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/#board">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/#board">4</a><a class="page-number" href="/page/5/#board">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/#board">8</a><a class="extend next" rel="next" href="/page/4/#board"><i class="iconfont icon-arrowright"></i></a>
+    </span>
+  </nav>
+
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://github.com/davidlii" target="_blank" rel="nofollow noopener"><span>Davidlii</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
   
 
   
-    <div class="guide-pager">
-  
-    <a href="/page/2/"><span class="page-arrow">← </span>Prev</a>
-  
-  
-    <a href="/page/4/">Next<span class="page-arrow"> →</span></a>
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        Views: 
+        <span id="busuanzi_value_site_pv"></span>
+        
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        Visitors: 
+        <span id="busuanzi_value_site_uv"></span>
+        
+      </span>
+    
+    
   
 </div>
+
   
-</main>
-
-
-    <div class="scroll-top">
-  <span class="arrow-icon"></span>
+  
+  
 </div>
-    <footer class="app-footer">
-  <p class="copyright">
-    &copy; 2022 | <a href="https://github.com/davidlii" target="_blank">Davidli</a>
-    <br>
-    <a href="https://hexo.io" target="_blank">Hexo</a> | Theme-<a target="_blank" rel="noopener" href="https://github.com/yanm1ng">yanm1ng</a>
-  </p>
-</footer>
 
-<script>
-  function async(u, c) {
-    var d = document, t = 'script',
-      o = d.createElement(t),
-      s = d.getElementsByTagName(t)[0];
-    o.src = u;
-    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
-    s.parentNode.insertBefore(o, s);
-  }
-</script>
-<script>
-  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
-    FastClick.attach(document.body);
-  })
-</script>
+  </footer>
 
-<script>
-  var hasLine = 'true';
-  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
-    $('figure pre').each(function(i, block) {
-      var figure = $(this).parents('figure');
-      if (hasLine === 'false') {
-        figure.find('.gutter').hide();
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
       }
-      var lang = figure.attr('class').split(' ')[1] || 'code';
-      var codeHtml = $(this).html();
-      var codeTag = document.createElement('code');
-      codeTag.className = lang;
-      codeTag.innerHTML = codeHtml;
-      $(this).attr('class', '').empty().html(codeTag);
-      figure.attr('data-lang', lang.toUpperCase());
-      hljs.highlightBlock(block);
-    });
-  })
-</script>
-<!-- Baidu Tongji -->
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
 
 
-<script src="/js/script.js"></script>
 
-  </body>
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
 </html>

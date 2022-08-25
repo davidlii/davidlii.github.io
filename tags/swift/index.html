@@ -1,631 +1,434 @@
+
+
 <!DOCTYPE html>
-<html>
-  <head>
-  <meta http-equiv="content-type" content="text/html; charset=utf-8">
-  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
-  <meta name="description" content="This is Davidli&#39;s blog ~">
-  <meta name="keyword" content="hexo-theme, vuejs">
-  
-    <link rel="shortcut icon" type="image/ico" href="/image/logo.png"/> 
-  
-  <title>
-    
-      Davidli
-    
-  </title>
-  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
-  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
-  
-<link rel="stylesheet" href="/css/style.css">
-<link rel="stylesheet" href="/css/plugins/gitment.css">
-
-  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
-  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
-  
-<script src="/js/qrious.js"></script>
-<script src="/js/gitment.js"></script>
-
-  
-  
-    <!-- MathJax support START -->
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      });
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      });
-    </script>
-    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <!-- MathJax support END -->
-  
+<html lang="zh-Hans" data-default-color-scheme=auto>
 
 
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="Davidli">
+  
+    <meta name="description" content="This is Davidli&#39;s blog ~">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Tags - Swift">
+<meta property="og:url" content="http://yoursite.com/tags/Swift/index.html">
+<meta property="og:site_name" content="Davidli">
+<meta property="og:description" content="This is Davidli&#39;s blog ~">
+<meta property="og:locale">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Davidli">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>Tags - Swift - Davidli</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"yoursite.com","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
 <meta name="generator" content="Hexo 6.2.0"></head>
-<div class="wechat-share">
-  <img src="/css/images/logo.png" />
-</div>
 
-  <body>
-    <header class="header fixed-header">
-  <div class="header-container">
-    <a class="home-link" href="/">
-      <div class="logo"></div>
-      <span>Davidli</span>
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 80vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Davidli</strong>
     </a>
-    <ul class="right-list">
-      
-        <li class="list-item">
-          
-            <a href="/" class="item-link">Davidli</a>
-          
-        </li>
-      
-        <li class="list-item">
-          
-            <a href="/archives/" class="item-link">归档</a>
-          
-        </li>
-      
-        <li class="list-item">
-          
-            <a href="/tags/" class="item-link">标签</a>
-          
-        </li>
-      
-        <li class="list-item">
-          
-            <a href="/about/" class="item-link">关于</a>
-          
-        </li>
-      
-    </ul>
-    <div class="menu">
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-    </div>
-    <div class="menu-mask">
-      <ul class="menu-list">
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
         
-          <li class="menu-item">
-            
-              <a href="/" class="menu-link">Davidli</a>
-            
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                Categories
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                Tags
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
           </li>
+          
         
-          <li class="menu-item">
-            
-              <a href="/archives/" class="menu-link">归档</a>
-            
-          </li>
         
-          <li class="menu-item">
-            
-              <a href="/tags/" class="menu-link">标签</a>
-            
-          </li>
-        
-          <li class="menu-item">
-            
-              <a href="/about/" class="menu-link">关于</a>
-            
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
           </li>
         
       </ul>
     </div>
   </div>
-</header>
+</nav>
 
-    <div id="article-banner">
-  <h2>Archives</h2>
-  <p class="post-date">文章归档</p>
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Tags - Swift"></span>
+          
+        </div>
+
+        
+      </div>
+
+      
+        <div class="scroll-down-bar">
+          <i class="iconfont icon-arrowdown"></i>
+        </div>
+      
+    </div>
+  </div>
 </div>
-<main class="app-body" id="archives">
-  
-  
-  
-    <section class="time-section">
-  <h1 class="section-year">
-    2022
-  </h1>
-  <div class="section-list">
-    
-    
-      <div class="section-list-item">
-        <a href="/2022/01/09/dart.html" class="archive-title">Dart语言入门</a>
-        <p class="archive-date">01-09</p>
-      </div>
-    
-  </div>
-</section>
-  
-    <section class="time-section">
-  <h1 class="section-year">
-    2021
-  </h1>
-  <div class="section-list">
-    
-    
-      <div class="section-list-item">
-        <a href="/2021/06/06/RAC-sig-filter.html" class="archive-title">RAC-数据的过滤与转换</a>
-        <p class="archive-date">06-06</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2021/06/01/RAC-sig-order.html" class="archive-title">RAC-信号的组合</a>
-        <p class="archive-date">06-01</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2021/05/25/RAC-async.html" class="archive-title">RAC-异步行为</a>
-        <p class="archive-date">05-25</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2021/05/25/RAC-signal.html" class="archive-title">RAC-信号与订阅者</a>
-        <p class="archive-date">05-25</p>
-      </div>
-    
-  </div>
-</section>
-  
-    <section class="time-section">
-  <h1 class="section-year">
-    2020
-  </h1>
-  <div class="section-list">
-    
-    
-      <div class="section-list-item">
-        <a href="/2020/12/21/modules-protocol.html" class="archive-title">组件化-面向协议方案</a>
-        <p class="archive-date">12-21</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2020/11/12/modules-runtime.html" class="archive-title">组件化-反射方案</a>
-        <p class="archive-date">11-12</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2020/09/03/modules-url.html" class="archive-title">组件化-URL路由方案</a>
-        <p class="archive-date">09-03</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2020/09/01/patterns.html" class="archive-title">常用架构模式</a>
-        <p class="archive-date">09-01</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2020/04/17/reveal.html" class="archive-title">界面调试工具：Reveal</a>
-        <p class="archive-date">04-17</p>
-      </div>
-    
-  </div>
-</section>
-  
-    <section class="time-section">
-  <h1 class="section-year">
-    2019
-  </h1>
-  <div class="section-list">
-    
-    
-      <div class="section-list-item">
-        <a href="/2019/08/31/podspec.html" class="archive-title">搭建自己的pod库</a>
-        <p class="archive-date">08-31</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2019/04/18/majia.html" class="archive-title">分包配置</a>
-        <p class="archive-date">04-18</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2019/04/02/safeapp.html" class="archive-title">应用的安全</a>
-        <p class="archive-date">04-02</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2019/03/31/frida.html" class="archive-title">frida一键砸壳</a>
-        <p class="archive-date">03-31</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2019/03/28/jailbreak-ios12.html" class="archive-title">iOS12越狱填坑</a>
-        <p class="archive-date">03-28</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2019/03/25/code_confusion.html" class="archive-title">代码混淆、shell 脚本自动替换</a>
-        <p class="archive-date">03-25</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2019/03/23/shell-ipa.html" class="archive-title">Shell脚本打包与上传</a>
-        <p class="archive-date">03-23</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2019/03/22/iosreverse.html" class="archive-title">iOS 应用逆向工程</a>
-        <p class="archive-date">03-22</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2019/03/16/mach_o.html" class="archive-title">Mach-O</a>
-        <p class="archive-date">03-16</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2019/03/15/resign.html" class="archive-title">ipa 重新签名</a>
-        <p class="archive-date">03-15</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2019/02/25/launch.html" class="archive-title">App 的启动过程</a>
-        <p class="archive-date">02-25</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2019/02/15/compile.html" class="archive-title">编译器</a>
-        <p class="archive-date">02-15</p>
-      </div>
-    
-  </div>
-</section>
-  
-    <section class="time-section">
-  <h1 class="section-year">
-    2018
-  </h1>
-  <div class="section-list">
-    
-    
-      <div class="section-list-item">
-        <a href="/2018/12/12/static-dynamic.html" class="archive-title">派发机制</a>
-        <p class="archive-date">12-12</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2018/10/09/algorithm.html" class="archive-title">常用排序算法</a>
-        <p class="archive-date">10-09</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2018/09/15/swift-dynamic.html" class="archive-title">Swift-@objc\@objcMember\dynamic</a>
-        <p class="archive-date">09-15</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2018/09/14/swift-map.html" class="archive-title">Swift高阶函数</a>
-        <p class="archive-date">09-14</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2018/09/13/swift-faq.html" class="archive-title">Swift 中的常见问题</a>
-        <p class="archive-date">09-13</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2018/09/02/swift-mixmatch.html" class="archive-title">Swift 与 OC 的混编</a>
-        <p class="archive-date">09-02</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2018/08/31/swift-kvo-observer.html" class="archive-title">Swift 中监听属性变化</a>
-        <p class="archive-date">08-31</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2018/08/20/swift-refcycle.html" class="archive-title">Swift闭包捕获变量&amp;循环引用</a>
-        <p class="archive-date">08-20</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2018/08/18/swift-error.html" class="archive-title">Swift中Error异常</a>
-        <p class="archive-date">08-18</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2018/08/16/swift-as.html" class="archive-title">Swift-is/as类型检查</a>
-        <p class="archive-date">08-16</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2018/08/15/swift-unwrap.html" class="archive-title">Swift可选拆包</a>
-        <p class="archive-date">08-15</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2018/07/23/fast-github.html" class="archive-title">Github 访问慢的解决方案</a>
-        <p class="archive-date">07-23</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2018/07/11/dsym.html" class="archive-title">结合dSYM文件分析crash日志</a>
-        <p class="archive-date">07-11</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2018/06/22/autolayout.html" class="archive-title">约束与布局</a>
-        <p class="archive-date">06-22</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2018/06/15/str-modifier.html" class="archive-title">字符串属性的修饰符</a>
-        <p class="archive-date">06-15</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2018/06/14/copy.html" class="archive-title">拷贝相关知识点</a>
-        <p class="archive-date">06-14</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2018/04/13/kvo.html" class="archive-title">KVO 的底层实现</a>
-        <p class="archive-date">04-13</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2018/04/12/kvc.html" class="archive-title">KVC 的底层实现</a>
-        <p class="archive-date">04-12</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2018/03/15/block.html" class="archive-title">block的实现</a>
-        <p class="archive-date">03-15</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2018/01/31/source_code_afn.html" class="archive-title">AFNetworking</a>
-        <p class="archive-date">01-31</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2018/01/28/source_code_sd.html" class="archive-title">SDWebImage</a>
-        <p class="archive-date">01-28</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2018/01/21/autoreleasepool.html" class="archive-title">OC中的内存管理</a>
-        <p class="archive-date">01-21</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2018/01/20/reuse_cell.html" class="archive-title">Cell重用、卡顿、离屏渲染</a>
-        <p class="archive-date">01-20</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2018/01/14/retain_circle.html" class="archive-title">循环引用问题</a>
-        <p class="archive-date">01-14</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2018/01/09/framework.html" class="archive-title">静态库 &amp; 动态库、.a &amp; .framework、制作库</a>
-        <p class="archive-date">01-09</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2018/01/07/uiresponder.html" class="archive-title">事件传递 &amp; 事件响应、hitTest</a>
-        <p class="archive-date">01-07</p>
-      </div>
-    
-  </div>
-</section>
-  
-    <section class="time-section">
-  <h1 class="section-year">
-    2017
-  </h1>
-  <div class="section-list">
-    
-    
-      <div class="section-list-item">
-        <a href="/2017/12/29/draw.html" class="archive-title">图层</a>
-        <p class="archive-date">12-29</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2017/12/25/load-initialize.html" class="archive-title">+load 与 +initialize</a>
-        <p class="archive-date">12-25</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2017/12/24/initializer.html" class="archive-title">构造函数</a>
-        <p class="archive-date">12-24</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2017/12/22/download.html" class="archive-title">iOS 文件下载</a>
-        <p class="archive-date">12-22</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2017/11/28/crash.html" class="archive-title">iOS异常捕获</a>
-        <p class="archive-date">11-28</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2017/11/27/bad_access.html" class="archive-title">内存错误调试</a>
-        <p class="archive-date">11-27</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2017/11/27/weak.html" class="archive-title">weak 的实现原理</a>
-        <p class="archive-date">11-27</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2017/11/25/sandbox.html" class="archive-title">沙盒 &amp; 本地持久化方案</a>
-        <p class="archive-date">11-25</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2017/11/25/udid_idfa.html" class="archive-title">iOS 设备唯一标识符</a>
-        <p class="archive-date">11-25</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2017/11/24/faq.html" class="archive-title">FQA-常见问题</a>
-        <p class="archive-date">11-24</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2017/11/24/memory.html" class="archive-title">虚拟内存分配</a>
-        <p class="archive-date">11-24</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2017/11/24/atomic.html" class="archive-title">atomic一定线程安全吗？</a>
-        <p class="archive-date">11-24</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2017/11/24/property.html" class="archive-title">属性的修饰符</a>
-        <p class="archive-date">11-24</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2017/11/22/http.html" class="archive-title">网络知识点笔记</a>
-        <p class="archive-date">11-22</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2017/11/21/lock.html" class="archive-title">iOS中的八大锁</a>
-        <p class="archive-date">11-21</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2017/11/17/nsoperation.html" class="archive-title">多线程：NSOperation</a>
-        <p class="archive-date">11-17</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2017/11/08/gcd.html" class="archive-title">多线程：GCD</a>
-        <p class="archive-date">11-08</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2017/11/07/nsthread.html" class="archive-title">多线程：NSThread</a>
-        <p class="archive-date">11-07</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2017/09/09/runloop.html" class="archive-title">Runloop</a>
-        <p class="archive-date">09-09</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2017/09/01/runtime_addClass.html" class="archive-title">Runtime：动态增加新类、方法、属性</a>
-        <p class="archive-date">09-01</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2017/09/01/runtime_swizzle.html" class="archive-title">Runtime：黑魔法：方法交换、数组对对象检测</a>
-        <p class="archive-date">09-01</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2017/08/30/runtime_associate.html" class="archive-title">Runtime：对象关联</a>
-        <p class="archive-date">08-30</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2017/08/25/runtime_ivar.html" class="archive-title">Runtime：成员变量、属性及其应用</a>
-        <p class="archive-date">08-25</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2017/08/23/runtime_message.html" class="archive-title">Runtime：消息机制</a>
-        <p class="archive-date">08-23</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2017/08/22/runtime_metaclass.html" class="archive-title">Runtime：元类</a>
-        <p class="archive-date">08-22</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2017/07/24/hello-world.html" class="archive-title">Hello World</a>
-        <p class="archive-date">07-24</p>
-      </div>
-    
-  </div>
-</section>
-  
-</main>
 
-<script>
-  (function () {
-    var url = 'http://yoursite.com/tags/Swift/index.html';
-    $('#article-banner').geopattern(url);
-    $('.header').removeClass('fixed-header');
-  })();
-</script>
-    <div class="scroll-top">
-  <span class="arrow-icon"></span>
 </div>
-    <footer class="app-footer">
-  <p class="copyright">
-    &copy; 2022 | <a href="https://github.com/davidlii" target="_blank">Davidli</a>
-    <br>
-    <a href="https://hexo.io" target="_blank">Hexo</a> | Theme-<a target="_blank" rel="noopener" href="https://github.com/yanm1ng">yanm1ng</a>
-  </p>
-</footer>
 
-<script>
-  function async(u, c) {
-    var d = document, t = 'script',
-      o = d.createElement(t),
-      s = d.getElementsByTagName(t)[0];
-    o.src = u;
-    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
-    s.parentNode.insertBefore(o, s);
-  }
-</script>
-<script>
-  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
-    FastClick.attach(document.body);
-  })
-</script>
+  </header>
 
-<script>
-  var hasLine = 'true';
-  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
-    $('figure pre').each(function(i, block) {
-      var figure = $(this).parents('figure');
-      if (hasLine === 'false') {
-        figure.find('.gutter').hide();
+  <main>
+    
+      <div class="container nopadding-x-md">
+        <div id="board"
+          >
+          
+          <div class="container">
+            <div class="row">
+              <div class="col-12 col-md-10 m-auto">
+                
+
+<div class="list-group">
+  <p class="h4">9 posts in total</p>
+  <hr>
+  
+  
+    
+      
+      <p class="h5">2018</p>
+    
+    <a href="/2018/09/15/swift-dynamic.html" class="list-group-item list-group-item-action">
+      <time>09-15</time>
+      <div class="list-group-item-title">Swift-@objc\@objcMember\dynamic</div>
+    </a>
+  
+    
+    <a href="/2018/09/14/swift-map.html" class="list-group-item list-group-item-action">
+      <time>09-14</time>
+      <div class="list-group-item-title">Swift高阶函数</div>
+    </a>
+  
+    
+    <a href="/2018/09/13/swift-faq.html" class="list-group-item list-group-item-action">
+      <time>09-13</time>
+      <div class="list-group-item-title">Swift 中的常见问题</div>
+    </a>
+  
+    
+    <a href="/2018/09/02/swift-mixmatch.html" class="list-group-item list-group-item-action">
+      <time>09-02</time>
+      <div class="list-group-item-title">Swift 与 OC 的混编</div>
+    </a>
+  
+    
+    <a href="/2018/08/31/swift-kvo-observer.html" class="list-group-item list-group-item-action">
+      <time>08-31</time>
+      <div class="list-group-item-title">Swift 中监听属性变化</div>
+    </a>
+  
+    
+    <a href="/2018/08/20/swift-refcycle.html" class="list-group-item list-group-item-action">
+      <time>08-20</time>
+      <div class="list-group-item-title">Swift闭包捕获变量&amp;循环引用</div>
+    </a>
+  
+    
+    <a href="/2018/08/18/swift-error.html" class="list-group-item list-group-item-action">
+      <time>08-18</time>
+      <div class="list-group-item-title">Swift中Error异常</div>
+    </a>
+  
+    
+    <a href="/2018/08/16/swift-as.html" class="list-group-item list-group-item-action">
+      <time>08-16</time>
+      <div class="list-group-item-title">Swift-is/as类型检查</div>
+    </a>
+  
+    
+    <a href="/2018/08/15/swift-unwrap.html" class="list-group-item list-group-item-action">
+      <time>08-15</time>
+      <div class="list-group-item-title">Swift可选拆包</div>
+    </a>
+  
+</div>
+
+
+
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://github.com/davidlii" target="_blank" rel="nofollow noopener"><span>Davidlii</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        Views: 
+        <span id="busuanzi_value_site_pv"></span>
+        
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        Visitors: 
+        <span id="busuanzi_value_site_uv"></span>
+        
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
       }
-      var lang = figure.attr('class').split(' ')[1] || 'code';
-      var codeHtml = $(this).html();
-      var codeTag = document.createElement('code');
-      codeTag.className = lang;
-      codeTag.innerHTML = codeHtml;
-      $(this).attr('class', '').empty().html(codeTag);
-      figure.attr('data-lang', lang.toUpperCase());
-      hljs.highlightBlock(block);
-    });
-  })
-</script>
-<!-- Baidu Tongji -->
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
 
 
-<script src="/js/script.js"></script>
 
-  </body>
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
 </html>

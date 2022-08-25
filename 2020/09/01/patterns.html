@@ -1,145 +1,295 @@
+
+
 <!DOCTYPE html>
-<html>
-  <head>
-  <meta http-equiv="content-type" content="text/html; charset=utf-8">
-  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
-  <meta name="description" content="This is Davidli&#39;s blog ~">
-  <meta name="keyword" content="hexo-theme, vuejs">
-  
-    <link rel="shortcut icon" type="image/ico" href="/image/logo.png"/> 
-  
-  <title>
-    
-      常用架构模式 | Davidli
-    
-  </title>
-  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
-  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
-  
-<link rel="stylesheet" href="/css/style.css">
-<link rel="stylesheet" href="/css/plugins/gitment.css">
-
-  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
-  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
-  
-<script src="/js/qrious.js"></script>
-<script src="/js/gitment.js"></script>
-
-  
-  
-    <!-- MathJax support START -->
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      });
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      });
-    </script>
-    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <!-- MathJax support END -->
-  
+<html lang="zh-Hans" data-default-color-scheme=auto>
 
 
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="Davidli">
+  
+    <meta name="description" content="架构模式 架构模式，用于描述软件系统里的基本的结构组织或纲要。架构模式提供了一些定义好的子系统，指定它们的责任，并给出把它们组织在一起的法则和指南。常见的架构模式有：分层模式、微核模式、管道与过滤器、MVC模式、REST模式、SOA模式。  #为什么会出现架构模式？ 架构模式诞生于软件开发的最大难题：需求变更。需求变更往往导致软件代码的修改。而有些代码尤其是一些大型系统，其代码理解起来会非常困难，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="常用架构模式">
+<meta property="og:url" content="http://yoursite.com/2020/09/01/patterns.html">
+<meta property="og:site_name" content="Davidli">
+<meta property="og:description" content="架构模式 架构模式，用于描述软件系统里的基本的结构组织或纲要。架构模式提供了一些定义好的子系统，指定它们的责任，并给出把它们组织在一起的法则和指南。常见的架构模式有：分层模式、微核模式、管道与过滤器、MVC模式、REST模式、SOA模式。  #为什么会出现架构模式？ 架构模式诞生于软件开发的最大难题：需求变更。需求变更往往导致软件代码的修改。而有些代码尤其是一些大型系统，其代码理解起来会非常困难，">
+<meta property="og:locale">
+<meta property="og:image" content="https://davidlii.nos-eastchina1.126.net/pic_traditional_mvc.jpeg">
+<meta property="og:image" content="https://davidlii.nos-eastchina1.126.net/pic_cocoa_mvc.jpeg">
+<meta property="og:image" content="https://davidlii.nos-eastchina1.126.net/pic_mass_controller.png">
+<meta property="og:image" content="https://davidlii.nos-eastchina1.126.net/pic_arch_mvp.png">
+<meta property="og:image" content="https://davidlii.nos-eastchina1.126.net/pic_arch_mvvm.png">
+<meta property="article:published_time" content="2020-09-01T11:02:04.000Z">
+<meta property="article:modified_time" content="2018-05-31T15:25:04.000Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="架构">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://davidlii.nos-eastchina1.126.net/pic_traditional_mvc.jpeg">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>常用架构模式 - Davidli</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"yoursite.com","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
 <meta name="generator" content="Hexo 6.2.0"></head>
-<div class="wechat-share">
-  <img src="/css/images/logo.png" />
-</div>
 
-  <body>
-    <header class="header fixed-header">
-  <div class="header-container">
-    <a class="home-link" href="/">
-      <div class="logo"></div>
-      <span>Davidli</span>
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Davidli</strong>
     </a>
-    <ul class="right-list">
-      
-        <li class="list-item">
-          
-            <a href="/" class="item-link">Davidli</a>
-          
-        </li>
-      
-        <li class="list-item">
-          
-            <a href="/archives/" class="item-link">归档</a>
-          
-        </li>
-      
-        <li class="list-item">
-          
-            <a href="/tags/" class="item-link">标签</a>
-          
-        </li>
-      
-        <li class="list-item">
-          
-            <a href="/about/" class="item-link">关于</a>
-          
-        </li>
-      
-    </ul>
-    <div class="menu">
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-    </div>
-    <div class="menu-mask">
-      <ul class="menu-list">
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
         
-          <li class="menu-item">
-            
-              <a href="/" class="menu-link">Davidli</a>
-            
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                Categories
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                Tags
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
           </li>
+          
         
-          <li class="menu-item">
-            
-              <a href="/archives/" class="menu-link">归档</a>
-            
-          </li>
         
-          <li class="menu-item">
-            
-              <a href="/tags/" class="menu-link">标签</a>
-            
-          </li>
-        
-          <li class="menu-item">
-            
-              <a href="/about/" class="menu-link">关于</a>
-            
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
           </li>
         
       </ul>
     </div>
   </div>
-</header>
+</nav>
 
-    <div id="article-banner">
-  <h2>常用架构模式</h2>
-  <p class="post-date">2020-09-01</p>
-  <div class="arrow-down">
-    <a href="javascript:;"></a>
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="常用架构模式"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2020-09-01 19:02" pubdate>
+          September 1, 2020 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          7.3k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          62 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
   </div>
 </div>
-<main class="app-body flex-box">
-  <!-- Article START -->
-  <article class="post-article">
-    <section class="markdown-content"><h3 id="架构模式"><a href="#架构模式" class="headerlink" title="架构模式"></a>架构模式</h3><blockquote>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">常用架构模式</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h3 id="架构模式"><a href="#架构模式" class="headerlink" title="架构模式"></a>架构模式</h3><blockquote>
 <p>架构模式，用于描述软件系统里的基本的结构组织或纲要。架构模式提供了一些定义好的子系统，指定它们的责任，并给出把它们组织在一起的法则和指南。常见的架构模式有：分层模式、微核模式、管道与过滤器、MVC模式、REST模式、SOA模式。</p>
 </blockquote>
 <p><strong>#为什么会出现架构模式？</strong><br><br/></p>
@@ -150,10 +300,10 @@
 <p><strong>#概念区分：设计模式</strong><br><br/></p>
 <p>设计模式是一套被反复使用的、多数人知晓的、经过分类编目的、代码设计经验的总结。使用设计模式是为了重用代码、让代码更容易被他人理解、保证代码可靠性。设计模式一共有23种，常见的有工厂模式、单例模式、代理模式、观察者模式、策略模式等。<br><br/></p>
 <p>一个构架往往用到多个设计模式，如<code>mvc</code>架构是观察者模式、策略模式和组合模式的演变。</p>
-<p><img src="https://davidlii.nos-eastchina1.126.net/pic_traditional_mvc.jpeg" alt="传统MVC"></p>
+<p><img src="https://davidlii.nos-eastchina1.126.net/pic_traditional_mvc.jpeg" srcset="/img/loading.gif" lazyload alt="传统MVC"></p>
 <p>可以看到，MVC架构下，项目中的代码被整合为视图、模型、控制器三个角色。当用户操作一个视图时，会产生一个事件并交给控制器；控制器收到事件后会采用一种<code>策略</code>：要求模型更新数据的状态或者要求视图更新样式；模型中数据变化后则会<code>通知</code>视图更新界面。</p>
 <h3 id="1-Apple版的-MVC"><a href="#1-Apple版的-MVC" class="headerlink" title="1.Apple版的 MVC"></a>1.Apple版的 MVC</h3><p>上面是传统的MVC模式，可以看到，虽然也区分了三种角色，但是它们互相之间都有耦合，尤其是模型和视图支架。而实际上视图和模型往往是最需要复用的，所以，最合理的设计是保持二者的独立性。因此 Apple 设计了自己版本的MVC，通过控制器来实现视图与模型的解耦。</p>
-<h4 id="1-1-角色划分"><a href="#1-1-角色划分" class="headerlink" title="1.1.角色划分"></a>1.1.角色划分</h4><p><img src="https://davidlii.nos-eastchina1.126.net/pic_cocoa_mvc.jpeg" alt="cocoaMVC"></p>
+<h4 id="1-1-角色划分"><a href="#1-1-角色划分" class="headerlink" title="1.1.角色划分"></a>1.1.角色划分</h4><p><img src="https://davidlii.nos-eastchina1.126.net/pic_cocoa_mvc.jpeg" srcset="/img/loading.gif" lazyload alt="cocoaMVC"></p>
 <p><strong>模型</strong><br><br/></p>
 <p>持有数据、封装处理数据的业务逻辑，提供数据接口给 Controller。理想中，模型层不应与视图层有任何关联。<br><br/></p>
 <p><strong>视图</strong><br><br/></p>
@@ -163,11 +313,11 @@
 <p>从角色划分可以看出，理想的 Cocoa MVC 模式中，模型、控制器与视图三层分工明确，模型和视图之间相互独立，控制器扮演二者中间人的角色。</p>
 <h4 id="1-2-现实中的MVC"><a href="#1-2-现实中的MVC" class="headerlink" title="1.2.现实中的MVC"></a>1.2.现实中的MVC</h4><p>理想中，视图与控制器相互独立。但实际iOS开发过程中，它们总是结对出现，每个<code>ViewController</code>中都有一个<code>View</code>，这就导致视图层紧密耦合在控制层里。控制器要负责维护视图的生命周期，响应用户在视图层的操作，实现诸如<code>Tableview</code>等视图的代理等。。MVC 事实上变成了 M-VC。<br><br/></p>
 <p>理想中，视图与模型相互独立。但实际中，你可能会遇到这总情形：初始化<code>cell</code>时，经常会直接传入<code>Model</code>对象，形成视图与模型的耦合。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">- (UITableViewCell *)tableView:(UITableView *)tableView</span><br><span class="line">cellForRowAtIndexPath:(NSIndexPath *)indexPath</span><br><span class="line">&#123;</span><br><span class="line">    CustomTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@&quot;Goods&quot;];</span><br><span class="line">    cell.goods = self.dataSource[indexPath.row];</span><br><span class="line">    return cell;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs objectivec">- (<span class="hljs-built_in">UITableViewCell</span> *)tableView:(<span class="hljs-built_in">UITableView</span> *)tableView<br>cellForRowAtIndexPath:(<span class="hljs-built_in">NSIndexPath</span> *)indexPath<br>&#123;<br>    CustomTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<span class="hljs-string">@&quot;Goods&quot;</span>];<br>    cell.goods = <span class="hljs-keyword">self</span>.dataSource[indexPath.row];<br>    <span class="hljs-keyword">return</span> cell;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>理想中，模型应该持有数据、封装处理数据的业务逻辑，提供数据接口，但有些实践中，模型被简单的设计为只有一些属性的类，数据相关的业务逻辑都被放在了控制器中。当需要修改数据的业务逻辑时，如更换网络通讯库、更新json解析时的某个字段，就需要在控制器中进行修改。<br><br/></p>
-<p>理想中，上面的<code>cell</code>不引用模型对象，那么<code>cell</code>的设置就要放到控制器中，这会增加控制器中的代码量。另外，网络请求、工具方法等显然不适合放在视图和模型层里，而一旦放在控制器里，同样也会造成控制器的臃肿。这些就是<code>Massive View Controller</code>的由来，形象表示如下：<br><img src="https://davidlii.nos-eastchina1.126.net/pic_mass_controller.png" alt="mass"><br>当业务逻辑和展示逻辑都在控制器中时，就很难进行单元测试。</p>
-<h3 id="2-MVP架构模式"><a href="#2-MVP架构模式" class="headerlink" title="2.MVP架构模式"></a>2.MVP架构模式</h3><h4 id="2-1-角色划分"><a href="#2-1-角色划分" class="headerlink" title="2.1.角色划分"></a>2.1.角色划分</h4><p><img src="https://davidlii.nos-eastchina1.126.net/pic_arch_mvp.png" alt="iOS架构模式-MVP"></p>
+<p>理想中，上面的<code>cell</code>不引用模型对象，那么<code>cell</code>的设置就要放到控制器中，这会增加控制器中的代码量。另外，网络请求、工具方法等显然不适合放在视图和模型层里，而一旦放在控制器里，同样也会造成控制器的臃肿。这些就是<code>Massive View Controller</code>的由来，形象表示如下：<br><img src="https://davidlii.nos-eastchina1.126.net/pic_mass_controller.png" srcset="/img/loading.gif" lazyload alt="mass"><br>当业务逻辑和展示逻辑都在控制器中时，就很难进行单元测试。</p>
+<h3 id="2-MVP架构模式"><a href="#2-MVP架构模式" class="headerlink" title="2.MVP架构模式"></a>2.MVP架构模式</h3><h4 id="2-1-角色划分"><a href="#2-1-角色划分" class="headerlink" title="2.1.角色划分"></a>2.1.角色划分</h4><p><img src="https://davidlii.nos-eastchina1.126.net/pic_arch_mvp.png" srcset="/img/loading.gif" lazyload alt="iOS架构模式-MVP"></p>
 <p><strong>模型</strong><br><br/></p>
 <p>与 MVC 中的模型类似。<br><br/></p>
 <p><strong>视图</strong><br><br/></p>
@@ -177,12 +327,12 @@
 <br/>
 MVP 是由 MVC 演化而来的，它对 MVC 中的控制器进行了优化而生成`Presenter`。`P层`和 MVC 中的控制器一样，负责核心逻辑。但不一样的是`P层`通过接口和协议进行数据传递，从而使视图和模型解耦，更加专注于自身业务逻辑。同时，因为主要的逻辑在`P层`，所以可以方便的对其进行单元测试。
 
-<h4 id="2-2-示例"><a href="#2-2-示例" class="headerlink" title="2.2.示例:"></a>2.2.示例:</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line">#import &quot;ViewController.h&quot;</span><br><span class="line">#import &quot;Presenter.h&quot;</span><br><span class="line">#import &quot;UserViewProtocol.h&quot;</span><br><span class="line"></span><br><span class="line">@interface ViewController ()</span><br><span class="line">&lt;UserViewProtocol,</span><br><span class="line">UITableViewDataSource&gt;</span><br><span class="line"></span><br><span class="line">@property (nonatomic,strong) NSArray *friendlyUIData;</span><br><span class="line">@property (nonatomic,strong) Presenter *presenter;</span><br><span class="line">@property (weak, nonatomic) IBOutlet UITableView *tableview;</span><br><span class="line">@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *indicator;</span><br><span class="line"></span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation ViewController</span><br><span class="line"></span><br><span class="line">- (void)viewDidLoad</span><br><span class="line">&#123;</span><br><span class="line">	[super viewDidLoad];</span><br><span class="line">	self.presenter = [Presenter new];</span><br><span class="line">	[self.presenter attachView:self];</span><br><span class="line">	[self.presenter fetchData];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#pragma mark -Tableview datasource</span><br><span class="line">- (NSInteger)tableView:(UITableView *)tableView </span><br><span class="line">numberOfRowsInSection:(NSInteger)section</span><br><span class="line">&#123;</span><br><span class="line">	return self.friendlyUIData.count;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (UITableViewCell *)tableView:(UITableView *)tableView</span><br><span class="line">         cellForRowAtIndexPath:(NSIndexPath *)indexPath</span><br><span class="line">&#123;</span><br><span class="line">	UITableViewCell *cell = [tableView </span><br><span class="line">	dequeueReusableCellWithIdentifier:@&quot;cell&quot; forIndexPath:indexPath];</span><br><span class="line">	cell.textLabel.text = [self.friendlyUIData[indexPath.row] </span><br><span class="line">	valueForKey:@&quot;name&quot;];</span><br><span class="line"></span><br><span class="line">	return cell;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#pragma mark -UserView Protocol</span><br><span class="line">-(void)userViewDataSource:(NSArray*)data</span><br><span class="line">&#123;</span><br><span class="line">	self.friendlyUIData = data;</span><br><span class="line">	[self.tableview reloadData];</span><br><span class="line">&#125;</span><br><span class="line">-(void) showIndicator</span><br><span class="line">&#123;</span><br><span class="line">	self.indicator.hidden = NO;</span><br><span class="line">&#125;</span><br><span class="line">- (void) hideIndicator</span><br><span class="line">&#123;</span><br><span class="line">	self.indicator.hidden = YES;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="2-2-示例"><a href="#2-2-示例" class="headerlink" title="2.2.示例:"></a>2.2.示例:</h4><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-meta">#import <span class="hljs-string">&quot;ViewController.h&quot;</span></span><br><span class="hljs-meta">#import <span class="hljs-string">&quot;Presenter.h&quot;</span></span><br><span class="hljs-meta">#import <span class="hljs-string">&quot;UserViewProtocol.h&quot;</span></span><br><br><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">ViewController</span> ()</span><br>&lt;UserViewProtocol,<br><span class="hljs-built_in">UITableViewDataSource</span>&gt;<br><br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>,<span class="hljs-keyword">strong</span>) <span class="hljs-built_in">NSArray</span> *friendlyUIData;<br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>,<span class="hljs-keyword">strong</span>) Presenter *presenter;<br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">weak</span>, <span class="hljs-keyword">nonatomic</span>) <span class="hljs-keyword">IBOutlet</span> <span class="hljs-built_in">UITableView</span> *tableview;<br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">weak</span>, <span class="hljs-keyword">nonatomic</span>) <span class="hljs-keyword">IBOutlet</span> <span class="hljs-built_in">UIActivityIndicatorView</span> *indicator;<br><br><span class="hljs-keyword">@end</span><br><br><span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">ViewController</span></span><br><br>- (<span class="hljs-type">void</span>)viewDidLoad<br>&#123;<br>	[<span class="hljs-variable language_">super</span> viewDidLoad];<br>	<span class="hljs-keyword">self</span>.presenter = [Presenter new];<br>	[<span class="hljs-keyword">self</span>.presenter attachView:<span class="hljs-keyword">self</span>];<br>	[<span class="hljs-keyword">self</span>.presenter fetchData];<br>&#125;<br><br><span class="hljs-meta">#<span class="hljs-keyword">pragma</span> mark -Tableview datasource</span><br>- (<span class="hljs-built_in">NSInteger</span>)tableView:(<span class="hljs-built_in">UITableView</span> *)tableView <br>numberOfRowsInSection:(<span class="hljs-built_in">NSInteger</span>)section<br>&#123;<br>	<span class="hljs-keyword">return</span> <span class="hljs-keyword">self</span>.friendlyUIData.count;<br>&#125;<br><br>- (<span class="hljs-built_in">UITableViewCell</span> *)tableView:(<span class="hljs-built_in">UITableView</span> *)tableView<br>         cellForRowAtIndexPath:(<span class="hljs-built_in">NSIndexPath</span> *)indexPath<br>&#123;<br>	<span class="hljs-built_in">UITableViewCell</span> *cell = [tableView <br>	dequeueReusableCellWithIdentifier:<span class="hljs-string">@&quot;cell&quot;</span> forIndexPath:indexPath];<br>	cell.textLabel.text = [<span class="hljs-keyword">self</span>.friendlyUIData[indexPath.row] <br>	valueForKey:<span class="hljs-string">@&quot;name&quot;</span>];<br><br>	<span class="hljs-keyword">return</span> cell;<br>&#125;<br><br><span class="hljs-meta">#<span class="hljs-keyword">pragma</span> mark -UserView Protocol</span><br>-(<span class="hljs-type">void</span>)userViewDataSource:(<span class="hljs-built_in">NSArray</span>*)data<br>&#123;<br>	<span class="hljs-keyword">self</span>.friendlyUIData = data;<br>	[<span class="hljs-keyword">self</span>.tableview reloadData];<br>&#125;<br>-(<span class="hljs-type">void</span>) showIndicator<br>&#123;<br>	<span class="hljs-keyword">self</span>.indicator.hidden = <span class="hljs-literal">NO</span>;<br>&#125;<br>- (<span class="hljs-type">void</span>) hideIndicator<br>&#123;<br>	<span class="hljs-keyword">self</span>.indicator.hidden = <span class="hljs-literal">YES</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p><code>ViewController</code>与其中的<code>tableview</code>共同构成了 MVP 中的视图层，负责界面的显示和更新。它实现了<code>tableview</code>的协议及用户交互的协议<code>UserViewProtocol</code>。它会等待 <code>Presenter</code>的命令来被动的更新UI。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">//Presenter.h</span><br><span class="line">#import &lt;Foundation/Foundation.h&gt;</span><br><span class="line">#import &quot;UserViewProtocol.h&quot;</span><br><span class="line"></span><br><span class="line">@interface Presenter : NSObject</span><br><span class="line">-(void)attachView:(id &lt;UserViewProtocol&gt;)view;</span><br><span class="line">-(void)fetchData;//模拟获取网络数据</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-comment">//Presenter.h</span><br><span class="hljs-meta">#import <span class="hljs-string">&lt;Foundation/Foundation.h&gt;</span></span><br><span class="hljs-meta">#import <span class="hljs-string">&quot;UserViewProtocol.h&quot;</span></span><br><br><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">Presenter</span> : <span class="hljs-title">NSObject</span></span><br>-(<span class="hljs-type">void</span>)attachView:(<span class="hljs-type">id</span> &lt;UserViewProtocol&gt;)view;<br>-(<span class="hljs-type">void</span>)fetchData;<span class="hljs-comment">//模拟获取网络数据</span><br><span class="hljs-keyword">@end</span><br></code></pre></td></tr></table></figure>
 
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">//Presenter.m</span><br><span class="line">#import &quot;Presenter.h&quot;</span><br><span class="line">#import &quot;UserService.h&quot;</span><br><span class="line"></span><br><span class="line">@interface Presenter()</span><br><span class="line">@property (nonatomic,strong) UserService *userService;</span><br><span class="line">@property (nonatomic,weak) id &lt;UserViewProtocol&gt; attachView;</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation Presenter</span><br><span class="line"></span><br><span class="line">- (void)attachView:(id&lt;UserViewProtocol&gt;)view</span><br><span class="line">&#123;</span><br><span class="line">	self.attachView = view;</span><br><span class="line">	self.userService  = [UserService new];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">-(void)fetchData&#123;</span><br><span class="line">	[self getUserDatas];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">-(void)getUserDatas&#123;</span><br><span class="line">	[self.attachView showIndicator];</span><br><span class="line">    //模拟网络请求</span><br><span class="line">	[_userService getUserInfosSuccess:^(NSDictionary *dic)</span><br><span class="line">    &#123;</span><br><span class="line">        //获取到数据 告诉View更新界面</span><br><span class="line">		[self.attachView hideIndicator];</span><br><span class="line">		[self.attachView userViewDataSource:</span><br><span class="line">		[self processOriginDataToUIFriendlyData:userArr]];</span><br><span class="line">	&#125; andFail:^(NSDictionary *dic) &#123;</span><br><span class="line">	&#125;];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//处理数据，输出成UI需要的数据</span><br><span class="line">-(NSArray *)processOriginDataToUIFriendlyData:(NSArray *) originData</span><br><span class="line">&#123;</span><br><span class="line">	//略..</span><br><span class="line">	return friendlyUIData;</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-comment">//Presenter.m</span><br><span class="hljs-meta">#import <span class="hljs-string">&quot;Presenter.h&quot;</span></span><br><span class="hljs-meta">#import <span class="hljs-string">&quot;UserService.h&quot;</span></span><br><br><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">Presenter</span>()</span><br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>,<span class="hljs-keyword">strong</span>) UserService *userService;<br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>,<span class="hljs-keyword">weak</span>) <span class="hljs-type">id</span> &lt;UserViewProtocol&gt; attachView;<br><span class="hljs-keyword">@end</span><br><br><span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">Presenter</span></span><br><br>- (<span class="hljs-type">void</span>)attachView:(<span class="hljs-type">id</span>&lt;UserViewProtocol&gt;)view<br>&#123;<br>	<span class="hljs-keyword">self</span>.attachView = view;<br>	<span class="hljs-keyword">self</span>.userService  = [UserService new];<br>&#125;<br><br>-(<span class="hljs-type">void</span>)fetchData&#123;<br>	[<span class="hljs-keyword">self</span> getUserDatas];<br>&#125;<br><br>-(<span class="hljs-type">void</span>)getUserDatas&#123;<br>	[<span class="hljs-keyword">self</span>.attachView showIndicator];<br>    <span class="hljs-comment">//模拟网络请求</span><br>	[_userService getUserInfosSuccess:^(<span class="hljs-built_in">NSDictionary</span> *dic)<br>    &#123;<br>        <span class="hljs-comment">//获取到数据 告诉View更新界面</span><br>		[<span class="hljs-keyword">self</span>.attachView hideIndicator];<br>		[<span class="hljs-keyword">self</span>.attachView userViewDataSource:<br>		[<span class="hljs-keyword">self</span> processOriginDataToUIFriendlyData:userArr]];<br>	&#125; andFail:^(<span class="hljs-built_in">NSDictionary</span> *dic) &#123;<br>	&#125;];<br>&#125;<br><br><span class="hljs-comment">//处理数据，输出成UI需要的数据</span><br>-(<span class="hljs-built_in">NSArray</span> *)processOriginDataToUIFriendlyData:(<span class="hljs-built_in">NSArray</span> *) originData<br>&#123;<br>	<span class="hljs-comment">//略..</span><br>	<span class="hljs-keyword">return</span> friendlyUIData;<br>&#125;<br><span class="hljs-keyword">@end</span><br></code></pre></td></tr></table></figure>
 
 <p>其中的-attachView方法中有两个作用：</p>
 <ul>
@@ -190,16 +340,16 @@ MVP 是由 MVC 演化而来的，它对 MVC 中的控制器进行了优化而生
 <li>持有一个<code>UserService</code>对象以发起网络请求。</li>
 </ul>
 <p>当模型中数据发生变化时（如网络请求返回数据），<code>P层</code>会将处理后的数据通过代理反馈给控制器层并由后者更新界面。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">//UserService.h</span><br><span class="line">#import &lt;Foundation/Foundation.h&gt;</span><br><span class="line">typedef void(^SuccessHandler)(NSDictionary *dic);</span><br><span class="line">typedef void(^FailHandler)(NSDictionary *dic);</span><br><span class="line"></span><br><span class="line">//Model层，用来发起网络请求并返回数据给Presenter。</span><br><span class="line">@interface UserService : NSObject</span><br><span class="line">-(void)getUserInfosSuccess:(SuccessHandler )success </span><br><span class="line">andFail:(FailHandler) fail;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-comment">//UserService.h</span><br><span class="hljs-meta">#import <span class="hljs-string">&lt;Foundation/Foundation.h&gt;</span></span><br><span class="hljs-keyword">typedef</span> <span class="hljs-type">void</span>(^SuccessHandler)(<span class="hljs-built_in">NSDictionary</span> *dic);<br><span class="hljs-keyword">typedef</span> <span class="hljs-type">void</span>(^FailHandler)(<span class="hljs-built_in">NSDictionary</span> *dic);<br><br><span class="hljs-comment">//Model层，用来发起网络请求并返回数据给Presenter。</span><br><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">UserService</span> : <span class="hljs-title">NSObject</span></span><br>-(<span class="hljs-type">void</span>)getUserInfosSuccess:(SuccessHandler )success <br>andFail:(FailHandler) fail;<br><span class="hljs-keyword">@end</span><br></code></pre></td></tr></table></figure>
 
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">//UserService.m</span><br><span class="line">#import &quot;UserService.h&quot;</span><br><span class="line"></span><br><span class="line">@implementation UserService</span><br><span class="line"></span><br><span class="line">-(void)getUserInfosSuccess:(SuccessHandler )success </span><br><span class="line">andFail:(FailHandler) fail</span><br><span class="line">&#123;</span><br><span class="line">	NSArray  *result =@[@&#123;@&quot;name&quot;:@&quot;Tom&quot;,@&quot;age&quot;:@25&#125;];</span><br><span class="line">	dispatch_after(dispatch_time(</span><br><span class="line">                                 DISPATCH_TIME_NOW, </span><br><span class="line">                                 (int64_t)(2 * NSEC_PER_SEC)),</span><br><span class="line">                   dispatch_get_main_queue(), ^&#123;</span><br><span class="line">		success(@&#123;@&quot;data&quot;:result&#125;);</span><br><span class="line">	&#125;);</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-comment">//UserService.m</span><br><span class="hljs-meta">#import <span class="hljs-string">&quot;UserService.h&quot;</span></span><br><br><span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">UserService</span></span><br><br>-(<span class="hljs-type">void</span>)getUserInfosSuccess:(SuccessHandler )success <br>andFail:(FailHandler) fail<br>&#123;<br>	<span class="hljs-built_in">NSArray</span>  *result =@[@&#123;<span class="hljs-string">@&quot;name&quot;</span>:<span class="hljs-string">@&quot;Tom&quot;</span>,<span class="hljs-string">@&quot;age&quot;</span>:@<span class="hljs-number">25</span>&#125;];<br>	dispatch_after(dispatch_time(<br>                                 DISPATCH_TIME_NOW, <br>                                 (int64_t)(<span class="hljs-number">2</span> * <span class="hljs-built_in">NSEC_PER_SEC</span>)),<br>                   dispatch_get_main_queue(), ^&#123;<br>		success(@&#123;<span class="hljs-string">@&quot;data&quot;</span>:result&#125;);<br>	&#125;);<br>&#125;<br><span class="hljs-keyword">@end</span><br></code></pre></td></tr></table></figure>
 
 <p>UserService 属于 Model 层，主要用来请求数据给 P层。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">//UserViewProtocol.h</span><br><span class="line">#import &lt;Foundation/Foundation.h&gt;</span><br><span class="line"></span><br><span class="line">@protocol UserViewProtocol &lt;NSObject&gt;</span><br><span class="line"></span><br><span class="line">-(void) userViewDataSource:(NSArray*)data;</span><br><span class="line">-(void) showIndicator;</span><br><span class="line">-(void) hideIndicator;</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-comment">//UserViewProtocol.h</span><br><span class="hljs-meta">#import <span class="hljs-string">&lt;Foundation/Foundation.h&gt;</span></span><br><br><span class="hljs-class"><span class="hljs-keyword">@protocol</span> <span class="hljs-title">UserViewProtocol</span> &lt;<span class="hljs-title">NSObject</span>&gt;</span><br><br>-(<span class="hljs-type">void</span>) userViewDataSource:(<span class="hljs-built_in">NSArray</span>*)data;<br>-(<span class="hljs-type">void</span>) showIndicator;<br>-(<span class="hljs-type">void</span>) hideIndicator;<br><br><span class="hljs-keyword">@end</span><br></code></pre></td></tr></table></figure>
 
 <p>UserViewProtocol 是协议，其中定义了一些方法，这些方法就是<code>P层</code>对视图层发送的命令。示例中 ViewController 实现了此协议，在模型层拿到数据之后，<code>P层</code>会通过代理，告诉 ViewController 来更新UI。<br><br/></p>
 <p>使用 MVP 会增加代码量，但是总体上减少了代码的复杂性。</p>
-<h3 id="3-MVVM架构模式"><a href="#3-MVVM架构模式" class="headerlink" title="3.MVVM架构模式"></a>3.MVVM架构模式</h3><h4 id="3-1-角色划分"><a href="#3-1-角色划分" class="headerlink" title="3.1.角色划分"></a>3.1.角色划分</h4><p><img src="https://davidlii.nos-eastchina1.126.net/pic_arch_mvvm.png" alt="image"></p>
+<h3 id="3-MVVM架构模式"><a href="#3-MVVM架构模式" class="headerlink" title="3.MVVM架构模式"></a>3.MVVM架构模式</h3><h4 id="3-1-角色划分"><a href="#3-1-角色划分" class="headerlink" title="3.1.角色划分"></a>3.1.角色划分</h4><p><img src="https://davidlii.nos-eastchina1.126.net/pic_arch_mvvm.png" srcset="/img/loading.gif" lazyload alt="image"></p>
 <p><strong>模型</strong><br><br/></p>
 <p>与 MVP 中的模型类似。<br><br/></p>
 <p><strong>视图</strong><br><br/></p>
@@ -230,217 +380,346 @@ MVP 是由 MVC 演化而来的，它对 MVC 中的控制器进行了优化而生
 <p>#<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/9acc7498bebb?open_source=weibo_search">©挂着铃铛的兔</a></p>
 <p>#<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/2ad25e2769b5">©西木柚子</a></p>
 <p>#<a target="_blank" rel="noopener" href="https://juejin.im/post/5bcda4796fb9a05d32518ad8">©gzhongcheng-iOS架构设计</a></p>
-</section>
-    <!-- Tags START -->
-    
-      <div class="tags">
-        <span>Tags:</span>
-        
-  <a href="/tags#架构" >
-    <span class="tag-code">架构</span>
-  </a>
 
-      </div>
-    
-    <!-- Tags END -->
-    <!-- NAV START -->
-    
-  <div class="nav-container">
-    <!-- reverse left and right to put prev and next in a more logic postition -->
-    
-      <a class="nav-left" href="/2020/04/17/reveal.html">
-        <span class="nav-arrow">← </span>
-        
-          界面调试工具：Reveal
-        
-      </a>
-    
-    
-      <a class="nav-right" href="/2020/09/03/modules-url.html">
-        
-          组件化-URL路由方案
-        
-        <span class="nav-arrow"> →</span>
-      </a>
-    
-  </div>
-
-    <!-- NAV END -->
-    <!-- 打赏 START -->
-    
-      <div class="money-like">
-        <div class="reward-btn">
-          赏
-          <span class="money-code">
-            <span class="alipay-code">
-              <div class="code-image"></div>
-              <b>使用支付宝打赏</b>
-            </span>
-            <span class="wechat-code">
-              <div class="code-image"></div>
-              <b>使用微信打赏</b>
-            </span>
-          </span>
-        </div>
-        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
-      </div>
-    
-    <!-- 打赏 END -->
-    <!-- 二维码 START -->
-    
-    <!-- 二维码 END -->
-    
-      <!-- No Comment -->
-    
-  </article>
-  <!-- Article END -->
-  <!-- Catalog START -->
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
   
-    <aside class="catalog-container">
-  <div class="toc-main">
-    <strong class="toc-title">Catalog</strong>
-    
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E6%9E%B6%E6%9E%84%E6%A8%A1%E5%BC%8F"><span class="toc-nav-text">架构模式</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1-Apple%E7%89%88%E7%9A%84-MVC"><span class="toc-nav-text">1.Apple版的 MVC</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#1-1-%E8%A7%92%E8%89%B2%E5%88%92%E5%88%86"><span class="toc-nav-text">1.1.角色划分</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#1-2-%E7%8E%B0%E5%AE%9E%E4%B8%AD%E7%9A%84MVC"><span class="toc-nav-text">1.2.现实中的MVC</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-MVP%E6%9E%B6%E6%9E%84%E6%A8%A1%E5%BC%8F"><span class="toc-nav-text">2.MVP架构模式</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-1-%E8%A7%92%E8%89%B2%E5%88%92%E5%88%86"><span class="toc-nav-text">2.1.角色划分</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-2-%E7%A4%BA%E4%BE%8B"><span class="toc-nav-text">2.2.示例:</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-MVVM%E6%9E%B6%E6%9E%84%E6%A8%A1%E5%BC%8F"><span class="toc-nav-text">3.MVVM架构模式</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3-1-%E8%A7%92%E8%89%B2%E5%88%92%E5%88%86"><span class="toc-nav-text">3.1.角色划分</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3-2-%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9%EF%BC%9A"><span class="toc-nav-text">3.2.注意事项：</span></a></li></ol></li></ol>
-    
-  </div>
-</aside>
   
-  <!-- Catalog END -->
-</main>
-
-<script>
-  (function () {
-    var url = 'http://yoursite.com/2020/09/01/patterns.html';
-    var banner = ''
-    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
-      $('#article-banner').css({
-        'background-image': 'url(' + banner + ')'
-      })
-    } else {
-      $('#article-banner').geopattern(url)
-    }
-    $('.header').removeClass('fixed-header')
-
-     // error image
-    $(".markdown-content img").on('error', function() {
-      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
-      $(this).css({
-        'cursor': 'default'
-      })
-    })
-
-    // zoom image
-    $(".markdown-content img").on('click', function() {
-      var src = $(this).attr('src')
-      if (src !== 'http://file.muyutech.com/error-img.png') {
-        var imageW = $(this).width()
-        var imageH = $(this).height()
-        
-        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
-        zoom = zoom < 1 ? 1 : zoom
-        zoom = zoom > 2 ? 2 : zoom
-        var transY = (($(window).height() - imageH) / 2).toFixed(2)
-
-        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
-        $('.image-view-wrap').addClass('wrap-active')
-        $('.image-view-wrap img').css({
-          'width': `${imageW}`,
-          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
-        })
-        $('html').css('overflow', 'hidden')
-
-        $('.image-view-wrap').on('click', function() {
-          $(this).remove()
-          $('html').attr('style', '')
-        })
-      }
-    })
-
-    // qrcode
-    var qr = new QRious({
-      element: document.getElementById('share-qrcode'),
-      value: document.location.href
-    });
-
-    // gitment
-    var gitmentConfig = "";
-    if (gitmentConfig !== 'undefined') {
-      var gitment = new Gitment({
-        id: "常用架构模式",
-        owner: "",
-        repo: "",
-        oauth: {
-          client_id: "",
-          client_secret: ""
-        },
-        theme: {
-          render(state, instance) {
-            const container = document.createElement('div')
-            container.lang = "en-US"
-            container.className = 'gitment-container gitment-root-container'
-            container.appendChild(instance.renderHeader(state, instance))
-            container.appendChild(instance.renderEditor(state, instance))
-            container.appendChild(instance.renderComments(state, instance))
-            container.appendChild(instance.renderFooter(state, instance))
-            return container;
-          }
-        }
-      })
-      gitment.render(document.getElementById('comments'))
-    }
-  })();
-</script>
-
-    <div class="scroll-top">
-  <span class="arrow-icon"></span>
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%9E%B6%E6%9E%84/">#架构</a>
+      
+    </div>
+  
 </div>
-    <footer class="app-footer">
-  <p class="copyright">
-    &copy; 2022 | <a href="https://github.com/davidlii" target="_blank">Davidli</a>
-    <br>
-    <a href="https://hexo.io" target="_blank">Hexo</a> | Theme-<a target="_blank" rel="noopener" href="https://github.com/yanm1ng">yanm1ng</a>
-  </p>
-</footer>
 
-<script>
-  function async(u, c) {
-    var d = document, t = 'script',
-      o = d.createElement(t),
-      s = d.getElementsByTagName(t)[0];
-    o.src = u;
-    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
-    s.parentNode.insertBefore(o, s);
-  }
-</script>
-<script>
-  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
-    FastClick.attach(document.body);
-  })
-</script>
 
-<script>
-  var hasLine = 'true';
-  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
-    $('figure pre').each(function(i, block) {
-      var figure = $(this).parents('figure');
-      if (hasLine === 'false') {
-        figure.find('.gutter').hide();
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>常用架构模式</div>
+      <div>http://yoursite.com/2020/09/01/patterns.html</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>September 1, 2020</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>Licensed under</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/09/03/modules-url.html" title="组件化-URL路由方案">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">组件化-URL路由方案</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/04/17/reveal.html" title="界面调试工具：Reveal">
+                        <span class="hidden-mobile">界面调试工具：Reveal</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;Table of Contents</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://github.com/davidlii" target="_blank" rel="nofollow noopener"><span>Davidlii</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        Views: 
+        <span id="busuanzi_value_site_pv"></span>
+        
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        Visitors: 
+        <span id="busuanzi_value_site_uv"></span>
+        
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
       }
-      var lang = figure.attr('class').split(' ')[1] || 'code';
-      var codeHtml = $(this).html();
-      var codeTag = document.createElement('code');
-      codeTag.className = lang;
-      codeTag.innerHTML = codeHtml;
-      $(this).attr('class', '').empty().html(codeTag);
-      figure.attr('data-lang', lang.toUpperCase());
-      hljs.highlightBlock(block);
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
     });
-  })
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
 </script>
-<!-- Baidu Tongji -->
 
 
-<script src="/js/script.js"></script>
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
 
-  </body>
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
 </html>

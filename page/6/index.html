@@ -1,446 +1,779 @@
+
+
 <!DOCTYPE html>
-<html>
-  <head>
-  <meta http-equiv="content-type" content="text/html; charset=utf-8">
-  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
-  <meta name="description" content="This is Davidli&#39;s blog ~">
-  <meta name="keyword" content="hexo-theme, vuejs">
-  
-    <link rel="shortcut icon" type="image/ico" href="/image/logo.png"/> 
-  
-  <title>
-    
-      Davidli
-    
-  </title>
-  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
-  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
-  
-<link rel="stylesheet" href="/css/style.css">
-<link rel="stylesheet" href="/css/plugins/gitment.css">
-
-  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
-  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
-  
-<script src="/js/qrious.js"></script>
-<script src="/js/gitment.js"></script>
-
-  
-  
-    <!-- MathJax support START -->
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      });
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      });
-    </script>
-    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <!-- MathJax support END -->
-  
+<html lang="zh-Hans" data-default-color-scheme=auto>
 
 
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="Davidli">
+  
+    <meta name="description" content="This is Davidli&#39;s blog ~">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Davidli">
+<meta property="og:url" content="http://yoursite.com/page/6/index.html">
+<meta property="og:site_name" content="Davidli">
+<meta property="og:description" content="This is Davidli&#39;s blog ~">
+<meta property="og:locale">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Davidli">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>Davidli</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"yoursite.com","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
 <meta name="generator" content="Hexo 6.2.0"></head>
-<div class="wechat-share">
-  <img src="/css/images/logo.png" />
-</div>
 
-  <body>
-    <header class="header fixed-header">
-  <div class="header-container">
-    <a class="home-link" href="/">
-      <div class="logo"></div>
-      <span>Davidli</span>
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 100vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Davidli</strong>
     </a>
-    <ul class="right-list">
-      
-        <li class="list-item">
-          
-            <a href="/" class="item-link active">Davidli</a>
-          
-        </li>
-      
-        <li class="list-item">
-          
-            <a href="/archives/" class="item-link">归档</a>
-          
-        </li>
-      
-        <li class="list-item">
-          
-            <a href="/tags/" class="item-link">标签</a>
-          
-        </li>
-      
-        <li class="list-item">
-          
-            <a href="/about/" class="item-link">关于</a>
-          
-        </li>
-      
-    </ul>
-    <div class="menu">
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-    </div>
-    <div class="menu-mask">
-      <ul class="menu-list">
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
         
-          <li class="menu-item">
-            
-              <a href="/" class="menu-link mobile-active">Davidli</a>
-            
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                Categories
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                Tags
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
           </li>
+          
         
-          <li class="menu-item">
-            
-              <a href="/archives/" class="menu-link">归档</a>
-            
-          </li>
         
-          <li class="menu-item">
-            
-              <a href="/tags/" class="menu-link">标签</a>
-            
-          </li>
-        
-          <li class="menu-item">
-            
-              <a href="/about/" class="menu-link">关于</a>
-            
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
           </li>
         
       </ul>
     </div>
   </div>
-</header>
+</nav>
 
-    <main class="app-body">
   
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2017/12/24/initializer.html">构造函数</a>
-      </h2>
-      <p class="article-date">December 24, 2017</p>
-      
-        
-  <a href="/tags#FQA" >
-    <span class="tag-code">FQA</span>
-  </a>
 
-      
-      <div class="article-summary">
-        
-          1、指定构造函数（Designated Initializer）在 OC 的很多头文件中，都会出现NS_DESIGNATED_INITIALIZER这个宏，如：
-12- (instancetype)initWithNibName:(NSString *)nibNameOrNilbundle: ...
-        
-      </div>
-      <a class="more" href="/2017/12/24/initializer.html">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2017/12/22/download.html">iOS 文件下载</a>
-      </h2>
-      <p class="article-date">December 22, 2017</p>
-      
-        
-  <a href="/tags#网络" >
-    <span class="tag-code">网络</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          iOS 中实现文件下载有以下几种方式：
-一.NSDataNSData 提供了类方法实现文件下载：
-123NSURL  *aUrl = [NSURL URLWithString:@&quot;https://example.jpg&quot;];NSData *data = [NSData d ...
-        
-      </div>
-      <a class="more" href="/2017/12/22/download.html">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2017/11/28/crash.html">iOS异常捕获</a>
-      </h2>
-      <p class="article-date">November 28, 2017</p>
-      
-        
-  <a href="/tags#异常" >
-    <span class="tag-code">异常</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          线上APP获取崩溃信息的方式：
-使用系统 API 收集崩溃信息并上传到服务器。
-使用友盟、Bugly 等第三方收集分析SDK。
-使用 iTunes Connect 上的崩溃收集服务。
-
-这里暂时只讲第一种。iOS提供了异常发生时的处理API，在程序启动的时候可以添加这样的Handler，这样 ...
-        
-      </div>
-      <a class="more" href="/2017/11/28/crash.html">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2017/11/27/bad_access.html">内存错误调试</a>
-      </h2>
-      <p class="article-date">November 27, 2017</p>
-      
-        
-  <a href="/tags#异常" >
-    <span class="tag-code">异常</span>
-  </a>
-
-  <a href="/tags#内存管理" >
-    <span class="tag-code">内存管理</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          1、内存错误是啥在C和OC中，你一直在处理指针。指针是存储另一个变量的内存地址的变量。当向一个对象发送消息时，指向该对象的指针将会被引用。这意味着，你获取了指针所指的内存地址，并访问该存储区域的值。
-当该存储器区域不再映射到你的应用时，或者换句话说，该内存区域在你认为使用的时候却没有使用，该 ...
-        
-      </div>
-      <a class="more" href="/2017/11/27/bad_access.html">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2017/11/27/weak.html">weak 的实现原理</a>
-      </h2>
-      <p class="article-date">November 27, 2017</p>
-      
-        
-  <a href="/tags#机制" >
-    <span class="tag-code">机制</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
           
-weak 表示的是一个弱引用，不会增加对象的引用计数，并且在所指向的对象被释放之后，weak 指针会被置为nil。weak 引用通常是用于处理循环引用的问题。
+            <span id="subtitle" data-typed-text="好记性不如烂笔头"></span>
+          
+        </div>
 
-实现原理：
-初始化：
-
-runtime 调用 objc_initWeak 函数，初始化一个新的 weak 指针指向对象的地址。
- ...
         
       </div>
-      <a class="more" href="/2017/11/27/weak.html">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2017/11/25/sandbox.html">沙盒 & 本地持久化方案</a>
-      </h2>
-      <p class="article-date">November 25, 2017</p>
-      
-        
-  <a href="/tags#FQA" >
-    <span class="tag-code">FQA</span>
-  </a>
 
       
-      <div class="article-summary">
+        <div class="scroll-down-bar">
+          <i class="iconfont icon-arrowdown"></i>
+        </div>
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      <div class="container nopadding-x-md">
+        <div id="board"
+          style="margin-top: 0">
+          
+          <div class="container">
+            <div class="row">
+              <div class="col-12 col-md-10 m-auto">
+                
+
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
         
-          1、沙盒
-iOS程序默认情况下只能访问程序自己的目录，这个目录被称为“沙盒”。
+        <a href="/2017/12/24/initializer.html" target="_blank">
+          构造函数
+        </a>
+      </h1>
 
-沙盒的目录结构：
-123456&quot;应用程序包&quot;- Documents- Library  *Caches  *Preferences- tmp
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2017/12/24/initializer.html" target="_blank">
+        <div>
+          1、指定构造函数（Designated Initializer）在 OC 的很多头文件中，都会出现NS_DESIGNATED_INITIALIZER这个宏，如： 12- (instancetype)initWithNibName:(NSString *)nibNameOrNilbundle:(NSBundle *)nibBundleOrNil NS_DESIGNATED_INITIALIZER;
+        </div>
+      </a>
 
-1.1.”应用程序包”:这里存放的是应用程序的 ...
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2017-12-24 00:18" pubdate>
+              2017-12-24
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/FQA/">#FQA</a>
+            
+          </div>
         
       </div>
-      <a class="more" href="/2017/11/25/sandbox.html">Read more</a>
     </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2017/11/25/udid_idfa.html">iOS 设备唯一标识符</a>
-      </h2>
-      <p class="article-date">November 25, 2017</p>
-      
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
         
-  <a href="/tags#FQA" >
-    <span class="tag-code">FQA</span>
-  </a>
+        <a href="/2017/12/22/download.html" target="_blank">
+          iOS 文件下载
+        </a>
+      </h1>
 
       
-      <div class="article-summary">
-        
-          1、UDIDUDID（Unique Device Identifier），iOS 设备的唯一识别码，是一个40位十六进制序列。
-1[[UIDevice cuurrent] uniqueIdenfier];
+      <a class="index-excerpt index-excerpt__noimg" href="/2017/12/22/download.html" target="_blank">
+        <div>
+          iOS 中实现文件下载有以下几种方式： 一.NSDataNSData 提供了类方法实现文件下载： 123NSURL  *aUrl &#x3D; [NSURL URLWithString:@&quot;https:&#x2F;&#x2F;example.jpg&quot;];NSData *data &#x3D; [NSData dataWithContentsOfURL:aUrl];UIImage *image &#x3D; [UIImage i
+        </div>
+      </a>
 
-移动广告商等往往需要通过UDID用来识别玩家用户，并对用户活动进行跟踪。这会泄露用户 ...
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2017-12-22 20:54" pubdate>
+              2017-12-22
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E7%BD%91%E7%BB%9C/">#网络</a>
+            
+          </div>
         
       </div>
-      <a class="more" href="/2017/11/25/udid_idfa.html">Read more</a>
     </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2017/11/24/faq.html">FQA-常见问题</a>
-      </h2>
-      <p class="article-date">November 24, 2017</p>
-      
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
         
-  <a href="/tags#FQA" >
-    <span class="tag-code">FQA</span>
-  </a>
+        <a href="/2017/11/28/crash.html" target="_blank">
+          iOS异常捕获
+        </a>
+      </h1>
 
       
-      <div class="article-summary">
+      <a class="index-excerpt index-excerpt__noimg" href="/2017/11/28/crash.html" target="_blank">
+        <div>
+          线上APP获取崩溃信息的方式： 使用系统 API 收集崩溃信息并上传到服务器。 使用友盟、Bugly 等第三方收集分析SDK。 使用 iTunes Connect 上的崩溃收集服务。  这里暂时只讲第一种。iOS提供了异常发生时的处理API，在程序启动的时候可以添加这样的Handler，这样程序发生异常的时候就可以对异常进行必要的处理。 1void NSSetUncaughtExceptionHa
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
         
-          1、VC的生命周期
--initWithCoder: &#x2F;&#x2F;VC初始化
--initWithNibName:bundle:
--loadView &#x2F;&#x2F;从nib载入视图或返回一个自定义视图
--viewDidLoad &#x2F;&#x2F;视图载入完成并开始进一 ...
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2017-11-28 23:34" pubdate>
+              2017-11-28
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E5%BC%82%E5%B8%B8/">#异常</a>
+            
+          </div>
         
       </div>
-      <a class="more" href="/2017/11/24/faq.html">Read more</a>
     </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2017/11/24/memory.html">虚拟内存分配</a>
-      </h2>
-      <p class="article-date">November 24, 2017</p>
-      
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
         
-  <a href="/tags#内存管理" >
-    <span class="tag-code">内存管理</span>
-  </a>
+        <a href="/2017/11/27/bad_access.html" target="_blank">
+          内存错误调试
+        </a>
+      </h1>
 
       
-      <div class="article-summary">
+      <a class="index-excerpt index-excerpt__noimg" href="/2017/11/27/bad_access.html" target="_blank">
+        <div>
+          1、内存错误是啥在C和OC中，你一直在处理指针。指针是存储另一个变量的内存地址的变量。当向一个对象发送消息时，指向该对象的指针将会被引用。这意味着，你获取了指针所指的内存地址，并访问该存储区域的值。 当该存储器区域不再映射到你的应用时，或者换句话说，该内存区域在你认为使用的时候却没有使用，该内存区域是无法访问的。 这时内核会抛出一个异常（ EXC ），表明你的应用程序不能访问该存储器区域（BAD
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
         
-          分区及职责
-栈区(stack)：存放局部变量和方法实参。
-
-堆区(heap)：存放OC中使用new等方法创建的对象。
-
-全局（静态）区：包括以下两个分区：
-
-
-123.1. 数据段（Data segment）：初始化的全局变量和静态变量。3.2. BSS段：未初始化的全局变量和静态变量。
-
- ...
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2017-11-27 23:29" pubdate>
+              2017-11-27
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">#内存管理</a>
+            
+              <a href="/tags/%E5%BC%82%E5%B8%B8/">#异常</a>
+            
+          </div>
         
       </div>
-      <a class="more" href="/2017/11/24/memory.html">Read more</a>
     </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2017/11/24/atomic.html">atomic一定线程安全吗？</a>
-      </h2>
-      <p class="article-date">November 24, 2017</p>
-      
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
         
-  <a href="/tags#多线程" >
-    <span class="tag-code">多线程</span>
-  </a>
+        <a href="/2017/11/27/weak.html" target="_blank">
+          weak 的实现原理
+        </a>
+      </h1>
 
       
-      <div class="article-summary">
-        
-          1.什么是线程安全？
-线程安全，是多线程编程时的计算机程序代码中的一个概念。在拥有共享数据的多条线程并行执行的程序中，线程安全的代码会通过同步机制保证各个线程都可以正常且正确的执行，不会出现数据污染等意外情况。
+      <a class="index-excerpt index-excerpt__noimg" href="/2017/11/27/weak.html" target="_blank">
+        <div>
+          weak 表示的是一个弱引用，不会增加对象的引用计数，并且在所指向的对象被释放之后，weak 指针会被置为nil。weak 引用通常是用于处理循环引用的问题。  实现原理： 初始化：  runtime 调用 objc_initWeak 函数，初始化一个新的 weak 指针指向对象的地址。  添加引用：  objc_initWeak 调用 objc_storeWeak 来更新指针指向，创建对应的弱
+        </div>
+      </a>
 
-2.atomic与nonatomic的区别atomic 与 nonatomic ...
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2017-11-27 19:36" pubdate>
+              2017-11-27
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%9C%BA%E5%88%B6/">#机制</a>
+            
+          </div>
         
       </div>
-      <a class="more" href="/2017/11/24/atomic.html">Read more</a>
     </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2017/11/25/sandbox.html" target="_blank">
+          沙盒 &amp; 本地持久化方案
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2017/11/25/sandbox.html" target="_blank">
+        <div>
+          1、沙盒 iOS程序默认情况下只能访问程序自己的目录，这个目录被称为“沙盒”。  沙盒的目录结构： 123456&quot;应用程序包&quot;- Documents- Library  *Caches  *Preferences- tmp  1.1.”应用程序包”:这里存放的是应用程序的源文件，包括资源文件和可执行文件。 12String *path &#x3D; [[NSBundle mainBund
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2017-11-25 19:20" pubdate>
+              2017-11-25
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/FQA/">#FQA</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2017/11/25/udid_idfa.html" target="_blank">
+          iOS 设备唯一标识符
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2017/11/25/udid_idfa.html" target="_blank">
+        <div>
+          1、UDIDUDID（Unique Device Identifier），iOS 设备的唯一识别码，是一个40位十六进制序列。 1[[UIDevice cuurrent] uniqueIdenfier];  移动广告商等往往需要通过UDID用来识别玩家用户，并对用户活动进行跟踪。这会泄露用户的隐私信息，所以iOS5.0之后，苹果已被废除此方法，并且禁止使用UDID信息的APP上架。 2、UUIDU
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2017-11-25 18:20" pubdate>
+              2017-11-25
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/FQA/">#FQA</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2017/11/24/faq.html" target="_blank">
+          FQA-常见问题
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2017/11/24/faq.html" target="_blank">
+        <div>
+          1、VC的生命周期 -initWithCoder: &#x2F;&#x2F;VC初始化 -initWithNibName:bundle: -loadView &#x2F;&#x2F;从nib载入视图或返回一个自定义视图 -viewDidLoad &#x2F;&#x2F;视图载入完成并开始进一步的设置 -viewWillAppear: &#x2F;&#x2F;视图即将出现在屏幕上 -updateVi
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2017-11-24 18:14" pubdate>
+              2017-11-24
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/FQA/">#FQA</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2017/11/24/memory.html" target="_blank">
+          虚拟内存分配
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2017/11/24/memory.html" target="_blank">
+        <div>
+          分区及职责 栈区(stack)：存放局部变量和方法实参。  堆区(heap)：存放OC中使用new等方法创建的对象。  全局（静态）区：包括以下两个分区：   123.1. 数据段（Data segment）：初始化的全局变量和静态变量。3.2. BSS段：未初始化的全局变量和静态变量。   常量区(数据段)：const、@”x”常量字符串  代码段(Text segment)：程序的代码（ELF
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2017-11-24 17:57" pubdate>
+              2017-11-24
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">#内存管理</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2017/11/24/atomic.html" target="_blank">
+          atomic一定线程安全吗？
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2017/11/24/atomic.html" target="_blank">
+        <div>
+          1.什么是线程安全？ 线程安全，是多线程编程时的计算机程序代码中的一个概念。在拥有共享数据的多条线程并行执行的程序中，线程安全的代码会通过同步机制保证各个线程都可以正常且正确的执行，不会出现数据污染等意外情况。  2.atomic与nonatomic的区别atomic 与 nonatomic 的本质区别在于getter、setter方法实现上的不同： #示例1：nonatomic属性的实现 123
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2017-11-24 17:40" pubdate>
+              2017-11-24
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/">#多线程</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+
+
+  <nav aria-label="navigation">
+    <span class="pagination" id="pagination">
+      <a class="extend prev" rel="prev" href="/page/5/#board"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/#board">4</a><a class="page-number" href="/page/5/#board">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/#board">7</a><a class="page-number" href="/page/8/#board">8</a><a class="extend next" rel="next" href="/page/7/#board"><i class="iconfont icon-arrowright"></i></a>
+    </span>
+  </nav>
+
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://github.com/davidlii" target="_blank" rel="nofollow noopener"><span>Davidlii</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
   
 
   
-    <div class="guide-pager">
-  
-    <a href="/page/5/"><span class="page-arrow">← </span>Prev</a>
-  
-  
-    <a href="/page/7/">Next<span class="page-arrow"> →</span></a>
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        Views: 
+        <span id="busuanzi_value_site_pv"></span>
+        
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        Visitors: 
+        <span id="busuanzi_value_site_uv"></span>
+        
+      </span>
+    
+    
   
 </div>
+
   
-</main>
-
-
-    <div class="scroll-top">
-  <span class="arrow-icon"></span>
+  
+  
 </div>
-    <footer class="app-footer">
-  <p class="copyright">
-    &copy; 2022 | <a href="https://github.com/davidlii" target="_blank">Davidli</a>
-    <br>
-    <a href="https://hexo.io" target="_blank">Hexo</a> | Theme-<a target="_blank" rel="noopener" href="https://github.com/yanm1ng">yanm1ng</a>
-  </p>
-</footer>
 
-<script>
-  function async(u, c) {
-    var d = document, t = 'script',
-      o = d.createElement(t),
-      s = d.getElementsByTagName(t)[0];
-    o.src = u;
-    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
-    s.parentNode.insertBefore(o, s);
-  }
-</script>
-<script>
-  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
-    FastClick.attach(document.body);
-  })
-</script>
+  </footer>
 
-<script>
-  var hasLine = 'true';
-  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
-    $('figure pre').each(function(i, block) {
-      var figure = $(this).parents('figure');
-      if (hasLine === 'false') {
-        figure.find('.gutter').hide();
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
       }
-      var lang = figure.attr('class').split(' ')[1] || 'code';
-      var codeHtml = $(this).html();
-      var codeTag = document.createElement('code');
-      codeTag.className = lang;
-      codeTag.innerHTML = codeHtml;
-      $(this).attr('class', '').empty().html(codeTag);
-      figure.attr('data-lang', lang.toUpperCase());
-      hljs.highlightBlock(block);
-    });
-  })
-</script>
-<!-- Baidu Tongji -->
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
 
 
-<script src="/js/script.js"></script>
 
-  </body>
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
 </html>

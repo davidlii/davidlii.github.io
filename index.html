@@ -1,456 +1,777 @@
+
+
 <!DOCTYPE html>
-<html>
-  <head>
-  <meta http-equiv="content-type" content="text/html; charset=utf-8">
-  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
-  <meta name="description" content="This is Davidli&#39;s blog ~">
-  <meta name="keyword" content="hexo-theme, vuejs">
-  
-    <link rel="shortcut icon" type="image/ico" href="/image/logo.png"/> 
-  
-  <title>
-    
-      Davidli
-    
-  </title>
-  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
-  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
-  
-<link rel="stylesheet" href="/css/style.css">
-<link rel="stylesheet" href="/css/plugins/gitment.css">
-
-  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
-  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
-  
-<script src="/js/qrious.js"></script>
-<script src="/js/gitment.js"></script>
-
-  
-  
-    <!-- MathJax support START -->
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      });
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      });
-    </script>
-    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <!-- MathJax support END -->
-  
+<html lang="zh-Hans" data-default-color-scheme=auto>
 
 
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="Davidli">
+  
+    <meta name="description" content="This is Davidli&#39;s blog ~">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Davidli">
+<meta property="og:url" content="http://yoursite.com/index.html">
+<meta property="og:site_name" content="Davidli">
+<meta property="og:description" content="This is Davidli&#39;s blog ~">
+<meta property="og:locale">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Davidli">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>Davidli</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"yoursite.com","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
 <meta name="generator" content="Hexo 6.2.0"></head>
-<div class="wechat-share">
-  <img src="/css/images/logo.png" />
-</div>
 
-  <body>
-    <header class="header fixed-header">
-  <div class="header-container">
-    <a class="home-link" href="/">
-      <div class="logo"></div>
-      <span>Davidli</span>
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 100vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Davidli</strong>
     </a>
-    <ul class="right-list">
-      
-        <li class="list-item">
-          
-            <a href="/" class="item-link active">Davidli</a>
-          
-        </li>
-      
-        <li class="list-item">
-          
-            <a href="/archives/" class="item-link">归档</a>
-          
-        </li>
-      
-        <li class="list-item">
-          
-            <a href="/tags/" class="item-link">标签</a>
-          
-        </li>
-      
-        <li class="list-item">
-          
-            <a href="/about/" class="item-link">关于</a>
-          
-        </li>
-      
-    </ul>
-    <div class="menu">
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-    </div>
-    <div class="menu-mask">
-      <ul class="menu-list">
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
         
-          <li class="menu-item">
-            
-              <a href="/" class="menu-link mobile-active">Davidli</a>
-            
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                Categories
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                Tags
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
           </li>
+          
         
-          <li class="menu-item">
-            
-              <a href="/archives/" class="menu-link">归档</a>
-            
-          </li>
         
-          <li class="menu-item">
-            
-              <a href="/tags/" class="menu-link">标签</a>
-            
-          </li>
-        
-          <li class="menu-item">
-            
-              <a href="/about/" class="menu-link">关于</a>
-            
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
           </li>
         
       </ul>
     </div>
   </div>
-</header>
+</nav>
 
-    <main class="app-body">
   
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2022/01/09/dart.html">Dart语言入门</a>
-      </h2>
-      <p class="article-date">January 9, 2022</p>
-      
-        
-  <a href="/tags#Flutter" >
-    <span class="tag-code">Flutter</span>
-  </a>
 
-      
-      <div class="article-summary">
-        
-          一.简介
-Dart is a client-optimized language for fast apps on any platform.
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="好记性不如烂笔头"></span>
+          
+        </div>
 
-Dart是谷歌开发的计算机编程语言，可用于移动应用、网页、服务器等领域。它是一门面向对象的语言，也是强类型的、类定义的、单继承的语言，支持接口、混 ...
         
       </div>
-      <a class="more" href="/2022/01/09/dart.html">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2021/06/06/RAC-sig-filter.html">RAC-数据的过滤与转换</a>
-      </h2>
-      <p class="article-date">June 6, 2021</p>
-      
-        
-  <a href="/tags#源码" >
-    <span class="tag-code">源码</span>
-  </a>
 
       
-      <div class="article-summary">
+        <div class="scroll-down-bar">
+          <i class="iconfont icon-arrowdown"></i>
+        </div>
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      <div class="container nopadding-x-md">
+        <div id="board"
+          style="margin-top: 0">
+          
+          <div class="container">
+            <div class="row">
+              <div class="col-12 col-md-10 m-auto">
+                
+
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
         
-          前言信号在订阅后就可以接收回调的数据了，有时候我们需要对收到的数据进行过滤或者转换后才能继续使用。
-例如发送按钮的userInteractionEnabled状态需要依请求的isFnished状态而定：请求发送后未完成则按钮不可点击，请求成功返回后按钮可点击。这种场景下我们只需要创建一个信号 ...
+        <a href="/2022/01/09/dart.html" target="_blank">
+          Dart语言入门
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2022/01/09/dart.html" target="_blank">
+        <div>
+          一.简介 Dart is a client-optimized language for fast apps on any platform.  Dart是谷歌开发的计算机编程语言，可用于移动应用、网页、服务器等领域。它是一门面向对象的语言，也是强类型的、类定义的、单继承的语言，支持接口、混入(Mixins)、抽象类、泛型、可选类型等。它融合了许多现代编程语言的优秀特性，从中能看到JavaScri
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-01-09 09:26" pubdate>
+              2022-01-09
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Flutter/">#Flutter</a>
+            
+          </div>
         
       </div>
-      <a class="more" href="/2021/06/06/RAC-sig-filter.html">Read more</a>
     </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2021/06/01/RAC-sig-order.html">RAC-信号的组合</a>
-      </h2>
-      <p class="article-date">June 1, 2021</p>
-      
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
         
-  <a href="/tags#源码" >
-    <span class="tag-code">源码</span>
-  </a>
+        <a href="/2021/06/06/RAC-sig-filter.html" target="_blank">
+          RAC-数据的过滤与转换
+        </a>
+      </h1>
 
       
-      <div class="article-summary">
+      <a class="index-excerpt index-excerpt__noimg" href="/2021/06/06/RAC-sig-filter.html" target="_blank">
+        <div>
+          前言信号在订阅后就可以接收回调的数据了，有时候我们需要对收到的数据进行过滤或者转换后才能继续使用。 例如发送按钮的userInteractionEnabled状态需要依请求的isFnished状态而定：请求发送后未完成则按钮不可点击，请求成功返回后按钮可点击。这种场景下我们只需要创建一个信号监听请求的isFnished属性，并对信号返回的结果进行取反即可。 再比如修改昵称时一般不能前后输入一样的昵
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
         
-          前言项目中往往有多个信号在执行任务，而这些信号之间通常要按照一定的方式或顺序进行组合。比如：
-
-先要用户登录成功才能加载通讯录；
-请求头像和用户信息都完成后才刷新详情页。
-
-RAC 针对诸如这些场景，设计了一套实用的API供我们组合信号：
-concat12/// Subscribes to  ...
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2021-06-06 13:49" pubdate>
+              2021-06-06
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%BA%90%E7%A0%81/">#源码</a>
+            
+          </div>
         
       </div>
-      <a class="more" href="/2021/06/01/RAC-sig-order.html">Read more</a>
     </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2021/05/25/RAC-async.html">RAC-异步行为</a>
-      </h2>
-      <p class="article-date">May 25, 2021</p>
-      
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
         
-  <a href="/tags#源码" >
-    <span class="tag-code">源码</span>
-  </a>
+        <a href="/2021/06/01/RAC-sig-order.html" target="_blank">
+          RAC-信号的组合
+        </a>
+      </h1>
 
       
-      <div class="article-summary">
+      <a class="index-excerpt index-excerpt__noimg" href="/2021/06/01/RAC-sig-order.html" target="_blank">
+        <div>
+          前言项目中往往有多个信号在执行任务，而这些信号之间通常要按照一定的方式或顺序进行组合。比如：  先要用户登录成功才能加载通讯录； 请求头像和用户信息都完成后才刷新详情页。  RAC 针对诸如这些场景，设计了一套实用的API供我们组合信号： concat12&#x2F;&#x2F;&#x2F; Subscribes to &#96;signal&#96; when the source signal completes.- (RACSignal
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
         
-          前言OC中的异步行为：
-
-block
-delegate
-KVO
-通知
-target-action机制
-
-异步行为的共同点：
-
-何时触发并不确定，观察者需要等待其触发时的回调；
-异步行为的创建和触发并不在同一块区域，往往是分开的。
-
-异步行为的缺点：
-
-异步行为的创建和回调相对分散，这不符合代 ...
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2021-06-01 20:17" pubdate>
+              2021-06-01
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%BA%90%E7%A0%81/">#源码</a>
+            
+          </div>
         
       </div>
-      <a class="more" href="/2021/05/25/RAC-async.html">Read more</a>
     </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2021/05/25/RAC-signal.html">RAC-信号与订阅者</a>
-      </h2>
-      <p class="article-date">May 25, 2021</p>
-      
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
         
-  <a href="/tags#源码" >
-    <span class="tag-code">源码</span>
-  </a>
+        <a href="/2021/05/25/RAC-async.html" target="_blank">
+          RAC-异步行为
+        </a>
+      </h1>
 
       
-      <div class="article-summary">
-        
-          一.信号1.信号是啥RAC文档 中关于RACSignal的描述:
+      <a class="index-excerpt index-excerpt__noimg" href="/2021/05/25/RAC-async.html" target="_blank">
+        <div>
+          前言OC中的异步行为：  block delegate KVO 通知 target-action机制  异步行为的共同点：  何时触发并不确定，观察者需要等待其触发时的回调； 异步行为的创建和触发并不在同一块区域，往往是分开的。  异步行为的缺点：  异步行为的创建和回调相对分散，这不符合代码规范中”高内聚”的要求； 使用不当时，这些行为往往会造成循环引用等问题。  RAC文档 摘要：  One
+        </div>
+      </a>
 
-A signal, represented by the RACSignal class, is a push-driven stream.Signals generally represent data that will ...
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2021-05-25 23:41" pubdate>
+              2021-05-25
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%BA%90%E7%A0%81/">#源码</a>
+            
+          </div>
         
       </div>
-      <a class="more" href="/2021/05/25/RAC-signal.html">Read more</a>
     </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2020/12/21/modules-protocol.html">组件化-面向协议方案</a>
-      </h2>
-      <p class="article-date">December 21, 2020</p>
-      
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
         
-  <a href="/tags#架构" >
-    <span class="tag-code">架构</span>
-  </a>
+        <a href="/2021/05/25/RAC-signal.html" target="_blank">
+          RAC-信号与订阅者
+        </a>
+      </h1>
 
       
-      <div class="article-summary">
+      <a class="index-excerpt index-excerpt__noimg" href="/2021/05/25/RAC-signal.html" target="_blank">
+        <div>
+          一.信号1.信号是啥RAC文档 中关于RACSignal的描述:  A signal, represented by the RACSignal class, is a push-driven stream.Signals generally represent data that will be delivered in the future. As work is performed or d
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
         
-          1.前言URL和反射方案各有自己的局限性：
-
-URL路由方案支持的参数类型不够灵活；
-反射方案的中间通信层使用明文类名和接口名，硬编码极容易出错；
-两种方案中组件之间传值时需要引用对方的实体文件，这样就依然存在耦合问题；
-
-本篇将要探讨的协议+服务注册+URL+反射方案，其中的协议就很好的解 ...
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2021-05-25 02:10" pubdate>
+              2021-05-25
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%BA%90%E7%A0%81/">#源码</a>
+            
+          </div>
         
       </div>
-      <a class="more" href="/2020/12/21/modules-protocol.html">Read more</a>
     </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2020/11/12/modules-runtime.html">组件化-反射方案</a>
-      </h2>
-      <p class="article-date">November 12, 2020</p>
-      
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
         
-  <a href="/tags#架构" >
-    <span class="tag-code">架构</span>
-  </a>
+        <a href="/2020/12/21/modules-protocol.html" target="_blank">
+          组件化-面向协议方案
+        </a>
+      </h1>
 
       
-      <div class="article-summary">
+      <a class="index-excerpt index-excerpt__noimg" href="/2020/12/21/modules-protocol.html" target="_blank">
+        <div>
+          1.前言URL和反射方案各有自己的局限性：  URL路由方案支持的参数类型不够灵活； 反射方案的中间通信层使用明文类名和接口名，硬编码极容易出错； 两种方案中组件之间传值时需要引用对方的实体文件，这样就依然存在耦合问题；  本篇将要探讨的协议+服务注册+URL+反射方案，其中的协议就很好的解决了这些问题~ 2.思路2.1.本地调用组件将自己对外提供的服务以协议的形式进行声明，对其他所有组件可见；
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
         
-          1.前言上一篇文章中分析了组件化的目标和好处，同时梳理了基于URL+Block的路由组件化解决方案的原理、实践和优缺点。本文将继续介绍第二种解决方案：基于反射原理的组件化方案。
-2.场景从主页跳转到详情，传入详情页所需的头像；
-在详情中简单的修改信息之后，返回主页时更新主页的标题。
-3.思路 ...
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-12-21 19:57" pubdate>
+              2020-12-21
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%9E%B6%E6%9E%84/">#架构</a>
+            
+          </div>
         
       </div>
-      <a class="more" href="/2020/11/12/modules-runtime.html">Read more</a>
     </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2020/09/03/modules-url.html">组件化-URL路由方案</a>
-      </h2>
-      <p class="article-date">September 3, 2020</p>
-      
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
         
-  <a href="/tags#架构" >
-    <span class="tag-code">架构</span>
-  </a>
+        <a href="/2020/11/12/modules-runtime.html" target="_blank">
+          组件化-反射方案
+        </a>
+      </h1>
 
       
-      <div class="article-summary">
+      <a class="index-excerpt index-excerpt__noimg" href="/2020/11/12/modules-runtime.html" target="_blank">
+        <div>
+          1.前言上一篇文章中分析了组件化的目标和好处，同时梳理了基于URL+Block的路由组件化解决方案的原理、实践和优缺点。本文将继续介绍第二种解决方案：基于反射原理的组件化方案。 2.场景从主页跳转到详情，传入详情页所需的头像； 在详情中简单的修改信息之后，返回主页时更新主页的标题。 3.思路基于反射原理的组件化方案，其首要目标还是实现各组件之间的通信，同时减少组件间的耦合。其实现原理如下： 3.1
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
         
-          一、组件化1.目的为了解耦：把复杂系统拆分成多个组件，分离组件边界和责任，便于独立升级和维护。
-2.好处
-明确组件职责
-
-按合理的粒度将系统拆分成多个组件，确保组件各司其职，以便于复用。
-
-减少组件间的依赖
-
-通信层实现了组件间的通信，而不用在组件间跳转、调用服务时引用其他组件的文件。
-
-提 ...
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-11-12 10:47" pubdate>
+              2020-11-12
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%9E%B6%E6%9E%84/">#架构</a>
+            
+          </div>
         
       </div>
-      <a class="more" href="/2020/09/03/modules-url.html">Read more</a>
     </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2020/09/01/patterns.html">常用架构模式</a>
-      </h2>
-      <p class="article-date">September 1, 2020</p>
-      
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
         
-  <a href="/tags#架构" >
-    <span class="tag-code">架构</span>
-  </a>
+        <a href="/2020/09/03/modules-url.html" target="_blank">
+          组件化-URL路由方案
+        </a>
+      </h1>
 
       
-      <div class="article-summary">
-        
-          架构模式
-架构模式，用于描述软件系统里的基本的结构组织或纲要。架构模式提供了一些定义好的子系统，指定它们的责任，并给出把它们组织在一起的法则和指南。常见的架构模式有：分层模式、微核模式、管道与过滤器、MVC模式、REST模式、SOA模式。
+      <a class="index-excerpt index-excerpt__noimg" href="/2020/09/03/modules-url.html" target="_blank">
+        <div>
+          一、组件化1.目的为了解耦：把复杂系统拆分成多个组件，分离组件边界和责任，便于独立升级和维护。 2.好处 明确组件职责  按合理的粒度将系统拆分成多个组件，确保组件各司其职，以便于复用。  减少组件间的依赖  通信层实现了组件间的通信，而不用在组件间跳转、调用服务时引用其他组件的文件。  提升开发&#x2F;编译&#x2F;测试效率  开发人员只须关注自己的组件，不再需要导入或编译其他组件，从而提
+        </div>
+      </a>
 
-#为什么会出现架构模式？
-架构模式诞生于软件开发的 ...
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-09-03 17:40" pubdate>
+              2020-09-03
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%9E%B6%E6%9E%84/">#架构</a>
+            
+          </div>
         
       </div>
-      <a class="more" href="/2020/09/01/patterns.html">Read more</a>
     </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2020/04/17/reveal.html">界面调试工具：Reveal</a>
-      </h2>
-      <p class="article-date">April 17, 2020</p>
-      
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
         
-  <a href="/tags#逆向工程" >
-    <span class="tag-code">逆向工程</span>
-  </a>
+        <a href="/2020/09/01/patterns.html" target="_blank">
+          常用架构模式
+        </a>
+      </h1>
 
       
-      <div class="article-summary">
-        
-          1.简介1.1.场景
-场景1
+      <a class="index-excerpt index-excerpt__noimg" href="/2020/09/01/patterns.html" target="_blank">
+        <div>
+          架构模式 架构模式，用于描述软件系统里的基本的结构组织或纲要。架构模式提供了一些定义好的子系统，指定它们的责任，并给出把它们组织在一起的法则和指南。常见的架构模式有：分层模式、微核模式、管道与过滤器、MVC模式、REST模式、SOA模式。  #为什么会出现架构模式？ 架构模式诞生于软件开发的最大难题：需求变更。需求变更往往导致软件代码的修改。而有些代码尤其是一些大型系统，其代码理解起来会非常困难，
+        </div>
+      </a>
 
-我们在模拟器或真机上调试自家应用时，一般的过程可能是：
-修改界面元素 → 编译运行 → 效果不满意继续修改 → 编译运行
-当某些效果需要反复调试时，很多时间会浪费在编译运行阶段，尤其是当你的应用比较复杂时。
-解决这个痛点有多种方式，如使用RN、Flutter等 ...
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-09-01 19:02" pubdate>
+              2020-09-01
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%9E%B6%E6%9E%84/">#架构</a>
+            
+          </div>
         
       </div>
-      <a class="more" href="/2020/04/17/reveal.html">Read more</a>
     </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2020/04/17/reveal.html" target="_blank">
+          界面调试工具：Reveal
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2020/04/17/reveal.html" target="_blank">
+        <div>
+          1.简介1.1.场景 场景1  我们在模拟器或真机上调试自家应用时，一般的过程可能是： 修改界面元素 → 编译运行 → 效果不满意继续修改 → 编译运行 当某些效果需要反复调试时，很多时间会浪费在编译运行阶段，尤其是当你的应用比较复杂时。 解决这个痛点有多种方式，如使用RN、Flutter等框架，它们都支持实时渲染，不过这些都涉及到成本的取舍。  场景2  有时我们需要研究某些第三方应用的界面布局
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-04-17 20:38" pubdate>
+              2020-04-17
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/">#逆向工程</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+
+
+  <nav aria-label="navigation">
+    <span class="pagination" id="pagination">
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/#board">2</a><a class="page-number" href="/page/3/#board">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/#board">8</a><a class="extend next" rel="next" href="/page/2/#board"><i class="iconfont icon-arrowright"></i></a>
+    </span>
+  </nav>
+
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://github.com/davidlii" target="_blank" rel="nofollow noopener"><span>Davidlii</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
   
 
   
-    <div class="guide-pager">
-  
-    <a class="unvisible" href="/"><span class="page-arrow">←</span> Prev</a>
-  
-  
-    <a href="/page/2/">Next<span class="page-arrow"> →</span></a>
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        Views: 
+        <span id="busuanzi_value_site_pv"></span>
+        
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        Visitors: 
+        <span id="busuanzi_value_site_uv"></span>
+        
+      </span>
+    
+    
   
 </div>
+
   
-</main>
-
-
-    <div class="scroll-top">
-  <span class="arrow-icon"></span>
+  
+  
 </div>
-    <footer class="app-footer">
-  <p class="copyright">
-    &copy; 2022 | <a href="https://github.com/davidlii" target="_blank">Davidli</a>
-    <br>
-    <a href="https://hexo.io" target="_blank">Hexo</a> | Theme-<a target="_blank" rel="noopener" href="https://github.com/yanm1ng">yanm1ng</a>
-  </p>
-</footer>
 
-<script>
-  function async(u, c) {
-    var d = document, t = 'script',
-      o = d.createElement(t),
-      s = d.getElementsByTagName(t)[0];
-    o.src = u;
-    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
-    s.parentNode.insertBefore(o, s);
-  }
-</script>
-<script>
-  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
-    FastClick.attach(document.body);
-  })
-</script>
+  </footer>
 
-<script>
-  var hasLine = 'true';
-  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
-    $('figure pre').each(function(i, block) {
-      var figure = $(this).parents('figure');
-      if (hasLine === 'false') {
-        figure.find('.gutter').hide();
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
       }
-      var lang = figure.attr('class').split(' ')[1] || 'code';
-      var codeHtml = $(this).html();
-      var codeTag = document.createElement('code');
-      codeTag.className = lang;
-      codeTag.innerHTML = codeHtml;
-      $(this).attr('class', '').empty().html(codeTag);
-      figure.attr('data-lang', lang.toUpperCase());
-      hljs.highlightBlock(block);
-    });
-  })
-</script>
-<!-- Baidu Tongji -->
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
 
 
-<script src="/js/script.js"></script>
 
-  </body>
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
 </html>

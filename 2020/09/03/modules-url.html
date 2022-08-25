@@ -1,145 +1,291 @@
+
+
 <!DOCTYPE html>
-<html>
-  <head>
-  <meta http-equiv="content-type" content="text/html; charset=utf-8">
-  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
-  <meta name="description" content="This is Davidli&#39;s blog ~">
-  <meta name="keyword" content="hexo-theme, vuejs">
-  
-    <link rel="shortcut icon" type="image/ico" href="/image/logo.png"/> 
-  
-  <title>
-    
-      组件化-URL路由方案 | Davidli
-    
-  </title>
-  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
-  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
-  
-<link rel="stylesheet" href="/css/style.css">
-<link rel="stylesheet" href="/css/plugins/gitment.css">
-
-  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
-  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
-  
-<script src="/js/qrious.js"></script>
-<script src="/js/gitment.js"></script>
-
-  
-  
-    <!-- MathJax support START -->
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      });
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      });
-    </script>
-    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <!-- MathJax support END -->
-  
+<html lang="zh-Hans" data-default-color-scheme=auto>
 
 
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="Davidli">
+  
+    <meta name="description" content="一、组件化1.目的为了解耦：把复杂系统拆分成多个组件，分离组件边界和责任，便于独立升级和维护。 2.好处 明确组件职责  按合理的粒度将系统拆分成多个组件，确保组件各司其职，以便于复用。  减少组件间的依赖  通信层实现了组件间的通信，而不用在组件间跳转、调用服务时引用其他组件的文件。  提升开发&#x2F;编译&#x2F;测试效率  开发人员只须关注自己的组件，不再需要导入或编译其他组件，从而提">
+<meta property="og:type" content="article">
+<meta property="og:title" content="组件化-URL路由方案">
+<meta property="og:url" content="http://yoursite.com/2020/09/03/modules-url.html">
+<meta property="og:site_name" content="Davidli">
+<meta property="og:description" content="一、组件化1.目的为了解耦：把复杂系统拆分成多个组件，分离组件边界和责任，便于独立升级和维护。 2.好处 明确组件职责  按合理的粒度将系统拆分成多个组件，确保组件各司其职，以便于复用。  减少组件间的依赖  通信层实现了组件间的通信，而不用在组件间跳转、调用服务时引用其他组件的文件。  提升开发&#x2F;编译&#x2F;测试效率  开发人员只须关注自己的组件，不再需要导入或编译其他组件，从而提">
+<meta property="og:locale">
+<meta property="og:image" content="https://davidlii.nos-eastchina1.126.net/pic_module_URL_Block.jpg">
+<meta property="article:published_time" content="2020-09-03T09:40:31.000Z">
+<meta property="article:modified_time" content="2019-11-10T10:15:31.000Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="架构">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://davidlii.nos-eastchina1.126.net/pic_module_URL_Block.jpg">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>组件化-URL路由方案 - Davidli</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"yoursite.com","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
 <meta name="generator" content="Hexo 6.2.0"></head>
-<div class="wechat-share">
-  <img src="/css/images/logo.png" />
-</div>
 
-  <body>
-    <header class="header fixed-header">
-  <div class="header-container">
-    <a class="home-link" href="/">
-      <div class="logo"></div>
-      <span>Davidli</span>
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Davidli</strong>
     </a>
-    <ul class="right-list">
-      
-        <li class="list-item">
-          
-            <a href="/" class="item-link">Davidli</a>
-          
-        </li>
-      
-        <li class="list-item">
-          
-            <a href="/archives/" class="item-link">归档</a>
-          
-        </li>
-      
-        <li class="list-item">
-          
-            <a href="/tags/" class="item-link">标签</a>
-          
-        </li>
-      
-        <li class="list-item">
-          
-            <a href="/about/" class="item-link">关于</a>
-          
-        </li>
-      
-    </ul>
-    <div class="menu">
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-    </div>
-    <div class="menu-mask">
-      <ul class="menu-list">
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
         
-          <li class="menu-item">
-            
-              <a href="/" class="menu-link">Davidli</a>
-            
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                Categories
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                Tags
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
           </li>
+          
         
-          <li class="menu-item">
-            
-              <a href="/archives/" class="menu-link">归档</a>
-            
-          </li>
         
-          <li class="menu-item">
-            
-              <a href="/tags/" class="menu-link">标签</a>
-            
-          </li>
-        
-          <li class="menu-item">
-            
-              <a href="/about/" class="menu-link">关于</a>
-            
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
           </li>
         
       </ul>
     </div>
   </div>
-</header>
+</nav>
 
-    <div id="article-banner">
-  <h2>组件化-URL路由方案</h2>
-  <p class="post-date">2020-09-03</p>
-  <div class="arrow-down">
-    <a href="javascript:;"></a>
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="组件化-URL路由方案"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2020-09-03 17:40" pubdate>
+          September 3, 2020 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          18k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          153 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
   </div>
 </div>
-<main class="app-body flex-box">
-  <!-- Article START -->
-  <article class="post-article">
-    <section class="markdown-content"><h3 id="一、组件化"><a href="#一、组件化" class="headerlink" title="一、组件化"></a>一、组件化</h3><h4 id="1-目的"><a href="#1-目的" class="headerlink" title="1.目的"></a>1.目的</h4><p>为了解耦：把复杂系统拆分成多个组件，分离组件边界和责任，便于独立升级和维护。</p>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">组件化-URL路由方案</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h3 id="一、组件化"><a href="#一、组件化" class="headerlink" title="一、组件化"></a>一、组件化</h3><h4 id="1-目的"><a href="#1-目的" class="headerlink" title="1.目的"></a>1.目的</h4><p>为了解耦：把复杂系统拆分成多个组件，分离组件边界和责任，便于独立升级和维护。</p>
 <h4 id="2-好处"><a href="#2-好处" class="headerlink" title="2.好处"></a>2.好处</h4><ul>
 <li>明确组件职责</li>
 </ul>
@@ -175,27 +321,27 @@
 <p>组件化的实践中，按照合理的粒度将系统划分为多个组件之后，主要的挑战就变成了如何实现各组件之间的通信，同时减少组件间的耦合。<br><br/></p>
 <p>针对这一问题，URL+Block路由方案的实现思路和原理如下：</p>
 <h5 id="2-1-服务Block"><a href="#2-1-服务Block" class="headerlink" title="2.1.服务Block"></a>2.1.服务Block</h5><p>将创建详情实例的服务封装成一个block：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">// DetailViewController.m</span><br><span class="line">RouteHandler handler = ^ id (NSDictionary *parameters)&#123;</span><br><span class="line">    return [[DetailViewController alloc] init];</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs kotlin"><span class="hljs-comment">// DetailViewController.m</span><br>RouteHandler handler = ^ id (NSDictionary *parameters)&#123;<br>    <span class="hljs-keyword">return</span> [[DetailViewController alloc] <span class="hljs-keyword">init</span>];<br>&#125;;<br></code></pre></td></tr></table></figure>
 
 <h5 id="2-2-服务URL"><a href="#2-2-服务URL" class="headerlink" title="2.2.服务URL"></a>2.2.服务URL</h5><p>定义URL，用它表示详情组件中的某项服务：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// Defines.h</span><br><span class="line">// 简单的创建详情实例</span><br><span class="line">static NSString *const kRouteDetaiCreateIns = @&quot;//detail/create&quot;;</span><br><span class="line">// 创建详情实例并设置图片</span><br><span class="line">static NSString *const kRouteDetaiPushWithIcon = @&quot;//detail/push&quot;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-comment">// Defines.h</span><br><span class="hljs-comment">// 简单的创建详情实例</span><br><span class="hljs-keyword">static</span> <span class="hljs-built_in">NSString</span> *<span class="hljs-keyword">const</span> kRouteDetaiCreateIns = <span class="hljs-string">@&quot;//detail/create&quot;</span>;<br><span class="hljs-comment">// 创建详情实例并设置图片</span><br><span class="hljs-keyword">static</span> <span class="hljs-built_in">NSString</span> *<span class="hljs-keyword">const</span> kRouteDetaiPushWithIcon = <span class="hljs-string">@&quot;//detail/push&quot;</span>;<br></code></pre></td></tr></table></figure>
 
 <h5 id="2-3-映射URL与Block"><a href="#2-3-映射URL与Block" class="headerlink" title="2.3.映射URL与Block"></a>2.3.映射URL与Block</h5><p>在单例类<code>Router</code>中将表示某项服务的URL与真正封装了服务的Block映射到字典中：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[Router bindURL:kRouteDetaiPushWithIcon toHandler:handler];</span><br></pre></td></tr></table></figure>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-section">[Router bindURL:kRouteDetaiPushWithIcon toHandler:handler]</span><span class="hljs-comment">;</span><br></code></pre></td></tr></table></figure>
 
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">// Router.m</span><br><span class="line">// MARK: 绑定URL-Block</span><br><span class="line">+(void)bindURL:(NSString *)urlStr toHandler:(RouteHandler)handler&#123;</span><br><span class="line">    [self.routes setValue:handler forKey:urlStr];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">+ (NSMutableDictionary*)routes &#123;</span><br><span class="line">    @synchronized (self) &#123;</span><br><span class="line">        static NSMutableDictionary *_routes = nil;</span><br><span class="line">        if (!_routes) &#123;</span><br><span class="line">            _routes = [NSMutableDictionary dictionary];</span><br><span class="line">        &#125;</span><br><span class="line">        return _routes;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-comment">// Router.m</span><br><span class="hljs-comment">// MARK: 绑定URL-Block</span><br>+(<span class="hljs-type">void</span>)bindURL:(<span class="hljs-built_in">NSString</span> *)urlStr toHandler:(RouteHandler)handler&#123;<br>    [<span class="hljs-keyword">self</span>.routes setValue:handler forKey:urlStr];<br>&#125;<br><br>+ (<span class="hljs-built_in">NSMutableDictionary</span>*)routes &#123;<br>    <span class="hljs-keyword">@synchronized</span> (<span class="hljs-keyword">self</span>) &#123;<br>        <span class="hljs-keyword">static</span> <span class="hljs-built_in">NSMutableDictionary</span> *_routes = <span class="hljs-literal">nil</span>;<br>        <span class="hljs-keyword">if</span> (!_routes) &#123;<br>            _routes = [<span class="hljs-built_in">NSMutableDictionary</span> dictionary];<br>        &#125;<br>        <span class="hljs-keyword">return</span> _routes;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <h5 id="2-4-调用服务"><a href="#2-4-调用服务" class="headerlink" title="2.4.调用服务"></a>2.4.调用服务</h5><p>在主页中通过<code>Router</code>调用详情的服务并获取返回值：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">UIViewController *vc = [Router handleURL:url complexParams:params completion:^(id result) &#123;</span><br><span class="line">    self.title = @&quot;Updated&quot;;</span><br><span class="line">&#125;];</span><br><span class="line">[self.navigationController pushViewController:vc animated:YES];</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-built_in">UIViewController</span> *vc = [Router handleURL:url complexParams:params completion:^(<span class="hljs-type">id</span> result) &#123;<br>    <span class="hljs-keyword">self</span>.title = <span class="hljs-string">@&quot;Updated&quot;</span>;<br>&#125;];<br>[<span class="hljs-keyword">self</span>.navigationController pushViewController:vc animated:<span class="hljs-literal">YES</span>];<br></code></pre></td></tr></table></figure>
 
 <h5 id="2-5-服务路由查询"><a href="#2-5-服务路由查询" class="headerlink" title="2.5.服务路由查询"></a>2.5.服务路由查询</h5><p><code>+handleURL</code>接口内部会根据之前保存的URL-Block映射关系，以<code>url</code>为key去查询对应的Block并执行它：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">+ (nullable RouteHandler)handlerForURL:(nonnull NSString *)urlStr &#123;</span><br><span class="line">    return [self.routes valueForKey:urlStr];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs objectivec">+ (<span class="hljs-keyword">nullable</span> RouteHandler)handlerForURL:(<span class="hljs-keyword">nonnull</span> <span class="hljs-built_in">NSString</span> *)urlStr &#123;<br>    <span class="hljs-keyword">return</span> [<span class="hljs-keyword">self</span>.routes valueForKey:urlStr];<br>&#125;<br></code></pre></td></tr></table></figure>
 
-<h4 id="3-实例"><a href="#3-实例" class="headerlink" title="3.实例"></a>3.实例</h4><h5 id="3-1-映射URL与服务"><a href="#3-1-映射URL与服务" class="headerlink" title="3.1.映射URL与服务"></a>3.1.映射URL与服务</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">// Defines.h</span><br><span class="line"></span><br><span class="line">#ifndef UrlsHeader_h</span><br><span class="line">#define UrlsHeader_h</span><br><span class="line"></span><br><span class="line">#import &lt;UIKit/UIKit.h&gt;</span><br><span class="line"></span><br><span class="line">// 详情页对外暴露的回调</span><br><span class="line">typedef void(^DetailCallback)(void);</span><br><span class="line"></span><br><span class="line">// 简单的创建详情实例</span><br><span class="line">static NSString *const kRouteDetaiCreateIns = @&quot;//detail/create&quot;;</span><br><span class="line">// 创建详情实例并设置图片</span><br><span class="line">static NSString *const kRouteDetaiPushWithIcon = @&quot;//detail/push&quot;;</span><br><span class="line">// 跳转主页</span><br><span class="line">static NSString *const kRouteHome = @&quot;//home&quot;;</span><br><span class="line"></span><br><span class="line">#endif /* UrlsHeader_h */</span><br></pre></td></tr></table></figure>
+<h4 id="3-实例"><a href="#3-实例" class="headerlink" title="3.实例"></a>3.实例</h4><h5 id="3-1-映射URL与服务"><a href="#3-1-映射URL与服务" class="headerlink" title="3.1.映射URL与服务"></a>3.1.映射URL与服务</h5><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-comment">// Defines.h</span><br><br><span class="hljs-meta">#<span class="hljs-keyword">ifndef</span> UrlsHeader_h</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> UrlsHeader_h</span><br><br><span class="hljs-meta">#import <span class="hljs-string">&lt;UIKit/UIKit.h&gt;</span></span><br><br><span class="hljs-comment">// 详情页对外暴露的回调</span><br><span class="hljs-keyword">typedef</span> <span class="hljs-type">void</span>(^DetailCallback)(<span class="hljs-type">void</span>);<br><br><span class="hljs-comment">// 简单的创建详情实例</span><br><span class="hljs-keyword">static</span> <span class="hljs-built_in">NSString</span> *<span class="hljs-keyword">const</span> kRouteDetaiCreateIns = <span class="hljs-string">@&quot;//detail/create&quot;</span>;<br><span class="hljs-comment">// 创建详情实例并设置图片</span><br><span class="hljs-keyword">static</span> <span class="hljs-built_in">NSString</span> *<span class="hljs-keyword">const</span> kRouteDetaiPushWithIcon = <span class="hljs-string">@&quot;//detail/push&quot;</span>;<br><span class="hljs-comment">// 跳转主页</span><br><span class="hljs-keyword">static</span> <span class="hljs-built_in">NSString</span> *<span class="hljs-keyword">const</span> kRouteHome = <span class="hljs-string">@&quot;//home&quot;</span>;<br><br><span class="hljs-meta">#<span class="hljs-keyword">endif</span> <span class="hljs-comment">/* UrlsHeader_h */</span></span><br></code></pre></td></tr></table></figure>
 
 <p><code>Defines.h</code>头文件用于定义URL，也包括其他必要参数。它是一个通用文件，不属于某个组件，可在.pch文件中导入此头文件。<br><br/></p>
 <p>在这里你可以定义一个URL字符串<code>@&quot;//detail/push</code>，其中第一个字符串”detail”表示详情组件，第二个字符串”push“表示跳转功能。后面我们就使用此URL来实现从主页到详情的跳转。</p>
-<h5 id="3-2-定义Router"><a href="#3-2-定义Router" class="headerlink" title="3.2.定义Router"></a>3.2.定义Router</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br></pre></td><td class="code"><pre><span class="line">// Router.h</span><br><span class="line">// 表示服务的block，接受字典类型的参数集合</span><br><span class="line">typedef _Nullable id (^RouteHandler)( NSDictionary * _Nullable parameters);</span><br><span class="line">// 回调block</span><br><span class="line">typedef void (^RouteCompletion)(_Nullable id result);</span><br><span class="line"></span><br><span class="line">@interface Router : NSObject</span><br><span class="line"></span><br><span class="line">/// 绑定URL与Block</span><br><span class="line">/// @param urlStr 对外暴露的代表某组件服务的URL</span><br><span class="line">/// @param handler 服务接口，以block形式暴露给外部调用者</span><br><span class="line">+ (void)bindURL:(nonnull NSString *)urlStr </span><br><span class="line">      toHandler:(nonnull RouteHandler)handler;</span><br><span class="line"></span><br><span class="line">/// 调用服务接口</span><br><span class="line">/// @param urlStr 代表目标组件服务接口的URL</span><br><span class="line">/// @param complexParams URL中不方便传递的参数</span><br><span class="line">/// @param completion 回调</span><br><span class="line">+ (nullable id)handleURL:(nonnull NSString *)urlStr</span><br><span class="line">complexParams:(nullable NSDictionary*)complexParams</span><br><span class="line">              completion:(nullable RouteCompletion)completion;</span><br><span class="line"></span><br><span class="line">/// 该URL是否有与之对应的Block</span><br><span class="line">/// @param urlStr URL字符串</span><br><span class="line">+ (BOOL)canHandleUrl:(NSString*)urlStr;</span><br><span class="line"></span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span><br><span class="line"></span><br><span class="line">// Router.m</span><br><span class="line">#import &quot;Router.h&quot;</span><br><span class="line"></span><br><span class="line">static Router *mInstance = nil;</span><br><span class="line"></span><br><span class="line">@implementation Router</span><br><span class="line"></span><br><span class="line">+ (instancetype)sharedInstance&#123;</span><br><span class="line">    return [[self alloc] init];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">+ (instancetype)allocWithZone:(struct _NSZone *)zone&#123;</span><br><span class="line">    static dispatch_once_t onceToken;</span><br><span class="line">    dispatch_once(&amp;onceToken, ^&#123;</span><br><span class="line">        mInstance = [super allocWithZone:zone];</span><br><span class="line">    &#125;);</span><br><span class="line">    return mInstance;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// MARK: Getter&amp;Setter</span><br><span class="line"></span><br><span class="line">+ (NSMutableDictionary*)routes &#123;</span><br><span class="line">    @synchronized (self) &#123;</span><br><span class="line">        static NSMutableDictionary *_routes = nil;</span><br><span class="line">        if (!_routes) &#123;</span><br><span class="line">            _routes = [NSMutableDictionary dictionary];</span><br><span class="line">        &#125;</span><br><span class="line">        return _routes;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// MARK: 绑定URL-Block</span><br><span class="line">+(void)bindURL:(NSString *)urlStr toHandler:(RouteHandler)handler&#123;</span><br><span class="line">    [self.routes setValue:handler forKey:urlStr];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// MARK: 根据URL调用服务</span><br><span class="line">+ (nullable id)handleURL:(nonnull NSString *)urlStr</span><br><span class="line">complexParams:(nullable NSDictionary*)complexParams</span><br><span class="line">   completion:(nullable RouteCompletion)completion &#123;</span><br><span class="line">    </span><br><span class="line">    // 重新获取参数之前的URL.host和URL.path，如“//detail/push”</span><br><span class="line">    NSString *URLKey = [self getKeyFromURL:urlStr];</span><br><span class="line">    </span><br><span class="line">    // 查找url对应的block</span><br><span class="line">    RouteHandler handler = [self handlerForURL:URLKey];</span><br><span class="line">    </span><br><span class="line">    //拼接参数</span><br><span class="line">    NSDictionary *paramsInURL = [self.class parametersInURL:urlStr];</span><br><span class="line">    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithDictionary:complexParams];</span><br><span class="line">    [params addEntriesFromDictionary:paramsInURL];</span><br><span class="line">    </span><br><span class="line">    id obj = handler(params);</span><br><span class="line">    </span><br><span class="line">    return obj;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// MARK: 获取URL中?号之后的参数</span><br><span class="line">+ (nullable NSDictionary*)parametersInURL:(nonnull NSString*)urlStr &#123;</span><br><span class="line">    NSURL *URL = [NSURL URLWithString:urlStr];</span><br><span class="line">    NSMutableDictionary *params = nil;</span><br><span class="line">    NSString *query = URL.query;</span><br><span class="line">    if(query.length &gt; 0) &#123;</span><br><span class="line">        params = [NSMutableDictionary dictionary];</span><br><span class="line">        NSArray *list = [query componentsSeparatedByString:@&quot;&amp;&quot;];</span><br><span class="line">        for (NSString *param in list) &#123;</span><br><span class="line">            NSArray *elts = [param componentsSeparatedByString:@&quot;=&quot;];</span><br><span class="line">            if([elts count] &lt; 2) continue;</span><br><span class="line">            NSString *decodedStr = [[elts lastObject] stringByRemovingPercentEncoding];</span><br><span class="line">            [params setObject:decodedStr forKey:[elts firstObject]];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return params;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// MARK:根据URL获取对应的Block</span><br><span class="line">+ (nullable RouteHandler)handlerForURL:(nonnull NSString *)urlStr &#123;</span><br><span class="line">    return [self.routes valueForKey:urlStr];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// MARK:URL是否有与之对应的Block</span><br><span class="line">+ (BOOL)canHandleUrl:(NSString*)urlStr&#123;</span><br><span class="line">    return [self getKeyFromURL:urlStr].length != 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//  重新获取参数之前的URL.host和URL.path，如“//detail/push”</span><br><span class="line">+ (NSString*)getKeyFromURL:(NSString*)urlStr&#123;</span><br><span class="line">    NSURL *url = [NSURL URLWithString:urlStr];</span><br><span class="line">    NSString *host = url.host;</span><br><span class="line">    NSString *path = url.path;</span><br><span class="line">    NSString *URLKey = [NSString stringWithFormat:@&quot;//%@%@&quot;,host,path];</span><br><span class="line">    </span><br><span class="line">    return URLKey;</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<h5 id="3-2-定义Router"><a href="#3-2-定义Router" class="headerlink" title="3.2.定义Router"></a>3.2.定义Router</h5><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-comment">// Router.h</span><br><span class="hljs-comment">// 表示服务的block，接受字典类型的参数集合</span><br><span class="hljs-keyword">typedef</span> _Nullable <span class="hljs-type">id</span> (^RouteHandler)( <span class="hljs-built_in">NSDictionary</span> * _Nullable parameters);<br><span class="hljs-comment">// 回调block</span><br><span class="hljs-keyword">typedef</span> <span class="hljs-type">void</span> (^RouteCompletion)(_Nullable <span class="hljs-type">id</span> result);<br><br><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">Router</span> : <span class="hljs-title">NSObject</span></span><br><br><span class="hljs-comment">/// 绑定URL与Block</span><br><span class="hljs-comment">/// @param urlStr 对外暴露的代表某组件服务的URL</span><br><span class="hljs-comment">/// @param handler 服务接口，以block形式暴露给外部调用者</span><br>+ (<span class="hljs-type">void</span>)bindURL:(<span class="hljs-keyword">nonnull</span> <span class="hljs-built_in">NSString</span> *)urlStr <br>      toHandler:(<span class="hljs-keyword">nonnull</span> RouteHandler)handler;<br><br><span class="hljs-comment">/// 调用服务接口</span><br><span class="hljs-comment">/// @param urlStr 代表目标组件服务接口的URL</span><br><span class="hljs-comment">/// @param complexParams URL中不方便传递的参数</span><br><span class="hljs-comment">/// @param completion 回调</span><br>+ (<span class="hljs-keyword">nullable</span> <span class="hljs-type">id</span>)handleURL:(<span class="hljs-keyword">nonnull</span> <span class="hljs-built_in">NSString</span> *)urlStr<br>complexParams:(<span class="hljs-keyword">nullable</span> <span class="hljs-built_in">NSDictionary</span>*)complexParams<br>              completion:(<span class="hljs-keyword">nullable</span> RouteCompletion)completion;<br><br><span class="hljs-comment">/// 该URL是否有与之对应的Block</span><br><span class="hljs-comment">/// @param urlStr URL字符串</span><br>+ (<span class="hljs-type">BOOL</span>)canHandleUrl:(<span class="hljs-built_in">NSString</span>*)urlStr;<br><br><span class="hljs-keyword">@end</span><br><br>~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~<br><br><span class="hljs-comment">// Router.m</span><br><span class="hljs-meta">#import <span class="hljs-string">&quot;Router.h&quot;</span></span><br><br><span class="hljs-keyword">static</span> Router *mInstance = <span class="hljs-literal">nil</span>;<br><br><span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">Router</span></span><br><br>+ (<span class="hljs-keyword">instancetype</span>)sharedInstance&#123;<br>    <span class="hljs-keyword">return</span> [[<span class="hljs-keyword">self</span> alloc] init];<br>&#125;<br><br>+ (<span class="hljs-keyword">instancetype</span>)allocWithZone:(<span class="hljs-keyword">struct</span> _NSZone *)zone&#123;<br>    <span class="hljs-keyword">static</span> <span class="hljs-built_in">dispatch_once_t</span> onceToken;<br>    <span class="hljs-built_in">dispatch_once</span>(&amp;onceToken, ^&#123;<br>        mInstance = [<span class="hljs-variable language_">super</span> allocWithZone:zone];<br>    &#125;);<br>    <span class="hljs-keyword">return</span> mInstance;<br>&#125;<br><br><span class="hljs-comment">// MARK: Getter&amp;Setter</span><br><br>+ (<span class="hljs-built_in">NSMutableDictionary</span>*)routes &#123;<br>    <span class="hljs-keyword">@synchronized</span> (<span class="hljs-keyword">self</span>) &#123;<br>        <span class="hljs-keyword">static</span> <span class="hljs-built_in">NSMutableDictionary</span> *_routes = <span class="hljs-literal">nil</span>;<br>        <span class="hljs-keyword">if</span> (!_routes) &#123;<br>            _routes = [<span class="hljs-built_in">NSMutableDictionary</span> dictionary];<br>        &#125;<br>        <span class="hljs-keyword">return</span> _routes;<br>    &#125;<br>&#125;<br><br><span class="hljs-comment">// MARK: 绑定URL-Block</span><br>+(<span class="hljs-type">void</span>)bindURL:(<span class="hljs-built_in">NSString</span> *)urlStr toHandler:(RouteHandler)handler&#123;<br>    [<span class="hljs-keyword">self</span>.routes setValue:handler forKey:urlStr];<br>&#125;<br><br><span class="hljs-comment">// MARK: 根据URL调用服务</span><br>+ (<span class="hljs-keyword">nullable</span> <span class="hljs-type">id</span>)handleURL:(<span class="hljs-keyword">nonnull</span> <span class="hljs-built_in">NSString</span> *)urlStr<br>complexParams:(<span class="hljs-keyword">nullable</span> <span class="hljs-built_in">NSDictionary</span>*)complexParams<br>   completion:(<span class="hljs-keyword">nullable</span> RouteCompletion)completion &#123;<br>    <br>    <span class="hljs-comment">// 重新获取参数之前的URL.host和URL.path，如“//detail/push”</span><br>    <span class="hljs-built_in">NSString</span> *URLKey = [<span class="hljs-keyword">self</span> getKeyFromURL:urlStr];<br>    <br>    <span class="hljs-comment">// 查找url对应的block</span><br>    RouteHandler handler = [<span class="hljs-keyword">self</span> handlerForURL:URLKey];<br>    <br>    <span class="hljs-comment">//拼接参数</span><br>    <span class="hljs-built_in">NSDictionary</span> *paramsInURL = [<span class="hljs-keyword">self</span>.class parametersInURL:urlStr];<br>    <span class="hljs-built_in">NSMutableDictionary</span> *params = [<span class="hljs-built_in">NSMutableDictionary</span> dictionaryWithDictionary:complexParams];<br>    [params addEntriesFromDictionary:paramsInURL];<br>    <br>    <span class="hljs-type">id</span> obj = handler(params);<br>    <br>    <span class="hljs-keyword">return</span> obj;<br>&#125;<br><br><span class="hljs-comment">// MARK: 获取URL中?号之后的参数</span><br>+ (<span class="hljs-keyword">nullable</span> <span class="hljs-built_in">NSDictionary</span>*)parametersInURL:(<span class="hljs-keyword">nonnull</span> <span class="hljs-built_in">NSString</span>*)urlStr &#123;<br>    <span class="hljs-built_in">NSURL</span> *URL = [<span class="hljs-built_in">NSURL</span> URLWithString:urlStr];<br>    <span class="hljs-built_in">NSMutableDictionary</span> *params = <span class="hljs-literal">nil</span>;<br>    <span class="hljs-built_in">NSString</span> *query = URL.query;<br>    <span class="hljs-keyword">if</span>(query.length &gt; <span class="hljs-number">0</span>) &#123;<br>        params = [<span class="hljs-built_in">NSMutableDictionary</span> dictionary];<br>        <span class="hljs-built_in">NSArray</span> *list = [query componentsSeparatedByString:<span class="hljs-string">@&quot;&amp;&quot;</span>];<br>        <span class="hljs-keyword">for</span> (<span class="hljs-built_in">NSString</span> *param <span class="hljs-keyword">in</span> list) &#123;<br>            <span class="hljs-built_in">NSArray</span> *elts = [param componentsSeparatedByString:<span class="hljs-string">@&quot;=&quot;</span>];<br>            <span class="hljs-keyword">if</span>([elts count] &lt; <span class="hljs-number">2</span>) <span class="hljs-keyword">continue</span>;<br>            <span class="hljs-built_in">NSString</span> *decodedStr = [[elts lastObject] stringByRemovingPercentEncoding];<br>            [params setObject:decodedStr forKey:[elts firstObject]];<br>        &#125;<br>    &#125;<br>    <span class="hljs-keyword">return</span> params;<br>&#125;<br><br><span class="hljs-comment">// MARK:根据URL获取对应的Block</span><br>+ (<span class="hljs-keyword">nullable</span> RouteHandler)handlerForURL:(<span class="hljs-keyword">nonnull</span> <span class="hljs-built_in">NSString</span> *)urlStr &#123;<br>    <span class="hljs-keyword">return</span> [<span class="hljs-keyword">self</span>.routes valueForKey:urlStr];<br>&#125;<br><br><span class="hljs-comment">// MARK:URL是否有与之对应的Block</span><br>+ (<span class="hljs-type">BOOL</span>)canHandleUrl:(<span class="hljs-built_in">NSString</span>*)urlStr&#123;<br>    <span class="hljs-keyword">return</span> [<span class="hljs-keyword">self</span> getKeyFromURL:urlStr].length != <span class="hljs-number">0</span>;<br>&#125;<br><br><span class="hljs-comment">//  重新获取参数之前的URL.host和URL.path，如“//detail/push”</span><br>+ (<span class="hljs-built_in">NSString</span>*)getKeyFromURL:(<span class="hljs-built_in">NSString</span>*)urlStr&#123;<br>    <span class="hljs-built_in">NSURL</span> *url = [<span class="hljs-built_in">NSURL</span> URLWithString:urlStr];<br>    <span class="hljs-built_in">NSString</span> *host = url.host;<br>    <span class="hljs-built_in">NSString</span> *path = url.path;<br>    <span class="hljs-built_in">NSString</span> *URLKey = [<span class="hljs-built_in">NSString</span> stringWithFormat:<span class="hljs-string">@&quot;//%@%@&quot;</span>,host,path];<br>    <br>    <span class="hljs-keyword">return</span> URLKey;<br>&#125;<br><span class="hljs-keyword">@end</span><br></code></pre></td></tr></table></figure>
 
 <p>这是URL路由方案中的<code>核心类</code>。其主要作用有：</p>
 <ul>
@@ -207,14 +353,14 @@
 <p>2、<code>+handleURL</code>接口中的<code>urlStr</code>参数则是完整的URL，可包含调用方向目标组件传递的参数，如”&#x2F;&#x2F;detail&#x2F;push?a&#x3D;1&amp;b&#x3D;1”;<br><br/></p>
 <p>3、在<code>+handleURL</code>方法内部根据URL查询Block时，key为从<code>urlStr</code>中拆分出的<code>url.host+url.path</code>部分，即<code>“//detail/push”</code>；<br><br/></p>
 <p>4、本示例中<code>Router.h</code>只提供了最简单和最主要的两个接口，实际使用中可根据需求自己扩展其他功能，这里不做过多的延伸，因为后面会讲到有赞开源的库<code>Bifrost</code>，那里进行了完善的封装。</p>
-<h5 id="3-3-注册服务"><a href="#3-3-注册服务" class="headerlink" title="3.3.注册服务"></a>3.3.注册服务</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line">// DetailViewController.h</span><br><span class="line">@interface DetailViewController : UIViewController</span><br><span class="line">@property (nonatomic, strong) UIImage *img;</span><br><span class="line">@property (nonatomic, copy) DetailCallback callBack; // 回调block</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span><br><span class="line">// DetailViewController.m</span><br><span class="line">#import &quot;Router.h&quot;</span><br><span class="line">@interface DetailViewController ()</span><br><span class="line">@property (weak, nonatomic) IBOutlet UIImageView *mIconView;</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation DetailViewController</span><br><span class="line"></span><br><span class="line">+ (void)load&#123;</span><br><span class="line">    // 以block的形式封装对外服务</span><br><span class="line">    RouteHandler handler = ^ id (NSDictionary *parameters)&#123;</span><br><span class="line">        UIImage *img = parameters[@&quot;img&quot;];</span><br><span class="line">        DetailCallback callback = parameters[@&quot;block&quot;];</span><br><span class="line">        DetailViewController *vc = [[UIStoryboard storyboardWithName:@&quot;Main&quot; bundle:nil]</span><br><span class="line">                                    instantiateViewControllerWithIdentifier:@&quot;DetailViewController&quot;];</span><br><span class="line">        vc.img = img;</span><br><span class="line">        vc.callBack = callback;</span><br><span class="line">        return vc;</span><br><span class="line">    &#125;;</span><br><span class="line">    // 将URL与Block的关系注册到路由表中</span><br><span class="line">    [Router bindURL:kRouteDetaiPushWithIcon toHandler:handler];</span><br><span class="line">    </span><br><span class="line">    // 可注册多个Block，以便对外提供更多服务</span><br><span class="line">    RouteHandler handler2 = ^ (NSDictionary *params)&#123;</span><br><span class="line">        return [[DetailViewController alloc] init];</span><br><span class="line">    &#125;;</span><br><span class="line">    [Router bindURL:kRouteDetaiCreateIns toHandler:handler2];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)viewDidLoad &#123;</span><br><span class="line">    [super viewDidLoad];</span><br><span class="line">    _mIconView.image = _img;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (IBAction)onDismissAction:(id)sender &#123;</span><br><span class="line">    self.callBack(); //回调给服务调用方</span><br><span class="line">    [self.navigationController popViewControllerAnimated:YES];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">-(void)dealloc&#123;</span><br><span class="line">    NSLog(@&quot;+++DetailViewController dealloced~~&quot;);</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<h5 id="3-3-注册服务"><a href="#3-3-注册服务" class="headerlink" title="3.3.注册服务"></a>3.3.注册服务</h5><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-comment">// DetailViewController.h</span><br><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">DetailViewController</span> : <span class="hljs-title">UIViewController</span></span><br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">strong</span>) <span class="hljs-built_in">UIImage</span> *img;<br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">copy</span>) DetailCallback callBack; <span class="hljs-comment">// 回调block</span><br><span class="hljs-keyword">@end</span><br><br>~~~~~~~~~~~~~~~~~~~~~~~~~~~~~<br><span class="hljs-comment">// DetailViewController.m</span><br><span class="hljs-meta">#import <span class="hljs-string">&quot;Router.h&quot;</span></span><br><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">DetailViewController</span> ()</span><br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">weak</span>, <span class="hljs-keyword">nonatomic</span>) <span class="hljs-keyword">IBOutlet</span> <span class="hljs-built_in">UIImageView</span> *mIconView;<br><span class="hljs-keyword">@end</span><br><br><span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">DetailViewController</span></span><br><br>+ (<span class="hljs-type">void</span>)load&#123;<br>    <span class="hljs-comment">// 以block的形式封装对外服务</span><br>    RouteHandler handler = ^ <span class="hljs-type">id</span> (<span class="hljs-built_in">NSDictionary</span> *parameters)&#123;<br>        <span class="hljs-built_in">UIImage</span> *img = parameters[<span class="hljs-string">@&quot;img&quot;</span>];<br>        DetailCallback callback = parameters[<span class="hljs-string">@&quot;block&quot;</span>];<br>        DetailViewController *vc = [[<span class="hljs-built_in">UIStoryboard</span> storyboardWithName:<span class="hljs-string">@&quot;Main&quot;</span> bundle:<span class="hljs-literal">nil</span>]<br>                                    instantiateViewControllerWithIdentifier:<span class="hljs-string">@&quot;DetailViewController&quot;</span>];<br>        vc.img = img;<br>        vc.callBack = callback;<br>        <span class="hljs-keyword">return</span> vc;<br>    &#125;;<br>    <span class="hljs-comment">// 将URL与Block的关系注册到路由表中</span><br>    [Router bindURL:kRouteDetaiPushWithIcon toHandler:handler];<br>    <br>    <span class="hljs-comment">// 可注册多个Block，以便对外提供更多服务</span><br>    RouteHandler handler2 = ^ (<span class="hljs-built_in">NSDictionary</span> *params)&#123;<br>        <span class="hljs-keyword">return</span> [[DetailViewController alloc] init];<br>    &#125;;<br>    [Router bindURL:kRouteDetaiCreateIns toHandler:handler2];<br>&#125;<br><br>- (<span class="hljs-type">void</span>)viewDidLoad &#123;<br>    [<span class="hljs-variable language_">super</span> viewDidLoad];<br>    _mIconView.image = _img;<br>&#125;<br><br>- (<span class="hljs-keyword">IBAction</span>)onDismissAction:(<span class="hljs-type">id</span>)sender &#123;<br>    <span class="hljs-keyword">self</span>.callBack(); <span class="hljs-comment">//回调给服务调用方</span><br>    [<span class="hljs-keyword">self</span>.navigationController popViewControllerAnimated:<span class="hljs-literal">YES</span>];<br>&#125;<br><br>-(<span class="hljs-type">void</span>)dealloc&#123;<br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;+++DetailViewController dealloced~~&quot;</span>);<br>&#125;<br><span class="hljs-keyword">@end</span><br></code></pre></td></tr></table></figure>
 
 <p>这一步是在被调用的组件中进行的，即<code>DetailViewController</code>。注册的操作是在<code>+load()</code>方法中进行的，这样就能保证在应用启动阶段将表示当前组件服务接口的URL和block自动注册到<code>Router</code>中，以便后面随时调用。</p>
 <br/>
 
 <p><code>+load()</code>方法中可以注册多个对外提供服务的block，就相当于对外提供了多个接口，区分好对应的URL即可。</p>
 <h5 id="3-4-本地调用服务"><a href="#3-4-本地调用服务" class="headerlink" title="3.4.本地调用服务"></a>3.4.本地调用服务</h5><p>所谓本地调用，就是我们的应用内部组件之间的服务调用，比如主页调用详情的接口：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">// HomeViewController.m</span><br><span class="line">#import &quot;Router.h&quot;</span><br><span class="line"></span><br><span class="line">@implementation HomeViewController</span><br><span class="line"></span><br><span class="line">- (void)viewDidLoad &#123;</span><br><span class="line">    [super viewDidLoad];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (IBAction)onPushAction:(id)sender &#123;</span><br><span class="line">    // 声明回调 从头像页面返回当前页面时更新标题</span><br><span class="line">    DetailCallback block = ^()&#123;</span><br><span class="line">        self.title = @&quot;Info Checked&quot;;</span><br><span class="line">    &#125;;</span><br><span class="line">    NSDictionary *params = @&#123;@&quot;img&quot;:[UIImage imageNamed:@&quot;1&quot;],@&quot;block&quot;:block&#125;;</span><br><span class="line">    NSString *url = [kRouteDetaiPushWithIcon stringByAppendingString:@&quot;?num=1&amp;orderid=10001&quot;];</span><br><span class="line"></span><br><span class="line">    // 调用服务</span><br><span class="line">    UIViewController *vc = [Router handleURL:url complexParams:params completion:^(id result) &#123;</span><br><span class="line">        self.title = @&quot;Updated&quot;;</span><br><span class="line">    &#125;];</span><br><span class="line">    [self.navigationController pushViewController:vc animated:YES];</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-comment">// HomeViewController.m</span><br><span class="hljs-meta">#import <span class="hljs-string">&quot;Router.h&quot;</span></span><br><br><span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">HomeViewController</span></span><br><br>- (<span class="hljs-type">void</span>)viewDidLoad &#123;<br>    [<span class="hljs-variable language_">super</span> viewDidLoad];<br>&#125;<br><br>- (<span class="hljs-keyword">IBAction</span>)onPushAction:(<span class="hljs-type">id</span>)sender &#123;<br>    <span class="hljs-comment">// 声明回调 从头像页面返回当前页面时更新标题</span><br>    DetailCallback block = ^()&#123;<br>        <span class="hljs-keyword">self</span>.title = <span class="hljs-string">@&quot;Info Checked&quot;</span>;<br>    &#125;;<br>    <span class="hljs-built_in">NSDictionary</span> *params = @&#123;<span class="hljs-string">@&quot;img&quot;</span>:[<span class="hljs-built_in">UIImage</span> imageNamed:<span class="hljs-string">@&quot;1&quot;</span>],<span class="hljs-string">@&quot;block&quot;</span>:block&#125;;<br>    <span class="hljs-built_in">NSString</span> *url = [kRouteDetaiPushWithIcon stringByAppendingString:<span class="hljs-string">@&quot;?num=1&amp;orderid=10001&quot;</span>];<br><br>    <span class="hljs-comment">// 调用服务</span><br>    <span class="hljs-built_in">UIViewController</span> *vc = [Router handleURL:url complexParams:params completion:^(<span class="hljs-type">id</span> result) &#123;<br>        <span class="hljs-keyword">self</span>.title = <span class="hljs-string">@&quot;Updated&quot;</span>;<br>    &#125;];<br>    [<span class="hljs-keyword">self</span>.navigationController pushViewController:vc animated:<span class="hljs-literal">YES</span>];<br>&#125;<br><span class="hljs-keyword">@end</span><br></code></pre></td></tr></table></figure>
 
 <ul>
 <li>调用方使用约定好的URL字符串指明要调用的服务接口；</li>
@@ -228,7 +374,7 @@
 <li>别的应用通过<code>[[UIApplication sharedApplication] openURL:url]</code>传递指定格式的URL到我们的应用；</li>
 <li>我们的应用在下面的回调中接收URL，经过Router查询和调用与URL绑定的服务Block：</li>
 </ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">- (BOOL)application:(UIApplication *)app </span><br><span class="line">            openURL:(NSURL *)url </span><br><span class="line">            options:(NSDictionary&lt;UIApplicationOpenURLOptionsKey,id&gt; *)options</span><br><span class="line">&#123;</span><br><span class="line">    BOOL canHandle = [Router canHandleUrl:url.absoluteString];</span><br><span class="line">    if (canHandle) &#123;</span><br><span class="line">        [Router handleURL:url.absoluteString complexParams:nil completion:^(id result) &#123;</span><br><span class="line">        &#125;];</span><br><span class="line">    &#125;</span><br><span class="line">    return canHandle;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs objectivec">- (<span class="hljs-type">BOOL</span>)application:(<span class="hljs-built_in">UIApplication</span> *)app <br>            openURL:(<span class="hljs-built_in">NSURL</span> *)url <br>            options:(<span class="hljs-built_in">NSDictionary</span>&lt;<span class="hljs-built_in">UIApplicationOpenURLOptionsKey</span>,<span class="hljs-type">id</span>&gt; *)options<br>&#123;<br>    <span class="hljs-type">BOOL</span> canHandle = [Router canHandleUrl:url.absoluteString];<br>    <span class="hljs-keyword">if</span> (canHandle) &#123;<br>        [Router handleURL:url.absoluteString complexParams:<span class="hljs-literal">nil</span> completion:^(<span class="hljs-type">id</span> result) &#123;<br>        &#125;];<br>    &#125;<br>    <span class="hljs-keyword">return</span> canHandle;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>远程调用时传递的URL一定要按照约定的格式拼接；<br><br/></p>
 <p>基于URL的远程调用有个缺点，即URL中参数的类型将会受到限制，图片、数据、block等类型的参数将无法直接拼接到URL后面。</p>
@@ -237,10 +383,10 @@
 <li>定义URL以表示组件对外提供的某个接口；</li>
 <li>应用启动阶段在全局字典中保存URL与Block的映射关系；</li>
 <li>简单参数拼接到URL中，复杂参数包装到complexParams字典中；</li>
-<li>服务调用方传入URL，由Router查询并调用与之绑定的Block；<br><img src="https://davidlii.nos-eastchina1.126.net/pic_module_URL_Block.jpg" alt="组件化-URL-BLOCK"></li>
+<li>服务调用方传入URL，由Router查询并调用与之绑定的Block；<br><img src="https://davidlii.nos-eastchina1.126.net/pic_module_URL_Block.jpg" srcset="/img/loading.gif" lazyload alt="组件化-URL-BLOCK"></li>
 </ul>
 <h4 id="5-目录结构"><a href="#5-目录结构" class="headerlink" title="5.目录结构"></a>5.目录结构</h4><p>整个工程的目录结构如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── HelModules+URL</span><br><span class="line">│   ├── AppDelegate.h</span><br><span class="line">│   ├── AppDelegate.m</span><br><span class="line">│   ├── Assets.xcassets</span><br><span class="line">│   │   ├── AppIcon.appiconset</span><br><span class="line">│   │   └── Contents.json</span><br><span class="line">│   ├── Base.lproj</span><br><span class="line">│   │   ├── LaunchScreen.storyboard</span><br><span class="line">│   │   └── Main.storyboard</span><br><span class="line">│   ├── Common</span><br><span class="line">│   │   ├── Defines.h</span><br><span class="line">│   │   └── PrefixHeader.pch</span><br><span class="line">│   ├── Detail</span><br><span class="line">│   │   ├── DetailViewController.h</span><br><span class="line">│   │   └── DetailViewController.m</span><br><span class="line">│   ├── Home</span><br><span class="line">│   │   ├── HomeViewController.h</span><br><span class="line">│   │   └── HomeViewController.m</span><br><span class="line">│   ├── Icons</span><br><span class="line">│   │   ├── 1@2x.png</span><br><span class="line">│   │   └── 1@3x.png</span><br><span class="line">│   ├── Info.plist</span><br><span class="line">│   ├── Routers</span><br><span class="line">│   │   ├── Router.h</span><br><span class="line">│   │   └── Router.m</span><br><span class="line">│   └── main.m</span><br></pre></td></tr></table></figure>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs stylus">.<br>├── HelModules+URL<br>│   ├── AppDelegate<span class="hljs-selector-class">.h</span><br>│   ├── AppDelegate<span class="hljs-selector-class">.m</span><br>│   ├── Assets<span class="hljs-selector-class">.xcassets</span><br>│   │   ├── AppIcon<span class="hljs-selector-class">.appiconset</span><br>│   │   └── Contents<span class="hljs-selector-class">.json</span><br>│   ├── Base<span class="hljs-selector-class">.lproj</span><br>│   │   ├── LaunchScreen<span class="hljs-selector-class">.storyboard</span><br>│   │   └── Main<span class="hljs-selector-class">.storyboard</span><br>│   ├── Common<br>│   │   ├── Defines<span class="hljs-selector-class">.h</span><br>│   │   └── PrefixHeader<span class="hljs-selector-class">.pch</span><br>│   ├── Detail<br>│   │   ├── DetailViewController<span class="hljs-selector-class">.h</span><br>│   │   └── DetailViewController<span class="hljs-selector-class">.m</span><br>│   ├── Home<br>│   │   ├── HomeViewController<span class="hljs-selector-class">.h</span><br>│   │   └── HomeViewController<span class="hljs-selector-class">.m</span><br>│   ├── Icons<br>│   │   ├── <span class="hljs-number">1</span>@<span class="hljs-number">2</span>x<span class="hljs-selector-class">.png</span><br>│   │   └── <span class="hljs-number">1</span>@<span class="hljs-number">3</span>x<span class="hljs-selector-class">.png</span><br>│   ├── Info<span class="hljs-selector-class">.plist</span><br>│   ├── Routers<br>│   │   ├── Router<span class="hljs-selector-class">.h</span><br>│   │   └── Router<span class="hljs-selector-class">.m</span><br>│   └── <span class="hljs-selector-tag">main</span>.m<br></code></pre></td></tr></table></figure>
 
 <h4 id="6-Bifrost"><a href="#6-Bifrost" class="headerlink" title="6.Bifrost"></a>6.Bifrost</h4><p>整个URL解耦方案的核心是<code>Router</code>类：</p>
 <ul>
@@ -248,7 +394,7 @@
 <li>根据URL查询并调用对应Block。</li>
 </ul>
 <p>这里着重推荐一下有赞开源的组件化库<a target="_blank" rel="noopener" href="https://github.com/youzan/Bifrost">”#Bifrost“</a>，它提供了对Router完善的封装。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br></pre></td><td class="code"><pre><span class="line">// Bifrost+Router.h</span><br><span class="line">#import &quot;Bifrost.h&quot;</span><br><span class="line"></span><br><span class="line">#define BFComplete(Params, Result) [Bifrost completeWithParameters:Params result:Result]</span><br><span class="line"></span><br><span class="line">// default keys in the parameters of BifrostRouteHandler</span><br><span class="line">extern NSString * _Nonnull const kBifrostRouteURL; //the key for the raw url</span><br><span class="line">extern NSString * _Nonnull const kBifrostRouteCompletion; //the key for the completion block.</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> The handler for a binded url</span><br><span class="line"> </span><br><span class="line"> @param parameters containers above 2 keys and parameters from the query string and complexParams</span><br><span class="line"> @return the obj returned by the handler</span><br><span class="line"> */</span><br><span class="line">typedef _Nullable id (^BifrostRouteHandler)( NSDictionary * _Nullable parameters);</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> The completion block to be invoked at the end of the router handler block</span><br><span class="line"> </span><br><span class="line"> @param result completion result. defaultly it is the returned object of the BifrostRouteHandler.</span><br><span class="line"> */</span><br><span class="line">typedef void (^BifrostRouteCompletion)(_Nullable id result);</span><br><span class="line"></span><br><span class="line">@interface Bifrost (Router)</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> The method to bind a URL to handler</span><br><span class="line"> </span><br><span class="line"> @param urlStr The URL string. Only scheme, host and api path will be used here.</span><br><span class="line"> Its query string will be ignore here.</span><br><span class="line"> @param handler the handler block.</span><br><span class="line"> The BifrostRouteCompletion should be invoked at the end of the block</span><br><span class="line"> */</span><br><span class="line">+ (void)bindURL:(nonnull NSString *)urlStr toHandler:(nonnull BifrostRouteHandler)handler;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> The method to unbind a URL</span><br><span class="line"> </span><br><span class="line"> @param urlStr The URL string. Only scheme, host and api path will be used here.</span><br><span class="line"> Its query string will be ignore here.</span><br><span class="line"> */</span><br><span class="line">+ (void)unbindURL:(nonnull NSString *)urlStr;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> Method to unbind all URLs</span><br><span class="line"> */</span><br><span class="line">+ (void)unbindAllURLs;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> The method to check whether a url can be handled</span><br><span class="line"> </span><br><span class="line"> @param urlStr The URL string. Only scheme, host and api path will be used here.</span><br><span class="line"> Its query string will be ignore here.</span><br><span class="line"> */</span><br><span class="line">+ (BOOL)canHandleURL:(nonnull NSString *)urlStr;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> Method to handle the URL</span><br><span class="line"> </span><br><span class="line"> @param urlStr URL string</span><br><span class="line"> @return the returned object of the url&#x27;s BifrostRouteHandler</span><br><span class="line"> */</span><br><span class="line">+ (nullable id)handleURL:(nonnull NSString *)urlStr;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> Method to handle the url with completion block</span><br><span class="line"> </span><br><span class="line"> @param urlStr URL string</span><br><span class="line"> @param completion The completion block</span><br><span class="line"> @return the returned object of the url&#x27;s BifrostRouteHandler</span><br><span class="line"> */</span><br><span class="line">+ (nullable id)handleURL:(nonnull NSString *)urlStr</span><br><span class="line">              completion:(nullable BifrostRouteCompletion)completion;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> The method to handle URL with complex parameters and completion block</span><br><span class="line"> </span><br><span class="line"> @param urlStr URL string</span><br><span class="line"> @param complexParams complex parameters that can&#x27;t be put in the url query strings</span><br><span class="line"> @param completion The completion block</span><br><span class="line"> @return the returned object of the url&#x27;s BifrostRouteHandler</span><br><span class="line"> */</span><br><span class="line">+ (nullable id)handleURL:(nonnull NSString *)urlStr</span><br><span class="line">           complexParams:(nullable NSDictionary*)complexParams</span><br><span class="line">              completion:(nullable BifrostRouteCompletion)completion;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> Invoke the completion block in the parameters of BifrostRouteHandler.</span><br><span class="line"> Recommend to use macro BFComplete for convenient.</span><br><span class="line"> </span><br><span class="line"> @param params parameters of BifrostRouteHandler</span><br><span class="line"> @param result the result for the BifrostRouteCompletion</span><br><span class="line"> */</span><br><span class="line">+ (void)completeWithParameters:(nullable NSDictionary*)params result:(_Nullable id)result;</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-comment">// Bifrost+Router.h</span><br><span class="hljs-meta">#import <span class="hljs-string">&quot;Bifrost.h&quot;</span></span><br><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> BFComplete(Params, Result) [Bifrost completeWithParameters:Params result:Result]</span><br><br><span class="hljs-comment">// default keys in the parameters of BifrostRouteHandler</span><br><span class="hljs-keyword">extern</span> <span class="hljs-built_in">NSString</span> * _Nonnull <span class="hljs-keyword">const</span> kBifrostRouteURL; <span class="hljs-comment">//the key for the raw url</span><br><span class="hljs-keyword">extern</span> <span class="hljs-built_in">NSString</span> * _Nonnull <span class="hljs-keyword">const</span> kBifrostRouteCompletion; <span class="hljs-comment">//the key for the completion block.</span><br><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> The handler for a binded url</span><br><span class="hljs-comment"> </span><br><span class="hljs-comment"> @param parameters containers above 2 keys and parameters from the query string and complexParams</span><br><span class="hljs-comment"> @return the obj returned by the handler</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">typedef</span> _Nullable <span class="hljs-type">id</span> (^BifrostRouteHandler)( <span class="hljs-built_in">NSDictionary</span> * _Nullable parameters);<br><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> The completion block to be invoked at the end of the router handler block</span><br><span class="hljs-comment"> </span><br><span class="hljs-comment"> @param result completion result. defaultly it is the returned object of the BifrostRouteHandler.</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">typedef</span> <span class="hljs-type">void</span> (^BifrostRouteCompletion)(_Nullable <span class="hljs-type">id</span> result);<br><br><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">Bifrost</span> (<span class="hljs-title">Router</span>)</span><br><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> The method to bind a URL to handler</span><br><span class="hljs-comment"> </span><br><span class="hljs-comment"> @param urlStr The URL string. Only scheme, host and api path will be used here.</span><br><span class="hljs-comment"> Its query string will be ignore here.</span><br><span class="hljs-comment"> @param handler the handler block.</span><br><span class="hljs-comment"> The BifrostRouteCompletion should be invoked at the end of the block</span><br><span class="hljs-comment"> */</span><br>+ (<span class="hljs-type">void</span>)bindURL:(<span class="hljs-keyword">nonnull</span> <span class="hljs-built_in">NSString</span> *)urlStr toHandler:(<span class="hljs-keyword">nonnull</span> BifrostRouteHandler)handler;<br><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> The method to unbind a URL</span><br><span class="hljs-comment"> </span><br><span class="hljs-comment"> @param urlStr The URL string. Only scheme, host and api path will be used here.</span><br><span class="hljs-comment"> Its query string will be ignore here.</span><br><span class="hljs-comment"> */</span><br>+ (<span class="hljs-type">void</span>)unbindURL:(<span class="hljs-keyword">nonnull</span> <span class="hljs-built_in">NSString</span> *)urlStr;<br><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> Method to unbind all URLs</span><br><span class="hljs-comment"> */</span><br>+ (<span class="hljs-type">void</span>)unbindAllURLs;<br><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> The method to check whether a url can be handled</span><br><span class="hljs-comment"> </span><br><span class="hljs-comment"> @param urlStr The URL string. Only scheme, host and api path will be used here.</span><br><span class="hljs-comment"> Its query string will be ignore here.</span><br><span class="hljs-comment"> */</span><br>+ (<span class="hljs-type">BOOL</span>)canHandleURL:(<span class="hljs-keyword">nonnull</span> <span class="hljs-built_in">NSString</span> *)urlStr;<br><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> Method to handle the URL</span><br><span class="hljs-comment"> </span><br><span class="hljs-comment"> @param urlStr URL string</span><br><span class="hljs-comment"> @return the returned object of the url&#x27;s BifrostRouteHandler</span><br><span class="hljs-comment"> */</span><br>+ (<span class="hljs-keyword">nullable</span> <span class="hljs-type">id</span>)handleURL:(<span class="hljs-keyword">nonnull</span> <span class="hljs-built_in">NSString</span> *)urlStr;<br><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> Method to handle the url with completion block</span><br><span class="hljs-comment"> </span><br><span class="hljs-comment"> @param urlStr URL string</span><br><span class="hljs-comment"> @param completion The completion block</span><br><span class="hljs-comment"> @return the returned object of the url&#x27;s BifrostRouteHandler</span><br><span class="hljs-comment"> */</span><br>+ (<span class="hljs-keyword">nullable</span> <span class="hljs-type">id</span>)handleURL:(<span class="hljs-keyword">nonnull</span> <span class="hljs-built_in">NSString</span> *)urlStr<br>              completion:(<span class="hljs-keyword">nullable</span> BifrostRouteCompletion)completion;<br><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> The method to handle URL with complex parameters and completion block</span><br><span class="hljs-comment"> </span><br><span class="hljs-comment"> @param urlStr URL string</span><br><span class="hljs-comment"> @param complexParams complex parameters that can&#x27;t be put in the url query strings</span><br><span class="hljs-comment"> @param completion The completion block</span><br><span class="hljs-comment"> @return the returned object of the url&#x27;s BifrostRouteHandler</span><br><span class="hljs-comment"> */</span><br>+ (<span class="hljs-keyword">nullable</span> <span class="hljs-type">id</span>)handleURL:(<span class="hljs-keyword">nonnull</span> <span class="hljs-built_in">NSString</span> *)urlStr<br>           complexParams:(<span class="hljs-keyword">nullable</span> <span class="hljs-built_in">NSDictionary</span>*)complexParams<br>              completion:(<span class="hljs-keyword">nullable</span> BifrostRouteCompletion)completion;<br><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> Invoke the completion block in the parameters of BifrostRouteHandler.</span><br><span class="hljs-comment"> Recommend to use macro BFComplete for convenient.</span><br><span class="hljs-comment"> </span><br><span class="hljs-comment"> @param params parameters of BifrostRouteHandler</span><br><span class="hljs-comment"> @param result the result for the BifrostRouteCompletion</span><br><span class="hljs-comment"> */</span><br>+ (<span class="hljs-type">void</span>)completeWithParameters:(<span class="hljs-keyword">nullable</span> <span class="hljs-built_in">NSDictionary</span>*)params result:(_Nullable <span class="hljs-type">id</span>)result;<br><br><span class="hljs-keyword">@end</span><br></code></pre></td></tr></table></figure>
 
 <p>从头文件中可以看到，<code>Bifrost</code>的主要功能包括：</p>
 <ul>
@@ -258,7 +404,7 @@
 <li>检测某个URL是否绑定了Block；</li>
 </ul>
 <p>具体的实现代码如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br></pre></td><td class="code"><pre><span class="line">#import &quot;Bifrost+Router.h&quot;</span><br><span class="line"></span><br><span class="line">#define BFLog(msg) NSLog(@&quot;[Bifrost] %@&quot;, (msg))</span><br><span class="line">#define BFKey(URL) [Bifrost keyForURL:URL]</span><br><span class="line"></span><br><span class="line">NSString *const kBifrostRouteURL = @&quot;kBifrostRouteURL&quot;;</span><br><span class="line">NSString *const kBifrostRouteCompletion = @&quot;kBifrostRouteCompletion&quot;;</span><br><span class="line"></span><br><span class="line">@implementation Bifrost (Router)</span><br><span class="line"></span><br><span class="line">// 从带参数的URL中取出.host和.path部分，作为绑定block所用的键</span><br><span class="line">+ (nonnull NSString*)keyForURL:(nonnull NSString*)urlStr &#123;</span><br><span class="line">    NSURL *URL = [NSURL URLWithString:urlStr];</span><br><span class="line">    NSString *key = [NSString stringWithFormat:@&quot;%@%@&quot;, URL.host, URL.path];</span><br><span class="line">    return key;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 取出URL.query部分，以&amp;分割参数，重新组成字典</span><br><span class="line">+ (nullable NSDictionary*)parametersInURL:(nonnull NSString*)urlStr &#123;</span><br><span class="line">    NSURL *URL = [NSURL URLWithString:urlStr];</span><br><span class="line">    NSMutableDictionary *params = nil;</span><br><span class="line">    NSString *query = URL.query;</span><br><span class="line">    if(query.length &gt; 0) &#123;</span><br><span class="line">        params = [NSMutableDictionary dictionary];</span><br><span class="line">        NSArray *list = [query componentsSeparatedByString:@&quot;&amp;&quot;];</span><br><span class="line">        for (NSString *param in list) &#123;</span><br><span class="line">            NSArray *elts = [param componentsSeparatedByString:@&quot;=&quot;];</span><br><span class="line">            if([elts count] &lt; 2) continue;</span><br><span class="line">            NSString *decodedStr = [[elts lastObject] stringByRemovingPercentEncoding];</span><br><span class="line">            [params setObject:decodedStr forKey:[elts firstObject]];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return params;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 静态字典，全局一份，保存URL与Block的映射关系</span><br><span class="line">+ (NSMutableDictionary*)routes &#123;</span><br><span class="line">    @synchronized (self) &#123;</span><br><span class="line">        static NSMutableDictionary *_routes = nil;</span><br><span class="line">        if (!_routes) &#123;</span><br><span class="line">            _routes = [NSMutableDictionary dictionary];</span><br><span class="line">        &#125;</span><br><span class="line">        return _routes;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 保存URL与Block的映射关系</span><br><span class="line">+ (void)bindURL:(nonnull NSString *)urlStr toHandler:(nonnull BifrostRouteHandler)handler &#123;</span><br><span class="line">    [self.routes setObject:handler forKey:BFKey(urlStr)];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 解除URL与Block的映射关系</span><br><span class="line">+ (void)unbindURL:(nonnull NSString *)urlStr &#123;</span><br><span class="line">    [self.routes removeObjectForKey:BFKey(urlStr)];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 清空所有的映射</span><br><span class="line">+ (void)unbindAllURLs &#123;</span><br><span class="line">    [self.routes removeAllObjects];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 根据URL查询已绑定的Block</span><br><span class="line">+ (nullable BifrostRouteHandler)handlerForURL:(nonnull NSString *)urlStr &#123;</span><br><span class="line">    return [self.routes objectForKey:BFKey(urlStr)];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 检测URL是否绑定了Block</span><br><span class="line">+ (BOOL)canHandleURL:(nonnull NSString *)urlStr &#123;</span><br><span class="line">    if (urlStr.length == 0) &#123;</span><br><span class="line">        return NO;</span><br><span class="line">    &#125;</span><br><span class="line">    if ([self handlerForURL:urlStr]) &#123;</span><br><span class="line">        return YES;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        return NO;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 查询并调用URL绑定的block，url中包含了简单的参数</span><br><span class="line">+ (nullable id)handleURL:(nonnull NSString *)urlStr &#123;</span><br><span class="line">    return [self handleURL:urlStr complexParams:nil completion:nil];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 查询并调用URL绑定的block，url中包含了简单的参数，同时附带回调函数</span><br><span class="line">+ (nullable id)handleURL:(nonnull NSString *)urlStr</span><br><span class="line">              completion:(nullable BifrostRouteCompletion)completion &#123;</span><br><span class="line">    return [self handleURL:urlStr complexParams:nil completion:completion];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 查询并调用URL绑定的block，url中包含了简单的参数，复杂参数包含在complexParams字典中，同时附带回调函数</span><br><span class="line">+ (nullable id)handleURL:(nonnull NSString *)urlStr</span><br><span class="line">           complexParams:(nullable NSDictionary*)complexParams</span><br><span class="line">              completion:(nullable BifrostRouteCompletion)completion &#123;</span><br><span class="line">    id obj = nil;</span><br><span class="line">    @try &#123;</span><br><span class="line">        BifrostRouteHandler handler = [self handlerForURL:urlStr];</span><br><span class="line">        NSMutableDictionary *params = [NSMutableDictionary dictionaryWithDictionary:complexParams];</span><br><span class="line">        [params addEntriesFromDictionary:[self.class parametersInURL:urlStr]];</span><br><span class="line">        [params setObject:urlStr forKey:kBifrostRouteURL];</span><br><span class="line">        if (completion) &#123;</span><br><span class="line">            [params setObject:completion forKey:kBifrostRouteCompletion];</span><br><span class="line">        &#125;</span><br><span class="line">        if (!handler) &#123;</span><br><span class="line">            NSString *reason = [NSString stringWithFormat:@&quot;Cannot find handler for route url %@&quot;, urlStr];</span><br><span class="line">            NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];</span><br><span class="line">            [userInfo setValue:@(BFExceptionUrlHandlerNotFound) forKey:kBifrostExceptionCode];</span><br><span class="line">            [userInfo setValue:urlStr forKey:kBifrostExceptionURLStr];</span><br><span class="line">            [userInfo setValue:params forKey:kBifrostExceptionURLParams];</span><br><span class="line">            NSException *exception = [[NSException alloc] initWithName:BifrostExceptionName</span><br><span class="line">                                                                reason:reason</span><br><span class="line">                                                              userInfo:userInfo];</span><br><span class="line">            BifrostExceptionHandler handler = [self getExceptionHandler];</span><br><span class="line">            if (handler) &#123;</span><br><span class="line">                obj = handler(exception);</span><br><span class="line">            &#125;</span><br><span class="line">            BFLog(reason);</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            obj = handler(params);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; @catch (NSException *exception) &#123;</span><br><span class="line">        NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithDictionary:exception.userInfo];</span><br><span class="line">        [userInfo setValue:@(BFExceptionDefaultCode) forKey:kBifrostExceptionCode];</span><br><span class="line">        [userInfo setValue:urlStr forKey:kBifrostExceptionURLStr];</span><br><span class="line">        [userInfo setValue:complexParams forKey:kBifrostExceptionURLParams];</span><br><span class="line">        NSException *ex = [[NSException alloc] initWithName:exception.name</span><br><span class="line">                                                     reason:exception.reason</span><br><span class="line">                                                   userInfo:userInfo];</span><br><span class="line">        BifrostExceptionHandler handler = [self getExceptionHandler];</span><br><span class="line">        if (handler) &#123;</span><br><span class="line">            obj = handler(ex);</span><br><span class="line">        &#125;</span><br><span class="line">        BFLog(exception.reason);</span><br><span class="line">    &#125; @finally &#123;</span><br><span class="line">        return obj;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 从参数列表中查询并调用回调函数</span><br><span class="line">+ (void)completeWithParameters:(nullable NSDictionary*)params result:(_Nullable id)result &#123;</span><br><span class="line">    BifrostRouteCompletion completion = params[kBifrostRouteCompletion];</span><br><span class="line">    if (completion) &#123;</span><br><span class="line">        completion(result);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-meta">#import <span class="hljs-string">&quot;Bifrost+Router.h&quot;</span></span><br><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> BFLog(msg) NSLog(@<span class="hljs-string">&quot;[Bifrost] %@&quot;</span>, (msg))</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> BFKey(URL) [Bifrost keyForURL:URL]</span><br><br><span class="hljs-built_in">NSString</span> *<span class="hljs-keyword">const</span> kBifrostRouteURL = <span class="hljs-string">@&quot;kBifrostRouteURL&quot;</span>;<br><span class="hljs-built_in">NSString</span> *<span class="hljs-keyword">const</span> kBifrostRouteCompletion = <span class="hljs-string">@&quot;kBifrostRouteCompletion&quot;</span>;<br><br><span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">Bifrost</span> (<span class="hljs-title">Router</span>)</span><br><br><span class="hljs-comment">// 从带参数的URL中取出.host和.path部分，作为绑定block所用的键</span><br>+ (<span class="hljs-keyword">nonnull</span> <span class="hljs-built_in">NSString</span>*)keyForURL:(<span class="hljs-keyword">nonnull</span> <span class="hljs-built_in">NSString</span>*)urlStr &#123;<br>    <span class="hljs-built_in">NSURL</span> *URL = [<span class="hljs-built_in">NSURL</span> URLWithString:urlStr];<br>    <span class="hljs-built_in">NSString</span> *key = [<span class="hljs-built_in">NSString</span> stringWithFormat:<span class="hljs-string">@&quot;%@%@&quot;</span>, URL.host, URL.path];<br>    <span class="hljs-keyword">return</span> key;<br>&#125;<br><br><span class="hljs-comment">// 取出URL.query部分，以&amp;分割参数，重新组成字典</span><br>+ (<span class="hljs-keyword">nullable</span> <span class="hljs-built_in">NSDictionary</span>*)parametersInURL:(<span class="hljs-keyword">nonnull</span> <span class="hljs-built_in">NSString</span>*)urlStr &#123;<br>    <span class="hljs-built_in">NSURL</span> *URL = [<span class="hljs-built_in">NSURL</span> URLWithString:urlStr];<br>    <span class="hljs-built_in">NSMutableDictionary</span> *params = <span class="hljs-literal">nil</span>;<br>    <span class="hljs-built_in">NSString</span> *query = URL.query;<br>    <span class="hljs-keyword">if</span>(query.length &gt; <span class="hljs-number">0</span>) &#123;<br>        params = [<span class="hljs-built_in">NSMutableDictionary</span> dictionary];<br>        <span class="hljs-built_in">NSArray</span> *list = [query componentsSeparatedByString:<span class="hljs-string">@&quot;&amp;&quot;</span>];<br>        <span class="hljs-keyword">for</span> (<span class="hljs-built_in">NSString</span> *param <span class="hljs-keyword">in</span> list) &#123;<br>            <span class="hljs-built_in">NSArray</span> *elts = [param componentsSeparatedByString:<span class="hljs-string">@&quot;=&quot;</span>];<br>            <span class="hljs-keyword">if</span>([elts count] &lt; <span class="hljs-number">2</span>) <span class="hljs-keyword">continue</span>;<br>            <span class="hljs-built_in">NSString</span> *decodedStr = [[elts lastObject] stringByRemovingPercentEncoding];<br>            [params setObject:decodedStr forKey:[elts firstObject]];<br>        &#125;<br>    &#125;<br>    <span class="hljs-keyword">return</span> params;<br>&#125;<br><br><span class="hljs-comment">// 静态字典，全局一份，保存URL与Block的映射关系</span><br>+ (<span class="hljs-built_in">NSMutableDictionary</span>*)routes &#123;<br>    <span class="hljs-keyword">@synchronized</span> (<span class="hljs-keyword">self</span>) &#123;<br>        <span class="hljs-keyword">static</span> <span class="hljs-built_in">NSMutableDictionary</span> *_routes = <span class="hljs-literal">nil</span>;<br>        <span class="hljs-keyword">if</span> (!_routes) &#123;<br>            _routes = [<span class="hljs-built_in">NSMutableDictionary</span> dictionary];<br>        &#125;<br>        <span class="hljs-keyword">return</span> _routes;<br>    &#125;<br>&#125;<br><br><span class="hljs-comment">// 保存URL与Block的映射关系</span><br>+ (<span class="hljs-type">void</span>)bindURL:(<span class="hljs-keyword">nonnull</span> <span class="hljs-built_in">NSString</span> *)urlStr toHandler:(<span class="hljs-keyword">nonnull</span> BifrostRouteHandler)handler &#123;<br>    [<span class="hljs-keyword">self</span>.routes setObject:handler forKey:BFKey(urlStr)];<br>&#125;<br><br><span class="hljs-comment">// 解除URL与Block的映射关系</span><br>+ (<span class="hljs-type">void</span>)unbindURL:(<span class="hljs-keyword">nonnull</span> <span class="hljs-built_in">NSString</span> *)urlStr &#123;<br>    [<span class="hljs-keyword">self</span>.routes removeObjectForKey:BFKey(urlStr)];<br>&#125;<br><br><span class="hljs-comment">// 清空所有的映射</span><br>+ (<span class="hljs-type">void</span>)unbindAllURLs &#123;<br>    [<span class="hljs-keyword">self</span>.routes removeAllObjects];<br>&#125;<br><br><span class="hljs-comment">// 根据URL查询已绑定的Block</span><br>+ (<span class="hljs-keyword">nullable</span> BifrostRouteHandler)handlerForURL:(<span class="hljs-keyword">nonnull</span> <span class="hljs-built_in">NSString</span> *)urlStr &#123;<br>    <span class="hljs-keyword">return</span> [<span class="hljs-keyword">self</span>.routes objectForKey:BFKey(urlStr)];<br>&#125;<br><br><span class="hljs-comment">// 检测URL是否绑定了Block</span><br>+ (<span class="hljs-type">BOOL</span>)canHandleURL:(<span class="hljs-keyword">nonnull</span> <span class="hljs-built_in">NSString</span> *)urlStr &#123;<br>    <span class="hljs-keyword">if</span> (urlStr.length == <span class="hljs-number">0</span>) &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">NO</span>;<br>    &#125;<br>    <span class="hljs-keyword">if</span> ([<span class="hljs-keyword">self</span> handlerForURL:urlStr]) &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">YES</span>;<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">NO</span>;<br>    &#125;<br>&#125;<br><br><span class="hljs-comment">// 查询并调用URL绑定的block，url中包含了简单的参数</span><br>+ (<span class="hljs-keyword">nullable</span> <span class="hljs-type">id</span>)handleURL:(<span class="hljs-keyword">nonnull</span> <span class="hljs-built_in">NSString</span> *)urlStr &#123;<br>    <span class="hljs-keyword">return</span> [<span class="hljs-keyword">self</span> handleURL:urlStr complexParams:<span class="hljs-literal">nil</span> completion:<span class="hljs-literal">nil</span>];<br>&#125;<br><br><span class="hljs-comment">// 查询并调用URL绑定的block，url中包含了简单的参数，同时附带回调函数</span><br>+ (<span class="hljs-keyword">nullable</span> <span class="hljs-type">id</span>)handleURL:(<span class="hljs-keyword">nonnull</span> <span class="hljs-built_in">NSString</span> *)urlStr<br>              completion:(<span class="hljs-keyword">nullable</span> BifrostRouteCompletion)completion &#123;<br>    <span class="hljs-keyword">return</span> [<span class="hljs-keyword">self</span> handleURL:urlStr complexParams:<span class="hljs-literal">nil</span> completion:completion];<br>&#125;<br><br><span class="hljs-comment">// 查询并调用URL绑定的block，url中包含了简单的参数，复杂参数包含在complexParams字典中，同时附带回调函数</span><br>+ (<span class="hljs-keyword">nullable</span> <span class="hljs-type">id</span>)handleURL:(<span class="hljs-keyword">nonnull</span> <span class="hljs-built_in">NSString</span> *)urlStr<br>           complexParams:(<span class="hljs-keyword">nullable</span> <span class="hljs-built_in">NSDictionary</span>*)complexParams<br>              completion:(<span class="hljs-keyword">nullable</span> BifrostRouteCompletion)completion &#123;<br>    <span class="hljs-type">id</span> obj = <span class="hljs-literal">nil</span>;<br>    <span class="hljs-keyword">@try</span> &#123;<br>        BifrostRouteHandler handler = [<span class="hljs-keyword">self</span> handlerForURL:urlStr];<br>        <span class="hljs-built_in">NSMutableDictionary</span> *params = [<span class="hljs-built_in">NSMutableDictionary</span> dictionaryWithDictionary:complexParams];<br>        [params addEntriesFromDictionary:[<span class="hljs-keyword">self</span>.class parametersInURL:urlStr]];<br>        [params setObject:urlStr forKey:kBifrostRouteURL];<br>        <span class="hljs-keyword">if</span> (completion) &#123;<br>            [params setObject:completion forKey:kBifrostRouteCompletion];<br>        &#125;<br>        <span class="hljs-keyword">if</span> (!handler) &#123;<br>            <span class="hljs-built_in">NSString</span> *reason = [<span class="hljs-built_in">NSString</span> stringWithFormat:<span class="hljs-string">@&quot;Cannot find handler for route url %@&quot;</span>, urlStr];<br>            <span class="hljs-built_in">NSMutableDictionary</span> *userInfo = [<span class="hljs-built_in">NSMutableDictionary</span> dictionary];<br>            [userInfo setValue:@(BFExceptionUrlHandlerNotFound) forKey:kBifrostExceptionCode];<br>            [userInfo setValue:urlStr forKey:kBifrostExceptionURLStr];<br>            [userInfo setValue:params forKey:kBifrostExceptionURLParams];<br>            <span class="hljs-built_in">NSException</span> *exception = [[<span class="hljs-built_in">NSException</span> alloc] initWithName:BifrostExceptionName<br>                                                                reason:reason<br>                                                              userInfo:userInfo];<br>            BifrostExceptionHandler handler = [<span class="hljs-keyword">self</span> getExceptionHandler];<br>            <span class="hljs-keyword">if</span> (handler) &#123;<br>                obj = handler(exception);<br>            &#125;<br>            BFLog(reason);<br>        &#125; <span class="hljs-keyword">else</span> &#123;<br>            obj = handler(params);<br>        &#125;<br>    &#125; <span class="hljs-keyword">@catch</span> (<span class="hljs-built_in">NSException</span> *exception) &#123;<br>        <span class="hljs-built_in">NSMutableDictionary</span> *userInfo = [<span class="hljs-built_in">NSMutableDictionary</span> dictionaryWithDictionary:exception.userInfo];<br>        [userInfo setValue:@(BFExceptionDefaultCode) forKey:kBifrostExceptionCode];<br>        [userInfo setValue:urlStr forKey:kBifrostExceptionURLStr];<br>        [userInfo setValue:complexParams forKey:kBifrostExceptionURLParams];<br>        <span class="hljs-built_in">NSException</span> *ex = [[<span class="hljs-built_in">NSException</span> alloc] initWithName:exception.name<br>                                                     reason:exception.reason<br>                                                   userInfo:userInfo];<br>        BifrostExceptionHandler handler = [<span class="hljs-keyword">self</span> getExceptionHandler];<br>        <span class="hljs-keyword">if</span> (handler) &#123;<br>            obj = handler(ex);<br>        &#125;<br>        BFLog(exception.reason);<br>    &#125; <span class="hljs-keyword">@finally</span> &#123;<br>        <span class="hljs-keyword">return</span> obj;<br>    &#125;<br>&#125;<br><br><span class="hljs-comment">// 从参数列表中查询并调用回调函数</span><br>+ (<span class="hljs-type">void</span>)completeWithParameters:(<span class="hljs-keyword">nullable</span> <span class="hljs-built_in">NSDictionary</span>*)params result:(_Nullable <span class="hljs-type">id</span>)result &#123;<br>    BifrostRouteCompletion completion = params[kBifrostRouteCompletion];<br>    <span class="hljs-keyword">if</span> (completion) &#123;<br>        completion(result);<br>    &#125;<br>&#125;<br><br><span class="hljs-keyword">@end</span><br></code></pre></td></tr></table></figure>
 
 <p>库的实现并不复杂，各接口的作用已经在上面标明。它提供了异常情况的报错，同时URL和参数的处理也值得借鉴。</p>
 <h4 id="7-方案评价"><a href="#7-方案评价" class="headerlink" title="7.方案评价"></a>7.方案评价</h4><p>无论是我们自己的<code>Router</code>还是有赞的<code>Bifrost</code>，其实现组件化的思路都是一样的：都是URL与Block的绑定和路由。<br><br/></p>
@@ -281,217 +427,346 @@
 <p>#<a target="_blank" rel="noopener" href="https://github.com/davidli-/DaModules-Hardcore">©反射方案demo</a></p>
 <p>#<a target="_blank" rel="noopener" href="https://github.com/davidli-/DaModule-Protocol">©服务协议注册方案demo</a></p>
 <p>#<a target="_blank" rel="noopener" href="https://github.com/youzan/Bifrost">©有赞Bifrost</a></p>
-</section>
-    <!-- Tags START -->
-    
-      <div class="tags">
-        <span>Tags:</span>
-        
-  <a href="/tags#架构" >
-    <span class="tag-code">架构</span>
-  </a>
 
-      </div>
-    
-    <!-- Tags END -->
-    <!-- NAV START -->
-    
-  <div class="nav-container">
-    <!-- reverse left and right to put prev and next in a more logic postition -->
-    
-      <a class="nav-left" href="/2020/09/01/patterns.html">
-        <span class="nav-arrow">← </span>
-        
-          常用架构模式
-        
-      </a>
-    
-    
-      <a class="nav-right" href="/2020/11/12/modules-runtime.html">
-        
-          组件化-反射方案
-        
-        <span class="nav-arrow"> →</span>
-      </a>
-    
-  </div>
-
-    <!-- NAV END -->
-    <!-- 打赏 START -->
-    
-      <div class="money-like">
-        <div class="reward-btn">
-          赏
-          <span class="money-code">
-            <span class="alipay-code">
-              <div class="code-image"></div>
-              <b>使用支付宝打赏</b>
-            </span>
-            <span class="wechat-code">
-              <div class="code-image"></div>
-              <b>使用微信打赏</b>
-            </span>
-          </span>
-        </div>
-        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
-      </div>
-    
-    <!-- 打赏 END -->
-    <!-- 二维码 START -->
-    
-    <!-- 二维码 END -->
-    
-      <!-- No Comment -->
-    
-  </article>
-  <!-- Article END -->
-  <!-- Catalog START -->
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
   
-    <aside class="catalog-container">
-  <div class="toc-main">
-    <strong class="toc-title">Catalog</strong>
-    
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E4%B8%80%E3%80%81%E7%BB%84%E4%BB%B6%E5%8C%96"><span class="toc-nav-text">一、组件化</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#1-%E7%9B%AE%E7%9A%84"><span class="toc-nav-text">1.目的</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-%E5%A5%BD%E5%A4%84"><span class="toc-nav-text">2.好处</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3-%E6%96%B9%E6%A1%88"><span class="toc-nav-text">3.方案</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E4%BA%8C%E3%80%81URL%E8%B7%AF%E7%94%B1%E6%96%B9%E6%A1%88"><span class="toc-nav-text">二、URL路由方案</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#1-%E5%9C%BA%E6%99%AF"><span class="toc-nav-text">1.场景</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-%E6%80%9D%E8%B7%AF"><span class="toc-nav-text">2.思路</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#2-1-%E6%9C%8D%E5%8A%A1Block"><span class="toc-nav-text">2.1.服务Block</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#2-2-%E6%9C%8D%E5%8A%A1URL"><span class="toc-nav-text">2.2.服务URL</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#2-3-%E6%98%A0%E5%B0%84URL%E4%B8%8EBlock"><span class="toc-nav-text">2.3.映射URL与Block</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#2-4-%E8%B0%83%E7%94%A8%E6%9C%8D%E5%8A%A1"><span class="toc-nav-text">2.4.调用服务</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#2-5-%E6%9C%8D%E5%8A%A1%E8%B7%AF%E7%94%B1%E6%9F%A5%E8%AF%A2"><span class="toc-nav-text">2.5.服务路由查询</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3-%E5%AE%9E%E4%BE%8B"><span class="toc-nav-text">3.实例</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#3-1-%E6%98%A0%E5%B0%84URL%E4%B8%8E%E6%9C%8D%E5%8A%A1"><span class="toc-nav-text">3.1.映射URL与服务</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#3-2-%E5%AE%9A%E4%B9%89Router"><span class="toc-nav-text">3.2.定义Router</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#3-3-%E6%B3%A8%E5%86%8C%E6%9C%8D%E5%8A%A1"><span class="toc-nav-text">3.3.注册服务</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#3-4-%E6%9C%AC%E5%9C%B0%E8%B0%83%E7%94%A8%E6%9C%8D%E5%8A%A1"><span class="toc-nav-text">3.4.本地调用服务</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#3-5-%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E8%B0%83%E7%94%A8"><span class="toc-nav-text">3.5.远程服务调用</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#4-%E6%B5%81%E7%A8%8B%E6%80%BB%E7%BB%93"><span class="toc-nav-text">4.流程总结</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#5-%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84"><span class="toc-nav-text">5.目录结构</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#6-Bifrost"><span class="toc-nav-text">6.Bifrost</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#7-%E6%96%B9%E6%A1%88%E8%AF%84%E4%BB%B7"><span class="toc-nav-text">7.方案评价</span></a></li></ol></li></ol>
-    
-  </div>
-</aside>
   
-  <!-- Catalog END -->
-</main>
-
-<script>
-  (function () {
-    var url = 'http://yoursite.com/2020/09/03/modules-url.html';
-    var banner = ''
-    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
-      $('#article-banner').css({
-        'background-image': 'url(' + banner + ')'
-      })
-    } else {
-      $('#article-banner').geopattern(url)
-    }
-    $('.header').removeClass('fixed-header')
-
-     // error image
-    $(".markdown-content img").on('error', function() {
-      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
-      $(this).css({
-        'cursor': 'default'
-      })
-    })
-
-    // zoom image
-    $(".markdown-content img").on('click', function() {
-      var src = $(this).attr('src')
-      if (src !== 'http://file.muyutech.com/error-img.png') {
-        var imageW = $(this).width()
-        var imageH = $(this).height()
-        
-        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
-        zoom = zoom < 1 ? 1 : zoom
-        zoom = zoom > 2 ? 2 : zoom
-        var transY = (($(window).height() - imageH) / 2).toFixed(2)
-
-        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
-        $('.image-view-wrap').addClass('wrap-active')
-        $('.image-view-wrap img').css({
-          'width': `${imageW}`,
-          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
-        })
-        $('html').css('overflow', 'hidden')
-
-        $('.image-view-wrap').on('click', function() {
-          $(this).remove()
-          $('html').attr('style', '')
-        })
-      }
-    })
-
-    // qrcode
-    var qr = new QRious({
-      element: document.getElementById('share-qrcode'),
-      value: document.location.href
-    });
-
-    // gitment
-    var gitmentConfig = "";
-    if (gitmentConfig !== 'undefined') {
-      var gitment = new Gitment({
-        id: "组件化-URL路由方案",
-        owner: "",
-        repo: "",
-        oauth: {
-          client_id: "",
-          client_secret: ""
-        },
-        theme: {
-          render(state, instance) {
-            const container = document.createElement('div')
-            container.lang = "en-US"
-            container.className = 'gitment-container gitment-root-container'
-            container.appendChild(instance.renderHeader(state, instance))
-            container.appendChild(instance.renderEditor(state, instance))
-            container.appendChild(instance.renderComments(state, instance))
-            container.appendChild(instance.renderFooter(state, instance))
-            return container;
-          }
-        }
-      })
-      gitment.render(document.getElementById('comments'))
-    }
-  })();
-</script>
-
-    <div class="scroll-top">
-  <span class="arrow-icon"></span>
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%9E%B6%E6%9E%84/">#架构</a>
+      
+    </div>
+  
 </div>
-    <footer class="app-footer">
-  <p class="copyright">
-    &copy; 2022 | <a href="https://github.com/davidlii" target="_blank">Davidli</a>
-    <br>
-    <a href="https://hexo.io" target="_blank">Hexo</a> | Theme-<a target="_blank" rel="noopener" href="https://github.com/yanm1ng">yanm1ng</a>
-  </p>
-</footer>
 
-<script>
-  function async(u, c) {
-    var d = document, t = 'script',
-      o = d.createElement(t),
-      s = d.getElementsByTagName(t)[0];
-    o.src = u;
-    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
-    s.parentNode.insertBefore(o, s);
-  }
-</script>
-<script>
-  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
-    FastClick.attach(document.body);
-  })
-</script>
 
-<script>
-  var hasLine = 'true';
-  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
-    $('figure pre').each(function(i, block) {
-      var figure = $(this).parents('figure');
-      if (hasLine === 'false') {
-        figure.find('.gutter').hide();
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>组件化-URL路由方案</div>
+      <div>http://yoursite.com/2020/09/03/modules-url.html</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>September 3, 2020</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>Licensed under</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/11/12/modules-runtime.html" title="组件化-反射方案">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">组件化-反射方案</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/09/01/patterns.html" title="常用架构模式">
+                        <span class="hidden-mobile">常用架构模式</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;Table of Contents</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://github.com/davidlii" target="_blank" rel="nofollow noopener"><span>Davidlii</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        Views: 
+        <span id="busuanzi_value_site_pv"></span>
+        
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        Visitors: 
+        <span id="busuanzi_value_site_uv"></span>
+        
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
       }
-      var lang = figure.attr('class').split(' ')[1] || 'code';
-      var codeHtml = $(this).html();
-      var codeTag = document.createElement('code');
-      codeTag.className = lang;
-      codeTag.innerHTML = codeHtml;
-      $(this).attr('class', '').empty().html(codeTag);
-      figure.attr('data-lang', lang.toUpperCase());
-      hljs.highlightBlock(block);
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
     });
-  })
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
 </script>
-<!-- Baidu Tongji -->
 
 
-<script src="/js/script.js"></script>
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
 
-  </body>
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
 </html>

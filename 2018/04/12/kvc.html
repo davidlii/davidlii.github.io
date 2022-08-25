@@ -1,160 +1,306 @@
+
+
 <!DOCTYPE html>
-<html>
-  <head>
-  <meta http-equiv="content-type" content="text/html; charset=utf-8">
-  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
-  <meta name="description" content="This is Davidli&#39;s blog ~">
-  <meta name="keyword" content="hexo-theme, vuejs">
-  
-    <link rel="shortcut icon" type="image/ico" href="/image/logo.png"/> 
-  
-  <title>
-    
-      KVC 的底层实现 | Davidli
-    
-  </title>
-  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
-  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
-  
-<link rel="stylesheet" href="/css/style.css">
-<link rel="stylesheet" href="/css/plugins/gitment.css">
-
-  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
-  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
-  
-<script src="/js/qrious.js"></script>
-<script src="/js/gitment.js"></script>
-
-  
-  
-    <!-- MathJax support START -->
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      });
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      });
-    </script>
-    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <!-- MathJax support END -->
-  
+<html lang="zh-Hans" data-default-color-scheme=auto>
 
 
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="Davidli">
+  
+    <meta name="description" content="1.KVC是啥?键值编码（key value coding）是一种可以通过字符串的名字（key）来访问类属性的机制。区别于通过调用Setter、Getter来访问属性的方法。 2.啥用?通常我们要访问一个类中属性的值时，可以使用点语法（如 people.name）。但当你想访问私有属性或成员变量时，点语法就没用了。而有了 KVC 问题就迎刃而解。  常用方法?  NSKeyValueCoding.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="KVC 的底层实现">
+<meta property="og:url" content="http://yoursite.com/2018/04/12/kvc.html">
+<meta property="og:site_name" content="Davidli">
+<meta property="og:description" content="1.KVC是啥?键值编码（key value coding）是一种可以通过字符串的名字（key）来访问类属性的机制。区别于通过调用Setter、Getter来访问属性的方法。 2.啥用?通常我们要访问一个类中属性的值时，可以使用点语法（如 people.name）。但当你想访问私有属性或成员变量时，点语法就没用了。而有了 KVC 问题就迎刃而解。  常用方法?  NSKeyValueCoding.">
+<meta property="og:locale">
+<meta property="og:image" content="https://davidlii.nos-eastchina1.126.net/pic_keypath.jpg">
+<meta property="article:published_time" content="2018-04-12T15:17:02.000Z">
+<meta property="article:modified_time" content="2018-12-23T15:20:02.000Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="机制">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://davidlii.nos-eastchina1.126.net/pic_keypath.jpg">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>KVC 的底层实现 - Davidli</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"yoursite.com","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
 <meta name="generator" content="Hexo 6.2.0"></head>
-<div class="wechat-share">
-  <img src="/css/images/logo.png" />
-</div>
 
-  <body>
-    <header class="header fixed-header">
-  <div class="header-container">
-    <a class="home-link" href="/">
-      <div class="logo"></div>
-      <span>Davidli</span>
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Davidli</strong>
     </a>
-    <ul class="right-list">
-      
-        <li class="list-item">
-          
-            <a href="/" class="item-link">Davidli</a>
-          
-        </li>
-      
-        <li class="list-item">
-          
-            <a href="/archives/" class="item-link">归档</a>
-          
-        </li>
-      
-        <li class="list-item">
-          
-            <a href="/tags/" class="item-link">标签</a>
-          
-        </li>
-      
-        <li class="list-item">
-          
-            <a href="/about/" class="item-link">关于</a>
-          
-        </li>
-      
-    </ul>
-    <div class="menu">
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-    </div>
-    <div class="menu-mask">
-      <ul class="menu-list">
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
         
-          <li class="menu-item">
-            
-              <a href="/" class="menu-link">Davidli</a>
-            
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                Categories
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                Tags
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
           </li>
+          
         
-          <li class="menu-item">
-            
-              <a href="/archives/" class="menu-link">归档</a>
-            
-          </li>
         
-          <li class="menu-item">
-            
-              <a href="/tags/" class="menu-link">标签</a>
-            
-          </li>
-        
-          <li class="menu-item">
-            
-              <a href="/about/" class="menu-link">关于</a>
-            
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
           </li>
         
       </ul>
     </div>
   </div>
-</header>
+</nav>
 
-    <div id="article-banner">
-  <h2>KVC 的底层实现</h2>
-  <p class="post-date">2018-04-12</p>
-  <div class="arrow-down">
-    <a href="javascript:;"></a>
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="KVC 的底层实现"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2018-04-12 23:17" pubdate>
+          April 12, 2018 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          7.2k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          61 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
   </div>
 </div>
-<main class="app-body flex-box">
-  <!-- Article START -->
-  <article class="post-article">
-    <section class="markdown-content"><h3 id="1-KVC是啥"><a href="#1-KVC是啥" class="headerlink" title="1.KVC是啥?"></a>1.KVC是啥?</h3><p>键值编码（key value coding）是一种可以通过字符串的名字（key）来访问类属性的机制。区别于通过调用Setter、Getter来访问属性的方法。</p>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">KVC 的底层实现</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h3 id="1-KVC是啥"><a href="#1-KVC是啥" class="headerlink" title="1.KVC是啥?"></a>1.KVC是啥?</h3><p>键值编码（key value coding）是一种可以通过字符串的名字（key）来访问类属性的机制。区别于通过调用Setter、Getter来访问属性的方法。</p>
 <h3 id="2-啥用"><a href="#2-啥用" class="headerlink" title="2.啥用?"></a>2.啥用?</h3><p>通常我们要访问一个类中属性的值时，可以使用点语法（如 people.name）。但当你想访问私有属性或成员变量时，点语法就没用了。而有了 KVC 问题就迎刃而解。</p>
 <ul>
 <li><strong>常用方法?</strong></li>
 </ul>
 <p><code>NSKeyValueCoding.h</code>中有个 NSObject 的分类：<code>NSObject(NSKeyValueCoding)</code>，其中定义了以下方法：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- (id)valueForKey:(NSString *)key;</span><br><span class="line">- (id)valueForKeyPath:(NSString *)keyPath;</span><br><span class="line">- (void)setValue:(nullable id)value forKey:(NSString *)key;</span><br><span class="line">- (void)setValue:(nullable id)value forKeyPath:(NSString *)keyPath;</span><br></pre></td></tr></table></figure>
+<figure class="highlight erlang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs erlang">- <span class="hljs-params">(id)</span>valueForKey:<span class="hljs-params">(NSString *)</span>key;<br>- <span class="hljs-params">(id)</span>valueForKeyPath:<span class="hljs-params">(NSString *)</span>keyPath;<br>- <span class="hljs-params">(void)</span>setValue:<span class="hljs-params">(nullable id)</span>value forKey:<span class="hljs-params">(NSString *)</span>key;<br>- <span class="hljs-params">(void)</span>setValue:<span class="hljs-params">(nullable id)</span>value forKeyPath:<span class="hljs-params">(NSString *)</span>keyPath;<br></code></pre></td></tr></table></figure>
 
 <p>其中，-valueForKey: 与 -valueForKeyPath:在一般的属性访问时，效果是一样的。但要访问类似下面案例1中 Student.index 这种子属性时，就只能使用后者，使用前者编译时没问题但运行时会崩溃。<br><br/></p>
 <p>#示例1：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">@interface Student : NSObject</span><br><span class="line">@property (nonatomic,assign) int index;</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@interface People : NSObject</span><br><span class="line">&#123;</span><br><span class="line">    NSString *name;//私有变量</span><br><span class="line">    Student *student;</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs less"><span class="hljs-variable">@interface</span> <span class="hljs-attribute">Student </span>: NSObject<br><span class="hljs-variable">@property</span> (nonatomic,assign) int index;<br><span class="hljs-variable">@end</span><br><br><span class="hljs-variable">@interface</span> <span class="hljs-attribute">People </span>: NSObject<br>&#123;<br>    <span class="hljs-selector-tag">NSString</span> *<span class="hljs-selector-tag">name</span>;<span class="hljs-comment">//私有变量</span><br>    <span class="hljs-selector-tag">Student</span> *<span class="hljs-selector-tag">student</span>;<br>&#125;<br>@<span class="hljs-selector-tag">end</span><br></code></pre></td></tr></table></figure>
 
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">#import &quot;People.h&quot;</span><br><span class="line"></span><br><span class="line">@implementation Student</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@interface People()</span><br><span class="line">@property (nonatomic, copy) NSString *eMail;//私有属性</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation People</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-meta">#import <span class="hljs-string">&quot;People.h&quot;</span></span><br><br><span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">Student</span></span><br><span class="hljs-keyword">@end</span><br><br><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">People</span>()</span><br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">copy</span>) <span class="hljs-built_in">NSString</span> *eMail;<span class="hljs-comment">//私有属性</span><br><span class="hljs-keyword">@end</span><br><br><span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">People</span></span><br><span class="hljs-keyword">@end</span><br></code></pre></td></tr></table></figure>
 
 <p>调用示例：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">People *people = [People new];</span><br><span class="line">Student *student = [Student new];</span><br><span class="line"></span><br><span class="line">[people setValue:@&quot;David&quot; forKey:@&quot;name&quot;];</span><br><span class="line">[people setValue:@&quot;email@&quot; forKey:@&quot;eMail&quot;];</span><br><span class="line">[people setValue:student forKey:@&quot;student&quot;];</span><br><span class="line">[people setValue:@(101) forKeyPath:@&quot;student.index&quot;];</span><br><span class="line"></span><br><span class="line">NSString *name = [people valueForKey:@&quot;name&quot;];</span><br><span class="line">int index = [[people valueForKeyPath:@&quot;student.index&quot;] intValue];</span><br><span class="line">NSLog(@&quot;++++name:%@，index:%d&quot;,name,index);</span><br></pre></td></tr></table></figure>
+<figure class="highlight prolog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs prolog"><span class="hljs-symbol">People</span> *people = [<span class="hljs-symbol">People</span> new];<br><span class="hljs-symbol">Student</span> *student = [<span class="hljs-symbol">Student</span> new];<br><br>[people setValue:@<span class="hljs-string">&quot;David&quot;</span> forKey:@<span class="hljs-string">&quot;name&quot;</span>];<br>[people setValue:@<span class="hljs-string">&quot;email@&quot;</span> forKey:@<span class="hljs-string">&quot;eMail&quot;</span>];<br>[people setValue:student forKey:@<span class="hljs-string">&quot;student&quot;</span>];<br>[people setValue:@(<span class="hljs-number">101</span>) forKeyPath:@<span class="hljs-string">&quot;student.index&quot;</span>];<br><br><span class="hljs-symbol">NSString</span> *name = [people valueForKey:@<span class="hljs-string">&quot;name&quot;</span>];<br>int index = [[people valueForKeyPath:@<span class="hljs-string">&quot;student.index&quot;</span>] intValue];<br><span class="hljs-symbol">NSLog</span>(@<span class="hljs-string">&quot;++++name:%@，index:%d&quot;</span>,name,index);<br></code></pre></td></tr></table></figure>
 
 <h3 id="3-底层的原理"><a href="#3-底层的原理" class="headerlink" title="3.底层的原理?"></a>3.底层的原理?</h3><p>在<code>NSKeyValueCoding.h</code>对<code>KVC</code>的实现过程有详细的解释。</p>
 <h4 id="3-1-valueForKey"><a href="#3-1-valueForKey" class="headerlink" title="3.1.valueForKey:"></a>3.1.valueForKey:</h4><ol>
@@ -168,15 +314,15 @@
 <li>如果仍没找到符合的成员变量，则调用 setValue:forUnderfinedKey: 并抛出 NSUndefinedKeyException 异常。</li>
 </ol>
 <p>#示例2：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">@interface Model : NSObject</span><br><span class="line">@property (nonatomic, strong) NSString *_modelString;</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@interface People : NSObject</span><br><span class="line">@property (nonatomic, strong) NSString *stringA;</span><br><span class="line">@property (nonatomic, strong) Model *modelA;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs less"><span class="hljs-variable">@interface</span> <span class="hljs-attribute">Model </span>: NSObject<br><span class="hljs-variable">@property</span> (nonatomic, strong) NSString *_modelString;<br><span class="hljs-variable">@end</span><br><br><span class="hljs-variable">@interface</span> <span class="hljs-attribute">People </span>: NSObject<br><span class="hljs-variable">@property</span> (nonatomic, strong) NSString *stringA;<br><span class="hljs-variable">@property</span> (nonatomic, strong) Model *modelA;<br><span class="hljs-variable">@end</span><br></code></pre></td></tr></table></figure>
 
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">#import &quot;People.h&quot;</span><br><span class="line"></span><br><span class="line">@implementation Model</span><br><span class="line">- (void)set_modelString:(NSString *)_modelString</span><br><span class="line">&#123;</span><br><span class="line">    __modelString = _modelString;</span><br><span class="line">    NSLog(@&quot;++++执行 setter _modelString&quot;);</span><br><span class="line">&#125;</span><br><span class="line">- (void)setModelString:(NSString *)modelString</span><br><span class="line">&#123;</span><br><span class="line">    NSLog(@&quot;++++执行 setter modelString&quot;);</span><br><span class="line">&#125;</span><br><span class="line">- (void)setNoExist1:(NSString *)noExist</span><br><span class="line">&#123;</span><br><span class="line">    NSLog(@&quot;++++执行 setter noExist1 &quot;);</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation People</span><br><span class="line"></span><br><span class="line">- (void)setStringA:(NSString *)stringA</span><br><span class="line">&#123;</span><br><span class="line">    _stringA = stringA;</span><br><span class="line">    NSLog(@&quot;++++执行 setter stringA&quot;);</span><br><span class="line">&#125;</span><br><span class="line">- (instancetype)init</span><br><span class="line">&#123;</span><br><span class="line">    if (self = [super init]) &#123;</span><br><span class="line">        self.modelA = [[Model alloc] init];</span><br><span class="line">    &#125;</span><br><span class="line">    return self;</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-meta">#import <span class="hljs-string">&quot;People.h&quot;</span></span><br><br><span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">Model</span></span><br>- (<span class="hljs-type">void</span>)set_modelString:(<span class="hljs-built_in">NSString</span> *)_modelString<br>&#123;<br>    __modelString = _modelString;<br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;++++执行 setter _modelString&quot;</span>);<br>&#125;<br>- (<span class="hljs-type">void</span>)setModelString:(<span class="hljs-built_in">NSString</span> *)modelString<br>&#123;<br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;++++执行 setter modelString&quot;</span>);<br>&#125;<br>- (<span class="hljs-type">void</span>)setNoExist1:(<span class="hljs-built_in">NSString</span> *)noExist<br>&#123;<br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;++++执行 setter noExist1 &quot;</span>);<br>&#125;<br><span class="hljs-keyword">@end</span><br><br><span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">People</span></span><br><br>- (<span class="hljs-type">void</span>)setStringA:(<span class="hljs-built_in">NSString</span> *)stringA<br>&#123;<br>    _stringA = stringA;<br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;++++执行 setter stringA&quot;</span>);<br>&#125;<br>- (<span class="hljs-keyword">instancetype</span>)init<br>&#123;<br>    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">self</span> = [<span class="hljs-variable language_">super</span> init]) &#123;<br>        <span class="hljs-keyword">self</span>.modelA = [[Model alloc] init];<br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">self</span>;<br>&#125;<br><span class="hljs-keyword">@end</span><br></code></pre></td></tr></table></figure>
 
 <p>调用：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">- (void)kvcTest</span><br><span class="line">&#123;</span><br><span class="line">    People *apeo = [[People alloc] init];</span><br><span class="line">    //调用了setter</span><br><span class="line">    apeo.stringA = @&quot;stringA setter&quot;;</span><br><span class="line">    //也调用了setter</span><br><span class="line">    ①[apeo setValue:@&quot;stringA KVC&quot; forKey:@&quot;stringA&quot;];</span><br><span class="line">    //没调用setter 但最终赋值给了此属性对应的成员变量_stringA</span><br><span class="line">    ②[apeo setValue:@&quot;_stringA KVC&quot; forKey:@&quot;_stringA&quot;]; </span><br><span class="line">    </span><br><span class="line">    NSLog(@&quot;++++apeo.stringA 值: %@&quot;, apeo.stringA);</span><br><span class="line">    NSLog(@&quot;++++++++++++++++++++++++++++++&quot;);</span><br><span class="line">    </span><br><span class="line">    // 调用-set_modelString:</span><br><span class="line">    ③[apeo setValue:@&quot;_modelString kvc&quot; forKeyPath:@&quot;modelA._modelString&quot;];</span><br><span class="line">    //不存在的属性，但会调用-setModelString:函数</span><br><span class="line">    ④[apeo setValue:@&quot;modelString kvc&quot; forKeyPath:@&quot;modelA.modelString&quot;];</span><br><span class="line">    //没调用setter 但最终赋值给了modelA的属性对应的成员变量_modelString</span><br><span class="line">    ⑤[apeo setValue:@&quot;__modelString kvc&quot; forKeyPath:@&quot;modelA.__modelString&quot;];</span><br><span class="line">    </span><br><span class="line">    //不存在的属性 但会调用其setter函数-setNoExist1:</span><br><span class="line">    ⑥[apeo setValue:@&quot;noExist1&quot; forKeyPath:@&quot;modelA.noExist1&quot;];</span><br><span class="line">    </span><br><span class="line">    NSLog(@&quot;++++apeo.modelA._modelString 值: %@&quot;, apeo.modelA._modelString);</span><br><span class="line">    NSLog(@&quot;++++++++++++++++++++++++++++++&quot;);</span><br><span class="line">    </span><br><span class="line">    ⑦NSString *s1 = [apeo valueForKeyPath:@&quot;modelA._modelString&quot;];</span><br><span class="line">    ⑧NSString *s2 = [apeo valueForKeyPath:@&quot;modelA.modelString&quot;];</span><br><span class="line">    ⑨NSString *s3 = [apeo valueForKeyPath:@&quot;modelA.__modelString&quot;];</span><br><span class="line">    NSLog(@&quot;++++s1:%@ s2:%@ s3:%@&quot;,s1,s2,s3);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs objectivec">- (<span class="hljs-type">void</span>)kvcTest<br>&#123;<br>    People *apeo = [[People alloc] init];<br>    <span class="hljs-comment">//调用了setter</span><br>    apeo.stringA = <span class="hljs-string">@&quot;stringA setter&quot;</span>;<br>    <span class="hljs-comment">//也调用了setter</span><br>    ①[apeo setValue:<span class="hljs-string">@&quot;stringA KVC&quot;</span> forKey:<span class="hljs-string">@&quot;stringA&quot;</span>];<br>    <span class="hljs-comment">//没调用setter 但最终赋值给了此属性对应的成员变量_stringA</span><br>    ②[apeo setValue:<span class="hljs-string">@&quot;_stringA KVC&quot;</span> forKey:<span class="hljs-string">@&quot;_stringA&quot;</span>]; <br>    <br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;++++apeo.stringA 值: %@&quot;</span>, apeo.stringA);<br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;++++++++++++++++++++++++++++++&quot;</span>);<br>    <br>    <span class="hljs-comment">// 调用-set_modelString:</span><br>    ③[apeo setValue:<span class="hljs-string">@&quot;_modelString kvc&quot;</span> forKeyPath:<span class="hljs-string">@&quot;modelA._modelString&quot;</span>];<br>    <span class="hljs-comment">//不存在的属性，但会调用-setModelString:函数</span><br>    ④[apeo setValue:<span class="hljs-string">@&quot;modelString kvc&quot;</span> forKeyPath:<span class="hljs-string">@&quot;modelA.modelString&quot;</span>];<br>    <span class="hljs-comment">//没调用setter 但最终赋值给了modelA的属性对应的成员变量_modelString</span><br>    ⑤[apeo setValue:<span class="hljs-string">@&quot;__modelString kvc&quot;</span> forKeyPath:<span class="hljs-string">@&quot;modelA.__modelString&quot;</span>];<br>    <br>    <span class="hljs-comment">//不存在的属性 但会调用其setter函数-setNoExist1:</span><br>    ⑥[apeo setValue:<span class="hljs-string">@&quot;noExist1&quot;</span> forKeyPath:<span class="hljs-string">@&quot;modelA.noExist1&quot;</span>];<br>    <br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;++++apeo.modelA._modelString 值: %@&quot;</span>, apeo.modelA._modelString);<br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;++++++++++++++++++++++++++++++&quot;</span>);<br>    <br>    ⑦<span class="hljs-built_in">NSString</span> *s1 = [apeo valueForKeyPath:<span class="hljs-string">@&quot;modelA._modelString&quot;</span>];<br>    ⑧<span class="hljs-built_in">NSString</span> *s2 = [apeo valueForKeyPath:<span class="hljs-string">@&quot;modelA.modelString&quot;</span>];<br>    ⑨<span class="hljs-built_in">NSString</span> *s3 = [apeo valueForKeyPath:<span class="hljs-string">@&quot;modelA.__modelString&quot;</span>];<br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;++++s1:%@ s2:%@ s3:%@&quot;</span>,s1,s2,s3);<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>输出日志：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">++++执行 setter stringA</span><br><span class="line">++++执行 setter stringA</span><br><span class="line">++++apeo.stringA 值: _stringA KVC</span><br><span class="line">++++++++++++++++++++++++++++++</span><br><span class="line">++++执行 setter _modelString</span><br><span class="line">++++执行 setter modelString</span><br><span class="line">++++执行 setter noExist1</span><br><span class="line">++++apeo.modelA._modelString 值: __modelString kvc</span><br><span class="line">++++++++++++++++++++++++++++++</span><br><span class="line">++++s1:__modelString kvc s2:__modelString kvc s3:__modelString kvc</span><br></pre></td></tr></table></figure>
+<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs asciidoc"><span class="hljs-code">+++</span>+执行 setter stringA<br><span class="hljs-code">+++</span>+执行 setter stringA<br><span class="hljs-section">++++apeo.stringA 值: _stringA KVC</span><br><span class="hljs-section">++++++++++++++++++++++++++++++</span><br><span class="hljs-code">+++</span>+执行 setter <span class="hljs-emphasis">_modelString</span><br><span class="hljs-emphasis">++++执行 setter modelString</span><br><span class="hljs-emphasis">++++执行 setter noExist1</span><br><span class="hljs-emphasis">++++apeo.modelA._modelString 值: __modelString kvc</span><br><span class="hljs-emphasis">++++++++++++++++++++++++++++++</span><br><span class="hljs-emphasis">++++s1:__modelString kvc s2:__modelString kvc s3:__</span>modelString kvc<br></code></pre></td></tr></table></figure>
 
 <p>日志显示：①~⑨全部执行成功；其中①③④⑥ 执行了setter方法，⑦⑧执行了getter方法，②⑤⑨直接访问的实例变量。</p>
 <h4 id="3-3-小结"><a href="#3-3-小结" class="headerlink" title="3.3.小结"></a>3.3.小结</h4><p>当我们使用<code>id objectA = objectB.value2</code>时是否代表 objectB 有一个 value2<code>属性</code>呢？实际上不一定，例如<code>object.class</code>，NSObject 中 并没有<code>class</code>属性，只有一个<code>class</code>方法。<br><br/></p>
@@ -188,7 +334,7 @@
 <br/>
 
 <p>我们可以在<code>keyPath</code>中加入<code>集合运算符</code>，它们以<code>@</code>开头，用来指定对数据的某种操作，最终返回处理后的结果。具体格式为：</p>
-<p><img src="https://davidlii.nos-eastchina1.126.net/pic_keypath.jpg" alt="keypath"></p>
+<p><img src="https://davidlii.nos-eastchina1.126.net/pic_keypath.jpg" srcset="/img/loading.gif" lazyload alt="keypath"></p>
 <p>格式说明：</p>
 <ul>
 <li>左边：将要执行运算的集合；</li>
@@ -198,226 +344,355 @@
 <p>如果是数组调用了<code>valueForKeyPath</code>，则左边部分可以省略；<br><br/></p>
 <p>运算符为数组的<code>count</code>时右边的部分可以忽略，其他运算的右边不能为空。<br><br/></p>
 <p>#示例1：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">//银行卡</span><br><span class="line">@interface Card : NSObject</span><br><span class="line">@property (nonatomic) int cardNumber; // 编号</span><br><span class="line">@property (nonatomic) float money;    // 余额</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">//用户</span><br><span class="line">#import &quot;Card.h&quot;</span><br><span class="line">@interface User : NSObject</span><br><span class="line">@property (nonatomic) NSInteger age; //年龄</span><br><span class="line">@property (nonatomic) NSArray *cardArr; //拥有的银行卡</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">//调用</span><br><span class="line">- (BOOL)application:(UIApplication *)application</span><br><span class="line">didFinishLaunchingWithOptions:(NSDictionary *)launchOptions</span><br><span class="line">&#123;</span><br><span class="line">    Card *card1 = [Card new];</span><br><span class="line">    card1.cardNumber = 100;</span><br><span class="line">    card1.money = 1000;</span><br><span class="line">    </span><br><span class="line">    Card *card2 = [Card new];</span><br><span class="line">    card2.cardNumber = 101;</span><br><span class="line">    card2.money = 2000;</span><br><span class="line">    </span><br><span class="line">    User *user = [User new];</span><br><span class="line">    user.age = 20;</span><br><span class="line">    user.cardArr = @[card1,card2];</span><br><span class="line">    </span><br><span class="line">    User *user2 = [User new];</span><br><span class="line">    user2.age = 30;</span><br><span class="line">    </span><br><span class="line">    NSArray *userArr = @[user,user2];</span><br><span class="line">    </span><br><span class="line">    int min = [[user valueForKeyPath:@&quot;cardArr.@min.money&quot;] intValue];</span><br><span class="line">    int max = [[user valueForKeyPath:@&quot;cardArr.@max.money&quot;] intValue];</span><br><span class="line">    int sum = [[user valueForKeyPath:@&quot;cardArr.@sum.money&quot;] intValue];</span><br><span class="line">    int avg = [[user valueForKeyPath:@&quot;cardArr.@avg.money&quot;] intValue];</span><br><span class="line">    int count = [[userArr valueForKeyPath:@&quot;cardArr.@count&quot;] intValue];</span><br><span class="line">    //直接对数组进行查询</span><br><span class="line">    int count2 = [[userArr valueForKeyPath:@&quot;@count&quot;] intValue];</span><br><span class="line">    int maxAge = [[userArr valueForKeyPath:@&quot;@max.age&quot;] intValue];</span><br><span class="line">    </span><br><span class="line">    return YES;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-comment">//银行卡</span><br><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">Card</span> : <span class="hljs-title">NSObject</span></span><br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>) <span class="hljs-type">int</span> cardNumber; <span class="hljs-comment">// 编号</span><br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>) <span class="hljs-type">float</span> money;    <span class="hljs-comment">// 余额</span><br><span class="hljs-keyword">@end</span><br><br><span class="hljs-comment">//用户</span><br><span class="hljs-meta">#import <span class="hljs-string">&quot;Card.h&quot;</span></span><br><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">User</span> : <span class="hljs-title">NSObject</span></span><br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>) <span class="hljs-built_in">NSInteger</span> age; <span class="hljs-comment">//年龄</span><br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>) <span class="hljs-built_in">NSArray</span> *cardArr; <span class="hljs-comment">//拥有的银行卡</span><br><span class="hljs-keyword">@end</span><br><br><span class="hljs-comment">//调用</span><br>- (<span class="hljs-type">BOOL</span>)application:(<span class="hljs-built_in">UIApplication</span> *)application<br>didFinishLaunchingWithOptions:(<span class="hljs-built_in">NSDictionary</span> *)launchOptions<br>&#123;<br>    Card *card1 = [Card new];<br>    card1.cardNumber = <span class="hljs-number">100</span>;<br>    card1.money = <span class="hljs-number">1000</span>;<br>    <br>    Card *card2 = [Card new];<br>    card2.cardNumber = <span class="hljs-number">101</span>;<br>    card2.money = <span class="hljs-number">2000</span>;<br>    <br>    User *user = [User new];<br>    user.age = <span class="hljs-number">20</span>;<br>    user.cardArr = @[card1,card2];<br>    <br>    User *user2 = [User new];<br>    user2.age = <span class="hljs-number">30</span>;<br>    <br>    <span class="hljs-built_in">NSArray</span> *userArr = @[user,user2];<br>    <br>    <span class="hljs-type">int</span> min = [[user valueForKeyPath:<span class="hljs-string">@&quot;cardArr.@min.money&quot;</span>] intValue];<br>    <span class="hljs-type">int</span> max = [[user valueForKeyPath:<span class="hljs-string">@&quot;cardArr.@max.money&quot;</span>] intValue];<br>    <span class="hljs-type">int</span> sum = [[user valueForKeyPath:<span class="hljs-string">@&quot;cardArr.@sum.money&quot;</span>] intValue];<br>    <span class="hljs-type">int</span> avg = [[user valueForKeyPath:<span class="hljs-string">@&quot;cardArr.@avg.money&quot;</span>] intValue];<br>    <span class="hljs-type">int</span> count = [[userArr valueForKeyPath:<span class="hljs-string">@&quot;cardArr.@count&quot;</span>] intValue];<br>    <span class="hljs-comment">//直接对数组进行查询</span><br>    <span class="hljs-type">int</span> count2 = [[userArr valueForKeyPath:<span class="hljs-string">@&quot;@count&quot;</span>] intValue];<br>    <span class="hljs-type">int</span> maxAge = [[userArr valueForKeyPath:<span class="hljs-string">@&quot;@max.age&quot;</span>] intValue];<br>    <br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">YES</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>#示例2：数组中数字运算</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">- (void)kvcToSumArr</span><br><span class="line">&#123;</span><br><span class="line">    NSArray *array = @[@&quot;1&quot;,@&quot;2&quot;, @&quot;3&quot;];</span><br><span class="line">    // 最大值</span><br><span class="line">    int max = [[array valueForKeyPath:@&quot;@max.intValue&quot;] intValue];</span><br><span class="line">    // 最小值</span><br><span class="line">    int min = [[array valueForKeyPath:@&quot;@min.intValue&quot;] intValue];</span><br><span class="line">    // 求和</span><br><span class="line">    int sum = [[array valueForKeyPath:@&quot;@sum.intValue&quot;] intValue];</span><br><span class="line">    // 平均值</span><br><span class="line">    float avg = [[array valueForKeyPath:@&quot;@avg.floatValue&quot;] floatValue];</span><br><span class="line">    </span><br><span class="line">    NSLog(@&quot;+++Max:%d,Min:%d,Sum:%d,Avg:%f&quot;,max,min,sum,avg);</span><br><span class="line">    //输出+++Max:3,Min:1,Sum:6,Avg:2.000000</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight stan"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs stan">- (<span class="hljs-type">void</span>)kvcToSumArr<br>&#123;<br>    NSArray *<span class="hljs-type">array</span> = @[@<span class="hljs-string">&quot;1&quot;</span>,@<span class="hljs-string">&quot;2&quot;</span>, @<span class="hljs-string">&quot;3&quot;</span>];<br>    <span class="hljs-comment">// 最大值</span><br>    <span class="hljs-type">int</span> <span class="hljs-built_in">max</span> = [[<span class="hljs-type">array</span> valueForKeyPath:@<span class="hljs-string">&quot;@max.intValue&quot;</span>] intValue];<br>    <span class="hljs-comment">// 最小值</span><br>    <span class="hljs-type">int</span> <span class="hljs-built_in">min</span> = [[<span class="hljs-type">array</span> valueForKeyPath:@<span class="hljs-string">&quot;@min.intValue&quot;</span>] intValue];<br>    <span class="hljs-comment">// 求和</span><br>    <span class="hljs-type">int</span> <span class="hljs-built_in">sum</span> = [[<span class="hljs-type">array</span> valueForKeyPath:@<span class="hljs-string">&quot;@sum.intValue&quot;</span>] intValue];<br>    <span class="hljs-comment">// 平均值</span><br>    float avg = [[<span class="hljs-type">array</span> valueForKeyPath:@<span class="hljs-string">&quot;@avg.floatValue&quot;</span>] floatValue];<br>    <br>    NSLog(@<span class="hljs-string">&quot;+++Max:%d,Min:%d,Sum:%d,Avg:%f&quot;</span>,<span class="hljs-built_in">max</span>,<span class="hljs-built_in">min</span>,<span class="hljs-built_in">sum</span>,avg);<br>    <span class="hljs-comment">//输出+++Max:3,Min:1,Sum:6,Avg:2.000000</span><br>&#125;<br></code></pre></td></tr></table></figure>
 
 <hr>
 <p>相关参考：</p>
 <p>#<a target="_blank" rel="noopener" href="https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/KeyValueCoding/CollectionOperators.html">©Apple-KVC Using Collection Operators</a></p>
 <p>#<a target="_blank" rel="noopener" href="https://juejin.im/post/5ac5f4b46fb9a028d5675645">©掘金</a></p>
-</section>
-    <!-- Tags START -->
-    
-      <div class="tags">
-        <span>Tags:</span>
-        
-  <a href="/tags#机制" >
-    <span class="tag-code">机制</span>
-  </a>
 
-      </div>
-    
-    <!-- Tags END -->
-    <!-- NAV START -->
-    
-  <div class="nav-container">
-    <!-- reverse left and right to put prev and next in a more logic postition -->
-    
-      <a class="nav-left" href="/2018/03/15/block.html">
-        <span class="nav-arrow">← </span>
-        
-          block的实现
-        
-      </a>
-    
-    
-      <a class="nav-right" href="/2018/04/13/kvo.html">
-        
-          KVO 的底层实现
-        
-        <span class="nav-arrow"> →</span>
-      </a>
-    
-  </div>
-
-    <!-- NAV END -->
-    <!-- 打赏 START -->
-    
-      <div class="money-like">
-        <div class="reward-btn">
-          赏
-          <span class="money-code">
-            <span class="alipay-code">
-              <div class="code-image"></div>
-              <b>使用支付宝打赏</b>
-            </span>
-            <span class="wechat-code">
-              <div class="code-image"></div>
-              <b>使用微信打赏</b>
-            </span>
-          </span>
-        </div>
-        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
-      </div>
-    
-    <!-- 打赏 END -->
-    <!-- 二维码 START -->
-    
-    <!-- 二维码 END -->
-    
-      <!-- No Comment -->
-    
-  </article>
-  <!-- Article END -->
-  <!-- Catalog START -->
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
   
-    <aside class="catalog-container">
-  <div class="toc-main">
-    <strong class="toc-title">Catalog</strong>
-    
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1-KVC%E6%98%AF%E5%95%A5"><span class="toc-nav-text">1.KVC是啥?</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-%E5%95%A5%E7%94%A8"><span class="toc-nav-text">2.啥用?</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-%E5%BA%95%E5%B1%82%E7%9A%84%E5%8E%9F%E7%90%86"><span class="toc-nav-text">3.底层的原理?</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3-1-valueForKey"><span class="toc-nav-text">3.1.valueForKey:</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3-2-setValue-forKey"><span class="toc-nav-text">3.2.setValue:forKey:</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3-3-%E5%B0%8F%E7%BB%93"><span class="toc-nav-text">3.3.小结</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#KVC%E4%B8%8E%E9%9B%86%E5%90%88%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="toc-nav-text">#KVC与集合运算符</span></a></li></ol>
-    
-  </div>
-</aside>
   
-  <!-- Catalog END -->
-</main>
-
-<script>
-  (function () {
-    var url = 'http://yoursite.com/2018/04/12/kvc.html';
-    var banner = ''
-    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
-      $('#article-banner').css({
-        'background-image': 'url(' + banner + ')'
-      })
-    } else {
-      $('#article-banner').geopattern(url)
-    }
-    $('.header').removeClass('fixed-header')
-
-     // error image
-    $(".markdown-content img").on('error', function() {
-      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
-      $(this).css({
-        'cursor': 'default'
-      })
-    })
-
-    // zoom image
-    $(".markdown-content img").on('click', function() {
-      var src = $(this).attr('src')
-      if (src !== 'http://file.muyutech.com/error-img.png') {
-        var imageW = $(this).width()
-        var imageH = $(this).height()
-        
-        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
-        zoom = zoom < 1 ? 1 : zoom
-        zoom = zoom > 2 ? 2 : zoom
-        var transY = (($(window).height() - imageH) / 2).toFixed(2)
-
-        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
-        $('.image-view-wrap').addClass('wrap-active')
-        $('.image-view-wrap img').css({
-          'width': `${imageW}`,
-          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
-        })
-        $('html').css('overflow', 'hidden')
-
-        $('.image-view-wrap').on('click', function() {
-          $(this).remove()
-          $('html').attr('style', '')
-        })
-      }
-    })
-
-    // qrcode
-    var qr = new QRious({
-      element: document.getElementById('share-qrcode'),
-      value: document.location.href
-    });
-
-    // gitment
-    var gitmentConfig = "";
-    if (gitmentConfig !== 'undefined') {
-      var gitment = new Gitment({
-        id: "KVC 的底层实现",
-        owner: "",
-        repo: "",
-        oauth: {
-          client_id: "",
-          client_secret: ""
-        },
-        theme: {
-          render(state, instance) {
-            const container = document.createElement('div')
-            container.lang = "en-US"
-            container.className = 'gitment-container gitment-root-container'
-            container.appendChild(instance.renderHeader(state, instance))
-            container.appendChild(instance.renderEditor(state, instance))
-            container.appendChild(instance.renderComments(state, instance))
-            container.appendChild(instance.renderFooter(state, instance))
-            return container;
-          }
-        }
-      })
-      gitment.render(document.getElementById('comments'))
-    }
-  })();
-</script>
-
-    <div class="scroll-top">
-  <span class="arrow-icon"></span>
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%9C%BA%E5%88%B6/">#机制</a>
+      
+    </div>
+  
 </div>
-    <footer class="app-footer">
-  <p class="copyright">
-    &copy; 2022 | <a href="https://github.com/davidlii" target="_blank">Davidli</a>
-    <br>
-    <a href="https://hexo.io" target="_blank">Hexo</a> | Theme-<a target="_blank" rel="noopener" href="https://github.com/yanm1ng">yanm1ng</a>
-  </p>
-</footer>
 
-<script>
-  function async(u, c) {
-    var d = document, t = 'script',
-      o = d.createElement(t),
-      s = d.getElementsByTagName(t)[0];
-    o.src = u;
-    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
-    s.parentNode.insertBefore(o, s);
-  }
-</script>
-<script>
-  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
-    FastClick.attach(document.body);
-  })
-</script>
 
-<script>
-  var hasLine = 'true';
-  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
-    $('figure pre').each(function(i, block) {
-      var figure = $(this).parents('figure');
-      if (hasLine === 'false') {
-        figure.find('.gutter').hide();
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>KVC 的底层实现</div>
+      <div>http://yoursite.com/2018/04/12/kvc.html</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>April 12, 2018</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>Licensed under</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2018/04/13/kvo.html" title="KVO 的底层实现">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">KVO 的底层实现</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2018/03/15/block.html" title="block的实现">
+                        <span class="hidden-mobile">block的实现</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;Table of Contents</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://github.com/davidlii" target="_blank" rel="nofollow noopener"><span>Davidlii</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        Views: 
+        <span id="busuanzi_value_site_pv"></span>
+        
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        Visitors: 
+        <span id="busuanzi_value_site_uv"></span>
+        
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
       }
-      var lang = figure.attr('class').split(' ')[1] || 'code';
-      var codeHtml = $(this).html();
-      var codeTag = document.createElement('code');
-      codeTag.className = lang;
-      codeTag.innerHTML = codeHtml;
-      $(this).attr('class', '').empty().html(codeTag);
-      figure.attr('data-lang', lang.toUpperCase());
-      hljs.highlightBlock(block);
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
     });
-  })
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
 </script>
-<!-- Baidu Tongji -->
 
 
-<script src="/js/script.js"></script>
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
 
-  </body>
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
 </html>
