@@ -23,17 +23,13 @@
 <meta property="og:site_name" content="Davidli">
 <meta property="og:description" content="混编的两种情况：①Swift 工程中使用 Objective-C 文件； ②Objective-C 工程中使用 Swift 文件。 本文所用 Xcode 版本：9.4.1 1.Swift 中混编 OCSwift 工程中使用 OC 文件时需要依赖 桥接头文件 将 OC 中的属性、接口等暴露给 Swift。默认情况下，在 Swift 工程中首次创建 OC 文件时，Xcode 会自动提示你是否创建桥接头">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://davidlii.nos-eastchina1.126.net/pic_swift_OC_Header.png">
-<meta property="og:image" content="https://davidlii.nos-eastchina1.126.net/pic_swift_OC_dir.png">
-<meta property="og:image" content="https://davidlii.nos-eastchina1.126.net/pic_swift_OC.png">
-<meta property="og:image" content="https://davidlii.nos-eastchina1.126.net/pic_mix_match_dir.png">
-<meta property="og:image" content="https://davidlii.nos-eastchina1.126.net/pic_mix_match.png">
+<meta property="og:image" content="https://davidlii.nos-eastchina1.126.net/pic_swift.png">
 <meta property="article:published_time" content="2018-09-01T16:43:36.000Z">
 <meta property="article:modified_time" content="2018-09-02T14:43:36.000Z">
 <meta property="article:author" content="Davidli">
 <meta property="article:tag" content="Swift">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://davidlii.nos-eastchina1.126.net/pic_swift_OC_Header.png">
+<meta name="twitter:image" content="https://davidlii.nos-eastchina1.126.net/pic_swift.png">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
@@ -289,8 +285,8 @@
             
               <div class="markdown-body">
                 
-                <h2 id="混编的两种情况："><a href="#混编的两种情况：" class="headerlink" title="混编的两种情况："></a>混编的两种情况：</h2><p>①Swift 工程中使用 Objective-C 文件；<br><br/></p>
-<p>②Objective-C 工程中使用 Swift 文件。<br><br/></p>
+                <h2 id="混编的两种情况："><a href="#混编的两种情况：" class="headerlink" title="混编的两种情况："></a>混编的两种情况：</h2><p>①Swift 工程中使用 Objective-C 文件；</p>
+<p>②Objective-C 工程中使用 Swift 文件。</p>
 <p>本文所用 Xcode 版本：9.4.1</p>
 <h3 id="1-Swift-中混编-OC"><a href="#1-Swift-中混编-OC" class="headerlink" title="1.Swift 中混编 OC"></a>1.Swift 中混编 OC</h3><p>Swift 工程中使用 OC 文件时需要依赖 <code>桥接头文件</code> 将 OC 中的属性、接口等暴露给 Swift。默认情况下，在 Swift 工程中首次创建 OC 文件时，Xcode 会自动提示你是否创建桥接头文件：</p>
 <p><img src="https://davidlii.nos-eastchina1.126.net/pic_swift_OC_Header.png" srcset="/img/loading.gif" lazyload alt="桥接头文件"></p>
@@ -298,7 +294,7 @@
 <p><img src="https://davidlii.nos-eastchina1.126.net/pic_swift_OC_dir.png" srcset="/img/loading.gif" lazyload alt="swift工程中OC文件目录"></p>
 <p>Xcode 会自动设置好相关信息，可在 “Targets–&gt;Build Settings–&gt;Swift Compiler - General” 查看，一般不用做修改：</p>
 <p><img src="https://davidlii.nos-eastchina1.126.net/pic_swift_OC.png" srcset="/img/loading.gif" lazyload alt="swift使用OC文件的设置"></p>
-<p>如果你忽略了之前 Xcode 的提示，没创建桥接头文件，后面你还有机会。稍后你可以按照上面的命名规则自己新建一个头文件，在 “Targets–&gt;Build Settings–&gt;Swift Compiler - General” 中手动设置好 “Objective-C Bridging Header” 选项的路径即可。<br><br/></p>
+<p>如果你忽略了之前 Xcode 的提示，没创建桥接头文件，后面你还有机会。稍后你可以按照上面的命名规则自己新建一个头文件，在 “Targets–&gt;Build Settings–&gt;Swift Compiler - General” 中手动设置好 “Objective-C Bridging Header” 选项的路径即可。</p>
 <p>接下来就可以在 “HelloSwift-Bridging-Header.h” 文件中导入你想暴露的 OC 头文件了：</p>
 <figure class="highlight clean"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs clean">#<span class="hljs-keyword">import</span> <span class="hljs-string">&quot;OCFile.h&quot;</span><br></code></pre></td></tr></table></figure>
 
@@ -311,7 +307,7 @@
 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs swift"><span class="hljs-keyword">import</span> UIKit<br><br><span class="hljs-keyword">@UIApplicationMain</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">AppDelegate</span>: <span class="hljs-title class_">UIResponder</span>, <span class="hljs-title class_">UIApplicationDelegate</span> &#123;<br><br>    <span class="hljs-keyword">var</span> window: <span class="hljs-type">UIWindow</span>?<br><br>    <span class="hljs-keyword">func</span> <span class="hljs-title function_">application</span>(<span class="hljs-keyword">_</span> <span class="hljs-params">application</span>: <span class="hljs-type">UIApplication</span>,<br>                     <span class="hljs-params">didFinishLaunchingWithOptions</span><br>        <span class="hljs-params">launchOptions</span>: [<span class="hljs-params">UIApplicationLaunchOptionsKey</span>: <span class="hljs-keyword">Any</span>]<span class="hljs-operator">?</span>) -&gt; <span class="hljs-type">Bool</span><br>    &#123;<br>        <span class="hljs-keyword">let</span> ocf <span class="hljs-operator">=</span> <span class="hljs-type">OCFile</span>()<br>        ocf.instanceFunction(<span class="hljs-type">Direction</span>.east)<br>        <span class="hljs-type">OCFile</span>.classFunction()<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;+++<span class="hljs-subst">\(ocf.anArr)</span>&quot;</span>)<br>        <br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 
-<h3 id="2-OC-中混编-Swift"><a href="#2-OC-中混编-Swift" class="headerlink" title="2.OC 中混编 Swift"></a>2.OC 中混编 Swift</h3><p>OC 工程中使用 Swift 文件需要一个命名格式为 “工程名-Swift.h” 的头文件。它是一个 Objective-C 头文件，被视为 Swift 代码的<code>umbrella header</code>。它包含了你工程 target 里所有 Swift 代码中定义的接口、属性等。有了它 Swift 文件中标记为 <code>open</code>、<code>public</code>、<code>internal</code> 的信息才能暴露给 OC 。这个文件是在你编译工程（command+B）后 Xcode 自动生成的，不需要我们自己创建，也不会显示在工程目录中。下面是具体步骤：<br><br/></p>
+<h3 id="2-OC-中混编-Swift"><a href="#2-OC-中混编-Swift" class="headerlink" title="2.OC 中混编 Swift"></a>2.OC 中混编 Swift</h3><p>OC 工程中使用 Swift 文件需要一个命名格式为 “工程名-Swift.h” 的头文件。它是一个 Objective-C 头文件，被视为 Swift 代码的<code>umbrella header</code>。它包含了你工程 target 里所有 Swift 代码中定义的接口、属性等。有了它 Swift 文件中标记为 <code>open</code>、<code>public</code>、<code>internal</code> 的信息才能暴露给 OC 。这个文件是在你编译工程（command+B）后 Xcode 自动生成的，不需要我们自己创建，也不会显示在工程目录中。下面是具体步骤：</p>
 <p>在 OC 工程中新建 Swift 文件：“command+N -&gt; swift File”，目录如下：</p>
 <p><img src="https://davidlii.nos-eastchina1.126.net/pic_mix_match_dir.png" srcset="/img/loading.gif" lazyload alt="OC工程中swift文件目录"></p>
 <p>如果是首次创建 Swift 文件，Xcode 同样会提示新建桥接头文件，这里可以不创建。之后 Xcode 会自动帮我们设置好 “Objective-C Generated Interface Header Name” 选项，我们不用做什么修改：</p>
