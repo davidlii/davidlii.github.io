@@ -16,12 +16,12 @@
   <meta name="author" content="Davidli">
   <meta name="keywords" content="Davidli">
   
-    <meta name="description" content="架构模式 架构模式，用于描述软件系统里的基本的结构组织或纲要。架构模式提供了一些定义好的子系统，指定它们的责任，并给出把它们组织在一起的法则和指南。常见的架构模式有：分层模式、微核模式、管道与过滤器、MVC模式、REST模式、SOA模式。  #为什么会出现架构模式？ 架构模式诞生于软件开发的最大难题：需求变更。需求变更往往导致软件代码的修改。而有些代码尤其是一些大型系统，其代码理解起来会非常困难，">
+    <meta name="description" content="一.架构模式1.引言 架构模式，用于描述软件系统里的基本的结构组织或纲要。架构模式提供了一些定义好的子系统，指定它们的责任，并给出把它们组织在一起的法则和指南。常见的架构模式有：分层模式、微核模式、管道与过滤器、MVC模式、REST模式、SOA模式。  2.起源架构模式诞生于软件开发的最大难题：需求变更。需求变更往往导致软件代码的修改。而有些代码尤其是一些大型系统，其代码理解起来会非常困难，只有当">
 <meta property="og:type" content="article">
 <meta property="og:title" content="常用架构模式">
 <meta property="og:url" content="http://yoursite.com/2020/09/01/patterns.html">
 <meta property="og:site_name" content="Davidli">
-<meta property="og:description" content="架构模式 架构模式，用于描述软件系统里的基本的结构组织或纲要。架构模式提供了一些定义好的子系统，指定它们的责任，并给出把它们组织在一起的法则和指南。常见的架构模式有：分层模式、微核模式、管道与过滤器、MVC模式、REST模式、SOA模式。  #为什么会出现架构模式？ 架构模式诞生于软件开发的最大难题：需求变更。需求变更往往导致软件代码的修改。而有些代码尤其是一些大型系统，其代码理解起来会非常困难，">
+<meta property="og:description" content="一.架构模式1.引言 架构模式，用于描述软件系统里的基本的结构组织或纲要。架构模式提供了一些定义好的子系统，指定它们的责任，并给出把它们组织在一起的法则和指南。常见的架构模式有：分层模式、微核模式、管道与过滤器、MVC模式、REST模式、SOA模式。  2.起源架构模式诞生于软件开发的最大难题：需求变更。需求变更往往导致软件代码的修改。而有些代码尤其是一些大型系统，其代码理解起来会非常困难，只有当">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://davidlii.nos-eastchina1.126.net/pic_pattons.png">
 <meta property="article:published_time" content="2020-09-01T11:02:04.000Z">
@@ -234,7 +234,7 @@
         
         
         
-          62 分钟
+          61 分钟
         
       </span>
     
@@ -285,45 +285,46 @@
             
               <div class="markdown-body">
                 
-                <h3 id="架构模式"><a href="#架构模式" class="headerlink" title="架构模式"></a>架构模式</h3><blockquote>
+                <h3 id="一-架构模式"><a href="#一-架构模式" class="headerlink" title="一.架构模式"></a>一.架构模式</h3><h4 id="1-引言"><a href="#1-引言" class="headerlink" title="1.引言"></a>1.引言</h4><blockquote>
 <p>架构模式，用于描述软件系统里的基本的结构组织或纲要。架构模式提供了一些定义好的子系统，指定它们的责任，并给出把它们组织在一起的法则和指南。常见的架构模式有：分层模式、微核模式、管道与过滤器、MVC模式、REST模式、SOA模式。</p>
 </blockquote>
-<p><strong>#为什么会出现架构模式？</strong><br><br/></p>
-<p>架构模式诞生于软件开发的最大难题：需求变更。需求变更往往导致软件代码的修改。而有些代码尤其是一些大型系统，其代码理解起来会非常困难，只有当时参与开发的人员能看的明白，其他人很难接手。这种代码修改时往往会碰到“触一发而动全身”的问题，甚至改出BUG。<br><br/></p>
-<p>这一切的根源，其实只是一个最简单的事实，就是系统中对于“代码耦合”的结构问题。糟糕的代码耦合让整个系统变得难以理解、难以修改、难以分工、难以集成。针对代码耦合的问题，软件界进行了大量的理论研究和实践，最后发现：系统的架构设计，是改善耦合的最好方式。<br><br/></p>
-<p><strong>#好的架构模式的特点:</strong><br><br/></p>
-<p>任务均衡分摊给具有清晰角色的实体；高内聚、低耦合；高重用性、低维护成本。可单独测试。<br><br/></p>
-<p><strong>#概念区分：设计模式</strong><br><br/></p>
-<p>设计模式是一套被反复使用的、多数人知晓的、经过分类编目的、代码设计经验的总结。使用设计模式是为了重用代码、让代码更容易被他人理解、保证代码可靠性。设计模式一共有23种，常见的有工厂模式、单例模式、代理模式、观察者模式、策略模式等。<br><br/></p>
+<h4 id="2-起源"><a href="#2-起源" class="headerlink" title="2.起源"></a>2.起源</h4><p>架构模式诞生于软件开发的最大难题：需求变更。需求变更往往导致软件代码的修改。而有些代码尤其是一些大型系统，其代码理解起来会非常困难，只有当时参与开发的人员能看的明白，其他人很难接手。这种代码修改时往往会碰到“触一发而动全身”的问题，甚至改出BUG。</p>
+<p>这一切的根源，其实只是一个最简单的事实，就是系统中对于“代码耦合”的结构问题。糟糕的代码耦合让整个系统变得难以理解、难以修改、难以分工、难以集成。针对代码耦合的问题，软件界进行了大量的理论研究和实践，最后发现：系统的架构设计，是改善耦合的最好方式。</p>
+<h4 id="3-特点"><a href="#3-特点" class="headerlink" title="3.特点"></a>3.特点</h4><p>优秀架构模式的共同点:</p>
+<ul>
+<li>任务均衡分摊给具有清晰角色的实体；</li>
+<li>高内聚、低耦合；</li>
+<li>高重用性、低维护成本；</li>
+<li>可单独测试。</li>
+</ul>
+<h4 id="4-区分"><a href="#4-区分" class="headerlink" title="4.区分"></a>4.区分</h4><p>区分两个名词：<code>架构模式</code>与<code>设计模式</code>：</p>
+<p><code>设计模式</code>是一套被反复使用的、多数人知晓的、经过分类编目的、代码设计经验的总结。使用设计模式是为了重用代码、让代码更容易被他人理解、保证代码可靠性。设计模式一共有23种，常见的有工厂模式、单例模式、代理模式、观察者模式、策略模式等。</p>
 <p>一个构架往往用到多个设计模式，如<code>mvc</code>架构是观察者模式、策略模式和组合模式的演变。</p>
-<p><img src="https://davidlii.nos-eastchina1.126.net/pic_traditional_mvc.jpeg" srcset="/img/loading.gif" lazyload alt="传统MVC"></p>
-<p>可以看到，MVC架构下，项目中的代码被整合为视图、模型、控制器三个角色。当用户操作一个视图时，会产生一个事件并交给控制器；控制器收到事件后会采用一种<code>策略</code>：要求模型更新数据的状态或者要求视图更新样式；模型中数据变化后则会<code>通知</code>视图更新界面。</p>
-<h3 id="1-Apple版的-MVC"><a href="#1-Apple版的-MVC" class="headerlink" title="1.Apple版的 MVC"></a>1.Apple版的 MVC</h3><p>上面是传统的MVC模式，可以看到，虽然也区分了三种角色，但是它们互相之间都有耦合，尤其是模型和视图支架。而实际上视图和模型往往是最需要复用的，所以，最合理的设计是保持二者的独立性。因此 Apple 设计了自己版本的MVC，通过控制器来实现视图与模型的解耦。</p>
-<h4 id="1-1-角色划分"><a href="#1-1-角色划分" class="headerlink" title="1.1.角色划分"></a>1.1.角色划分</h4><p><img src="https://davidlii.nos-eastchina1.126.net/pic_cocoa_mvc.jpeg" srcset="/img/loading.gif" lazyload alt="cocoaMVC"></p>
-<p><strong>模型</strong><br><br/></p>
-<p>持有数据、封装处理数据的业务逻辑，提供数据接口给 Controller。理想中，模型层不应与视图层有任何关联。<br><br/></p>
-<p><strong>视图</strong><br><br/></p>
-<p>视图负责展示信息，包括显示数据并允许用户编辑数据，但视图不存储数据。视图应可复用、可配置并保持统一性，例如 AppKit 中定义的 NSButton。因为模型不能绑定到视图中，所以视图需要一种机制来知晓模型中数据的变化。<br><br/></p>
-<p><strong>控制器</strong><br><br/></p>
-<p>控制器负责连接模型与视图，扮演着中间人的角色。控制器为视图提供需要显示的数据；响应用户的操作并调用模型中的业务逻辑更新数据；将数据的变化通知给视图。控制器也用来管理对象的生命周期，定义相关业务以实现一些设置和指定的任务。<br><br/></p>
+<p><img src="https://davidlii.nos-eastchina1.126.net/pic_ori_mvc.jpg" srcset="/img/loading.gif" lazyload alt="传统MVC"></p>
+<p>上图是传统的<code>MVC</code>架构，项目中的代码被整合为<code>视图</code>、<code>模型</code>、<code>控制器</code>三个角色。</p>
+<ul>
+<li>当用户操作一个视图时，会产生一个事件并交给控制器；</li>
+<li>控制器收到事件后会采用一种<code>策略</code>：要求模型更新数据的状态或者要求视图更新样式；</li>
+<li>模型中数据变化后则会<code>通知</code>视图更新界面。</li>
+</ul>
+<h3 id="二-MVC"><a href="#二-MVC" class="headerlink" title="二.MVC"></a>二.MVC</h3><h4 id="1-Apple版MVC"><a href="#1-Apple版MVC" class="headerlink" title="1.Apple版MVC"></a>1.Apple版MVC</h4><p>上图是传统的MVC模式，虽然也区分了三种角色，但是它们互相之间都有耦合，尤其是模型和视图之间。而视图和模型往往是最需要复用的，所以，最合理的设计是保持二者的独立性。因此 Apple 设计了自己的MVC版本，通过控制器来实现视图与模型的解耦。</p>
+<h4 id="2-角色划分"><a href="#2-角色划分" class="headerlink" title="2.角色划分"></a>2.角色划分</h4><p><img src="https://davidlii.nos-eastchina1.126.net/pic_apple_mvc.jpg" srcset="/img/loading.gif" lazyload alt="cocoaMVC"></p>
+<h5 id="模型"><a href="#模型" class="headerlink" title="模型"></a>模型</h5><p>持有数据、封装处理数据的业务逻辑，提供数据接口给 Controller。理想中，模型层不应与视图层有任何关联。</p>
+<h5 id="视图"><a href="#视图" class="headerlink" title="视图"></a>视图</h5><p>视图负责展示信息，包括显示数据并允许用户编辑数据，但视图不存储数据。视图应可复用、可配置并保持统一性，例如 UIKit 中定义的 UIButton。因为模型不能绑定到视图中，所以视图需要一种机制来知晓模型中数据的变化。</p>
+<h5 id="控制器"><a href="#控制器" class="headerlink" title="控制器"></a>控制器</h5><p>控制器负责连接模型与视图，扮演着中间人的角色。控制器为视图提供需要显示的数据；响应用户的操作并调用模型中的业务逻辑更新数据；将数据的变化通知给视图。控制器也用来管理对象的生命周期，定义相关业务以实现一些设置和指定的任务。</p>
 <p>从角色划分可以看出，理想的 Cocoa MVC 模式中，模型、控制器与视图三层分工明确，模型和视图之间相互独立，控制器扮演二者中间人的角色。</p>
-<h4 id="1-2-现实中的MVC"><a href="#1-2-现实中的MVC" class="headerlink" title="1.2.现实中的MVC"></a>1.2.现实中的MVC</h4><p>理想中，视图与控制器相互独立。但实际iOS开发过程中，它们总是结对出现，每个<code>ViewController</code>中都有一个<code>View</code>，这就导致视图层紧密耦合在控制层里。控制器要负责维护视图的生命周期，响应用户在视图层的操作，实现诸如<code>Tableview</code>等视图的代理等。。MVC 事实上变成了 M-VC。<br><br/></p>
+<h4 id="3-现实中的MVC"><a href="#3-现实中的MVC" class="headerlink" title="3.现实中的MVC"></a>3.现实中的MVC</h4><p>理想中，视图与控制器相互独立。但实际iOS开发过程中，它们总是结对出现，每个<code>ViewController</code>中都有一个<code>View</code>，这就导致视图层紧密耦合在控制层里。控制器要负责维护视图的生命周期，响应用户在视图层的操作，实现诸如<code>Tableview</code>等视图的代理等。。MVC 事实上变成了 M-VC。</p>
 <p>理想中，视图与模型相互独立。但实际中，你可能会遇到这总情形：初始化<code>cell</code>时，经常会直接传入<code>Model</code>对象，形成视图与模型的耦合。</p>
 <figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs objectivec">- (<span class="hljs-built_in">UITableViewCell</span> *)tableView:(<span class="hljs-built_in">UITableView</span> *)tableView<br>cellForRowAtIndexPath:(<span class="hljs-built_in">NSIndexPath</span> *)indexPath<br>&#123;<br>    CustomTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<span class="hljs-string">@&quot;Goods&quot;</span>];<br>    cell.goods = <span class="hljs-keyword">self</span>.dataSource[indexPath.row];<br>    <span class="hljs-keyword">return</span> cell;<br>&#125;<br></code></pre></td></tr></table></figure>
 
-<p>理想中，模型应该持有数据、封装处理数据的业务逻辑，提供数据接口，但有些实践中，模型被简单的设计为只有一些属性的类，数据相关的业务逻辑都被放在了控制器中。当需要修改数据的业务逻辑时，如更换网络通讯库、更新json解析时的某个字段，就需要在控制器中进行修改。<br><br/></p>
+<p>理想中，模型应该持有数据、封装处理数据的业务逻辑，提供数据接口，但有些实践中，模型被简单的设计为只有一些属性的类，数据相关的业务逻辑都被放在了控制器中。当需要修改数据的业务逻辑时，如更换网络通讯库、更新json解析时的某个字段，就需要在控制器中进行修改。</p>
 <p>理想中，上面的<code>cell</code>不引用模型对象，那么<code>cell</code>的设置就要放到控制器中，这会增加控制器中的代码量。另外，网络请求、工具方法等显然不适合放在视图和模型层里，而一旦放在控制器里，同样也会造成控制器的臃肿。这些就是<code>Massive View Controller</code>的由来，形象表示如下：<br><img src="https://davidlii.nos-eastchina1.126.net/pic_mass_controller.png" srcset="/img/loading.gif" lazyload alt="mass"><br>当业务逻辑和展示逻辑都在控制器中时，就很难进行单元测试。</p>
-<h3 id="2-MVP架构模式"><a href="#2-MVP架构模式" class="headerlink" title="2.MVP架构模式"></a>2.MVP架构模式</h3><h4 id="2-1-角色划分"><a href="#2-1-角色划分" class="headerlink" title="2.1.角色划分"></a>2.1.角色划分</h4><p><img src="https://davidlii.nos-eastchina1.126.net/pic_arch_mvp.png" srcset="/img/loading.gif" lazyload alt="iOS架构模式-MVP"></p>
-<p><strong>模型</strong><br><br/></p>
-<p>与 MVC 中的模型类似。<br><br/></p>
-<p><strong>视图</strong><br><br/></p>
-<p>由视图和控制器组成，作用有：界面元素布局和执行动画；将用户操作事件交给<code>P</code>层处理并展示处理结果；P层中的业务逻辑处理完毕后通过代理告知视图刷新界面；控制器负责生成视图，实现视图的代理和数据源以及界面的跳转等。<br><br/></p>
-<p><strong>P层</strong><br><br/></p>
-<p>扮演着视图与模型中间人的角色，实现视图与模型的解耦：定义响应视图中事件的接口，实现事件对应的处理逻辑；调用模型的接口以获取数据，加工数据并将其封装成视图适用的数据和状态。</p>
-<br/>
-MVP 是由 MVC 演化而来的，它对 MVC 中的控制器进行了优化而生成`Presenter`。`P层`和 MVC 中的控制器一样，负责核心逻辑。但不一样的是`P层`通过接口和协议进行数据传递，从而使视图和模型解耦，更加专注于自身业务逻辑。同时，因为主要的逻辑在`P层`，所以可以方便的对其进行单元测试。
-
-<h4 id="2-2-示例"><a href="#2-2-示例" class="headerlink" title="2.2.示例:"></a>2.2.示例:</h4><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-meta">#import <span class="hljs-string">&quot;ViewController.h&quot;</span></span><br><span class="hljs-meta">#import <span class="hljs-string">&quot;Presenter.h&quot;</span></span><br><span class="hljs-meta">#import <span class="hljs-string">&quot;UserViewProtocol.h&quot;</span></span><br><br><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">ViewController</span> ()</span><br>&lt;UserViewProtocol,<br><span class="hljs-built_in">UITableViewDataSource</span>&gt;<br><br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>,<span class="hljs-keyword">strong</span>) <span class="hljs-built_in">NSArray</span> *friendlyUIData;<br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>,<span class="hljs-keyword">strong</span>) Presenter *presenter;<br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">weak</span>, <span class="hljs-keyword">nonatomic</span>) <span class="hljs-keyword">IBOutlet</span> <span class="hljs-built_in">UITableView</span> *tableview;<br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">weak</span>, <span class="hljs-keyword">nonatomic</span>) <span class="hljs-keyword">IBOutlet</span> <span class="hljs-built_in">UIActivityIndicatorView</span> *indicator;<br><br><span class="hljs-keyword">@end</span><br><br><span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">ViewController</span></span><br><br>- (<span class="hljs-type">void</span>)viewDidLoad<br>&#123;<br>	[<span class="hljs-variable language_">super</span> viewDidLoad];<br>	<span class="hljs-keyword">self</span>.presenter = [Presenter new];<br>	[<span class="hljs-keyword">self</span>.presenter attachView:<span class="hljs-keyword">self</span>];<br>	[<span class="hljs-keyword">self</span>.presenter fetchData];<br>&#125;<br><br><span class="hljs-meta">#<span class="hljs-keyword">pragma</span> mark -Tableview datasource</span><br>- (<span class="hljs-built_in">NSInteger</span>)tableView:(<span class="hljs-built_in">UITableView</span> *)tableView <br>numberOfRowsInSection:(<span class="hljs-built_in">NSInteger</span>)section<br>&#123;<br>	<span class="hljs-keyword">return</span> <span class="hljs-keyword">self</span>.friendlyUIData.count;<br>&#125;<br><br>- (<span class="hljs-built_in">UITableViewCell</span> *)tableView:(<span class="hljs-built_in">UITableView</span> *)tableView<br>         cellForRowAtIndexPath:(<span class="hljs-built_in">NSIndexPath</span> *)indexPath<br>&#123;<br>	<span class="hljs-built_in">UITableViewCell</span> *cell = [tableView <br>	dequeueReusableCellWithIdentifier:<span class="hljs-string">@&quot;cell&quot;</span> forIndexPath:indexPath];<br>	cell.textLabel.text = [<span class="hljs-keyword">self</span>.friendlyUIData[indexPath.row] <br>	valueForKey:<span class="hljs-string">@&quot;name&quot;</span>];<br><br>	<span class="hljs-keyword">return</span> cell;<br>&#125;<br><br><span class="hljs-meta">#<span class="hljs-keyword">pragma</span> mark -UserView Protocol</span><br>-(<span class="hljs-type">void</span>)userViewDataSource:(<span class="hljs-built_in">NSArray</span>*)data<br>&#123;<br>	<span class="hljs-keyword">self</span>.friendlyUIData = data;<br>	[<span class="hljs-keyword">self</span>.tableview reloadData];<br>&#125;<br>-(<span class="hljs-type">void</span>) showIndicator<br>&#123;<br>	<span class="hljs-keyword">self</span>.indicator.hidden = <span class="hljs-literal">NO</span>;<br>&#125;<br>- (<span class="hljs-type">void</span>) hideIndicator<br>&#123;<br>	<span class="hljs-keyword">self</span>.indicator.hidden = <span class="hljs-literal">YES</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="三-MVP"><a href="#三-MVP" class="headerlink" title="三.MVP"></a>三.MVP</h3><h4 id="1-角色划分"><a href="#1-角色划分" class="headerlink" title="1.角色划分"></a>1.角色划分</h4><p><img src="https://davidlii.nos-eastchina1.126.net/pic_arch_mvp.png" srcset="/img/loading.gif" lazyload alt="iOS架构模式-MVP"></p>
+<h5 id="模型-1"><a href="#模型-1" class="headerlink" title="模型"></a>模型</h5><p>与 MVC 中的模型类似。</p>
+<h5 id="视图-1"><a href="#视图-1" class="headerlink" title="视图"></a>视图</h5><p>由视图和控制器组成，作用有：界面元素布局和执行动画；将用户操作事件交给<code>P</code>层处理并展示处理结果；P层中的业务逻辑处理完毕后通过代理告知视图刷新界面；控制器负责生成视图，实现视图的代理和数据源以及界面的跳转等。</p>
+<h5 id="P层"><a href="#P层" class="headerlink" title="P层"></a>P层</h5><p>扮演着视图与模型中间人的角色，实现视图与模型的解耦：定义响应视图中事件的接口，实现事件对应的处理逻辑；调用模型的接口以获取数据，加工数据并将其封装成视图适用的数据和状态。</p>
+<p>MVP 是由 MVC 演化而来的，它对 MVC 中的控制器进行了优化而生成<code>Presenter</code>。<code>P层</code>和 MVC 中的控制器一样，负责核心逻辑。但不一样的是<code>P层</code>通过接口和协议进行数据传递，从而使视图和模型解耦，更加专注于自身业务逻辑。同时，因为主要的逻辑在<code>P层</code>，所以可以方便的对其进行单元测试。</p>
+<h4 id="2-示例"><a href="#2-示例" class="headerlink" title="2.示例:"></a>2.示例:</h4><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-meta">#import <span class="hljs-string">&quot;ViewController.h&quot;</span></span><br><span class="hljs-meta">#import <span class="hljs-string">&quot;Presenter.h&quot;</span></span><br><span class="hljs-meta">#import <span class="hljs-string">&quot;UserViewProtocol.h&quot;</span></span><br><br><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">ViewController</span> ()</span><br>&lt;UserViewProtocol,<br><span class="hljs-built_in">UITableViewDataSource</span>&gt;<br><br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>,<span class="hljs-keyword">strong</span>) <span class="hljs-built_in">NSArray</span> *friendlyUIData;<br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>,<span class="hljs-keyword">strong</span>) Presenter *presenter;<br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">weak</span>, <span class="hljs-keyword">nonatomic</span>) <span class="hljs-keyword">IBOutlet</span> <span class="hljs-built_in">UITableView</span> *tableview;<br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">weak</span>, <span class="hljs-keyword">nonatomic</span>) <span class="hljs-keyword">IBOutlet</span> <span class="hljs-built_in">UIActivityIndicatorView</span> *indicator;<br><br><span class="hljs-keyword">@end</span><br><br><span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">ViewController</span></span><br><br>- (<span class="hljs-type">void</span>)viewDidLoad<br>&#123;<br>	[<span class="hljs-variable language_">super</span> viewDidLoad];<br>	<span class="hljs-keyword">self</span>.presenter = [Presenter new];<br>	[<span class="hljs-keyword">self</span>.presenter attachView:<span class="hljs-keyword">self</span>];<br>	[<span class="hljs-keyword">self</span>.presenter fetchData];<br>&#125;<br><br><span class="hljs-meta">#<span class="hljs-keyword">pragma</span> mark -Tableview datasource</span><br>- (<span class="hljs-built_in">NSInteger</span>)tableView:(<span class="hljs-built_in">UITableView</span> *)tableView <br>numberOfRowsInSection:(<span class="hljs-built_in">NSInteger</span>)section<br>&#123;<br>	<span class="hljs-keyword">return</span> <span class="hljs-keyword">self</span>.friendlyUIData.count;<br>&#125;<br><br>- (<span class="hljs-built_in">UITableViewCell</span> *)tableView:(<span class="hljs-built_in">UITableView</span> *)tableView<br>         cellForRowAtIndexPath:(<span class="hljs-built_in">NSIndexPath</span> *)indexPath<br>&#123;<br>	<span class="hljs-built_in">UITableViewCell</span> *cell = [tableView <br>	dequeueReusableCellWithIdentifier:<span class="hljs-string">@&quot;cell&quot;</span> forIndexPath:indexPath];<br>	cell.textLabel.text = [<span class="hljs-keyword">self</span>.friendlyUIData[indexPath.row] <br>	valueForKey:<span class="hljs-string">@&quot;name&quot;</span>];<br><br>	<span class="hljs-keyword">return</span> cell;<br>&#125;<br><br><span class="hljs-meta">#<span class="hljs-keyword">pragma</span> mark -UserView Protocol</span><br>-(<span class="hljs-type">void</span>)userViewDataSource:(<span class="hljs-built_in">NSArray</span>*)data<br>&#123;<br>	<span class="hljs-keyword">self</span>.friendlyUIData = data;<br>	[<span class="hljs-keyword">self</span>.tableview reloadData];<br>&#125;<br>-(<span class="hljs-type">void</span>) showIndicator<br>&#123;<br>	<span class="hljs-keyword">self</span>.indicator.hidden = <span class="hljs-literal">NO</span>;<br>&#125;<br>- (<span class="hljs-type">void</span>) hideIndicator<br>&#123;<br>	<span class="hljs-keyword">self</span>.indicator.hidden = <span class="hljs-literal">YES</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p><code>ViewController</code>与其中的<code>tableview</code>共同构成了 MVP 中的视图层，负责界面的显示和更新。它实现了<code>tableview</code>的协议及用户交互的协议<code>UserViewProtocol</code>。它会等待 <code>Presenter</code>的命令来被动的更新UI。</p>
 <figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-comment">//Presenter.h</span><br><span class="hljs-meta">#import <span class="hljs-string">&lt;Foundation/Foundation.h&gt;</span></span><br><span class="hljs-meta">#import <span class="hljs-string">&quot;UserViewProtocol.h&quot;</span></span><br><br><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">Presenter</span> : <span class="hljs-title">NSObject</span></span><br>-(<span class="hljs-type">void</span>)attachView:(<span class="hljs-type">id</span> &lt;UserViewProtocol&gt;)view;<br>-(<span class="hljs-type">void</span>)fetchData;<span class="hljs-comment">//模拟获取网络数据</span><br><span class="hljs-keyword">@end</span><br></code></pre></td></tr></table></figure>
@@ -343,38 +344,30 @@ MVP 是由 MVC 演化而来的，它对 MVC 中的控制器进行了优化而生
 <p>UserService 属于 Model 层，主要用来请求数据给 P层。</p>
 <figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-comment">//UserViewProtocol.h</span><br><span class="hljs-meta">#import <span class="hljs-string">&lt;Foundation/Foundation.h&gt;</span></span><br><br><span class="hljs-class"><span class="hljs-keyword">@protocol</span> <span class="hljs-title">UserViewProtocol</span> &lt;<span class="hljs-title">NSObject</span>&gt;</span><br><br>-(<span class="hljs-type">void</span>) userViewDataSource:(<span class="hljs-built_in">NSArray</span>*)data;<br>-(<span class="hljs-type">void</span>) showIndicator;<br>-(<span class="hljs-type">void</span>) hideIndicator;<br><br><span class="hljs-keyword">@end</span><br></code></pre></td></tr></table></figure>
 
-<p>UserViewProtocol 是协议，其中定义了一些方法，这些方法就是<code>P层</code>对视图层发送的命令。示例中 ViewController 实现了此协议，在模型层拿到数据之后，<code>P层</code>会通过代理，告诉 ViewController 来更新UI。<br><br/></p>
+<p>UserViewProtocol 是协议，其中定义了一些方法，这些方法就是<code>P层</code>对视图层发送的命令。示例中 ViewController 实现了此协议，在模型层拿到数据之后，<code>P层</code>会通过代理，告诉 ViewController 来更新UI。</p>
 <p>使用 MVP 会增加代码量，但是总体上减少了代码的复杂性。</p>
-<h3 id="3-MVVM架构模式"><a href="#3-MVVM架构模式" class="headerlink" title="3.MVVM架构模式"></a>3.MVVM架构模式</h3><h4 id="3-1-角色划分"><a href="#3-1-角色划分" class="headerlink" title="3.1.角色划分"></a>3.1.角色划分</h4><p><img src="https://davidlii.nos-eastchina1.126.net/pic_arch_mvvm.png" srcset="/img/loading.gif" lazyload alt="image"></p>
-<p><strong>模型</strong><br><br/></p>
-<p>与 MVP 中的模型类似。<br><br/></p>
-<p><strong>视图</strong><br><br/></p>
-<p>由 View 和 Controller 组成，负责显示 UI。绑定 ViewModel 中的属性，触发 ViewModel 中的命令。<br><br/></p>
-<p><strong>视图模型VM</strong><br><br/></p>
-<p>负责用户输入内容的验证逻辑（如用户名、密码的合法性）；视图显示逻辑；发起网络请求；从 Model 中获取<code>V层</code>所需的数据，转换成<code>V层</code>可以展示的数据（如TableView 的 DataSource）；暴露公开的属性和命令供<code>V层</code>进行绑定。<br><br/></p>
-<p><strong>Binder</strong><br><br/></p>
-<p>在 MVVM 中，声明式的数据和命令绑定是一个隐含的约定，它可以让开发者非常方便地实现<code>视图层</code>和<code>ViewModel</code>的同步，避免编写大量繁杂的样板化代码。（ReactiveCocoa）<br><br/></p>
-<p>MVVM 是微软提出来的，它其实就是在 MVP 的基础上发展起来的。因此，MVVM 各层的职责基本上与 MVP 的类似，其中<code>VM</code>对应<code>P层</code>。MVVM 相对于 MVP 改良了什么呢？答案就是 <code>数据绑定</code>。<br><br/></p>
-<p>在 MVP 中，从用户点击开始，一个完整的响应流程是：<code>视图</code>调用<code>P层</code>处理业务逻辑，<code>P层</code>调用<code>模型</code>处理数据，处理完成后 <code>P层</code>再通过代理回调<code>视图</code>。这里要反复同步<code>P层</code>的状态，当事件多起来时这样写就有点麻烦。<br><br/></p>
-<p>而在 MVVM 中， <code>View</code>与<code>VM层</code>之间多了数据绑定的操作，这意味着当<code>VM层</code>的数据变化时，你只需要更新<code>VM层</code>的某个属性，那么绑定了该属性的<code>V层</code>会相应的变动 UI，自动实现状态的同步。可参考<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/2ad25e2769b5">此文</a>中的代码来帮助理解。<br><br/></p>
-<p>MVVM 模式中，<code>ViewModel</code>存在的目的在于抽离<code>Controller</code>中的展示业务逻辑，而不是代替<code>Controller</code>本身。所以它不负责视图的操作，也就不需要持有任何的视图对象，更不能包含视图的<code>push/present</code>等跳转逻辑。这里，Controller 要做的仅是将<code>视图</code>和<code>ViewModel</code>进行绑定，同时管理各个<code>视图</code>。所以实际上我们的 MVVM 也可以看成<code>M-VM-C-V</code>。</p>
-<h4 id="3-2-注意事项："><a href="#3-2-注意事项：" class="headerlink" title="3.2.注意事项："></a>3.2.注意事项：</h4><ul>
+<h3 id="三-MVVM"><a href="#三-MVVM" class="headerlink" title="三.MVVM"></a>三.MVVM</h3><h4 id="1-角色划分-1"><a href="#1-角色划分-1" class="headerlink" title="1.角色划分"></a>1.角色划分</h4><p><img src="https://davidlii.nos-eastchina1.126.net/pic_arch_mvvm.png" srcset="/img/loading.gif" lazyload alt="image"></p>
+<h5 id="模型-2"><a href="#模型-2" class="headerlink" title="模型"></a>模型</h5><p>与 MVP 中的模型类似。</p>
+<h5 id="视图-2"><a href="#视图-2" class="headerlink" title="视图"></a>视图</h5><p>由 View 和 Controller 组成，负责显示 UI。绑定 ViewModel 中的属性，触发 ViewModel 中的命令。</p>
+<h5 id="VM"><a href="#VM" class="headerlink" title="VM"></a>VM</h5><p>负责用户输入内容的验证逻辑（如用户名、密码的合法性）；视图显示逻辑；发起网络请求；从 Model 中获取<code>V层</code>所需的数据，转换成<code>V层</code>可以展示的数据（如TableView 的 DataSource）；暴露公开的属性和命令供<code>V层</code>进行绑定。</p>
+<h5 id="Binder"><a href="#Binder" class="headerlink" title="Binder"></a>Binder</h5><p>在 MVVM 中，声明式的数据和命令绑定是一个隐含的约定，它可以让开发者非常方便地实现<code>视图层</code>和<code>ViewModel</code>的同步，避免编写大量繁杂的胶水代码。著名的RAC库正提供了这种绑定能力。</p>
+<h4 id="2-帮助理解"><a href="#2-帮助理解" class="headerlink" title="2.帮助理解"></a>2.帮助理解</h4><h5 id="①数据绑定"><a href="#①数据绑定" class="headerlink" title="①数据绑定"></a>①数据绑定</h5><p>MVVM是微软提出的，是在 MVP 的基础上发展起来的。因此，MVVM 各层的职责基本上与 MVP 的类似，其中<code>VM</code>对应<code>P层</code>。MVVM 相对于 MVP 改良了什么呢？答案就是 <code>数据绑定</code>。</p>
+<p>在 MVP 中，从用户点击开始，一个完整的响应流程是：<code>视图</code>调用<code>P层</code>处理业务逻辑，<code>P层</code>调用<code>模型</code>处理数据，处理完成后 <code>P层</code>再通过代理回调<code>视图</code>。这里要反复同步<code>P层</code>的状态，当事件多起来时这样写就有点麻烦。</p>
+<p>而在 MVVM 中， <code>View</code>与<code>VM层</code>之间多了数据绑定的操作，这意味着当<code>VM层</code>的数据变化时，你只需要更新<code>VM层</code>的某个属性，那么绑定了该属性的<code>V层</code>会相应的变动 UI，自动实现状态的同步。可参考<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/2ad25e2769b5">这篇博客</a>中的代码来帮助理解。</p>
+<h5 id="②ViewModel"><a href="#②ViewModel" class="headerlink" title="②ViewModel"></a>②ViewModel</h5><p>MVVM 模式中，<code>ViewModel</code>存在的目的在于抽离<code>Controller</code>中的展示业务逻辑，而不是代替<code>Controller</code>本身。所以它不负责视图的操作，也就不需要持有任何的视图对象，更不能包含视图的<code>push/present</code>等跳转逻辑。这里，Controller 要做的仅是将<code>视图</code>和<code>ViewModel</code>进行绑定，同时管理各个<code>视图</code>。所以实际上我们的 MVVM 也可以看成<code>M-VM-C-V</code>。</p>
+<h5 id="③规范："><a href="#③规范：" class="headerlink" title="③规范："></a>③规范：</h5><ul>
 <li>MMVM 中<code>ViewModel</code>绑定了<code>Model</code>，反过来不行；</li>
 <li>MMVM 中<code>V层</code>绑定了<code>ViewModel</code>，反过来也不行，<code>ViewModel</code>中不能包含<code>View</code>；</li>
-<li>Controller 尽量不涉及业务逻辑，让<code>ViewModel</code>去做；</li>
-<li>Controller 是中间人，接收<code>View</code>的事件、调用<code>ViewModel</code>的方法、响应<code>ViewModel</code>的变化；</li>
+<li>Controller尽量不涉及业务逻辑，让<code>ViewModel</code>去做；</li>
+<li>Controller是中间人，接收<code>View</code>的事件、调用<code>ViewModel</code>的方法、响应<code>VM</code>的变化；</li>
 <li>ViewModel 避免过于臃肿，否则重蹈 Controller 的覆辙，变得难以维护；</li>
-<li>MVVM 配合某种绑定机制时效果最好（如ReactiveCocoa）。</li>
+<li>MVVM 配合某种绑定机制时效果最好（如RAC）。</li>
 </ul>
 <hr>
 <p>相关参考：</p>
 <p>#<a target="_blank" rel="noopener" href="https://developer.apple.com/library/archive/documentation/General/Conceptual/CocoaEncyclopedia/Model-View-Controller/Model-View-Controller.html">AppleDoc-MVC</a></p>
 <p>#<a target="_blank" rel="noopener" href="http://blog.sunnyxx.com/tags/Reactive-Cocoa-Tutorial/">©sunnyxx-RAC</a></p>
-<p>#<a target="_blank" rel="noopener" href="http://www.maiziedu.com/article/13003/">©每日分享</a></p>
-<p>#<a target="_blank" rel="noopener" href="http://www.cocoachina.com/ios/20170612/19500.html">©CoderMikeHe</a></p>
-<p>#<a target="_blank" rel="noopener" href="http://www.cocoachina.com/ios/20160108/14916.html">©CocoaChina翻译活动</a></p>
 <p>#<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/9acc7498bebb?open_source=weibo_search">©挂着铃铛的兔</a></p>
-<p>#<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/2ad25e2769b5">©西木柚子</a></p>
 <p>#<a target="_blank" rel="noopener" href="https://juejin.im/post/5bcda4796fb9a05d32518ad8">©gzhongcheng-iOS架构设计</a></p>
 
                 
