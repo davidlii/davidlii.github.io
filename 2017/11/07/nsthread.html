@@ -392,7 +392,7 @@
 </ul>
 <figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs objectivec">[<span class="hljs-keyword">self</span> performSelectorOnMainThread:<span class="hljs-keyword">@selector</span>(run) withObject:<span class="hljs-literal">nil</span> waitUntilDone:<span class="hljs-literal">YES</span>];<br></code></pre></td></tr></table></figure>
 
-<h4 id="4-3-线程同步"><a href="#4-3-线程同步" class="headerlink" title="4.3.线程同步"></a>4.3.线程同步</h4><p>多个线程同时读写同一份共享资源时，可能会引起冲突。线程同步是指是指在一定的时间内只允许某一个线程访问某个资源。OC 中实现线程加锁有 NSLock 和 @synchronized 等方式。</p>
+<h4 id="4-3-线程同步"><a href="#4-3-线程同步" class="headerlink" title="4.3.线程同步"></a>4.3.线程同步</h4><p>多个线程同时读写同一份共享资源时，可能会引起冲突。<code>线程同步</code>是指在一定时间内只允许某一个线程访问某个资源。OC 中实现线程加锁有 NSLock 和 @synchronized 等方式。</p>
 <ul>
 <li>NSLock 创建锁对象、加锁和解锁:</li>
 </ul>
