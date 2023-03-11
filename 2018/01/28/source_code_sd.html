@@ -430,7 +430,7 @@
 <p>一般下载的图片或者我们手动拖进主 bundle 的图片都是 PNG 或者 JPG 格式的图片，这些图片都是经过编码压缩后的图片数据，并不是控件可以直接显示的位图。如果我们直接使用 “[UIImage imageNamed:]” 来加载图片，系统默认会在主线程立即进行图片的解码工作，这个过程就是把图片数据解码成可供控件直接显示的位图数据。由于这个解码操作比较耗时，并且默认是在主线程进行，所以当在主线程大量调用时就会产生卡顿。同时由于位图体积较大，所以在磁盘缓存中不会直接缓存位图数据，而是编码压缩过的PNG 或者 JPG 数据。</p>
 </blockquote>
 <p>这里更准确的说，[UIImage imageNamed:] 加载图片时，不是立即解码的，而是在图片设置到<code>UIImageView</code>或者<code>CALayer.contents</code>中，并且 CALayer 被提交到GPU进行渲染前才会解码。另外，使用这种方式加载图片时，系统会自动缓存一份该图片，后面再使用此图时会直接从缓存中取，不再次解码。即使如此，使用这种方式加载图片时，最后的解码部分仍然时在主线程中进行的，所以当大量加载图片时，仍然有可能会出现卡顿现象。<br><br/></p>
-<p>SD 这里所做的正是对图片进行解码，而且是在异步线程里。SD缓存图片到内存时保存的是解码后的图片，缓存是通过 NSCache 实现的。这一步的目的是提高加载图片的速度和效率，需要注意的是，它在解码时会占用相当一部分内存，是典型的空间换时间。如果你遇到了内存问题，可以尝试禁止自动解码或者清空缓存：</p>
+<p>SD 这里所做的正是对图片进行解码，而且是在异步线程里。<strong>SD缓存图片到内存时保存的是解码后的图片</strong>，缓存是通过 NSCache 实现的。这一步的目的是提高加载图片的速度和效率，需要注意的是，它在解码时会占用相当一部分内存，是典型的空间换时间。如果你遇到了内存问题，可以尝试禁止自动解码或者清空缓存：</p>
 <figure class="highlight inform7"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs inform7"><span class="hljs-comment">[<span class="hljs-comment">[SDImageCache sharedImageCache]</span> setShouldDecompressImages:NO]</span>;<br><span class="hljs-comment">[<span class="hljs-comment">[SDWebImageDownloader sharedDownloader]</span> setShouldDecompressImages:NO]</span>;<br><span class="hljs-comment">[<span class="hljs-comment">[SDImageCache sharedImageCache]</span> clearMemory]</span>;<br></code></pre></td></tr></table></figure>
 
 <h3 id="三、缓存类的实现"><a href="#三、缓存类的实现" class="headerlink" title="三、缓存类的实现"></a>三、缓存类的实现</h3><p>写这篇文章时最新sd版本为3.7.3，缓存相关功能主要由 SDImageCache 类提供。这里的缓存包括了内存和磁盘两种方式。其中，内存缓存使用的是继承自 NSCache 的 AutoPurgeCache 类；磁盘缓存的操作被单独放在一个串行队列 ioQueue 中。这个类中主要的方法及实现如下：</p>
@@ -459,7 +459,7 @@
 <ul>
 <li>库中各类职责清晰；</li>
 <li>网络图片的下载、解码及缓存等都使用异步的方式进行，保证了主线程的流畅性；</li>
-<li>大量使用了 NSOperation 和 GCD，为我们在多线程中执行任务和处理线程同步问题提供了范例；</li>
+<li>大量使用 NSOperation 和 GCD，为我们处理线程同步问题提供了范例；</li>
 <li>图片加载前，先在异步线程中解码成位图，为我们优化图片加载提供了灵感；</li>
 <li>设计良好的缓存策略，提高了应用的性能表现；</li>
 </ul>

@@ -234,7 +234,7 @@
         
         
         
-          93 分钟
+          92 分钟
         
       </span>
     
@@ -347,7 +347,7 @@
 <li>此类是详情组件的一部分，可以导入和依赖详情原类；</li>
 <li>注意上面的命名方式，类名前缀为<code>Target_</code>，而方法名前缀为<code>Action_</code>；</li>
 </ul>
-<p>关于最后一条，这是因为接下来使用到的通信类三方库<code>CTMediator</code>中做了特殊处理，所以我们需要按照通信层的要求进行命名，当然，你也可以按照自己的规范在原库中将<code>Target_</code>he和<code>Action_</code>修改为你自己喜欢的前缀。</p>
+<p>关于最后一条，这是因为接下来使用到的通信类三方库<code>CTMediator</code>中做了特殊处理，所以我们需要按照通信层的要求进行命名，当然，你也可以按照自己的规范在原库中将<code>Target_</code>和<code>Action_</code>修改为你自己喜欢的前缀。</p>
 <h4 id="5-3-通信类"><a href="#5-3-通信类" class="headerlink" title="5.3.通信类"></a>5.3.通信类</h4><p><code>中间通信层</code>，这是三方库<code>CTMediator</code>的一个分类：</p>
 <figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-meta">#import <span class="hljs-string">&quot;CTMediator.h&quot;</span></span><br><br><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">CTMediator</span> (<span class="hljs-title">Detail</span>)</span><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> 详情中间通信类对外提供的接口</span><br><span class="hljs-comment"> @param paramDic 参数</span><br><span class="hljs-comment"> @return 返回值</span><br><span class="hljs-comment"> */</span><br>- (<span class="hljs-built_in">UIViewController</span>*)<span class="hljs-built_in">CTDetail</span>:(<span class="hljs-built_in">NSDictionary</span>*)paramDic;<br><span class="hljs-keyword">@end</span><br><br><span class="hljs-meta">#import <span class="hljs-string">&quot;CTMediator+Detail.h&quot;</span></span><br><br><span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">CTMediator</span> (<span class="hljs-title">Detail</span>)</span><br><br>- (<span class="hljs-built_in">UIViewController</span> *)<span class="hljs-built_in">CTDetail</span>:(<span class="hljs-built_in">NSDictionary</span> *)paramDic&#123;<br>    <br>    <span class="hljs-comment">/* 调用CTMediator库的“performTarget”方法;</span><br><span class="hljs-comment">    使用字符串，结合反射机制，从而避免直接引用目标类，减少依赖</span><br><span class="hljs-comment">    */</span><br>    <span class="hljs-keyword">return</span> [<span class="hljs-keyword">self</span> performTarget:<span class="hljs-string">@&quot;DetailViewController&quot;</span><br>                        action:<span class="hljs-string">@&quot;showDetail&quot;</span><br>                        params:paramDic<br>             shouldCacheTarget:<span class="hljs-literal">NO</span>];<br>&#125;<br><span class="hljs-keyword">@end</span><br></code></pre></td></tr></table></figure>
 
