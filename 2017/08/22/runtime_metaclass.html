@@ -23,11 +23,13 @@
 <meta property="og:site_name" content="Davidli">
 <meta property="og:description" content="1.runtimeruntime，直译过来是运行时，它是一套底层的C语言API，包含很多强大实用的C语言数据类型和C语言函数。我们的OC代码在运行阶段都是基于runtime环境才能正常运行的。 2.常用场景 发送消息； 读取成员变量； 动态为某个类增加属性； 交换类中的方法、动态为某个类添加方法； 动态创建、删除、修改一个类；  3.对象 OC中，含有isa指针且该指针可以正确指向类的数据结构，都">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://davidlii.nos-eastchina1.126.net/pic_metaclass.png">
 <meta property="article:published_time" content="2017-08-21T17:57:57.000Z">
 <meta property="article:modified_time" content="2019-09-30T01:45:00.000Z">
 <meta property="article:author" content="Davidli">
 <meta property="article:tag" content="runtime">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://davidlii.nos-eastchina1.126.net/pic_metaclass.png">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
@@ -295,35 +297,64 @@
 <p>OC中，含有isa指针且该指针可以正确指向类的数据结构，都可以视为对象。</p>
 </blockquote>
 <p>下面是<code>objc.h</code>中的相关定义:</p>
-<figure class="highlight smali"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs smali"><span class="hljs-comment">#if !OBJC_TYPES_DEFINED</span><br>/// An opaque type that represents an Objective-C class.<br>typedef struct objc_class *Class;<br><br>/// Represents an<span class="hljs-built_in"> instance </span>of a class.<br>struct objc_object &#123;<br>Class isa  OBJC_ISA_AVAI<span class="hljs-class">LABILITY;</span><br>&#125;;<br><br>/// A pointer to an<span class="hljs-built_in"> instance </span>of a class.<br>typedef struct objc_object *id;<br><span class="hljs-comment">#endif</span><br></code></pre></td></tr></table></figure>
+<pre><code class="hljs">#if !OBJC_TYPES_DEFINED
+/// An opaque type that represents an Objective-C class.
+typedef struct objc_class *Class;
 
+/// Represents an instance of a class.
+struct objc_object &#123;
+Class isa  OBJC_ISA_AVAILABILITY;
+&#125;;
+
+/// A pointer to an instance of a class.
+typedef struct objc_object *id;
+#endif
+</code></pre>
 <p>从<code>objc_object</code>结构体的定义可以看出：对象实质上是一个结构体，其结构体内含有<code>isa</code>指针，指向其所属的类。</p>
 <h3 id="4-类"><a href="#4-类" class="headerlink" title="4.类"></a>4.类</h3><p>下面是<code>runtime.h</code>中对<code>类</code>的定义：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">struct</span> <span class="hljs-title class_">objc_class</span> &#123;<br>Class isa  OBJC_ISA_AVAILABILITY;       <span class="hljs-comment">//指针</span><br><br><span class="hljs-meta">#<span class="hljs-keyword">if</span> !__OBJC2__</span><br>Class super_class                       <span class="hljs-comment">//父类;</span><br><span class="hljs-type">const</span> <span class="hljs-type">char</span> *name                        <span class="hljs-comment">//类名;</span><br><span class="hljs-type">long</span> version                                             <span class="hljs-comment">//类的版本信息，默认为0;</span><br><span class="hljs-type">long</span> info                               <span class="hljs-comment">//位标识;</span><br><span class="hljs-type">long</span> instance_size                      <span class="hljs-comment">//类的实例变量大小;</span><br><span class="hljs-keyword">struct</span> <span class="hljs-title class_">objc_ivar_list</span> *ivars            <span class="hljs-comment">//类的成员变量链表;</span><br><span class="hljs-keyword">struct</span> <span class="hljs-title class_">objc_method_list</span> **methodLists   <span class="hljs-comment">//方法定义的链表;</span><br><span class="hljs-keyword">struct</span> <span class="hljs-title class_">objc_cache</span> *cache                <span class="hljs-comment">//方法缓存;</span><br><span class="hljs-keyword">struct</span> <span class="hljs-title class_">objc_protocol_list</span> *protocols    <span class="hljs-comment">//协议链表;</span><br><span class="hljs-meta">#<span class="hljs-keyword">endif</span></span><br><br>&#125; OBJC2_UNAVAILABLE;<br></code></pre></td></tr></table></figure>
+<pre><code class="hljs">struct objc_class &#123;
+Class isa  OBJC_ISA_AVAILABILITY;       //指针
 
+#if !__OBJC2__
+Class super_class                       //父类;
+const char *name                        //类名;
+long version                                             //类的版本信息，默认为0;
+long info                               //位标识;
+long instance_size                      //类的实例变量大小;
+struct objc_ivar_list *ivars            //类的成员变量链表;
+struct objc_method_list **methodLists   //方法定义的链表;
+struct objc_cache *cache                //方法缓存;
+struct objc_protocol_list *protocols    //协议链表;
+#endif
+
+&#125; OBJC2_UNAVAILABLE;
+</code></pre>
 <p>从结构体的定义来看，类也是以<code>isa</code>开始并指向类的数据结构。OC中类与元类在运行时都是<code>objc_class</code>类型，所以，<strong>类和元类也是一种对象</strong>。</p>
-<h3 id="5-实例对象-类对象-元类"><a href="#5-实例对象-类对象-元类" class="headerlink" title="5.实例对象\类对象\元类"></a>5.实例对象\类对象\元类</h3><figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs abnf">NSObject *obj <span class="hljs-operator">=</span> [NSObject alloc]<span class="hljs-comment">;</span><br></code></pre></td></tr></table></figure>
-
+<h3 id="5-实例对象-类对象-元类"><a href="#5-实例对象-类对象-元类" class="headerlink" title="5.实例对象\类对象\元类"></a>5.实例对象\类对象\元类</h3><pre><code class="hljs">NSObject *obj = [NSObject alloc];
+</code></pre>
 <h4 id="5-1-实例对象"><a href="#5-1-实例对象" class="headerlink" title="5.1.实例对象"></a>5.1.实例对象</h4><p>实例对象，instance object，是指从某个类实例化而来的对象，如示例中的<code>obj</code>。</p>
 <h4 id="5-2-类对象"><a href="#5-2-类对象" class="headerlink" title="5.2.类对象"></a>5.2.类对象</h4><p>类对象，Class object，类作为对象时，就称之为类对象。调用一个 “类方法” ，如 [NSObject alloc]，实质上是向它的类对象(NSObject)发送了一个消息。类对象是由编译器创建的，任何继承自NSObject的类，它的实例对象中都有一个isa指针，指向它的类对象。</p>
-<h4 id="5-3-元类"><a href="#5-3-元类" class="headerlink" title="5.3.元类"></a>5.3.元类</h4><p>从一个类实例化而来的对象叫实例对象；类作为对象，又是元类（Metaclass）的实例，<strong>元类是类对象所属的类</strong>。<br><br/></p>
-<p>注意区分类对象和元类：类对象中保存的是关于其实例对象的信息(变量，实例方法、遵守的协议等)；元类中保存的是关于类对象的信息(类方法，类的版本，名字等)；<br><br/></p>
-<p>元类与继承的封闭循环：</p>
+<h4 id="5-3-元类"><a href="#5-3-元类" class="headerlink" title="5.3.元类"></a>5.3.元类</h4><p>从一个类实例化而来的对象叫实例对象；类作为对象，又是元类（Metaclass）的实例，<strong>元类是类对象所属的类</strong>。</p>
+<p>注意区分类对象和元类：类对象中保存的是关于其实例对象的信息(变量，实例方法、遵守的协议等)；元类中保存的是关于类的信息(类方法，类的版本，名字等)；</p>
+<p>借用网上的一张图，演示元类与继承的封闭循环：</p>
+<p><img src="https://davidlii.nos-eastchina1.126.net/pic_metaclass.png" srcset="/img/loading.gif" lazyload alt="isa与superclass"></p>
+<p>图中实线是 super_class 指针，虚线是<code>isa</code>指针。</p>
 <ul>
 <li>实例对象是类的实例；</li>
 <li>类作为对象又是元类的实例;</li>
 <li>元类作为对象是根元类的实例；</li>
 <li>根元类是其自身的实例。</li>
 <li>根元类的superclass为根类自己；</li>
+<li>根类的superclass为nil；</li>
 </ul>
-<h3 id="6-相关函数"><a href="#6-相关函数" class="headerlink" title="6.相关函数"></a>6.相关函数</h3><figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs actionscript">-<span class="hljs-keyword">class</span><br></code></pre></td></tr></table></figure>
-
+<h3 id="6-相关函数"><a href="#6-相关函数" class="headerlink" title="6.相关函数"></a>6.相关函数</h3><pre><code class="hljs">-class
+</code></pre>
 <p>对于实例对象，返回其 isa 指针指向的<code>类</code>；对于类对象，返回其<code>本身</code>。</p>
-<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs reasonml"><span class="hljs-keyword">object</span><span class="hljs-constructor">_getClass(<span class="hljs-params">id</span> <span class="hljs-params">obj</span>)</span><br></code></pre></td></tr></table></figure>
-
+<pre><code class="hljs">object_getClass(id obj)
+</code></pre>
 <p>返回isa指针指向的内容。对于实例对象，返回其 isa 指向的<code>类</code>；对于类对象，返回其对应的<code>元类</code>。</p>
-<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">objc<span class="hljs-constructor">_getMetaClass(<span class="hljs-params">const</span> <span class="hljs-params">char</span> <span class="hljs-operator">*</span><span class="hljs-params">name</span>)</span><br></code></pre></td></tr></table></figure>
-
+<pre><code class="hljs">objc_getMetaClass(const char *name)
+</code></pre>
 <p>返回此类对应的<code>元类</code>。</p>
 <hr>
 <p>相关参考：</p>

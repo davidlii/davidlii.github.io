@@ -223,7 +223,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          7.2k 字
+          7.3k 字
         
       </span>
     
@@ -313,6 +313,7 @@
 <li>第一步中没有找到格式相符的方法的话，如果 accessInstanceVariablesDirectly 属性返回 YES。那么就去依次查询符合_key，_isKey，key，isKey 格式的成员变量，找到后给它赋值。</li>
 <li>如果仍没找到符合的成员变量，则调用 setValue:forUnderfinedKey: 并抛出 NSUndefinedKeyException 异常。</li>
 </ol>
+<p>由上述过程可以得知：<code>valueForKey</code>会调用属性的<code>getter</code>，<code>setValue:forKey:</code>会调用属性的<code>setter</code>函数。</p>
 <p>#示例2：</p>
 <figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs less"><span class="hljs-variable">@interface</span> <span class="hljs-attribute">Model </span>: NSObject<br><span class="hljs-variable">@property</span> (nonatomic, strong) NSString *_modelString;<br><span class="hljs-variable">@end</span><br><br><span class="hljs-variable">@interface</span> <span class="hljs-attribute">People </span>: NSObject<br><span class="hljs-variable">@property</span> (nonatomic, strong) NSString *stringA;<br><span class="hljs-variable">@property</span> (nonatomic, strong) Model *modelA;<br><span class="hljs-variable">@end</span><br></code></pre></td></tr></table></figure>
 
