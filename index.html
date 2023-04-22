@@ -226,8 +226,75 @@
     
     
       <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2023/04/23/flutter-embedin-ios.html" target="_self">
+          <img src="https://davidlii.nos-eastchina1.126.net/pic_flutter.png" srcset="/img/loading.gif" lazyload alt="iOS集成flutter模块">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2023/04/23/flutter-embedin-ios.html" target="_self">
+          iOS集成flutter模块
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt " href="/2023/04/23/flutter-embedin-ios.html" target="_self">
+        <div>
+          1.集成方式现有iOS工程中，可以添加flutter_module以集成flutter模块。这些模块会以framework的形式被集成到iOS工程中。同时在集成flutter模块前，需要导入依赖的Flutter engine等。为完成这些工作，Flutter根据不同需求提供了三种方式： 1.全自动 CocoaPods管理依赖，这种方式下每次我们build应用时，flutter_module模块中的
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-04-23 03:10" pubdate>
+              2023-04-23
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%8A%80%E6%9C%AF/" class="category-chain-item">技术</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Flutter/">#Flutter</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
         <a href="/2023/03/29/flutter-hot-reload-in-native.html" target="_self">
-          <img src="https://davidlii.nos-eastchina1.126.net/pic_flutter.png" srcset="/img/loading.gif" lazyload alt="热更新混编中的flutter模块">
+          <img src="https://davidlii.nos-eastchina1.126.net/pic_flutter.png" srcset="/img/loading.gif" lazyload alt="热重载混编中的flutter模块">
         </a>
       </div>
     
@@ -235,14 +302,14 @@
       <h1 class="index-header">
         
         <a href="/2023/03/29/flutter-hot-reload-in-native.html" target="_self">
-          热更新混编中的flutter模块
+          热重载混编中的flutter模块
         </a>
       </h1>
 
       
       <a class="index-excerpt " href="/2023/03/29/flutter-hot-reload-in-native.html" target="_self">
         <div>
-          1.背景hot-reload，热更新、热加载，允许开发者在应用运行时更改源代码，并实时观看效果。目前SwiftUI与Flutter都具备热更新的能力，开发阶段调试UI的效率极高。在原生iOS应用中混编flutter模块时，原生部分(非SwiftUI的)在修改后还是需要通过重新Run来查看效果，而其中的 flutter 部分则是可以基于flutter attach实现热更新的，本文就简单的做一次配置
+          1.背景hot-reload，热重载，允许开发者在应用运行时更改源代码，并实时观看效果。目前SwiftUI与Flutter都具备热重载的能力，开发阶段调试UI的效率极高。在原生iOS应用中混编flutter模块时，原生部分(非SwiftUI的)在修改后还是需要通过重新Run来查看效果，而其中的 flutter 部分则是可以基于flutter attach实现热重载的，本文就简单的做一次配置记录。
         </div>
       </a>
 
@@ -788,73 +855,6 @@
             <i class="iconfont icon-date"></i>
             <time datetime="2020-11-12 10:47" pubdate>
               2020-11-12
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E6%8A%80%E6%9C%AF/" class="category-chain-item">技术</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E6%9E%B6%E6%9E%84/">#架构</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-      <div class="col-12 col-md-4 m-auto index-img">
-        <a href="/2020/09/03/modules-url.html" target="_self">
-          <img src="https://davidlii.nos-eastchina1.126.net/pic_zujianhua.png" srcset="/img/loading.gif" lazyload alt="组件化-URL路由方案">
-        </a>
-      </div>
-    
-    <article class="col-12 col-md-8 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2020/09/03/modules-url.html" target="_self">
-          组件化-URL路由方案
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt " href="/2020/09/03/modules-url.html" target="_self">
-        <div>
-          一、组件化1.目的为了解耦：把复杂系统拆分成多个组件，分离组件边界和责任，便于独立升级和维护。 2.好处 明确组件职责  按合理的粒度将系统拆分成多个组件，确保组件各司其职，以便于复用。  减少组件间的依赖  通信层实现了组件间的通信，而不用在组件间跳转、调用服务时引用其他组件的文件。  提升开发&#x2F;编译&#x2F;测试效率  开发人员只须关注自己的组件，不再需要导入或编译其他组件，从而提
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-09-03 17:40" pubdate>
-              2020-09-03
             </time>
           </div>
         
