@@ -304,7 +304,7 @@
 <li>如果在 block 中访问了一个局部变量，那么 block 就会强引用该变量。</li>
 </ul>
 <p>block 的循环引用一般表现为，block 作为属性被类的实例(self)强引用，然后实例在block中又引用了实例本身。<code>self -&gt; block -&gt; self</code>。编写代码时，这种循环引用编译器能捕捉到并给出提醒：“Capturing ‘self’ strongly in this block is likely to lead to a retain cycle”。</p>
-<p>注意：并不是所有block都会造成循环引用。只有被<code>强引用了</code>的 block 才会产生循环引用，一些系统封装的block就不存在循环引用问题，如：</p>
+<p>注意：并不是所有block都会造成循环引用。只有被<code>强引用</code>了的 block 才会产生循环引用，一些系统封装的block就不存在循环引用问题，如：</p>
 <figure class="highlight dust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs dust"><span class="language-xml">dispatch_async(dispatch_get_main_queue(), ^</span><span class="hljs-template-variable">&#123;</span><br><span class="hljs-template-variable">&#125;</span><span class="language-xml">);</span><br><span class="language-xml"></span><br><span class="language-xml">[UIView animateWithDuration:1 animations:^</span><span class="hljs-template-variable">&#123;</span><br><span class="hljs-template-variable">&#125;</span><span class="language-xml">];</span><br></code></pre></td></tr></table></figure>
 
 <h5 id="循环引用示例1"><a href="#循环引用示例1" class="headerlink" title="#循环引用示例1"></a>#循环引用示例1</h5><p>自定义的一个<code>Student</code>类：</p>
