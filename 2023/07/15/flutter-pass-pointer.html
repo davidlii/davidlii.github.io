@@ -16,12 +16,12 @@
   <meta name="author" content="Davidli">
   <meta name="keywords" content="Davidli">
   
-    <meta name="description" content="1.背景这两天在学习手势相关的知识点，想实现一个Listview带可点击的背景视图。使用的是Stack布局，上层为Listview，下层为背景与按钮。因为Listview在上，点击手势无法穿透并向下传递，所以，背景中的按钮无法响应点击事件。  后来了解到IgnorePointer、AbsorbPointer组件，利用其中的前者可实现点击穿透的效果。 2.组件介绍以下是Flutter库中对这两个组件">
+    <meta name="description" content="1.背景这两天在学习手势相关的知识点，想实现一个Listview带可点击的背景视图。使用的是Stack布局，上层为Listview，下层为背景与按钮。因为Listview在上，点击手势无法穿透并向下传递，导致背景中的按钮无法响应点击事件。  几经查询，了解到IgnorePointer、AbsorbPointer组件，其中的前者就可以实现点击穿透的效果。以下就是对研究点击穿透原理过程的整理记录。 2">
 <meta property="og:type" content="article">
-<meta property="og:title" content="flutter指针事件-点击穿透">
+<meta property="og:title" content="Flutter指针事件-点击穿透">
 <meta property="og:url" content="http://yoursite.com/2023/07/15/flutter-pass-pointer.html">
 <meta property="og:site_name" content="Davidli">
-<meta property="og:description" content="1.背景这两天在学习手势相关的知识点，想实现一个Listview带可点击的背景视图。使用的是Stack布局，上层为Listview，下层为背景与按钮。因为Listview在上，点击手势无法穿透并向下传递，所以，背景中的按钮无法响应点击事件。  后来了解到IgnorePointer、AbsorbPointer组件，利用其中的前者可实现点击穿透的效果。 2.组件介绍以下是Flutter库中对这两个组件">
+<meta property="og:description" content="1.背景这两天在学习手势相关的知识点，想实现一个Listview带可点击的背景视图。使用的是Stack布局，上层为Listview，下层为背景与按钮。因为Listview在上，点击手势无法穿透并向下传递，导致背景中的按钮无法响应点击事件。  几经查询，了解到IgnorePointer、AbsorbPointer组件，其中的前者就可以实现点击穿透的效果。以下就是对研究点击穿透原理过程的整理记录。 2">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://davidlii.nos-eastchina1.126.net/pic_flutter.png">
 <meta property="article:published_time" content="2023-07-14T16:33:05.000Z">
@@ -35,7 +35,7 @@
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>flutter指针事件-点击穿透 - Davidli</title>
+  <title>Flutter指针事件-点击穿透 - Davidli</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -200,7 +200,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="flutter指针事件-点击穿透"></span>
+            <span id="subtitle" data-typed-text="Flutter指针事件-点击穿透"></span>
           
         </div>
 
@@ -223,7 +223,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          4.3k 字
+          11k 字
         
       </span>
     
@@ -234,7 +234,7 @@
         
         
         
-          36 分钟
+          89 分钟
         
       </span>
     
@@ -280,27 +280,141 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">flutter指针事件-点击穿透</h1>
+            <h1 style="display: none">Flutter指针事件-点击穿透</h1>
             
             
               <div class="markdown-body">
                 
-                <h3 id="1-背景"><a href="#1-背景" class="headerlink" title="1.背景"></a>1.背景</h3><p>这两天在学习手势相关的知识点，想实现一个Listview带可点击的背景视图。使用的是<code>Stack</code>布局，上层为<code>Listview</code>，下层为背景与按钮。因为<code>Listview</code>在上，点击手势无法穿透并向下传递，所以，背景中的按钮无法响应点击事件。</p>
+                <h3 id="1-背景"><a href="#1-背景" class="headerlink" title="1.背景"></a>1.背景</h3><p>这两天在学习手势相关的知识点，想实现一个Listview带可点击的背景视图。使用的是<code>Stack</code>布局，上层为<code>Listview</code>，下层为背景与按钮。因为<code>Listview</code>在上，点击手势无法穿透并向下传递，导致背景中的按钮无法响应点击事件。</p>
 <p><img src="https://davidlii.nos-eastchina1.126.net/pic_flutter_tableback.png" srcset="/img/loading.gif" lazyload alt="点击穿透"></p>
-<p>后来了解到<code>IgnorePointer</code>、<code>AbsorbPointer</code>组件，利用其中的前者可实现点击穿透的效果。</p>
-<h3 id="2-组件介绍"><a href="#2-组件介绍" class="headerlink" title="2.组件介绍"></a>2.组件介绍</h3><p>以下是Flutter库中对这两个组件的解释：</p>
-<ul>
-<li><input checked="" disabled="" type="checkbox"> IgnorePointer</li>
-</ul>
-<blockquote>
-<p>prevents its children from receiving pointer events but is itself invisible to hit testing.</p>
+<p>几经查询，了解到<code>IgnorePointer</code>、<code>AbsorbPointer</code>组件，其中的前者就可以实现点击穿透的效果。以下就是对研究点击穿透原理过程的整理记录。</p>
+<h3 id="2-PointerEvents"><a href="#2-PointerEvents" class="headerlink" title="2.PointerEvents"></a>2.PointerEvents</h3><blockquote>
+<p>指针事件（Pointer Events）是一种用于处理来自各种输入设备（例如鼠标、触控笔和触摸屏等）输入信息的现代化解决方案。</p>
 </blockquote>
+<p>早期web时代只有鼠标，通过鼠标可完成<code>mousedown</code>、<code>mouseover</code>、<code>mouseup</code>等「鼠标事件」；如今手机平板等触屏设备普及，轻触屏幕即可与设备上的应用交互，因此又引入了「触摸事件」，如<code>touchstart</code>、<code>touchend</code>和<code>touchmove</code>。为解决同时维护两份事件代码的问题，人们又引入了全新的规范「指针事件」。它为各种指针输入设备提供了一套统一的事件，会自动兼容web端与移动端的事件，并返回<code>pointerType</code>等表明触发此事件的设备类型（鼠标&#x2F;触控笔&#x2F;触摸等）。</p>
+<p>对移动端来说，指针事件可分三个阶段：手指按下、移动、抬起。</p>
+<p>以Flutter为例，框架针对手指的按下、移动、抬起这些事件，分别封装了对应的事件对象：</p>
+<table>
+<thead>
+<tr>
+<th align="center"><strong>事件类型</strong></th>
+<th align="center"><strong>事件对象</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">按下</td>
+<td align="center">PointerDownEvent</td>
+</tr>
+<tr>
+<td align="center">移动</td>
+<td align="center">PointerMoveEvent</td>
+</tr>
+<tr>
+<td align="center">抬起</td>
+<td align="center">PointerUpEvent</td>
+</tr>
+</tbody></table>
+<p>需要指出的是，「指针事件」与「手势」不完全是一回事，手势是由指针事件构成的，但有更丰富的内涵，如单击、双击、拖动、旋转等。</p>
+<h3 id="3-HitTest"><a href="#3-HitTest" class="headerlink" title="3.HitTest"></a>3.HitTest</h3><p>触发指针事件时，Flutter会在渲染树中执行<code>命中测试</code>(HitTest)，以确定触摸的是哪些渲染对象。</p>
+<h4 id="3-1-hitTest"><a href="#3-1-hitTest" class="headerlink" title="3.1.hitTest"></a>3.1.hitTest</h4><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs DART"><span class="hljs-comment">/// <span class="language-markdown">Determines the set of render objects located at the given position.</span></span><br><span class="hljs-comment">///</span><br><span class="hljs-comment">/// <span class="language-markdown">Returns true, and adds any render objects that contain the point to the</span></span><br><span class="hljs-comment">/// <span class="language-markdown">given hit test result, if this render object or one of its descendants</span></span><br><span class="hljs-comment">/// <span class="language-markdown">absorbs the hit (preventing objects below this one from being hit).</span></span><br><span class="hljs-comment">/// <span class="language-markdown">Returns false if the hit can continue to other objects below this one.</span></span><br><br><span class="hljs-built_in">bool</span> hitTest(BoxHitTestResult result, &#123; <span class="hljs-keyword">required</span> Offset position &#125;) &#123;<br>    <span class="hljs-comment">//省略...</span><br><span class="hljs-keyword">if</span> (_size!.contains(position)) &#123;<br>  <span class="hljs-keyword">if</span> (hitTestChildren(result, position: position) || hitTestSelf(position)) &#123;<br>      result.add(BoxHitTestEntry(<span class="hljs-keyword">this</span>, position));<br>      <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;<br>    &#125;<br>  &#125;<br>  <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>以上是[RenderBox.hitTest]的源码注释，是否命中逻辑的如下：</p>
+<ol>
+<li>先检测点击是否在当前渲染对象(self)的size范围内；</li>
+<li>再对子树递归执行命中测试，有子树命中通过则将self加入测试结果列表(result)中；</li>
+<li>若子树未通过命中测试，则对self执行命中测试；</li>
+<li>若self声明自己通过命中测试，则把self添加进测试结果列表。</li>
+</ol>
+<p>测试结果列表<code>result</code>中储存的是所有通过命中测试的RenderBox，即触摸点下的渲染对象，这些对象将能接收和处理指针事件。</p>
+<hr>
+<p>需要说明的是，不同的渲染对象对hitTest有不同的实现，以[Listener]为例：</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs reasonml"><span class="hljs-built_in">bool</span> hit<span class="hljs-constructor">Test(BoxHitTestResult <span class="hljs-params">result</span>, &#123; Offset <span class="hljs-params">position</span> &#125;)</span> &#123;<br>    <span class="hljs-built_in">bool</span> hitTarget =<span class="hljs-literal">false</span>;<br>    <span class="hljs-keyword">if</span> (size.contains(position)) &#123;<br>      hitTarget = hit<span class="hljs-constructor">TestChildren(<span class="hljs-params">result</span>, <span class="hljs-params">position</span>: <span class="hljs-params">position</span>)</span><span class="hljs-operator"> || </span>hit<span class="hljs-constructor">TestSelf(<span class="hljs-params">position</span>)</span>;<br>      <span class="hljs-keyword">if</span> (hitTarget<span class="hljs-operator"> || </span>behavior<span class="hljs-operator"> == </span><span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">HitTestBehavior</span>.</span></span>translucent)<br>        result.add(<span class="hljs-constructor">BoxHitTestEntry(<span class="hljs-params">this</span>, <span class="hljs-params">position</span>)</span>);<br>    &#125;<br>    return hitTarget;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>其命中测试的逻辑与[RenderBox]大致相同，只是多了一条对<code>behavior</code>属性的判断。</p>
+<table>
+<thead>
+<tr>
+<th align="center">behavior</th>
+<th align="left">作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">deferToChild</td>
+<td align="left">自己是否通过命中测试取决于子组件是否通过命中测试</td>
+</tr>
+<tr>
+<td align="center">opaque</td>
+<td align="left">自己必然会通过命中测试，同时其 hitTest 返回值始终为true</td>
+</tr>
+<tr>
+<td align="center">translucent</td>
+<td align="left">自己必然会通过命中测试，但其 hitTest 返回值不一定为true</td>
+</tr>
+</tbody></table>
+<h4 id="3-2-hitTestChildren"><a href="#3-2-hitTestChildren" class="headerlink" title="3.2.hitTestChildren"></a>3.2.hitTestChildren</h4><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs DART"><span class="hljs-comment">/// <span class="language-markdown">Override this method to check whether any children are located at the</span></span><br><span class="hljs-comment">/// <span class="language-markdown">given position.</span></span><br><span class="hljs-comment">///</span><br><span class="hljs-comment">/// <span class="language-markdown">Subclasses should return true if at least one child reported a hit at the</span></span><br><span class="hljs-comment">/// <span class="language-markdown">specified position.</span></span><br><span class="hljs-comment">///</span><br><span class="hljs-comment">/// <span class="language-markdown">Typically children should be hit-tested in reverse paint order so that</span></span><br><span class="hljs-comment">/// <span class="language-markdown">hit tests at locations where children overlap hit the child that is</span></span><br><span class="hljs-comment">/// <span class="language-markdown">visually &quot;on top&quot; (i.e., paints later).</span></span><br><span class="hljs-comment">///</span><br><span class="hljs-meta">@protected</span><br><span class="hljs-built_in">bool</span> hitTestChildren(BoxHitTestResult result, &#123; <span class="hljs-keyword">required</span> Offset position &#125;) =&gt; <span class="hljs-keyword">false</span>;<br></code></pre></td></tr></table></figure>
+
+<p>此方法的作用是，判断是否有子节点通过了命中测试。</p>
+<p>如果有，则将子组件添加到<code>HitTestResult</code>中，方法返回值<code>true</code>；</p>
+<p>如果没有，则方法返回<code>false</code>。</p>
+<hr>
+<p>对包含多个子组件的组件，该方法会递归调用子组件的<code>hitTest</code>方法，且是<code>逆序</code>进行的：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs DART"><span class="hljs-comment">// RenderBoxContainerDefaultsMixin 中的实现：</span><br><span class="hljs-comment">// 子类的 hitTestChildren() 中直接调用此方法</span><br><span class="hljs-built_in">bool</span> defaultHitTestChildren(BoxHitTestResult result, &#123; <span class="hljs-keyword">required</span> Offset position &#125;) &#123;<br>  <span class="hljs-comment">// 1.从后向前逆序遍历所有子组件</span><br>  ChildType? child = lastChild;<br>  <span class="hljs-keyword">while</span> (child != <span class="hljs-keyword">null</span>) &#123;<br>    <span class="hljs-keyword">final</span> ParentDataType childParentData = child.parentData! <span class="hljs-keyword">as</span> ParentDataType;<br>    <span class="hljs-comment">// 2.当前子节点调用hitTest</span><br>    <span class="hljs-keyword">final</span> <span class="hljs-built_in">bool</span> isHit = result.addWithPaintOffset(<br>      offset: childParentData.offset,<br>      position: position,<br>      hitTest: (BoxHitTestResult result, Offset? transformed) &#123;<br>        <span class="hljs-keyword">return</span> child!.hitTest(result, position: transformed!);<br>      &#125;,<br>    );<br>    <span class="hljs-comment">// 3.有一个子节点通过命中测试，则终止遍历，返回true</span><br>    <span class="hljs-keyword">if</span> (isHit) <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;<br>    child = childParentData.previousSibling;<br>  &#125;<br>  <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;<br>&#125;<br><br>  <span class="hljs-comment">// 子节点调用hitTest</span><br><span class="hljs-built_in">bool</span> addWithPaintOffset(&#123;<br>  <span class="hljs-keyword">required</span> Offset? offset,<br>  <span class="hljs-keyword">required</span> Offset position,<br>  <span class="hljs-keyword">required</span> BoxHitTest hitTest,<br>&#125;) &#123;<br>  <span class="hljs-comment">// 省略...</span><br>  <span class="hljs-comment">// 子节点调用hitTest</span><br>  <span class="hljs-keyword">final</span> <span class="hljs-built_in">bool</span> isHit = hitTest(<span class="hljs-keyword">this</span>, transformedPosition);<br>  <span class="hljs-keyword">return</span> isHit;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>如果子节点A未通过命中测试，则继续逆序对其前面的兄弟节点进行命中测试；</p>
+<p>只要有某个子节点<code>A</code>通过命中测试，则终止其剩余兄弟节点的遍历过程：</p>
 <ul>
-<li><input checked="" disabled="" type="checkbox"> AbsorbPointer</li>
+<li>此时，A前面的兄弟节点将没有机会通过命中测试；</li>
+<li>A的父节点的<code>hitTestChildren</code>&#x3D;true；</li>
+<li>进而导致A的父节点的<code>hitTest</code>&#x3D;true；</li>
+<li>最终，A的父节点通过命中测试；</li>
 </ul>
-<blockquote>
-<p>prevents its children from receiving pointer events but is itself visible to hit testing.</p>
-</blockquote>
+<p>如果所有子节点都未命中，则父节点调用<code>hitTestSelf</code>，父节点是否命中根据此返回值而定。</p>
+<hr>
+<p>为什么兄弟节点间要逆序检测呢？</p>
+<p>因为兄弟节点重叠时，后面的组件会在前面组件之上。点击时应该是上面的组件响应事件，下面的组件被遮住不能响应此事件。因此命中测试应该优先对后面的节点进行测试，一旦命中通过则不再继续遍历检测了。</p>
+<h4 id="3-3-hitTestSelf"><a href="#3-3-hitTestSelf" class="headerlink" title="3.3.hitTestSelf"></a>3.3.hitTestSelf</h4><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs DART"><span class="hljs-comment">/// <span class="language-markdown">Override this method if this render object can be hit even if its</span></span><br><span class="hljs-comment">/// <span class="language-markdown">children were not hit.</span></span><br><span class="hljs-comment">///</span><br><span class="hljs-comment">/// <span class="language-markdown">Returns true if the specified <span class="hljs-code">`position`</span> should be considered a hit</span></span><br><span class="hljs-comment">/// <span class="language-markdown">on this render object.</span></span><br><span class="hljs-comment">///</span><br><span class="hljs-meta">@protected</span><br><span class="hljs-built_in">bool</span> hitTestSelf(Offset position) =&gt; <span class="hljs-keyword">false</span>;<br></code></pre></td></tr></table></figure>
+
+<p>声明自己是否通过命中测试。</p>
+<p>想强制自己通过命中测试时，可重写此方法并返回<code>true</code>。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs DART"><span class="hljs-built_in">bool</span> hitTestSelf(Offset position) =&gt; behavior == HitTestBehavior.opaque;<br></code></pre></td></tr></table></figure>
+
+<p>以上是<code>Listener</code>中的实现，字段&#x3D;<code>opaque</code>即可确保自己一定通过测试。</p>
+<h4 id="3-4-iOS响应者链"><a href="#3-4-iOS响应者链" class="headerlink" title="3.4.iOS响应者链"></a>3.4.iOS响应者链</h4><p>无论在原理还是具体实现上，Flutter的<code>命中测试</code>与我们iOS开发中的<code>响应者链</code>都十分相似：</p>
+<ul>
+<li>触摸点下哪些组件能响应事件，都是由命中测试决定的；</li>
+<li>命中测试都是从根节点开始，之后在子树中递归进行；</li>
+<li>同级子树的命中测试都是按从后往前的顺序(逆序)进行；</li>
+<li>父节点未通过命中测试，则子节点一定不会通过测试；</li>
+<li>子节点通过命中测试，则父节点也一定通过命中测试；</li>
+</ul>
+<p>注：这里说的是默认实现，即子类未重写原始方法的情况下！</p>
+<h3 id="4-事件分发"><a href="#4-事件分发" class="headerlink" title="4.事件分发"></a>4.事件分发</h3><p>命中测试完毕后，通过测试的所有渲染节点都已加入<code>HitTestResult</code>列表。</p>
+<p>完成了这一步，就确定了谁可以响应这些事件。那么节点具体是怎么处理事件的呢？这就涉及到Flutter的<code>事件分发</code>(Event Dispatch)。</p>
+<p>框架会遍历<code>HitTestResult</code>列表，调用每个渲染对象的<code>handleEvent</code>方法分发处理指针事件：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs DART"><span class="hljs-comment">// 事件分发</span><br><span class="hljs-keyword">void</span> dispatchEvent(PointerEvent event, HitTestResult? hitTestResult) &#123;<br>  <span class="hljs-comment">//省略... </span><br>  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">final</span> HitTestEntry entry <span class="hljs-keyword">in</span> hitTestResult.path) &#123;<br>    entry.target.handleEvent(event.transformed(entry.transform), entry);<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>需要注意：在命中检测时先递归检测子节点，再检测父节点。所以 HitTestResult 列表中：</p>
+<ul>
+<li>子节点在父节点之前；</li>
+<li>同级子节点间呈倒序排列。</li>
+</ul>
+<p>所以，事件分发时也是按照此顺序进行：</p>
+<ul>
+<li>子节点先于父节点处理事件；</li>
+<li>同级子节点间按倒序处理事件。</li>
+</ul>
+<p>这些也都与iOS中，事件的传递链相同~</p>
+<h3 id="5-拦截组件"><a href="#5-拦截组件" class="headerlink" title="5.拦截组件"></a>5.拦截组件</h3><p>回到开头「点击穿透」的问题，实现此功能须先研究下Flutter提供的两个组件：</p>
+<ul>
+<li>IgnorePointer</li>
+</ul>
+<figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs 1c"><span class="hljs-comment">/// A widget that is invisible during hit testing.</span><br><span class="hljs-comment">///</span><br><span class="hljs-comment">/// When [ignoring] is true, this widget (and its subtree) is invisible</span><br><span class="hljs-comment">/// to hit testing. It still consumes space during layout and paints its child</span><br><span class="hljs-comment">/// as usual. It just cannot be the target of located events, because it returns</span><br><span class="hljs-comment">/// false from [RenderBox.hitTest].</span><br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>AbsorbPointer</li>
+</ul>
+<figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs 1c"><span class="hljs-comment">/// A widget that absorbs pointers during hit testing.</span><br><span class="hljs-comment">///</span><br><span class="hljs-comment">/// When [absorbing] is true, this widget prevents its subtree from receiving</span><br><span class="hljs-comment">/// pointer events by terminating hit testing at itself. It still consumes space</span><br><span class="hljs-comment">/// during layout and paints its child as usual. It just prevents its children</span><br><span class="hljs-comment">/// from being the target of located events, because it returns true from</span><br><span class="hljs-comment">/// [RenderBox.hitTest].</span><br></code></pre></td></tr></table></figure>
+
 <p>二者的区别以图表形式展示如下：</p>
 <table>
 <thead>
@@ -351,25 +465,43 @@
 </tr>
 </tbody></table>
 <p>属性&#x3D;<code>false</code>时，</p>
-<p>作为普通容器组件，自身与child可响应点击事件，且不会再往下传递。</p>
+<p>作为普通容器组件，自身与子树可接收点击事件，且不会再往下传递。</p>
 <p>属性&#x3D;<code>true</code>时,</p>
 <p>共同作用：</p>
 <ul>
-<li>禁止child响应PointerEvent；</li>
+<li>禁止子树接收指针事件；</li>
 </ul>
 <p>不同的是：</p>
 <ul>
-<li><p>IgnorePointer会<code>忽略</code>PointerEvent，自己和child都不响应点击事件，PointerEvent会穿透自己，传递给位于其下面被其挡住的组件，因此下面的组件可以响应此PointerEvent；</p>
+<li><p>IgnorePointer会<code>忽略</code>指针事件，自己和子树都不响应点击事件，事件会穿透自己，传递给位于其下面被其挡住的组件，因此下面的组件可以响应此指针事件；</p>
 </li>
-<li><p>AbsorbPointer会<code>吸收</code>PointerEvent，即自己会拦截并响应点击事件，PointerEvent无法穿透自己，因此位于其下面被其挡住的组件无法响应此PointerEvent；</p>
+<li><p>AbsorbPointer会<code>吸收</code>指针事件，即自己会拦截并响应点击事件，事件无法穿透自己，因此位于其下面被其挡住的组件无法响应此指针事件；</p>
 </li>
 </ul>
-<h3 id="3-组件示例"><a href="#3-组件示例" class="headerlink" title="3.组件示例"></a>3.组件示例</h3><p><img src="https://davidlii.nos-eastchina1.126.net/pic_flutter_pointer_pass.png" srcset="/img/loading.gif" lazyload alt="点击穿透"></p>
+<h3 id="6-组件源码"><a href="#6-组件源码" class="headerlink" title="6.组件源码"></a>6.组件源码</h3><p>下面通过源码看看二者在实现上的区别：</p>
+<h4 id="6-1-IgnorePointer"><a href="#6-1-IgnorePointer" class="headerlink" title="6.1.IgnorePointer"></a>6.1.IgnorePointer</h4><figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">@override<br>  <span class="hljs-built_in">bool</span> hit<span class="hljs-constructor">Test(BoxHitTestResult <span class="hljs-params">result</span>, &#123;<span class="hljs-params">required</span> Offset <span class="hljs-params">position</span>&#125;)</span> &#123;<br>    return !ignoring<span class="hljs-operator"> &amp;&amp; </span>super.hit<span class="hljs-constructor">Test(<span class="hljs-params">result</span>, <span class="hljs-params">position</span>: <span class="hljs-params">position</span>)</span>;<br>  &#125;<br></code></pre></td></tr></table></figure>
+
+<p>当<code>ignoring</code>字段&#x3D;true时：</p>
+<ul>
+<li>hitTest 直接返回 false，命中测试失败，IgnorePointer自己不能响应指针事件；</li>
+<li>super.hitTest 被截断不再执行，子节点没机会加入HitTestResult列表，不能响应指针事件。</li>
+</ul>
+<p>点击事件在<code>IgnorePointer</code>及其子节点中被忽略，从而有机会穿透自己，传给其下面的组件。</p>
+<h4 id="6-2-AbsorbPointer"><a href="#6-2-AbsorbPointer" class="headerlink" title="6.2.AbsorbPointer"></a>6.2.AbsorbPointer</h4><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs arduino">@<span class="hljs-function"><span class="hljs-keyword">override</span></span><br><span class="hljs-function">  <span class="hljs-type">bool</span> <span class="hljs-title">hitTest</span><span class="hljs-params">(BoxHitTestResult result, &#123;required Offset position&#125;)</span> </span>&#123;<br>    <span class="hljs-keyword">return</span> absorbing<br>        ? size.<span class="hljs-built_in">contains</span>(position)<br>        : super.<span class="hljs-built_in">hitTest</span>(result, position: position);<br>  &#125;<br></code></pre></td></tr></table></figure>
+
+<p>当<code>absorbing</code>&#x3D;true，且触摸点在size范围内时：</p>
+<ul>
+<li>hitTest返回true，当前AbsorbPointer组件通过命中测试，事件不再往下传递；</li>
+<li>当前AbsorbPointer的父组件也能通过命中测试，因为父组件的child的hitTest返回true；</li>
+<li>AbsorbPointer的子树不能响应指针事件，因为子树没机会加入事件列表。</li>
+</ul>
+<p>所以，<code>AbsorbPointer</code>可以被用来作为拦截指针事件的组件来使用。</p>
+<h3 id="7-穿透示例"><a href="#7-穿透示例" class="headerlink" title="7.穿透示例"></a>7.穿透示例</h3><p><img src="https://davidlii.nos-eastchina1.126.net/pic_flutter_pointer_event.png" srcset="/img/loading.gif" lazyload alt="点击穿透"></p>
 <p>测试代码：</p>
-<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><code class="hljs DART"><span class="hljs-comment">// 8.测试</span><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">DakTestPage</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">StatelessWidget</span> </span>&#123;<br>  <span class="hljs-keyword">const</span> DakTestPage(&#123;Key? key&#125;) : <span class="hljs-keyword">super</span>(key: key);<br><br>  <span class="hljs-meta">@override</span><br>  Widget build(BuildContext context) &#123;<br>    <span class="hljs-keyword">return</span> Stack(<br>      alignment: Alignment.center,<br>      children: [_buildBack(), _buildFront()],<br>    );<br>  &#125;<br><br>  <span class="hljs-comment">//绿色按钮</span><br>  Widget _buildBack() &#123;<br>    <span class="hljs-keyword">return</span> Listener(<br>        onPointerDown: (event) =&gt; <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;++++listen back&#x27;</span>),<br>        behavior: HitTestBehavior.deferToChild,<br>        child: ElevatedButton(<br>            style: ButtonStyle(<br>                padding: MaterialStateProperty.all(<span class="hljs-keyword">const</span> EdgeInsets.all(<span class="hljs-number">10</span>)),<br>                foregroundColor: MaterialStateProperty.all(Colors.white),<br>                backgroundColor: MaterialStateProperty.all(Colors.green)),<br>            onPressed: () =&gt; <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;**** 有事吗? ***&#x27;</span>),<br>            child: <span class="hljs-keyword">const</span> Text(<br>              <span class="hljs-string">&#x27;+Click+&#x27;</span>,<br>              style:<br>                  TextStyle(color: Colors.white, fontWeight: FontWeight.bold),<br>            )));<br>  &#125;<br><br>  <span class="hljs-comment">//灰色区域</span><br>  Widget _buildFront() &#123;<br>    <span class="hljs-keyword">return</span> Listener(<br>        onPointerDown: (event) =&gt; <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;++listen front&#x27;</span>),<br>        behavior: HitTestBehavior.deferToChild,  <span class="hljs-comment">//注意：跟这里也有关系</span><br>        <span class="hljs-comment">// 替换-1(AbsorbPointer)</span><br>        child: IgnorePointer(<br>          <span class="hljs-comment">// 替换-2(absorbing)</span><br>          ignoring: <span class="hljs-keyword">true</span>,<br>          child: Listener(<br>            child: Container(<br>              color: Colors.black26,<br>              width: <span class="hljs-number">200.0</span>,<br>              height: <span class="hljs-number">100.0</span>,<br>            ),<br>            onPointerDown: (event) =&gt; <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;++listen child&quot;</span>),<br>          ),<br>        ));<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><code class="hljs DART"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">DakTestPage</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">StatelessWidget</span> </span>&#123;<br>  <span class="hljs-keyword">const</span> DakTestPage(&#123;Key? key&#125;) : <span class="hljs-keyword">super</span>(key: key);<br><br>  <span class="hljs-meta">@override</span><br>  Widget build(BuildContext context) &#123;<br>    <span class="hljs-keyword">return</span> Stack(<br>      alignment: Alignment.center,<br>      children: [_buildBack(), _buildFront()],<br>    );<br>  &#125;<br><br>  <span class="hljs-comment">//绿色按钮</span><br>  Widget _buildBack() &#123;<br>    <span class="hljs-keyword">return</span> Listener(<br>        onPointerDown: (event) =&gt; <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;++++listen back&#x27;</span>),<br>        behavior: HitTestBehavior.deferToChild,<br>        child: ElevatedButton(<br>            style: ButtonStyle(<br>                padding: MaterialStateProperty.all(<span class="hljs-keyword">const</span> EdgeInsets.all(<span class="hljs-number">10</span>)),<br>                foregroundColor: MaterialStateProperty.all(Colors.white),<br>                backgroundColor: MaterialStateProperty.all(Colors.green)),<br>            onPressed: () =&gt; <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;**** 有事吗? ***&#x27;</span>),<br>            child: <span class="hljs-keyword">const</span> Text(<br>              <span class="hljs-string">&#x27;+Click+&#x27;</span>,<br>              style:<br>                  TextStyle(color: Colors.white, fontWeight: FontWeight.bold),<br>            )));<br>  &#125;<br><br>  <span class="hljs-comment">//灰色区域</span><br>  Widget _buildFront() &#123;<br>    <span class="hljs-keyword">const</span> mHeit = <span class="hljs-number">100.0</span>;<br>    <span class="hljs-keyword">return</span> Listener(<br>        onPointerDown: (event) =&gt; <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;++listen front&#x27;</span>),<br>        behavior: HitTestBehavior.deferToChild, <span class="hljs-comment">//注意：跟这里也有关系</span><br>        <span class="hljs-comment">// 替换-1(AbsorbPointer)</span><br>        child: IgnorePointer(<br>          <span class="hljs-comment">// 替换-2(absorbing)</span><br>          ignoring: <span class="hljs-keyword">true</span>,<br>          child: Listener(<br>            onPointerDown: (event) =&gt; <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;++listen child&quot;</span>),<br>            child: Container(<br>              color: Colors.black26,<br>              width: <span class="hljs-number">200.0</span>,<br>              height: mHeit,<br>              child: Row(<br>                children: [<br>                  Expanded(<br>                      child: Container(height: mHeit, color: Colors.black38)),<br>                  Expanded(<br>                      child: Container(height: mHeit, color: Colors.white38))<br>                ],<br>              ),<br>            ),<br>          ),<br>        ));<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <ul>
-<li>点击灰色区域时，不会有任何日志打印；</li>
+<li>点击灰色且不与绿色按钮重合的区域时，不会有任何日志打印；</li>
 </ul>
 <p>这说明：<code>IgnorePointer</code>禁止了子树与自己参与响应点击事件；</p>
 <ul>
@@ -384,10 +516,10 @@
 <p>即：<code>AbsorbPointer</code>禁止子树响应点击事件，但其自己可响应；同时，点击事件被拦截，下面的组件无法再响应此事件。</p>
 <hr>
 <p>代码的<code>//注意:</code>这里我做了标注，使用<code>Listener</code>时，需要结合<code>behavior</code>的具体值，才能确定点击能否穿透到下层组件上去。比如示例代码中，设置<code>behavior=opaque</code>时，点击就无法穿透。</p>
-<h3 id="4-前文实现"><a href="#4-前文实现" class="headerlink" title="4.前文实现"></a>4.前文实现</h3><p>回到开头的问题，为了使背景组件可点击，给<code>Listview</code>套一层<code>IgrorePointer</code>，并在背景显示完时，将<code>ignoring</code>属性设置为<code>true</code>即可。</p>
+<h3 id="8-前文实现"><a href="#8-前文实现" class="headerlink" title="8.前文实现"></a>8.前文实现</h3><p>回到开头的问题，为了使背景组件可点击，给<code>Listview</code>套一层<code>IgrorePointer</code>，并在背景显示完时，将<code>ignoring</code>属性设置为<code>true</code>即可。</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">DakAITeacherPage</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">StatefulWidget</span> </span>&#123;<br>  <span class="hljs-keyword">const</span> <span class="hljs-variable constant_">DakAITeacherPage</span>(&#123;Key? key&#125;) : <span class="hljs-title function_ invoke__">super</span>(<span class="hljs-attr">key</span>: key);<br><br>  @override<br>  State&lt;DakAITeacherPage&gt; <span class="hljs-title function_ invoke__">createState</span>() =&gt; <span class="hljs-title function_ invoke__">_DakAITeacherPageState</span>();<br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">_DakAITeacherPageState</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">State</span>&lt;<span class="hljs-title">DakAITeacherPage</span>&gt;</span><br><span class="hljs-class">    <span class="hljs-title">with</span> <span class="hljs-title">AutomaticKeepAliveClientMixin</span> </span>&#123;<br>  <span class="hljs-comment">// 。。。</span><br>  <span class="hljs-keyword">bool</span> mIgnore = <span class="hljs-literal">false</span>; <span class="hljs-comment">//控制手势是否能穿透Listview</span><br><br>  @override<br>  Widget <span class="hljs-title function_ invoke__">build</span>(BuildContext context) &#123;<br>    super.<span class="hljs-title function_ invoke__">build</span>(context);<br>    <span class="hljs-keyword">return</span> <span class="hljs-title function_ invoke__">Scaffold</span>(<br>      <span class="hljs-attr">drawer</span>: <span class="hljs-keyword">const</span> <span class="hljs-title function_ invoke__">DakSideDraw</span>(),<br>      <span class="hljs-attr">body</span>: <span class="hljs-title function_ invoke__">Stack</span>(<br>        <span class="hljs-attr">children</span>: [<span class="hljs-title function_ invoke__">_buildBack</span>(), <span class="hljs-title function_ invoke__">_buildList</span>()],<br>      ),<br>    );<br>  &#125;<br><br>  <span class="hljs-comment">// 背景视图</span><br>  Widget <span class="hljs-title function_ invoke__">_buildBack</span>() &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-title function_ invoke__">Listener</span>(<br>      <span class="hljs-attr">behavior</span>: HitTestBehavior.deferToChild,<br>      <span class="hljs-attr">onPointerDown</span>: (event) &#123;<br>        <span class="hljs-title function_ invoke__">setState</span>(() &#123;<br>          mIgnore = !mIgnore; <span class="hljs-comment">// 重置ignoring属性</span><br>        &#125;);<br>      &#125;,<br>      child: <span class="hljs-title function_ invoke__">Container</span>(<br>        <span class="hljs-attr">child</span>: <span class="hljs-title function_ invoke__">Center</span>(<br>            <span class="hljs-attr">child</span>: <span class="hljs-title function_ invoke__">Container</span>(<br>          <span class="hljs-attr">width</span>: <span class="hljs-number">100</span>,<br>          <span class="hljs-attr">height</span>: <span class="hljs-number">50</span>,<br>          <span class="hljs-attr">child</span>: <span class="hljs-title function_ invoke__">TextButton</span>(<br>              <span class="hljs-attr">onPressed</span>: () &#123;<br>                <span class="hljs-keyword">print</span>(<span class="hljs-string">&#x27;**** Hi? ***&#x27;</span>);<br>              &#125;,<br>              <span class="hljs-attr">child</span>: <span class="hljs-keyword">const</span> <span class="hljs-title function_ invoke__">Text</span>(<br>                <span class="hljs-string">&#x27;Click&#x27;</span>,<br>                <span class="hljs-attr">style</span>:<br>                    <span class="hljs-title function_ invoke__">TextStyle</span>(<span class="hljs-attr">color</span>: Colors.white, <span class="hljs-attr">fontWeight</span>: FontWeight.bold),<br>              )),<br>        )),<br>      ),<br>    );<br>  &#125;<br><br>  <span class="hljs-comment">// 构建列表视图</span><br>  Widget <span class="hljs-title function_ invoke__">_buildList</span>() &#123;<br>    <span class="hljs-comment">// ！！！重点在这里</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-title function_ invoke__">IgnorePointer</span>(<br>      <span class="hljs-attr">ignoring</span>: mIgnore,<br>      <span class="hljs-attr">child</span>: <span class="hljs-title function_ invoke__">Column</span>(<br>        <span class="hljs-attr">children</span>: [<br>          MediaQuery.<span class="hljs-title function_ invoke__">removePadding</span>(<br>            <span class="hljs-attr">context</span>: context,<br>            <span class="hljs-attr">removeTop</span>: <span class="hljs-literal">true</span>,<br>            <span class="hljs-attr">child</span>: <span class="hljs-title function_ invoke__">Expanded</span>(<br>                <span class="hljs-attr">child</span>: NotificationListener&lt;ScrollNotification&gt;(<br>                    <span class="hljs-attr">onNotification</span>: (notification) &#123;<br>                      <span class="hljs-title function_ invoke__">_handleScrollNotification</span>(notification);<br>                      <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>                    &#125;,<br>                    <span class="hljs-attr">child</span>: ListView.<span class="hljs-title function_ invoke__">builder</span>(<br>                        <span class="hljs-attr">padding</span>: EdgeInsets.<span class="hljs-title function_ invoke__">fromLTRB</span>(<span class="hljs-number">0</span>, mScrollTopInset, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>),<br>                        <span class="hljs-attr">itemCount</span>: <span class="hljs-number">30</span>,<br>                        <span class="hljs-attr">itemExtent</span>: <span class="hljs-number">50.0</span>,<br>                        <span class="hljs-attr">controller</span>: _scrollController,<br>                        <span class="hljs-attr">itemBuilder</span>: (context, index) &#123;<br>                          <span class="hljs-keyword">return</span> <span class="hljs-title function_ invoke__">Container</span>(<br>                            <span class="hljs-attr">color</span>: Colors.white,<br>                            <span class="hljs-attr">child</span>: <span class="hljs-title function_ invoke__">ListTile</span>(<br>                              <span class="hljs-attr">title</span>: <span class="hljs-title function_ invoke__">Text</span>(<span class="hljs-string">&quot;<span class="hljs-subst">$index</span>&quot;</span>),<br>                            ),<br>                          );<br>                        &#125;))),<br>          )<br>        ],<br>      ),<br>    );<br>  &#125;<br><br>  <span class="hljs-comment">// 处理滑动通知</span><br>  <span class="hljs-title function_ invoke__">_handleScrollNotification</span>(ScrollNotification notification) &#123;<br>    <span class="hljs-comment">// 4.滑动结束</span><br>    <span class="hljs-comment">// 重置ignoring属性</span><br>    mIgnore = <span class="hljs-literal">true</span>;<br>    <span class="hljs-comment">// 。。。</span><br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 
-<h3 id="5-后记"><a href="#5-后记" class="headerlink" title="5.后记"></a>5.后记</h3><p>以上<code>点击穿透</code>案例是对<code>PointerEvents</code>一次很好的实践，后续还有很多需要学习，继续期待~</p>
+<h3 id="9-后记"><a href="#9-后记" class="headerlink" title="9.后记"></a>9.后记</h3><p>以上<code>点击穿透</code>案例是对<code>PointerEvents</code>一次很好的实践，后续还有很多需要学习，继续期待~</p>
 
                 
               </div>
@@ -433,7 +565,7 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>flutter指针事件-点击穿透</div>
+      <div>Flutter指针事件-点击穿透</div>
       <div>http://yoursite.com/2023/07/15/flutter-pass-pointer.html</div>
     </div>
     <div class="license-meta">
