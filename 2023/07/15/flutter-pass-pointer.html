@@ -223,7 +223,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          11k 字
+          12k 字
         
       </span>
     
@@ -234,7 +234,7 @@
         
         
         
-          89 分钟
+          97 分钟
         
       </span>
     
@@ -328,7 +328,7 @@
 <p>测试结果列表<code>result</code>中储存的是所有通过命中测试的RenderBox，即触摸点下的渲染对象，这些对象将能接收和处理指针事件。</p>
 <hr>
 <p>需要说明的是，不同的渲染对象对hitTest有不同的实现，以[Listener]为例：</p>
-<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs reasonml"><span class="hljs-built_in">bool</span> hit<span class="hljs-constructor">Test(BoxHitTestResult <span class="hljs-params">result</span>, &#123; Offset <span class="hljs-params">position</span> &#125;)</span> &#123;<br>    <span class="hljs-built_in">bool</span> hitTarget =<span class="hljs-literal">false</span>;<br>    <span class="hljs-keyword">if</span> (size.contains(position)) &#123;<br>      hitTarget = hit<span class="hljs-constructor">TestChildren(<span class="hljs-params">result</span>, <span class="hljs-params">position</span>: <span class="hljs-params">position</span>)</span><span class="hljs-operator"> || </span>hit<span class="hljs-constructor">TestSelf(<span class="hljs-params">position</span>)</span>;<br>      <span class="hljs-keyword">if</span> (hitTarget<span class="hljs-operator"> || </span>behavior<span class="hljs-operator"> == </span><span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">HitTestBehavior</span>.</span></span>translucent)<br>        result.add(<span class="hljs-constructor">BoxHitTestEntry(<span class="hljs-params">this</span>, <span class="hljs-params">position</span>)</span>);<br>    &#125;<br>    return hitTarget;<br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs DART"><span class="hljs-built_in">bool</span> hitTest(BoxHitTestResult result, &#123; Offset position &#125;) &#123;<br>    <span class="hljs-built_in">bool</span> hitTarget =<span class="hljs-keyword">false</span>;<br>    <span class="hljs-keyword">if</span> (size.contains(position)) &#123;<br>      hitTarget = hitTestChildren(result, position: position) || hitTestSelf(position);<br>      <span class="hljs-keyword">if</span> (hitTarget || behavior == HitTestBehavior.translucent)<br>        result.add(BoxHitTestEntry(<span class="hljs-keyword">this</span>, position));<br>    &#125;<br>    <span class="hljs-keyword">return</span> hitTarget;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>其命中测试的逻辑与[RenderBox]大致相同，只是多了一条对<code>behavior</code>属性的判断。</p>
 <table>
@@ -379,7 +379,7 @@
 <figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs DART"><span class="hljs-built_in">bool</span> hitTestSelf(Offset position) =&gt; behavior == HitTestBehavior.opaque;<br></code></pre></td></tr></table></figure>
 
 <p>以上是<code>Listener</code>中的实现，字段&#x3D;<code>opaque</code>即可确保自己一定通过测试。</p>
-<h4 id="3-4-iOS响应者链"><a href="#3-4-iOS响应者链" class="headerlink" title="3.4.iOS响应者链"></a>3.4.iOS响应者链</h4><p>无论在原理还是具体实现上，Flutter的<code>命中测试</code>与我们iOS开发中的<code>响应者链</code>都十分相似：</p>
+<h4 id="3-4-iOS响应者链"><a href="#3-4-iOS响应者链" class="headerlink" title="3.4.iOS响应者链"></a>3.4.iOS响应者链</h4><p>无论在原理还是具体实现上，Flutter的<code>命中测试</code>与iOS开发中的<code>响应者链</code>都十分相似：</p>
 <ul>
 <li>触摸点下哪些组件能响应事件，都是由命中测试决定的；</li>
 <li>命中测试都是从根节点开始，之后在子树中递归进行；</li>
@@ -404,6 +404,20 @@
 <li>同级子节点间按倒序处理事件。</li>
 </ul>
 <p>这些也都与iOS中，事件的传递链相同~</p>
+<hr>
+<p>需要说明的是，通过命中测试是以<code>hitTest</code>的返回值为标准。但具体能否响应指针事件，是以渲染对象是否被加入<code>BoxHitTestResult</code>列表为标准。上面也说过，不同的渲染对象会重写<code>hitTest</code>并提供自己版本的实现，以[ Listener ]为例:</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs DART"><span class="hljs-built_in">bool</span> hitTest(BoxHitTestResult result, &#123; Offset position &#125;) &#123;<br>    <span class="hljs-built_in">bool</span> hitTarget =<span class="hljs-keyword">false</span>;<br>    <span class="hljs-keyword">if</span> (size.contains(position)) &#123;<br>      hitTarget = hitTestChildren(result, position: position) || hitTestSelf(position);<br>      <span class="hljs-keyword">if</span> (hitTarget || behavior == HitTestBehavior.translucent)<br>        result.add(BoxHitTestEntry(<span class="hljs-keyword">this</span>, position));<br>    &#125;<br>    <span class="hljs-keyword">return</span> hitTarget;<br>&#125;<br><br><span class="hljs-built_in">bool</span> hitTestSelf(Offset position) =&gt; behavior == HitTestBehavior.opaque;<br></code></pre></td></tr></table></figure>
+
+<p>当 behavior &#x3D;<code>translucent</code>时，无论触摸点是否在 Listener 区域内，其<code>hitTestSelf</code>都会返回false，即 self 未通过命中测试。尽管如此，Listener还是能拦截并响应此事件，因为根据源码中的逻辑，此时 self 会被加入<code>BoxHitTestResult</code>列表中，在事件分发时 Listener 依然会响应此事件。</p>
+<p>这种情况与iOS中的动态方法决议相似：</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs awk">+ (BOOL)resolveClassMethod:(SEL)name;    <span class="hljs-regexp">//</span>类方法<br>+ (BOOL)resolveInstanceMethod:(SEL)name; <span class="hljs-regexp">//</span>实例方法<br></code></pre></td></tr></table></figure>
+
+<p>表面上看，方法决议是否成功是以函数的返回值为标志，但实际上在不涉及消息转发的情况下：</p>
+<ul>
+<li>若函数内为指定的SEL提供实现，无论返回YES或NO，编译都会正常进行；</li>
+<li>若函数内并没有为SEL提供实现，无论返回YES或NO，编译都会crash；</li>
+</ul>
+<p>综上，判断节点是否响应事件时，须依实际类型而定，看节点是否在<code>BoxHitTestResult</code>列表中。</p>
 <h3 id="5-拦截组件"><a href="#5-拦截组件" class="headerlink" title="5.拦截组件"></a>5.拦截组件</h3><p>回到开头「点击穿透」的问题，实现此功能须先研究下Flutter提供的两个组件：</p>
 <ul>
 <li>IgnorePointer</li>
