@@ -234,7 +234,7 @@
         
         
         
-          97 分钟
+          98 分钟
         
       </span>
     
@@ -360,18 +360,25 @@
 <p>对包含多个子组件的组件，该方法会递归调用子组件的<code>hitTest</code>方法，且是<code>逆序</code>进行的：</p>
 <figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs DART"><span class="hljs-comment">// RenderBoxContainerDefaultsMixin 中的实现：</span><br><span class="hljs-comment">// 子类的 hitTestChildren() 中直接调用此方法</span><br><span class="hljs-built_in">bool</span> defaultHitTestChildren(BoxHitTestResult result, &#123; <span class="hljs-keyword">required</span> Offset position &#125;) &#123;<br>  <span class="hljs-comment">// 1.从后向前逆序遍历所有子组件</span><br>  ChildType? child = lastChild;<br>  <span class="hljs-keyword">while</span> (child != <span class="hljs-keyword">null</span>) &#123;<br>    <span class="hljs-keyword">final</span> ParentDataType childParentData = child.parentData! <span class="hljs-keyword">as</span> ParentDataType;<br>    <span class="hljs-comment">// 2.当前子节点调用hitTest</span><br>    <span class="hljs-keyword">final</span> <span class="hljs-built_in">bool</span> isHit = result.addWithPaintOffset(<br>      offset: childParentData.offset,<br>      position: position,<br>      hitTest: (BoxHitTestResult result, Offset? transformed) &#123;<br>        <span class="hljs-keyword">return</span> child!.hitTest(result, position: transformed!);<br>      &#125;,<br>    );<br>    <span class="hljs-comment">// 3.有一个子节点通过命中测试，则终止遍历，返回true</span><br>    <span class="hljs-keyword">if</span> (isHit) <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;<br>    child = childParentData.previousSibling;<br>  &#125;<br>  <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;<br>&#125;<br><br>  <span class="hljs-comment">// 子节点调用hitTest</span><br><span class="hljs-built_in">bool</span> addWithPaintOffset(&#123;<br>  <span class="hljs-keyword">required</span> Offset? offset,<br>  <span class="hljs-keyword">required</span> Offset position,<br>  <span class="hljs-keyword">required</span> BoxHitTest hitTest,<br>&#125;) &#123;<br>  <span class="hljs-comment">// 省略...</span><br>  <span class="hljs-comment">// 子节点调用hitTest</span><br>  <span class="hljs-keyword">final</span> <span class="hljs-built_in">bool</span> isHit = hitTest(<span class="hljs-keyword">this</span>, transformedPosition);<br>  <span class="hljs-keyword">return</span> isHit;<br>&#125;<br></code></pre></td></tr></table></figure>
 
-<p>如果子节点A未通过命中测试，则继续逆序对其前面的兄弟节点进行命中测试；</p>
-<p>只要有某个子节点<code>A</code>通过命中测试，则终止其剩余兄弟节点的遍历过程：</p>
+<ol>
+<li><p>如果子节点A未通过命中测试，则继续逆序对其前面的兄弟节点进行命中测试；</p>
+</li>
+<li><p>只要有某个子节点<code>X</code>通过命中测试，则终止其剩余兄弟节点的遍历过程：</p>
+</li>
+</ol>
 <ul>
-<li>此时，A前面的兄弟节点将没有机会通过命中测试；</li>
-<li>A的父节点的<code>hitTestChildren</code>&#x3D;true；</li>
-<li>进而导致A的父节点的<code>hitTest</code>&#x3D;true；</li>
-<li>最终，A的父节点通过命中测试；</li>
+<li>X前面的兄弟节点将没有机会通过命中测试，事件被X拦截；</li>
+<li>X父节点的<code>hitTestChildren</code>&#x3D;true；</li>
+<li>进而使X父节点的<code>hitTest</code>&#x3D;true，X的父节点通过命中测试；</li>
 </ul>
-<p>如果所有子节点都未命中，则父节点调用<code>hitTestSelf</code>，父节点是否命中根据此返回值而定。</p>
+<ol start="3">
+<li>如果所有子节点都未命中，则父节点调用<code>hitTestSelf</code>，父节点是否命中根据此返回值而定。</li>
+</ol>
 <hr>
-<p>为什么兄弟节点间要逆序检测呢？</p>
-<p>因为兄弟节点重叠时，后面的组件会在前面组件之上。点击时应该是上面的组件响应事件，下面的组件被遮住不能响应此事件。因此命中测试应该优先对后面的节点进行测试，一旦命中通过则不再继续遍历检测了。</p>
+<p>为什么存在中断机制？</p>
+<p>因为在大多数布局中兄弟节点间不重叠，触摸点下往往只会有一个节点。因此命中测试时一旦某个节点通过测试即由它响应事件，没必要继续遍历检测其他节点了。</p>
+<p>为什么兄弟节点间要逆序检测？</p>
+<p>因为对于<code>Stack</code>这种布局，兄弟节点重叠时，后面的组件会在前面组件之上。点击时应该是上面的组件响应事件，下面的组件被遮住不能响应此事件。因此命中测试应该优先对后面的节点进行测试，一旦命中通过则不再继续遍历检测了。</p>
 <h4 id="3-3-hitTestSelf"><a href="#3-3-hitTestSelf" class="headerlink" title="3.3.hitTestSelf"></a>3.3.hitTestSelf</h4><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs DART"><span class="hljs-comment">/// <span class="language-markdown">Override this method if this render object can be hit even if its</span></span><br><span class="hljs-comment">/// <span class="language-markdown">children were not hit.</span></span><br><span class="hljs-comment">///</span><br><span class="hljs-comment">/// <span class="language-markdown">Returns true if the specified <span class="hljs-code">`position`</span> should be considered a hit</span></span><br><span class="hljs-comment">/// <span class="language-markdown">on this render object.</span></span><br><span class="hljs-comment">///</span><br><span class="hljs-meta">@protected</span><br><span class="hljs-built_in">bool</span> hitTestSelf(Offset position) =&gt; <span class="hljs-keyword">false</span>;<br></code></pre></td></tr></table></figure>
 
 <p>声明自己是否通过命中测试。</p>
@@ -469,7 +476,7 @@
 </tr>
 <tr>
 <td align="center"><strong>self</strong></td>
-<td align="center">✅</td>
+<td align="center">❎</td>
 <td align="center">✅</td>
 </tr>
 <tr>
@@ -493,21 +500,21 @@
 </li>
 </ul>
 <h3 id="6-组件源码"><a href="#6-组件源码" class="headerlink" title="6.组件源码"></a>6.组件源码</h3><p>下面通过源码看看二者在实现上的区别：</p>
-<h4 id="6-1-IgnorePointer"><a href="#6-1-IgnorePointer" class="headerlink" title="6.1.IgnorePointer"></a>6.1.IgnorePointer</h4><figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">@override<br>  <span class="hljs-built_in">bool</span> hit<span class="hljs-constructor">Test(BoxHitTestResult <span class="hljs-params">result</span>, &#123;<span class="hljs-params">required</span> Offset <span class="hljs-params">position</span>&#125;)</span> &#123;<br>    return !ignoring<span class="hljs-operator"> &amp;&amp; </span>super.hit<span class="hljs-constructor">Test(<span class="hljs-params">result</span>, <span class="hljs-params">position</span>: <span class="hljs-params">position</span>)</span>;<br>  &#125;<br></code></pre></td></tr></table></figure>
+<h4 id="6-1-IgnorePointer"><a href="#6-1-IgnorePointer" class="headerlink" title="6.1.IgnorePointer"></a>6.1.IgnorePointer</h4><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs DART"><span class="hljs-meta">@override</span><br>  <span class="hljs-built_in">bool</span> hitTest(BoxHitTestResult result, &#123;<span class="hljs-keyword">required</span> Offset position&#125;) &#123;<br>    <span class="hljs-keyword">return</span> !ignoring &amp;&amp; <span class="hljs-keyword">super</span>.hitTest(result, position: position);<br>  &#125;<br></code></pre></td></tr></table></figure>
 
 <p>当<code>ignoring</code>字段&#x3D;true时：</p>
 <ul>
-<li>hitTest 直接返回 false，命中测试失败，IgnorePointer自己不能响应指针事件；</li>
-<li>super.hitTest 被截断不再执行，子节点没机会加入HitTestResult列表，不能响应指针事件。</li>
+<li>hitTest 直接返回 false，IgnorePointer自己和子节点的命中测试失败；</li>
+<li>super.hitTest 被截断，自己和子节点没机会加入HitTestResult列表，都不能响应事件。</li>
 </ul>
-<p>点击事件在<code>IgnorePointer</code>及其子节点中被忽略，从而有机会穿透自己，传给其下面的组件。</p>
-<h4 id="6-2-AbsorbPointer"><a href="#6-2-AbsorbPointer" class="headerlink" title="6.2.AbsorbPointer"></a>6.2.AbsorbPointer</h4><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs arduino">@<span class="hljs-function"><span class="hljs-keyword">override</span></span><br><span class="hljs-function">  <span class="hljs-type">bool</span> <span class="hljs-title">hitTest</span><span class="hljs-params">(BoxHitTestResult result, &#123;required Offset position&#125;)</span> </span>&#123;<br>    <span class="hljs-keyword">return</span> absorbing<br>        ? size.<span class="hljs-built_in">contains</span>(position)<br>        : super.<span class="hljs-built_in">hitTest</span>(result, position: position);<br>  &#125;<br></code></pre></td></tr></table></figure>
+<p>由于IgnorePointer节点的<code>hitTest</code>返回 false，hitTest过程会继续遍历其兄弟节点和下层节点，从而使事件有机会<code>穿透</code>自己，传给兄弟节点或下面的组件。</p>
+<h4 id="6-2-AbsorbPointer"><a href="#6-2-AbsorbPointer" class="headerlink" title="6.2.AbsorbPointer"></a>6.2.AbsorbPointer</h4><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs DART"><span class="hljs-meta">@override</span><br>  <span class="hljs-built_in">bool</span> hitTest(BoxHitTestResult result, &#123;<span class="hljs-keyword">required</span> Offset position&#125;) &#123;<br>    <span class="hljs-keyword">return</span> absorbing<br>        ? size.contains(position)<br>        : <span class="hljs-keyword">super</span>.hitTest(result, position: position);<br>  &#125;<br></code></pre></td></tr></table></figure>
 
 <p>当<code>absorbing</code>&#x3D;true，且触摸点在size范围内时：</p>
 <ul>
 <li>hitTest返回true，当前AbsorbPointer组件通过命中测试，事件不再往下传递；</li>
 <li>当前AbsorbPointer的父组件也能通过命中测试，因为父组件的child的hitTest返回true；</li>
-<li>AbsorbPointer的子树不能响应指针事件，因为子树没机会加入事件列表。</li>
+<li>AbsorbPointer自己与子树不能响应指针事件，因为hitTest直接返回 true，自己与子节点并没有加入HitTestResult列表中。</li>
 </ul>
 <p>所以，<code>AbsorbPointer</code>可以被用来作为拦截指针事件的组件来使用。</p>
 <h3 id="7-穿透示例"><a href="#7-穿透示例" class="headerlink" title="7.穿透示例"></a>7.穿透示例</h3><p><img src="https://davidlii.nos-eastchina1.126.net/pic_flutter_pointer_event.png" srcset="/img/loading.gif" lazyload alt="点击穿透"></p>
