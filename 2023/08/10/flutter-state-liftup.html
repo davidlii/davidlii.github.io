@@ -1,0 +1,701 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/avatar.png">
+  <link rel="icon" href="/img/avatar.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Davidli">
+  <meta name="keywords" content="Davidli">
+  
+    <meta name="description" content="1.初识状态管理原生-命令式原生开发中，点击按钮并修改一个组件的属性从而改变其状态时，通常情况下，我们会在按钮回调中找到此组件的对象，直接修改其对应属性的值，由runloop在合适的时机会重新绘制。代码如下： 123func onClick() &amp;#123;    myView.backgroundColor &#x3D; UIColor.white;&amp;#125; 当然，也可以结合RX以响应式编程实现此功能">
+<meta property="og:type" content="article">
+<meta property="og:title" content="flutter状态管理-lift state up">
+<meta property="og:url" content="http://yoursite.com/2023/08/10/flutter-state-liftup.html">
+<meta property="og:site_name" content="Davidli">
+<meta property="og:description" content="1.初识状态管理原生-命令式原生开发中，点击按钮并修改一个组件的属性从而改变其状态时，通常情况下，我们会在按钮回调中找到此组件的对象，直接修改其对应属性的值，由runloop在合适的时机会重新绘制。代码如下： 123func onClick() &amp;#123;    myView.backgroundColor &#x3D; UIColor.white;&amp;#125; 当然，也可以结合RX以响应式编程实现此功能">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://davidlii.nos-eastchina1.126.net/pic_flutter.png">
+<meta property="article:published_time" content="2023-08-10T14:00:33.000Z">
+<meta property="article:modified_time" content="2023-08-10T14:00:33.000Z">
+<meta property="article:author" content="Davidli">
+<meta property="article:tag" content="Flutter">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://davidlii.nos-eastchina1.126.net/pic_flutter.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>flutter状态管理-lift state up - Davidli</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"yoursite.com","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Davidlii</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/IMG_0.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="flutter状态管理-lift state up"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-08-10 22:00" pubdate>
+          2023年8月10日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          6.3k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          53 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">flutter状态管理-lift state up</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h3 id="1-初识状态管理"><a href="#1-初识状态管理" class="headerlink" title="1.初识状态管理"></a>1.初识状态管理</h3><h4 id="原生-命令式"><a href="#原生-命令式" class="headerlink" title="原生-命令式"></a>原生-命令式</h4><p>原生开发中，点击按钮并修改一个组件的属性从而改变其状态时，通常情况下，我们会在按钮回调中找到此组件的对象，直接修改其对应属性的值，由runloop在合适的时机会重新绘制。代码如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs SWIFT"><span class="hljs-keyword">func</span> <span class="hljs-title function_">onClick</span>() &#123;<br>    myView.backgroundColor <span class="hljs-operator">=</span> <span class="hljs-type">UIColor</span>.white;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>当然，也可以结合RX以响应式编程实现此功能，这里不作展开~</p>
+<h4 id="Flutter-响应式"><a href="#Flutter-响应式" class="headerlink" title="Flutter-响应式"></a>Flutter-响应式</h4><p>同样的功能，在 Flutter 这种响应式框架中，一般是在按钮组件的回调中修改某个变量，再以某种方式告诉框架：我已经修改了状态值，你去重绘对应的组件树从而响应状态的变化。以计算器为例：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><code class="hljs DART"><span class="hljs-keyword">void</span> main() &#123;<br>  runApp(<span class="hljs-keyword">const</span> MyApp());<br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyApp</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">StatelessWidget</span> </span>&#123;<br>  <span class="hljs-keyword">const</span> MyApp(&#123;Key? key&#125;) : <span class="hljs-keyword">super</span>(key: key);<br><br>  <span class="hljs-meta">@override</span><br>  Widget build(BuildContext context) &#123;<br>    <span class="hljs-keyword">return</span> MaterialApp(<br>      title: <span class="hljs-string">&#x27;Flutter Demo&#x27;</span>,<br>      theme: ThemeData(<br>        primarySwatch: Colors.blue,<br>      ),<br>      home: <span class="hljs-keyword">const</span> MyHomePage(title: <span class="hljs-string">&#x27;Flutter Demo Home Page&#x27;</span>),<br>    );<br>  &#125;<br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyHomePage</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">StatefulWidget</span> </span>&#123;<br>  <span class="hljs-keyword">const</span> MyHomePage(&#123;Key? key, <span class="hljs-keyword">required</span> <span class="hljs-keyword">this</span>.title&#125;) : <span class="hljs-keyword">super</span>(key: key);<br>  <span class="hljs-keyword">final</span> <span class="hljs-built_in">String</span> title;<br><br>  <span class="hljs-meta">@override</span><br>  _MyHomePageState createState() =&gt; _MyHomePageState();<br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">_MyHomePageState</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">State</span>&lt;<span class="hljs-title">MyHomePage</span>&gt; </span>&#123;<br>  <span class="hljs-built_in">int</span> _counter = <span class="hljs-number">0</span>; <span class="hljs-comment">// 1.定义变量</span><br><br>  <span class="hljs-keyword">void</span> _incrementCounter() &#123;<br>    setState(() &#123;<br>      _counter++; <span class="hljs-comment">// 3.修改状态</span><br>    &#125;);<br>  &#125;<br><br>  <span class="hljs-meta">@override</span><br>  Widget build(BuildContext context) &#123; <span class="hljs-comment">// 4.重绘以响应状态变化</span><br>    <span class="hljs-keyword">return</span> Scaffold(<br>      appBar: AppBar(<br>        title: Text(widget.title),<br>      ),<br>      body: Center(<br>        child: Column(<br>          mainAxisAlignment: MainAxisAlignment.center,<br>          children: &lt;Widget&gt;[<br>            Text(<br>              <span class="hljs-string">&#x27;<span class="hljs-subst">$_counter</span>&#x27;</span>, <span class="hljs-comment">// 5.获取最新_counter构建新Text</span><br>              style: Theme.of(context).textTheme.headline4,<br>            ),<br>          ],<br>        ),<br>      ),<br>      floatingActionButton: FloatingActionButton(<br>        onPressed: _incrementCounter, <span class="hljs-comment">// 2.执行回调函数</span><br>        tooltip: <span class="hljs-string">&#x27;Increment&#x27;</span>,<br>        child: <span class="hljs-keyword">const</span> Icon(Icons.add),<br>      ),<br>    );<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>状态管理的整个流程是这样：</p>
+<ol>
+<li>按钮回调函数中对<code>_counter</code>变量做自增运算；</li>
+<li>通过<code>setState</code>告诉框架：我已修改，你去重新绘制整个组件树；</li>
+<li>重绘工作交给了<code>Widget build(BuildContext context)</code>函数；</li>
+<li><code>build</code>中新建所有子树，其中<code>Text</code>组件使用最新<code>_counter</code>展示数值。</li>
+</ol>
+<h3 id="2-提升状态"><a href="#2-提升状态" class="headerlink" title="2.提升状态"></a>2.提升状态</h3><p>如前文所述，原生开发中修改某组件的状态，通常是拿到该组件的对象并直接修改其属性值。</p>
+<p>而响应式框架中，获取别的组件不是很方便，组件之间一般只能向上或者向下通信，兄弟组件之间无法直接通信。</p>
+<p>为此，Flutter采用了「Lift state up」理念：将数据从子组件移到某个父组件，以便在那里使用它，再将其传递给其他子组件。例如，为实现AB组件间的通信：</p>
+<ol>
+<li>需要沿着组件树传递A的<code>state</code>；</li>
+<li>或者提升<code>state</code>到必要的高度，直到B组件能获得这份数据；</li>
+<li>或者AB组件拥有共同的父组件。</li>
+</ol>
+<h3 id="3-性能问题"><a href="#3-性能问题" class="headerlink" title="3.性能问题"></a>3.性能问题</h3><p>如果使用不当，提升状态可能造成一些不必要的性能开销：</p>
+<p>拿前文的计算器案例来说，点击加号按钮后，按道理只需重绘<code>Text</code>一个节点即可，其他组件无需重绘。但<code>_counter</code>状态在父节点<code>MyHomePage</code>中，<code>setState</code>时整个<code>MyHomePage</code>全都重新绘制了，即<code>appBar</code>、底部按钮这些组件都重绘了。这种大范围重绘引起的部分组件不必要的重绘，显然是一种浪费性能的行为。</p>
+<p>以日志演示这种副作用：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><code class="hljs DART"><span class="hljs-comment">// 自定义的组件，主要是为了打印日志</span><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">DakBox</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">StatelessWidget</span> </span>&#123;<br>  <span class="hljs-keyword">const</span> DakBox(&#123;Key? key&#125;) : <span class="hljs-keyword">super</span>(key: key);<br><br>  <span class="hljs-meta">@override</span><br>  Widget build(BuildContext context) &#123;<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;DakBox rebuild&quot;</span>); <span class="hljs-comment">// 打印日志</span><br>    <span class="hljs-keyword">return</span> Container(<br>      color: Colors.pink,<br>    );<br>  &#125;<br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">_MyHomePageState</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">State</span>&lt;<span class="hljs-title">MyHomePage</span>&gt; </span>&#123;<br>  <span class="hljs-built_in">int</span> _counter = <span class="hljs-number">0</span>;<br>  <span class="hljs-comment">//省略。。。</span><br>  <span class="hljs-meta">@override</span><br>  Widget build(BuildContext context) &#123;<br>    <span class="hljs-keyword">return</span> Scaffold(<br>    <span class="hljs-comment">//省略。。。</span><br>      body: Center(<br>        child: Column(<br>          mainAxisAlignment: MainAxisAlignment.center,<br>          children: &lt;Widget&gt;[<br>            Text(<br>              <span class="hljs-string">&#x27;<span class="hljs-subst">$_counter</span>&#x27;</span>,<br>              style: Theme.of(context).textTheme.headline4,<br>            ),<br>            DakBox(), <span class="hljs-comment">// 看这里，使用自定义的组件作为演示</span><br>          ],<br>        ),<br>      ),<br>      <span class="hljs-comment">//省略。。。</span><br>    );<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>我们自定义了一个<code>DakBox</code>组件并加入到<code>MyHomePage</code>的列中。</p>
+<p>每次点击底部加号按钮时，计数器数值+1，同时控制台输出日志：</p>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ebnf"><span class="hljs-attribute">DakBox rebuild</span><br></code></pre></td></tr></table></figure>
+
+<p>这说明，<code>DakBox</code>在<code>MyHomePage</code>重绘时跟着重新 build 了一遍，而<code>DakBox</code>并不涉及<code>_counter</code>状态，没必要重新 build 以节省性能。</p>
+<p>结合常见案例来看，这种性能问题多是由【大范围重绘】与【组件不必要的重绘】造成的，那么解决问题的思路就可以从这两方面入手：</p>
+<ol>
+<li>缩小重绘范围；</li>
+<li>禁止组件参与重绘。</li>
+</ol>
+<p>下面还是以计算器案例来演示解决这种性能问题的三种方案~</p>
+<hr>
+<h4 id="解决方案1"><a href="#解决方案1" class="headerlink" title="解决方案1"></a>解决方案1</h4><p>将实例<code>DakBox</code>的创建提到State所在组件的initState阶段，保证只创建一次。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs DART"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">_MyHomePageState</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">State</span>&lt;<span class="hljs-title">MyHomePage</span>&gt; </span>&#123;<br>  <span class="hljs-built_in">int</span> _counter = <span class="hljs-number">0</span>;<br>  <span class="hljs-keyword">var</span> myBox = DakBox(); <span class="hljs-comment">// 1.这里创建实例，在MyHomePage的生命周期内，只调用一次</span><br><br>  <span class="hljs-comment">//省略。。。</span><br><br>  <span class="hljs-meta">@override</span><br>  Widget build(BuildContext context) &#123;<br>    <span class="hljs-keyword">return</span> Scaffold(<br>      <span class="hljs-comment">//省略。。。</span><br>      body: Center(<br>        child: Column(<br>          mainAxisAlignment: MainAxisAlignment.center,<br>          children: &lt;Widget&gt;[<br>            Text(<br>              <span class="hljs-string">&#x27;<span class="hljs-subst">$_counter</span>&#x27;</span>,<br>              style: Theme.of(context).textTheme.headline4,<br>            ),<br>            myBox, <span class="hljs-comment">// 2.这里使用initiateState时创建的实例</span><br>          ],<br>        ),<br>      ),<br>      <span class="hljs-comment">//省略。。。</span><br>    );<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>但这种做法不值得推荐~因为在Flutter框架的共识中，所有跟UI相关的代码，都应该写在 build 中，这样在<code>setState</code>时才能保证绘制出来的东西是正确的。另外如果创建<code>DakBox()</code>实例时需要传入<code>context</code>这样的参数，在 initState 阶段就很不方便传入了。</p>
+<h4 id="解决方案2"><a href="#解决方案2" class="headerlink" title="解决方案2"></a>解决方案2</h4><p>使用<code>const</code>修饰<code>DakBox</code>实例，确保只绘制一次。</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><code class="hljs scala"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">DakBox</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">StatelessWidget</span> </span>&#123;<br>  const <span class="hljs-type">DakBox</span>(&#123;<span class="hljs-type">Key</span>? key&#125;) : <span class="hljs-keyword">super</span>(key: key);<br>  <span class="hljs-meta">@override</span><br>  <span class="hljs-type">Widget</span> build(<span class="hljs-type">BuildContext</span> context) &#123;<br>    print(<span class="hljs-string">&quot;DakBox rebuild&quot;</span>);<br>    <span class="hljs-keyword">return</span> <span class="hljs-type">Container</span>(<br>      color: <span class="hljs-type">Colors</span>.pink,<br>    );<br>  &#125;<br>&#125;<br><br><span class="hljs-comment">//省略。。。</span><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">_MyHomePageState</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">State&lt;MyHomePage&gt;</span> </span>&#123;<br>  int _counter = <span class="hljs-number">0</span>;<br>  <span class="hljs-comment">//省略。。。</span><br>  <span class="hljs-meta">@override</span><br>  <span class="hljs-type">Widget</span> build(<span class="hljs-type">BuildContext</span> context) &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-type">Scaffold</span>(<br>    <span class="hljs-comment">//省略。。。</span><br>      body: <span class="hljs-type">Center</span>(<br>        child: <span class="hljs-type">Column</span>(<br>          mainAxisAlignment: <span class="hljs-type">MainAxisAlignment</span>.center,<br>          children: &lt;<span class="hljs-type">Widget</span>&gt;[<br>            <span class="hljs-type">Text</span>(<br>              &#x27;$_counter&#x27;,<br>              style: <span class="hljs-type">Theme</span>.of(context).textTheme.headline4,<br>            ),<br>            const <span class="hljs-type">DakBox</span>(), <span class="hljs-comment">// 使用const修饰，只build一次</span><br>          ],<br>        ),<br>      ),<br>      <span class="hljs-comment">//省略。。。</span><br>    );<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><code>DakBox</code>只在<code>MyHomePage</code>第一次 build 时重绘了一次，之后点击按钮更新数值时不再重新绘制。</p>
+<p>此方案的不便：无法给<code>const</code>组件传入<code>Theme.of()</code>或<code>MediaQuery.of()</code>等需要动态获取的值~</p>
+<h4 id="解决方案3"><a href="#解决方案3" class="headerlink" title="解决方案3"></a>解决方案3</h4><p>借助特殊机制，只在小范围内重绘组件。</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><code class="hljs scala"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">DakText</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">StatelessWidget</span> </span>&#123;<br>  <span class="hljs-keyword">final</span> int counter;<br>  const <span class="hljs-type">DakText</span>(&#123;<span class="hljs-type">Key</span>? key, required <span class="hljs-keyword">this</span>.counter&#125;) : <span class="hljs-keyword">super</span>(key: key);<br><br>  <span class="hljs-meta">@override</span><br>  <span class="hljs-type">Widget</span> build(<span class="hljs-type">BuildContext</span> context) &#123;<br>    print(&#x27;++rebuild <span class="hljs-type">DakText</span>&#x27;);<br>    <span class="hljs-keyword">return</span> <span class="hljs-type">Text</span>(<br>      &#x27;$counter&#x27;, <span class="hljs-comment">// 5.获取最新_counter构建新Text</span><br>      style: <span class="hljs-type">Theme</span>.of(context).textTheme.headline4,<br>    );<br>  &#125;<br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">DakBox</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">StatelessWidget</span> </span>&#123;<br>  const <span class="hljs-type">DakBox</span>(&#123;<span class="hljs-type">Key</span>? key&#125;) : <span class="hljs-keyword">super</span>(key: key);<br><br>  <span class="hljs-meta">@override</span><br>  <span class="hljs-type">Widget</span> build(<span class="hljs-type">BuildContext</span> context) &#123;<br>    print(<span class="hljs-string">&quot;DakBox rebuild&quot;</span>); <span class="hljs-comment">// 打印日志</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-type">Container</span>(<br>      color: <span class="hljs-type">Colors</span>.pink,<br>    );<br>  &#125;<br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">_MyHomePageState</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">State&lt;MyHomePage&gt;</span> </span>&#123;<br>  <span class="hljs-keyword">final</span> <span class="hljs-type">ValueNotifier</span>&lt;int&gt; _counter = <span class="hljs-type">ValueNotifier</span>(<span class="hljs-number">0</span>); <span class="hljs-comment">// 1.定义变量</span><br><br>  void _incrementCounter() &#123;<br>    _counter.value++; <span class="hljs-comment">// 3.修改状态</span><br>  &#125;<br><br>  <span class="hljs-meta">@override</span><br>  <span class="hljs-type">Widget</span> build(<span class="hljs-type">BuildContext</span> context) &#123;<br>    print(&#x27;rebuild <span class="hljs-type">MyHomePage</span>&#x27;);<br>    <span class="hljs-keyword">return</span> <span class="hljs-type">Scaffold</span>(<br>      appBar: <span class="hljs-type">AppBar</span>(<br>        title: <span class="hljs-type">Text</span>(widget.title),<br>      ),<br>      body: <span class="hljs-type">Center</span>(<br>        child: <span class="hljs-type">Column</span>(<br>          mainAxisAlignment: <span class="hljs-type">MainAxisAlignment</span>.center,<br>          children: &lt;<span class="hljs-type">Widget</span>&gt;[<br>            <span class="hljs-comment">// 4.重绘以响应状态变化</span><br>            <span class="hljs-type">ValueListenableBuilder</span>(<br>              valueListenable: _counter,<br>              builder: (context, value, child) &#123;<br>                print(&#x27;<span class="hljs-type">ValueListenableBuilder</span> rebuild&#x27;);<br>                <span class="hljs-keyword">return</span> <span class="hljs-type">DakText</span>(counter: _counter.value);<br>              &#125;,<br>            ),<br>            const <span class="hljs-type">DakBox</span>(),<br>          ],<br>        ),<br>      ),<br>      floatingActionButton: <span class="hljs-type">FloatingActionButton</span>(<br>        onPressed: _incrementCounter, <span class="hljs-comment">// 2.执行回调函数</span><br>        tooltip: &#x27;<span class="hljs-type">Increment</span>&#x27;,<br>        child: const <span class="hljs-type">Icon</span>(<span class="hljs-type">Icons</span>.add),<br>      ),<br>    );<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>这里，我们使用了<code>ValueNotifier</code>，它是一个类似于Swift中属性包装器<code>@propertyWrapper</code>的东西，内部为我们封装了属性操作和发送通知等业务逻辑，这个在后面的文章中再详细介绍。</p>
+<p>点击底部加号按钮之后输出日志：</p>
+<figure class="highlight brainfuck"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs brainfuck"><span class="hljs-comment">ValueListenableBuilder rebuild</span><br><span class="hljs-literal">++</span><span class="hljs-comment">rebuild DakText</span><br></code></pre></td></tr></table></figure>
+
+<p>即只有<code>DakText</code>发生重绘，<code>MyHomePage</code>与<code>AppBar</code>、加号按钮等均未参与重绘，推荐这种方案！</p>
+<h3 id="4-小结"><a href="#4-小结" class="headerlink" title="4.小结"></a>4.小结</h3><p>本文介绍了原生开发与响应式编程中对于状态管理的不同处理方式，着重讲解了Flutter中对<code>提升状态</code>的实践及其产生的问题与解决方案。其中解决方案3用到了<code>ValueNotifier</code>，这是状态管理中常用到的一个小技巧，下一篇文章中将做详细介绍~</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%8A%80%E6%9C%AF/" class="category-chain-item">技术</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Flutter/">#Flutter</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>flutter状态管理-lift state up</div>
+      <div>http://yoursite.com/2023/08/10/flutter-state-liftup.html</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Davidli</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年8月10日</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/07/15/flutter-pass-pointer.html" title="flutter手势-点击穿透">
+                        <span class="hidden-mobile">flutter手势-点击穿透</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://github.com/davidli-" target="_blank" rel="nofollow noopener"><span>Davidlii</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
