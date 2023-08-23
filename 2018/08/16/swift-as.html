@@ -19,7 +19,7 @@
     <meta name="description" content="一、前言作为面向对象的语言，OC 与 Swift 都具有多态性，有时会大量使用类簇，因此描述对象的信息成为了常见需求。  判断对象在继承树上的位置； 判断对象是否遵守了某个协议；  这些都是对象内省能力的一部分，本文将尝试对 OC 和 Swift 中这些场景的实现做一次整理。 二、OC版NSObject协议中提供了诸多内省方法，本文主要讨论以下三个： 12345678&#x2F;&#x2F;NSObject.h@pr">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Swift-is&#x2F;as类型检查">
-<meta property="og:url" content="http://yoursite.com/2018/08/16/swift-as.html">
+<meta property="og:url" content="https://davidlii.cn/2018/08/16/swift-as.html">
 <meta property="og:site_name" content="Davidli">
 <meta property="og:description" content="一、前言作为面向对象的语言，OC 与 Swift 都具有多态性，有时会大量使用类簇，因此描述对象的信息成为了常见需求。  判断对象在继承树上的位置； 判断对象是否遵守了某个协议；  这些都是对象内省能力的一部分，本文将尝试对 OC 和 Swift 中这些场景的实现做一次整理。 二、OC版NSObject协议中提供了诸多内省方法，本文主要讨论以下三个： 12345678&#x2F;&#x2F;NSObject.h@pr">
 <meta property="og:locale" content="zh_CN">
@@ -73,7 +73,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"yoursite.com","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+    var CONFIG = {"hostname":"davidlii.cn","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -498,7 +498,7 @@
   <div class="license-box my-3">
     <div class="license-title">
       <div>Swift-is/as类型检查</div>
-      <div>http://yoursite.com/2018/08/16/swift-as.html</div>
+      <div>https://davidlii.cn/2018/08/16/swift-as.html</div>
     </div>
     <div class="license-meta">
       

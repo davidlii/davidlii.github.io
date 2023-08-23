@@ -19,7 +19,7 @@
     <meta name="description" content="1.背景hot-reload，热重载，允许开发者在应用运行时更改源代码，并实时观看效果。目前SwiftUI与Flutter都具备热重载的能力，开发阶段调试UI的效率极高。在原生iOS应用中混编flutter模块时，原生部分(非SwiftUI的)在修改后还是需要通过重新Run来查看效果，而其中的 flutter 部分则是可以基于flutter attach实现热重载的，本文就简单的做一次配置记录。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="热重载混编中的flutter模块">
-<meta property="og:url" content="http://yoursite.com/2023/03/29/flutter-hot-reload-in-native.html">
+<meta property="og:url" content="https://davidlii.cn/2023/03/29/flutter-hot-reload-in-native.html">
 <meta property="og:site_name" content="Davidli">
 <meta property="og:description" content="1.背景hot-reload，热重载，允许开发者在应用运行时更改源代码，并实时观看效果。目前SwiftUI与Flutter都具备热重载的能力，开发阶段调试UI的效率极高。在原生iOS应用中混编flutter模块时，原生部分(非SwiftUI的)在修改后还是需要通过重新Run来查看效果，而其中的 flutter 部分则是可以基于flutter attach实现热重载的，本文就简单的做一次配置记录。">
 <meta property="og:locale" content="zh_CN">
@@ -73,7 +73,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"yoursite.com","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+    var CONFIG = {"hostname":"davidlii.cn","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -369,7 +369,7 @@
   <div class="license-box my-3">
     <div class="license-title">
       <div>热重载混编中的flutter模块</div>
-      <div>http://yoursite.com/2023/03/29/flutter-hot-reload-in-native.html</div>
+      <div>https://davidlii.cn/2023/03/29/flutter-hot-reload-in-native.html</div>
     </div>
     <div class="license-meta">
       

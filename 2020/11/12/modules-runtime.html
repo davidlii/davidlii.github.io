@@ -19,7 +19,7 @@
     <meta name="description" content="1.前言上一篇文章中分析了组件化的目标和好处，同时梳理了基于URL+Block的路由组件化解决方案的原理、实践和优缺点。本文将继续介绍第二种解决方案：基于反射原理的组件化方案。 2.场景从主页跳转到详情，传入详情页所需的头像； 在详情中简单的修改信息之后，返回主页时更新主页的标题。 3.思路基于反射原理的组件化方案，其首要目标还是实现各组件之间的通信，同时减少组件间的耦合。其实现原理如下： 3.1">
 <meta property="og:type" content="article">
 <meta property="og:title" content="组件化-反射方案">
-<meta property="og:url" content="http://yoursite.com/2020/11/12/modules-runtime.html">
+<meta property="og:url" content="https://davidlii.cn/2020/11/12/modules-runtime.html">
 <meta property="og:site_name" content="Davidli">
 <meta property="og:description" content="1.前言上一篇文章中分析了组件化的目标和好处，同时梳理了基于URL+Block的路由组件化解决方案的原理、实践和优缺点。本文将继续介绍第二种解决方案：基于反射原理的组件化方案。 2.场景从主页跳转到详情，传入详情页所需的头像； 在详情中简单的修改信息之后，返回主页时更新主页的标题。 3.思路基于反射原理的组件化方案，其首要目标还是实现各组件之间的通信，同时减少组件间的耦合。其实现原理如下： 3.1">
 <meta property="og:locale" content="zh_CN">
@@ -73,7 +73,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"yoursite.com","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+    var CONFIG = {"hostname":"davidlii.cn","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -434,7 +434,7 @@
   <div class="license-box my-3">
     <div class="license-title">
       <div>组件化-反射方案</div>
-      <div>http://yoursite.com/2020/11/12/modules-runtime.html</div>
+      <div>https://davidlii.cn/2020/11/12/modules-runtime.html</div>
     </div>
     <div class="license-meta">
       

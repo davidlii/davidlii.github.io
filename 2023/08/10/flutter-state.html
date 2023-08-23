@@ -1,0 +1,945 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/avatar.png">
+  <link rel="icon" href="/img/avatar.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Davidli">
+  <meta name="keywords" content="Davidli">
+  
+    <meta name="description" content="1.初识状态 Flutter是声明式编程，通过构建​​用户界面来反应状态的变化，如上图：  f对应着build()函数; state是构建应用界面时所需的状态，即数据。  Flutter中通过修改状态，触发界面的重绘，而非直接修改界面对象本身。 1.1.原生-命令式原生开发中，点击按钮并修改一个组件的属性从而改变其状态时，通常情况下，我们会在按钮回调中找到此组件的对象，直接修改其对应属性的值，由r">
+<meta property="og:type" content="article">
+<meta property="og:title" content="flutter状态管理">
+<meta property="og:url" content="https://davidlii.cn/2023/08/10/flutter-state.html">
+<meta property="og:site_name" content="Davidli">
+<meta property="og:description" content="1.初识状态 Flutter是声明式编程，通过构建​​用户界面来反应状态的变化，如上图：  f对应着build()函数; state是构建应用界面时所需的状态，即数据。  Flutter中通过修改状态，触发界面的重绘，而非直接修改界面对象本身。 1.1.原生-命令式原生开发中，点击按钮并修改一个组件的属性从而改变其状态时，通常情况下，我们会在按钮回调中找到此组件的对象，直接修改其对应属性的值，由r">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://davidlii.nos-eastchina1.126.net/pic_flutter.png">
+<meta property="article:published_time" content="2023-08-10T14:00:33.000Z">
+<meta property="article:modified_time" content="2023-08-10T14:00:33.000Z">
+<meta property="article:author" content="Davidli">
+<meta property="article:tag" content="Flutter">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://davidlii.nos-eastchina1.126.net/pic_flutter.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>flutter状态管理 - Davidli</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"davidlii.cn","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Davidlii</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/IMG_0.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="flutter状态管理"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-08-10 22:00" pubdate>
+          2023年8月10日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          53k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          445 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">flutter状态管理</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h3 id="1-初识状态"><a href="#1-初识状态" class="headerlink" title="1.初识状态"></a>1.初识状态</h3><p><img src="https://davidlii.nos-eastchina1.126.net/pic_flutter_ui-equals-function-of-state.jpg" srcset="/img/loading.gif" lazyload alt="声明式UI-中文社区"></p>
+<p>Flutter是声明式编程，通过构建​​用户界面来反应状态的变化，如上图：</p>
+<ul>
+<li><code>f</code>对应着<code>build()</code>函数;</li>
+<li><code>state</code>是构建应用界面时所需的状态，即数据。</li>
+</ul>
+<p>Flutter中通过修改状态，触发界面的重绘，而非直接修改界面对象本身。</p>
+<h4 id="1-1-原生-命令式"><a href="#1-1-原生-命令式" class="headerlink" title="1.1.原生-命令式"></a>1.1.原生-命令式</h4><p>原生开发中，点击按钮并修改一个组件的属性从而改变其状态时，通常情况下，我们会在按钮回调中找到此组件的对象，直接修改其对应属性的值，由runloop在合适的时机会重新绘制。代码如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs SWIFT"><span class="hljs-keyword">func</span> <span class="hljs-title function_">onClick</span>() &#123;<br>    myView.backgroundColor <span class="hljs-operator">=</span> <span class="hljs-type">UIColor</span>.white;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>当然，也可以结合RX以响应式编程实现此功能，这里不作展开~</p>
+<h4 id="1-2-Flutter-响应式"><a href="#1-2-Flutter-响应式" class="headerlink" title="1.2.Flutter-响应式"></a>1.2.Flutter-响应式</h4><p>同样的功能，在 Flutter 这种响应式框架中，一般是在按钮组件的回调中修改某个变量，再以某种方式告诉框架：我已经修改了状态值，你去重绘对应的组件树从而响应状态的变化。以计算器为例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs FLUTTER">class _MyHomePageState extends State&lt;MyHomePage&gt; &#123;<br>  int _counter = 0; // 1.定义变量<br><br>  void _incrementCounter() &#123;<br>    setState(() &#123;<br>      _counter++; // 3.修改状态<br>    &#125;);<br>  &#125;<br><br>  @override<br>  Widget build(BuildContext context) &#123; // 4.重绘以响应状态变化<br>    return Scaffold(<br>      //省略。。。<br>      body: Center(<br>        child: Column(<br>          children: &lt;Widget&gt;[<br>            Text(&#x27;$_counter&#x27;), // 5.获取最新_counter构建新Text<br>          ],<br>        ),<br>      ),<br>      floatingActionButton: FloatingActionButton(<br>        onPressed: _incrementCounter, // 2.执行回调函数<br>        tooltip: &#x27;Increment&#x27;,<br>        child: const Icon(Icons.add),<br>      ),<br>    );<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>修改状态的流程是这样：</p>
+<ol>
+<li>按钮回调函数中对状态<code>_counter</code>做自增运算；</li>
+<li>通过<code>setState</code>告诉框架：我已修改，你去重新绘制整个组件树；</li>
+<li>重绘工作交给了<code>build(context)</code>函数；</li>
+<li><code>build</code>中新建所有子树，其中子组件<code>Text</code>使用最新<code>_counter</code>展示数值。</li>
+</ol>
+<h3 id="2-状态分类"><a href="#2-状态分类" class="headerlink" title="2.状态分类"></a>2.状态分类</h3><p>Flutter 中状态可分两种：<code>短时状态</code>和<code>全局状态</code>。</p>
+<h4 id="2-1-短时状态"><a href="#2-1-短时状态" class="headerlink" title="2.1.短时状态"></a>2.1.短时状态</h4><p>也称局部状态或临时状态，独立于某个组件中，只影响该组件自己的行为。</p>
+<p>例子：</p>
+<ul>
+<li>前文计时器案例中的数值<code>_counter</code>；</li>
+<li>一个 PageView 组件中的当前页面<code>_index</code>；</li>
+<li>一个复杂动画中当前进度；</li>
+<li>一个 BottomNavigationBar 中当前被选中的 tab；</li>
+</ul>
+<p>因为其他组件不需要访问此状态，也就无需状态管理架构去管理这种状态，你需要用的只是一个<code>StatefulWidget</code>。</p>
+<h4 id="2-2-全局状态"><a href="#2-2-全局状态" class="headerlink" title="2.2.全局状态"></a>2.2.全局状态</h4><p>在多组件甚至整个应用之间共享的、在用户会话期间保留的状态，就是全局状态或称共享状态。</p>
+<p>例子：</p>
+<ul>
+<li>用户偏好设置；</li>
+<li>登录信息；</li>
+<li>电商应用中的购物车；</li>
+</ul>
+<p>通常，我们可借助不同的技术实现跨组件共享状态，如传参、回调、控制器，也可以使用Flutter框架内置的<code>InheritedWidget</code>、<code>ChangeNotifier</code>、<code>StreamBuilder</code>等，还有一些优秀的三方库<code>flutter_bloc</code>、<code>Provider</code>等。</p>
+<h3 id="3-提升状态"><a href="#3-提升状态" class="headerlink" title="3.提升状态"></a>3.提升状态</h3><p>原生开发中，兄弟组件通常以成员变量或属性的形式存在于共同的父组件中，想与对方通信(如传值或修改状态)时，一般是由前者在父组件中提供一个回调函数，在回调函数中获取对方组件的对象，通过<code>对象.setxx</code>的方式修改对方的属性值，或者调用对方提供的相关接口来处理具体业务。</p>
+<p>而声明式框架中，通过这样的方式实现组件之间的通信是没有必要的。因为任何修改对方属性状态的行为，都相当于修改了对方的配置，会引起对方组件的重构，即对方组件会创建新的实例，以<code>对象.setxx</code>形式的修改就没有意义了，直接修改对方的 state 即可。</p>
+<p>在声明式框架里，组件之间一般只能由上而下地传递数据，兄弟组件之间无法直接通信。Flutter 框架采用了 Facebook 在 React 中提出的<code>Lift State Up</code>理念：将需要传递的数据从子组件移到某个共同的父组件，在那里修改它，再将它传递给其他子组件。</p>
+<h4 id="示例：购物车"><a href="#示例：购物车" class="headerlink" title="示例：购物车"></a>示例：购物车</h4><p><img src="https://davidlii.nos-eastchina1.126.net/pic_flutter_state-management-explainer.gif" srcset="/img/loading.gif" lazyload alt="提升状态-中文社区"></p>
+<p><code>商品目录</code>与<code>购物车</code>两组件之间传递数据的思路：</p>
+<ol>
+<li>两个组件之间需要共享<code>CART</code>(已加购商品)这个<code>State</code>；</li>
+<li>提升<code>State</code>到必要的高度，直到两组件都能读取到它；</li>
+<li>最近最合适的节点是两者共同的父组件<code>MyApp</code>；</li>
+<li><code>MyApp</code>保存<code>State</code>对象，并分发给商品目录与购物车组件；</li>
+<li>商品目录中通过回调等方式在<code>MyApp</code>中修改<code>State</code>；</li>
+<li>进入购物车页面时以入参形式接收<code>MyApp</code>中的<code>State</code>；</li>
+</ol>
+<p>代码实现1：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br></pre></td><td class="code"><pre><code class="hljs FLUTTER">void main() &#123;<br>  runApp(DakMyApp());<br>&#125;<br><br>class DakMyApp extends StatelessWidget &#123;<br>  final _cart = DakCart(); //共同父组件中共享状态<br>  DakMyApp(&#123;Key? key&#125;) : super(key: key);<br><br>  @override<br>  Widget build(BuildContext context) &#123;<br>    print(&#x27;DakMyApp build&#x27;);<br>    return MaterialApp(<br>      home: DakCatelogPage(<br>        cart: _cart, // 以参数形式传递数据<br>      ),<br>    );<br>  &#125;<br>&#125;<br><br>// 购物车model<br>class DakCart &#123;<br>  // 已加购商品列表<br>  final List&lt;DakItem&gt; _items = [];<br>  List get items =&gt; _items;<br>  //商品总价<br>  int get totalPrice =&gt; _items.length * 42;<br><br>  // 增加商品<br>  void add(DakItem item) &#123;<br>    _items.add(item);<br>  &#125;<br><br>  // 删除商品<br>  void delete(DakItem item) &#123;<br>    int index = _items.indexOf(item);<br>    _items.removeAt(index);<br>  &#125;<br>&#125;<br><br>// 商品model<br>class DakItem &#123;<br>  //商品名<br>  String name;<br>  //是否已加购<br>  bool selected;<br><br>  DakItem(&#123;<br>    required this.name,<br>    required this.selected,<br>  &#125;);<br>&#125;<br><br>// 商品目录页面<br>class DakCatelogPage extends StatefulWidget &#123;<br>  final DakCart cart; // 传入共享的状态<br>  const DakCatelogPage(&#123;<br>    Key? key,<br>    required this.cart,<br>  &#125;) : super(key: key);<br><br>  @override<br>  State&lt;DakCatelogPage&gt; createState() =&gt; _DakCatelogPageState();<br>&#125;<br><br>class _DakCatelogPageState extends State&lt;DakCatelogPage&gt; &#123;<br>  static final items = [<br>    &#x27;Apple&#x27;,<br>    &#x27;Banana&#x27;,<br>    &#x27;Cherry&#x27;,<br>    &#x27;Damson&#x27;,<br>    &#x27;Grape&#x27;,<br>    &#x27;Haw&#x27;,<br>    &#x27;Kiwifruit&#x27;,<br>    &#x27;Lemon&#x27;,<br>    &#x27;Mango&#x27;,<br>    &#x27;Orange&#x27;<br>  ].map((e) =&gt; DakItem(name: e, selected: false)).toList(); //模拟商品列表<br><br>  @override<br>  Widget build(BuildContext context) &#123;<br>    print(&#x27;DakCatelogPage build&#x27;);<br>    return Scaffold(<br>      appBar: AppBar(<br>        backgroundColor: Colors.yellow,<br>        title: const Text(<br>          &#x27;Catelog&#x27;,<br>          style: TextStyle(<br>            fontSize: 28,<br>            fontWeight: FontWeight.bold,<br>            color: Colors.black,<br>          ),<br>        ),<br>        actions: [<br>          TextButton.icon(<br>            onPressed: () &#123;<br>              Navigator.of(context).push(<br>                MaterialPageRoute(<br>                  builder: (context) =&gt; DakCartPage(provider: widget.cart),<br>                ),<br>              );<br>            &#125;,<br>            icon: const Icon(<br>              Icons.shopping_cart,<br>              color: Colors.black,<br>            ),<br>            label: DakCartCounter(provider: widget.cart),<br>          ),<br>        ],<br>      ),<br>      body: ListView.builder(<br>        itemCount: items.length,<br>        itemBuilder: (context, index) &#123;<br>          return DakListCell(<br>            aItem: items[index],<br>            callback: (item) &#123;<br>              // callback 处理状态变化<br>              item.selected = !item.selected;<br>              item.selected ? widget.cart.add(item) : widget.cart.delete(item);<br>              setState(() &#123;&#125;); //刷新AppBar中的商品数量<br>            &#125;,<br>          );<br>        &#125;,<br>      ),<br>    );<br>  &#125;<br>&#125;<br><br>//商品总数<br>class DakCartCounter extends StatelessWidget &#123;<br>  final DakCart provider;<br>  const DakCartCounter(&#123;<br>    Key? key,<br>    required this.provider,<br>  &#125;) : super(key: key);<br><br>  @override<br>  Widget build(BuildContext context) &#123;<br>    print(&#x27;DakCartCounter build&#x27;);<br>    return Text(<br>      &#x27;共$&#123;provider.items.length&#125;件&#x27;,<br>      style: const TextStyle(<br>        color: Colors.black,<br>      ),<br>    );<br>  &#125;<br>&#125;<br><br>// 定义cell中按钮点击的回调函数<br>typedef DakCallback = Function(DakItem);<br><br>// Row cell<br>class DakListCell extends StatefulWidget &#123;<br>  final DakItem aItem;<br>  final DakCallback callback;<br>  const DakListCell(&#123;Key? key, required this.aItem, required this.callback&#125;)<br>      : super(key: key);<br><br>  @override<br>  State&lt;DakListCell&gt; createState() =&gt; _DakListCellState();<br>&#125;<br><br>class _DakListCellState extends State&lt;DakListCell&gt; &#123;<br>  _updateState() &#123;<br>    setState(() &#123;<br>      //item.selected = !item.selected; // Cell内部处理<br>      widget.callback(widget.aItem); //执行回调，在父组件中处理数据逻辑<br>    &#125;);<br>  &#125;<br><br>  @override<br>  Widget build(BuildContext context) &#123;<br>    return Container(<br>      padding: const EdgeInsets.all(10),<br>      color: Colors.white,<br>      child: Row(<br>        children: [<br>          Expanded(<br>            child: Row(<br>              children: [<br>                Container(<br>                  margin: const EdgeInsets.symmetric(horizontal: 10),<br>                  width: 50,<br>                  height: 50,<br>                  color: Colors.yellow,<br>                ),<br>                Text(<br>                  widget.aItem.name,<br>                  style: const TextStyle(<br>                    fontSize: 18,<br>                    fontWeight: FontWeight.bold,<br>                  ),<br>                ),<br>              ],<br>            ),<br>          ),<br>          Builder(<br>            builder: (context) &#123;<br>              return widget.aItem.selected<br>                  ? IconButton(<br>                      onPressed: _updateState,<br>                      icon: const Icon(Icons.check),<br>                    )<br>                  : ElevatedButton(<br>                      onPressed: _updateState,<br>                      style: ButtonStyle(<br>                        backgroundColor:<br>                            MaterialStateProperty.all(Colors.white),<br>                        elevation: MaterialStateProperty.all(0),<br>                      ),<br>                      child: const Text(<br>                        &#x27;ADD&#x27;,<br>                        style: TextStyle(color: Colors.black),<br>                      ),<br>                    );<br>            &#125;,<br>          ),<br>        ],<br>      ),<br>    );<br>  &#125;<br>&#125;<br><br>// 购物车页面<br>class DakCartPage extends StatelessWidget &#123;<br>  final DakCart provider; // 传入共享的状态<br>  const DakCartPage(&#123;Key? key, required this.provider&#125;) : super(key: key);<br><br>  @override<br>  Widget build(BuildContext context) &#123;<br>    print(&#x27;DakCartPage build&#x27;);<br>    return Scaffold(<br>      appBar: AppBar(<br>        backgroundColor: Colors.yellow,<br>        title: const Text(<br>          &#x27;Cart&#x27;,<br>          style: TextStyle(<br>            fontSize: 28,<br>            fontWeight: FontWeight.bold,<br>            color: Colors.black,<br>          ),<br>        ),<br>      ),<br>      body: Container(<br>        color: Colors.yellow,<br>        child: Column(<br>          children: [<br>            Expanded(<br>              child: ListView.builder(<br>                itemCount: provider.items.length,<br>                itemBuilder: (context, index) &#123;<br>                  final item = provider.items[index];<br>                  return Container(<br>                    padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),<br>                    child: Text(<br>                      &#x27;· $&#123;item.name&#125;&#x27;,<br>                      style: const TextStyle(<br>                        color: Colors.black,<br>                        fontSize: 18,<br>                        fontWeight: FontWeight.bold,<br>                      ),<br>                    ),<br>                  );<br>                &#125;,<br>              ),<br>            ),<br>            Container(<br>              height: 2,<br>              color: Colors.black,<br>            ),<br>            Container(<br>              padding: const EdgeInsets.symmetric(vertical: 100),<br>              child: Center(<br>                child: Row(<br>                  mainAxisAlignment: MainAxisAlignment.center,<br>                  children: [<br>                    Text(<br>                      &#x27;\$ $&#123;provider.totalPrice&#125;&#x27;,<br>                      style: const TextStyle(<br>                        fontSize: 28,<br>                        fontWeight: FontWeight.bold,<br>                      ),<br>                    ),<br>                    const SizedBox(<br>                      width: 50,<br>                    ),<br>                    ElevatedButton(<br>                      onPressed: () &#123;&#125;,<br>                      style: ButtonStyle(<br>                        backgroundColor:<br>                            MaterialStateProperty.all(Colors.white),<br>                      ),<br>                      child: const Text(<br>                        &#x27;BUY&#x27;,<br>                        style: TextStyle(<br>                          fontSize: 18,<br>                          fontWeight: FontWeight.bold,<br>                          color: Colors.black,<br>                        ),<br>                      ),<br>                    ),<br>                  ],<br>                ),<br>              ),<br>            ),<br>          ],<br>        ),<br>      ),<br>    );<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>示例中，</p>
+<ul>
+<li><code>DakCatelogPage</code>是商品目录页；</li>
+<li><code>DakCartPage</code>是购物车页；</li>
+<li><code>DakMyApp</code>为商品目录与购物车的共同父组件;</li>
+<li><code>DakCart</code>为已加购商品的实体类；</li>
+</ul>
+<p>在商品目录页中选择或删除商品后，保存已加购商品信息到<code>DakCart</code>中；</p>
+<p>为了让购物车页面获取已加购商品信息，状态控制类<code>DakCart</code>被提升到<code>DakMyApp</code>中。在商品目录与购物车页面初始化时，父组件<code>DakMyApp</code>以入参形式将此状态对象传递给二者。</p>
+<p>注：此示例不是最优代码实现范例，还需要考虑局部刷新等问题~</p>
+<h3 id="4-读写状态"><a href="#4-读写状态" class="headerlink" title="4.读写状态"></a>4.读写状态</h3><p>提升后的状态在父组件中，AB作为兄弟组件相互独立，访问或修改对方的状态需要以下方式：</p>
+<ul>
+<li>对方提供的回调函数；</li>
+<li>对方提供的处理状态的控制器；</li>
+<li>框架内置的传递状态的组件；</li>
+<li>社区提供的一些优秀三方库。</li>
+</ul>
+<h4 id="4-1-回调"><a href="#4-1-回调" class="headerlink" title="4.1.回调"></a>4.1.回调</h4><ol>
+<li>A组件<code>访问</code>B组件的状态：</li>
+</ol>
+<p>将B的状态提升到AB共同的父组件中，在父组件<code>build</code>并创建A组件时，以参数形式将状态传给A；</p>
+<ol start="2">
+<li>A组件<code>修改</code>B组件的状态：</li>
+</ol>
+<p>将B的状态提升到AB共同的父组件中，A定义回调函数并由父组件在A初始化时传入，在回调函数中修改B组件的状态。</p>
+<p>代码实现2：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><code class="hljs FLUTTER">// 父组件<br>class _MyHomePageState extends State&lt;MyHomePage&gt; &#123;<br>  int _count = 0; // 状态 在共同的父组件MyHome中<br><br>  // 回调函数 修改状态<br>  void _increment() &#123;<br>    setState(() &#123;<br>      _count++;<br>    &#125;);<br>  &#125;<br><br>  @override<br>  Widget build(BuildContext context) &#123;<br>    return Scaffold(<br>      appBar: AppBar(<br>        title: Text(widget.title),<br>      ),<br>      body: Center(<br>        child: Column(<br>          children: &lt;Widget&gt;[<br>            // 组件A<br>            DakUpdater(<br>              count: _count, //访问外部状态<br>              callback: _increment, // 修改外部状态_count<br>            ),<br>            // 组件B<br>            Text(&#x27;$_count&#x27;), // 使用状态_count<br>          ],<br>        ),<br>      ),<br>    );<br>  &#125;<br>&#125;<br><br>class DakUpdater extends StatelessWidget &#123;<br>  final int count; //传入外部状态<br>  final void Function() callback; //给外部用的回调函数<br><br>  const DakUpdater(&#123;Key? key,required this.count,required this.callback&#125;) : super(key: key);<br><br>  @override<br>  Widget build(BuildContext context) &#123;<br>    return Container(<br>      width: 100,<br>      margin: const EdgeInsets.only(top: 20),<br>      color: Colors.green,<br>      child: Column(<br>        children: [<br>          Text(<br>            &#x27;$count&#x27;, <br>            style: const TextStyle(color: Colors.white),<br>          ),<br>          ElevatedButton(<br>            onPressed: callback, // 修改外部状态<br>            child: const Text(&#x27;+1+&#x27;),<br>          ),<br>        ],<br>      ),<br>    );<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>示例中<code>DakUpdater</code>在创建时以参数(值拷贝)形式访问了外部状态<code>_count</code>；</p>
+<p><code>DakUpdater</code>组件中<code>ElevatedButton</code>按钮点击之后，执行外部传入的回调函数，在父组件中修改了<code>_count</code>状态值并在重新 build 时再次传给了<code>DakUpdater</code>。</p>
+<h4 id="4-2-控制器"><a href="#4-2-控制器" class="headerlink" title="4.2.控制器"></a>4.2.控制器</h4><p>对于内部状态比较复杂的组件，可将修改状态的业务封装成控制器，再将控制器提升到父组件中供外部调用。很多Flutter框架内置组件都使用了这种方式，对外提供控制器以修改组件内部状态。</p>
+<p>A组件想访问或修改B组件的状态，一般是由B组件提供一个<code>controller</code>处理自身状态变化的业务，再将此控制器提升到AB组件的共同父组件中，在那里调用控制器的接口触发状态变化。</p>
+<p>代码实现3：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br></pre></td><td class="code"><pre><code class="hljs FLUTTER">class DakBoxController &#123;<br>  Color color = Colors.pink;<br>  DakBoxController(&#123;Key? key&#125;);<br>  // 提供接口 修改状态<br>  changeColor(Color value) &#123;<br>    color = value;<br>  &#125;<br>&#125;<br><br>// 自定义的组件，主要是为了看颜色变化<br>class DakBox extends StatelessWidget &#123;<br>  final DakBoxController controller;<br>  const DakBox(&#123;<br>    Key? key,<br>    required this.controller,<br>  &#125;) : super(key: key);<br><br>  @override<br>  Widget build(BuildContext context) &#123;<br>    print(&quot;DakBox rebuild&quot;); // 打印日志<br>    return Container(<br>      height: 50,<br>      width: 50,<br>      color: controller.color,<br>    ); // 使用controller中的状态<br>  &#125;<br>&#125;<br><br>//省略。。<br><br>class _MyHomePageState extends State&lt;MyHomePage&gt; &#123;<br>  int _counter = 0; <br>  // 1.初始化控制器<br>  final _editController = TextEditingController(text: &#x27;Hello world&#x27;);<br>  final _listController = ScrollController();<br>  final _boxController = DakBoxController();<br><br>  void _incrementCounter() &#123;<br>    // 3.修改状态<br>    setState(() &#123;<br>      _counter++;<br>      _boxController.changeColor(Colors.green); // 改颜色<br>      _editController.clear(); // 清空文本<br>      _listController.animateTo(100,<br>          duration: const Duration(microseconds: 300), curve: Curves.bounceIn,); //滑动位置<br>    &#125;);<br>  &#125;<br><br>  @override<br>  Widget build(BuildContext context) &#123;<br>    // 4.重绘以响应状态变化<br>    return Scaffold(<br>      //省略。。<br>      body: Center(<br>        child: Column(<br>          children: &lt;Widget&gt;[<br>            //计算器数值<br>            Text(&#x27;$_counter&#x27;),<br>            //自定义控件<br>            DakBox(controller: _boxController),//使用自定义的控制器<br>            //输入框<br>            TextField(controller: _editController), //使用内置控制器<br>            //ListView<br>            SizedBox(<br>              height: 200,<br>              child: ListView.builder(<br>                controller: _listController, //使用内置控制器<br>                itemCount: 100,<br>                itemBuilder: (context, index) &#123;<br>                  return Text(&#x27;$index&#x27;);<br>                &#125;,<br>              ),<br>            ),<br>          ],<br>        ),<br>      ),<br>      floatingActionButton: FloatingActionButton(<br>        onPressed: _incrementCounter, // 2.执行回调函数<br>        tooltip: &#x27;Increment&#x27;,<br>        child: const Icon(Icons.add),<br>      ),<br>    );<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>示例中，视图中间我们放置了数值Text、自定义的DakBox、文本输入框、列表4个组件，点击底部按钮修改它们的状态。其中数值Text的状态是直接传值，DakBox、TextField、ListView都是由控制器处理具体状态变化逻辑。可以看出，控制器实际上只是对修改状态的逻辑做了一层封装，外部组件要修改本组件内部状态时使用接口即可，本质上与<code>Callback</code>方式差不多。</p>
+<h3 id="5-InheritedWidget"><a href="#5-InheritedWidget" class="headerlink" title="5.InheritedWidget"></a>5.InheritedWidget</h3><p>上面提到的<code>访问</code>状态使用传参，<code>修改</code>状态使用回调函数与控制器。理论上通过以上方式，已经可以实现几乎所有场景下的状态管理了。但现实项目中通常会有很多组件，且组件之间的树形关系可能会非常复杂，在使用状态提升后，如果只是依赖上述最简单的传参的方式，那么每个组件在构造函数中可能需要传入大量的参数才能将顶层的状态一层层传递到后续节点中。</p>
+<p>那么有没有什么方法，能让底部的组件直接访问到被我们提升到顶部的状态呢？Flutter框架给出的方案是继承式组件<code>InheritedWidget</code>。</p>
+<figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs 1c"><span class="hljs-comment">/// Base class for widgets that efficiently propagate information down the tree.</span><br><span class="hljs-comment">///</span><br><span class="hljs-comment">/// To obtain the nearest instance of a particular type of inherited widget from</span><br><span class="hljs-comment">/// a build context, use [BuildContext.dependOnInheritedWidgetOfExactType].</span><br><span class="hljs-comment">///</span><br><span class="hljs-comment">/// Inherited widgets, when referenced in this way, will cause the consumer to</span><br><span class="hljs-comment">/// rebuild when the inherited widget itself changes state.</span><br></code></pre></td></tr></table></figure>
+
+<p><code>InheritedWidget</code>也是一个<code>组件</code>，用于在组件树中高效的往下传递信息。</p>
+<p>实际上这种机制在我们开发过程中经常见到，如：</p>
+<ul>
+<li>Theme.of(context).primaryColor；</li>
+<li>MediaQuery.of(context).size；</li>
+<li>Navigator.of(context)；</li>
+</ul>
+<p>这些全局共享的状态，被提升在整个应用组件树的最顶层，下面任意节点都能方便的访问到。</p>
+<h5 id="5-1-示例"><a href="#5-1-示例" class="headerlink" title="5.1.示例"></a>5.1.示例</h5><p>我们使用<code>InheritedWidget</code>改造购物车案例中<code>已加购商品</code>的传值方式：</p>
+<p>代码实现4：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br><span class="line">311</span><br><span class="line">312</span><br><span class="line">313</span><br><span class="line">314</span><br><span class="line">315</span><br><span class="line">316</span><br><span class="line">317</span><br><span class="line">318</span><br><span class="line">319</span><br><span class="line">320</span><br><span class="line">321</span><br><span class="line">322</span><br><span class="line">323</span><br><span class="line">324</span><br><span class="line">325</span><br><span class="line">326</span><br><span class="line">327</span><br><span class="line">328</span><br><span class="line">329</span><br><span class="line">330</span><br><span class="line">331</span><br><span class="line">332</span><br><span class="line">333</span><br><span class="line">334</span><br><span class="line">335</span><br><span class="line">336</span><br><span class="line">337</span><br><span class="line">338</span><br><span class="line">339</span><br><span class="line">340</span><br><span class="line">341</span><br><span class="line">342</span><br><span class="line">343</span><br><span class="line">344</span><br><span class="line">345</span><br><span class="line">346</span><br><span class="line">347</span><br><span class="line">348</span><br><span class="line">349</span><br><span class="line">350</span><br><span class="line">351</span><br><span class="line">352</span><br><span class="line">353</span><br><span class="line">354</span><br><span class="line">355</span><br><span class="line">356</span><br><span class="line">357</span><br><span class="line">358</span><br><span class="line">359</span><br><span class="line">360</span><br><span class="line">361</span><br><span class="line">362</span><br><span class="line">363</span><br><span class="line">364</span><br><span class="line">365</span><br><span class="line">366</span><br><span class="line">367</span><br><span class="line">368</span><br><span class="line">369</span><br><span class="line">370</span><br><span class="line">371</span><br><span class="line">372</span><br><span class="line">373</span><br><span class="line">374</span><br><span class="line">375</span><br><span class="line">376</span><br><span class="line">377</span><br><span class="line">378</span><br><span class="line">379</span><br><span class="line">380</span><br><span class="line">381</span><br><span class="line">382</span><br><span class="line">383</span><br><span class="line">384</span><br><span class="line">385</span><br><span class="line">386</span><br><span class="line">387</span><br><span class="line">388</span><br><span class="line">389</span><br><span class="line">390</span><br><span class="line">391</span><br></pre></td><td class="code"><pre><code class="hljs FLUTTER">//注：此示例不是最优代码实现范例，还需要考虑局部刷新等问题~<br>void main() &#123;<br>  runApp(const DakMyApp());<br>&#125;<br><br>class DakMyApp extends StatefulWidget &#123;<br>  const DakMyApp(&#123;Key? key&#125;) : super(key: key);<br>  @override<br>  State&lt;DakMyApp&gt; createState() =&gt; _DakMyAppState();<br>&#125;<br><br>class _DakMyAppState extends State&lt;DakMyApp&gt; &#123;<br>  //购物车实体在顶层<br>  var cart = DakCart(items: []);<br>  @override<br>  Widget build(BuildContext context) &#123;<br>    print(&#x27;DakMyAPP build&#x27;);<br>    return DakCartInheritedWidget(<br>      cart: cart,<br>      child: MaterialApp(<br>        home: DakCatelogPage(<br>          callback: (item) &#123;<br>            //重绘<br>            setState(() &#123;<br>              if (item != null) &#123;<br>                final newItems =<br>                    item.selected ? cart.add(item) : cart.delete(item);<br>                cart = DakCart(items: newItems);<br>              &#125; else &#123;<br>                print(&#x27;单纯setState，未更新数据&#x27;);<br>              &#125;<br>            &#125;);<br>          &#125;,<br>        ),<br>      ),<br>    );<br>  &#125;<br>&#125;<br><br>// 传递数据组件<br>class DakCartInheritedWidget extends InheritedWidget &#123;<br>  //状态<br>  final DakCart cart;<br><br>  const DakCartInheritedWidget(&#123;<br>    Key? key,<br>    required this.cart,<br>    required Widget child, //必须传入child<br>  &#125;) : super(<br>          key: key,<br>          child: child,<br>        );<br><br>  // 便捷获取共享对象<br>  static DakCartInheritedWidget? of(BuildContext context) &#123;<br>    return context.dependOnInheritedWidgetOfExactType&lt;DakCartInheritedWidget&gt;();<br>  &#125;<br><br>  // 重写<br>  @override<br>  bool updateShouldNotify(DakCartInheritedWidget oldWidget) &#123;<br>    final update = oldWidget.cart != cart;<br>    print(&#x27;shoudl update? $update&#x27;);<br>    return update;<br>  &#125;<br>&#125;<br><br>// 购物车Model<br>class DakCart &#123;<br>  // 已加购商品<br>  List&lt;DakItem&gt; items = [];<br>  // 商品总价<br>  int get totalPrice =&gt; items.length * 42;<br>  DakCart(&#123;required this.items&#125;);<br>  //加入购物车<br>  List&lt;DakItem&gt; add(DakItem item) &#123;<br>    items.add(item);<br>    return items;<br>  &#125;<br><br>  //移出购物车<br>  List&lt;DakItem&gt; delete(DakItem item) &#123;<br>    int index = items.indexOf(item);<br>    items.removeAt(index);<br>    return items;<br>  &#125;<br><br>  // 重写==操作符，用于后续判断购物车是否发生了变化<br>  @override<br>  bool operator ==(Object other) &#123;<br>    if (other is! DakCart) &#123;<br>      return false;<br>    &#125;<br>    if (!identical(this, other)) &#123;<br>      return false;<br>    &#125;<br>    bool same =<br>        listEquals(items, other.items) &amp;&amp; (other.totalPrice == totalPrice);<br>    return same;<br>  &#125;<br><br>  @override<br>  int get hashCode =&gt; Object.hashAll([items, totalPrice]);<br>&#125;<br><br>// 商品Model<br>class DakItem &#123;<br>  String name;<br>  bool selected;<br><br>  DakItem(&#123;<br>    required this.name,<br>    required this.selected,<br>  &#125;);<br>&#125;<br><br>// 商品列表页面<br>class DakCatelogPage extends StatelessWidget &#123;<br>  final DakCallback callback;<br>  const DakCatelogPage(&#123;<br>    Key? key,<br>    required this.callback,<br>  &#125;) : super(key: key);<br>  static final items = [<br>    &#x27;Apple&#x27;,<br>    &#x27;Banana&#x27;,<br>    &#x27;Cherry&#x27;,<br>    &#x27;Damson&#x27;,<br>    &#x27;Grape&#x27;,<br>    &#x27;Haw&#x27;,<br>    &#x27;Kiwifruit&#x27;,<br>    &#x27;Lemon&#x27;,<br>    &#x27;Mango&#x27;,<br>    &#x27;Orange&#x27;<br>  ].map((e) =&gt; DakItem(name: e, selected: false)).toList();<br><br>  @override<br>  Widget build(BuildContext context) &#123;<br>    print(&#x27;DakCatelogPage build&#x27;);<br>    return Scaffold(<br>      appBar: AppBar(<br>        backgroundColor: Colors.yellow,<br>        centerTitle: true,<br>        title: const Text(<br>          &#x27;Catelog&#x27;,<br>          style: TextStyle(<br>            fontSize: 28,<br>            fontWeight: FontWeight.bold,<br>            color: Colors.black,<br>          ),<br>        ),<br>        actions: [<br>          TextButton.icon(<br>            onPressed: () &#123;<br>              Navigator.of(context).push(<br>                MaterialPageRoute(<br>                  builder: (context) =&gt; const DakCartPage(),<br>                ),<br>              );<br>            &#125;,<br>            icon: const Icon(<br>              Icons.shopping_cart,<br>              color: Colors.black,<br>            ),<br>            label: const DakCartCounter(),<br>          ),<br>        ],<br>      ),<br>      body: ListView.builder(<br>        itemCount: items.length,<br>        itemBuilder: (context, index) &#123;<br>          return DakListCell(<br>            item: items[index],<br>            callback: (item) &#123;<br>              callback(item);<br>            &#125;,<br>          );<br>        &#125;,<br>      ),<br>      floatingActionButton: FloatingActionButton(<br>        backgroundColor: Colors.yellow,<br>        onPressed: () &#123;<br>          callback(null);<br>        &#125;,<br>        child: const Icon(<br>          Icons.refresh,<br>          color: Colors.black,<br>        ),<br>      ),<br>    );<br>  &#125;<br>&#125;<br><br>//商品总数<br>class DakCartCounter extends StatefulWidget &#123;<br>  const DakCartCounter(&#123;Key? key&#125;) : super(key: key);<br><br>  @override<br>  State&lt;DakCartCounter&gt; createState() =&gt; _DakCartCounterState();<br>&#125;<br><br>class _DakCartCounterState extends State&lt;DakCartCounter&gt; &#123;<br>  @override<br>  void didChangeDependencies() &#123;<br>    super.didChangeDependencies();<br>    print(&#x27;DakCartCounter didChangeDependencies&#x27;);<br>  &#125;<br><br>  @override<br>  Widget build(BuildContext context) &#123;<br>    print(&#x27;DakCartCounter build&#x27;);<br>    var provider = DakCartInheritedWidget.of(context); // 这里直接读取共享的数据 不再靠参数传递<br>    return Text(<br>      &#x27;共$&#123;provider?.cart.items.length&#125;件&#x27;,<br>      style: const TextStyle(<br>        color: Colors.black,<br>      ),<br>    );<br>  &#125;<br>&#125;<br><br>// Cell点击回调<br>typedef DakCallback = void Function(DakItem?);<br><br>// 商品cell<br>class DakListCell extends StatefulWidget &#123;<br>  final DakItem item;<br>  final DakCallback callback;<br>  const DakListCell(&#123;<br>    Key? key,<br>    required this.item,<br>    required this.callback,<br>  &#125;) : super(key: key);<br><br>  @override<br>  State&lt;DakListCell&gt; createState() =&gt; _DakListCellState();<br>&#125;<br><br>class _DakListCellState extends State&lt;DakListCell&gt; &#123;<br>  _updateState() &#123;<br>    setState(() &#123;<br>      widget.item.selected = !widget.item.selected;<br>    &#125;);<br>    widget.callback(widget.item);<br>  &#125;<br><br>  @override<br>  Widget build(BuildContext context) &#123;<br>    return Container(<br>      padding: const EdgeInsets.all(10),<br>      color: Colors.white,<br>      child: Row(<br>        children: [<br>          Expanded(<br>            child: Row(<br>              children: [<br>                Container(<br>                  margin: const EdgeInsets.symmetric(horizontal: 10),<br>                  width: 50,<br>                  height: 50,<br>                  color: Colors.yellow,<br>                ),<br>                Text(<br>                  widget.item.name,<br>                  style: const TextStyle(<br>                    fontSize: 18,<br>                    fontWeight: FontWeight.bold,<br>                  ),<br>                ),<br>              ],<br>            ),<br>          ),<br>          Builder(<br>            builder: (context) &#123;<br>              return widget.item.selected<br>                  ? IconButton(<br>                      // 已选中<br>                      onPressed: _updateState,<br>                      icon: const Icon(Icons.check),<br>                    )<br>                  : ElevatedButton(<br>                      //未选中<br>                      onPressed: _updateState,<br>                      style: ButtonStyle(<br>                        backgroundColor:<br>                            MaterialStateProperty.all(Colors.white),<br>                        elevation: MaterialStateProperty.all(0),<br>                      ),<br>                      child: const Text(<br>                        &#x27;ADD&#x27;,<br>                        style: TextStyle(color: Colors.black),<br>                      ),<br>                    );<br>            &#125;,<br>          ),<br>        ],<br>      ),<br>    );<br>  &#125;<br>&#125;<br><br>// 购物车页面<br>class DakCartPage extends StatelessWidget &#123;<br>  const DakCartPage(&#123;<br>    Key? key,<br>  &#125;) : super(key: key);<br><br>  @override<br>  Widget build(BuildContext context) &#123;<br>    print(&#x27;DakCartPage build&#x27;);<br>    var provider = DakCartInheritedWidget.of(context); // 这里直接读取共享的数据 不再靠参数传递<br>    return Scaffold(<br>      appBar: AppBar(<br>        backgroundColor: Colors.yellow,<br>        title: const Text(<br>          &#x27;Cart&#x27;,<br>          style: TextStyle(<br>            fontSize: 28,<br>            fontWeight: FontWeight.bold,<br>            color: Colors.black,<br>          ),<br>        ),<br>      ),<br>      body: Container(<br>        color: Colors.yellow,<br>        child: Column(<br>          children: [<br>            Expanded(<br>              child: ListView.builder(<br>                itemCount: provider?.cart.items.length,<br>                itemBuilder: (context, index) &#123;<br>                  final item = provider?.cart.items[index];<br>                  return Container(<br>                    padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),<br>                    child: Text(<br>                      &#x27;· $&#123;item?.name&#125;&#x27;,<br>                      style: const TextStyle(<br>                        color: Colors.black,<br>                        fontSize: 18,<br>                        fontWeight: FontWeight.bold,<br>                      ),<br>                    ),<br>                  );<br>                &#125;,<br>              ),<br>            ),<br>            Container(<br>              height: 2,<br>              color: Colors.black,<br>            ),<br>            Container(<br>              padding: const EdgeInsets.symmetric(vertical: 100),<br>              child: Center(<br>                child: Row(<br>                  mainAxisAlignment: MainAxisAlignment.center,<br>                  children: [<br>                    Text(<br>                      &#x27;\$ $&#123;provider?.cart.totalPrice&#125;&#x27;,<br>                      style: const TextStyle(<br>                        fontSize: 28,<br>                        fontWeight: FontWeight.bold,<br>                      ),<br>                    ),<br>                    const SizedBox(<br>                      width: 50,<br>                    ),<br>                    ElevatedButton(<br>                      onPressed: () &#123;&#125;,<br>                      style: ButtonStyle(<br>                        backgroundColor:<br>                            MaterialStateProperty.all(Colors.white),<br>                      ),<br>                      child: const Text(<br>                        &#x27;BUY&#x27;,<br>                        style: TextStyle(<br>                          fontSize: 18,<br>                          fontWeight: FontWeight.bold,<br>                          color: Colors.black,<br>                        ),<br>                      ),<br>                    ),<br>                  ],<br>                ),<br>              ),<br>            ),<br>          ],<br>        ),<br>      ),<br>    );<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>示例中，我们增加了一个<code>DakCartInheritedWidget</code>类，它继承自<code>InheritedWidget</code>并重写了其要求的方法，同时提供了一个全局便捷访问此对象的<code>of()</code>方法。</p>
+<p>之前的方案中，已加购商品状态<code>items</code>保存在<code>DakMyApp</code>中，通过参数传递的方式分别传给<code>DakCatelogPage</code>与<code>DakCartPage</code>；现在已加购商品状态仍保存在<code>DakMyApp</code>中，但是不需要我们手动传递了，<code>DakMyApp</code>的任意后续子节点内都可以直接通过以下两种方式获取到这个状态：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs FLUTTER">// 方式1<br>var provider = context.dependOnInheritedWidgetOfExactType&lt;DakCartInheritedWidget&gt;();<br>// 方式2：便捷方法<br>var provider = DakCartInheritedWidget.of(context);<br></code></pre></td></tr></table></figure>
+
+<p>后者是对前者的封装，本质上是一样的，它们会在组件树上返回当前节点之前且离当前节点【最近的】一个【指定类型的】共享对象，即<code>DakMyApp</code>中创建的<code>DakCartInheritedWidget</code>对象。</p>
+<p>通过<code>InheritedWidget</code>组件，我们将状态提升到合适的顶部某一组件中，在其下面的组件可随时通过指定方法获取这一状态，从而省去了传参的麻烦~</p>
+<h5 id="5-2-机制原理"><a href="#5-2-机制原理" class="headerlink" title="5.2.机制原理"></a>5.2.机制原理</h5><p><code>InheritedWidget</code>是基于观察者模式实现的：</p>
+<ul>
+<li>注册：利用 BuildContext 注册监听；</li>
+<li>读取：通过 BuildContext 读取数据；</li>
+<li>通知：<code>InheritedWidget</code>发生改变，通知监听者重绘；</li>
+</ul>
+<h6 id="i-注册"><a href="#i-注册" class="headerlink" title="i.注册"></a>i.注册</h6><p>使用<code>InheritedWidget</code>时，注册实际上是伴随着读取一起进行的，通过下面这种方式：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs DART"><span class="hljs-comment">// 方式1</span><br><span class="hljs-keyword">static</span> DakCartInheritedWidget? of(BuildContext context) &#123;<br>  context.dependOnInheritedWidgetOfExactType&lt;SomeInheritedWidget&gt;();<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>与之对应的还有另一种读取方式：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs DART"><span class="hljs-comment">// 方式2</span><br><span class="hljs-keyword">static</span> DakCartInheritedWidget? of(BuildContext context) &#123;<br>  context.getElementForInheritedWidgetOfExactType&lt;SomeInheritedWidget&gt;()?.widget <span class="hljs-keyword">as</span> SomeInheritedWidget;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>这是真正的读取，没有额外的注册监听操作。接下来就看看方式1是如何注册，以及它与方式2的区别在哪。</p>
+<p><code>dependOn</code>与<code>get</code>都是<code>Element</code>根类中的成员方法，使用这两种方式都能读取到共享的数据。</p>
+<p>但后续当<code>InheritedWidget</code>发生改变时，其依赖者能否感知到变化，在这二者上就有很大的不同了，这是二者不同的实现逻辑导致的：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs DART"><span class="hljs-meta">@override</span><br>InheritedElement? getElementForInheritedWidgetOfExactType&lt;T <span class="hljs-keyword">extends</span> InheritedWidget&gt;() &#123;<br>  <span class="hljs-keyword">assert</span>(_debugCheckStateIsActiveForAncestorLookup());<br>  <span class="hljs-keyword">final</span> InheritedElement? ancestor = _inheritedWidgets == <span class="hljs-keyword">null</span> ? <span class="hljs-keyword">null</span> : _inheritedWidgets![T];<br>  <span class="hljs-keyword">return</span> ancestor;<br>&#125;<br><br><span class="hljs-meta">@override</span><br>T? dependOnInheritedWidgetOfExactType&lt;T <span class="hljs-keyword">extends</span> InheritedWidget&gt;(&#123;<span class="hljs-built_in">Object?</span> aspect&#125;) &#123;<br>  <span class="hljs-keyword">assert</span>(_debugCheckStateIsActiveForAncestorLookup());<br>  <span class="hljs-keyword">final</span> InheritedElement? ancestor = _inheritedWidgets == <span class="hljs-keyword">null</span> ? <span class="hljs-keyword">null</span> : _inheritedWidgets![T];<br>  <span class="hljs-comment">//差别在以下部分</span><br>  <span class="hljs-keyword">if</span> (ancestor != <span class="hljs-keyword">null</span>) &#123;<br>    <span class="hljs-keyword">return</span> dependOnInheritedElement(ancestor, aspect: aspect) <span class="hljs-keyword">as</span> T;<br>  &#125;<br>  _hadUnsatisfiedDependencies = <span class="hljs-keyword">true</span>;<br>  <span class="hljs-keyword">return</span> <span class="hljs-keyword">null</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>区别在于：<code>get</code>直接返回一个<code>InheritedElement</code>，即<code>_inheritedWidgets</code>字典中与<code>T</code>类型对应的那个；<code>dependOn</code>返回一个<code>Widget</code>对象并继续调用了<code>dependOnInheritedElement()</code>方法：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs DART"><span class="hljs-meta">@override</span><br>InheritedWidget dependOnInheritedElement(InheritedElement ancestor, &#123; <span class="hljs-built_in">Object?</span> aspect &#125;) &#123;<br>  <span class="hljs-keyword">assert</span>(ancestor != <span class="hljs-keyword">null</span>);<br>  _dependencies ??= HashSet&lt;InheritedElement&gt;();<br>  _dependencies!.add(ancestor);<br>  ancestor.updateDependencies(<span class="hljs-keyword">this</span>, aspect);<br>  <span class="hljs-keyword">return</span> ancestor.widget;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>方法中，查找祖先<code>InheritedElement</code>节点中的<code>_dependencies</code>字典，并将自己<code>this</code>加入进去。</p>
+<ul>
+<li><code>this</code>是调用<code>dependOn</code>方法的<code>BuildContext</code>，实质是<code>BuildContext</code>对应的<code>Element</code>；</li>
+<li><code>ancestor</code>是指定<code>InheritedWidget</code>子类型对应的<code>InheritedElement</code>；</li>
+</ul>
+<p>继续跟踪<code>updateDependencies</code>方法进入<code>InheritFromElement</code>：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><code class="hljs DART"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">InheritedElement</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">ProxyElement</span> </span>&#123;<br>  <span class="hljs-comment">/// <span class="language-markdown">Creates an element that uses the given widget as its configuration.</span></span><br>  InheritedElement(InheritedWidget widget) : <span class="hljs-keyword">super</span>(widget);<br><br>  <span class="hljs-meta">@override</span><br>  InheritedWidget <span class="hljs-keyword">get</span> widget =&gt; <span class="hljs-keyword">super</span>.widget <span class="hljs-keyword">as</span> InheritedWidget;<br><br>  <span class="hljs-keyword">final</span> <span class="hljs-built_in">Map</span>&lt;<span class="hljs-built_in">Element</span>, <span class="hljs-built_in">Object?</span>&gt; _dependents = HashMap&lt;<span class="hljs-built_in">Element</span>, <span class="hljs-built_in">Object?</span>&gt;();<br>  <span class="hljs-comment">//省略...</span><br>  <span class="hljs-meta">@protected</span><br>  <span class="hljs-keyword">void</span> updateDependencies(<span class="hljs-built_in">Element</span> dependent, <span class="hljs-built_in">Object?</span> aspect) &#123;<br>    setDependencies(dependent, <span class="hljs-keyword">null</span>);<br>  &#125;<br><br>  <span class="hljs-meta">@protected</span><br>  <span class="hljs-keyword">void</span> setDependencies(<span class="hljs-built_in">Element</span> dependent, <span class="hljs-built_in">Object?</span> value) &#123;<br>    _dependents[dependent] = value;<br>  &#125;<br><br>  <span class="hljs-meta">@protected</span><br>  <span class="hljs-built_in">Object?</span> getDependencies(<span class="hljs-built_in">Element</span> dependent) &#123;<br>    <span class="hljs-keyword">return</span> _dependents[dependent];<br>  &#125;<br><br>  <span class="hljs-meta">@protected</span><br>  <span class="hljs-keyword">void</span> notifyDependent(<span class="hljs-keyword">covariant</span> InheritedWidget oldWidget, <span class="hljs-built_in">Element</span> dependent) &#123;<br>    dependent.didChangeDependencies();<br>  &#125;<br><br>  <span class="hljs-meta">@override</span><br>  <span class="hljs-keyword">void</span> updated(InheritedWidget oldWidget) &#123;<br>    <span class="hljs-keyword">if</span> (widget.updateShouldNotify(oldWidget))<br>      <span class="hljs-keyword">super</span>.updated(oldWidget);<br>  &#125;<br><br>  <span class="hljs-meta">@override</span><br>  <span class="hljs-keyword">void</span> notifyClients(InheritedWidget oldWidget) &#123;<br>    <span class="hljs-keyword">assert</span>(_debugCheckOwnerBuildTargetExists(<span class="hljs-string">&#x27;notifyClients&#x27;</span>));<br>    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">final</span> <span class="hljs-built_in">Element</span> dependent <span class="hljs-keyword">in</span> _dependents.keys) &#123;<br>      <span class="hljs-keyword">assert</span>(() &#123;<br>        <span class="hljs-comment">// check that it really is our descendant</span><br>        <span class="hljs-built_in">Element?</span> ancestor = dependent._parent;<br>        <span class="hljs-keyword">while</span> (ancestor != <span class="hljs-keyword">this</span> &amp;&amp; ancestor != <span class="hljs-keyword">null</span>)<br>          ancestor = ancestor._parent;<br>        <span class="hljs-keyword">return</span> ancestor == <span class="hljs-keyword">this</span>;<br>      &#125;());<br>      <span class="hljs-comment">// check that it really depends on us</span><br>      <span class="hljs-keyword">assert</span>(dependent._dependencies!.contains(<span class="hljs-keyword">this</span>));<br>      notifyDependent(oldWidget, dependent);<br>    &#125;<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>可以看到<code>_dependents</code>是一个Map，存放着所有的依赖者，只有在这个字典中的依赖者，才有机会在<code>InheritedWidget</code>发生变化时获得更新通知。<code>dependOn</code>最终调用了<code>setDependencies()</code>将调用者<code>context</code>对应的<code>Element</code>加入<code>_dependents</code>字典中。即当依赖者使用<code>of()</code>方法中的<code>dependOn</code>函数获取我们自定义的<code>InheritedWidget</code>时，会将自己添加进依赖者集合中，而<code>get</code>则不会添加依赖和监听。</p>
+<p>以购物车为例，通过<code>dependOn</code>读取数据，就是以<code>DakCartInheritedWidget</code>的类型为键，找到其对应的<code>InheritedElement</code>祖先节点对象，再把<code>DakCartCounter</code>的<code>BuildContext</code>对应的<code>Element</code>注册到祖先节点<code>InheritedElement</code>的<code>_dependencies</code>字典中，即右上角商品数量组件依赖和监听了<code>InheritedWidget</code>，有机会获取后续更新通知。</p>
+<h6 id="ii-读取"><a href="#ii-读取" class="headerlink" title="ii.读取"></a>ii.读取</h6><p>子节点是如何读取<code>InheritedWidget</code>中数据的呢？</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs DART"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">InheritedElement</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">ProxyElement</span> </span>&#123;<br>  <span class="hljs-comment">/// <span class="language-markdown">Creates an element that uses the given widget as its configuration.</span></span><br>  InheritedElement(InheritedWidget widget) : <span class="hljs-keyword">super</span>(widget);<br><br>  <span class="hljs-meta">@override</span><br>  InheritedWidget <span class="hljs-keyword">get</span> widget =&gt; <span class="hljs-keyword">super</span>.widget <span class="hljs-keyword">as</span> InheritedWidget;<br><br>  <span class="hljs-keyword">final</span> <span class="hljs-built_in">Map</span>&lt;<span class="hljs-built_in">Element</span>, <span class="hljs-built_in">Object?</span>&gt; _dependents = HashMap&lt;<span class="hljs-built_in">Element</span>, <span class="hljs-built_in">Object?</span>&gt;();<br><br>  <span class="hljs-meta">@override</span><br>  <span class="hljs-keyword">void</span> _updateInheritance() &#123;<br>    <span class="hljs-keyword">assert</span>(_lifecycleState == _ElementLifecycle.active);<br>    <span class="hljs-keyword">final</span> <span class="hljs-built_in">Map</span>&lt;<span class="hljs-built_in">Type</span>, InheritedElement&gt;? incomingWidgets = _parent?._inheritedWidgets;<br>    <span class="hljs-keyword">if</span> (incomingWidgets != <span class="hljs-keyword">null</span>)<br>      _inheritedWidgets = HashMap&lt;<span class="hljs-built_in">Type</span>, InheritedElement&gt;.from(incomingWidgets);<br>    <span class="hljs-keyword">else</span><br>      _inheritedWidgets = HashMap&lt;<span class="hljs-built_in">Type</span>, InheritedElement&gt;();<br>    _inheritedWidgets![widget.runtimeType] = <span class="hljs-keyword">this</span>;<br>  &#125;<br>  <span class="hljs-comment">//省略。。。</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<ul>
+<li><strong>Map&lt;Type, InheritedElement&gt;? _inheritedWidgets</strong></li>
+</ul>
+<p>这是从<code>Element</code>根类中继承的属性，保存着所有祖先节点中出现过的<code>InheritedWidget</code>与<code>InheritedElement</code>对象的映射关系。字典的键是<code>InheritedWidget</code>子类的<code>Type</code>，值是<code>InheritedElement</code>对象。</p>
+<p>在使用<code>get</code>或<code>dependOn</code>时，二者方法内部都会调用以下内容：</p>
+<figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs actionscript"><span class="hljs-keyword">final</span> InheritedElement? ancestor = _inheritedWidgets == <span class="hljs-literal">null</span> ? <span class="hljs-literal">null</span> : _inheritedWidgets![T];<br></code></pre></td></tr></table></figure>
+<p><code>ancestor</code>是根据<code>InheritedWidget</code>类型从<code>_inheritedWidgets</code>中取出的<code>InheritedElement</code>对象，通过<code>ancestor.widget</code>就能获取对应的<code>InheritedWidget</code>，进而读取其内部数据。</p>
+<p>这就是读取数据的原理~</p>
+<p>需要注意的是，<code>_inheritedWidgets</code>中给相同的键赋值会覆盖原<code>InheritedElement</code>对象，注意这一点，后面会用到。</p>
+<h6 id="iii-传递"><a href="#iii-传递" class="headerlink" title="iii.传递"></a>iii.传递</h6><p>为什么<code>InheritedWidget</code>能一直向下传递数据呢？</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs DART"><span class="hljs-keyword">void</span> _updateInheritance() &#123;<br>  <span class="hljs-keyword">assert</span>(_lifecycleState == _ElementLifecycle.active);<br>  _inheritedWidgets = _parent?._inheritedWidgets;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>这是<code>Element</code>根类中提供的函数，<code>Element</code>中在<code>mount()</code>的最后一步会调用此函数，以便更新<code>_inheritedWidgets</code>字段。</p>
+<p>对于非<code>InheritedWidget</code>组件，调用的是上面的默认实现，即把父节点的<code>_inheritedWidgets</code>赋给自己，从而将父组件上的共享数据传递给自己。</p>
+<p>对于<code>InheritedElement</code>，它重写了此函数：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs DART"><span class="hljs-meta">@override</span><br>  <span class="hljs-keyword">void</span> _updateInheritance() &#123;<br>  <span class="hljs-keyword">assert</span>(_lifecycleState == _ElementLifecycle.active);<br>  <span class="hljs-keyword">final</span> <span class="hljs-built_in">Map</span>&lt;<span class="hljs-built_in">Type</span>, InheritedElement&gt;? incomingWidgets = _parent?._inheritedWidgets;<br>  <span class="hljs-keyword">if</span> (incomingWidgets != <span class="hljs-keyword">null</span>) &#123;<br>    _inheritedWidgets = HashMap&lt;<span class="hljs-built_in">Type</span>, InheritedElement&gt;.from(incomingWidgets);<br>  &#125;<span class="hljs-keyword">else</span>&#123;<br>    _inheritedWidgets = HashMap&lt;<span class="hljs-built_in">Type</span>, InheritedElement&gt;();<br>  &#125;<br>  _inheritedWidgets![widget.runtimeType] = <span class="hljs-keyword">this</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>同样保留了父节点中的<code>_inheritedWidgets</code>，但又多了一步：将当前<code>InheritedWidget</code>与其<code>InheritedElement</code>的映射关系加入进来。</p>
+<p>这样在<code>Element</code>树中，<code>InheritedElement</code>中的数据会通过<code>_inheritedWidgets</code>字典，在其<code>InheritedWidget</code>或非<code>InheritedWidget</code>子节点中，层层往下传递~</p>
+<h6 id="iv-覆盖"><a href="#iv-覆盖" class="headerlink" title="iv.覆盖"></a>iv.覆盖</h6><p>还记得前面的提醒吗：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dart"><span class="hljs-built_in">Map</span>&lt;<span class="hljs-built_in">Type</span>, InheritedElement&gt;? _inheritedWidgets;<br></code></pre></td></tr></table></figure>
+<p>这个Map的键是<code>InheritedWidget</code>的类型，值是<code>InheritedElement</code>对象。由于_inheritedWidgets会在组件树上层层往下传递，所以在遇到子组件也是<code>InheritedWidget</code>节点时，祖节点中的<code>_inheritedWidgets</code>会被继承下来并添加新的键值对。给键值对赋值时如果使用相同的键，那么后来的值就会替换前值，即下层的共享数据覆盖上一层的共享数据。</p>
+<p>在组件树中传递数据时，可能会出现某个子节点<code>A</code>的上层有多个相同类型的<code>InheritedWidget</code>父节点，但携带的数据不同的情况，那<code>A</code>节点取到的是哪一层父节点共享的数据呢？以购物车案例为基础，我们稍作修改：</p>
+<p>代码实现5：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><code class="hljs FLUTTER">void main() &#123;<br>  runApp(DakMyApp());<br>&#125;<br><br>class DakMyApp extends StatefulWidget &#123;<br>  const DakMyApp(&#123;Key? key&#125;) : super(key: key);<br>  @override<br>  State&lt;DakMyApp&gt; createState() =&gt; _DakMyAppState();<br>&#125;<br><br>class _DakMyAppState extends State&lt;DakMyApp&gt; &#123;<br>  //顶级状态<br>  final cart1 = DakCart(items: []);<br>  //次级状态<br>  var cart2 = DakCart(items: [DakItem(name: &#x27;Pineapple&#x27;, selected: true)]);<br>  @override<br>  Widget build(BuildContext context) &#123;<br>    print(&#x27;DakMyAPP build&#x27;);<br>    return DakCartInheritedWidget( //看这里：父节点1<br>      cart: cart1,<br>      child: DakCartInheritedWidget( //看这里：父节点2<br>        cart: cart2,<br>        child: MaterialApp(<br>          home: DakCatelogPage(<br>            callback: (item) &#123;<br>              //重绘<br>              setState(() &#123;<br>                if (item != null) &#123;<br>                  final newItems =<br>                      item.selected ? cart2.add(item) : cart2.delete(item);<br>                  cart2 = DakCart(items: newItems);<br>                &#125; else &#123;<br>                  print(&#x27;单纯setState，未更新数据&#x27;);<br>                &#125;<br>              &#125;);<br>            &#125;,<br>          ),<br>        ),<br>      ),<br>    );<br>  &#125;<br>&#125;<br>// 省略。。。<br>// 购物车<br>class DakCartPage extends StatelessWidget &#123;DakCartInheritedWidget<br>  // 省略。。。<br>  @override<br>  Widget build(BuildContext context) &#123;<br>    // 获取顶部最近的一份共享数据<br>    var provider = DakCartInheritedWidget.of(context);<br>    return Scaffold(<br>      // 省略。。。<br>      body: Container(<br>        child: Column(<br>          children: [<br>            Expanded(<br>              child: ListView.builder(<br>                itemCount: provider?.items.length,<br>                itemBuilder: (context, index) &#123;<br>                  final item = provider?.items[index];<br>                  return Container(<br>                    padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),<br>                    child: Text(&#x27;· $&#123;item?.name&#125;&#x27;),<br>                  );<br>                &#125;,<br>              ),<br>            ),<br>            // 省略。。。<br>          ],<br>        ),<br>      ),<br>    );<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>我们在原<code>DakCartInheritedWidget</code>的下层，又套了一个<code>DakCartInheritedWidget</code>，其中上层共享的<code>cart1</code>是空的，下层的<code>cart2</code>则包含了一个已选水果“Pineapple”。此时我们直接进入购物车页面就会发现，购物车中列表中显示了“Pineapple”，即购物车组件获取到的是在它之前且离它最近的已经包含一个水果的<code>cart2</code>对象。</p>
+<p>这是因为，两层继承式组件<code>DakCartInheritedWidget</code>是父子组件的关系，在构建时会各自执行一遍<code>_updateInheritance()</code>函数：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs DART"><span class="hljs-meta">@override</span><br>  <span class="hljs-keyword">void</span> _updateInheritance() &#123;<br>  <span class="hljs-keyword">assert</span>(_lifecycleState == _ElementLifecycle.active);<br>  <span class="hljs-keyword">final</span> <span class="hljs-built_in">Map</span>&lt;<span class="hljs-built_in">Type</span>, InheritedElement&gt;? incomingWidgets = _parent?._inheritedWidgets;<br>  <span class="hljs-keyword">if</span> (incomingWidgets != <span class="hljs-keyword">null</span>) &#123;<br>    _inheritedWidgets = HashMap&lt;<span class="hljs-built_in">Type</span>, InheritedElement&gt;.from(incomingWidgets);<br>  &#125;<span class="hljs-keyword">else</span>&#123;<br>    _inheritedWidgets = HashMap&lt;<span class="hljs-built_in">Type</span>, InheritedElement&gt;();<br>  &#125;<br>  _inheritedWidgets![widget.runtimeType] = <span class="hljs-keyword">this</span>; <span class="hljs-comment">//注意看，是这里</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<p>上层执行时，<code>_inheritedWidgets</code>中保存了<code>DakCartInheritedWidget</code>与<code>InheritedElement</code>的映射关系并往下传递，假设为<code>[w:e1]</code>；下层执行时，<code>_inheritedWidgets</code>先保留了父节点的<code>[w:e1]</code>，再将自己加入进去，但由于<code>widget.runtimeType</code>没变，即键<code>w</code>没变，导致字典的值<code>e1</code>被覆盖掉，替换成当前<code>InheritedElement</code>对象，从而变成<code>[w:e2]</code>。</p>
+<p>购物车页面是第二级<code>DakCartInheritedWidget</code>的子节点，所以它读取共享数据时，读到的是离自己最近的<code>DakCartInheritedWidget</code>中的<code>cart2</code>。</p>
+<p>这只是基于源码的一种推理验证，实际项目中应该不会真的有必要这么用~</p>
+<h6 id="v-更新"><a href="#v-更新" class="headerlink" title="v.更新"></a>v.更新</h6><p>对<code>InheritedWidget</code>来说，如果只是在某个依赖者里修改<code>InheritedWidget</code>中共享的数据，是不会触发其他依赖者更新的。只有满足以下条件才行：</p>
+<ol>
+<li>子节点调用<code>context.dependOnInheritedWidgetOfExactType</code>注入依赖；</li>
+<li>重写<code>InheritedWidget</code>的<code>updateShouldNotify()</code>方法，比较新旧<code>InheritedWidget</code>中的共享数据是否发生了变化，最终返回 true 时依赖者才会同步更新；</li>
+<li>修改<code>InheritedWidget</code>中共享的数据：对值类型的共享数据，可直接修改其值；对引用类型的共享数据，需要将其替换成新对象，而非在原指针的基础上修改其某个属性，必要时还需重写共享数据对象的<code>==</code>操作符与<code>hashCode</code>以定义新旧数据对象是否相同。只有新旧数据对象不相同，<code>updateShouldNotify()</code>中对二者做比较时才能返回 true；</li>
+<li>调用<code>setState</code>（比如在在父节点中），触发<code>InheritedWidget</code>的重绘，从而调用 Element 的<code>update()</code>函数，走<code>notifyClients</code>流程；</li>
+</ol>
+<p>这些都是<code>InheritedWidget</code>实现源码中相关逻辑要求的，主要是在<code>InheritedElement</code>中，而<code>InheritedElement</code>继承自<code>ProxyElement</code>：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><code class="hljs DART"><span class="hljs-keyword">abstract</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ProxyElement</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">ComponentElement</span> </span>&#123;<br><br>  <span class="hljs-meta">@override</span><br>  ProxyWidget <span class="hljs-keyword">get</span> widget =&gt; <span class="hljs-keyword">super</span>.widget <span class="hljs-keyword">as</span> ProxyWidget;<br><br>  <span class="hljs-meta">@override</span><br>  Widget build() =&gt; widget.child;<br><br>  <span class="hljs-meta">@override</span><br>  <span class="hljs-keyword">void</span> update(ProxyWidget newWidget) &#123;<br>    <span class="hljs-keyword">final</span> ProxyWidget oldWidget = widget;<br>    <span class="hljs-keyword">super</span>.update(newWidget);<br>    updated(oldWidget);<br>    _dirty = <span class="hljs-keyword">true</span>;<br>    rebuild();<br>  &#125;<br><br>  <span class="hljs-comment">/// <span class="language-markdown">Called during build when the [widget] has changed.</span></span><br>  <span class="hljs-comment">///</span><br>  <span class="hljs-comment">/// <span class="language-markdown">By default, calls [notifyClients]. Subclasses may override this method to</span></span><br>  <span class="hljs-comment">/// <span class="language-markdown">avoid calling [notifyClients] unnecessarily (e.g. if the old and new</span></span><br>  <span class="hljs-comment">/// <span class="language-markdown">widgets are equivalent).</span></span><br>  <span class="hljs-meta">@protected</span><br>  <span class="hljs-keyword">void</span> updated(<span class="hljs-keyword">covariant</span> ProxyWidget oldWidget) &#123;<br>    notifyClients(oldWidget);<br>  &#125;<br><br>  <span class="hljs-comment">/// <span class="language-markdown">Notify other objects that the widget associated with this element has</span></span><br>  <span class="hljs-comment">/// <span class="language-markdown">changed.</span></span><br>  <span class="hljs-comment">///</span><br>  <span class="hljs-comment">/// <span class="language-markdown">Called during [update] (via [updated]) after changing the widget</span></span><br>  <span class="hljs-comment">/// <span class="language-markdown">associated with this element but before rebuilding this element.</span></span><br>  <span class="hljs-meta">@protected</span><br>  <span class="hljs-keyword">void</span> notifyClients(<span class="hljs-keyword">covariant</span> ProxyWidget oldWidget);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>在<code>Element</code>树已构建完成后，某个<code>InheritedElement</code>节点的配置发生变化时（通常是内部的共享数据变化了），在父节点调用<code>setState</code>重新构建widget树时，会复用当前位置上的<code>Element</code>，更新它的配置信息(newWidget)，而非创建新的。此时会调用<code>InheritedElement</code>的<code>update()</code>函数。</p>
+<p><code>update</code>内会调用<code>updated</code>方法，而<code>InheritedElement</code>从<code>ProxyElement</code>继承并重写了此方法：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs DART"><span class="hljs-meta">@override</span><br><span class="hljs-keyword">void</span> updated(InheritedWidget oldWidget) &#123;<br>  <span class="hljs-keyword">if</span> (widget.updateShouldNotify(oldWidget))<br>    <span class="hljs-keyword">super</span>.updated(oldWidget);<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>通常，我们会在自定义<code>InheritedWidget</code>时重写这里的<code>updateShouldNotify()</code>方法：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs FLUTTER">// 重写<br>@override<br>bool updateShouldNotify(DakCartInheritedWidget oldWidget) &#123;<br>  return (oldWidget.items != items); //自定义判断逻辑<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>这里的返回值可根据具体业务而定，返回 true 则继续调用上面所说的<code>updated</code>方法：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs DART"><span class="hljs-comment">/// <span class="language-markdown">Called during build when the [widget] has changed.</span></span><br><span class="hljs-comment">///</span><br><span class="hljs-comment">/// <span class="language-markdown">By default, calls [notifyClients]. Subclasses may override this method to</span></span><br><span class="hljs-comment">/// <span class="language-markdown">avoid calling [notifyClients] unnecessarily (e.g. if the old and new</span></span><br><span class="hljs-comment">/// <span class="language-markdown">widgets are equivalent).</span></span><br><span class="hljs-meta">@protected</span><br><span class="hljs-keyword">void</span> updated(<span class="hljs-keyword">covariant</span> ProxyWidget oldWidget) &#123;<br>  notifyClients(oldWidget);<br>&#125;<br></code></pre></td></tr></table></figure>
+<p><code>updated</code>里默认调用<code>notifyClients</code>方法：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs DART"><span class="hljs-comment">/// <span class="language-markdown">Notifies all dependent elements that this inherited widget has changed, by</span></span><br><span class="hljs-comment">/// <span class="language-markdown">calling [Element.didChangeDependencies].</span></span><br><span class="hljs-comment">///</span><br><span class="hljs-comment">/// <span class="language-markdown">This method must only be called during the build phase. Usually this</span></span><br><span class="hljs-comment">/// <span class="language-markdown">method is called automatically when an inherited widget is rebuilt, e.g.</span></span><br><span class="hljs-comment">/// <span class="language-markdown">as a result of calling [State.setState] above the inherited widget.</span></span><br><span class="hljs-comment">///</span><br><span class="hljs-meta">@override</span><br><span class="hljs-keyword">void</span> notifyClients(InheritedWidget oldWidget) &#123;<br>  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">final</span> <span class="hljs-built_in">Element</span> dependent <span class="hljs-keyword">in</span> _dependents.keys) &#123;<br>    notifyDependent(oldWidget, dependent); <span class="hljs-comment">//看这里</span><br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>它会遍历<code>_dependents</code>字典，为每个依赖者调用<code>notifyDependent</code>方法：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs DART"><span class="hljs-comment">/// <span class="language-markdown">Called by [notifyClients] for each dependent.</span></span><br><span class="hljs-comment">///</span><br><span class="hljs-comment">/// <span class="language-markdown">Calls <span class="hljs-code">`dependent.didChangeDependencies()`</span> by default.</span></span><br><span class="hljs-comment">///</span><br><span class="hljs-comment">/// <span class="language-markdown">Subclasses can override this method to selectively call</span></span><br><span class="hljs-comment">/// <span class="language-markdown">[didChangeDependencies] based on the value of [getDependencies].</span></span><br><span class="hljs-comment">///</span><br><span class="hljs-meta">@protected</span><br><span class="hljs-keyword">void</span> notifyDependent(<span class="hljs-keyword">covariant</span> InheritedWidget oldWidget, <span class="hljs-built_in">Element</span> dependent) &#123;<br>  dependent.didChangeDependencies();<br>&#125;<br></code></pre></td></tr></table></figure>
+<p><code>notifyDependent</code>最终调用依赖者(Element)的<code>didChangeDependencies</code>方法：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs DART"><span class="hljs-meta">@mustCallSuper</span><br><span class="hljs-keyword">void</span> didChangeDependencies() &#123;<br>  markNeedsBuild();<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>ps：只有<code>StatefulWidget</code>才有<code>didChangeDependencies</code>回调，如果依赖者对应的组件是<code>StatelessWidget</code>类型，那么组件还是会重绘，只不过没有<code>didChangeDependencies</code>调用而已~</p>
+<p>到这里，依赖者Element就已经能感知自己依赖的数据发生了变化，使用最新数据等待重绘即可。</p>
+<p>由于<code>getInheritedWidgetOfExactType</code>不会往<code>_dependents</code>中注入依赖，也就不会调用<code>notifyDependent</code>方法，所以调用<code>get</code>时的组件没机会获得通知，也就不会重绘~</p>
+<p><code>InheritedWidget</code>中重写<code>updateShouldNotify</code>返回 false 时，就不会调用<code>updated</code>，不走<code>notifyClients</code>流程，依赖者也就不会获得通知和重绘。</p>
+<hr>
+<p>以购物车为例，正常情况下选中并加购商品时，会输出以下日志：</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm">DakMyAPP <span class="hljs-keyword">build</span><br><span class="hljs-keyword"></span>DakCatelogPage <span class="hljs-keyword">build</span><br><span class="hljs-keyword"></span>DakCartCounter <span class="hljs-keyword">didChangeDependencies</span><br><span class="hljs-keyword"></span>DakCartCounter <span class="hljs-keyword">build</span><br></code></pre></td></tr></table></figure>
+<p>其中最后两行是<code>DakCartInheritedWidget</code>的依赖者<code>DakCartCounter</code>组件的日志 ，setState时，因为<code>DakCartCounter</code>继承自<code>StatefulWidget</code>，所以它的<code>didChangeDependencies</code>函数会触发，并发生重绘。</p>
+<p>当我们将 DakCartInheritedWidget 中<code>updateShouldNotify</code>的返回值始终设置为 false 时：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs dart"><span class="hljs-comment">// 重写</span><br>  <span class="hljs-meta">@override</span><br>  <span class="hljs-built_in">bool</span> updateShouldNotify(DakCartInheritedWidget oldWidget) &#123;<br>    <span class="hljs-keyword">const</span> update = <span class="hljs-keyword">false</span>;<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;shoudl update? <span class="hljs-subst">$update</span>&#x27;</span>);<br>    <span class="hljs-keyword">return</span> update;<br>  &#125;<br></code></pre></td></tr></table></figure>
+
+<p>加购商品并在<code>MyApp</code>中<code>setState</code>时，会得到以下日志：</p>
+<figure class="highlight n1ql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs n1ql">DakMyAPP <span class="hljs-keyword">build</span><br>shoudl <span class="hljs-keyword">update</span>? <span class="hljs-literal">false</span><br>DakCatelogPage <span class="hljs-keyword">build</span><br></code></pre></td></tr></table></figure>
+<p>即：虽然<code>DakCartInheritedWidget</code>组件发生了重绘，但其依赖者 Element 对应的<code>DakCartCounter</code>组件的<code>didChangeDependencies()</code>函数并未触发，组件本身也没重绘！</p>
+<p><code>didChangeDependencies</code>没触发可以理解，因为<code>updateShouldNotify</code>返回了 false，依赖者不走<code>notifyClients</code>流程；没重绘（build）是为啥呢？尤其是在其父节点都已发生重绘的情况下！</p>
+<p>这里，看下我们使用<code>DakCartCounter</code>组件的方式：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs FLUTTER">actions: [<br>  TextButton.icon(<br>    onPressed: () &#123;<br>      Navigator.of(context).push(<br>        MaterialPageRoute(<br>          builder: (context) =&gt; const DakCartPage(),<br>        ),<br>      );<br>    &#125;,<br>    icon: const Icon(<br>      Icons.shopping_cart,<br>      color: Colors.black,<br>    ),<br>    label: const DakCartCounter(), // 注意看这里的const<br>  ),<br>]<br></code></pre></td></tr></table></figure>
+
+<p>代码标注处，我们使用的是<code>const</code>修饰依赖者组件，在完成第一次构建之后，它就不再参与重绘了，除非其依赖的共享数据发生了变化。你可以尝试将<code>const</code>关键字去掉并查看新的日志，你会发现依赖者这次会跟着重绘了，即使是<code>updateShouldNotify</code>返回了 false。因为非<code>const</code>组件在父节点 build 时，要跟着重新构建。</p>
+<p>所以这就是节省性能的一个小技巧：必要时使用<code>const</code>关键字！</p>
+<p>另外在本小结开头处，我们提到让依赖者同步更新时需要满足的条件3：修改共享数据时，数据对象本身要发生变化。这里<code>变化</code>的标准是以<code>hashCode</code>和<code>==</code>操作符来定义的。以购物车为例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs FLUTTER">class _DakMyAppState extends State&lt;DakMyApp&gt; &#123;<br>  var cart = DakCart(items: []);<br>  @override<br>  Widget build(BuildContext context) &#123;<br>    print(&#x27;DakMyAPP build&#x27;);<br>    return DakCartInheritedWidget(<br>      cart: cart,<br>      child: MaterialApp(<br>        home: DakCatelogPage(<br>          callback: (item) &#123;<br>            //重绘<br>            setState(() &#123;<br>              if (item != null) &#123;<br>                final newItems =<br>                    item.selected ? cart.add(item) : cart.delete(item);<br>                //cart = DakCart(items: newItems); //看这里<br>              &#125; else &#123;<br>                print(&#x27;单纯setState，未更新数据&#x27;); <br>              &#125;<br>            &#125;);<br>          &#125;,<br>        ),<br>      ),<br>    );<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>当<code>callback</code>中返回的参数<code>item</code>不为空时，我们会去修改<code>cart</code>对象，即通过<code>cart.add</code>或<code>cart.delete</code>增减响应商品。实际上到这一步，我们还只是对原共享数据对象<code>cart</code>内的<code>items</code>数组做了修改，并未改变<code>cart</code>对象的指针。如果此时注释掉“cart &#x3D; DakCart(items: newItems)”这一行，直接调用<code>setState</code>，那么<code>DakCartInheritedWidget</code>会重绘，但其<code>updateShouldNotify</code>方法会触发并返回<code>false</code>，依赖者们不会重绘！</p>
+<p>这是因为，我们在重写<code>updateShouldNotify</code>时设置的更新逻辑如下：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs dart"><span class="hljs-built_in">bool</span> updateShouldNotify(DakCartInheritedWidget oldWidget) &#123;<br>  <span class="hljs-keyword">final</span> update = oldWidget.cart != cart; <span class="hljs-comment">// 比对新旧cart对象，比的是二者的指针</span><br>  <span class="hljs-keyword">return</span> update;<br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">DakCart</span> </span>&#123;<br>  <span class="hljs-comment">// 省略。。</span><br>  <span class="hljs-comment">// 重写==操作符，用于后续判断购物车是否发生了变化</span><br>  <span class="hljs-meta">@override</span><br>  <span class="hljs-built_in">bool</span> <span class="hljs-keyword">operator</span> ==(<span class="hljs-built_in">Object</span> other) &#123;<br>    <span class="hljs-keyword">if</span> (other <span class="hljs-keyword">is</span>! DakCart) &#123;<br>      <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;<br>    &#125;<br>    <span class="hljs-keyword">if</span> (!identical(<span class="hljs-keyword">this</span>, other)) &#123;<br>      <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;<br>    &#125;<br>    <span class="hljs-built_in">bool</span> same =<br>        listEquals(items, other.items) &amp;&amp; (other.totalPrice == totalPrice);<br>    <span class="hljs-keyword">return</span> same;<br>  &#125;<br><br>  <span class="hljs-meta">@override</span><br>  <span class="hljs-built_in">int</span> <span class="hljs-keyword">get</span> hashCode =&gt; <span class="hljs-built_in">Object</span>.hashAll([items, totalPrice]);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>setState 时会创建新的<code>DakCartInheritedWidget</code>对象<code>this</code>并调用其内部<code>updateShouldNotify</code>方法，此时<code>this</code>中持有的<code>cart</code>对象与<code>oldWidget</code>的相同。在没有重写<code>DakCart</code>类中<code>==</code>操作符与<code>hashCode</code>的情况下，<code>!=</code>操作符默认比对的是对象的内存地址，即新widget与oldWidget中<code>cart</code>对象的<code>指针</code>。而<code>cart.add</code>或<code>cart.delete</code>只是修改了<code>cart</code>内部<code>items</code>数组，并未改变<code>cart</code>对象本身的指针，<code>this</code>与<code>oldWidget</code>持有的<code>cart</code>对象指向同一片内存地址，<code>updateShouldNotify</code>返回 false，依赖者们也就不会去重绘！</p>
+<p>购物车示例中，我对<code>DakCart</code>类的<code>==</code>操作符与<code>hashCode</code>进行了重写，但也只是作为演示，仅仅比对了新旧对象的内存地址。在实际业务中，你可以设置自己的判断标准，比如当<code>InheritedWidget</code>中共享数据为指针类型的<code>User</code>对象时，只要<code>name</code>字段相同就可以认为两个<code>User</code>对象<code>==</code>；而对于简单的值类型，如<code>int counter</code>，直接给 counter 赋值就能让<code>updateShouldNotify</code>返回false，触发依赖者更新。</p>
+<p>可以这么做个小结：依赖者能否同步更新，要根据<code>updateShouldNotify</code>中的判断逻辑、共享数据是否重写<code>==</code>与<code>hashCode</code>等情况而定。如果根据我们设置的标准，数据确实发生变化则 setState 时依赖者们会跟随<code>InheritedWidet</code>重绘，否则仅<code>InheritedWidet</code>重绘而依赖者们不重绘。</p>
+<hr>
+<h5 id="5-3-总结"><a href="#5-3-总结" class="headerlink" title="5.3.总结"></a>5.3.总结</h5><p><code>InheritedWidet</code>的使用步骤总结：</p>
+<p>1.自定义<code>InheritedWidget</code>子类，提供共享数据与<code>of</code>方法，重写<code>updateShouldNotify</code>方法；</p>
+<p>2.使用依赖者作为<code>InheritedWidet</code>的子孙节点，在依赖者内调用<code>of</code>方法获取共享数据，同时将依赖者注入<code>InheritedElement</code>的<code>_dependents</code>字典中；</p>
+<p>3.<code>InheritedWidget</code>内共享数据变化时，在父节点中调用setState，触发自身重绘，通知依赖者们执行<code>didChangeDependencies</code>和重绘；</p>
+<h3 id="6-局部刷新"><a href="#6-局部刷新" class="headerlink" title="6.局部刷新"></a>6.局部刷新</h3><p>在<code>代码实现4</code>的开头有个声明，这种实现不是最优方案，因为在<code>InheritedWidget</code>中的数据发生改变时，我们在<code>MyApp</code>这里调用了<code>setState</code>，这就导致几乎整个应用都执行了重绘！这是严重的性能浪费，所以需要考虑局部刷新问题，在小范围内只让依赖了<code>InheritedWidget</code>的组件重绘即可。那么接下来我们将使用 Flutter 框架内置的一些支持局部刷新的小组件继续完善代码~</p>
+<h4 id="6-1-ChangeNotifier"><a href="#6-1-ChangeNotifier" class="headerlink" title="6.1.ChangeNotifier"></a>6.1.ChangeNotifier</h4><p>这是一个在所监听内容发生变化时，能产生通知的类，下面结合源码进行分析：</p>
+<h5 id="1-Listenable"><a href="#1-Listenable" class="headerlink" title="1.Listenable"></a>1.Listenable</h5><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs DART"><span class="hljs-keyword">abstract</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Listenable</span> </span>&#123;<br><br>  <span class="hljs-keyword">const</span> Listenable();<br><br>  <span class="hljs-keyword">factory</span> Listenable.merge(<span class="hljs-built_in">List</span>&lt;Listenable?&gt; listenables) = _MergingListenable;<br><br>  <span class="hljs-keyword">void</span> addListener(VoidCallback listener);<br><br>  <span class="hljs-keyword">void</span> removeListener(VoidCallback listener);<br>&#125;<br></code></pre></td></tr></table></figure>
+<p><code>Listenable</code>这是一个抽象类，用于维护着监听者列表，对外提供了增、删、合并监听者的接口。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><code class="hljs DART"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ChangeNotifier</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">Listenable</span> </span>&#123;<br>  <span class="hljs-built_in">int</span> _count = <span class="hljs-number">0</span>;<br>  <span class="hljs-built_in">List</span>&lt;VoidCallback?&gt; _listeners = <span class="hljs-built_in">List</span>&lt;VoidCallback?&gt;.filled(<span class="hljs-number">0</span>, <span class="hljs-keyword">null</span>);<br><br>  <span class="hljs-meta">@protected</span><br>  <span class="hljs-built_in">bool</span> <span class="hljs-keyword">get</span> hasListeners &#123;<br>    <span class="hljs-keyword">return</span> _count &gt; <span class="hljs-number">0</span>;<br>  &#125;<br><br>  <span class="hljs-meta">@override</span><br>  <span class="hljs-keyword">void</span> addListener(VoidCallback listener) &#123;<br>    <span class="hljs-comment">//省略。。</span><br>  &#125;<br><br>  <span class="hljs-keyword">void</span> _removeAt(<span class="hljs-built_in">int</span> index) &#123;<br>    <span class="hljs-comment">//省略。。</span><br>  &#125;<br><br>  <span class="hljs-meta">@override</span><br>  <span class="hljs-keyword">void</span> removeListener(VoidCallback listener) &#123;<br>    <span class="hljs-comment">//省略。。</span><br>  &#125;<br><br>  <span class="hljs-meta">@protected</span><br>  <span class="hljs-keyword">void</span> notifyListeners() &#123;<br>    <span class="hljs-keyword">if</span> (_count == <span class="hljs-number">0</span>)<br>      <span class="hljs-keyword">return</span>;<br>    _notificationCallStackDepth++;<br><br>    <span class="hljs-keyword">final</span> <span class="hljs-built_in">int</span> end = _count;<br>    <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> i = <span class="hljs-number">0</span>; i &lt; end; i++) &#123;<br>      _listeners[i]?.call();<br>    &#125;<br>    <span class="hljs-comment">//省略。。</span><br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>这是精简之后的<code>ChangeNotifier</code>源码，它实现了<code>Listenable</code>抽象类，提供了<code>notifyListeners</code>方法，在数据变化时供我们调用以便给监听者们发送通知。</p>
+<p>看上去这个类并不复杂，下面就用它来改造购物车案例，实现局部刷新功能，再结合案例代码看看这个类的实现路径。</p>
+<h5 id="2-示例"><a href="#2-示例" class="headerlink" title="2.示例"></a>2.示例</h5><p>代码实现6：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br></pre></td><td class="code"><pre><code class="hljs FLUTTER">import &#x27;dart:collection&#x27;;<br>import &#x27;package:flutter/foundation.dart&#x27;;<br>import &#x27;package:flutter/material.dart&#x27;;<br><br>class DakMyApp extends StatelessWidget &#123; // 这里变了<br>  DakMyApp(&#123;Key? key&#125;) : super(key: key);<br><br>  final cart = DakCart();<br>  @override<br>  Widget build(BuildContext context) &#123;<br>    print(&#x27;DakMyAPP build&#x27;);<br>    return DakCartInheritedWidget(<br>      cart: cart,<br>      child: const MaterialApp(<br>        home: DakCatelogPage(),<br>      ),<br>    );<br>  &#125;<br>&#125;<br><br>class DakCartInheritedWidget extends InheritedWidget &#123;<br>  //状态<br>  final DakCart cart;<br><br>  const DakCartInheritedWidget(&#123;<br>    Key? key,<br>    required this.cart,<br>    required Widget child,<br>  &#125;) : super(<br>          key: key,<br>          child: child,<br>        );<br><br>  // 便捷获取共享对象<br>  static DakCartInheritedWidget? of(BuildContext context) &#123;<br>    // 这里变了<br>    return context.dependOnInheritedWidgetOfExactType&lt;DakCartInheritedWidget&gt;();<br>  &#125;<br><br>  // 重写<br>  @override<br>  bool updateShouldNotify(DakCartInheritedWidget oldWidget) &#123;<br>    return false; // 这里变了<br>  &#125;<br>&#125;<br><br>// 购物车Model<br>class DakCart extends ChangeNotifier &#123;<br>  // 已加购商品<br>  final List&lt;DakItem&gt; _items = [];<br><br>  UnmodifiableListView&lt;DakItem&gt; get items =&gt; UnmodifiableListView(_items);<br><br>  // 商品总价<br>  int get totalPrice =&gt; items.length * 42;<br><br>  //加入购物车<br>  add(DakItem item) &#123;<br>    _items.add(item);<br>    notifyListeners(); // 这里变了<br>  &#125;<br><br>  //移出购物车<br>  delete(DakItem item) &#123;<br>    int index = _items.indexOf(item);<br>    _items.removeAt(index);<br>    notifyListeners(); // 这里变了<br>  &#125;<br>&#125;<br><br>// 商品Model<br>class DakItem &#123;<br>  String name;<br>  bool selected;<br><br>  DakItem(&#123;<br>    required this.name,<br>    required this.selected,<br>  &#125;);<br>&#125;<br><br>// 商品列表页面<br>class DakCatelogPage extends StatelessWidget &#123;<br>  const DakCatelogPage(&#123;<br>    Key? key,<br>  &#125;) : super(key: key);<br>  static final items = [<br>    &#x27;Apple&#x27;,<br>    &#x27;Banana&#x27;,<br>    &#x27;Cherry&#x27;,<br>    &#x27;Damson&#x27;,<br>    &#x27;Grape&#x27;,<br>    &#x27;Haw&#x27;,<br>    &#x27;Kiwifruit&#x27;,<br>    &#x27;Lemon&#x27;,<br>    &#x27;Mango&#x27;,<br>    &#x27;Orange&#x27;<br>  ].map((e) =&gt; DakItem(name: e, selected: false)).toList();<br><br>  @override<br>  Widget build(BuildContext context) &#123;<br>    print(&#x27;DakCatelogPage build&#x27;);<br>    return Scaffold(<br>      appBar: AppBar(<br>        backgroundColor: Colors.yellow,<br>        centerTitle: true,<br>        title: const Text(<br>          &#x27;Catelog&#x27;,<br>          style: TextStyle(<br>            fontSize: 28,<br>            fontWeight: FontWeight.bold,<br>            color: Colors.black,<br>          ),<br>        ),<br>        actions: [<br>          TextButton.icon(<br>            onPressed: () &#123;&#125;,<br>            icon: const Icon(<br>              Icons.shopping_cart,<br>              color: Colors.black,<br>            ),<br>            label: const DakCartCounter(),<br>          ),<br>        ],<br>      ),<br>      body: ListView.builder(<br>        itemCount: items.length,<br>        itemBuilder: (context, index) &#123;<br>          return DakListCell(<br>            item: items[index],<br>          );<br>        &#125;,<br>      ),<br>    );<br>  &#125;<br>&#125;<br><br>//商品总数<br>class DakCartCounter extends StatelessWidget &#123;<br>  const DakCartCounter(&#123;<br>    Key? key,<br>  &#125;) : super(key: key);<br>  @override<br>  Widget build(BuildContext context) &#123;<br>    print(&#x27;DakCartCounter build&#x27;);<br>    var cart = DakCartInheritedWidget.of(context)!.cart;<br>    return AnimatedBuilder(<br>      // 推荐使用最新的 ListenableBuilder<br>      animation: cart,<br>      builder: (context, child) &#123;<br>        print(&#x27;AnimatedBuilder Go&#x27;);<br>        return Text(<br>          &#x27;共$&#123;cart.items.length&#125;件&#x27;,<br>          style: const TextStyle(<br>            color: Colors.black,<br>          ),<br>        );<br>      &#125;,<br>    );<br>  &#125;<br>&#125;<br><br>// 商品cell<br>class DakListCell extends StatefulWidget &#123;<br>  final DakItem item;<br>  const DakListCell(&#123;<br>    Key? key,<br>    required this.item,<br>  &#125;) : super(key: key);<br><br>  @override<br>  State&lt;DakListCell&gt; createState() =&gt; _DakListCellState();<br>&#125;<br><br>class _DakListCellState extends State&lt;DakListCell&gt; &#123;<br>  _updateState() &#123;<br>    setState(() &#123;<br>      widget.item.selected = !widget.item.selected;<br>      var cart = DakCartInheritedWidget.of(context)!.cart;<br>      // 修改共享数据<br>      widget.item.selected ? cart.add(widget.item) : cart.delete(widget.item);<br>    &#125;);<br>  &#125;<br><br>  @override<br>  Widget build(BuildContext context) &#123;<br>    return Container(<br>      padding: const EdgeInsets.all(10),<br>      color: Colors.white,<br>      child: Row(<br>        children: [<br>          Expanded(<br>            child: Row(<br>              children: [<br>                Container(<br>                  margin: const EdgeInsets.symmetric(horizontal: 10),<br>                  width: 50,<br>                  height: 50,<br>                  color: Colors.yellow,<br>                ),<br>                Text(<br>                  widget.item.name,<br>                  style: const TextStyle(<br>                    fontSize: 18,<br>                    fontWeight: FontWeight.bold,<br>                  ),<br>                ),<br>              ],<br>            ),<br>          ),<br>          Builder(<br>            builder: (context) &#123;<br>              return widget.item.selected<br>                  ? IconButton(<br>                      // 已选中<br>                      onPressed: _updateState,<br>                      icon: const Icon(Icons.check),<br>                    )<br>                  : ElevatedButton(<br>                      //未选中<br>                      onPressed: _updateState,<br>                      style: ButtonStyle(<br>                        backgroundColor:<br>                            MaterialStateProperty.all(Colors.white),<br>                        elevation: MaterialStateProperty.all(0),<br>                      ),<br>                      child: const Text(<br>                        &#x27;ADD&#x27;,<br>                        style: TextStyle(color: Colors.black),<br>                      ),<br>                    );<br>            &#125;,<br>          ),<br>        ],<br>      ),<br>    );<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>与<code>代码实现4</code>相比，主要的变化是：</p>
+<ul>
+<li>现在<code>DakMyApp</code>与<code>DakCartCounter</code>是<code>StatelessWidget</code>了；</li>
+<li><code>DakCartInheritedWidget</code>中<code>updateShouldNotify()</code>方法直接返回了 false，后续数据的更新通过<code>ChangeNotifier</code>实现，不再需要走<code>notifyClients</code>流程了；</li>
+<li>静态方法<code>of()</code>中<code>dependOn..</code>变成了<code>get..</code>，也是因为后续数据的更新通过<code>ChangeNotifier</code>实现，不再需要注入依赖；</li>
+<li><code>DakCatelogPage</code>与<code>DakListCell</code>中传递的<code>DakCallback</code>参数都不需要了，加购商品时直接在<code>DakListCell</code>的<code>_updateState()</code>回调里调用<code>cart.add()</code>或<code>cart.delete</code>更新共享数据。</li>
+<li>共享数据使用者<code>DakCartCounter</code>中通过<code>AnimatedBuilder</code>来监听数据变化，并且在数据变化后使用已变化的数据仅局部重绘<code>Text</code>节点即可。</li>
+</ul>
+<p>为了做个验证，加购一件商品，此时控制台输出日志：</p>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ebnf"><span class="hljs-attribute">AnimatedBuilder Go</span><br></code></pre></td></tr></table></figure>
+<p>共享数据变化后，仅局部重绘了依赖者中使用此数据的的<code>Text</code>节点。</p>
+<h5 id="3-实现流程"><a href="#3-实现流程" class="headerlink" title="3.实现流程"></a>3.实现流程</h5><h6 id="i-注册-1"><a href="#i-注册-1" class="headerlink" title="i.注册"></a>i.注册</h6><p>实现代码6中，我在依赖者的<code>Text</code>节点使用了<code>AnimatedBuilder</code>注册监听并构建组件：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs DART">AnimatedBuilder(<br>animation: cart,<br>builder: (context, child) &#123;<br>  <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;AnimatedBuilder Go&#x27;</span>);<br>  <span class="hljs-keyword">return</span> Text(<br>    <span class="hljs-string">&#x27;共<span class="hljs-subst">$&#123;cart.items.length&#125;</span>件&#x27;</span>,<br>    style: <span class="hljs-keyword">const</span> TextStyle(<br>      color: Colors.black,<br>    ),<br>  );<br> &#125;,<br>)<br></code></pre></td></tr></table></figure>
+<p>其实用它是因为我的MAC系统较老，暂时没有升级 Flutter 版本，如果你的系统比较新，这里最好是使用2.15版本之后新出的<code>ListenableBuilder</code>，不过它俩在功能上类似，我权且用它做演示了。</p>
+<p><code>AnimatedBuilder</code>是<code>AnimatedWidget</code>的子类，用于在监听的数据变化时重绘依赖者组件：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs DART"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">AnimatedBuilder</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">AnimatedWidget</span> </span>&#123;<br>  <span class="hljs-keyword">const</span> AnimatedBuilder(&#123;<br>    Key? key,<br>    <span class="hljs-keyword">required</span> Listenable animation,<br>    <span class="hljs-keyword">required</span> <span class="hljs-keyword">this</span>.builder,<br>    <span class="hljs-keyword">this</span>.child,<br>  &#125;) : <span class="hljs-keyword">super</span>(key: key, listenable: animation);<br><br>  <span class="hljs-keyword">final</span> TransitionBuilder builder;<br>  <span class="hljs-keyword">final</span> Widget? child;<br><br>  <span class="hljs-meta">@override</span><br>  Widget build(BuildContext context) &#123;<br>    <span class="hljs-keyword">return</span> builder(context, child);<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<ul>
+<li>参数1是个<code>Listenable</code>类型，对应购物车示例中的共享数据<code>cart</code>对象；</li>
+<li>参数2是构造组件的回调函数，每当监听的数据发生变化时，都会执行自己的<code>build()</code>函数，构建并返回我们自定义的组件，即购物车示例中<code>DakCartCounter</code>的<code>Text</code>组件。</li>
+</ul>
+<p>构建<code>AnimatedBuilder</code>时，<code>animation</code>将传递给其父类<code>AnimatedWidget</code>的<code>listenable</code>字段：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs DART"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">_AnimatedState</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">State</span>&lt;<span class="hljs-title">AnimatedWidget</span>&gt; </span>&#123;<br>  <span class="hljs-meta">@override</span><br>  <span class="hljs-keyword">void</span> initState() &#123;<br>    <span class="hljs-keyword">super</span>.initState();<br>    widget.listenable.addListener(_handleChange);<br>  &#125;<br><br>  <span class="hljs-keyword">void</span> _handleChange() &#123;<br>    setState(() &#123;<br>      <span class="hljs-comment">// The listenable&#x27;s state is our build state, and it changed already.</span><br>    &#125;);<br>  &#125;<br><br>  <span class="hljs-meta">@override</span><br>  Widget build(BuildContext context) =&gt; widget.build(context);<br>&#125;<br></code></pre></td></tr></table></figure>
+<p><code>listenable</code>在<code>initState()</code>阶段注册了通知的回调<code>_handleChange</code>，至此完成了注册这一步。</p>
+<h6 id="ii-修改"><a href="#ii-修改" class="headerlink" title="ii.修改"></a>ii.修改</h6><p>在商品分类页面，点击Cell中加购按钮后，先读取共享数据再修改它:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs FLUTTER">_updateState() &#123;<br>  setState(() &#123;<br>    widget.item.selected = !widget.item.selected;<br>    // 1.读取共享数据<br>    var cart = DakCartInheritedWidget.of(context)!.cart;<br>    // 2.修改共享数据<br>    widget.item.selected ? cart.add(widget.item) : cart.delete(widget.item);<br>  &#125;);<br>&#125;<br></code></pre></td></tr></table></figure>
+<h6 id="iii-通知"><a href="#iii-通知" class="headerlink" title="iii.通知"></a>iii.通知</h6><p><code>cart</code>对象在执行<code>add()</code>或者<code>delete()</code>的最后，都调用了<code>notifyListeners()</code>函数：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs FLUTTER">//加入购物车<br>add(DakItem item) &#123;<br>  _items.add(item);<br>  notifyListeners();<br>&#125;<br><br>//移出购物车<br>delete(DakItem item) &#123;<br>  int index = _items.indexOf(item);<br>  _items.removeAt(index);<br>  notifyListeners();<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs DART"><span class="hljs-meta">@protected</span><br><span class="hljs-keyword">void</span> notifyListeners() &#123;<br>  <span class="hljs-keyword">if</span> (_count == <span class="hljs-number">0</span>)<br>    <span class="hljs-keyword">return</span>;<br>  _notificationCallStackDepth++;<br><br>  <span class="hljs-keyword">final</span> <span class="hljs-built_in">int</span> end = _count;<br>  <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> i = <span class="hljs-number">0</span>; i &lt; end; i++) &#123;<br>    _listeners[i]?.call(); <span class="hljs-comment">// 重点在这里</span><br>  &#125;<br>  <span class="hljs-comment">//省略。。</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>即调用<code>ChangeNotifier</code>中的<code>_listeners[i]?.call()</code>，执行监听者的<code>_handleChange</code>回调。而这个回调正是前文在<code>i.注册</code>阶段里<code>_AnimatedState</code>中定义的：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs DART"><span class="hljs-keyword">void</span> _handleChange() &#123;<br>    setState(() &#123;<br>      <span class="hljs-comment">// The listenable&#x27;s state is our build state, and it changed already.</span><br>    &#125;);<br>  &#125;<br></code></pre></td></tr></table></figure>
+<p>其默认实现是执行<code>setState</code>，即重绘<code>AnimatedWidget</code>组件，执行其<code>build()</code>函数，即执行我们在<code>AnimatedBuilder</code>中提供的第二个参数<code>builder</code>，也就是构建<code>Text</code>组件的回调。</p>
+<p>这样，<code>DakCartCounter</code>就成功接收到通知，并且通过<code>AnimatedBuilder</code>局部重绘了<code>Text</code>组件。</p>
+<h5 id="4-小结"><a href="#4-小结" class="headerlink" title="4.小结"></a>4.小结</h5><ul>
+<li>共享数据类继承<code>ChangeNotifier</code>；</li>
+<li>依赖者中通过<code>xxxBuilder</code>注册数据变化的回调；</li>
+<li>触发共享数据的更新，执行<code>notifyListeners()</code>；</li>
+<li>接收通知，局部重绘组件。</li>
+</ul>
+<h4 id="6-2-ValueNotifier"><a href="#6-2-ValueNotifier" class="headerlink" title="6.2. ValueNotifier"></a>6.2. ValueNotifier</h4><p><code>ChangeNotifier</code>已经很方便的帮我们实现局部重绘了，而Flutter框架想给你的还不止如此，它还提供了某些场景下更精简、方便的<code>ValueNotifier</code>：</p>
+<figure class="highlight haxe"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs haxe"><span class="hljs-comment">/// A [ChangeNotifier] that holds a single value.</span><br><span class="hljs-comment">///</span><br><span class="hljs-comment">/// When [value] is replaced with something that is not equal to the old</span><br><span class="hljs-comment">/// value as evaluated by the equality operator ==, this class notifies its</span><br><span class="hljs-comment">/// listeners.</span><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ValueNotifier</span>&lt;<span class="hljs-title">T</span>&gt; <span class="hljs-keyword"><span class="hljs-keyword">extends</span> <span class="hljs-type">ChangeNotifier</span></span> <span class="hljs-keyword"><span class="hljs-keyword">implements</span> <span class="hljs-type">ValueListenable</span></span>&lt;<span class="hljs-title">T</span>&gt; </span>&#123;<br>  <span class="hljs-comment">/// Creates a [ChangeNotifier] that wraps this value.</span><br>  ValueNotifier(<span class="hljs-built_in">this</span>._value);<br><br>  T _value;<br><br>  @<span class="hljs-keyword">override</span><br>  T <span class="hljs-keyword">get</span> value =&gt; _value;<br><br>  <span class="hljs-keyword">set</span> value(T <span class="hljs-keyword">new</span><span class="hljs-type">Value</span>) &#123;<br>    <span class="hljs-keyword">if</span> (_value == <span class="hljs-keyword">new</span><span class="hljs-type">Value</span>)<br>      <span class="hljs-keyword">return</span>;<br>    _value = <span class="hljs-keyword">new</span><span class="hljs-type">Value</span>;<br>    notifyListeners();<br>  &#125;<br><br>  @<span class="hljs-keyword">override</span><br>  <span class="hljs-keyword">String</span> toString() =&gt; <span class="hljs-string">&#x27;<span class="hljs-subst">$&#123;describeIdentity(this)&#125;</span>(<span class="hljs-subst">$value)&#x27;;</span></span><br><span class="hljs-subst"><span class="hljs-string">&#125;</span></span><br></code></pre></td></tr></table></figure>
+<p>它是<code>ChangeNotifier</code>的子类，可以很方便的帮我们在共享数据外包裹一层<code>ChangeNotifier</code>，为共享数据提供<code>getter</code>、<code>setter</code>，并在<code>setter</code>内帮我们叫<code>notifyListeners()</code>。</p>
+<p>单看这些介绍，是不是发现它与 Swift 中属性包装器<code>@propertyWrapper</code>很像！那么接下来就用它来继续改造<code>代码实现4</code>。</p>
+<p>代码实现7：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br></pre></td><td class="code"><pre><code class="hljs FLUTTER">class DakMyApp extends StatelessWidget &#123;  // 这里变了<br>  DakMyApp(&#123;Key? key&#125;) : super(key: key);<br><br>  final cart = DakCart(items: []);<br>  @override<br>  Widget build(BuildContext context) &#123;<br>    print(&#x27;DakMyAPP build&#x27;);<br>    return DakCartInheritedWidget(<br>      cart,<br>      child: const MaterialApp(<br>        home: DakCatelogPage(), // 这里变了<br>      ),<br>    );<br>  &#125;<br>&#125;<br><br>// 传递数据组件<br>class DakCartInheritedWidget extends InheritedWidget &#123;<br>  //状态<br>  late final ValueNotifier&lt;DakCart&gt; _valueNotifier;  // 这里变了<br>  ValueNotifier&lt;DakCart&gt; get valueNotifier =&gt; _valueNotifier;<br><br>  DakCartInheritedWidget(<br>    DakCart cart, &#123;<br>    Key? key,<br>    required Widget child, //必须传入child<br>  &#125;) : super(<br>          key: key,<br>          child: child,<br>        ) &#123;<br>    _valueNotifier = ValueNotifier(cart);<br>  &#125;<br><br>  // 更新监听的数据对象<br>  void updateData(DakCart cart) &#123;<br>    _valueNotifier.value = cart;<br>  &#125;<br><br>  // 便捷获取共享对象<br>  static DakCartInheritedWidget? of(BuildContext context) &#123;<br>    // 这里变了<br>    return context<br>        .getElementForInheritedWidgetOfExactType&lt;DakCartInheritedWidget&gt;()<br>        ?.widget as DakCartInheritedWidget;<br>  &#125;<br><br>  // 重写<br>  @override<br>  bool updateShouldNotify(DakCartInheritedWidget oldWidget) &#123;<br>    return false; // 这里变了<br>  &#125;<br>&#125;<br><br>// 购物车Model<br>class DakCart &#123;<br>  // 已加购商品<br>  List&lt;DakItem&gt; items = [];<br>  // 商品总价<br>  int get totalPrice =&gt; items.length * 42;<br>  DakCart(&#123;required this.items&#125;);<br>  //加入购物车<br>  List&lt;DakItem&gt; add(DakItem item) &#123;<br>    items.add(item);<br>    return items;<br>  &#125;<br><br>  //移出购物车<br>  List&lt;DakItem&gt; delete(DakItem item) &#123;<br>    int index = items.indexOf(item);<br>    items.removeAt(index);<br>    return items;<br>  &#125;<br><br>  // 重写==操作符，用于后续判断购物车是否发生了变化<br>  @override<br>  bool operator ==(Object other) &#123;<br>    if (other is! DakCart) &#123;<br>      return false;<br>    &#125;<br>    if (!identical(this, other)) &#123;<br>      return false;<br>    &#125;<br>    bool same =<br>        listEquals(items, other.items) &amp;&amp; (other.totalPrice == totalPrice);<br>    return same;<br>  &#125;<br><br>  @override<br>  int get hashCode =&gt; Object.hashAll([items, totalPrice]);<br>&#125;<br><br>// 商品Model<br>class DakItem &#123;<br>  String name;<br>  bool selected;<br><br>  DakItem(&#123;<br>    required this.name,<br>    required this.selected,<br>  &#125;);<br>&#125;<br><br>// 商品列表页面<br>class DakCatelogPage extends StatelessWidget &#123;<br>  const DakCatelogPage(&#123;<br>    Key? key,<br>  &#125;) : super(key: key);<br>  static final items = [<br>    &#x27;Apple&#x27;,<br>    &#x27;Banana&#x27;,<br>    &#x27;Cherry&#x27;,<br>    &#x27;Damson&#x27;,<br>    &#x27;Grape&#x27;,<br>    &#x27;Haw&#x27;,<br>    &#x27;Kiwifruit&#x27;,<br>    &#x27;Lemon&#x27;,<br>    &#x27;Mango&#x27;,<br>    &#x27;Orange&#x27;<br>  ].map((e) =&gt; DakItem(name: e, selected: false)).toList();<br><br>  @override<br>  Widget build(BuildContext context) &#123;<br>    print(&#x27;DakCatelogPage build&#x27;);<br>    return Scaffold(<br>      appBar: AppBar(<br>        backgroundColor: Colors.yellow,<br>        centerTitle: true,<br>        title: const Text(<br>          &#x27;Catelog&#x27;,<br>          style: TextStyle(<br>            fontSize: 28,<br>            fontWeight: FontWeight.bold,<br>            color: Colors.black,<br>          ),<br>        ),<br>        actions: [<br>          TextButton.icon(<br>            onPressed: () &#123;&#125;,<br>            icon: const Icon(<br>              Icons.shopping_cart,<br>              color: Colors.black,<br>            ),<br>            label: const DakCartCounter(),<br>          ),<br>        ],<br>      ),<br>      body: ListView.builder(<br>        itemCount: items.length,<br>        itemBuilder: (context, index) &#123;<br>          return DakListCell(<br>            item: items[index],<br>          );<br>        &#125;,<br>      ),<br>    );<br>  &#125;<br>&#125;<br><br>//商品总数<br>class DakCartCounter extends StatelessWidget &#123; // 这里变了<br>  const DakCartCounter(&#123;Key? key&#125;) : super(key: key);<br><br>  @override<br>  Widget build(BuildContext context) &#123;<br>    print(&#x27;DakCartCounter build&#x27;);<br>    var valueNotifier = DakCartInheritedWidget.of(context)!.valueNotifier;<br>    return ValueListenableBuilder(<br>      // 这里变了<br>      valueListenable: valueNotifier,<br>      builder: (context, DakCart value, child) &#123;<br>        print(&#x27;DakCartCounter build Text&#x27;);<br>        return Text(<br>          &#x27;共$&#123;value.items.length&#125;件&#x27;,<br>          style: const TextStyle(<br>            color: Colors.black,<br>          ),<br>        );<br>      &#125;,<br>    );<br>  &#125;<br>&#125;<br><br>// 商品cell<br>class DakListCell extends StatefulWidget &#123;<br>  final DakItem item;<br>  const DakListCell(&#123;<br>    Key? key,<br>    required this.item,<br>  &#125;) : super(key: key);<br><br>  @override<br>  State&lt;DakListCell&gt; createState() =&gt; _DakListCellState();<br>&#125;<br><br>class _DakListCellState extends State&lt;DakListCell&gt; &#123;<br>  _updateState() &#123;<br>    setState(() &#123;<br>      widget.item.selected = !widget.item.selected;<br>    &#125;);<br>    // 这里变了<br>    final inherit = DakCartInheritedWidget.of(context)!;<br>    final valueNotifier = inherit.valueNotifier;<br>    final newItems = widget.item.selected<br>        ? valueNotifier.value.add(widget.item)<br>        : valueNotifier.value.delete(widget.item);<br>    final newCart = DakCart(items: newItems);<br>    inherit.updateData(newCart);<br>  &#125;<br><br>  @override<br>  Widget build(BuildContext context) &#123;<br>    return Container(<br>      padding: const EdgeInsets.all(10),<br>      color: Colors.white,<br>      child: Row(<br>        children: [<br>          Expanded(<br>            child: Row(<br>              children: [<br>                Container(<br>                  margin: const EdgeInsets.symmetric(horizontal: 10),<br>                  width: 50,<br>                  height: 50,<br>                  color: Colors.yellow,<br>                ),<br>                Text(<br>                  widget.item.name,<br>                  style: const TextStyle(<br>                    fontSize: 18,<br>                    fontWeight: FontWeight.bold,<br>                  ),<br>                ),<br>              ],<br>            ),<br>          ),<br>          Builder(<br>            builder: (context) &#123;<br>              return widget.item.selected<br>                  ? IconButton(<br>                      // 已选中<br>                      onPressed: _updateState,<br>                      icon: const Icon(Icons.check),<br>                    )<br>                  : ElevatedButton(<br>                      //未选中<br>                      onPressed: _updateState,<br>                      style: ButtonStyle(<br>                        backgroundColor:<br>                            MaterialStateProperty.all(Colors.white),<br>                        elevation: MaterialStateProperty.all(0),<br>                      ),<br>                      child: const Text(<br>                        &#x27;ADD&#x27;,<br>                        style: TextStyle(color: Colors.black),<br>                      ),<br>                    );<br>            &#125;,<br>          ),<br>        ],<br>      ),<br>    );<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>主要的变化是：</p>
+<ul>
+<li>现在<code>DakMyApp</code>与<code>DakCartCounter</code>是<code>StatelessWidget</code>了；</li>
+<li><code>DakCartInheritedWidget</code>中共享数据由<code>DakCart</code>类型变为了<code>ValueNotifier&lt;DakCart&gt;</code>类型，同时增加了更新数据的方法<code>updateData()</code>；</li>
+<li><code>updateShouldNotify()</code>方法直接返回了 false，后续数据的更新通过<code>ValueNotifier</code>实现，不再需要走<code>notifyClients</code>流程；</li>
+<li>静态方法<code>of()</code>中<code>dependOn..</code>变成了<code>get..</code>，也是因为后续数据的更新通过<code>ValueNotifier</code>实现，不再需要注入依赖；</li>
+<li><code>DakCatelogPage</code>与<code>DakListCell</code>中的<code>DakCallback</code>参数都不需要了，加购商品时直接在<code>DakListCell</code>的<code>_updateState()</code>回调里调用<code>inherit.updateData(newCart)</code>更新数据；</li>
+<li>共享数据使用者<code>DakCartCounter</code>中通过<code>ValueListenableBuilder</code>来监听数据变化，并且在数据变化后直接使用回调中的<code>value</code>局部重绘<code>Text</code>节点即可。</li>
+</ul>
+<p>为了做个验证，加购一件商品，此时控制台输出日志：</p>
+<figure class="highlight arcade"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs arcade">DakCartCounter build <span class="hljs-built_in">Text</span><br></code></pre></td></tr></table></figure>
+<p>这次，借助<code>ValueNotifier</code>的能力，<code>MyApp</code>、<code>DakCatelogPage</code>、<code>DakCartCounter</code>也都没重绘，只有使用了共享数据的<code>Text</code>组件重绘了！</p>
+<h3 id="7-小结"><a href="#7-小结" class="headerlink" title="7.小结"></a>7.小结</h3><p>本文介绍了原生开发与响应式编程中对于状态管理的不同处理方式，着重讲解了Flutter中对<code>提升状态</code>的实践及其产生的问题与解决方案。其中重点讲解了<code>InheritedWidget</code>在组件树中从上而下传递数据的机制原理，<code>ChangeNotifier</code>与<code>ValueNotifier</code>实现局部重绘的原理与实践。其实除了这些，还有<code>provider</code>等三方库可以实现局部刷新，后面的文章里再接着介绍吧~</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%8A%80%E6%9C%AF/" class="category-chain-item">技术</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Flutter/">#Flutter</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>flutter状态管理</div>
+      <div>https://davidlii.cn/2023/08/10/flutter-state.html</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Davidli</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年8月10日</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/07/15/flutter-pass-pointer.html" title="flutter手势-点击穿透">
+                        <span class="hidden-mobile">flutter手势-点击穿透</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://github.com/davidli-" target="_blank" rel="nofollow noopener"><span>Davidlii</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

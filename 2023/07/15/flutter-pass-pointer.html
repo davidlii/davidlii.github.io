@@ -19,7 +19,7 @@
     <meta name="description" content="1.背景这两天在学习手势相关的知识点，想实现一个Listview带可点击的背景视图。使用的是Stack布局，上层为Listview，下层为背景与按钮。因为Listview在上，点击手势无法穿透并向下传递，导致背景中的按钮无法响应点击事件。  几经查询，了解到IgnorePointer、AbsorbPointer组件，其中的前者就可以实现点击穿透的效果。以下就是对研究点击穿透原理过程的整理记录。 2">
 <meta property="og:type" content="article">
 <meta property="og:title" content="flutter手势-点击穿透">
-<meta property="og:url" content="http://yoursite.com/2023/07/15/flutter-pass-pointer.html">
+<meta property="og:url" content="https://davidlii.cn/2023/07/15/flutter-pass-pointer.html">
 <meta property="og:site_name" content="Davidli">
 <meta property="og:description" content="1.背景这两天在学习手势相关的知识点，想实现一个Listview带可点击的背景视图。使用的是Stack布局，上层为Listview，下层为背景与按钮。因为Listview在上，点击手势无法穿透并向下传递，导致背景中的按钮无法响应点击事件。  几经查询，了解到IgnorePointer、AbsorbPointer组件，其中的前者就可以实现点击穿透的效果。以下就是对研究点击穿透原理过程的整理记录。 2">
 <meta property="og:locale" content="zh_CN">
@@ -73,7 +73,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"yoursite.com","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+    var CONFIG = {"hostname":"davidlii.cn","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -587,7 +587,7 @@
   <div class="license-box my-3">
     <div class="license-title">
       <div>flutter手势-点击穿透</div>
-      <div>http://yoursite.com/2023/07/15/flutter-pass-pointer.html</div>
+      <div>https://davidlii.cn/2023/07/15/flutter-pass-pointer.html</div>
     </div>
     <div class="license-meta">
       
@@ -629,9 +629,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2023/08/10/flutter-state-liftup.html" title="flutter状态管理-lift state up">
+                      <a href="/2023/08/10/flutter-state.html" title="flutter状态管理">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">flutter状态管理-lift state up</span>
+                        <span class="hidden-mobile">flutter状态管理</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
