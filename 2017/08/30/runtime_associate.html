@@ -16,12 +16,12 @@
   <meta name="author" content="Davidli">
   <meta name="keywords" content="Davidli">
   
-    <meta name="description" content="1.对象关联使用关联，我们可以在不修改类定义的前提下，为其对象增加存储空间。 适合的场景：  把某对象与特定对象相关联； OC允许给分类增加属性，但不会自动生成getter、setter函数，因此调用时会崩溃，使用关联可以解决此问题；  1.1.创建关联1OBJC_EXPORT void objc_setAssociatedObject(id object, const void *key, id">
+    <meta name="description" content="1.对象关联使用关联，我们可以在不修改类定义的前提下，为其对象增加存储空间。 适合的场景：  把某对象与特定对象相关联； 解决分类中属性不会自动生成getter、setter函数，调用时会闪退的问题；  1.1.创建关联1OBJC_EXPORT void objc_setAssociatedObject(id object, const void *key, id value, objc_Asso">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Runtime：对象关联">
 <meta property="og:url" content="https://davidlii.cn/2017/08/30/runtime_associate.html">
 <meta property="og:site_name" content="Davidli">
-<meta property="og:description" content="1.对象关联使用关联，我们可以在不修改类定义的前提下，为其对象增加存储空间。 适合的场景：  把某对象与特定对象相关联； OC允许给分类增加属性，但不会自动生成getter、setter函数，因此调用时会崩溃，使用关联可以解决此问题；  1.1.创建关联1OBJC_EXPORT void objc_setAssociatedObject(id object, const void *key, id">
+<meta property="og:description" content="1.对象关联使用关联，我们可以在不修改类定义的前提下，为其对象增加存储空间。 适合的场景：  把某对象与特定对象相关联； 解决分类中属性不会自动生成getter、setter函数，调用时会闪退的问题；  1.1.创建关联1OBJC_EXPORT void objc_setAssociatedObject(id object, const void *key, id value, objc_Asso">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2017-08-30T15:22:08.000Z">
 <meta property="article:modified_time" content="2019-09-29T04:21:08.000Z">
@@ -221,7 +221,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          8.2k 字
+          8.1k 字
         
       </span>
     
@@ -232,7 +232,7 @@
         
         
         
-          69 分钟
+          68 分钟
         
       </span>
     
@@ -283,11 +283,11 @@
             
               <div class="markdown-body">
                 
-                <h3 id="1-对象关联"><a href="#1-对象关联" class="headerlink" title="1.对象关联"></a>1.对象关联</h3><p>使用关联，我们可以在不修改类定义的前提下，为其对象增加存储空间。<br><br/></p>
+                <h3 id="1-对象关联"><a href="#1-对象关联" class="headerlink" title="1.对象关联"></a>1.对象关联</h3><p>使用关联，我们可以在不修改类定义的前提下，为其对象增加存储空间。</p>
 <p>适合的场景：</p>
 <ol>
 <li>把某对象与特定对象相关联；</li>
-<li>OC允许给分类增加属性，但不会自动生成getter、setter函数，因此调用时会崩溃，使用关联可以解决此问题；</li>
+<li>解决分类中属性不会自动生成getter、setter函数，调用时会闪退的问题；</li>
 </ol>
 <h4 id="1-1-创建关联"><a href="#1-1-创建关联" class="headerlink" title="1.1.创建关联"></a>1.1.创建关联</h4><figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">OBJC_EXPORT void objc<span class="hljs-constructor">_setAssociatedObject(<span class="hljs-params">id</span> <span class="hljs-params">object</span>, <span class="hljs-params">const</span> <span class="hljs-params">void</span> <span class="hljs-operator">*</span><span class="hljs-params">key</span>, <span class="hljs-params">id</span> <span class="hljs-params">value</span>, <span class="hljs-params">objc_AssociationPolicy</span> <span class="hljs-params">policy</span>)</span>;<br></code></pre></td></tr></table></figure>
 
@@ -304,8 +304,6 @@
 <p>作用：说明相关的对象是通过赋值、保留引用还是复制的方式进行关联的；还有这种关联是原子的还是非原子的。</p>
 <h4 id="1-2-获取关联"><a href="#1-2-获取关联" class="headerlink" title="1.2.获取关联"></a>1.2.获取关联</h4><figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">OBJC_EXPORT id objc<span class="hljs-constructor">_getAssociatedObject(<span class="hljs-params">id</span> <span class="hljs-params">object</span>, <span class="hljs-params">const</span> <span class="hljs-params">void</span> <span class="hljs-operator">*</span><span class="hljs-params">key</span>)</span>;<br></code></pre></td></tr></table></figure>
 <h4 id="1-3-断开关联"><a href="#1-3-断开关联" class="headerlink" title="1.3.断开关联"></a>1.3.断开关联</h4><p>断开关联可使用<code>objc_setAssociatedObject</code>函数，第三个参数传入nil值即可，此时关联策略也就无所谓了。</p>
-<br/>
-
 <p><code>objc_removeAssociatedObjects</code>也可以断开关联，但不建议使用这个函数，它会断开所有的关联。只有在需要把对象恢复到原始状态时才推荐使用这个函数。</p>
 <figure class="highlight isbl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs isbl"><span class="hljs-variable">OBJC_EXPORT</span> <span class="hljs-variable">void</span> <span class="hljs-function"><span class="hljs-title">objc_removeAssociatedObjects</span>(<span class="hljs-variable">id</span> <span class="hljs-variable"><span class="hljs-class">object</span></span>)</span><br></code></pre></td></tr></table></figure>
 
@@ -335,7 +333,7 @@
 <blockquote>
 <p>所有的关联属性、获取关联属性、移除关联属性都是通过一个<code>AssociationsManager</code>来操作，类似于 OC 中 NSFileManager 的角色，通过传递进来的对象作为地址取出这个对象所对应的关联列表，然后通过<code>key</code>取出这个关联列表的关联属性 ObjcAssociation。ObjcAssociation 包含了 <code>关联策略</code> 和 <code>关联值</code>.</p>
 </blockquote>
-<p>更具体的源码可以参考“大兵布莱恩特”的 <a target="_blank" rel="noopener" href="https://www.jianshu.com/p/21555a36a29d">这篇文章</a>~</p>
+<p>更具体的源码可以参考<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/21555a36a29d">这篇文章</a>~</p>
 <h3 id="2-分类特殊性"><a href="#2-分类特殊性" class="headerlink" title="2.分类特殊性"></a>2.分类特殊性</h3><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-meta">#import <span class="hljs-string">&lt;Foundation/Foundation.h&gt;</span></span><br><br><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">NSObject</span> (<span class="hljs-title">Associate</span>)</span><br>&#123;<br>    <span class="hljs-type">int</span> aInt;<span class="hljs-comment">//此处编译时会报错：“instance variables may not be placed in categories”</span><br>&#125;<br><span class="hljs-comment">//属性 分类中允许声明属性，但不会自动生成getter、setter函数；</span><br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">strong</span>) <span class="hljs-type">id</span> mAssociateObj;<br><br><span class="hljs-keyword">@end</span><br></code></pre></td></tr></table></figure>
 
 <ul>
@@ -343,7 +341,7 @@
 <li>分类中允许声明属性，但不会生成属性对应的成员变量及其 getter\setter；</li>
 <li>分类中可以增加新的方法，或者覆盖原类的方法；</li>
 </ul>
-<h4 id="2-1-✘成员变量"><a href="#2-1-✘成员变量" class="headerlink" title="2.1.✘成员变量"></a>2.1.✘成员变量</h4><p>结论：不能通过分类向原类中增加新的成员变量。<br><br/></p>
+<h4 id="2-1-✘成员变量"><a href="#2-1-✘成员变量" class="headerlink" title="2.1.✘成员变量"></a>2.1.✘成员变量</h4><p>结论：不能通过分类向原类中增加新的成员变量。</p>
 <p>原因分析：OC中的类是一个指向 <code>objc_class</code> 的结构体：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">struct</span> <span class="hljs-title class_">objc_class</span> &#123;<br>Class isa<br><br><span class="hljs-meta">#<span class="hljs-keyword">if</span> !__OBJC2__</span><br>Class super_class <br><span class="hljs-type">const</span> <span class="hljs-type">char</span> *name <br><span class="hljs-type">long</span> version<br><span class="hljs-type">long</span> info<br><span class="hljs-type">long</span> instance_size <br><span class="hljs-keyword">struct</span> <span class="hljs-title class_">objc_ivar_list</span> *ivars  <span class="hljs-comment">//成员变量列表</span><br><span class="hljs-keyword">struct</span> <span class="hljs-title class_">objc_method_list</span> **methodLists <br><span class="hljs-keyword">struct</span> <span class="hljs-title class_">objc_cache</span> *cache<br><span class="hljs-keyword">struct</span> <span class="hljs-title class_">objc_protocol_list</span> *protocols<br><span class="hljs-meta">#<span class="hljs-keyword">endif</span></span><br></code></pre></td></tr></table></figure>
 
@@ -354,14 +352,12 @@
 <ul>
 <li>分类的加载晚于原类</li>
 </ul>
-<p>分类中的属性和方法是在应用启动的过程中，原类注册完成之后才注册到原类中的，即分类加载时原类的结构早已固定。<br><br/></p>
-<p>基于以上两点，分类不能向一个已经<code>完成编译和加载</code>的原类中再增加成员变量~<br><br/></p>
+<p>分类中的属性和方法是在应用启动的过程中，原类注册完成之后才注册到原类中的，即分类加载时原类的结构早已固定。</p>
+<p>基于以上两点，分类不能向一个已经<code>完成编译和加载</code>的原类中再增加成员变量~</p>
 <p>有人说可以使用<code>class_addIvar()</code>增加成员变量，需要指出的是，这是个<code>运行时</code>函数~且苹果文档中已经明确说明：</p>
 <figure class="highlight smali"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs smali">/** <br>* Adds a<span class="hljs-built_in"> new </span>instance variable to a class.<br>* @note This function may only be called after objc_allocateClassPair<br>*      <span class="hljs-built_in"> and </span>before objc_registerClassPair. <br>*       Adding an<span class="hljs-built_in"> instance </span>variable to an existing class is<span class="hljs-built_in"> not </span>supported.<br>* @note The class must<span class="hljs-built_in"> not </span>be a metaclass. <br>*       Adding an<span class="hljs-built_in"> instance </span>variable to a metaclass is<span class="hljs-built_in"> not </span>supported.<br>* @note The<span class="hljs-built_in"> instance </span>variable&#x27;s minimum alignment in bytes is 1&lt;&lt;align. <br>*       The minimum alignment of an<span class="hljs-built_in"> instance </span><br>*       variable depends on the ivar&#x27;s type<span class="hljs-built_in"> and </span>the machine architecture. <br>*       For variables of any pointer type, pass log2(sizeof(pointer_type)).<br>*/<br>OBJC_EXPORT BOOL class_addIvar(Class cls,<span class="hljs-built_in"> const </span>char *name, size_t size, <br>uint8_t alignment,<span class="hljs-built_in"> const </span>char *types)<br></code></pre></td></tr></table></figure>
 
 <p>这个函数只能在<code>objc_allocateClassPair</code>与<code>objc_registerClassPair</code>之间使用。就是说一旦类的定义完成之后，就不能再增加成员变量。我们用到的类，在编译时其结构就已经固定了。即使在<code>运行时</code>，也不能在<code>objc_registerClassPair()</code>之后再增加成员变量！</p>
-<br/>
-
 <p>#示例：</p>
 <figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-meta">#import <span class="hljs-string">&lt;objc/runtime.h&gt;</span></span><br><span class="hljs-meta">#import <span class="hljs-string">&lt;objc/message.h&gt;</span></span><br><br>- (<span class="hljs-type">BOOL</span>)application:(<span class="hljs-built_in">UIApplication</span> *)application<br>didFinishLaunchingWithOptions:(<span class="hljs-built_in">NSDictionary</span> *)launchOptions<br>&#123;<br>    <span class="hljs-comment">//创建新的类</span><br>    Class Person = objc_allocateClassPair([<span class="hljs-built_in">NSObject</span> <span class="hljs-keyword">class</span>], <span class="hljs-string">&quot;Person&quot;</span>, <span class="hljs-number">0</span>);<br><br>    <span class="hljs-comment">//增加成员变量</span><br>    <span class="hljs-type">BOOL</span> status = class_addIvar(Person, <span class="hljs-string">&quot;nick&quot;</span>,<br>    <span class="hljs-keyword">sizeof</span>(<span class="hljs-built_in">NSString</span>*), log2(<span class="hljs-keyword">sizeof</span>(<span class="hljs-built_in">NSString</span>*)), <span class="hljs-keyword">@encode</span>(<span class="hljs-built_in">NSString</span>*));<br><br>    <span class="hljs-keyword">if</span> (status)<br>        <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;+++++变量nick添加成功&quot;</span>); <span class="hljs-comment">// 成功</span><br>    <span class="hljs-keyword">else</span><br>        <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;+++++变量nick添加失败&quot;</span>);<br><br>    <span class="hljs-comment">//注册类</span><br>    objc_registerClassPair(Person);<br><br>    status = class_addIvar(Person, <span class="hljs-string">&quot;city&quot;</span>,<br>    <span class="hljs-keyword">sizeof</span>(<span class="hljs-built_in">NSString</span>*), log2(<span class="hljs-keyword">sizeof</span>(<span class="hljs-built_in">NSString</span>*)), <span class="hljs-keyword">@encode</span>(<span class="hljs-built_in">NSString</span>*));<br><br>    <span class="hljs-keyword">if</span> (status)<br>        <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;+++++变量city添加成功&quot;</span>);<br>    <span class="hljs-keyword">else</span><br>        <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;+++++变量city添加失败&quot;</span>); <span class="hljs-comment">// 失败</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">YES</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
 
@@ -369,11 +365,11 @@
 <figure class="highlight brainfuck"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs brainfuck"><span class="hljs-literal">+++++</span><span class="hljs-comment">变量nick添加成功</span><br><span class="hljs-literal">+++++</span><span class="hljs-comment">变量city添加失败</span><br></code></pre></td></tr></table></figure>
 
 <p>示例中在<code>objc_registerClassPair()</code>之后添加成员变量<code>city</code>失败~</p>
-<h4 id="2-2-✔️属性"><a href="#2-2-✔️属性" class="headerlink" title="2.2.✔️属性"></a>2.2.✔️属性</h4><p>结论：分类中可以增加属性，但不会自动生成对应的成员变量和getter&#x2F;setter。<br><br/></p>
-<p>1、分类为什么可以声明属性呢？<br><br/></p>
-<p>这是因为分类的结构体中本身就定义了<code>proper_list_t *properties</code>字段，参考<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/eebc2acd7da0">这里</a>。<br><br/></p>
-<p>2、为什么不能自动生成属性对应的成员变量和存取函数呢？<br><br/></p>
-<p>原类中属性对应的成员变量和存取函数都是由编译器在编译阶段生成的，而分类的则是在应用启动阶段原类加载完成之后才注册到原类中的，所以没法实现属性的@synthesize功能。如果想实现这些功能，我们可以使用上面提到的关联技术。<br><br/></p>
+<h4 id="2-2-✔️属性"><a href="#2-2-✔️属性" class="headerlink" title="2.2.✔️属性"></a>2.2.✔️属性</h4><p>结论：分类中可以增加属性，但不会自动生成对应的成员变量和getter&#x2F;setter。</p>
+<p>1、分类为什么可以声明属性呢？</p>
+<p>这是因为分类的结构体中本身就定义了<code>proper_list_t *properties</code>字段，参考<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/eebc2acd7da0">这里</a>。</p>
+<p>2、为什么不能自动生成属性对应的成员变量和存取函数呢？</p>
+<p>原类中属性对应的成员变量和存取函数都是由编译器在编译阶段生成的，而分类的则是在应用启动阶段原类加载完成之后才注册到原类中的，所以没法实现属性的@synthesize功能。如果想实现这些功能，我们可以使用上面提到的关联技术。</p>
 <p>#示例：</p>
 <figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-meta">#import <span class="hljs-string">&lt;objc/runtime.h&gt;</span></span><br><span class="hljs-meta">#import <span class="hljs-string">&lt;objc/message.h&gt;</span></span><br><br>- (<span class="hljs-type">BOOL</span>)application:(<span class="hljs-built_in">UIApplication</span> *)application<br>didFinishLaunchingWithOptions:(<span class="hljs-built_in">NSDictionary</span> *)launchOptions<br>&#123;<br>    <span class="hljs-comment">//创建新的类</span><br>    Class Person = objc_allocateClassPair([<span class="hljs-built_in">NSObject</span> <span class="hljs-keyword">class</span>], <span class="hljs-string">&quot;Person&quot;</span>, <span class="hljs-number">0</span>);<br><br>    <span class="hljs-comment">//增加成员变量</span><br>    <span class="hljs-type">BOOL</span> status = class_addIvar(Person, <span class="hljs-string">&quot;nick&quot;</span>,<br>    <span class="hljs-keyword">sizeof</span>(<span class="hljs-built_in">NSString</span>*), log2(<span class="hljs-keyword">sizeof</span>(<span class="hljs-built_in">NSString</span>*)), <span class="hljs-keyword">@encode</span>(<span class="hljs-built_in">NSString</span>*));<br><br>    <span class="hljs-keyword">if</span> (status)<br>        <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;+++++变量nick添加成功&quot;</span>); <span class="hljs-comment">// 成功</span><br>    <span class="hljs-keyword">else</span><br>        <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;+++++变量nick添加失败&quot;</span>);<br><br>    <span class="hljs-comment">//注册类</span><br>    objc_registerClassPair(Person);<br><br>    <span class="hljs-comment">//为类增加属性</span><br>    objc_property_attribute_t type  = &#123;<span class="hljs-string">&quot;T&quot;</span>,<span class="hljs-string">&quot;@\&quot;NSString\&quot;&quot;</span>&#125;;<br>    objc_property_attribute_t ownership1 = &#123;<span class="hljs-string">&quot;C&quot;</span>,<span class="hljs-string">&quot;&quot;</span>&#125;;      <span class="hljs-comment">// C = copy</span><br>    objc_property_attribute_t ownership2 = &#123; <span class="hljs-string">&quot;N&quot;</span>, <span class="hljs-string">&quot;&quot;</span> &#125;;   <span class="hljs-comment">// N = nonatomic</span><br>    objc_property_attribute_t backIvars  = &#123;<span class="hljs-string">&quot;V&quot;</span>,<span class="hljs-string">&quot;_name&quot;</span>&#125;; <span class="hljs-comment">//属性名</span><br>    objc_property_attribute_t atts[] = &#123;type,ownership1,ownership2,backIvars&#125;;<br><br>    status = class_addProperty(Person, <span class="hljs-string">&quot;name&quot;</span>, atts, <span class="hljs-number">4</span>);<br>    <span class="hljs-keyword">if</span> (status)<br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;+++++属性name添加成功&quot;</span>); <span class="hljs-comment">// 成功</span><br>    <span class="hljs-keyword">else</span><br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;+++++属性name添加成功&quot;</span>);<br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">YES</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
 
@@ -382,17 +378,10 @@
 
 <p>日志显示，<code>objc_registerClassPair</code>之后是可以动态添加<code>属性</code>的，但是如果你打印此时类的成员变量列表你会发现，并未创建属性对应的以下划线<code>_</code>开头的成员变量。这是因为我们平时所见到的<code>&quot;_属性名&quot;</code>成员变量是由编译器自动创建的，这里的代码是在运行时，并未经过编译器~</p>
 <h4 id="2-3-✔️方法"><a href="#2-3-✔️方法" class="headerlink" title="2.3.✔️方法"></a>2.3.✔️方法</h4><p>结论：分类中可以增加新的方法，也可以覆盖原类的方法。</p>
-<br/>
-
-<p>类的结构体中，<code>**methodLists</code>是一个指向<code>objc_method_list</code>指针的指针，也就是说<code>**methodLists</code>只是把装方法们的容器的地址保存在类的结构体里。类编译完成后，这个容器的地址不可变了，但是我们可以往这个容器里继续添加元素。因为增加方法不会影响类的内存空间。<br><br/></p>
-<p>分类中定义的方法也会被加入到原类<code>**methodLists</code>容器中，且分类的方法会在原类的方法之前。也正是因为这样，我们在分类中重写原类的方法时，原类的方法会失效，因为在查找方法的过程中分类的方法靠前而最先被找到，直接终止寻找过程并调用分类中的实现去了。<br><br/></p>
+<p>类的结构体中，<code>**methodLists</code>是一个指向<code>objc_method_list</code>指针的指针，也就是说<code>**methodLists</code>只是把装方法们的容器的地址保存在类的结构体里。类编译完成后，这个容器的地址不可变了，但是我们可以往这个容器里继续添加元素。因为增加方法不会影响类的内存空间。</p>
+<p>分类中定义的方法也会被加入到原类<code>**methodLists</code>容器中，且分类的方法会在原类的方法之前。也正是因为这样，我们在分类中重写原类的方法时，原类的方法会失效，因为在查找方法的过程中分类的方法靠前而最先被找到，直接终止寻找过程并调用分类中的实现去了。</p>
 <p>#示例：</p>
 <figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-comment">// 原类头文件</span><br><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">Person</span> : <span class="hljs-title">NSObject</span> &lt;<span class="hljs-title">NSCoding</span>&gt;</span><br><br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">copy</span>) <span class="hljs-built_in">NSString</span> *name;<br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">assign</span>) <span class="hljs-built_in">NSInteger</span> age;<br><br>- (<span class="hljs-type">void</span>)callMe;<br><br><span class="hljs-keyword">@end</span><br><br><span class="hljs-comment">// 原类m文件</span><br><span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">Person</span></span><br><br>- (<span class="hljs-type">void</span>)callMe&#123;<br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;+++My name is:%@&quot;</span>,<span class="hljs-keyword">self</span>.name);<br>&#125;<br><span class="hljs-keyword">@end</span><br><br><br><span class="hljs-comment">// 分类Person+C.m</span><br><span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">Person</span> (<span class="hljs-title">C</span>)</span><br><br><span class="hljs-comment">// 重写原类的方法并提供新的实现</span><br>- (<span class="hljs-type">void</span>)callMe&#123;<br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;+++My name is not:%@&quot;</span>,<span class="hljs-keyword">self</span>.name);<br>&#125;<br><span class="hljs-keyword">@end</span><br></code></pre></td></tr></table></figure>
-
-<hr>
-<p>相关参考：</p>
-<p>#<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/21555a36a29d">©大兵布莱恩特-关联对象技术原理</a></p>
-
                 
               </div>
             
@@ -480,9 +469,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2017/09/01/runtime_swizzle.html" title="Runtime：黑魔法：方法交换、数组对对象检测">
+                      <a href="/2017/09/01/runtime_swizzle.html" title="Runtime：方法交换">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Runtime：黑魔法：方法交换、数组对对象检测</span>
+                        <span class="hidden-mobile">Runtime：方法交换</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -490,8 +479,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2017/08/25/runtime_ivar.html" title="Runtime：成员变量、属性及其应用">
-                        <span class="hidden-mobile">Runtime：成员变量、属性及其应用</span>
+                      <a href="/2017/08/25/runtime_ivar.html" title="Runtime：成员变量、属性">
+                        <span class="hidden-mobile">Runtime：成员变量、属性</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

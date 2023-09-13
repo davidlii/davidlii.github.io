@@ -372,7 +372,7 @@
 <li>public: 可以被任何模块的代码访问，模块外不可继承和重写。</li>
 <li>internal：默认访问级别，源代码所在的整个模块都可以访问。</li>
 <li>fileprivate：只能在当前文件中访问，当前类的扩展中也可以。</li>
-<li>private：只能在当前类中访问，当前类的扩展中也可以访问。</li>
+<li>private：只能在当前类与其扩展中访问，子类中无法访问。</li>
 </ul>
 <h3 id="8-defer"><a href="#8-defer" class="headerlink" title="8.defer"></a>8.defer</h3><p><code>defer</code>用于在离开当前代码块<code>前</code>执行一系列语句，如关闭数据库、清理对象等。</p>
 <p>当前代码块存在多个<code>defer</code>语句时，defer语句会按照定义时的顺序从后往前执行。</p>

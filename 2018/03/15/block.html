@@ -18,7 +18,7 @@
   
     <meta name="description" content="#1.block：从本质上来说，block是带有自动变量的匿名函数，是闭包在 OC 中的实现。 1.1.语法#block表达式:  ^ 返回值类型 (参数列表) {表达式}  #示例1.1： 123^int(int a, int b) &amp;#123;    return a * b;&amp;#125;;  #block类型变量:  返回值类型 (^变量名)(参数列表) &#x3D; Block表达式  #">
 <meta property="og:type" content="article">
-<meta property="og:title" content="block的实现">
+<meta property="og:title" content="Block的实现">
 <meta property="og:url" content="https://davidlii.cn/2018/03/15/block.html">
 <meta property="og:site_name" content="Davidli">
 <meta property="og:description" content="#1.block：从本质上来说，block是带有自动变量的匿名函数，是闭包在 OC 中的实现。 1.1.语法#block表达式:  ^ 返回值类型 (参数列表) {表达式}  #示例1.1： 123^int(int a, int b) &amp;#123;    return a * b;&amp;#125;;  #block类型变量:  返回值类型 (^变量名)(参数列表) &#x3D; Block表达式  #">
@@ -33,7 +33,7 @@
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>block的实现 - Davidli</title>
+  <title>Block的实现 - Davidli</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -198,7 +198,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="block的实现"></span>
+            <span id="subtitle" data-typed-text="Block的实现"></span>
           
         </div>
 
@@ -278,7 +278,7 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">block的实现</h1>
+            <h1 style="display: none">Block的实现</h1>
             
             
               <div class="markdown-body">
@@ -391,7 +391,7 @@
 <p>编译后会得到一个<code>main.cpp</code>文件，文件内容比较长，详细内容可到这里 <a target="_blank" rel="noopener" href="https://davidlii.nos-eastchina1.126.net/code_main.cpp">查看</a>，这里只看重点的部分：</p>
 <figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs abnf">struct __block_impl &#123;<br>  void *isa<span class="hljs-comment">;</span><br>  int Flags<span class="hljs-comment">;</span><br>  int Reserved<span class="hljs-comment">;</span><br>  void *FuncPtr<span class="hljs-comment">;</span><br>&#125;<span class="hljs-comment">;</span><br></code></pre></td></tr></table></figure>
 
-<p>这个<code>__block_impl</code>就是 block 的结构体。block 在编译过程中会被当做结构体进行处理，这里的<code>isa</code>字段指向 block 所属的类型，第#3章节有具体的介绍；<code>FuncPtr</code>字段表示函数指针，即对应的是 block 中的<code>&#123; &#125;</code>部分，它会指向下面编译器给我们生成的静态函数<code>__main_block_func_0</code>。</p>
+<p>这个<code>__block_impl</code>就是 block 的结构体。block 在编译过程中会被当做结构体进行处理，这里的<code>isa</code>字段指向 block 所属的类型，前面有具体的介绍；<code>FuncPtr</code>字段表示函数指针，即对应的是 block 中的<code>&#123; &#125;</code>部分，它会指向下面编译器给我们生成的静态函数<code>__main_block_func_0</code>。</p>
 <figure class="highlight sqf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sqf">static void <span class="hljs-variable">__main_block_func_0</span>(struct <span class="hljs-variable">__main_block_impl_0</span> *<span class="hljs-variable">__cself</span>) &#123;<br>    int <span class="hljs-built_in">count</span> = <span class="hljs-variable">__cself</span>-&gt;<span class="hljs-built_in">count</span>; <span class="hljs-comment">// bound by copy</span><br>    printf(<span class="hljs-string">&quot;varable in block:%d&quot;</span>,<span class="hljs-built_in">count</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>这个静态函数<code>__xxx_block_func_0</code>是一个函数的实现（前缀会根据.m文件的命名而变)，对应的是 block 中<code>&#123; &#125;</code>的部分。</p>
@@ -523,7 +523,7 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>block的实现</div>
+      <div>Block的实现</div>
       <div>https://davidlii.cn/2018/03/15/block.html</div>
     </div>
     <div class="license-meta">

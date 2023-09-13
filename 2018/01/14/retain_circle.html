@@ -18,7 +18,7 @@
   
     <meta name="description" content="1.概念循环引用可以简单理解为 A 强引用 B，B 又强引用了 A，双方同时保持对方的一个引用，导致引用计数不为0，始终无法释放。 影响？ 导致对象无法释放，造成内存泄露。如果是 ViewController 内出现循环引用，在反复 push &amp; pop 后，ViewController 释放不掉，导致内存激增，甚至引发crash。 2.场景2.1.block下面是一段关于 block 的">
 <meta property="og:type" content="article">
-<meta property="og:title" content="循环引用问题">
+<meta property="og:title" content="循环引用">
 <meta property="og:url" content="https://davidlii.cn/2018/01/14/retain_circle.html">
 <meta property="og:site_name" content="Davidli">
 <meta property="og:description" content="1.概念循环引用可以简单理解为 A 强引用 B，B 又强引用了 A，双方同时保持对方的一个引用，导致引用计数不为0，始终无法释放。 影响？ 导致对象无法释放，造成内存泄露。如果是 ViewController 内出现循环引用，在反复 push &amp; pop 后，ViewController 释放不掉，导致内存激增，甚至引发crash。 2.场景2.1.block下面是一段关于 block 的">
@@ -35,7 +35,7 @@
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>循环引用问题 - Davidli</title>
+  <title>循环引用 - Davidli</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -200,7 +200,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="循环引用问题"></span>
+            <span id="subtitle" data-typed-text="循环引用"></span>
           
         </div>
 
@@ -280,7 +280,7 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">循环引用问题</h1>
+            <h1 style="display: none">循环引用</h1>
             
             
               <div class="markdown-body">
@@ -395,7 +395,7 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>循环引用问题</div>
+      <div>循环引用</div>
       <div>https://davidlii.cn/2018/01/14/retain_circle.html</div>
     </div>
     <div class="license-meta">
@@ -438,9 +438,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2018/01/20/reuse_cell.html" title="Cell重用、卡顿、离屏渲染">
+                      <a href="/2018/01/20/reuse_cell.html" title="Cell与离屏渲染">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Cell重用、卡顿、离屏渲染</span>
+                        <span class="hidden-mobile">Cell与离屏渲染</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -448,8 +448,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2018/01/09/framework.html" title="静态库 &amp; 动态库、.a &amp; .framework、制作库">
-                        <span class="hidden-mobile">静态库 &amp; 动态库、.a &amp; .framework、制作库</span>
+                      <a href="/2018/01/09/framework.html" title="静态库 &amp; 动态库、.a &amp; .framework">
+                        <span class="hidden-mobile">静态库 &amp; 动态库、.a &amp; .framework</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

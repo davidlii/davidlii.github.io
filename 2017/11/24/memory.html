@@ -221,7 +221,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          844 字
+          825 字
         
       </span>
     
@@ -232,7 +232,7 @@
         
         
         
-          8 分钟
+          7 分钟
         
       </span>
     
@@ -305,11 +305,6 @@
 <li>BSS段\数据段\常量区\代码段：程序结束后由系统释放。</li>
 </ul>
 <figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-type">int</span> age = <span class="hljs-number">24</span>;  <span class="hljs-comment">//全局初始化区（数据段）</span><br><span class="hljs-built_in">NSString</span> *name;<span class="hljs-comment">//全局未初始化区（BSS段）</span><br><span class="hljs-keyword">static</span> <span class="hljs-built_in">NSString</span> *sName = <span class="hljs-string">@&quot;Dav&quot;</span>;<span class="hljs-comment">//全局（静态初始化）区</span><br><br><span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">AppDelegate</span></span><br><br>-(<span class="hljs-type">BOOL</span>)application:(<span class="hljs-built_in">UIApplication</span> *)application<br>willFinishLaunchingWithOptions:(<span class="hljs-built_in">NSDictionary</span> *)launchOptions<br>&#123;<br>    <span class="hljs-type">int</span> aInt;<span class="hljs-comment">//栈</span><br>    <span class="hljs-built_in">NSString</span> *aName = <span class="hljs-string">@&quot;Dav&quot;</span>; <span class="hljs-comment">//Dav在常量区，对象aName的指针存储在栈区。</span><br>    <span class="hljs-comment">//对象aArr的指针在栈区，分配而来的8字节的区域在堆区，aArr的指针指向堆区的地址。</span><br>    <span class="hljs-built_in">NSMutableArray</span> *aArr = [<span class="hljs-built_in">NSMutableArray</span> arrayWithCapacity:<span class="hljs-number">1</span>]; <br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">YES</span>;<br>&#125;<br><br>- (<span class="hljs-built_in">NSInteger</span>)mathAddParam1:(<span class="hljs-built_in">NSInteger</span>)num1 Param2:(<span class="hljs-built_in">NSInteger</span>)num2<br>&#123;<br>    <span class="hljs-keyword">return</span> num1 + num2; <span class="hljs-comment">//num1和num2 在栈区</span><br>&#125;<br><span class="hljs-keyword">@end</span><br></code></pre></td></tr></table></figure>
-
-<hr>
-<p>相关参考：</p>
-<p>#<a target="_blank" rel="noopener" href="https://blog.csdn.net/wangxiaolong_china/article/details/6844325">©elite-地址空间分布</a></p>
-
                 
               </div>
             

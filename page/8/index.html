@@ -242,7 +242,7 @@
       
       <a class="index-excerpt " href="/2017/11/08/gcd.html" target="_self">
         <div>
-          1.简介GCD是苹果公司在线程池模式基础上开发的一套多核编程的较新的解决方案。它的优点有：  底层是由C语言实现，API使用时简洁明了； 为多核处理器而设计，会自动利用更多的CPU内核进行运算，执行效率高； 会自动管理线程的生命周期，不需要我们写任何线程管理的代码，只需告诉它我们想要执行的任务。  2.同步与异步GCD中同步和异步是将任务以 block 的形式提交到指定的队列中时使用的两种方式。
+          1.简介GCD是在线程池模式基础上开发的一套多核编程的较新的解决方案：  底层由C语言实现，API使用时简洁明了； 为多核处理器而设计，会自动利用更多的CPU内核进行运算，执行效率高； 自动管理线程生命周期，无需手写线程管理的代码，只需告诉它我们想要执行的任务。  2.同步与异步同步和异步是将任务以 block 形式提交到指定队列中时所使用的两种方式。 1dispatch_sync(dispatc
         </div>
       </a>
 
@@ -428,7 +428,7 @@
     
       <div class="col-12 col-md-4 m-auto index-img">
         <a href="/2017/09/01/runtime_addClass.html" target="_self">
-          <img src="/img/avatar.png" srcset="/img/loading.gif" lazyload alt="Runtime：动态增加新类、方法、属性">
+          <img src="/img/avatar.png" srcset="/img/loading.gif" lazyload alt="Runtime：动态更新">
         </a>
       </div>
     
@@ -436,7 +436,7 @@
       <h1 class="index-header">
         
         <a href="/2017/09/01/runtime_addClass.html" target="_self">
-          Runtime：动态增加新类、方法、属性
+          Runtime：动态更新
         </a>
       </h1>
 
@@ -495,7 +495,7 @@
     
       <div class="col-12 col-md-4 m-auto index-img">
         <a href="/2017/09/01/runtime_swizzle.html" target="_self">
-          <img src="/img/avatar.png" srcset="/img/loading.gif" lazyload alt="Runtime：黑魔法：方法交换、数组对对象检测">
+          <img src="/img/avatar.png" srcset="/img/loading.gif" lazyload alt="Runtime：方法交换">
         </a>
       </div>
     
@@ -503,14 +503,14 @@
       <h1 class="index-header">
         
         <a href="/2017/09/01/runtime_swizzle.html" target="_self">
-          Runtime：黑魔法：方法交换、数组对对象检测
+          Runtime：方法交换
         </a>
       </h1>
 
       
       <a class="index-excerpt " href="/2017/09/01/runtime_swizzle.html" target="_self">
         <div>
-          方法交换Method Swizzling 作用：动态交换两个方法的实现(即IMP指针)； 原理：在类的数据结构体中有一个”方法列表”，它存放着 SEL 与 IMP 的映射关系。Method Swizzling 就是对这个列表进行的操作，通过改变这种映射关系，完成两个方法IMP的交换；   使用场景：  类的某个原有方法无法满足新的需求，需要扩展并替换之。如数组新增对象时，检测对象是否为nil； 新
+          1.方法交换Method Swizzling 作用：动态交换两个方法的实现(即IMP指针)； 原理：在类的数据结构体中有一个”方法列表”，它存放着 SEL 与 IMP 的映射关系。Method Swizzling 就是对这个列表进行的操作，通过改变这种映射关系，完成两个方法IMP的交换； 使用场景：  类的原有方法无法满足新需求，需要扩展并替换。如数组新增对象时，检测对象是否为nil； 新增页面统
         </div>
       </a>
 
@@ -577,7 +577,7 @@
       
       <a class="index-excerpt " href="/2017/08/30/runtime_associate.html" target="_self">
         <div>
-          1.对象关联使用关联，我们可以在不修改类定义的前提下，为其对象增加存储空间。 适合的场景：  把某对象与特定对象相关联； OC允许给分类增加属性，但不会自动生成getter、setter函数，因此调用时会崩溃，使用关联可以解决此问题；  1.1.创建关联1OBJC_EXPORT void objc_setAssociatedObject(id object, const void *key, id
+          1.对象关联使用关联，我们可以在不修改类定义的前提下，为其对象增加存储空间。 适合的场景：  把某对象与特定对象相关联； 解决分类中属性不会自动生成getter、setter函数，调用时会闪退的问题；  1.1.创建关联1OBJC_EXPORT void objc_setAssociatedObject(id object, const void *key, id value, objc_Asso
         </div>
       </a>
 
@@ -629,7 +629,7 @@
     
       <div class="col-12 col-md-4 m-auto index-img">
         <a href="/2017/08/25/runtime_ivar.html" target="_self">
-          <img src="/img/avatar.png" srcset="/img/loading.gif" lazyload alt="Runtime：成员变量、属性及其应用">
+          <img src="/img/avatar.png" srcset="/img/loading.gif" lazyload alt="Runtime：成员变量、属性">
         </a>
       </div>
     
@@ -637,7 +637,7 @@
       <h1 class="index-header">
         
         <a href="/2017/08/25/runtime_ivar.html" target="_self">
-          Runtime：成员变量、属性及其应用
+          Runtime：成员变量、属性
         </a>
       </h1>
 

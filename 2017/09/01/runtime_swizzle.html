@@ -16,12 +16,12 @@
   <meta name="author" content="Davidli">
   <meta name="keywords" content="Davidli">
   
-    <meta name="description" content="方法交换Method Swizzling 作用：动态交换两个方法的实现(即IMP指针)； 原理：在类的数据结构体中有一个”方法列表”，它存放着 SEL 与 IMP 的映射关系。Method Swizzling 就是对这个列表进行的操作，通过改变这种映射关系，完成两个方法IMP的交换；   使用场景：  类的某个原有方法无法满足新的需求，需要扩展并替换之。如数组新增对象时，检测对象是否为nil； 新">
+    <meta name="description" content="1.方法交换Method Swizzling 作用：动态交换两个方法的实现(即IMP指针)； 原理：在类的数据结构体中有一个”方法列表”，它存放着 SEL 与 IMP 的映射关系。Method Swizzling 就是对这个列表进行的操作，通过改变这种映射关系，完成两个方法IMP的交换； 使用场景：  类的原有方法无法满足新需求，需要扩展并替换。如数组新增对象时，检测对象是否为nil； 新增页面统">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Runtime：黑魔法：方法交换、数组对对象检测">
+<meta property="og:title" content="Runtime：方法交换">
 <meta property="og:url" content="https://davidlii.cn/2017/09/01/runtime_swizzle.html">
 <meta property="og:site_name" content="Davidli">
-<meta property="og:description" content="方法交换Method Swizzling 作用：动态交换两个方法的实现(即IMP指针)； 原理：在类的数据结构体中有一个”方法列表”，它存放着 SEL 与 IMP 的映射关系。Method Swizzling 就是对这个列表进行的操作，通过改变这种映射关系，完成两个方法IMP的交换；   使用场景：  类的某个原有方法无法满足新的需求，需要扩展并替换之。如数组新增对象时，检测对象是否为nil； 新">
+<meta property="og:description" content="1.方法交换Method Swizzling 作用：动态交换两个方法的实现(即IMP指针)； 原理：在类的数据结构体中有一个”方法列表”，它存放着 SEL 与 IMP 的映射关系。Method Swizzling 就是对这个列表进行的操作，通过改变这种映射关系，完成两个方法IMP的交换； 使用场景：  类的原有方法无法满足新需求，需要扩展并替换。如数组新增对象时，检测对象是否为nil； 新增页面统">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2017-09-01T08:09:05.000Z">
 <meta property="article:modified_time" content="2017-09-01T08:09:05.000Z">
@@ -33,7 +33,7 @@
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>Runtime：黑魔法：方法交换、数组对对象检测 - Davidli</title>
+  <title>Runtime：方法交换 - Davidli</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -198,7 +198,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="Runtime：黑魔法：方法交换、数组对对象检测"></span>
+            <span id="subtitle" data-typed-text="Runtime：方法交换"></span>
           
         </div>
 
@@ -278,29 +278,27 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">Runtime：黑魔法：方法交换、数组对对象检测</h1>
+            <h1 style="display: none">Runtime：方法交换</h1>
             
             
               <div class="markdown-body">
                 
-                <h3 id="方法交换"><a href="#方法交换" class="headerlink" title="方法交换"></a>方法交换</h3><p>Method Swizzling<br><br/></p>
-<p>作用：动态交换两个方法的实现(即IMP指针)；<br><br/></p>
+                <h3 id="1-方法交换"><a href="#1-方法交换" class="headerlink" title="1.方法交换"></a>1.方法交换</h3><p>Method Swizzling</p>
+<p>作用：动态交换两个方法的实现(即IMP指针)；</p>
 <p>原理：在类的数据结构体中有一个”方法列表”，它存放着 SEL 与 IMP 的映射关系。Method Swizzling 就是对这个列表进行的操作，通过改变这种映射关系，完成两个方法IMP的交换；</p>
-<br/>
-
 <p>使用场景：</p>
 <ol>
-<li>类的某个原有方法无法满足新的需求，需要扩展并替换之。如数组新增对象时，检测对象是否为nil；</li>
-<li>新增页面统计等功能时，新建父类实现统计业务，之后让相关类继承此类时，会造成重复劳动。而在运行时，如果事先替换viewDidLoad等为自己的统计方法，则只需要一次操作便可成功；</li>
+<li>类的原有方法无法满足新需求，需要扩展并替换。如数组新增对象时，检测对象是否为nil；</li>
+<li>新增页面统计等功能时，需新建父类实现统计业务，再让相关类继承此类，这会造成重复劳动。如果在运行时事先替换viewDidLoad等为自己的统计方法，则只需要一次操作即可；</li>
 </ol>
 <p>其核心代码是runtime的下面两个C语言API：</p>
 <figure class="highlight smali"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs smali">/** <br> * Exchanges the implementations of two methods.<br> * <br> * @param m1 Method to exchange with second method.<br> * @param m2 Method to exchange with first method.<br> * <br> * @note This is an atomic version of the following:<br> *  \code <br> *  IMP imp1 = method_getImplementation(m1);<br> *  IMP imp2 = method_getImplementation(m2);<br> *  method_setImplementation(m1, imp2);<br> *  method_setImplementation(m2, imp1);<br> *  \endcode<br> */<br>OBJC_EXPORT void method_exchangeImplementations(Method m1, Method m2)<br><br><br>/** <br> * Returns a specified<span class="hljs-built_in"> instance </span>method for a given class.<br> * <br> * @param cls The class you want to inspect.<br> * @param name The selector of the method you want to retrieve.<br> * <br> * @return The method that corresponds to the implementation of the selector specified by <br> *  \e name for the class specified by \e cls,<span class="hljs-built_in"> or </span>\c NULL<span class="hljs-built_in"> if </span>the specified class<span class="hljs-built_in"> or </span>its <br> *  superclasses do<span class="hljs-built_in"> not </span>contain an<span class="hljs-built_in"> instance </span>method with the specified selector.<br> *<br> * @note This function searches superclasses for implementations, whereas \c class_copyMethodList does not.<br> */<br>OBJC_EXPORT Method class_getInstanceMethod(Class cls, SEL name)<br></code></pre></td></tr></table></figure>
-<h3 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h3><p>数组新增对象时检测nil对象，防止闪退。</p>
+<h3 id="2-应用"><a href="#2-应用" class="headerlink" title="2.应用"></a>2.应用</h3><p>数组新增对象时检测nil对象，防止闪退。</p>
 <figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-meta">#import <span class="hljs-string">&quot;NSMutableArray+Extension.h&quot;</span></span><br><span class="hljs-meta">#import <span class="hljs-string">&lt;objc/runtime.h&gt;</span></span><br><br><span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">NSMutableArray</span> (<span class="hljs-title">Extension</span>)</span><br><br>+(<span class="hljs-type">void</span>)load&#123;<br>    [<span class="hljs-keyword">self</span> swizzle_install];<br>&#125;<br><br>+ (<span class="hljs-type">void</span>)swizzle_install<br>&#123;<br>    Method method1 = class_getInstanceMethod(objc_getClass(<span class="hljs-string">&quot;__NSArrayM&quot;</span>),<br>    <span class="hljs-keyword">@selector</span>(addObject:));<br>    Method method2 = class_getInstanceMethod(objc_getClass(<span class="hljs-string">&quot;__NSArrayM&quot;</span>),<br>    <span class="hljs-keyword">@selector</span>(swizzle_addObject:));<br>    <span class="hljs-comment">// 交换两个方法的实现函数</span><br>    method_exchangeImplementations(method1, method2);<br>&#125;<br><br>-(<span class="hljs-type">void</span>)swizzle_addObject:(<span class="hljs-type">id</span>)anObject<br>&#123;<br>    <span class="hljs-comment">// 发现空对象</span><br>    <span class="hljs-keyword">if</span> (<span class="hljs-literal">nil</span> == anObject)<br>    &#123;<br>        <span class="hljs-keyword">@try</span> &#123;<br>            <span class="hljs-comment">// 注意：因为已经交换过方法了，所以这里调用的是数组的addObject:方法。</span><br>            [<span class="hljs-keyword">self</span> swizzle_addObject:anObject];<br>        &#125; <span class="hljs-keyword">@catch</span> (<span class="hljs-built_in">NSException</span> *exception) &#123;<br>            <span class="hljs-comment">// 捕获异常，打印日志，避免闪退。</span><br>            <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;Crash reason:\n %@&quot;</span>, [exception callStackSymbols]);<br>        &#125; <span class="hljs-keyword">@finally</span> &#123;&#125;<br>    &#125;<br>    <span class="hljs-comment">// 如果对象不为空</span><br>    <span class="hljs-keyword">else</span>&#123;<br>        <span class="hljs-comment">// 正常调用数组原生的addObject:方法，不捕获异常。</span><br>        [<span class="hljs-keyword">self</span> swizzle_addObject:anObject];<br>    &#125;<br>&#125;<br><span class="hljs-keyword">@end</span><br></code></pre></td></tr></table></figure>
 
 <p>在APP启动后，运行时会先执行 NSMutableArray 分类中的 <code>+load</code> 函数，这里会调用<code>swizzle_install</code>，启动方法交换：</p>
 <figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs objectivec">- (<span class="hljs-type">BOOL</span>)application:(<span class="hljs-built_in">UIApplication</span> *)application didFinishLaunchingWithOptions:(<span class="hljs-built_in">NSDictionary</span> *)launchOptions<br>&#123;<br>    <span class="hljs-comment">//添加对象</span><br>    <span class="hljs-built_in">NSMutableArray</span> *array = [<span class="hljs-built_in">NSMutableArray</span> new];<br>    [array addObject:<span class="hljs-literal">nil</span>];<br>&#125;<br></code></pre></td></tr></table></figure>
-<p>上面代码中，虽然向数组中加入nil对象，但因为已经对addObject方法做了交换并做了容错处理，所以只是会打印崩溃日志，应用并不会崩溃。</p>
+<p>上面代码中，虽然向数组中加入nil对象，但因为已经对<code>addObject</code>方法做了交换并做了容错处理，所以只是会打印崩溃日志，应用并不会闪退。</p>
 
                 
               </div>
@@ -346,7 +344,7 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>Runtime：黑魔法：方法交换、数组对对象检测</div>
+      <div>Runtime：方法交换</div>
       <div>https://davidlii.cn/2017/09/01/runtime_swizzle.html</div>
     </div>
     <div class="license-meta">
@@ -389,9 +387,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2017/09/01/runtime_addClass.html" title="Runtime：动态增加新类、方法、属性">
+                      <a href="/2017/09/01/runtime_addClass.html" title="Runtime：动态更新">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Runtime：动态增加新类、方法、属性</span>
+                        <span class="hidden-mobile">Runtime：动态更新</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
