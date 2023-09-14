@@ -16,24 +16,24 @@
   <meta name="author" content="Davidli">
   <meta name="keywords" content="Davidli">
   
-    <meta name="description" content="1、Cell 的重用#示例1：常见用法 123456789101112- (UITableViewCell *)tableView:(UITableView *)tableViewcellForRowAtIndexPath:(NSIndexPath *)indexPath &amp;#123;  static NSString *CellIdentifier &#x3D; @&quot;Cell&quot;;  U">
+    <meta name="description" content="1.方法交换Method Swizzling 作用：动态交换两个方法的实现(即IMP指针)； 原理：在类的数据结构体中有一个”方法列表”，它存放着 SEL 与 IMP 的映射关系。Method Swizzling 就是对这个列表进行的操作，通过改变这种映射关系，完成两个方法IMP的交换； 使用场景：  类的原有方法无法满足新需求，需要扩展并替换。如数组新增对象时，检测对象是否为nil； 新增页面统">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Cell与离屏渲染">
-<meta property="og:url" content="https://davidlii.cn/2018/01/20/reuse_cell.html">
+<meta property="og:title" content="方法交换">
+<meta property="og:url" content="https://davidlii.cn/2017/09/01/runtime-swizzle.html">
 <meta property="og:site_name" content="Davidli">
-<meta property="og:description" content="1、Cell 的重用#示例1：常见用法 123456789101112- (UITableViewCell *)tableView:(UITableView *)tableViewcellForRowAtIndexPath:(NSIndexPath *)indexPath &amp;#123;  static NSString *CellIdentifier &#x3D; @&quot;Cell&quot;;  U">
+<meta property="og:description" content="1.方法交换Method Swizzling 作用：动态交换两个方法的实现(即IMP指针)； 原理：在类的数据结构体中有一个”方法列表”，它存放着 SEL 与 IMP 的映射关系。Method Swizzling 就是对这个列表进行的操作，通过改变这种映射关系，完成两个方法IMP的交换； 使用场景：  类的原有方法无法满足新需求，需要扩展并替换。如数组新增对象时，检测对象是否为nil； 新增页面统">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2018-01-20T15:24:11.000Z">
-<meta property="article:modified_time" content="2018-09-27T15:24:11.000Z">
+<meta property="article:published_time" content="2017-09-01T08:09:05.000Z">
+<meta property="article:modified_time" content="2017-09-01T08:09:05.000Z">
 <meta property="article:author" content="Davidli">
-<meta property="article:tag" content="机制">
+<meta property="article:tag" content="runtime">
 <meta name="twitter:card" content="summary_large_image">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>Cell与离屏渲染 - Davidli</title>
+  <title>方法交换 - Davidli</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -198,7 +198,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="Cell与离屏渲染"></span>
+            <span id="subtitle" data-typed-text="方法交换"></span>
           
         </div>
 
@@ -209,8 +209,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2018-01-20 23:24" pubdate>
-          2018年1月20日 晚上
+        <time datetime="2017-09-01 16:09" pubdate>
+          2017年9月1日 下午
         </time>
       </span>
     
@@ -221,7 +221,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          3.2k 字
+          2.5k 字
         
       </span>
     
@@ -232,7 +232,7 @@
         
         
         
-          27 分钟
+          22 分钟
         
       </span>
     
@@ -278,76 +278,27 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">Cell与离屏渲染</h1>
+            <h1 style="display: none">方法交换</h1>
             
             
               <div class="markdown-body">
                 
-                <h3 id="1、Cell-的重用"><a href="#1、Cell-的重用" class="headerlink" title="1、Cell 的重用"></a>1、Cell 的重用</h3><p>#示例1：常见用法</p>
-<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs objectivec">- (<span class="hljs-built_in">UITableViewCell</span> *)tableView:(<span class="hljs-built_in">UITableView</span> *)tableView<br>cellForRowAtIndexPath:(<span class="hljs-built_in">NSIndexPath</span> *)indexPath <br>&#123;<br>  <span class="hljs-keyword">static</span> <span class="hljs-built_in">NSString</span> *CellIdentifier = <span class="hljs-string">@&quot;Cell&quot;</span>;<br>  <span class="hljs-built_in">UITableViewCell</span> *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];<br>  <span class="hljs-keyword">if</span> (<span class="hljs-literal">nil</span> == cell) &#123;<br>    cell = [[<span class="hljs-built_in">UITableViewCell</span> alloc] initWithStyle:<br>    <span class="hljs-built_in">UITableViewCellStyleDefault</span> <br>    reuseIdentifier:CellIdentifier];<br>  &#125;<br>  <span class="hljs-keyword">return</span> cell;<br>&#125;<br></code></pre></td></tr></table></figure>
+                <h3 id="1-方法交换"><a href="#1-方法交换" class="headerlink" title="1.方法交换"></a>1.方法交换</h3><p>Method Swizzling</p>
+<p>作用：动态交换两个方法的实现(即IMP指针)；</p>
+<p>原理：在类的数据结构体中有一个”方法列表”，它存放着 SEL 与 IMP 的映射关系。Method Swizzling 就是对这个列表进行的操作，通过改变这种映射关系，完成两个方法IMP的交换；</p>
+<p>使用场景：</p>
+<ol>
+<li>类的原有方法无法满足新需求，需要扩展并替换。如数组新增对象时，检测对象是否为nil；</li>
+<li>新增页面统计等功能时，需新建父类实现统计业务，再让相关类继承此类，这会造成重复劳动。如果在运行时事先替换viewDidLoad等为自己的统计方法，则只需要一次操作即可；</li>
+</ol>
+<p>其核心代码是runtime的下面两个C语言API：</p>
+<figure class="highlight smali"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs smali">/** <br> * Exchanges the implementations of two methods.<br> * <br> * @param m1 Method to exchange with second method.<br> * @param m2 Method to exchange with first method.<br> * <br> * @note This is an atomic version of the following:<br> *  \code <br> *  IMP imp1 = method_getImplementation(m1);<br> *  IMP imp2 = method_getImplementation(m2);<br> *  method_setImplementation(m1, imp2);<br> *  method_setImplementation(m2, imp1);<br> *  \endcode<br> */<br>OBJC_EXPORT void method_exchangeImplementations(Method m1, Method m2)<br><br><br>/** <br> * Returns a specified<span class="hljs-built_in"> instance </span>method for a given class.<br> * <br> * @param cls The class you want to inspect.<br> * @param name The selector of the method you want to retrieve.<br> * <br> * @return The method that corresponds to the implementation of the selector specified by <br> *  \e name for the class specified by \e cls,<span class="hljs-built_in"> or </span>\c NULL<span class="hljs-built_in"> if </span>the specified class<span class="hljs-built_in"> or </span>its <br> *  superclasses do<span class="hljs-built_in"> not </span>contain an<span class="hljs-built_in"> instance </span>method with the specified selector.<br> *<br> * @note This function searches superclasses for implementations, whereas \c class_copyMethodList does not.<br> */<br>OBJC_EXPORT Method class_getInstanceMethod(Class cls, SEL name)<br></code></pre></td></tr></table></figure>
+<h3 id="2-应用"><a href="#2-应用" class="headerlink" title="2.应用"></a>2.应用</h3><p>数组新增对象时检测nil对象，防止闪退。</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-meta">#import <span class="hljs-string">&quot;NSMutableArray+Extension.h&quot;</span></span><br><span class="hljs-meta">#import <span class="hljs-string">&lt;objc/runtime.h&gt;</span></span><br><br><span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">NSMutableArray</span> (<span class="hljs-title">Extension</span>)</span><br><br>+(<span class="hljs-type">void</span>)load&#123;<br>    [<span class="hljs-keyword">self</span> swizzle_install];<br>&#125;<br><br>+ (<span class="hljs-type">void</span>)swizzle_install<br>&#123;<br>    Method method1 = class_getInstanceMethod(objc_getClass(<span class="hljs-string">&quot;__NSArrayM&quot;</span>),<br>    <span class="hljs-keyword">@selector</span>(addObject:));<br>    Method method2 = class_getInstanceMethod(objc_getClass(<span class="hljs-string">&quot;__NSArrayM&quot;</span>),<br>    <span class="hljs-keyword">@selector</span>(swizzle_addObject:));<br>    <span class="hljs-comment">// 交换两个方法的实现函数</span><br>    method_exchangeImplementations(method1, method2);<br>&#125;<br><br>-(<span class="hljs-type">void</span>)swizzle_addObject:(<span class="hljs-type">id</span>)anObject<br>&#123;<br>    <span class="hljs-comment">// 发现空对象</span><br>    <span class="hljs-keyword">if</span> (<span class="hljs-literal">nil</span> == anObject)<br>    &#123;<br>        <span class="hljs-keyword">@try</span> &#123;<br>            <span class="hljs-comment">// 注意：因为已经交换过方法了，所以这里调用的是数组的addObject:方法。</span><br>            [<span class="hljs-keyword">self</span> swizzle_addObject:anObject];<br>        &#125; <span class="hljs-keyword">@catch</span> (<span class="hljs-built_in">NSException</span> *exception) &#123;<br>            <span class="hljs-comment">// 捕获异常，打印日志，避免闪退。</span><br>            <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;Crash reason:\n %@&quot;</span>, [exception callStackSymbols]);<br>        &#125; <span class="hljs-keyword">@finally</span> &#123;&#125;<br>    &#125;<br>    <span class="hljs-comment">// 如果对象不为空</span><br>    <span class="hljs-keyword">else</span>&#123;<br>        <span class="hljs-comment">// 正常调用数组原生的addObject:方法，不捕获异常。</span><br>        [<span class="hljs-keyword">self</span> swizzle_addObject:anObject];<br>    &#125;<br>&#125;<br><span class="hljs-keyword">@end</span><br></code></pre></td></tr></table></figure>
 
-<p>[tableView dequeueReusableCellWithIdentifier:CellIdentifier]; 就是 cell 重用的标志性语句。上面的代码逻辑是：当需要显示一个 Cell 时，系统会先去重用队列中查询是否有可重用的 cell，如果有则复用它，如果没有则新建一个 cell。<br><br/></p>
-<p>#示例2：读取 UITableView 的属性</p>
-<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">+ (void)ivarList<br>&#123;<br>    unsigned <span class="hljs-built_in">int</span> count = <span class="hljs-number">0</span>;<br>    Ivar *ivars = <span class="hljs-keyword">class</span><span class="hljs-constructor">_copyIvarList([UITableView <span class="hljs-params">class</span>], &amp;<span class="hljs-params">count</span>)</span>;<br>    <br>    <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> i = <span class="hljs-number">0</span>; i&lt;count; i++)&#123;<br>        Ivar ivar = ivars<span class="hljs-literal">[<span class="hljs-identifier">i</span>]</span>;<br>        const <span class="hljs-built_in">char</span> *charName = ivar<span class="hljs-constructor">_getName(<span class="hljs-params">ivar</span>)</span>;<br>        const <span class="hljs-built_in">char</span> *charType = ivar<span class="hljs-constructor">_getTypeEncoding(<span class="hljs-params">ivar</span>)</span>;<br>        <span class="hljs-constructor">NSLog(@<span class="hljs-string">&quot;Name:%s,Type:%s&quot;</span>,<span class="hljs-params">charName</span>,<span class="hljs-params">charType</span>)</span>;<br>    &#125;<br>    free(ivars);<br>&#125;<br></code></pre></td></tr></table></figure>
-
-<p>上面通过运行时函数 <code>class_copyIvarList</code> 来读取 UITableView 中所有成员变量。结果如下：</p>
-<figure class="highlight sqf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sqf"><span class="hljs-built_in">Name</span>:<span class="hljs-variable">_visibleCells</span>,<span class="hljs-built_in">Type</span>:@<span class="hljs-string">&quot;NSMutableArray&quot;</span><br><span class="hljs-built_in">Name</span>:<span class="hljs-variable">_reusableTableCells</span>,<span class="hljs-built_in">Type</span>:@<span class="hljs-string">&quot;NSMutableDictionary&quot;</span><br></code></pre></td></tr></table></figure>
-
-<p>从打印结果可以看到，UITableView 中包括了以下两个属性：</p>
-<ul>
-<li><strong>visibleCells</strong>：（保存当前屏幕范围内显示的 cells）</li>
-<li><strong>reusableTableCells</strong>：（保存可重用的 cells）</li>
-</ul>
-<p><strong>Cell的重用逻辑：</strong><br><br/></p>
-<p>（1）假如当前屏幕能显示10个 Cell，在 UITableView 开始渲染时，系统会通过 <code>-initWithStyle:reuseIdentifier:</code> 方法创建10个新的 cell （标志相同） 并显示，这些 cell 会被放入 <code>visibleCells</code> 这个数组中。</p>
-<p>（2）向下滑动 TableView，当 <strong>cell1</strong> 完全移出屏幕，并且 <strong>cell11</strong> (它也是alloc出来的，原因同上)完全显示出来时，<strong>cell11</strong> 会被加入到 <code>visiableCells</code>，而 <strong>cell1</strong> 则被移出 <code>visiableCells</code> 并加入到 <code>reusableTableCells</code> 中。</p>
-<p>（3）接着向下滑动 TableView，因为 <strong>cell1</strong> 已经在 <code>reusableTableCells</code> 中，所以 即将显示的第12个 cell 会重用 <strong>cell1</strong>。因此 <strong>cell1</strong> 会被移出 <code>reusableTableCells</code> 并加入到 <code>visiableCells</code> 中；同时 <strong>cell2</strong> 移出 <code>visiableCells</code> 并加入到 <code>reusableTableCells</code> 中。</p>
-<p>（4）接下来的重用以此类推。。</p>
-<br/>
-
-<p><strong>注意：</strong> cell 是重用的，所以在配置 cell 时一定要重新设置重用的 cell，不要遗留老的数据。</p>
-<h3 id="2、卡顿与离屏渲染"><a href="#2、卡顿与离屏渲染" class="headerlink" title="2、卡顿与离屏渲染"></a>2、卡顿与离屏渲染</h3><p>Tableview 使用中常会出现性能问题，其中会涉及到离屏渲染，下面这些博客里会有专业的分析，多看看，收益颇丰~</p>
-<ul>
-<li>#<a target="_blank" rel="noopener" href="https://blog.ibireme.com/2015/11/12/smooth_user_interfaces_for_ios/">©ibireme-保持界面流畅的技巧</a></li>
-<li>#<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_29846663/article/details/68960512">©于海明-离屏渲染</a></li>
-</ul>
-<p>以下是从上面博客摘录的部分内容：</p>
-<h4 id="2-1-卡顿的原因"><a href="#2-1-卡顿的原因" class="headerlink" title="2.1 卡顿的原因"></a>2.1 卡顿的原因</h4><p>通常来说，计算机系统中 CPU、GPU、显示器是协同工作的：<code>CPU</code> 负责计算显示的内容，如视图的创建、布局计算、图片解码、文本绘制等，完成后提交到 GPU；<code>GPU</code> 负责对 CPU 提交的内容进行变换、合成、渲染，完成后将渲染结果放入帧缓冲区；<code>视频控制器</code>会按照 VSync 信号逐行读取帧缓冲区的数据，经过可能的数模转换传递给显示器显示。<br><br/></p>
-<p>如果在一个 VSync 时间内，CPU 或者 GPU 没有完成内容提交，则那一帧就会被丢弃，等待下一次机会再显示，而这时显示屏会保留之前的内容不变。这就是界面卡顿的原因。</p>
-<h4 id="2-2-离屏渲染"><a href="#2-2-离屏渲染" class="headerlink" title="2.2.离屏渲染"></a>2.2.离屏渲染</h4><p><strong>#离屏渲染：</strong> 指的是GPU在当前屏幕缓冲区以外开辟一个缓冲区进行渲染操作；<br><br/></p>
-<p><strong>#当前屏幕渲染：</strong> 是指GPU的渲染操作是在当前用于显示的屏幕缓冲区进行。<br><br/></p>
-<p>离屏渲染对性能影响很大，主要是因为离屏渲染会创建新的缓冲区，且在离屏渲染的整个过程，需要多次切换上下文环境。这些操作的开销很大（涉及到 OpenGL 的 pipelines 和 barrier 等），尤其是当有大量离屏渲染的情况时。<br><br/></p>
-<p><strong>#为什么会有离屏渲染机制?</strong><br><br/></p>
-<p>有些效果被认为不能直接呈现于屏幕，而需要在别的地方做额外的处理预合成。图层属性的混合体没有预合成之前不能直接在屏幕中绘制，所以就需要屏幕外渲染。屏幕外渲染并不意味着软件绘制，但是它意味着图层必须在被显示之前在一个屏幕外上下文中被渲染（不论CPU还是GPU）。<br><br/></p>
-<p><strong>#会触发离屏渲染的场景：</strong></p>
-<ul>
-<li>为图层设置遮罩（layer.mask）；</li>
-<li>将图层的 layer.masksToBounds 或 view.clipsToBounds 设置为YES；</li>
-<li>将图层 layer.allowsGroupOpacity 设置为YES 且 layer.opacity小于1.0；</li>
-<li>为图层设置阴影（layer.[shadowRadius\shadowOffset\shadowOpacity]）；</li>
-<li>为图层开启<a target="_blank" rel="noopener" href="https://blog.csdn.net/bravegogo/article/details/80494455">光栅化</a>：layer.shouldRasterize &#x3D; YES；</li>
-<li>为图层设置圆角 layer.cornerRadius；</li>
-<li>为图层设置抗锯齿性：layer.allowsEdgeAntialiasing &#x3D; YES；</li>
-<li>文本（任何种类，包括UILabel，CATextLayer，Core Text等）；</li>
-<li>使用 CGContext 在 drawRect :方法中绘制大部分情况下会导致离屏渲染（使用CPU渲染）。</li>
-</ul>
-<p><strong>#优化方案：</strong></p>
-<ul>
-<li>使用中间透明，四个角有背景色的图片代替圆角效果；</li>
-<li>使用UIBezierPath给CAShapeLayer画圆角，再赋值给视图的layer.mask；</li>
-<li>使用 ShadowPath 提前告诉CoreAnimation待渲染图层的形状(layer.shadowPath &#x3D; [UIBezierPath bezierPathWithRect:layer.bounds])；</li>
-<li>设置 layer.opaque &#x3D; YES，减少复杂图层合成；</li>
-<li>尽量使用不包含透明（alpha）通道的图片资源；</li>
-<li>尽量设置 layer 的大小值为整型值。</li>
-<li>使用异步进行 layer 渲染（如 Facebook的AsyncDisplayKit框架）；</li>
-</ul>
-<hr>
-<p>相关参考：</p>
-<p>#<a target="_blank" rel="noopener" href="http://blog.csdn.net/huifeidexin_1/article/details/7678986">©CSDN.huifeidexin_1-cell重用</a></p>
-<p>#<a target="_blank" rel="noopener" href="https://blog.ibireme.com/2015/11/12/smooth_user_interfaces_for_ios/">©ibireme-保持界面流畅的技巧</a></p>
-<p>#<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_29846663/article/details/68960512">©于海明-离屏渲染</a></p>
-<p>#<a target="_blank" rel="noopener" href="https://blog.csdn.net/bravegogo/article/details/80494455">©CSDN.bravegogo-光栅化</a></p>
-<p>#<a target="_blank" rel="noopener" href="http://texturegroup.org/docs/corner-rounding.html">©Texture-Corner Rounding</a></p>
+<p>在APP启动后，运行时会先执行 NSMutableArray 分类中的 <code>+load</code> 函数，这里会调用<code>swizzle_install</code>，启动方法交换：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs objectivec">- (<span class="hljs-type">BOOL</span>)application:(<span class="hljs-built_in">UIApplication</span> *)application didFinishLaunchingWithOptions:(<span class="hljs-built_in">NSDictionary</span> *)launchOptions<br>&#123;<br>    <span class="hljs-comment">//添加对象</span><br>    <span class="hljs-built_in">NSMutableArray</span> *array = [<span class="hljs-built_in">NSMutableArray</span> new];<br>    [array addObject:<span class="hljs-literal">nil</span>];<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>上面代码中，虽然向数组中加入nil对象，但因为已经对<code>addObject</code>方法做了交换并做了容错处理，所以只是会打印崩溃日志，应用并不会闪退。</p>
 
                 
               </div>
@@ -381,7 +332,7 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/%E6%9C%BA%E5%88%B6/">#机制</a>
+        <a href="/tags/runtime/">#runtime</a>
       
     </div>
   
@@ -393,8 +344,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>Cell与离屏渲染</div>
-      <div>https://davidlii.cn/2018/01/20/reuse_cell.html</div>
+      <div>方法交换</div>
+      <div>https://davidlii.cn/2017/09/01/runtime-swizzle.html</div>
     </div>
     <div class="license-meta">
       
@@ -406,7 +357,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2018年1月20日</div>
+          <div>2017年9月1日</div>
         </div>
       
       
@@ -436,9 +387,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2018/01/21/autoreleasepool.html" title="OC内存管理">
+                      <a href="/2017/09/01/runtime-addClass.html" title="动态注册类">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">OC内存管理</span>
+                        <span class="hidden-mobile">动态注册类</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -446,8 +397,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2018/01/14/retain_circle.html" title="循环引用">
-                        <span class="hidden-mobile">循环引用</span>
+                      <a href="/2017/08/30/runtime-associate.html" title="对象关联">
+                        <span class="hidden-mobile">对象关联</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

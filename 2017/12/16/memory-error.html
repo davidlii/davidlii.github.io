@@ -16,26 +16,25 @@
   <meta name="author" content="Davidli">
   <meta name="keywords" content="Davidli">
   
-    <meta name="description" content="1.runtimeruntime，直译过来是运行时，它是一套底层的C语言API，包含很多强大实用的C语言数据类型和C语言函数。我们的OC代码在运行阶段都是基于runtime环境才能正常运行的。 2.常用场景 发送消息； 读取成员变量； 动态为某个类增加属性； 交换类中的方法、动态为某个类添加方法； 动态创建、删除、修改一个类；  3.对象 OC中，含有isa指针且该指针可以正确指向类的数据结构，都">
+    <meta name="description" content="1、内存错误是啥在C和OC中，你一直在处理指针。指针是存储另一个变量的内存地址的变量。当向一个对象发送消息时，指向该对象的指针将会被引用。这意味着，你获取了指针所指的内存地址，并访问该存储区域的值。 当该存储器区域不再映射到你的应用时，或者换句话说，该内存区域在你认为使用的时候却没有使用，该内存区域是无法访问的。 这时内核会抛出一个异常（ EXC ），表明你的应用程序不能访问该存储器区域（BAD">
 <meta property="og:type" content="article">
-<meta property="og:title" content="元类">
-<meta property="og:url" content="https://davidlii.cn/2017/08/22/runtime_metaclass.html">
+<meta property="og:title" content="内存错误调试">
+<meta property="og:url" content="https://davidlii.cn/2017/12/16/memory-error.html">
 <meta property="og:site_name" content="Davidli">
-<meta property="og:description" content="1.runtimeruntime，直译过来是运行时，它是一套底层的C语言API，包含很多强大实用的C语言数据类型和C语言函数。我们的OC代码在运行阶段都是基于runtime环境才能正常运行的。 2.常用场景 发送消息； 读取成员变量； 动态为某个类增加属性； 交换类中的方法、动态为某个类添加方法； 动态创建、删除、修改一个类；  3.对象 OC中，含有isa指针且该指针可以正确指向类的数据结构，都">
+<meta property="og:description" content="1、内存错误是啥在C和OC中，你一直在处理指针。指针是存储另一个变量的内存地址的变量。当向一个对象发送消息时，指向该对象的指针将会被引用。这意味着，你获取了指针所指的内存地址，并访问该存储区域的值。 当该存储器区域不再映射到你的应用时，或者换句话说，该内存区域在你认为使用的时候却没有使用，该内存区域是无法访问的。 这时内核会抛出一个异常（ EXC ），表明你的应用程序不能访问该存储器区域（BAD">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://davidlii.nos-eastchina1.126.net/pic_metaclass.png">
-<meta property="article:published_time" content="2017-08-21T17:57:57.000Z">
-<meta property="article:modified_time" content="2019-09-30T01:45:00.000Z">
+<meta property="article:published_time" content="2017-12-16T15:29:11.000Z">
+<meta property="article:modified_time" content="2017-12-15T15:29:11.000Z">
 <meta property="article:author" content="Davidli">
-<meta property="article:tag" content="runtime">
+<meta property="article:tag" content="异常">
+<meta property="article:tag" content="内存管理">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://davidlii.nos-eastchina1.126.net/pic_metaclass.png">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>元类 - Davidli</title>
+  <title>内存错误调试 - Davidli</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -200,7 +199,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="元类"></span>
+            <span id="subtitle" data-typed-text="内存错误调试"></span>
           
         </div>
 
@@ -211,8 +210,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2017-08-22 01:57" pubdate>
-          2017年8月22日 凌晨
+        <time datetime="2017-12-16 23:29" pubdate>
+          2017年12月16日 晚上
         </time>
       </span>
     
@@ -223,7 +222,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.7k 字
+          1.3k 字
         
       </span>
     
@@ -234,7 +233,7 @@
         
         
         
-          15 分钟
+          12 分钟
         
       </span>
     
@@ -280,91 +279,34 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">元类</h1>
+            <h1 style="display: none">内存错误调试</h1>
             
             
               <div class="markdown-body">
                 
-                <h3 id="1-runtime"><a href="#1-runtime" class="headerlink" title="1.runtime"></a>1.runtime</h3><p><code>runtime</code>，直译过来是运行时，它是一套底层的C语言API，包含很多强大实用的C语言数据类型和C语言函数。我们的OC代码在运行阶段都是基于runtime环境才能正常运行的。</p>
-<h3 id="2-常用场景"><a href="#2-常用场景" class="headerlink" title="2.常用场景"></a>2.常用场景</h3><ul>
-<li>发送消息；</li>
-<li>读取成员变量；</li>
-<li>动态为某个类增加属性；</li>
-<li>交换类中的方法、动态为某个类添加方法；</li>
-<li>动态创建、删除、修改一个类；</li>
-</ul>
-<h3 id="3-对象"><a href="#3-对象" class="headerlink" title="3.对象"></a>3.对象</h3><blockquote>
-<p>OC中，含有isa指针且该指针可以正确指向类的数据结构，都可以视为对象。</p>
-</blockquote>
-<p>下面是<code>objc.h</code>中的相关定义:</p>
-<pre><code class="hljs">#if !OBJC_TYPES_DEFINED
-/// An opaque type that represents an Objective-C class.
-typedef struct objc_class *Class;
+                <h3 id="1、内存错误是啥"><a href="#1、内存错误是啥" class="headerlink" title="1、内存错误是啥"></a>1、内存错误是啥</h3><p>在C和OC中，你一直在处理指针。指针是存储另一个变量的内存地址的变量。当向一个对象发送消息时，指向该对象的指针将会被引用。这意味着，你获取了指针所指的内存地址，并访问该存储区域的值。</p>
+<p>当该存储器区域不再映射到你的应用时，或者换句话说，该内存区域在你认为使用的时候却没有使用，该内存区域是无法访问的。 这时内核会抛出一个异常（ EXC ），表明你的应用程序不能访问该存储器区域（BAD ACCESS） 。</p>
+<p>总之，当你碰到 EXC_BAD_ACCESS ，这意味着你试图发送消息到的内存块，但内存块无法执行该消息。但是，在某些情况下， EXC_BAD_ACCESS 是由被损坏的指针引起的。每当你的应用程序尝试引用损坏的指针，一个异常就会被内核抛出。</p>
+<figure class="highlight smali"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs smali">static NSMutableArray *array;<br> <br>- (void)viewDidLoad<br>&#123;<br>    [super viewDid<span class="hljs-class">Load];</span><br>   <span class="hljs-built_in"> array </span>= [[NSMutableArray alloc] initWithCapacity:5];<br>    [array release];<br>&#125;<br> <br>- (void) viewWillAppear:(BOOL)animated <br>&#123;<br>    [array addObject:@<span class="hljs-string">&quot;Hello&quot;</span>];<br>&#125;<br></code></pre></td></tr></table></figure>
 
-/// Represents an instance of a class.
-struct objc_object &#123;
-Class isa  OBJC_ISA_AVAILABILITY;
-&#125;;
+<p>上面的代码就会出现 EXC_BAD_ACCESS 错误，错误日志为：</p>
+<figure class="highlight smali"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs smali">-[CALayerArray addObject:]: unrecognized selector sent to<span class="hljs-built_in"> instance </span>0x604000443480<br></code></pre></td></tr></table></figure>
+<p>其中 0x604000443480 就是 array 变量的地址。</p>
+<p><strong>ps：</strong> Xcode7.0 之后的版本在编译上面的代码时，会在“[array release];”处报错：</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs angelscript">release <span class="hljs-keyword">is</span> unavailable <span class="hljs-keyword">in</span> <span class="hljs-built_in">auto</span>matic <span class="hljs-built_in">ref</span>erence counting mode<br></code></pre></td></tr></table></figure>
 
-/// A pointer to an instance of a class.
-typedef struct objc_object *id;
-#endif
-</code></pre>
-<p>从<code>objc_object</code>结构体的定义可以看出：对象实质上是一个结构体，其结构体内含有<code>isa</code>指针，指向其所属的类。</p>
-<h3 id="4-类"><a href="#4-类" class="headerlink" title="4.类"></a>4.类</h3><p>下面是<code>runtime.h</code>中对<code>类</code>的定义：</p>
-<pre><code class="hljs">struct objc_class &#123;
-Class isa  OBJC_ISA_AVAILABILITY;       //指针
+<p>所以，为了模拟上面的 EXC_BAD_ACCESS 错误，需要对编译环境进行设置：</p>
+<figure class="highlight xl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs xl">B<span class="hljs-function"><span class="hljs-title">uild</span> Settings -&gt;</span> O<span class="hljs-function"><span class="hljs-title">bjective</span>-C Automatic Reference Counting -&gt;</span> NO。<br></code></pre></td></tr></table></figure>
 
-#if !__OBJC2__
-Class super_class                       //父类;
-const char *name                        //类名;
-long version                                             //类的版本信息，默认为0;
-long info                               //位标识;
-long instance_size                      //类的实例变量大小;
-struct objc_ivar_list *ivars            //类的成员变量链表;
-struct objc_method_list **methodLists   //方法定义的链表;
-struct objc_cache *cache                //方法缓存;
-struct objc_protocol_list *protocols    //协议链表;
-#endif
-
-&#125; OBJC2_UNAVAILABLE;
-</code></pre>
-<p>从结构体的定义来看，类也是以<code>isa</code>开始并指向类的数据结构。OC中类与元类在运行时都是<code>objc_class</code>类型，所以，<strong>类和元类也是一种对象</strong>。</p>
-<h3 id="5-元类"><a href="#5-元类" class="headerlink" title="5.元类"></a>5.元类</h3><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs Objc"><span class="hljs-built_in">NSObject</span> *obj = [<span class="hljs-built_in">NSObject</span> alloc];<br></code></pre></td></tr></table></figure>
-
-<h4 id="5-1-实例对象"><a href="#5-1-实例对象" class="headerlink" title="5.1.实例对象"></a>5.1.实例对象</h4><p>实例对象，instance object，是指从某个类实例化而来的对象，如示例中的<code>obj</code>。</p>
-<h4 id="5-2-类对象"><a href="#5-2-类对象" class="headerlink" title="5.2.类对象"></a>5.2.类对象</h4><p>类对象，Class object，类作为对象时，就称之为类对象。调用一个 “类方法” ，如 [NSObject alloc]，实质上是向它的类对象(NSObject)发送了一个消息。类对象是由编译器创建的，任何继承自NSObject的类，它的实例对象中都有一个isa指针，指向它的类对象。</p>
-<h4 id="5-3-元类"><a href="#5-3-元类" class="headerlink" title="5.3.元类"></a>5.3.元类</h4><p>从一个类实例化而来的对象叫实例对象；类作为对象，又是元类（Metaclass）的实例，<strong>元类是类对象所属的类</strong>。</p>
-<p>注意区分类对象和元类：类对象中保存的是关于其实例对象的信息(变量，实例方法、遵守的协议等)；元类中保存的是关于类的信息(类方法，类的版本，名字等)；</p>
-<p>借用网上的一张图，演示元类与继承的封闭循环：</p>
-<p><img src="https://davidlii.nos-eastchina1.126.net/pic_metaclass.png" srcset="/img/loading.gif" lazyload alt="isa与superclass"></p>
-<p>图中实线是 super_class 指针，虚线是<code>isa</code>指针。</p>
-<ul>
-<li>实例对象是类的实例；</li>
-<li>类作为对象又是元类的实例;</li>
-<li>元类作为对象是根元类的实例；</li>
-<li>根元类是其自身的实例。</li>
-<li>根元类的superclass为根类自己；</li>
-<li>根类的superclass为nil；</li>
-</ul>
-<h3 id="6-isa"><a href="#6-isa" class="headerlink" title="6.isa"></a>6.isa</h3><p>isa 等价于 is kind of：</p>
-<ul>
-<li>实例对象 isa 指向类对象;</li>
-<li>类对象指 isa 向元类对象;</li>
-<li>元类对象的 isa 指向根元类;</li>
-</ul>
-<h3 id="7-相关函数"><a href="#7-相关函数" class="headerlink" title="7.相关函数"></a>7.相关函数</h3><pre><code class="hljs">-class
-</code></pre>
-<p>对于实例对象，返回其 isa 指针指向的<code>类</code>；对于类对象，返回其<code>本身</code>。</p>
-<pre><code class="hljs">object_getClass(id obj)
-</code></pre>
-<p>返回isa指针指向的内容。对于实例对象，返回其 isa 指向的<code>类</code>；对于类对象，返回其对应的<code>元类</code>。</p>
-<pre><code class="hljs">objc_getMetaClass(const char *name)
-</code></pre>
-<p>返回此类对应的<code>元类</code>。</p>
 <hr>
-<p>相关参考：</p>
-<p>#<a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/objectivec/">©Objective-C Runtime</a></p>
+<h3 id="2、咋调试？（Zombie-模式）"><a href="#2、咋调试？（Zombie-模式）" class="headerlink" title="2、咋调试？（Zombie 模式）"></a>2、咋调试？（Zombie 模式）</h3><p>EXC_BAD_ACCESS 难以调试的原因是，你不知道你的应用程序试图访问哪个对象时出了问题。在 Xcode 中，启用僵尸对象意味着被释放的对象将会以僵尸的形式被保留。如果向僵尸对象发送消息，应用程序将会由于 EXC_BAD_ACCESS 而崩溃，此时 Xcode 就可以告诉你你试图访问的是哪个僵尸对象。</p>
+<p>下面是在 Xcode9.2 中开启僵尸调试模式的步骤：</p>
+<figure class="highlight xl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs xl">左上角E<span class="hljs-function"><span class="hljs-title">dit</span> Scheme -&gt;</span> R<span class="hljs-function"><span class="hljs-title">un</span> -&gt;</span> D<span class="hljs-function"><span class="hljs-title">iagnostics</span> -&gt;</span> 勾选Zombie Objects<br></code></pre></td></tr></table></figure>
+
+<p>设置完之后还是上面的代码，再次运行之后，会打印如下报错信息：</p>
+<figure class="highlight smali"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs smali">Thread 1: EXC_BAD_INSTRUCTION (code=EXC_I386_INVOP, subcode=0x0)<br>*** -[__NSArrayM addObject:]: message sent to deallocated<span class="hljs-built_in"> instance </span>0x60400045d1c0<br></code></pre></td></tr></table></figure>
+
+<p>找到问题后记得还原 scheme中的 Zombie 设置。</p>
 
                 
               </div>
@@ -383,7 +325,7 @@ struct objc_protocol_list *protocols    //协议链表;
     
       <span class="category-chain">
         
-  <a href="/categories/%E6%8A%80%E6%9C%AF/" class="category-chain-item">技术</a>
+  <a href="/categories/%E8%AF%BE%E5%A4%96/" class="category-chain-item">课外</a>
   
   
 
@@ -398,7 +340,9 @@ struct objc_protocol_list *protocols    //协议链表;
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/runtime/">#runtime</a>
+        <a href="/tags/%E5%BC%82%E5%B8%B8/">#异常</a>
+      
+        <a href="/tags/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">#内存管理</a>
       
     </div>
   
@@ -410,8 +354,8 @@ struct objc_protocol_list *protocols    //协议链表;
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>元类</div>
-      <div>https://davidlii.cn/2017/08/22/runtime_metaclass.html</div>
+      <div>内存错误调试</div>
+      <div>https://davidlii.cn/2017/12/16/memory-error.html</div>
     </div>
     <div class="license-meta">
       
@@ -423,7 +367,7 @@ struct objc_protocol_list *protocols    //协议链表;
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2017年8月22日</div>
+          <div>2017年12月16日</div>
         </div>
       
       
@@ -453,9 +397,9 @@ struct objc_protocol_list *protocols    //协议链表;
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2017/08/23/runtime_message.html" title="消息机制">
+                      <a href="/2017/12/18/memory.html" title="虚拟内存分配">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">消息机制</span>
+                        <span class="hidden-mobile">虚拟内存分配</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -463,8 +407,8 @@ struct objc_protocol_list *protocols    //协议链表;
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2017/07/24/hello-world.html" title="Hello World">
-                        <span class="hidden-mobile">Hello World</span>
+                      <a href="/2017/12/15/crash.html" title="iOS异常捕获">
+                        <span class="hidden-mobile">iOS异常捕获</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

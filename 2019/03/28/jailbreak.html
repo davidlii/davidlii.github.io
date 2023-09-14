@@ -16,24 +16,26 @@
   <meta name="author" content="Davidli">
   <meta name="keywords" content="Davidli">
   
-    <meta name="description" content="1、UDIDUDID（Unique Device Identifier），iOS 设备的唯一识别码，是一个40位十六进制序列。 1[[UIDevice cuurrent] uniqueIdenfier];  移动广告商等往往需要通过UDID用来识别玩家用户，并对用户活动进行跟踪。这会泄露用户的隐私信息，所以iOS5.0之后，苹果已被废除此方法，并且禁止使用UDID信息的APP上架。 2、UUIDU">
+    <meta name="description" content="最近看到有新版的iOS12越狱工具发布，一时手痒，于是将手里的设备进行了越狱。这中间又出了各种问题，在这里记录下来，顺便给后面踩坑的同学做个参考~  1.越狱工具unc0verjailbreak for iOS 11.0-12.1.2，版本号为 v3.0.0~b48，手机 Safari 中打开 这里，在第二个 Tab 的jailbreaks选项中找到unc0ver-new beta，下载完成后进入">
 <meta property="og:type" content="article">
-<meta property="og:title" content="iOS 设备唯一标识符">
-<meta property="og:url" content="https://davidlii.cn/2017/11/25/udid_idfa.html">
+<meta property="og:title" content="iOS12越狱填坑">
+<meta property="og:url" content="https://davidlii.cn/2019/03/28/jailbreak.html">
 <meta property="og:site_name" content="Davidli">
-<meta property="og:description" content="1、UDIDUDID（Unique Device Identifier），iOS 设备的唯一识别码，是一个40位十六进制序列。 1[[UIDevice cuurrent] uniqueIdenfier];  移动广告商等往往需要通过UDID用来识别玩家用户，并对用户活动进行跟踪。这会泄露用户的隐私信息，所以iOS5.0之后，苹果已被废除此方法，并且禁止使用UDID信息的APP上架。 2、UUIDU">
+<meta property="og:description" content="最近看到有新版的iOS12越狱工具发布，一时手痒，于是将手里的设备进行了越狱。这中间又出了各种问题，在这里记录下来，顺便给后面踩坑的同学做个参考~  1.越狱工具unc0verjailbreak for iOS 11.0-12.1.2，版本号为 v3.0.0~b48，手机 Safari 中打开 这里，在第二个 Tab 的jailbreaks选项中找到unc0ver-new beta，下载完成后进入">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2017-11-25T10:20:07.000Z">
-<meta property="article:modified_time" content="2019-07-17T16:04:23.000Z">
+<meta property="og:image" content="https://davidlii.nos-eastchina1.126.net/pic_jailbreak.jpg">
+<meta property="article:published_time" content="2019-03-28T12:08:55.000Z">
+<meta property="article:modified_time" content="2019-03-28T12:08:55.000Z">
 <meta property="article:author" content="Davidli">
-<meta property="article:tag" content="数据">
+<meta property="article:tag" content="逆向">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://davidlii.nos-eastchina1.126.net/pic_jailbreak.jpg">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>iOS 设备唯一标识符 - Davidli</title>
+  <title>iOS12越狱填坑 - Davidli</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -198,7 +200,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="iOS 设备唯一标识符"></span>
+            <span id="subtitle" data-typed-text="iOS12越狱填坑"></span>
           
         </div>
 
@@ -209,8 +211,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2017-11-25 18:20" pubdate>
-          2017年11月25日 晚上
+        <time datetime="2019-03-28 20:08" pubdate>
+          2019年3月28日 晚上
         </time>
       </span>
     
@@ -221,7 +223,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2.3k 字
+          2.5k 字
         
       </span>
     
@@ -232,7 +234,7 @@
         
         
         
-          19 分钟
+          22 分钟
         
       </span>
     
@@ -278,40 +280,79 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">iOS 设备唯一标识符</h1>
+            <h1 style="display: none">iOS12越狱填坑</h1>
             
             
               <div class="markdown-body">
                 
-                <h4 id="1、UDID"><a href="#1、UDID" class="headerlink" title="1、UDID"></a>1、UDID</h4><p>UDID（Unique Device Identifier），iOS 设备的唯一识别码，是一个40位十六进制序列。</p>
-<figure class="highlight inform7"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs inform7"><span class="hljs-comment">[<span class="hljs-comment">[UIDevice cuurrent]</span> uniqueIdenfier]</span>;<br></code></pre></td></tr></table></figure>
+                <p>最近看到有新版的iOS12越狱工具发布，一时手痒，于是将手里的设备进行了越狱。这中间又出了各种问题，在这里记录下来，顺便给后面踩坑的同学做个参考~</p>
+<p><img src="https://davidlii.nos-eastchina1.126.net/pic_jailbreak_ios12.png" srcset="/img/loading.gif" lazyload alt="纲目"></p>
+<h3 id="1-越狱工具"><a href="#1-越狱工具" class="headerlink" title="1.越狱工具"></a>1.越狱工具</h3><p><code>unc0ver</code>jailbreak for iOS 11.0-12.1.2，版本号为 v3.0.0~b48，手机 Safari 中打开 <a target="_blank" rel="noopener" href="https://app.ignition.fun/">这里</a>，在第二个 Tab 的<code>jailbreaks</code>选项中找到<code>unc0ver-new beta</code>，下载完成后进入<code>unc0ver</code>，点 jailberak 即可自动越狱。<br><br/></p>
+<p>越狱完成后会自动安装 Cydia~</p>
+<h3 id="2-Cydia联网失败"><a href="#2-Cydia联网失败" class="headerlink" title="2.Cydia联网失败"></a>2.Cydia联网失败</h3><h4 id="2-1-乐网"><a href="#2-1-乐网" class="headerlink" title="2.1.乐网"></a>2.1.乐网</h4><p>下载爱思手机助手，搜索并安装<code>乐网</code>，启动后打开开关，再进入 Cydia 即可。</p>
+<h4 id="2-2-插件"><a href="#2-2-插件" class="headerlink" title="2.2.插件"></a>2.2.插件</h4><p>你也可以在 Cydia 中添加<code>贴吧源</code> <a target="_blank" rel="noopener" href="http://apt.cydiaba.cn/">http://apt.cydiaba.cn</a> ，搜索并安装<code>联网修正</code>插件即可。</p>
+<h3 id="3-搜不到OpenSSH"><a href="#3-搜不到OpenSSH" class="headerlink" title="3.搜不到OpenSSH"></a>3.搜不到OpenSSH</h3><h4 id="添加新的源"><a href="#添加新的源" class="headerlink" title="添加新的源"></a>添加新的源</h4><ul>
+<li><p>蚂蚁源：<a target="_blank" rel="noopener" href="http://apt.cydia.love/">http://apt.cydia.love</a></p>
+</li>
+<li><p>Cydia贴吧源：<a target="_blank" rel="noopener" href="http://apt.cydiaba.cn/">http://apt.cydiaba.cn</a></p>
+</li>
+<li><p>saurik源：<a target="_blank" rel="noopener" href="http://apt.saurik.com/cydia">http://apt.saurik.com/cydia</a></p>
+</li>
+<li><p>雷锋源：<a target="_blank" rel="noopener" href="http://apt.abcydia.com/">http://apt.abcydia.com</a></p>
+</li>
+</ul>
+<h3 id="4-修改密码"><a href="#4-修改密码" class="headerlink" title="4.修改密码"></a>4.修改密码</h3><p>iOS设备上有<code>root</code>和<code>mobile</code>两个用户，在安装完 SSH 后记得修改默认的登录密码“alpine”，防止病毒通过 ssh 以 root 用户身份登录设备。</p>
+<br/>
 
-<p>移动广告商等往往需要通过UDID用来识别玩家用户，并对用户活动进行跟踪。这会泄露用户的隐私信息，所以iOS5.0之后，苹果已被废除此方法，并且禁止使用UDID信息的APP上架。</p>
-<h4 id="2、UUID"><a href="#2、UUID" class="headerlink" title="2、UUID"></a>2、UUID</h4><p>UUID（Universally Unique Identifier），通用唯一标识符，是一个32位的十六进制序列。</p>
-<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">5</span>; i++) &#123;<br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;++%@&quot;</span>,[<span class="hljs-built_in">NSUUID</span> UUID]);<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>ssh登录设备</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs angelscript">$ ssh <span class="hljs-symbol">root@</span><span class="hljs-number">192.168</span><span class="hljs-number">.31</span>.xx <span class="hljs-comment">//设备所在WiFi的IP地址</span><br></code></pre></td></tr></table></figure>
 
-<p>日志：</p>
-<figure class="highlight subunit"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs subunit">++CA34E048-C879<span class="hljs-string">-4</span>BCA<span class="hljs-string">-8105</span><span class="hljs-string">-8</span>E6F3DA137C4<br>+<span class="hljs-string">+4</span>C808BD6-C7EE<span class="hljs-string">-4</span>E35-BEB5-B319F37BEA30<br>++C9B7AA3E<span class="hljs-string">-71</span>AD<span class="hljs-string">-462</span>B-BAC1<span class="hljs-string">-36</span>B9433B987F<br>++A8847816<span class="hljs-string">-7194</span><span class="hljs-string">-4</span>ECF<span class="hljs-string">-8</span>FA4<span class="hljs-string">-75</span>C566D68B21<br>+<span class="hljs-string">+6</span>C9FCC03-BCF7<span class="hljs-string">-4</span>B68<span class="hljs-string">-9</span>A98<span class="hljs-string">-8209</span>BF83690E<br></code></pre></td></tr></table></figure>
+<ul>
+<li>修改 root 密码：</li>
+</ul>
+<figure class="highlight haxe"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs haxe">~ root<span class="hljs-meta"># passwd</span><br>changing password <span class="hljs-keyword">for</span> root.<br>New password:<span class="hljs-type"></span><br>Retype <span class="hljs-keyword">new</span> <span class="hljs-type">password</span>:<br>~ root<span class="hljs-meta"># </span><br></code></pre></td></tr></table></figure>
 
-<p>循环5次，每次取到的值都不一样。所以当用户重新启动了应用或者删除应用重装后，UUID都会被重置。因此你需要在应用第一次启动时就将其UUID保存到钥匙串中，之后从钥匙串中取值。<br><br/></p>
-<p>因为每次使用系统方法获取到的UUID都是不一样的，所以每个应用都会产生与之对应的UUID。像淘宝和支付宝账号互通的这种系列应用，如果从淘宝切到支付宝，因为UUID不一样了就提示换了设备，显然不符合实际情况。</p>
-<h4 id="3、IDFV"><a href="#3、IDFV" class="headerlink" title="3、IDFV"></a>3、IDFV</h4><p>iOS6.0之后，苹果提供的新方法。它是通过 bundleID 的反转的前两部分进行匹配，如果内容相同则认为是同一个Vendor（供应商），例如对于<code>com.example.app1</code>和<code>com.example.app2</code>这两个 bundleID，它们就属于同一个 Vendor，共享同一个<code>IDFV</code>。这样就解决了上面提到的账号互通类应用切换登录时的问题。</p>
-<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs abnf">UIDevice *device <span class="hljs-operator">=</span> [UIDevice currentDevice]<span class="hljs-comment">;</span><br>NSUUID * uuid <span class="hljs-operator">=</span> [device identifierForVendor]<span class="hljs-comment">;</span><br></code></pre></td></tr></table></figure>
+<ul>
+<li>修改 mobile 密码：</li>
+</ul>
+<figure class="highlight haxe"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs haxe">~ root<span class="hljs-meta"># passwd mobile</span><br>changing password <span class="hljs-keyword">for</span> mobile.<br>New password:<span class="hljs-type"></span><br>Retype <span class="hljs-keyword">new</span> <span class="hljs-type">password</span>:<br>~ root<span class="hljs-meta"># </span><br></code></pre></td></tr></table></figure>
 
-<p><strong>vendor</strong>（运营商）的值是根据已经上架到 Appstore 的 App 来决定的。如果应用不是通过 Appstore 安装的（如企业版或开发调试阶段），那么会根据<code>bundle ID</code>判断。<br><br/></p>
-<p>iOS6.x中，会取 bundleID 的前两个部分生成 <code>vendor ID</code>（##com.example##.app.app1）。<br><br/></p>
-<p>iOS7.x之后，除了最后一部分外，其他部分的 bundleID 都会用来生成<code>vendor ID</code>（##com.example.app##.app1）。<br><br/></p>
-<p>需要注意的是，用户删除了某 APP 重装后，APP 里再获取 <code>IDFV</code> 时，值和之前的就不同了。</p>
-<h4 id="4、IDFA"><a href="#4、IDFA" class="headerlink" title="4、IDFA"></a>4、IDFA</h4><p>IDFA - identifierForIdentifier（广告标示符），每个设备只有一个IDFA，在同一个设备上的所有 APP 都会取到相同的值，是iOS6 苹果专门给各广告提供商用来追踪用户而设定的。虽然 iPhone 默认是允许追踪的，而且一般用户都不知道有这么个设置，但是用户可以在 设置 - 隐私 - 广告追踪 里重置此 ID 的值，或者限制此 ID 的使用，所以有可能会取不到值。</p>
-<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs angelscript"><span class="hljs-comment">//依赖库：AdSupport.framework</span><br>#<span class="hljs-keyword">import</span> &lt;AdSupport/AdSupport.h&gt;<br><span class="hljs-string">[[[ASIdentifierManager sharedManager]</span> advertisingIdentifier] UUIDString];<br></code></pre></td></tr></table></figure>
+<p>你也可以在 Cydia 中下载<code>Mterminal</code>命令行工具，按照上面的操作修改密码。</p>
+<h3 id="5-重启后越狱状态恢复"><a href="#5-重启后越狱状态恢复" class="headerlink" title="5.重启后越狱状态恢复"></a>5.重启后越狱状态恢复</h3><p>打开<code>unc0ver-settings-Restore RootFS</code>选项清除越狱信息，重新越狱。</p>
+<h3 id="6-重新越狱后ssh登录失败"><a href="#6-重新越狱后ssh登录失败" class="headerlink" title="6.重新越狱后ssh登录失败"></a>6.重新越狱后ssh登录失败</h3><p>失败信息如下：</p>
+<figure class="highlight gauss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs gauss"><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@</span><br><span class="hljs-comment">@</span>    WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!     <span class="hljs-comment">@</span><br><span class="hljs-comment">@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><br>IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!<br>Someone could be eavesdropping on you right <span class="hljs-built_in">now</span> (man-in-the-middle attack)!<br>It is also possible that a host <span class="hljs-built_in">key</span> has just been changed.<br>The fingerprint <span class="hljs-keyword">for</span> the RSA key sent by the remote host is<br>SHA256:eiVsYjmcqRFD46WOMhcQPxRJSgPDbndRDq2/+3Zxaw4.<br>Please contact your system administrator.<br>Add correct host key in /Users/Macmafia/.ssh/known_hosts to get rid of this message.<br>Offending RSA key in /Users/Macmafia/.ssh/known_hosts:8<br>RSA host key <span class="hljs-keyword">for</span> 192.168.31.xx has changed and you have requested strict checking.<br>Host key verification failed.<br></code></pre></td></tr></table></figure>
 
-<p><strong>注意</strong>：App Store 禁止不使用广告而只采集 IDFA 的 APP 上架。</p>
-<h4 id="5、OpenUDID"><a href="#5、OpenUDID" class="headerlink" title="5、OpenUDID"></a>5、OpenUDID</h4><p>UDID 被弃用后，广大开发者需要寻找一个可以替代的 UDID，并且不受苹果控制的方案，由此，OpenUDID 成为了当时使用最广泛的开源 UDID 代替方案。OpenUDID 利用一个非常巧妙的方法在不同程序间存储标示符：在粘贴板中用了一个特殊的名称来存储标示符，通过这种方法，其他应用程序也可以获取。<br><br/></p>
-<p>每台iOS设备的 OpenUDID 是通过第一个带有 OpenUDID SDK包的 App 生成，如果你完全删除全部带有 OpenUDID SDK包的App（比如恢复系统等），那么OpenUDID会重新生成，而且和之前的值会不同，相当于新设备。<br><br/></p>
-<p>另外，苹果在 iOS 7 之后对粘贴板做了限制，导致同一个设备上的应用间，无法再共享一个 OpenUDID。</p>
-<h4 id="6、MAC"><a href="#6、MAC" class="headerlink" title="6、MAC"></a>6、MAC</h4><p>MAC 地址在网络上用来区分设备的唯一性，接入网络的设备都有一个MAC地址，他们肯定都是唯一的。一部 iPhone 上可能有多个 MAC 地址，包括 WIFI 的、SIM 的等，但是 iTouch 和 iPad 上就有一个 WIFI 的，因此只需获取 WIFI 的 MAC 地址就好了。一般会采取 MD5（MAC 地址 + bundleID）获取唯一标识。<br><br/></p>
-<p>但是 MAC 地址和 UDID 一样，存在隐私问题， iOS 7 之后，所有设备请求 MAC 地址会返回一个固定值，这个方法也不攻自破了。</p>
-<h4 id="7、IDFV-keychain"><a href="#7、IDFV-keychain" class="headerlink" title="7、IDFV + keychain"></a>7、IDFV + keychain</h4><p>通过以上几种储存唯一标识的方法的分析，总结一下各有优劣。很多方法被苹果禁止或者漏洞太多，越来越不被开发者使用，现在苹果主推 IDFA 和 IDFV 这两种方法，但是 IDFV 在 APP 重新安装时会变化，所以可以将IDFV存储到钥匙串中，以后每次想获取标识符时都从钥匙串中取。</p>
+<p>Mac中进入~&#x2F;.ssh目录，打开<code>known_hosts</code>文件并将 wifi 的 ip 地址及其对应的公钥字符串删除，重新 ssh 登录即可。</p>
+<h3 id="7-cycript安装失败"><a href="#7-cycript安装失败" class="headerlink" title="7.cycript安装失败"></a>7.cycript安装失败</h3><ul>
+<li>cycript插件</li>
+</ul>
+<p>Cydia 中默认已安装<code>cycript</code>，添加大佬源：apt.saurik.com&#x2F;cydia，更新<code>cycript</code>插件。</p>
+<ul>
+<li>apt安装</li>
+</ul>
+<p>ssh登录后，$ apt-get install cycrypt</p>
+<ul>
+<li>官网</li>
+</ul>
+<p>1、到官网下载<code>cycript_0.9.501_iphoneos-arm.deb</code>和<code>libffi_1:3.0.10-5_iphoneos-arm.deb</code>包；<br><br/></p>
+<p>2、sftp命令传送文件到设备中：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs vim">$ sftp root@wifi ip地址<br>sftp&gt; <span class="hljs-keyword">put</span> cycript_0.<span class="hljs-number">9.501</span>_iphoneos-arm.<span class="hljs-keyword">deb</span><br>sftp&gt; <span class="hljs-keyword">put</span> libffi_1:<span class="hljs-number">3.0</span>.<span class="hljs-number">10</span>-<span class="hljs-number">5</span>_iphoneos-arm.<span class="hljs-keyword">deb</span><br></code></pre></td></tr></table></figure>
+
+<p>3、dpkg安装</p>
+<figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs crystal"><span class="hljs-variable">$ </span>ssh root<span class="hljs-variable">@192</span>.<span class="hljs-number">168.1</span>.<span class="hljs-number">101</span><br>~ root<span class="hljs-comment"># dpkg -i cycript_0.9.501_iphoneos-arm.deb</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="8-“ps-e”命令报错"><a href="#8-“ps-e”命令报错" class="headerlink" title="8.“ps-e”命令报错"></a>8.“ps-e”命令报错</h3><p>报错信息：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs vim">-<span class="hljs-keyword">sh</span>: /usr/bin/<span class="hljs-keyword">ps</span>: Bad CPU <span class="hljs-built_in">type</span> in <span class="hljs-built_in">executable</span><br></code></pre></td></tr></table></figure>
+
+<p>方案：Cydia 中将<code>adv-cmds</code>插件降级到”119-6”；</p>
+<h3 id="9-“cycript-p”命令出错"><a href="#9-“cycript-p”命令出错" class="headerlink" title="9.“cycript -p”命令出错"></a>9.“cycript -p”命令出错</h3><figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">iPhone:~ root# cycript -p NewsBoard<br><span class="hljs-literal">[<span class="hljs-number">3345</span>]</span> <span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">DarwinInjector</span>.</span></span>cpp<span class="hljs-literal">[<span class="hljs-number">246</span>]</span>: <span class="hljs-constructor">_krncall(<span class="hljs-params">mach_vm_read_overwrite</span>)</span> =<span class="hljs-number">10000003</span><br>*** <span class="hljs-constructor">_assert(<span class="hljs-params">status</span> <span class="hljs-operator">==</span> 0)</span>:../<span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">Inject</span>.</span></span>cpp(<span class="hljs-number">143</span>):InjectLibrary<br></code></pre></td></tr></table></figure>
+
+<p>这会导致接下来无法查询到进程的<code>Document</code>目录，进而无法导入砸壳动态库。<a target="_blank" rel="noopener" href="http://bbs.iosre.com/">论坛</a>里的方案都试过了，暂时解决不了。这里我们可以换个不那么酷的方式，在 Cydia 安装的<code>Filza</code>插件，找到“&#x2F;var&#x2F;mobile&#x2F;Containers&#x2F;Data&#x2F;Application&#x2F;”目录，这里会显示应用的名字。</p>
+<p><img src="https://davidlii.nos-eastchina1.126.net/pic_filza.PNG" srcset="/img/loading.gif" lazyload alt="filza"></p>
+<p>选择目标进程，点击进入对应的<code>Documents</code>目录即可~</p>
+<hr>
+<p>相关参考：</p>
+<p>#<a target="_blank" rel="noopener" href="https://www.cnblogs.com/mengfanrong/p/5096590.html">©ssh远程登录报错</a></p>
 
                 
               </div>
@@ -330,7 +371,7 @@
     
       <span class="category-chain">
         
-  <a href="/categories/%E6%8A%80%E6%9C%AF/" class="category-chain-item">技术</a>
+  <a href="/categories/%E8%AF%BE%E5%A4%96/" class="category-chain-item">课外</a>
   
   
 
@@ -345,7 +386,7 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/%E6%95%B0%E6%8D%AE/">#数据</a>
+        <a href="/tags/%E9%80%86%E5%90%91/">#逆向</a>
       
     </div>
   
@@ -357,8 +398,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>iOS 设备唯一标识符</div>
-      <div>https://davidlii.cn/2017/11/25/udid_idfa.html</div>
+      <div>iOS12越狱填坑</div>
+      <div>https://davidlii.cn/2019/03/28/jailbreak.html</div>
     </div>
     <div class="license-meta">
       
@@ -370,7 +411,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2017年11月25日</div>
+          <div>2019年3月28日</div>
         </div>
       
       
@@ -400,9 +441,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2017/11/25/sandbox.html" title="沙盒 &amp; 本地持久化方案">
+                      <a href="/2019/03/31/frida.html" title="frida一键砸壳">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">沙盒 &amp; 本地持久化方案</span>
+                        <span class="hidden-mobile">frida一键砸壳</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -410,8 +451,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2017/11/24/faq.html" title="FAQ-常见问题">
-                        <span class="hidden-mobile">FAQ-常见问题</span>
+                      <a href="/2019/03/25/confusion.html" title="脚本混淆代码">
+                        <span class="hidden-mobile">脚本混淆代码</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

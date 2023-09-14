@@ -16,25 +16,24 @@
   <meta name="author" content="Davidli">
   <meta name="keywords" content="Davidli">
   
-    <meta name="description" content="1、内存错误是啥在C和OC中，你一直在处理指针。指针是存储另一个变量的内存地址的变量。当向一个对象发送消息时，指向该对象的指针将会被引用。这意味着，你获取了指针所指的内存地址，并访问该存储区域的值。 当该存储器区域不再映射到你的应用时，或者换句话说，该内存区域在你认为使用的时候却没有使用，该内存区域是无法访问的。 这时内核会抛出一个异常（ EXC ），表明你的应用程序不能访问该存储器区域（BAD">
+    <meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
 <meta property="og:type" content="article">
-<meta property="og:title" content="内存错误调试">
-<meta property="og:url" content="https://davidlii.cn/2017/12/16/bad_access.html">
+<meta property="og:title" content="Hello World">
+<meta property="og:url" content="https://davidlii.cn/2017/07/24/helloworld.html">
 <meta property="og:site_name" content="Davidli">
-<meta property="og:description" content="1、内存错误是啥在C和OC中，你一直在处理指针。指针是存储另一个变量的内存地址的变量。当向一个对象发送消息时，指向该对象的指针将会被引用。这意味着，你获取了指针所指的内存地址，并访问该存储区域的值。 当该存储器区域不再映射到你的应用时，或者换句话说，该内存区域在你认为使用的时候却没有使用，该内存区域是无法访问的。 这时内核会抛出一个异常（ EXC ），表明你的应用程序不能访问该存储器区域（BAD">
+<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2017-12-16T15:29:11.000Z">
-<meta property="article:modified_time" content="2017-12-15T15:29:11.000Z">
+<meta property="article:published_time" content="2017-07-24T09:40:34.000Z">
+<meta property="article:modified_time" content="2023-09-14T16:40:49.386Z">
 <meta property="article:author" content="Davidli">
-<meta property="article:tag" content="异常">
-<meta property="article:tag" content="内存管理">
+<meta property="article:tag" content="FAQ">
 <meta name="twitter:card" content="summary_large_image">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>内存错误调试 - Davidli</title>
+  <title>Hello World - Davidli</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -199,7 +198,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="内存错误调试"></span>
+            <span id="subtitle" data-typed-text="Hello World"></span>
           
         </div>
 
@@ -210,8 +209,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2017-12-16 23:29" pubdate>
-          2017年12月16日 晚上
+        <time datetime="2017-07-24 17:40" pubdate>
+          2017年7月24日 下午
         </time>
       </span>
     
@@ -222,7 +221,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.3k 字
+          349 字
         
       </span>
     
@@ -233,7 +232,7 @@
         
         
         
-          12 分钟
+          3 分钟
         
       </span>
     
@@ -279,34 +278,24 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">内存错误调试</h1>
+            <h1 style="display: none">Hello World</h1>
             
             
               <div class="markdown-body">
                 
-                <h3 id="1、内存错误是啥"><a href="#1、内存错误是啥" class="headerlink" title="1、内存错误是啥"></a>1、内存错误是啥</h3><p>在C和OC中，你一直在处理指针。指针是存储另一个变量的内存地址的变量。当向一个对象发送消息时，指向该对象的指针将会被引用。这意味着，你获取了指针所指的内存地址，并访问该存储区域的值。</p>
-<p>当该存储器区域不再映射到你的应用时，或者换句话说，该内存区域在你认为使用的时候却没有使用，该内存区域是无法访问的。 这时内核会抛出一个异常（ EXC ），表明你的应用程序不能访问该存储器区域（BAD ACCESS） 。</p>
-<p>总之，当你碰到 EXC_BAD_ACCESS ，这意味着你试图发送消息到的内存块，但内存块无法执行该消息。但是，在某些情况下， EXC_BAD_ACCESS 是由被损坏的指针引起的。每当你的应用程序尝试引用损坏的指针，一个异常就会被内核抛出。</p>
-<figure class="highlight smali"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs smali">static NSMutableArray *array;<br> <br>- (void)viewDidLoad<br>&#123;<br>    [super viewDid<span class="hljs-class">Load];</span><br>   <span class="hljs-built_in"> array </span>= [[NSMutableArray alloc] initWithCapacity:5];<br>    [array release];<br>&#125;<br> <br>- (void) viewWillAppear:(BOOL)animated <br>&#123;<br>    [array addObject:@<span class="hljs-string">&quot;Hello&quot;</span>];<br>&#125;<br></code></pre></td></tr></table></figure>
+                <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo new <span class="hljs-string">&quot;file name&quot;</span><br></code></pre></td></tr></table></figure>
 
-<p>上面的代码就会出现 EXC_BAD_ACCESS 错误，错误日志为：</p>
-<figure class="highlight smali"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs smali">-[CALayerArray addObject:]: unrecognized selector sent to<span class="hljs-built_in"> instance </span>0x604000443480<br></code></pre></td></tr></table></figure>
-<p>其中 0x604000443480 就是 array 变量的地址。</p>
-<p><strong>ps：</strong> Xcode7.0 之后的版本在编译上面的代码时，会在“[array release];”处报错：</p>
-<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs angelscript">release <span class="hljs-keyword">is</span> unavailable <span class="hljs-keyword">in</span> <span class="hljs-built_in">auto</span>matic <span class="hljs-built_in">ref</span>erence counting mode<br></code></pre></td></tr></table></figure>
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo s<br></code></pre></td></tr></table></figure>
 
-<p>所以，为了模拟上面的 EXC_BAD_ACCESS 错误，需要对编译环境进行设置：</p>
-<figure class="highlight xl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs xl">B<span class="hljs-function"><span class="hljs-title">uild</span> Settings -&gt;</span> O<span class="hljs-function"><span class="hljs-title">bjective</span>-C Automatic Reference Counting -&gt;</span> NO。<br></code></pre></td></tr></table></figure>
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo g<br></code></pre></td></tr></table></figure>
 
-<hr>
-<h3 id="2、咋调试？（Zombie-模式）"><a href="#2、咋调试？（Zombie-模式）" class="headerlink" title="2、咋调试？（Zombie 模式）"></a>2、咋调试？（Zombie 模式）</h3><p>EXC_BAD_ACCESS 难以调试的原因是，你不知道你的应用程序试图访问哪个对象时出了问题。在 Xcode 中，启用僵尸对象意味着被释放的对象将会以僵尸的形式被保留。如果向僵尸对象发送消息，应用程序将会由于 EXC_BAD_ACCESS 而崩溃，此时 Xcode 就可以告诉你你试图访问的是哪个僵尸对象。</p>
-<p>下面是在 Xcode9.2 中开启僵尸调试模式的步骤：</p>
-<figure class="highlight xl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs xl">左上角E<span class="hljs-function"><span class="hljs-title">dit</span> Scheme -&gt;</span> R<span class="hljs-function"><span class="hljs-title">un</span> -&gt;</span> D<span class="hljs-function"><span class="hljs-title">iagnostics</span> -&gt;</span> 勾选Zombie Objects<br></code></pre></td></tr></table></figure>
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo d<br></code></pre></td></tr></table></figure>
 
-<p>设置完之后还是上面的代码，再次运行之后，会打印如下报错信息：</p>
-<figure class="highlight smali"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs smali">Thread 1: EXC_BAD_INSTRUCTION (code=EXC_I386_INVOP, subcode=0x0)<br>*** -[__NSArrayM addObject:]: message sent to deallocated<span class="hljs-built_in"> instance </span>0x60400045d1c0<br></code></pre></td></tr></table></figure>
-
-<p>找到问题后记得还原 scheme中的 Zombie 设置。</p>
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/deployment.html">Deployment</a></p>
 
                 
               </div>
@@ -325,7 +314,7 @@
     
       <span class="category-chain">
         
-  <a href="/categories/%E8%AF%BE%E5%A4%96/" class="category-chain-item">课外</a>
+  <a href="/categories/%E5%85%A5%E9%97%A8/" class="category-chain-item">入门</a>
   
   
 
@@ -340,9 +329,7 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/%E5%BC%82%E5%B8%B8/">#异常</a>
-      
-        <a href="/tags/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">#内存管理</a>
+        <a href="/tags/FAQ/">#FAQ</a>
       
     </div>
   
@@ -354,8 +341,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>内存错误调试</div>
-      <div>https://davidlii.cn/2017/12/16/bad_access.html</div>
+      <div>Hello World</div>
+      <div>https://davidlii.cn/2017/07/24/helloworld.html</div>
     </div>
     <div class="license-meta">
       
@@ -367,7 +354,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2017年12月16日</div>
+          <div>2017年7月24日</div>
         </div>
       
       
@@ -397,21 +384,15 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2017/12/18/memory.html" title="虚拟内存分配">
+                      <a href="/2017/08/22/runtime-metaclass.html" title="元类">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">虚拟内存分配</span>
+                        <span class="hidden-mobile">元类</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
                   </article>
                   <article class="post-next col-6">
                     
-                    
-                      <a href="/2017/12/15/crash.html" title="iOS异常捕获">
-                        <span class="hidden-mobile">iOS异常捕获</span>
-                        <span class="visible-mobile">下一篇</span>
-                        <i class="iconfont icon-arrowright"></i>
-                      </a>
                     
                   </article>
                 </div>

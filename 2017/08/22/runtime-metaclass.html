@@ -16,26 +16,26 @@
   <meta name="author" content="Davidli">
   <meta name="keywords" content="Davidli">
   
-    <meta name="description" content="最近看到有新版的iOS12越狱工具发布，一时手痒，于是将手里的设备进行了越狱。这中间又出了各种问题，在这里记录下来，顺便给后面踩坑的同学做个参考~  1.越狱工具unc0verjailbreak for iOS 11.0-12.1.2，版本号为 v3.0.0~b48，手机 Safari 中打开 这里，在第二个 Tab 的jailbreaks选项中找到unc0ver-new beta，下载完成后进入">
+    <meta name="description" content="1.runtimeruntime，直译过来是运行时，它是一套底层的C语言API，包含很多强大实用的C语言数据类型和C语言函数。我们的OC代码在运行阶段都是基于runtime环境才能正常运行的。 2.常用场景 发送消息； 读取成员变量； 动态为某个类增加属性； 交换类中的方法、动态为某个类添加方法； 动态创建、删除、修改一个类；  3.对象 OC中，含有isa指针且该指针可以正确指向类的数据结构，都">
 <meta property="og:type" content="article">
-<meta property="og:title" content="iOS12越狱填坑">
-<meta property="og:url" content="https://davidlii.cn/2019/03/28/jailbreak-ios12.html">
+<meta property="og:title" content="元类">
+<meta property="og:url" content="https://davidlii.cn/2017/08/22/runtime-metaclass.html">
 <meta property="og:site_name" content="Davidli">
-<meta property="og:description" content="最近看到有新版的iOS12越狱工具发布，一时手痒，于是将手里的设备进行了越狱。这中间又出了各种问题，在这里记录下来，顺便给后面踩坑的同学做个参考~  1.越狱工具unc0verjailbreak for iOS 11.0-12.1.2，版本号为 v3.0.0~b48，手机 Safari 中打开 这里，在第二个 Tab 的jailbreaks选项中找到unc0ver-new beta，下载完成后进入">
+<meta property="og:description" content="1.runtimeruntime，直译过来是运行时，它是一套底层的C语言API，包含很多强大实用的C语言数据类型和C语言函数。我们的OC代码在运行阶段都是基于runtime环境才能正常运行的。 2.常用场景 发送消息； 读取成员变量； 动态为某个类增加属性； 交换类中的方法、动态为某个类添加方法； 动态创建、删除、修改一个类；  3.对象 OC中，含有isa指针且该指针可以正确指向类的数据结构，都">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://davidlii.nos-eastchina1.126.net/pic_jailbreak.jpg">
-<meta property="article:published_time" content="2019-03-28T12:08:55.000Z">
-<meta property="article:modified_time" content="2019-03-28T12:08:55.000Z">
+<meta property="og:image" content="https://davidlii.nos-eastchina1.126.net/pic_metaclass.png">
+<meta property="article:published_time" content="2017-08-21T17:57:57.000Z">
+<meta property="article:modified_time" content="2019-09-30T01:45:00.000Z">
 <meta property="article:author" content="Davidli">
-<meta property="article:tag" content="逆向">
+<meta property="article:tag" content="runtime">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://davidlii.nos-eastchina1.126.net/pic_jailbreak.jpg">
+<meta name="twitter:image" content="https://davidlii.nos-eastchina1.126.net/pic_metaclass.png">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>iOS12越狱填坑 - Davidli</title>
+  <title>元类 - Davidli</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -200,7 +200,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="iOS12越狱填坑"></span>
+            <span id="subtitle" data-typed-text="元类"></span>
           
         </div>
 
@@ -211,8 +211,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2019-03-28 20:08" pubdate>
-          2019年3月28日 晚上
+        <time datetime="2017-08-22 01:57" pubdate>
+          2017年8月22日 凌晨
         </time>
       </span>
     
@@ -223,7 +223,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2.5k 字
+          1.7k 字
         
       </span>
     
@@ -234,7 +234,7 @@
         
         
         
-          22 分钟
+          15 分钟
         
       </span>
     
@@ -280,79 +280,91 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">iOS12越狱填坑</h1>
+            <h1 style="display: none">元类</h1>
             
             
               <div class="markdown-body">
                 
-                <p>最近看到有新版的iOS12越狱工具发布，一时手痒，于是将手里的设备进行了越狱。这中间又出了各种问题，在这里记录下来，顺便给后面踩坑的同学做个参考~</p>
-<p><img src="https://davidlii.nos-eastchina1.126.net/pic_jailbreak_ios12.png" srcset="/img/loading.gif" lazyload alt="纲目"></p>
-<h3 id="1-越狱工具"><a href="#1-越狱工具" class="headerlink" title="1.越狱工具"></a>1.越狱工具</h3><p><code>unc0ver</code>jailbreak for iOS 11.0-12.1.2，版本号为 v3.0.0~b48，手机 Safari 中打开 <a target="_blank" rel="noopener" href="https://app.ignition.fun/">这里</a>，在第二个 Tab 的<code>jailbreaks</code>选项中找到<code>unc0ver-new beta</code>，下载完成后进入<code>unc0ver</code>，点 jailberak 即可自动越狱。<br><br/></p>
-<p>越狱完成后会自动安装 Cydia~</p>
-<h3 id="2-Cydia联网失败"><a href="#2-Cydia联网失败" class="headerlink" title="2.Cydia联网失败"></a>2.Cydia联网失败</h3><h4 id="2-1-乐网"><a href="#2-1-乐网" class="headerlink" title="2.1.乐网"></a>2.1.乐网</h4><p>下载爱思手机助手，搜索并安装<code>乐网</code>，启动后打开开关，再进入 Cydia 即可。</p>
-<h4 id="2-2-插件"><a href="#2-2-插件" class="headerlink" title="2.2.插件"></a>2.2.插件</h4><p>你也可以在 Cydia 中添加<code>贴吧源</code> <a target="_blank" rel="noopener" href="http://apt.cydiaba.cn/">http://apt.cydiaba.cn</a> ，搜索并安装<code>联网修正</code>插件即可。</p>
-<h3 id="3-搜不到OpenSSH"><a href="#3-搜不到OpenSSH" class="headerlink" title="3.搜不到OpenSSH"></a>3.搜不到OpenSSH</h3><h4 id="添加新的源"><a href="#添加新的源" class="headerlink" title="添加新的源"></a>添加新的源</h4><ul>
-<li><p>蚂蚁源：<a target="_blank" rel="noopener" href="http://apt.cydia.love/">http://apt.cydia.love</a></p>
-</li>
-<li><p>Cydia贴吧源：<a target="_blank" rel="noopener" href="http://apt.cydiaba.cn/">http://apt.cydiaba.cn</a></p>
-</li>
-<li><p>saurik源：<a target="_blank" rel="noopener" href="http://apt.saurik.com/cydia">http://apt.saurik.com/cydia</a></p>
-</li>
-<li><p>雷锋源：<a target="_blank" rel="noopener" href="http://apt.abcydia.com/">http://apt.abcydia.com</a></p>
-</li>
+                <h3 id="1-runtime"><a href="#1-runtime" class="headerlink" title="1.runtime"></a>1.runtime</h3><p><code>runtime</code>，直译过来是运行时，它是一套底层的C语言API，包含很多强大实用的C语言数据类型和C语言函数。我们的OC代码在运行阶段都是基于runtime环境才能正常运行的。</p>
+<h3 id="2-常用场景"><a href="#2-常用场景" class="headerlink" title="2.常用场景"></a>2.常用场景</h3><ul>
+<li>发送消息；</li>
+<li>读取成员变量；</li>
+<li>动态为某个类增加属性；</li>
+<li>交换类中的方法、动态为某个类添加方法；</li>
+<li>动态创建、删除、修改一个类；</li>
 </ul>
-<h3 id="4-修改密码"><a href="#4-修改密码" class="headerlink" title="4.修改密码"></a>4.修改密码</h3><p>iOS设备上有<code>root</code>和<code>mobile</code>两个用户，在安装完 SSH 后记得修改默认的登录密码“alpine”，防止病毒通过 ssh 以 root 用户身份登录设备。</p>
-<br/>
+<h3 id="3-对象"><a href="#3-对象" class="headerlink" title="3.对象"></a>3.对象</h3><blockquote>
+<p>OC中，含有isa指针且该指针可以正确指向类的数据结构，都可以视为对象。</p>
+</blockquote>
+<p>下面是<code>objc.h</code>中的相关定义:</p>
+<pre><code class="hljs">#if !OBJC_TYPES_DEFINED
+/// An opaque type that represents an Objective-C class.
+typedef struct objc_class *Class;
 
-<p>ssh登录设备</p>
-<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs angelscript">$ ssh <span class="hljs-symbol">root@</span><span class="hljs-number">192.168</span><span class="hljs-number">.31</span>.xx <span class="hljs-comment">//设备所在WiFi的IP地址</span><br></code></pre></td></tr></table></figure>
+/// Represents an instance of a class.
+struct objc_object &#123;
+Class isa  OBJC_ISA_AVAILABILITY;
+&#125;;
 
+/// A pointer to an instance of a class.
+typedef struct objc_object *id;
+#endif
+</code></pre>
+<p>从<code>objc_object</code>结构体的定义可以看出：对象实质上是一个结构体，其结构体内含有<code>isa</code>指针，指向其所属的类。</p>
+<h3 id="4-类"><a href="#4-类" class="headerlink" title="4.类"></a>4.类</h3><p>下面是<code>runtime.h</code>中对<code>类</code>的定义：</p>
+<pre><code class="hljs">struct objc_class &#123;
+Class isa  OBJC_ISA_AVAILABILITY;       //指针
+
+#if !__OBJC2__
+Class super_class                       //父类;
+const char *name                        //类名;
+long version                                             //类的版本信息，默认为0;
+long info                               //位标识;
+long instance_size                      //类的实例变量大小;
+struct objc_ivar_list *ivars            //类的成员变量链表;
+struct objc_method_list **methodLists   //方法定义的链表;
+struct objc_cache *cache                //方法缓存;
+struct objc_protocol_list *protocols    //协议链表;
+#endif
+
+&#125; OBJC2_UNAVAILABLE;
+</code></pre>
+<p>从结构体的定义来看，类也是以<code>isa</code>开始并指向类的数据结构。OC中类与元类在运行时都是<code>objc_class</code>类型，所以，<strong>类和元类也是一种对象</strong>。</p>
+<h3 id="5-元类"><a href="#5-元类" class="headerlink" title="5.元类"></a>5.元类</h3><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs Objc"><span class="hljs-built_in">NSObject</span> *obj = [<span class="hljs-built_in">NSObject</span> alloc];<br></code></pre></td></tr></table></figure>
+
+<h4 id="5-1-实例对象"><a href="#5-1-实例对象" class="headerlink" title="5.1.实例对象"></a>5.1.实例对象</h4><p>实例对象，instance object，是指从某个类实例化而来的对象，如示例中的<code>obj</code>。</p>
+<h4 id="5-2-类对象"><a href="#5-2-类对象" class="headerlink" title="5.2.类对象"></a>5.2.类对象</h4><p>类对象，Class object，类作为对象时，就称之为类对象。调用一个 “类方法” ，如 [NSObject alloc]，实质上是向它的类对象(NSObject)发送了一个消息。类对象是由编译器创建的，任何继承自NSObject的类，它的实例对象中都有一个isa指针，指向它的类对象。</p>
+<h4 id="5-3-元类"><a href="#5-3-元类" class="headerlink" title="5.3.元类"></a>5.3.元类</h4><p>从一个类实例化而来的对象叫实例对象；类作为对象，又是元类（Metaclass）的实例，<strong>元类是类对象所属的类</strong>。</p>
+<p>注意区分类对象和元类：类对象中保存的是关于其实例对象的信息(变量，实例方法、遵守的协议等)；元类中保存的是关于类的信息(类方法，类的版本，名字等)；</p>
+<p>借用网上的一张图，演示元类与继承的封闭循环：</p>
+<p><img src="https://davidlii.nos-eastchina1.126.net/pic_metaclass.png" srcset="/img/loading.gif" lazyload alt="isa与superclass"></p>
+<p>图中实线是 super_class 指针，虚线是<code>isa</code>指针。</p>
 <ul>
-<li>修改 root 密码：</li>
+<li>实例对象是类的实例；</li>
+<li>类作为对象又是元类的实例;</li>
+<li>元类作为对象是根元类的实例；</li>
+<li>根元类是其自身的实例。</li>
+<li>根元类的superclass为根类自己；</li>
+<li>根类的superclass为nil；</li>
 </ul>
-<figure class="highlight haxe"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs haxe">~ root<span class="hljs-meta"># passwd</span><br>changing password <span class="hljs-keyword">for</span> root.<br>New password:<span class="hljs-type"></span><br>Retype <span class="hljs-keyword">new</span> <span class="hljs-type">password</span>:<br>~ root<span class="hljs-meta"># </span><br></code></pre></td></tr></table></figure>
-
+<h3 id="6-isa"><a href="#6-isa" class="headerlink" title="6.isa"></a>6.isa</h3><p>isa 等价于 is kind of：</p>
 <ul>
-<li>修改 mobile 密码：</li>
+<li>实例对象 isa 指向类对象;</li>
+<li>类对象指 isa 向元类对象;</li>
+<li>元类对象的 isa 指向根元类;</li>
 </ul>
-<figure class="highlight haxe"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs haxe">~ root<span class="hljs-meta"># passwd mobile</span><br>changing password <span class="hljs-keyword">for</span> mobile.<br>New password:<span class="hljs-type"></span><br>Retype <span class="hljs-keyword">new</span> <span class="hljs-type">password</span>:<br>~ root<span class="hljs-meta"># </span><br></code></pre></td></tr></table></figure>
-
-<p>你也可以在 Cydia 中下载<code>Mterminal</code>命令行工具，按照上面的操作修改密码。</p>
-<h3 id="5-重启后越狱状态恢复"><a href="#5-重启后越狱状态恢复" class="headerlink" title="5.重启后越狱状态恢复"></a>5.重启后越狱状态恢复</h3><p>打开<code>unc0ver-settings-Restore RootFS</code>选项清除越狱信息，重新越狱。</p>
-<h3 id="6-重新越狱后ssh登录失败"><a href="#6-重新越狱后ssh登录失败" class="headerlink" title="6.重新越狱后ssh登录失败"></a>6.重新越狱后ssh登录失败</h3><p>失败信息如下：</p>
-<figure class="highlight gauss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs gauss"><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@</span><br><span class="hljs-comment">@</span>    WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!     <span class="hljs-comment">@</span><br><span class="hljs-comment">@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><span class="hljs-comment">@@</span><br>IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!<br>Someone could be eavesdropping on you right <span class="hljs-built_in">now</span> (man-in-the-middle attack)!<br>It is also possible that a host <span class="hljs-built_in">key</span> has just been changed.<br>The fingerprint <span class="hljs-keyword">for</span> the RSA key sent by the remote host is<br>SHA256:eiVsYjmcqRFD46WOMhcQPxRJSgPDbndRDq2/+3Zxaw4.<br>Please contact your system administrator.<br>Add correct host key in /Users/Macmafia/.ssh/known_hosts to get rid of this message.<br>Offending RSA key in /Users/Macmafia/.ssh/known_hosts:8<br>RSA host key <span class="hljs-keyword">for</span> 192.168.31.xx has changed and you have requested strict checking.<br>Host key verification failed.<br></code></pre></td></tr></table></figure>
-
-<p>Mac中进入~&#x2F;.ssh目录，打开<code>known_hosts</code>文件并将 wifi 的 ip 地址及其对应的公钥字符串删除，重新 ssh 登录即可。</p>
-<h3 id="7-cycript安装失败"><a href="#7-cycript安装失败" class="headerlink" title="7.cycript安装失败"></a>7.cycript安装失败</h3><ul>
-<li>cycript插件</li>
-</ul>
-<p>Cydia 中默认已安装<code>cycript</code>，添加大佬源：apt.saurik.com&#x2F;cydia，更新<code>cycript</code>插件。</p>
-<ul>
-<li>apt安装</li>
-</ul>
-<p>ssh登录后，$ apt-get install cycrypt</p>
-<ul>
-<li>官网</li>
-</ul>
-<p>1、到官网下载<code>cycript_0.9.501_iphoneos-arm.deb</code>和<code>libffi_1:3.0.10-5_iphoneos-arm.deb</code>包；<br><br/></p>
-<p>2、sftp命令传送文件到设备中：</p>
-<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs vim">$ sftp root@wifi ip地址<br>sftp&gt; <span class="hljs-keyword">put</span> cycript_0.<span class="hljs-number">9.501</span>_iphoneos-arm.<span class="hljs-keyword">deb</span><br>sftp&gt; <span class="hljs-keyword">put</span> libffi_1:<span class="hljs-number">3.0</span>.<span class="hljs-number">10</span>-<span class="hljs-number">5</span>_iphoneos-arm.<span class="hljs-keyword">deb</span><br></code></pre></td></tr></table></figure>
-
-<p>3、dpkg安装</p>
-<figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs crystal"><span class="hljs-variable">$ </span>ssh root<span class="hljs-variable">@192</span>.<span class="hljs-number">168.1</span>.<span class="hljs-number">101</span><br>~ root<span class="hljs-comment"># dpkg -i cycript_0.9.501_iphoneos-arm.deb</span><br></code></pre></td></tr></table></figure>
-
-<h3 id="8-“ps-e”命令报错"><a href="#8-“ps-e”命令报错" class="headerlink" title="8.“ps-e”命令报错"></a>8.“ps-e”命令报错</h3><p>报错信息：</p>
-<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs vim">-<span class="hljs-keyword">sh</span>: /usr/bin/<span class="hljs-keyword">ps</span>: Bad CPU <span class="hljs-built_in">type</span> in <span class="hljs-built_in">executable</span><br></code></pre></td></tr></table></figure>
-
-<p>方案：Cydia 中将<code>adv-cmds</code>插件降级到”119-6”；</p>
-<h3 id="9-“cycript-p”命令出错"><a href="#9-“cycript-p”命令出错" class="headerlink" title="9.“cycript -p”命令出错"></a>9.“cycript -p”命令出错</h3><figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">iPhone:~ root# cycript -p NewsBoard<br><span class="hljs-literal">[<span class="hljs-number">3345</span>]</span> <span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">DarwinInjector</span>.</span></span>cpp<span class="hljs-literal">[<span class="hljs-number">246</span>]</span>: <span class="hljs-constructor">_krncall(<span class="hljs-params">mach_vm_read_overwrite</span>)</span> =<span class="hljs-number">10000003</span><br>*** <span class="hljs-constructor">_assert(<span class="hljs-params">status</span> <span class="hljs-operator">==</span> 0)</span>:../<span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">Inject</span>.</span></span>cpp(<span class="hljs-number">143</span>):InjectLibrary<br></code></pre></td></tr></table></figure>
-
-<p>这会导致接下来无法查询到进程的<code>Document</code>目录，进而无法导入砸壳动态库。<a target="_blank" rel="noopener" href="http://bbs.iosre.com/">论坛</a>里的方案都试过了，暂时解决不了。这里我们可以换个不那么酷的方式，在 Cydia 安装的<code>Filza</code>插件，找到“&#x2F;var&#x2F;mobile&#x2F;Containers&#x2F;Data&#x2F;Application&#x2F;”目录，这里会显示应用的名字。</p>
-<p><img src="https://davidlii.nos-eastchina1.126.net/pic_filza.PNG" srcset="/img/loading.gif" lazyload alt="filza"></p>
-<p>选择目标进程，点击进入对应的<code>Documents</code>目录即可~</p>
+<h3 id="7-相关函数"><a href="#7-相关函数" class="headerlink" title="7.相关函数"></a>7.相关函数</h3><pre><code class="hljs">-class
+</code></pre>
+<p>对于实例对象，返回其 isa 指针指向的<code>类</code>；对于类对象，返回其<code>本身</code>。</p>
+<pre><code class="hljs">object_getClass(id obj)
+</code></pre>
+<p>返回isa指针指向的内容。对于实例对象，返回其 isa 指向的<code>类</code>；对于类对象，返回其对应的<code>元类</code>。</p>
+<pre><code class="hljs">objc_getMetaClass(const char *name)
+</code></pre>
+<p>返回此类对应的<code>元类</code>。</p>
 <hr>
 <p>相关参考：</p>
-<p>#<a target="_blank" rel="noopener" href="https://www.cnblogs.com/mengfanrong/p/5096590.html">©ssh远程登录报错</a></p>
+<p>#<a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/objectivec/">©Objective-C Runtime</a></p>
 
                 
               </div>
@@ -371,7 +383,7 @@
     
       <span class="category-chain">
         
-  <a href="/categories/%E8%AF%BE%E5%A4%96/" class="category-chain-item">课外</a>
+  <a href="/categories/%E6%8A%80%E6%9C%AF/" class="category-chain-item">技术</a>
   
   
 
@@ -386,7 +398,7 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/%E9%80%86%E5%90%91/">#逆向</a>
+        <a href="/tags/runtime/">#runtime</a>
       
     </div>
   
@@ -398,8 +410,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>iOS12越狱填坑</div>
-      <div>https://davidlii.cn/2019/03/28/jailbreak-ios12.html</div>
+      <div>元类</div>
+      <div>https://davidlii.cn/2017/08/22/runtime-metaclass.html</div>
     </div>
     <div class="license-meta">
       
@@ -411,7 +423,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2019年3月28日</div>
+          <div>2017年8月22日</div>
         </div>
       
       
@@ -441,9 +453,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2019/03/31/frida.html" title="frida一键砸壳">
+                      <a href="/2017/08/23/runtime-message.html" title="消息机制">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">frida一键砸壳</span>
+                        <span class="hidden-mobile">消息机制</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -451,8 +463,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2019/03/25/code_confusion.html" title="脚本混淆代码">
-                        <span class="hidden-mobile">脚本混淆代码</span>
+                      <a href="/2017/07/24/helloworld.html" title="Hello World">
+                        <span class="hidden-mobile">Hello World</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

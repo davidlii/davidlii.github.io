@@ -16,26 +16,24 @@
   <meta name="author" content="Davidli">
   <meta name="keywords" content="Davidli">
   
-    <meta name="description" content="Github为国外网站，所以域名解析时速度慢的。。解决此问题有俩方法：  挂VPN 修改hosts配置  本文讲的是第二种，修改hosts文件，具体步骤如下： #1、打开host文件 直接通过Finder  快捷键 command + shift + G，输入“&#x2F;etc”，回车即可进入etc文件夹，找到hosts文件，直接通过系统的“文本编辑”打开即可。  使用终端打开  1sudo v">
+    <meta name="description" content="1、UDIDUDID（Unique Device Identifier），iOS 设备的唯一识别码，是一个40位十六进制序列。 1[[UIDevice cuurrent] uniqueIdenfier];  移动广告商等往往需要通过UDID用来识别玩家用户，并对用户活动进行跟踪。这会泄露用户的隐私信息，所以iOS5.0之后，苹果已被废除此方法，并且禁止使用UDID信息的APP上架。 2、UUIDU">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Github访问慢？">
-<meta property="og:url" content="https://davidlii.cn/2019/07/23/fast-github.html">
+<meta property="og:title" content="iOS 设备唯一标识符">
+<meta property="og:url" content="https://davidlii.cn/2017/11/25/idfa.html">
 <meta property="og:site_name" content="Davidli">
-<meta property="og:description" content="Github为国外网站，所以域名解析时速度慢的。。解决此问题有俩方法：  挂VPN 修改hosts配置  本文讲的是第二种，修改hosts文件，具体步骤如下： #1、打开host文件 直接通过Finder  快捷键 command + shift + G，输入“&#x2F;etc”，回车即可进入etc文件夹，找到hosts文件，直接通过系统的“文本编辑”打开即可。  使用终端打开  1sudo v">
+<meta property="og:description" content="1、UDIDUDID（Unique Device Identifier），iOS 设备的唯一识别码，是一个40位十六进制序列。 1[[UIDevice cuurrent] uniqueIdenfier];  移动广告商等往往需要通过UDID用来识别玩家用户，并对用户活动进行跟踪。这会泄露用户的隐私信息，所以iOS5.0之后，苹果已被废除此方法，并且禁止使用UDID信息的APP上架。 2、UUIDU">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://davidlii.nos-eastchina1.126.net/pic_github.png">
-<meta property="article:published_time" content="2019-07-23T11:03:45.000Z">
-<meta property="article:modified_time" content="2019-07-23T11:03:45.000Z">
+<meta property="article:published_time" content="2017-11-25T10:20:07.000Z">
+<meta property="article:modified_time" content="2019-07-17T16:04:23.000Z">
 <meta property="article:author" content="Davidli">
-<meta property="article:tag" content="网络">
+<meta property="article:tag" content="数据">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://davidlii.nos-eastchina1.126.net/pic_github.png">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>Github访问慢？ - Davidli</title>
+  <title>iOS 设备唯一标识符 - Davidli</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -200,7 +198,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="Github访问慢？"></span>
+            <span id="subtitle" data-typed-text="iOS 设备唯一标识符"></span>
           
         </div>
 
@@ -211,8 +209,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2019-07-23 19:03" pubdate>
-          2019年7月23日 晚上
+        <time datetime="2017-11-25 18:20" pubdate>
+          2017年11月25日 晚上
         </time>
       </span>
     
@@ -223,7 +221,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          937 字
+          2.3k 字
         
       </span>
     
@@ -234,7 +232,7 @@
         
         
         
-          8 分钟
+          19 分钟
         
       </span>
     
@@ -280,38 +278,40 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">Github访问慢？</h1>
+            <h1 style="display: none">iOS 设备唯一标识符</h1>
             
             
               <div class="markdown-body">
                 
-                <p>Github为国外网站，所以域名解析时速度慢的。。解决此问题有俩方法：</p>
-<ul>
-<li>挂VPN</li>
-<li>修改hosts配置</li>
-</ul>
-<p>本文讲的是第二种，修改hosts文件，具体步骤如下：</p>
-<h2 id="1、打开host文件"><a href="#1、打开host文件" class="headerlink" title="#1、打开host文件"></a>#1、打开host文件</h2><ul>
-<li>直接通过Finder</li>
-</ul>
-<p>快捷键 command + shift + G，输入“&#x2F;etc”，回车即可进入etc文件夹，找到hosts文件，直接通过系统的“文本编辑”打开即可。</p>
-<ul>
-<li>使用终端打开</li>
-</ul>
-<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">sudo vi <span class="hljs-regexp">/etc/</span>hosts<br></code></pre></td></tr></table></figure>
+                <h4 id="1、UDID"><a href="#1、UDID" class="headerlink" title="1、UDID"></a>1、UDID</h4><p>UDID（Unique Device Identifier），iOS 设备的唯一识别码，是一个40位十六进制序列。</p>
+<figure class="highlight inform7"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs inform7"><span class="hljs-comment">[<span class="hljs-comment">[UIDevice cuurrent]</span> uniqueIdenfier]</span>;<br></code></pre></td></tr></table></figure>
 
-<p>输入密码后会看到目前hosts文件的配置信息：</p>
-<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs elixir"><span class="hljs-comment">##</span><br><span class="hljs-comment"># Host Database</span><br><span class="hljs-comment">#</span><br><span class="hljs-comment"># localhost is used to configure the loopback interface</span><br><span class="hljs-comment"># when the system is booting.  Do not change this entry.</span><br><span class="hljs-comment">##</span><br><span class="hljs-number">127.0</span>.<span class="hljs-number">0.1</span>	localhost<br><span class="hljs-number">255.255</span>.<span class="hljs-number">255.255</span>	broadcasthost<br>::<span class="hljs-number">1</span>             localhost <br></code></pre></td></tr></table></figure>
+<p>移动广告商等往往需要通过UDID用来识别玩家用户，并对用户活动进行跟踪。这会泄露用户的隐私信息，所以iOS5.0之后，苹果已被废除此方法，并且禁止使用UDID信息的APP上架。</p>
+<h4 id="2、UUID"><a href="#2、UUID" class="headerlink" title="2、UUID"></a>2、UUID</h4><p>UUID（Universally Unique Identifier），通用唯一标识符，是一个32位的十六进制序列。</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">5</span>; i++) &#123;<br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;++%@&quot;</span>,[<span class="hljs-built_in">NSUUID</span> UUID]);<br>&#125;<br></code></pre></td></tr></table></figure>
 
-<h2 id="2、查询Github域名对应的ip地址"><a href="#2、查询Github域名对应的ip地址" class="headerlink" title="#2、查询Github域名对应的ip地址"></a>#2、查询Github域名对应的ip地址</h2><p>在浏览器中访问 <a target="_blank" rel="noopener" href="https://www.ipaddress.com/">此网站</a>，在其搜索框中分别输入“github.com” 与 “github.global.ssl.fastly.net”，查询并记录下其对应的ip地址。我的查询结果如下：</p>
-<figure class="highlight accesslog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs accesslog"><span class="hljs-number">192.30.253.112</span> 	github.com<br><span class="hljs-number">151.101.13.194</span>	github.global.ssl.fastly.net<br></code></pre></td></tr></table></figure>
-<h2 id="3、修改hosts文件"><a href="#3、修改hosts文件" class="headerlink" title="#3、修改hosts文件"></a>#3、修改hosts文件</h2><p>通过“文本编辑”工具 或者 终端中使用 vi 命令打开hosts文件，将上面两行记录写入hosts文件，保存并退出。结果如下：</p>
-<figure class="highlight accesslog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs accesslog">##<br># Host Database<br>#<br># localhost is used to configure the loopback interface<br># when the system is booting.  Do not change this entry.<br>##<br><span class="hljs-number">127.0.0.1</span>	localhost<br><span class="hljs-number">255.255.255.255</span>	broadcasthost<br>::<span class="hljs-number">1</span>             localhost <br><br><span class="hljs-number">192.30.253.112</span> 	github.com<br><span class="hljs-number">151.101.13.194</span>	github.global.ssl.fastly.net<br></code></pre></td></tr></table></figure>
+<p>日志：</p>
+<figure class="highlight subunit"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs subunit">++CA34E048-C879<span class="hljs-string">-4</span>BCA<span class="hljs-string">-8105</span><span class="hljs-string">-8</span>E6F3DA137C4<br>+<span class="hljs-string">+4</span>C808BD6-C7EE<span class="hljs-string">-4</span>E35-BEB5-B319F37BEA30<br>++C9B7AA3E<span class="hljs-string">-71</span>AD<span class="hljs-string">-462</span>B-BAC1<span class="hljs-string">-36</span>B9433B987F<br>++A8847816<span class="hljs-string">-7194</span><span class="hljs-string">-4</span>ECF<span class="hljs-string">-8</span>FA4<span class="hljs-string">-75</span>C566D68B21<br>+<span class="hljs-string">+6</span>C9FCC03-BCF7<span class="hljs-string">-4</span>B68<span class="hljs-string">-9</span>A98<span class="hljs-string">-8209</span>BF83690E<br></code></pre></td></tr></table></figure>
 
-<h2 id="4、重新访问-Github-com"><a href="#4、重新访问-Github-com" class="headerlink" title="#4、重新访问 Github.com~"></a>#4、重新访问 Github.com~</h2><p>现在，重新访问 <a target="_blank" rel="noopener" href="https://github.com/">Github.com</a> 试试~</p>
-<hr>
-<p>相关参考：</p>
-<p>#<a target="_blank" rel="noopener" href="https://blog.csdn.net/wu__di/article/details/50538916">©传送门</a></p>
+<p>循环5次，每次取到的值都不一样。所以当用户重新启动了应用或者删除应用重装后，UUID都会被重置。因此你需要在应用第一次启动时就将其UUID保存到钥匙串中，之后从钥匙串中取值。<br><br/></p>
+<p>因为每次使用系统方法获取到的UUID都是不一样的，所以每个应用都会产生与之对应的UUID。像淘宝和支付宝账号互通的这种系列应用，如果从淘宝切到支付宝，因为UUID不一样了就提示换了设备，显然不符合实际情况。</p>
+<h4 id="3、IDFV"><a href="#3、IDFV" class="headerlink" title="3、IDFV"></a>3、IDFV</h4><p>iOS6.0之后，苹果提供的新方法。它是通过 bundleID 的反转的前两部分进行匹配，如果内容相同则认为是同一个Vendor（供应商），例如对于<code>com.example.app1</code>和<code>com.example.app2</code>这两个 bundleID，它们就属于同一个 Vendor，共享同一个<code>IDFV</code>。这样就解决了上面提到的账号互通类应用切换登录时的问题。</p>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs abnf">UIDevice *device <span class="hljs-operator">=</span> [UIDevice currentDevice]<span class="hljs-comment">;</span><br>NSUUID * uuid <span class="hljs-operator">=</span> [device identifierForVendor]<span class="hljs-comment">;</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>vendor</strong>（运营商）的值是根据已经上架到 Appstore 的 App 来决定的。如果应用不是通过 Appstore 安装的（如企业版或开发调试阶段），那么会根据<code>bundle ID</code>判断。<br><br/></p>
+<p>iOS6.x中，会取 bundleID 的前两个部分生成 <code>vendor ID</code>（##com.example##.app.app1）。<br><br/></p>
+<p>iOS7.x之后，除了最后一部分外，其他部分的 bundleID 都会用来生成<code>vendor ID</code>（##com.example.app##.app1）。<br><br/></p>
+<p>需要注意的是，用户删除了某 APP 重装后，APP 里再获取 <code>IDFV</code> 时，值和之前的就不同了。</p>
+<h4 id="4、IDFA"><a href="#4、IDFA" class="headerlink" title="4、IDFA"></a>4、IDFA</h4><p>IDFA - identifierForIdentifier（广告标示符），每个设备只有一个IDFA，在同一个设备上的所有 APP 都会取到相同的值，是iOS6 苹果专门给各广告提供商用来追踪用户而设定的。虽然 iPhone 默认是允许追踪的，而且一般用户都不知道有这么个设置，但是用户可以在 设置 - 隐私 - 广告追踪 里重置此 ID 的值，或者限制此 ID 的使用，所以有可能会取不到值。</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs angelscript"><span class="hljs-comment">//依赖库：AdSupport.framework</span><br>#<span class="hljs-keyword">import</span> &lt;AdSupport/AdSupport.h&gt;<br><span class="hljs-string">[[[ASIdentifierManager sharedManager]</span> advertisingIdentifier] UUIDString];<br></code></pre></td></tr></table></figure>
+
+<p><strong>注意</strong>：App Store 禁止不使用广告而只采集 IDFA 的 APP 上架。</p>
+<h4 id="5、OpenUDID"><a href="#5、OpenUDID" class="headerlink" title="5、OpenUDID"></a>5、OpenUDID</h4><p>UDID 被弃用后，广大开发者需要寻找一个可以替代的 UDID，并且不受苹果控制的方案，由此，OpenUDID 成为了当时使用最广泛的开源 UDID 代替方案。OpenUDID 利用一个非常巧妙的方法在不同程序间存储标示符：在粘贴板中用了一个特殊的名称来存储标示符，通过这种方法，其他应用程序也可以获取。<br><br/></p>
+<p>每台iOS设备的 OpenUDID 是通过第一个带有 OpenUDID SDK包的 App 生成，如果你完全删除全部带有 OpenUDID SDK包的App（比如恢复系统等），那么OpenUDID会重新生成，而且和之前的值会不同，相当于新设备。<br><br/></p>
+<p>另外，苹果在 iOS 7 之后对粘贴板做了限制，导致同一个设备上的应用间，无法再共享一个 OpenUDID。</p>
+<h4 id="6、MAC"><a href="#6、MAC" class="headerlink" title="6、MAC"></a>6、MAC</h4><p>MAC 地址在网络上用来区分设备的唯一性，接入网络的设备都有一个MAC地址，他们肯定都是唯一的。一部 iPhone 上可能有多个 MAC 地址，包括 WIFI 的、SIM 的等，但是 iTouch 和 iPad 上就有一个 WIFI 的，因此只需获取 WIFI 的 MAC 地址就好了。一般会采取 MD5（MAC 地址 + bundleID）获取唯一标识。<br><br/></p>
+<p>但是 MAC 地址和 UDID 一样，存在隐私问题， iOS 7 之后，所有设备请求 MAC 地址会返回一个固定值，这个方法也不攻自破了。</p>
+<h4 id="7、IDFV-keychain"><a href="#7、IDFV-keychain" class="headerlink" title="7、IDFV + keychain"></a>7、IDFV + keychain</h4><p>通过以上几种储存唯一标识的方法的分析，总结一下各有优劣。很多方法被苹果禁止或者漏洞太多，越来越不被开发者使用，现在苹果主推 IDFA 和 IDFV 这两种方法，但是 IDFV 在 APP 重新安装时会变化，所以可以将IDFV存储到钥匙串中，以后每次想获取标识符时都从钥匙串中取。</p>
 
                 
               </div>
@@ -330,7 +330,7 @@
     
       <span class="category-chain">
         
-  <a href="/categories/%E8%AF%BE%E5%A4%96/" class="category-chain-item">课外</a>
+  <a href="/categories/%E6%8A%80%E6%9C%AF/" class="category-chain-item">技术</a>
   
   
 
@@ -345,7 +345,7 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/%E7%BD%91%E7%BB%9C/">#网络</a>
+        <a href="/tags/%E6%95%B0%E6%8D%AE/">#数据</a>
       
     </div>
   
@@ -357,8 +357,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>Github访问慢？</div>
-      <div>https://davidlii.cn/2019/07/23/fast-github.html</div>
+      <div>iOS 设备唯一标识符</div>
+      <div>https://davidlii.cn/2017/11/25/idfa.html</div>
     </div>
     <div class="license-meta">
       
@@ -370,7 +370,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2019年7月23日</div>
+          <div>2017年11月25日</div>
         </div>
       
       
@@ -400,9 +400,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2019/08/31/podspec.html" title="搭建自己的Pod库">
+                      <a href="/2017/11/25/sandbox.html" title="沙盒 &amp; 本地持久化方案">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">搭建自己的Pod库</span>
+                        <span class="hidden-mobile">沙盒 &amp; 本地持久化方案</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -410,8 +410,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2019/06/18/majia.html" title="分包配置">
-                        <span class="hidden-mobile">分包配置</span>
+                      <a href="/2017/11/24/faq.html" title="FAQ-常见问题">
+                        <span class="hidden-mobile">FAQ-常见问题</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
