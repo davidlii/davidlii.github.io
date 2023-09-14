@@ -221,7 +221,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2.3k 字
+          2.2k 字
         
       </span>
     
@@ -309,7 +309,7 @@
 <ul>
 <li>将 AST 转换为更低级的中间码 (LLVM IR)</li>
 </ul>
-<h3 id="3-编译器后端：LLVM"><a href="#3-编译器后端：LLVM" class="headerlink" title="3.编译器后端：LLVM"></a>3.编译器后端：LLVM</h3><p>编译器后端负责将中间代码进行优化并最终生成对应平台的汇编代码。LLVM 属于编译器后端，其主要作用是：</p>
+<h3 id="3-编译器后端：LLVM"><a href="#3-编译器后端：LLVM" class="headerlink" title="3.编译器后端：LLVM"></a>3.编译器后端：LLVM</h3><p>编译器后端负责优化中间代码并生成对应平台的汇编代码。LLVM 属于编译器后端，其主要作用是：</p>
 <p>代码优化</p>
 <ul>
 <li>对生成的中间码做优化</li>
@@ -322,9 +322,9 @@
 </ul>
 <p>链接器</p>
 <ul>
-<li>读取所有的目标文件和库并解决所有未知符号的问题，将它们编码进一个可执行文件（或动态库）中。</li>
+<li>读取目标文件和库并解决未知符号问题，将它们编码进一个可执行文件或动态库中。</li>
 </ul>
-<h3 id="4-Xcode-build流程："><a href="#4-Xcode-build流程：" class="headerlink" title="4.Xcode build流程："></a>4.Xcode build流程：</h3><p>通过解析 Xcode 编译 log，可以发现 Xcode 是根据 target 分开进行编译的。每个 target 的具体的编译过程也可以通过展开 log 日志获得。基本的格式就是首先简明一句说明要干什么，然后缩进的几行说明具体的操作。比如：</p>
+<h3 id="4-Xcode-build流程："><a href="#4-Xcode-build流程：" class="headerlink" title="4.Xcode build流程："></a>4.Xcode build流程：</h3><p>通过解析 Xcode 编译 log，可以发现 Xcode 是根据 target 分开进行编译的。每个 target 的具体的编译过程也可以通过展开 log 日志获得。基本的格式是先简明一句说明要干什么，再缩进的几行说明具体的操作。</p>
 <figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><code class="hljs routeros">Build target CodeMix of project CodeMix with configuration <span class="hljs-built_in">Debug</span><br><br>CompileC /Users/<span class="hljs-built_in">..</span>/XXViewController.o CodeMix/XXViewController.m <br>normal x86_64 objective-c com.apple.compilers.llvm.clang.1_0.compiler<br>    cd /Users/<span class="hljs-built_in">..</span>/CodeMix<br>    <span class="hljs-built_in">export</span> <span class="hljs-attribute">LANG</span>=en_US.US-ASCII<br>    <span class="hljs-built_in">export</span> <span class="hljs-attribute">PATH</span>=“../XXViewController.o<br><br>Ld /Users/<span class="hljs-built_in">..</span>/Debug-iphonesimulator/CodeMix.app/CodeMix normal x86_64<br>    cd /Users/<span class="hljs-built_in">..</span>/CodeMix<br>    <span class="hljs-built_in">export</span> <span class="hljs-attribute">IPHONES_DEPLOYMENT_TARGET</span>=11.2<br>    <span class="hljs-built_in">..</span><br><br>PhaseScriptExecution Run\<span class="hljs-built_in"> Script </span>/Users/<span class="hljs-built_in">..</span>/Script-0AC86E9E1FF6721A00098A24.sh<br>    cd /Users/Macmafia/Desktop/CodeMix<br>    <span class="hljs-built_in">export</span> <span class="hljs-attribute">ACTION</span>=build<br>    <span class="hljs-built_in">export</span> <span class="hljs-attribute">AD_HOC_CODE_SIGNING_ALLOWED</span>=<span class="hljs-literal">YES</span><br>    <span class="hljs-built_in">export</span> <span class="hljs-attribute">ALTERNATE_GROUP</span>=staff<br><br>    /bin/sh -c /Users/<span class="hljs-built_in">..</span>/Script-0AC86E9E1FF6721A00098A24.sh<br><br>PRAGMA <span class="hljs-attribute">foreign_keys</span>=OFF;<br>BEGIN TRANSACTION;<br>CREATE TABLE symbols(src text, des text);<br>COMMIT;<br><br>Touch /Users/<span class="hljs-built_in">..</span>/Build/Products/Debug-iphonesimulator/CodeMix.app<br>    cd /Users/<span class="hljs-built_in">..</span>/CodeMix<br>    <span class="hljs-built_in">export</span> <span class="hljs-attribute">PATH</span>=<span class="hljs-string">&quot;/Applications/Xcode.app/../Debug-iphonesimulator/CodeMix.app</span><br><span class="hljs-string"></span><br><span class="hljs-string">CodeSign /Users/../Debug-iphonesimulator/CodeMix.app</span><br><span class="hljs-string">    cd /Users/../CodeMix</span><br><span class="hljs-string">    export CODESIGN_ALLOCATE=/Applications/Xcode.app/../codesign_allocate</span><br><span class="hljs-string">    </span><br><span class="hljs-string">Signing Identity:     &quot;</span>-&quot;<br>    <span class="hljs-built_in">..</span><br>Build succeeded    2018/1/26 下午9:35<br></code></pre></td></tr></table></figure>
 
 <p>从上面日志可以看到，大致的过程是：</p>
@@ -436,9 +436,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2019/02/25/launch.html" title="App 的启动过程">
+                      <a href="/2019/02/25/launch.html" title="应用的启动过程">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">App 的启动过程</span>
+                        <span class="hidden-mobile">应用的启动过程</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     

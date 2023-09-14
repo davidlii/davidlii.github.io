@@ -226,6 +226,209 @@
     
     
       <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2017/12/18/memory.html" target="_self">
+          <img src="/img/avatar.png" srcset="/img/loading.gif" lazyload alt="虚拟内存分配">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2017/12/18/memory.html" target="_self">
+          虚拟内存分配
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt " href="/2017/12/18/memory.html" target="_self">
+        <div>
+          分区及职责 栈区(stack)：存放局部变量和方法实参。  堆区(heap)：存放OC中使用new等方法创建的对象。  全局（静态）区：包括以下两个分区：   123.1. 数据段（Data segment）：初始化的全局变量和静态变量。3.2. BSS段：未初始化的全局变量和静态变量。   常量区(数据段)：const、@”x”常量字符串  代码段(Text segment)：程序的代码（ELF
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2017-12-18 17:57" pubdate>
+              2017-12-18
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E8%AF%BE%E5%A4%96/" class="category-chain-item">课外</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">#内存管理</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2017/12/16/bad_access.html" target="_self">
+          <img src="/img/avatar.png" srcset="/img/loading.gif" lazyload alt="内存错误调试">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2017/12/16/bad_access.html" target="_self">
+          内存错误调试
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt " href="/2017/12/16/bad_access.html" target="_self">
+        <div>
+          1、内存错误是啥在C和OC中，你一直在处理指针。指针是存储另一个变量的内存地址的变量。当向一个对象发送消息时，指向该对象的指针将会被引用。这意味着，你获取了指针所指的内存地址，并访问该存储区域的值。 当该存储器区域不再映射到你的应用时，或者换句话说，该内存区域在你认为使用的时候却没有使用，该内存区域是无法访问的。 这时内核会抛出一个异常（ EXC ），表明你的应用程序不能访问该存储器区域（BAD
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2017-12-16 23:29" pubdate>
+              2017-12-16
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E8%AF%BE%E5%A4%96/" class="category-chain-item">课外</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E5%BC%82%E5%B8%B8/">#异常</a>
+            
+              <a href="/tags/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">#内存管理</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2017/12/15/crash.html" target="_self">
+          <img src="/img/avatar.png" srcset="/img/loading.gif" lazyload alt="iOS异常捕获">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2017/12/15/crash.html" target="_self">
+          iOS异常捕获
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt " href="/2017/12/15/crash.html" target="_self">
+        <div>
+          线上APP获取崩溃信息的方式： 使用系统 API 收集崩溃信息并上传到服务器。 使用友盟、Bugly 等第三方收集分析SDK。 使用 iTunes Connect 上的崩溃收集服务。  这里暂时只讲第一种。iOS提供了异常发生时的处理API，在程序启动的时候可以添加这样的Handler，这样程序发生异常的时候就可以对异常进行必要的处理。 1void NSSetUncaughtExceptionHa
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2017-12-15 23:34" pubdate>
+              2017-12-15
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E8%AF%BE%E5%A4%96/" class="category-chain-item">课外</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E5%BC%82%E5%B8%B8/">#异常</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
         <a href="/2017/11/25/sandbox.html" target="_self">
           <img src="/img/avatar.png" srcset="/img/loading.gif" lazyload alt="沙盒 &amp; 本地持久化方案">
         </a>
@@ -281,7 +484,7 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/FQA/">#FQA</a>
+              <a href="/tags/%E6%95%B0%E6%8D%AE/">#数据</a>
             
           </div>
         
@@ -348,7 +551,7 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/FQA/">#FQA</a>
+              <a href="/tags/%E6%95%B0%E6%8D%AE/">#数据</a>
             
           </div>
         
@@ -361,7 +564,7 @@
     
       <div class="col-12 col-md-4 m-auto index-img">
         <a href="/2017/11/24/faq.html" target="_self">
-          <img src="/img/avatar.png" srcset="/img/loading.gif" lazyload alt="FQA-常见问题">
+          <img src="/img/avatar.png" srcset="/img/loading.gif" lazyload alt="FAQ-常见问题">
         </a>
       </div>
     
@@ -369,7 +572,7 @@
       <h1 class="index-header">
         
         <a href="/2017/11/24/faq.html" target="_self">
-          FQA-常见问题
+          FAQ-常见问题
         </a>
       </h1>
 
@@ -415,74 +618,7 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/FQA/">#FQA</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-      <div class="col-12 col-md-4 m-auto index-img">
-        <a href="/2017/11/24/memory.html" target="_self">
-          <img src="/img/avatar.png" srcset="/img/loading.gif" lazyload alt="虚拟内存分配">
-        </a>
-      </div>
-    
-    <article class="col-12 col-md-8 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2017/11/24/memory.html" target="_self">
-          虚拟内存分配
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt " href="/2017/11/24/memory.html" target="_self">
-        <div>
-          分区及职责 栈区(stack)：存放局部变量和方法实参。  堆区(heap)：存放OC中使用new等方法创建的对象。  全局（静态）区：包括以下两个分区：   123.1. 数据段（Data segment）：初始化的全局变量和静态变量。3.2. BSS段：未初始化的全局变量和静态变量。   常量区(数据段)：const、@”x”常量字符串  代码段(Text segment)：程序的代码（ELF
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2017-11-24 17:57" pubdate>
-              2017-11-24
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E6%8A%80%E6%9C%AF/" class="category-chain-item">技术</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">#内存管理</a>
+              <a href="/tags/FAQ/">#FAQ</a>
             
           </div>
         
@@ -495,7 +631,7 @@
     
       <div class="col-12 col-md-4 m-auto index-img">
         <a href="/2017/11/24/atomic.html" target="_self">
-          <img src="/img/avatar.png" srcset="/img/loading.gif" lazyload alt="atomic一定线程安全吗？">
+          <img src="/img/avatar.png" srcset="/img/loading.gif" lazyload alt="atomic线程安全吗？">
         </a>
       </div>
     
@@ -503,7 +639,7 @@
       <h1 class="index-header">
         
         <a href="/2017/11/24/atomic.html" target="_self">
-          atomic一定线程安全吗？
+          atomic线程安全吗？
         </a>
       </h1>
 
@@ -550,73 +686,6 @@
             <i class="iconfont icon-tags"></i>
             
               <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/">#多线程</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-      <div class="col-12 col-md-4 m-auto index-img">
-        <a href="/2017/11/24/property.html" target="_self">
-          <img src="/img/avatar.png" srcset="/img/loading.gif" lazyload alt="属性的修饰符">
-        </a>
-      </div>
-    
-    <article class="col-12 col-md-8 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2017/11/24/property.html" target="_self">
-          属性的修饰符
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt " href="/2017/11/24/property.html" target="_self">
-        <div>
-          区别1.retain：类似于ARC下的 strong，表示强引用和持有的关系：将属性成员变量的指针指向源对象，同时持有源对象（此对象的引用计数会加1）。 123456789&#x2F;&#x2F;retain-(void)setName:(NSString *)newName&amp;#123;    if (_name !&#x3D; newName) &amp;#123;        [newName retain];        [
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2017-11-24 17:37" pubdate>
-              2017-11-24
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E6%8A%80%E6%9C%AF/" class="category-chain-item">技术</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/FQA/">#FQA</a>
             
           </div>
         
@@ -695,75 +764,8 @@
     
     
       <div class="col-12 col-md-4 m-auto index-img">
-        <a href="/2017/11/22/http.html" target="_self">
-          <img src="/img/avatar.png" srcset="/img/loading.gif" lazyload alt="网络知识点笔记">
-        </a>
-      </div>
-    
-    <article class="col-12 col-md-8 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2017/11/22/http.html" target="_self">
-          网络知识点笔记
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt " href="/2017/11/22/http.html" target="_self">
-        <div>
-          #1.网络分层 应用层 表示层 会话层 传输层 网络层 数据链路层 物理层  #2.术语2.1.TCP 传输控制协议：传输层协议之一； 面向连接：传输数据前需要三次握手建立连接； 稳定可靠：传输数据时有响应、重发、拥堵控制机制； 时效性低：握手、响应、重发等机制会消耗大量时间，占用大量系统资源。  主要用在需要可靠传输数据的地方，如文件传输协议：HTTP、HTTPS、FTP；邮件传输协议：POP、
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2017-11-22 23:13" pubdate>
-              2017-11-22
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E6%8A%80%E6%9C%AF/" class="category-chain-item">技术</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E7%BD%91%E7%BB%9C/">#网络</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-      <div class="col-12 col-md-4 m-auto index-img">
         <a href="/2017/11/21/lock.html" target="_self">
-          <img src="/img/avatar.png" srcset="/img/loading.gif" lazyload alt="iOS中的八大锁">
+          <img src="/img/avatar.png" srcset="/img/loading.gif" lazyload alt="八大锁">
         </a>
       </div>
     
@@ -771,7 +773,7 @@
       <h1 class="index-header">
         
         <a href="/2017/11/21/lock.html" target="_self">
-          iOS中的八大锁
+          八大锁
         </a>
       </h1>
 
@@ -830,7 +832,7 @@
     
       <div class="col-12 col-md-4 m-auto index-img">
         <a href="/2017/11/17/nsoperation.html" target="_self">
-          <img src="/img/avatar.png" srcset="/img/loading.gif" lazyload alt="多线程：NSOperation">
+          <img src="/img/avatar.png" srcset="/img/loading.gif" lazyload alt="NSOperation">
         </a>
       </div>
     
@@ -838,7 +840,7 @@
       <h1 class="index-header">
         
         <a href="/2017/11/17/nsoperation.html" target="_self">
-          多线程：NSOperation
+          NSOperation
         </a>
       </h1>
 

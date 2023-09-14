@@ -18,7 +18,7 @@
   
     <meta name="description" content="1.API To create a new class, start by calling objc_allocateClassPair. Then set the class’s attributes with functions like class_addMethod and class_addIvar. When you are done building the class, call">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Runtime：动态更新">
+<meta property="og:title" content="动态注册类">
 <meta property="og:url" content="https://davidlii.cn/2017/09/01/runtime_addClass.html">
 <meta property="og:site_name" content="Davidli">
 <meta property="og:description" content="1.API To create a new class, start by calling objc_allocateClassPair. Then set the class’s attributes with functions like class_addMethod and class_addIvar. When you are done building the class, call">
@@ -33,7 +33,7 @@
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>Runtime：动态更新 - Davidli</title>
+  <title>动态注册类 - Davidli</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -198,7 +198,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="Runtime：动态更新"></span>
+            <span id="subtitle" data-typed-text="动态注册类"></span>
           
         </div>
 
@@ -278,7 +278,7 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">Runtime：动态更新</h1>
+            <h1 style="display: none">动态注册类</h1>
             
             
               <div class="markdown-body">
@@ -300,7 +300,7 @@
 <blockquote>
 <p>This function may only be called after objc_allocateClassPair and before objc_registerClassPair. Adding an instance variable to an existing class is not supported.<br>The class must not be a metaclass. Adding an instance variable to a metaclass is not supported.</p>
 </blockquote>
-<p>新增成员变量应该在类注册完成之前进行，类注册完成之后类结构已固定，实例的内存空间已经确定，不能再增加新的成员变量。<br><br/></p>
+<p>新增成员变量应该在类注册完成之前进行，类注册完成之后类结构已固定，实例的内存空间已经确定，不能再增加新的成员变量。</p>
 <p>新增加的成员变量应该加到实例对象所属的类中，而不能加到其所属类的元类中。</p>
 <h4 id="1-4-增加属性"><a href="#1-4-增加属性" class="headerlink" title="1.4.增加属性"></a>1.4.增加属性</h4><figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">BOOL <span class="hljs-keyword">class</span><span class="hljs-constructor">_addProperty(Class <span class="hljs-params">cls</span>, <span class="hljs-params">const</span> <span class="hljs-params">char</span> <span class="hljs-operator">*</span><span class="hljs-params">name</span>, <span class="hljs-params">const</span> <span class="hljs-params">objc_property_attribute_t</span> <span class="hljs-operator">*</span><span class="hljs-params">attributes</span>, <span class="hljs-params">unsigned</span> <span class="hljs-params">int</span> <span class="hljs-params">attributeCount</span>)</span>;<br></code></pre></td></tr></table></figure>
 
@@ -309,14 +309,14 @@
 <p>其中<code>RuntimeTool</code>是工具类，用来获取成员变量、属性和方法列表，实现代码如下：</p>
 <figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-meta">#import <span class="hljs-string">&quot;RuntimeTool.h&quot;</span></span><br><span class="hljs-meta">#import <span class="hljs-string">&lt;objc/runtime.h&gt; //包含对类、成员变量、属性、方法的操作</span></span><br><span class="hljs-meta">#import <span class="hljs-string">&lt;objc/message.h&gt; //包含消息机制</span></span><br><br><span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">RuntimeTool</span></span><br><br><span class="hljs-comment">/**</span><br><span class="hljs-comment">获取类中所有成员变量的名称与类型</span><br><span class="hljs-comment"></span><br><span class="hljs-comment">@param aClass 目标类名</span><br><span class="hljs-comment">@return 返回一个数组，&#123;键：变量名，值：类型&#125;</span><br><span class="hljs-comment">*/</span><br>+ (<span class="hljs-built_in">NSArray</span> *)ivarListWithClass:(Class)aClass<br>&#123;<br>    <span class="hljs-keyword">if</span> (!object_isClass(aClass))&#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>;<br>    &#125;<br><br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> count = <span class="hljs-number">0</span>;<br>    <span class="hljs-built_in">NSMutableArray</span> *resultArr = [<span class="hljs-built_in">NSMutableArray</span> array];<br><br>    Ivar *ivars = class_copyIvarList([aClass <span class="hljs-keyword">class</span>], &amp;count);<br><br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i&lt;count; i++)&#123;<br>        Ivar ivar = ivars[i];<br>        <span class="hljs-keyword">const</span> <span class="hljs-type">char</span> *charName = ivar_getName(ivar);<br>        <span class="hljs-keyword">const</span> <span class="hljs-type">char</span> *charType = ivar_getTypeEncoding(ivar);<br><br>        <span class="hljs-built_in">NSString</span> *name = [<span class="hljs-built_in">NSString</span> stringWithCString:charName encoding:<span class="hljs-built_in">NSUTF8StringEncoding</span>];<br><br>        <span class="hljs-built_in">NSString</span> *type = [<span class="hljs-built_in">NSString</span> stringWithCString:charType encoding:<span class="hljs-built_in">NSUTF8StringEncoding</span>];<br><br>        <span class="hljs-built_in">NSDictionary</span> *dic = @&#123;<span class="hljs-string">@&quot;ivar_name&quot;</span>:name,<span class="hljs-string">@&quot;objc_type&quot;</span>:type&#125;;<br><br>        [resultArr addObject:dic];<br>    &#125;<br><br>    free(ivars);<br><br>    <span class="hljs-keyword">return</span> resultArr;<br>&#125;<br><br><span class="hljs-comment">/**</span><br><span class="hljs-comment">获取类中所有属性的名称与类型</span><br><span class="hljs-comment"></span><br><span class="hljs-comment">@param aClass 目标类名</span><br><span class="hljs-comment">@return 返回一个数组，&#123;键：属性名，值：类型&#125;</span><br><span class="hljs-comment">*/</span><br>+ (<span class="hljs-built_in">NSArray</span> *)propertyListWithClass:(Class)aClass<br>&#123;<br>    <span class="hljs-keyword">if</span> (!object_isClass(aClass))&#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>;<br>    &#125;<br><br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> count = <span class="hljs-number">0</span>;<br>    <span class="hljs-built_in">NSMutableArray</span> *resultArr = [<span class="hljs-built_in">NSMutableArray</span> array];<br><br>    objc_property_t *properties = class_copyPropertyList([aClass <span class="hljs-keyword">class</span>], &amp;count);<br><br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i&lt;count; i++)&#123;<br>        objc_property_t aProperty = properties[i];<br>        <span class="hljs-keyword">const</span> <span class="hljs-type">char</span> *charName = property_getName(aProperty);<br>        <span class="hljs-keyword">const</span> <span class="hljs-type">char</span> *charType = property_getAttributes(aProperty);<br><br>        <span class="hljs-built_in">NSString</span> *name = [<span class="hljs-built_in">NSString</span> stringWithCString:charName encoding:<span class="hljs-built_in">NSUTF8StringEncoding</span>];<br><br>        <span class="hljs-built_in">NSString</span> *type = [<span class="hljs-built_in">NSString</span> stringWithCString:charType encoding:<span class="hljs-built_in">NSUTF8StringEncoding</span>];<br><br>        <span class="hljs-built_in">NSDictionary</span> *dic = @&#123;<span class="hljs-string">@&quot;property_name&quot;</span>:name,<span class="hljs-string">@&quot;objc_type&quot;</span>:type&#125;;<br><br>        [resultArr addObject:dic];<br>    &#125;<br><br>    free(properties);<br><br>    <span class="hljs-keyword">return</span> resultArr;<br>&#125;<br><br><span class="hljs-comment">/**</span><br><span class="hljs-comment">获取类中所有方法名</span><br><span class="hljs-comment"></span><br><span class="hljs-comment">@param aClass 目标类</span><br><span class="hljs-comment">@return 返回所有方法名组成的一个数组</span><br><span class="hljs-comment">*/</span><br>+ (<span class="hljs-built_in">NSArray</span> *)methodListWithClass:(Class)aClass<br>&#123;<br>    <span class="hljs-keyword">if</span> (!object_isClass(aClass))&#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>;<br>    &#125;<br>    <span class="hljs-built_in">NSMutableArray</span> *methodArr = [<span class="hljs-built_in">NSMutableArray</span> array];<br><br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> count = <span class="hljs-number">0</span>;<br>    Method *methods = class_copyMethodList(aClass, &amp;count);<br><br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; count; i++) &#123;<br>        SEL sel_name = method_getName(methods[i]);<br>        <span class="hljs-built_in">NSString</span> *name = [<span class="hljs-built_in">NSString</span> stringWithCString:sel_getName(sel_name) encoding:<span class="hljs-built_in">NSUTF8StringEncoding</span>];<br><br>        [methodArr addObject:name];<br>    &#125;<br>    free(methods);<br><br>    <span class="hljs-keyword">return</span> methodArr;<br>&#125;<br></code></pre></td></tr></table></figure>
 
-<p>注意：直接调用<code>objc_msgSend</code>在编译时会报错，需要在 “Build Setting”中，把“ Enable Strict Checking of objc_msgSend Calls” 关掉。<br><br/></p>
+<p>注意：直接调用<code>objc_msgSend</code>在编译时会报错，需要在 “Build Setting”中，把“ Enable Strict Checking of objc_msgSend Calls” 关掉。</p>
 <p>示例运行后输出日志：</p>
 <figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">+++++成功添加成员变量<span class="hljs-string">&#x27;height&#x27;</span>~<br>+++++成功添加属性<span class="hljs-string">&#x27;name&#x27;</span>~<br>+++++添加成员变量<span class="hljs-string">&#x27;width&#x27;</span>失败~<br>+++++成功添加属性<span class="hljs-string">&#x27;nick&#x27;</span>~<br>++++所有成员变量:(<br>        &#123;<br>        &quot;ivar_name&quot; = height;<br>        &quot;objc_type&quot; = &quot;@&quot;;<br>    &#125;<br>)<br>++++所有属性:(<br>        &#123;<br>        &quot;objc_type&quot; = &quot;T@\&quot;NSString\&quot;,C,N,V_name&quot;;<br>        &quot;property_name&quot; = nick;<br>    &#125;,<br>        &#123;<br>        &quot;objc_type&quot; = &quot;T@\&quot;NSString\&quot;,C,N,V_name&quot;;<br>        &quot;property_name&quot; = <span class="hljs-type">name</span>;<br>    &#125;<br>)<br>++++所有方法:(<br>    learn<br>)<br>++++执行learnOnTV方法<br>++++执行learOnBook方法<br></code></pre></td></tr></table></figure>
 
-<p>从日志中也可以得出结论：<br><br/></p>
-<p>1、在类<code>allocate</code>与<code>register</code>之间可以添加<code>成员变量</code>、<code>属性</code>和<code>方法</code>；<br><br/></p>
-<p>2、在<code>register</code>之后，即类结构固定之后<code>不能</code>再添加<code>成员变量</code>，但可以继续添加<code>属性</code>和<code>方法</code>；<br><br/></p>
-<p>3、动态添加的属性，并不会创建其对应的以<code>_</code>开头的成员变量，实际上这一步需要由编译器来完成。<br><br/></p>
+<p>从日志中也可以得出结论：</p>
+<p>1、在类<code>allocate</code>与<code>register</code>之间可以添加<code>成员变量</code>、<code>属性</code>和<code>方法</code>；</p>
+<p>2、在<code>register</code>之后，即类结构固定之后<code>不能</code>再添加<code>成员变量</code>，但可以继续添加<code>属性</code>和<code>方法</code>；</p>
+<p>3、动态添加的属性，并不会创建其对应的以<code>_</code>开头的成员变量，实际上这一步需要由编译器来完成。</p>
 <p>ps: 热更新<code>JSPatch</code>就是在OC的 runtime 基础上实现的，大致原理是：JS传递字符串给OC，OC通过 Runtime 的运行时函数，调用和替换相应的OC方法。待后期慢慢研究。。</p>
 
                 
@@ -363,7 +363,7 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>Runtime：动态更新</div>
+      <div>动态注册类</div>
       <div>https://davidlii.cn/2017/09/01/runtime_addClass.html</div>
     </div>
     <div class="license-meta">
@@ -416,8 +416,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2017/09/01/runtime_swizzle.html" title="Runtime：方法交换">
-                        <span class="hidden-mobile">Runtime：方法交换</span>
+                      <a href="/2017/09/01/runtime_swizzle.html" title="方法交换">
+                        <span class="hidden-mobile">方法交换</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
