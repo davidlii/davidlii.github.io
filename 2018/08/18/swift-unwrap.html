@@ -19,12 +19,12 @@
     <meta name="description" content="前言 You use optionals in situations where a value may be absent. An optional represents two possibilities: Either there is a value, and you can unwrap the optional to access that value, or there isn’t">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Swift可选拆包">
-<meta property="og:url" content="https://davidlii.cn/2018/08/15/swift-unwrap.html">
+<meta property="og:url" content="https://davidlii.cn/2018/08/18/swift-unwrap.html">
 <meta property="og:site_name" content="Davidli">
 <meta property="og:description" content="前言 You use optionals in situations where a value may be absent. An optional represents two possibilities: Either there is a value, and you can unwrap the optional to access that value, or there isn’t">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://davidlii.nos-eastchina1.126.net/pic_swift.png">
-<meta property="article:published_time" content="2018-08-15T12:16:04.000Z">
+<meta property="article:published_time" content="2018-08-18T12:16:04.000Z">
 <meta property="article:modified_time" content="2022-08-01T12:16:04.000Z">
 <meta property="article:author" content="Davidli">
 <meta property="article:tag" content="swift">
@@ -211,8 +211,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2018-08-15 20:16" pubdate>
-          2018年8月15日 晚上
+        <time datetime="2018-08-18 20:16" pubdate>
+          2018年8月18日 晚上
         </time>
       </span>
     
@@ -223,7 +223,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          5.4k 字
+          5.6k 字
         
       </span>
     
@@ -234,7 +234,7 @@
         
         
         
-          46 分钟
+          47 分钟
         
       </span>
     
@@ -299,9 +299,11 @@
 <h3 id="2-可选绑定"><a href="#2-可选绑定" class="headerlink" title="2.可选绑定"></a>2.可选绑定</h3><blockquote>
 <p>You use optional binding to find out whether an optional contains a value, and if so, to make that value available as a temporary constant or variable. Optional binding can be used with if and while statements to check for a value inside an optional, and to extract that value into a constant or variable, as part of a single action.</p>
 </blockquote>
-<p>可选绑定是当可选有值时将值绑定到一个临时变量或常量中的一种方法，多用在<code>if</code>和<code>while</code>语句中。</p>
+<p>可选绑定是当可选有值时将值绑定到一个临时变量或常量中，多用在<code>if</code>和<code>while</code>语句中。</p>
 <p>#示例1：</p>
 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs swift"><span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> actualNumber <span class="hljs-operator">=</span> <span class="hljs-type">Int</span>(possibleNumber) &#123; <span class="hljs-comment">// 有值时绑定到临时常量actualNumber中</span><br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;The string <span class="hljs-subst">\&quot;</span><span class="hljs-subst">\(possibleNumber)</span><span class="hljs-subst">\&quot;</span> has an integer value of <span class="hljs-subst">\(actualNumber)</span>&quot;</span>)<br>&#125; <span class="hljs-keyword">else</span> &#123;<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;The string <span class="hljs-subst">\&quot;</span><span class="hljs-subst">\(possibleNumber)</span><span class="hljs-subst">\&quot;</span> could not be converted to an integer&quot;</span>)<br>&#125;<br><span class="hljs-comment">// Prints &quot;The string &quot;123&quot; has an integer value of 123&quot;</span><br></code></pre></td></tr></table></figure>
+<p>精简版用法：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs swift"><span class="hljs-keyword">let</span> nickname: <span class="hljs-type">String</span>? <span class="hljs-operator">=</span> <span class="hljs-literal">nil</span><br><span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> nickname &#123; <span class="hljs-comment">// 省略了赋值：if let x = nickName</span><br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Hey, <span class="hljs-subst">\(nickname)</span>&quot;</span>) <span class="hljs-comment">// 使用同名变量代替拆包后的值</span><br>&#125;<br><span class="hljs-comment">// Doesn&#x27;t print anything, because nickname is nil.</span><br></code></pre></td></tr></table></figure>
 
 <p>#示例2：if中多个可选绑定组合</p>
 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs swift"><span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> firstNumber <span class="hljs-operator">=</span> <span class="hljs-type">Int</span>(<span class="hljs-string">&quot;4&quot;</span>), <span class="hljs-keyword">let</span> secondNumber <span class="hljs-operator">=</span> <span class="hljs-type">Int</span>(<span class="hljs-string">&quot;42&quot;</span>), firstNumber <span class="hljs-operator">&lt;</span> secondNumber <span class="hljs-operator">&amp;&amp;</span> secondNumber <span class="hljs-operator">&lt;</span> <span class="hljs-number">100</span> &#123;<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;<span class="hljs-subst">\(firstNumber)</span> &lt; <span class="hljs-subst">\(secondNumber)</span> &lt; 100&quot;</span>)<br>&#125;<br><span class="hljs-comment">// Prints &quot;4 &lt; 42 &lt; 100&quot;</span><br></code></pre></td></tr></table></figure>
@@ -310,7 +312,7 @@
 <p>Sometimes it’s clear from a program’s structure that an optional will always have a value, after that value is first set. In these cases, it’s useful to remove the need to check and unwrap the optional’s value every time it’s accessed, because it can be safely assumed to have a value all of the time.<br>These kinds of optionals are defined as implicitly unwrapped optionals. You write an implicitly unwrapped optional by placing an exclamation mark (String!) rather than a question mark (String?) after the type that you want to make optional.</p>
 </blockquote>
 <p>有时当可选被首次赋值之后，能确定此可选后续必定有值，且不会再被设置为nil。这时为了不必每次访问可选变量时都进行拆包或检查，可在声明可选时往其后面标注一个<code>!</code>，这种可选就是隐式拆包的可选。</p>
-<p>使用隐式拆包可选时，可以像普通可选一样进行可选绑定，也可以像非可选变量一样不必在其后加<code>!</code>：</p>
+<p>使用隐式拆包时，可以像普通可选一样进行可选绑定，也可以像非可选变量一样不必在其后加<code>!</code>：</p>
 <p>#示例：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">let</span> <span class="hljs-attr">possibleString</span>: <span class="hljs-title class_">String</span>? = <span class="hljs-string">&quot;An optional string.&quot;</span><br><span class="hljs-keyword">let</span> <span class="hljs-attr">forcedString</span>: <span class="hljs-title class_">String</span> = possibleString! <span class="hljs-comment">// requires an exclamation mark</span><br><br><span class="hljs-keyword">let</span> <span class="hljs-attr">assumedString</span>: <span class="hljs-title class_">String</span>! = <span class="hljs-string">&quot;An implicitly unwrapped optional string.&quot;</span><br><span class="hljs-keyword">let</span> <span class="hljs-attr">implicitString</span>: <span class="hljs-title class_">String</span> = assumedString <span class="hljs-comment">// no need for an exclamation mark</span><br><br><span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> definiteString = assumedString &#123;<br>    <span class="hljs-title function_">print</span>(definiteString)<br>&#125;<br><span class="hljs-comment">// Prints &quot;An implicitly unwrapped optional string.&quot;</span><br></code></pre></td></tr></table></figure>
 
@@ -390,7 +392,7 @@
   <div class="license-box my-3">
     <div class="license-title">
       <div>Swift可选拆包</div>
-      <div>https://davidlii.cn/2018/08/15/swift-unwrap.html</div>
+      <div>https://davidlii.cn/2018/08/18/swift-unwrap.html</div>
     </div>
     <div class="license-meta">
       
@@ -402,7 +404,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2018年8月15日</div>
+          <div>2018年8月18日</div>
         </div>
       
       
@@ -432,9 +434,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2018/08/16/swift-as.html" title="Swift-is/as类型检查">
+                      <a href="/2018/08/20/swift-isa.html" title="Swift类型检查：is-as">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Swift-is/as类型检查</span>
+                        <span class="hidden-mobile">Swift类型检查：is-as</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -442,8 +444,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2018/06/22/autolayout.html" title="约束">
-                        <span class="hidden-mobile">约束</span>
+                      <a href="/2018/08/15/swift-block.html" title="Swift闭包">
+                        <span class="hidden-mobile">Swift闭包</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
