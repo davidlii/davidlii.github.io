@@ -795,7 +795,7 @@
     
     <tags>
       
-      <tag>Sw1ft</tag>
+      <tag>Swift</tag>
       
     </tags>
     
@@ -820,7 +820,7 @@
     
     <tags>
       
-      <tag>Sw1ft</tag>
+      <tag>Swift</tag>
       
     </tags>
     
@@ -845,7 +845,7 @@
     
     <tags>
       
-      <tag>Sw1ft</tag>
+      <tag>Swift</tag>
       
     </tags>
     
@@ -870,7 +870,7 @@
     
     <tags>
       
-      <tag>Sw1ft</tag>
+      <tag>Swift</tag>
       
     </tags>
     
@@ -895,7 +895,7 @@
     
     <tags>
       
-      <tag>Sw1ft</tag>
+      <tag>Swift</tag>
       
     </tags>
     
@@ -920,7 +920,7 @@
     
     <tags>
       
-      <tag>Sw1ft</tag>
+      <tag>Swift</tag>
       
     </tags>
     
@@ -945,7 +945,7 @@
     
     <tags>
       
-      <tag>Sw1ft</tag>
+      <tag>Swift</tag>
       
     </tags>
     
@@ -974,7 +974,7 @@
       
       <tag>循环引用</tag>
       
-      <tag>Sw1ft</tag>
+      <tag>Swift</tag>
       
     </tags>
     
@@ -999,7 +999,7 @@
     
     <tags>
       
-      <tag>Sw1ft</tag>
+      <tag>Swift</tag>
       
     </tags>
     
@@ -1324,9 +1324,9 @@
     
     <tags>
       
-      <tag>block</tag>
-      
       <tag>内存管理</tag>
+      
+      <tag>block</tag>
       
       <tag>循环引用</tag>
       
