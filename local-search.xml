@@ -695,7 +695,7 @@
     
     <tags>
       
-      <tag>编译与启动</tag>
+      <tag>机制</tag>
       
     </tags>
     
@@ -720,7 +720,7 @@
     
     <tags>
       
-      <tag>编译与启动</tag>
+      <tag>机制</tag>
       
     </tags>
     
@@ -1324,9 +1324,9 @@
     
     <tags>
       
-      <tag>block</tag>
-      
       <tag>内存管理</tag>
+      
+      <tag>block</tag>
       
       <tag>循环引用</tag>
       
