@@ -16,12 +16,12 @@
   <meta name="author" content="Davidli">
   <meta name="keywords" content="Davidli">
   
-    <meta name="description" content="混编的两种情况：①Swift 工程中使用 Objective-C 文件； ②Objective-C 工程中使用 Swift 文件。 本文所用 Xcode 版本：9.4.1 1.Swift 中混编 OCSwift 工程中使用 OC 文件时需要依赖 桥接头文件 将 OC 中的属性、接口等暴露给 Swift。默认情况下，在 Swift 工程中首次创建 OC 文件时，Xcode 会自动提示你是否创建桥接头">
+    <meta name="description" content="1.混编 Swift 工程中使用 Objective-C 文件；  Objective-C 工程中使用 Swift 文件。   本文所用 Xcode 版本：9.4.1 2.Swift中混编OCSwift 工程中使用 OC 文件时需要依赖 桥接头文件 将 OC 中的属性、接口等暴露给 Swift。默认情况下，在 Swift 工程中首次创建 OC 文件时，Xcode 会自动提示你是否创建桥接头文件：">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Swift-OC混编">
 <meta property="og:url" content="https://davidlii.cn/2018/09/20/swift-mix.html">
 <meta property="og:site_name" content="Davidli">
-<meta property="og:description" content="混编的两种情况：①Swift 工程中使用 Objective-C 文件； ②Objective-C 工程中使用 Swift 文件。 本文所用 Xcode 版本：9.4.1 1.Swift 中混编 OCSwift 工程中使用 OC 文件时需要依赖 桥接头文件 将 OC 中的属性、接口等暴露给 Swift。默认情况下，在 Swift 工程中首次创建 OC 文件时，Xcode 会自动提示你是否创建桥接头">
+<meta property="og:description" content="1.混编 Swift 工程中使用 Objective-C 文件；  Objective-C 工程中使用 Swift 文件。   本文所用 Xcode 版本：9.4.1 2.Swift中混编OCSwift 工程中使用 OC 文件时需要依赖 桥接头文件 将 OC 中的属性、接口等暴露给 Swift。默认情况下，在 Swift 工程中首次创建 OC 文件时，Xcode 会自动提示你是否创建桥接头文件：">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://davidlii.nos-eastchina1.126.net/pic_swift.png">
 <meta property="article:published_time" content="2018-09-19T16:43:36.000Z">
@@ -194,7 +194,7 @@
   
 
 <div id="banner" class="banner" parallax=true
-     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+     style="background: url('/img/IMG_0.jpg') no-repeat center center; background-size: cover;">
   <div class="full-bg-img">
     <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
       <div class="banner-text text-center fade-in-up">
@@ -285,17 +285,21 @@
             
               <div class="markdown-body">
                 
-                <h2 id="混编的两种情况："><a href="#混编的两种情况：" class="headerlink" title="混编的两种情况："></a>混编的两种情况：</h2><p>①Swift 工程中使用 Objective-C 文件；</p>
-<p>②Objective-C 工程中使用 Swift 文件。</p>
+                <h3 id="1-混编"><a href="#1-混编" class="headerlink" title="1.混编"></a>1.混编</h3><ul>
+<li><p>Swift 工程中使用 Objective-C 文件；</p>
+</li>
+<li><p>Objective-C 工程中使用 Swift 文件。</p>
+</li>
+</ul>
 <p>本文所用 Xcode 版本：9.4.1</p>
-<h3 id="1-Swift-中混编-OC"><a href="#1-Swift-中混编-OC" class="headerlink" title="1.Swift 中混编 OC"></a>1.Swift 中混编 OC</h3><p>Swift 工程中使用 OC 文件时需要依赖 <code>桥接头文件</code> 将 OC 中的属性、接口等暴露给 Swift。默认情况下，在 Swift 工程中首次创建 OC 文件时，Xcode 会自动提示你是否创建桥接头文件：</p>
+<h3 id="2-Swift中混编OC"><a href="#2-Swift中混编OC" class="headerlink" title="2.Swift中混编OC"></a>2.Swift中混编OC</h3><p>Swift 工程中使用 OC 文件时需要依赖 <code>桥接头文件</code> 将 OC 中的属性、接口等暴露给 Swift。默认情况下，在 Swift 工程中首次创建 OC 文件时，Xcode 会自动提示你是否创建桥接头文件：</p>
 <p><img src="https://davidlii.nos-eastchina1.126.net/pic_swift_OC_Header.png" srcset="/img/loading.gif" lazyload alt="桥接头文件"></p>
 <p>选择创建后，工程目录下会多出一个以 “工程名-Bridging-Header.h” 命名的头文件:</p>
 <p><img src="https://davidlii.nos-eastchina1.126.net/pic_swift_OC_dir.png" srcset="/img/loading.gif" lazyload alt="swift工程中OC文件目录"></p>
-<p>Xcode 会自动设置好相关信息，可在 “Targets–&gt;Build Settings–&gt;Swift Compiler - General” 查看，一般不用做修改：</p>
+<p>可在 “Targets–&gt;Build Settings–&gt;Swift Compiler - General” 查看，一般不用做额外修改：</p>
 <p><img src="https://davidlii.nos-eastchina1.126.net/pic_swift_OC.png" srcset="/img/loading.gif" lazyload alt="swift使用OC文件的设置"></p>
-<p>如果你忽略了之前 Xcode 的提示，没创建桥接头文件，后面你还有机会。稍后你可以按照上面的命名规则自己新建一个头文件，在 “Targets–&gt;Build Settings–&gt;Swift Compiler - General” 中手动设置好 “Objective-C Bridging Header” 选项的路径即可。</p>
-<p>接下来就可以在 “HelloSwift-Bridging-Header.h” 文件中导入你想暴露的 OC 头文件了：</p>
+<p>如果你忽略了 Xcode 的提示，没创建桥接头文件，没关系后面还有机会。稍后你可以按照上面的命名规则自己新建一个头文件，在 “Targets–&gt;Build Settings–&gt;Swift Compiler - General” 中手动设置好 “Objective-C Bridging Header” 选项的路径即可。</p>
+<p>接下来就可以在桥接头文件 “HelloSwift-Bridging-Header.h” 中导入你想暴露的 OC 头文件了：</p>
 <figure class="highlight clean"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs clean">#<span class="hljs-keyword">import</span> <span class="hljs-string">&quot;OCFile.h&quot;</span><br></code></pre></td></tr></table></figure>
 
 <p>这样，就可以在 Swift 工程中使用刚刚创建的 OC 类<code>OCFile</code>了，完整示例如下：</p>
@@ -307,13 +311,13 @@
 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs swift"><span class="hljs-keyword">import</span> UIKit<br><br><span class="hljs-keyword">@UIApplicationMain</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">AppDelegate</span>: <span class="hljs-title class_">UIResponder</span>, <span class="hljs-title class_">UIApplicationDelegate</span> &#123;<br><br>    <span class="hljs-keyword">var</span> window: <span class="hljs-type">UIWindow</span>?<br><br>    <span class="hljs-keyword">func</span> <span class="hljs-title function_">application</span>(<span class="hljs-keyword">_</span> <span class="hljs-params">application</span>: <span class="hljs-type">UIApplication</span>,<br>                     <span class="hljs-params">didFinishLaunchingWithOptions</span><br>        <span class="hljs-params">launchOptions</span>: [<span class="hljs-params">UIApplicationLaunchOptionsKey</span>: <span class="hljs-keyword">Any</span>]<span class="hljs-operator">?</span>) -&gt; <span class="hljs-type">Bool</span><br>    &#123;<br>        <span class="hljs-keyword">let</span> ocf <span class="hljs-operator">=</span> <span class="hljs-type">OCFile</span>()<br>        ocf.instanceFunction(<span class="hljs-type">Direction</span>.east)<br>        <span class="hljs-type">OCFile</span>.classFunction()<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;+++<span class="hljs-subst">\(ocf.anArr)</span>&quot;</span>)<br>        <br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 
-<h3 id="2-OC-中混编-Swift"><a href="#2-OC-中混编-Swift" class="headerlink" title="2.OC 中混编 Swift"></a>2.OC 中混编 Swift</h3><p>OC 工程中使用 Swift 文件需要一个命名格式为 “工程名-Swift.h” 的头文件。它是一个 Objective-C 头文件，被视为 Swift 代码的<code>umbrella header</code>。它包含了你工程 target 里所有 Swift 代码中定义的接口、属性等。有了它 Swift 文件中标记为 <code>open</code>、<code>public</code>、<code>internal</code> 的信息才能暴露给 OC 。这个文件是在你编译工程（command+B）后 Xcode 自动生成的，不需要我们自己创建，也不会显示在工程目录中。下面是具体步骤：</p>
+<h3 id="3-OC中混编Swift"><a href="#3-OC中混编Swift" class="headerlink" title="3.OC中混编Swift"></a>3.OC中混编Swift</h3><p>OC 工程中使用 Swift 文件需要一个命名格式为 “工程名-Swift.h” 的头文件。它是一个 OC 头文件，包含了工程 Target 里所有 Swift 代码中定义的接口、属性等。有了它 Swift 文件中标记为 <code>open</code>、<code>public</code>、<code>internal</code> 的信息才能暴露给 OC 。在编译工程（command+B）后 Xcode 自动生成，不需要自己创建，也不会显示在工程目录中。下面是具体步骤：</p>
 <p>在 OC 工程中新建 Swift 文件：“command+N -&gt; swift File”，目录如下：</p>
 <p><img src="https://davidlii.nos-eastchina1.126.net/pic_mix_match_dir.png" srcset="/img/loading.gif" lazyload alt="OC工程中swift文件目录"></p>
-<p>如果是首次创建 Swift 文件，Xcode 同样会提示新建桥接头文件，这里可以不创建。之后 Xcode 会自动帮我们设置好 “Objective-C Generated Interface Header Name” 选项，我们不用做什么修改：</p>
+<p>首次创建 Swift 文件时，Xcode 会提示新建桥接头文件，这里可以不创建。之后 Xcode 会自动设置好 “Objective-C Generated Interface Header Name” 选项，我们不用做什么修改：</p>
 <p><img src="https://davidlii.nos-eastchina1.126.net/pic_mix_match.png" srcset="/img/loading.gif" lazyload alt="OC中使用swift文件"></p>
 <p>自定义你的 Swift 类：</p>
-<figure class="highlight livescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs livescript"><span class="hljs-keyword">import</span> Foundation<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">SwiftFile</span> : NSObject &#123;<br>    @objc <span class="hljs-keyword">var</span> name : <span class="hljs-built_in">String</span>?<br>    @objc <span class="hljs-keyword">let</span> nick : <span class="hljs-built_in">String</span><br>    <br>    @objc init(name:<span class="hljs-built_in">String</span>,nick:<span class="hljs-built_in">String</span>) &#123;<br>        self.name = name<br>        self.nick = nick<br>        super.init()<br>    &#125;<br>    <br>    @objc func swiftInstanceMethod<span class="hljs-function"><span class="hljs-params">(name:<span class="hljs-built_in">String</span>)</span> -&gt;</span> <span class="hljs-built_in">String</span> &#123;<br>        self.name = name<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;name is:\(name)&quot;</span>)<br>        <span class="hljs-keyword">return</span> name;<br>    &#125;<br>    <br>    @objc <span class="hljs-keyword">class</span> <span class="hljs-title class_">func</span> swiftClassMethod<span class="hljs-function"><span class="hljs-params">(nick:<span class="hljs-built_in">String</span>)</span> -&gt;</span> <span class="hljs-built_in">String</span> &#123;<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;nick is:\(nick)&quot;</span>)<br>        <span class="hljs-keyword">return</span> nick<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs swift"><span class="hljs-comment">// 继承NSObject并用@objc标记需要暴露给OC的元素</span><br><span class="hljs-keyword">import</span> Foundation<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">SwiftFile</span> : <span class="hljs-title class_">NSObject</span> &#123;<br>    <span class="hljs-keyword">@objc</span> <span class="hljs-keyword">var</span> name : <span class="hljs-type">String</span>?<br>    <span class="hljs-keyword">@objc</span> <span class="hljs-keyword">let</span> nick : <span class="hljs-type">String</span><br>    <br>    <span class="hljs-keyword">@objc</span> <span class="hljs-keyword">init</span>(<span class="hljs-params">name</span>:<span class="hljs-type">String</span>,<span class="hljs-params">nick</span>:<span class="hljs-type">String</span>) &#123;<br>        <span class="hljs-keyword">self</span>.name <span class="hljs-operator">=</span> name<br>        <span class="hljs-keyword">self</span>.nick <span class="hljs-operator">=</span> nick<br>        <span class="hljs-keyword">super</span>.<span class="hljs-keyword">init</span>()<br>    &#125;<br>    <br>    <span class="hljs-keyword">@objc</span> <span class="hljs-keyword">func</span> <span class="hljs-title function_">swiftInstanceMethod</span>(<span class="hljs-params">name</span>:<span class="hljs-type">String</span>) -&gt; <span class="hljs-type">String</span> &#123;<br>        <span class="hljs-keyword">self</span>.name <span class="hljs-operator">=</span> name<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;name is:<span class="hljs-subst">\(name)</span>&quot;</span>)<br>        <span class="hljs-keyword">return</span> name;<br>    &#125;<br>    <br>    <span class="hljs-keyword">@objc</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">func</span> <span class="hljs-title class_">swiftClassMethod</span>(<span class="hljs-title class_">nick</span>:<span class="hljs-title class_">String</span>) -&gt; <span class="hljs-title class_">String</span> &#123;<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;nick is:<span class="hljs-subst">\(nick)</span>&quot;</span>)<br>        <span class="hljs-keyword">return</span> nick<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>在用到此 Swift 文件的地方导入 “工程名-swift.h” 头文件即可：</p>
 <figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-meta">#import <span class="hljs-string">&quot;AppDelegate.h&quot;</span></span><br><span class="hljs-meta">#import <span class="hljs-string">&quot;ASDF-Swift.h&quot;</span> <span class="hljs-comment">//导入 swift 文件对应的 OC 版头文件</span></span><br><br><span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">AppDelegate</span></span><br><br>- (<span class="hljs-type">BOOL</span>)application:(<span class="hljs-built_in">UIApplication</span> *)application<br>didFinishLaunchingWithOptions:(<span class="hljs-built_in">NSDictionary</span> *)launchOptions<br>&#123;<br>    SwiftFile *sf = [[SwiftFile alloc] initWithName:<span class="hljs-string">@&quot;swift&quot;</span> nick:<span class="hljs-string">@&quot;sf&quot;</span>];<br>    sf.name = <span class="hljs-string">@&quot;Swift4.1&quot;</span>;<br>    [sf swiftInstanceMethodWithName:<span class="hljs-string">@&quot;Hello&quot;</span>];<br>    [SwiftFile swiftClassMethodWithNick:<span class="hljs-string">@&quot;newNick&quot;</span>];<br>    <br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">YES</span>;<br>&#125;<br><span class="hljs-keyword">@end</span><br></code></pre></td></tr></table></figure>
@@ -322,25 +326,25 @@
 <figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">SwiftFile</span> : <span class="hljs-title">NSObject</span></span><br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">copy</span>) <span class="hljs-built_in">NSString</span> * _Nullable name;<br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">readonly</span>, <span class="hljs-keyword">copy</span>) <span class="hljs-built_in">NSString</span> * _Nonnull nick;<br>- (<span class="hljs-keyword">nonnull</span> <span class="hljs-keyword">instancetype</span>)initWithName:(<span class="hljs-built_in">NSString</span> * _Nonnull)name nick:(<span class="hljs-built_in">NSString</span> * _Nonnull)nick OBJC_DESIGNATED_INITIALIZER;<br>- (<span class="hljs-built_in">NSString</span> * _Nonnull)swiftInstanceMethodWithName:(<span class="hljs-built_in">NSString</span> * _Nonnull)name SWIFT_WARN_UNUSED_RESULT;<br>- (<span class="hljs-keyword">nonnull</span> <span class="hljs-keyword">instancetype</span>)init SWIFT_UNAVAILABLE;<br>+ (<span class="hljs-keyword">nonnull</span> <span class="hljs-keyword">instancetype</span>)new SWIFT_DEPRECATED_MSG(<span class="hljs-string">&quot;-init is unavailable&quot;</span>);<br><span class="hljs-keyword">@end</span><br></code></pre></td></tr></table></figure>
 
 <h3 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h3><ul>
-<li><strong>public 与 private</strong></li>
+<li>可访问性</li>
 </ul>
-<p>OC 中使用 Swift 文件时，<code>工程名-Swift.h</code>文件中只能将 Swift 文件中标注为 <code>open</code>、<code>public</code>、<code>internal</code> 的类、属性和接口等暴露给 OC，<code>fileprivate</code>和<code>private</code>标记的信息对 OC 不可见。Swift 中默认的访问控制修饰符是<code>internal</code>。</p>
+<p>OC 中使用 Swift 文件时，Swift类需要继承<code>NSObject</code>并用<code>@objc</code>标记需要暴露给OC的元素；并且<code>工程名-Swift.h</code>文件中只能将 Swift文件中标注为<code>open</code>、<code>public</code>、<code>internal</code>的类、属性和接口等暴露给 OC，而<code>fileprivate</code>和<code>private</code>标记的信息对 OC 不可见。Swift 中默认的访问控制修饰符是<code>internal</code>。</p>
 <ul>
-<li><strong>版本变更</strong></li>
+<li>版本变更</li>
 </ul>
 <p>Swift 3.x 中类只要继承了 NSObject，编译器会隐式地为所有<code>public</code>的属性或方法添加<code>@objc</code>标注，这样就能把 Swift 的属性、函数等暴露给 OC；但 Swift 4.x 中继承自 NSObject 的类不再隐式添加<code>@objc</code>，需要手动标注。</p>
 <ul>
-<li><strong>继承问题</strong></li>
+<li>继承问题</li>
 </ul>
-<p>Swift 类可以继承自 OC 类，但反过来 OC 类不能继承 Swift 类。</p>
+<p>Swift类可以继承自 OC 类，但反过来 OC 类不能继承 Swift 类。</p>
 <ul>
-<li><strong>宏定义</strong></li>
+<li>宏定义</li>
 </ul>
-<p>Swift 中使用 OC 中的<code>宏</code>时，可以将简单的宏定义成全局常量，对于复杂的宏可以将其定义成函数。</p>
+<p>Swift中使用 OC 中的<code>宏</code>时，可以将简单的宏定义成全局常量，复杂的宏可以将其定义成函数。</p>
 <ul>
-<li><strong>Swift 中独有的特性</strong></li>
+<li>Swift独有的特性</li>
 </ul>
-<p>将 Swift 代码导入 OC 后，你可以访问在 Swift 类或协议中使用<code>@objc</code>标记的任何对象，只要该对象与 OC 兼容。需要注意的是部分 Swift 独有的特性不能在 OC 中使用，包括：泛型、元组、非Int类型的枚举、可变参数、函数嵌套等。</p>
+<p>将 Swift 代码导入 OC 后，你可以访问在 Swift 类或协议中使用<code>@objc</code>标记的任何对象，只要该对象与 OC 兼容。部分 Swift 独有的特性不能在 OC 中使用，包括：泛型、元组、非Int类型的枚举、可变参数、函数嵌套等。</p>
 <hr>
 <p>相关参考：</p>
 <p>#<a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/swift/migrating_your_objective_c_code_to_swift">©Apple</a></p>
