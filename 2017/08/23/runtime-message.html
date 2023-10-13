@@ -232,7 +232,7 @@
         
         
         
-          93 分钟
+          94 分钟
         
       </span>
     
@@ -384,7 +384,7 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs java">DynamicTool *insObj = [DynamicTool <span class="hljs-keyword">new</span>];<br><span class="hljs-type">Class</span> <span class="hljs-variable">classObj</span> <span class="hljs-operator">=</span> NSClassFromString(@<span class="hljs-string">&quot;DynamicTool&quot;</span>);<br><br>[insObj performSelector:<span class="hljs-meta">@selector(instanceMethodSelector)</span>];<br><br>[classObj performSelector:<span class="hljs-meta">@selector(classMethodSelector)</span> <br>withObject:@<span class="hljs-string">&quot;A&quot;</span> withObject:@<span class="hljs-string">&quot;B&quot;</span>];<br></code></pre></td></tr></table></figure>
 
 <p>DynamicTool 的头文件并未定义实例方法<code>instanceMethodSelector</code> 和类方法<code>classMethodSelector</code>。因此通过 performSelector 调用时，runtime会按照上一小结所述流程从类中查找该方法，因为未定义，所以查找失败并走动态方法决议流程，分别通过<code>resolveInstanceMethod</code>与 <code>resolveClassMethod</code>查找具体的方法实现。</p>
-<h3 id="11-消息转发机制"><a href="#11-消息转发机制" class="headerlink" title="11.消息转发机制"></a>11.消息转发机制</h3><p>如果没有实现动态方法决议机制，或者在动态方法决议时并未为selector提供实现，那么就会发生crash。为防止这种崩溃，OC还提供了消息转发机制，以将消息转发给其他对象。</p>
+<h3 id="11-消息转发机制"><a href="#11-消息转发机制" class="headerlink" title="11.消息转发机制"></a>11.消息转发机制</h3><p>如果没有实现动态方法决议机制，或者在动态方法决议时并未为selector提供实现，那么就会发生crash。为防止这种闪退，OC还提供了消息转发机制，以将消息转发给其他对象。</p>
 <p>如果同时提供了动态方法决议和消息转发，那么动态方法决议先于消息转发，只有当动态方法决议依然无法正确决议selector的实现，才会尝试进行消息转发。</p>
 <ul>
 <li>第一次转发机会</li>
@@ -417,10 +417,10 @@
 <p>调用示例：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java">DynamicTool *insObj = [DynamicTool <span class="hljs-keyword">new</span>];<br><span class="hljs-type">Class</span> <span class="hljs-variable">classObj</span> <span class="hljs-operator">=</span> NSClassFromString(@<span class="hljs-string">&quot;DynamicTool&quot;</span>);<br>[insObj performSelector:<span class="hljs-meta">@selector(unknownSelector)</span>];<br></code></pre></td></tr></table></figure>
 
-<h3 id="12-消息转发的过程"><a href="#12-消息转发的过程" class="headerlink" title="12.消息转发的过程"></a>12.消息转发的过程</h3><p>1、动态方法决议进入<code>resolveInstanceMethod</code>方法时，指定是否动态添加方法。若指定了实现函数，则通过<code>class_addMethod</code>函数动态地添加方法，并正常执行作为替代的C函数，如上面示例中的<code>dynamicResolution</code>方法；否则，进入第2步；</p>
-<p>2、<code>resolveInstanceMethod</code>方法中未指定实现函数时，不论返回YES或NO，都会进入消息转发流程，调用<code>forwardingTargetForSelector</code>方法，这是runtime给我们的第二次机会，用于指定哪个对象响应这个selector。若返回某个对象，则会调用该对象的方法；若返回nil，进入第3步;</p>
-<p>3、<code>forwardingTargetForSelector</code>返回nil时，则要通过 <code>methodSignatureForSelector</code>来指定方法签名。若返回nil，表示不处理，程序会crash；若返回方法签名，则进入第4步。</p>
-<p>4、<code>methodSignatureForSelector</code>返回方法签名时，会调用<code>forwardInvocation</code>方法。到这个方法中后即使不做任何处理程序也不会崩溃，当然也可以通过<code>anInvocation</code>再次将消息转发给某些对象，或者修改实现方法，修改响应对象等。</p>
+<h3 id="12-消息转发的过程"><a href="#12-消息转发的过程" class="headerlink" title="12.消息转发的过程"></a>12.消息转发的过程</h3><p>1、动态方法决议进入<code>resolvexxxMethod</code>方法时，指定是否动态添加方法。若指定了实现函数，则通过<code>class_addMethod</code>函数动态地添加方法，并正常执行作为替代的C函数，如上面示例中的<code>dynamicResolution</code>方法；否则，进入第2步；</p>
+<p>2、如果<code>resolvexxxMethod </code>方法中未指定实现函数，不论返回YES或NO，都会进入消息转发流程，调用<code>forwardingTargetForSelector</code>方法，在这里指定由哪个对象响应这个selector。若返回某个对象，则会调用该对象的方法；若返回nil，进入第3步;</p>
+<p>3、如果上一步<code>forwardingTargetForSelector</code>中返回nil或者返回的转发对象也不能响应此方法，则runtime会给我们第二次转发机会，通过<code>methodSignatureForSelector</code>创建一个方法签名。返回nil表示不处理，程序会crash；返回方法签名，则进入第4步。</p>
+<p>4、<code>methodSignatureForSelector</code>返回方法签名时，会调用<code>forwardInvocation</code>方法。到这个方法中后即使不做任何处理程序也不会闪退，当然也可以通过<code>anInvocation</code>再次将消息转发给多个对象，或者修改实现方法，修改响应对象等。</p>
 <h3 id="13-NSInvocation"><a href="#13-NSInvocation" class="headerlink" title="13.NSInvocation"></a>13.NSInvocation</h3><p>OC中 直接调用类的方法有两种途径：</p>
 <ul>
 <li>通过 NSObject 分类中定义的 <code>-performSelector:withObject:withObject:</code> 方法；</li>
