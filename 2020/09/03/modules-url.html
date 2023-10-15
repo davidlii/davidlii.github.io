@@ -16,12 +16,12 @@
   <meta name="author" content="Davidli">
   <meta name="keywords" content="Davidli">
   
-    <meta name="description" content="一、组件化1.目的为了解耦：把复杂系统拆分成多个组件，分离组件边界和责任，便于独立升级和维护。 2.好处 明确组件职责  按合理的粒度将系统拆分成多个组件，确保组件各司其职，以便于复用。  减少组件间的依赖  通信层实现了组件间的通信，而不用在组件间跳转、调用服务时引用其他组件的文件。  提升开发&#x2F;编译&#x2F;测试效率  开发人员只须关注自己的组件，不再需要导入或编译其他组件，从而提">
+    <meta name="description" content="一、组件化1.目的为了解耦：把复杂系统拆分成多个组件，分离组件边界和责任，便于独立升级和维护。 2.好处 明确组件职责  按合理的粒度将系统拆分成多个组件，确保组件各司其职，以便于复用。  提升开发&#x2F;编译&#x2F;测试效率  开发人员只须关注自己的组件，不再需要导入或编译其他组件，从而提升开发和编译速度。  减少组件间的依赖  通信层实现了组件间的通信，而不用在组件间跳转、调用服务时引">
 <meta property="og:type" content="article">
 <meta property="og:title" content="组件化-URL路由方案">
 <meta property="og:url" content="https://davidlii.cn/2020/09/03/modules-url.html">
 <meta property="og:site_name" content="Davidli">
-<meta property="og:description" content="一、组件化1.目的为了解耦：把复杂系统拆分成多个组件，分离组件边界和责任，便于独立升级和维护。 2.好处 明确组件职责  按合理的粒度将系统拆分成多个组件，确保组件各司其职，以便于复用。  减少组件间的依赖  通信层实现了组件间的通信，而不用在组件间跳转、调用服务时引用其他组件的文件。  提升开发&#x2F;编译&#x2F;测试效率  开发人员只须关注自己的组件，不再需要导入或编译其他组件，从而提">
+<meta property="og:description" content="一、组件化1.目的为了解耦：把复杂系统拆分成多个组件，分离组件边界和责任，便于独立升级和维护。 2.好处 明确组件职责  按合理的粒度将系统拆分成多个组件，确保组件各司其职，以便于复用。  提升开发&#x2F;编译&#x2F;测试效率  开发人员只须关注自己的组件，不再需要导入或编译其他组件，从而提升开发和编译速度。  减少组件间的依赖  通信层实现了组件间的通信，而不用在组件间跳转、调用服务时引">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://davidlii.nos-eastchina1.126.net/pic_zujianhua.png">
 <meta property="article:published_time" content="2020-09-03T09:40:31.000Z">
@@ -291,13 +291,13 @@
 </ul>
 <p>按合理的粒度将系统拆分成多个组件，确保组件各司其职，以便于复用。</p>
 <ul>
-<li>减少组件间的依赖</li>
-</ul>
-<p><code>通信层</code>实现了组件间的通信，而不用在组件间跳转、调用服务时引用其他组件的文件。</p>
-<ul>
 <li>提升开发&#x2F;编译&#x2F;测试效率</li>
 </ul>
 <p>开发人员只须关注自己的组件，不再需要导入或编译其他组件，从而提升开发和编译速度。</p>
+<ul>
+<li>减少组件间的依赖</li>
+</ul>
+<p><code>通信层</code>实现了组件间的通信，而不用在组件间跳转、调用服务时引用其他组件的文件。</p>
 <h4 id="3-方案"><a href="#3-方案" class="headerlink" title="3.方案"></a>3.方案</h4><p>目前 iOS 组件化的实践中，比较流行的解决方案可归纳为以下三种：</p>
 <p>1.基于<code>URL</code>+<code>Block</code>的路由方案；</p>
 <p>2.基于<code>反射</code>原理的方案；</p>
