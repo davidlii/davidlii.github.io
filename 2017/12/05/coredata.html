@@ -541,6 +541,7 @@
 <ol>
 <li>将属性设置成<code>Transformable</code>类型；</li>
 <li>提供一个继承自<code>NSValueTransformer</code>的子类，重写必须的方法；</li>
+<li>在模型编辑窗口，设置属性的<code>Transformer</code>与<code>Custom Class</code>字段；</li>
 <li>保存属性时，直接给属性赋值，Core Data 会通过我们指定的<code>NSValueTransformer</code>子类，自动执行数据转换，将属性中的值转换成 data，写入持久化存储；</li>
 <li>读取属性时，从持久化存储中读取 data，由<code>NSValueTransformer</code>子类自动转换成对应类型；</li>
 </ol>
