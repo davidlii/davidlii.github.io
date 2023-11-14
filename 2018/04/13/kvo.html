@@ -308,13 +308,13 @@
 <blockquote>
 <p>The default implementation of this method recognizes the same simple accessor methods and array accessor methods as -valueForKey:’s, and follows the same direct instance variable access policies, but always returns a mutable collection proxy object instead of the immutable collection that -valueForKey: would return.</p>
 </blockquote>
-<h3 id="KVO底层原理"><a href="#KVO底层原理" class="headerlink" title="#KVO底层原理?"></a>#KVO底层原理?</h3><p><a target="_blank" rel="noopener" href="https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/KeyValueObserving/Articles/KVOImplementation.html#//apple_ref/doc/uid/20002307-BAJEAIEE">官方文档</a> 解释如下：<br><br/></p>
-<p>Automatic key-value observing is implemented using a technique called isa-swizzling.<br><br/></p>
-<p>The isa pointer, as the name suggests, points to the object’s class which maintains a dispatch table. This dispatch table essentially contains pointers to the methods the class implements, among other data.<br><br/></p>
-<p>When an observer is registered for an attribute of an object the isa pointer of the observed object is modified, pointing to an intermediate class rather than at the true class. As a result the value of the isa pointer does not necessarily reflect the actual class of the instance.<br><br/></p>
-<p>You should never rely on the isa pointer to determine class membership. Instead, you should use the class method to determine the class of an object instance.<br><br/></p>
-<p>简而言之，苹果使用了一种 isa 交换的技术。当一个类的属性被观察时，Runtime 会动态的创建一个中间类，将原类的 isa 指针指向此中间类。中间类中重写原类被观察属性的 setter 方法，这样给原类属性赋值时调用的实际上是中间类的 setter 方法。重写的 setter 方法会调用 [super setValue:newName forKey:@”name”] 并在此方法前后分别插入 [self willChangeValueForKey:@“name”] 和 [self didChangeValueForKey:@”name”]，以通知观察对象值的改变。<br><br/></p>
-<p>以上面案例中的 Model 为例，当 name 属性被观察后，aModel 对象的 isa 指针被指向了一个新建的 Model 的中间类 NSKVONotifying_Model，这个中间类重写了被观察值的 setter 方法和 class 方法、dealloc 及 _isKVO 方法，然后使 aModel 对象的 isa 指针指向这个新建的类。所以事实上 aModel 变为了 NSKVONotifying_Model 的实例对象，执行方法要从这个类的方法列表里找。<br><br/></p>
+<h3 id="KVO底层原理"><a href="#KVO底层原理" class="headerlink" title="#KVO底层原理?"></a>#KVO底层原理?</h3><p><a target="_blank" rel="noopener" href="https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/KeyValueObserving/Articles/KVOImplementation.html#//apple_ref/doc/uid/20002307-BAJEAIEE">官方文档</a> 解释如下：</p>
+<p>Automatic key-value observing is implemented using a technique called isa-swizzling.</p>
+<p>The isa pointer, as the name suggests, points to the object’s class which maintains a dispatch table. This dispatch table essentially contains pointers to the methods the class implements, among other data.</p>
+<p>When an observer is registered for an attribute of an object the isa pointer of the observed object is modified, pointing to an intermediate class rather than at the true class. As a result the value of the isa pointer does not necessarily reflect the actual class of the instance.</p>
+<p>You should never rely on the isa pointer to determine class membership. Instead, you should use the class method to determine the class of an object instance.</p>
+<p>简而言之，苹果使用了一种 isa 交换的技术。当一个类的属性被观察时，Runtime 会动态的创建一个中间类，将原类的 isa 指针指向此中间类。中间类中重写原类被观察属性的 setter 方法，这样给原类属性赋值时调用的实际上是中间类的 setter 方法。重写的 setter 方法会调用 [super setValue:newName forKey:@”name”] 并在此方法前后分别插入 [self willChangeValueForKey:@“name”] 和 [self didChangeValueForKey:@”name”]，以通知观察对象值的改变。</p>
+<p>以上面案例中的 Model 为例，当 name 属性被观察后，aModel 对象的 isa 指针被指向了一个新建的 Model 的中间类 NSKVONotifying_Model，这个中间类重写了被观察值的 setter 方法和 class 方法、dealloc 及 _isKVO 方法，然后使 aModel 对象的 isa 指针指向这个新建的类。所以事实上 aModel 变为了 NSKVONotifying_Model 的实例对象，执行方法要从这个类的方法列表里找。</p>
 <p>苹果警告我们，通过 isa 获取类的类型是不可靠的，通过 class 方法才能得到正确的类。</p>
 <h3 id="主动触发KVO"><a href="#主动触发KVO" class="headerlink" title="#主动触发KVO"></a>#主动触发KVO</h3><p>如上所述，当属性发生变化时能收到通知，是因为 Runtime 使用 <code>isa-swizzling</code> 技术在中间类中属性的 <code>setter</code> 赋值语句前后主动调用了下面两个方法： </p>
 <figure class="highlight erlang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs erlang">- <span class="hljs-params">(void)</span>willChangeValueForKey:<span class="hljs-params">(NSString *)</span>key;<br>- <span class="hljs-params">(void)</span>didChangeValueForKey:<span class="hljs-params">(NSString *)</span>key;<br></code></pre></td></tr></table></figure>
@@ -348,7 +348,7 @@
     
       <span class="category-chain">
         
-  <a href="/categories/%E6%8A%80%E6%9C%AF/" class="category-chain-item">技术</a>
+  <a href="/categories/OC/" class="category-chain-item">OC</a>
   
   
 

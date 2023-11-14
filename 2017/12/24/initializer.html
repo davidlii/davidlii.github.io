@@ -18,7 +18,7 @@
   
     <meta name="description" content="1、指定构造函数（Designated Initializer）在 OC 的很多头文件中，都会出现NS_DESIGNATED_INITIALIZER这个宏，如： 12- (instancetype)initWithNibName:(NSString *)nibNameOrNilbundle:(NSBundle *)nibBundleOrNil NS_DESIGNATED_INITIALIZER;">
 <meta property="og:type" content="article">
-<meta property="og:title" content="构造函数">
+<meta property="og:title" content="构造器">
 <meta property="og:url" content="https://davidlii.cn/2017/12/24/initializer.html">
 <meta property="og:site_name" content="Davidli">
 <meta property="og:description" content="1、指定构造函数（Designated Initializer）在 OC 的很多头文件中，都会出现NS_DESIGNATED_INITIALIZER这个宏，如： 12- (instancetype)initWithNibName:(NSString *)nibNameOrNilbundle:(NSBundle *)nibBundleOrNil NS_DESIGNATED_INITIALIZER;">
@@ -33,7 +33,7 @@
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>构造函数 - Davidli</title>
+  <title>构造器 - Davidli</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -198,7 +198,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="构造函数"></span>
+            <span id="subtitle" data-typed-text="构造器"></span>
           
         </div>
 
@@ -278,7 +278,7 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">构造函数</h1>
+            <h1 style="display: none">构造器</h1>
             
             
               <div class="markdown-body">
@@ -286,9 +286,9 @@
                 <h3 id="1、指定构造函数（Designated-Initializer）"><a href="#1、指定构造函数（Designated-Initializer）" class="headerlink" title="1、指定构造函数（Designated Initializer）"></a>1、指定构造函数（Designated Initializer）</h3><p>在 OC 的很多头文件中，都会出现<code>NS_DESIGNATED_INITIALIZER</code>这个宏，如：</p>
 <figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs objectivec">- (<span class="hljs-keyword">instancetype</span>)initWithNibName:(<span class="hljs-built_in">NSString</span> *)nibNameOrNil<br>bundle:(<span class="hljs-built_in">NSBundle</span> *)nibBundleOrNil <span class="hljs-built_in">NS_DESIGNATED_INITIALIZER</span>;<br></code></pre></td></tr></table></figure>
 
-<p>这个宏就是 “指定构造函数” 的标志，它用来告诉调用者使用这个方法来初始化类对象。一个类可以定义多个构造方法，不同的构造方法可以传入不同的参数，或者通过不同的方式来初始化一个类对象，指定构造函数通常是参数最多的构造函数。一个类必须有一个指定构造器，但并不是说只能有一个。如果必要，你可以声明多个，但是通常情况下一个就足够了。<br><br/></p>
+<p>这个宏就是 “指定构造函数” 的标志，它用来告诉调用者使用这个方法来初始化类对象。一个类可以定义多个构造方法，不同的构造方法可以传入不同的参数，或者通过不同的方式来初始化一个类对象，指定构造函数通常是参数最多的构造函数。一个类必须有一个指定构造器，但并不是说只能有一个。如果必要，你可以声明多个，但是通常情况下一个就足够了。</p>
 <p>有时候为了方便，我们想使用尽量少或者不用参数，就能创建一个类对象。这时就可以使用“便利构造函数”来解决。</p>
-<h3 id="2、便利构造函数（Convenience-Initializer）"><a href="#2、便利构造函数（Convenience-Initializer）" class="headerlink" title="2、便利构造函数（Convenience Initializer）"></a>2、便利构造函数（Convenience Initializer）</h3><p>这是为了方便调用者快速创建一个类对象而定义的一种构造函数。通常会在便利构造函数中给成员变量提供一个默认值。<br><br/></p>
+<h3 id="2、便利构造函数（Convenience-Initializer）"><a href="#2、便利构造函数（Convenience-Initializer）" class="headerlink" title="2、便利构造函数（Convenience Initializer）"></a>2、便利构造函数（Convenience Initializer）</h3><p>这是为了方便调用者快速创建一个类对象而定义的一种构造函数。通常会在便利构造函数中给成员变量提供一个默认值。</p>
 <p>#示例1：</p>
 <figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-meta">#import <span class="hljs-string">&lt;Foundation/Foundation.h&gt;</span></span><br><br><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">Initializer</span> : <span class="hljs-title">NSObject</span></span><br>&#123;<br>    <span class="hljs-built_in">NSString</span> *aTitle;<br>    <span class="hljs-built_in">NSDate</span>   *aDate;<br>&#125;<br><br><span class="hljs-comment">//Designated Initializer</span><br>- (<span class="hljs-keyword">instancetype</span>)initWithTitle:(<span class="hljs-built_in">NSString</span> *)title<br>date:(<span class="hljs-built_in">NSDate</span>*)date <span class="hljs-built_in">NS_DESIGNATED_INITIALIZER</span>;<br><br><span class="hljs-comment">//Convenience Initializer</span><br>- (<span class="hljs-keyword">instancetype</span>)initWithTitle:(<span class="hljs-built_in">NSString</span> *)title;<br><br><span class="hljs-comment">//不希望调用父类(NSObject)的这个 Designated Initializer</span><br>- (<span class="hljs-keyword">instancetype</span>)init <span class="hljs-built_in">NS_UNAVAILABLE</span>;<br><span class="hljs-keyword">@end</span><br></code></pre></td></tr></table></figure>
 
@@ -298,8 +298,8 @@
 <figure class="highlight prolog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs prolog">//<span class="hljs-number">1</span><br><span class="hljs-symbol">Initializer</span> *ai1 = [[<span class="hljs-symbol">Initializer</span> alloc] init];<br>//<span class="hljs-number">2</span><br><span class="hljs-symbol">Initializer</span> *ai2 = [[<span class="hljs-symbol">Initializer</span> alloc] initWithTitle:@<span class="hljs-string">&quot;title2&quot;</span>];<br>//<span class="hljs-number">3</span><br><span class="hljs-symbol">Initializer</span> *ai3 = [[<span class="hljs-symbol">Initializer</span> alloc] initWithTitle:@<span class="hljs-string">&quot;title3&quot;</span> <br>date:[<span class="hljs-symbol">NSDate</span> date]];<br></code></pre></td></tr></table></figure>
 
 <p>上面的调用示例中，第一种在编译时会报错。因为不希望调用者使用此方法来初始化这个类对象，所以头文件中已把<code>init</code>方法声明为<code>NS_UNAVAILABLE</code>。</p>
-<h3 id="3、使用规范"><a href="#3、使用规范" class="headerlink" title="3、使用规范"></a>3、使用规范</h3><p>如果子类有<code>Designated Initializer</code>，那么这个<code>Designated Initializer</code> 中必须调用它直接父类的<code>Designated Initializer</code>，并且需要重写父类的<code>Designated Initializer</code>。<br><br/></p>
-<p>如果子类有<code>Designated Initializer</code>，那么<code>Convenience Initializer</code>必须调用这个子类中其它初始化函数(包括<code>Designated Initializer</code>和 其他<code>Convenience Initializer</code>)，不能调用 super 的初始化函数。<br><br/></p>
+<h3 id="3、使用规范"><a href="#3、使用规范" class="headerlink" title="3、使用规范"></a>3、使用规范</h3><p>如果子类有<code>Designated Initializer</code>，那么这个<code>Designated Initializer</code> 中必须调用它直接父类的<code>Designated Initializer</code>，并且需要重写父类的<code>Designated Initializer</code>。</p>
+<p>如果子类有<code>Designated Initializer</code>，那么<code>Convenience Initializer</code>必须调用这个子类中其它初始化函数(包括<code>Designated Initializer</code>和 其他<code>Convenience Initializer</code>)，不能调用 super 的初始化函数。</p>
 <p>由上可以推理出：</p>
 <ul>
 <li>Convenience Initializer 只能调用自己类中的其他初始化方法。</li>
@@ -324,7 +324,7 @@
     
       <span class="category-chain">
         
-  <a href="/categories/%E6%8A%80%E6%9C%AF/" class="category-chain-item">技术</a>
+  <a href="/categories/OC/" class="category-chain-item">OC</a>
   
   
 
@@ -351,7 +351,7 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>构造函数</div>
+      <div>构造器</div>
       <div>https://davidlii.cn/2017/12/24/initializer.html</div>
     </div>
     <div class="license-meta">
@@ -394,9 +394,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2017/12/25/load.html" title="+load 与 +initialize">
+                      <a href="/2017/12/25/load.html" title="+load &amp; +initialize">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">+load 与 +initialize</span>
+                        <span class="hidden-mobile">+load &amp; +initialize</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     

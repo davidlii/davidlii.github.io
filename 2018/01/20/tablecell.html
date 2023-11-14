@@ -18,7 +18,7 @@
   
     <meta name="description" content="1、Cell 的重用#示例1：常见用法 123456789101112- (UITableViewCell *)tableView:(UITableView *)tableViewcellForRowAtIndexPath:(NSIndexPath *)indexPath &amp;#123;  static NSString *CellIdentifier &#x3D; @&quot;Cell&quot;;  U">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Cell与离屏渲染">
+<meta property="og:title" content="离屏渲染">
 <meta property="og:url" content="https://davidlii.cn/2018/01/20/tablecell.html">
 <meta property="og:site_name" content="Davidli">
 <meta property="og:description" content="1、Cell 的重用#示例1：常见用法 123456789101112- (UITableViewCell *)tableView:(UITableView *)tableViewcellForRowAtIndexPath:(NSIndexPath *)indexPath &amp;#123;  static NSString *CellIdentifier &#x3D; @&quot;Cell&quot;;  U">
@@ -33,7 +33,7 @@
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>Cell与离屏渲染 - Davidli</title>
+  <title>离屏渲染 - Davidli</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -198,7 +198,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="Cell与离屏渲染"></span>
+            <span id="subtitle" data-typed-text="离屏渲染"></span>
           
         </div>
 
@@ -221,7 +221,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          3.2k 字
+          3.1k 字
         
       </span>
     
@@ -232,7 +232,7 @@
         
         
         
-          27 分钟
+          26 分钟
         
       </span>
     
@@ -278,7 +278,7 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">Cell与离屏渲染</h1>
+            <h1 style="display: none">离屏渲染</h1>
             
             
               <div class="markdown-body">
@@ -286,7 +286,7 @@
                 <h3 id="1、Cell-的重用"><a href="#1、Cell-的重用" class="headerlink" title="1、Cell 的重用"></a>1、Cell 的重用</h3><p>#示例1：常见用法</p>
 <figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs objectivec">- (<span class="hljs-built_in">UITableViewCell</span> *)tableView:(<span class="hljs-built_in">UITableView</span> *)tableView<br>cellForRowAtIndexPath:(<span class="hljs-built_in">NSIndexPath</span> *)indexPath <br>&#123;<br>  <span class="hljs-keyword">static</span> <span class="hljs-built_in">NSString</span> *CellIdentifier = <span class="hljs-string">@&quot;Cell&quot;</span>;<br>  <span class="hljs-built_in">UITableViewCell</span> *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];<br>  <span class="hljs-keyword">if</span> (<span class="hljs-literal">nil</span> == cell) &#123;<br>    cell = [[<span class="hljs-built_in">UITableViewCell</span> alloc] initWithStyle:<br>    <span class="hljs-built_in">UITableViewCellStyleDefault</span> <br>    reuseIdentifier:CellIdentifier];<br>  &#125;<br>  <span class="hljs-keyword">return</span> cell;<br>&#125;<br></code></pre></td></tr></table></figure>
 
-<p>[tableView dequeueReusableCellWithIdentifier:CellIdentifier]; 就是 cell 重用的标志性语句。上面的代码逻辑是：当需要显示一个 Cell 时，系统会先去重用队列中查询是否有可重用的 cell，如果有则复用它，如果没有则新建一个 cell。<br><br/></p>
+<p>[tableView dequeueReusableCellWithIdentifier:CellIdentifier]; 就是 cell 重用的标志性语句。上面的代码逻辑是：当需要显示一个 Cell 时，系统会先去重用队列中查询是否有可重用的 cell，如果有则复用它，如果没有则新建一个 cell。</p>
 <p>#示例2：读取 UITableView 的属性</p>
 <figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">+ (void)ivarList<br>&#123;<br>    unsigned <span class="hljs-built_in">int</span> count = <span class="hljs-number">0</span>;<br>    Ivar *ivars = <span class="hljs-keyword">class</span><span class="hljs-constructor">_copyIvarList([UITableView <span class="hljs-params">class</span>], &amp;<span class="hljs-params">count</span>)</span>;<br>    <br>    <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> i = <span class="hljs-number">0</span>; i&lt;count; i++)&#123;<br>        Ivar ivar = ivars<span class="hljs-literal">[<span class="hljs-identifier">i</span>]</span>;<br>        const <span class="hljs-built_in">char</span> *charName = ivar<span class="hljs-constructor">_getName(<span class="hljs-params">ivar</span>)</span>;<br>        const <span class="hljs-built_in">char</span> *charType = ivar<span class="hljs-constructor">_getTypeEncoding(<span class="hljs-params">ivar</span>)</span>;<br>        <span class="hljs-constructor">NSLog(@<span class="hljs-string">&quot;Name:%s,Type:%s&quot;</span>,<span class="hljs-params">charName</span>,<span class="hljs-params">charType</span>)</span>;<br>    &#125;<br>    free(ivars);<br>&#125;<br></code></pre></td></tr></table></figure>
 
@@ -298,13 +298,11 @@
 <li><strong>visibleCells</strong>：（保存当前屏幕范围内显示的 cells）</li>
 <li><strong>reusableTableCells</strong>：（保存可重用的 cells）</li>
 </ul>
-<p><strong>Cell的重用逻辑：</strong><br><br/></p>
+<p><strong>Cell的重用逻辑：</strong></p>
 <p>（1）假如当前屏幕能显示10个 Cell，在 UITableView 开始渲染时，系统会通过 <code>-initWithStyle:reuseIdentifier:</code> 方法创建10个新的 cell （标志相同） 并显示，这些 cell 会被放入 <code>visibleCells</code> 这个数组中。</p>
 <p>（2）向下滑动 TableView，当 <strong>cell1</strong> 完全移出屏幕，并且 <strong>cell11</strong> (它也是alloc出来的，原因同上)完全显示出来时，<strong>cell11</strong> 会被加入到 <code>visiableCells</code>，而 <strong>cell1</strong> 则被移出 <code>visiableCells</code> 并加入到 <code>reusableTableCells</code> 中。</p>
 <p>（3）接着向下滑动 TableView，因为 <strong>cell1</strong> 已经在 <code>reusableTableCells</code> 中，所以 即将显示的第12个 cell 会重用 <strong>cell1</strong>。因此 <strong>cell1</strong> 会被移出 <code>reusableTableCells</code> 并加入到 <code>visiableCells</code> 中；同时 <strong>cell2</strong> 移出 <code>visiableCells</code> 并加入到 <code>reusableTableCells</code> 中。</p>
 <p>（4）接下来的重用以此类推。。</p>
-<br/>
-
 <p><strong>注意：</strong> cell 是重用的，所以在配置 cell 时一定要重新设置重用的 cell，不要遗留老的数据。</p>
 <h3 id="2、卡顿与离屏渲染"><a href="#2、卡顿与离屏渲染" class="headerlink" title="2、卡顿与离屏渲染"></a>2、卡顿与离屏渲染</h3><p>Tableview 使用中常会出现性能问题，其中会涉及到离屏渲染，下面这些博客里会有专业的分析，多看看，收益颇丰~</p>
 <ul>
@@ -312,13 +310,13 @@
 <li>#<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_29846663/article/details/68960512">©于海明-离屏渲染</a></li>
 </ul>
 <p>以下是从上面博客摘录的部分内容：</p>
-<h4 id="2-1-卡顿的原因"><a href="#2-1-卡顿的原因" class="headerlink" title="2.1 卡顿的原因"></a>2.1 卡顿的原因</h4><p>通常来说，计算机系统中 CPU、GPU、显示器是协同工作的：<code>CPU</code> 负责计算显示的内容，如视图的创建、布局计算、图片解码、文本绘制等，完成后提交到 GPU；<code>GPU</code> 负责对 CPU 提交的内容进行变换、合成、渲染，完成后将渲染结果放入帧缓冲区；<code>视频控制器</code>会按照 VSync 信号逐行读取帧缓冲区的数据，经过可能的数模转换传递给显示器显示。<br><br/></p>
+<h4 id="2-1-卡顿的原因"><a href="#2-1-卡顿的原因" class="headerlink" title="2.1 卡顿的原因"></a>2.1 卡顿的原因</h4><p>通常来说，计算机系统中 CPU、GPU、显示器是协同工作的：<code>CPU</code> 负责计算显示的内容，如视图的创建、布局计算、图片解码、文本绘制等，完成后提交到 GPU；<code>GPU</code> 负责对 CPU 提交的内容进行变换、合成、渲染，完成后将渲染结果放入帧缓冲区；<code>视频控制器</code>会按照 VSync 信号逐行读取帧缓冲区的数据，经过可能的数模转换传递给显示器显示。</p>
 <p>如果在一个 VSync 时间内，CPU 或者 GPU 没有完成内容提交，则那一帧就会被丢弃，等待下一次机会再显示，而这时显示屏会保留之前的内容不变。这就是界面卡顿的原因。</p>
-<h4 id="2-2-离屏渲染"><a href="#2-2-离屏渲染" class="headerlink" title="2.2.离屏渲染"></a>2.2.离屏渲染</h4><p><strong>#离屏渲染：</strong> 指的是GPU在当前屏幕缓冲区以外开辟一个缓冲区进行渲染操作；<br><br/></p>
-<p><strong>#当前屏幕渲染：</strong> 是指GPU的渲染操作是在当前用于显示的屏幕缓冲区进行。<br><br/></p>
-<p>离屏渲染对性能影响很大，主要是因为离屏渲染会创建新的缓冲区，且在离屏渲染的整个过程，需要多次切换上下文环境。这些操作的开销很大（涉及到 OpenGL 的 pipelines 和 barrier 等），尤其是当有大量离屏渲染的情况时。<br><br/></p>
-<p><strong>#为什么会有离屏渲染机制?</strong><br><br/></p>
-<p>有些效果被认为不能直接呈现于屏幕，而需要在别的地方做额外的处理预合成。图层属性的混合体没有预合成之前不能直接在屏幕中绘制，所以就需要屏幕外渲染。屏幕外渲染并不意味着软件绘制，但是它意味着图层必须在被显示之前在一个屏幕外上下文中被渲染（不论CPU还是GPU）。<br><br/></p>
+<h4 id="2-2-离屏渲染"><a href="#2-2-离屏渲染" class="headerlink" title="2.2.离屏渲染"></a>2.2.离屏渲染</h4><p><strong>#离屏渲染：</strong> 指的是GPU在当前屏幕缓冲区以外开辟一个缓冲区进行渲染操作；</p>
+<p><strong>#当前屏幕渲染：</strong> 是指GPU的渲染操作是在当前用于显示的屏幕缓冲区进行。</p>
+<p>离屏渲染对性能影响很大，主要是因为离屏渲染会创建新的缓冲区，且在离屏渲染的整个过程，需要多次切换上下文环境。这些操作的开销很大（涉及到 OpenGL 的 pipelines 和 barrier 等），尤其是当有大量离屏渲染的情况时。</p>
+<p><strong>#为什么会有离屏渲染机制?</strong></p>
+<p>有些效果被认为不能直接呈现于屏幕，而需要在别的地方做额外的处理预合成。图层属性的混合体没有预合成之前不能直接在屏幕中绘制，所以就需要屏幕外渲染。屏幕外渲染并不意味着软件绘制，但是它意味着图层必须在被显示之前在一个屏幕外上下文中被渲染（不论CPU还是GPU）。</p>
 <p><strong>#会触发离屏渲染的场景：</strong></p>
 <ul>
 <li>为图层设置遮罩（layer.mask）；</li>
@@ -343,10 +341,8 @@
 </ul>
 <hr>
 <p>相关参考：</p>
-<p>#<a target="_blank" rel="noopener" href="http://blog.csdn.net/huifeidexin_1/article/details/7678986">©CSDN.huifeidexin_1-cell重用</a></p>
 <p>#<a target="_blank" rel="noopener" href="https://blog.ibireme.com/2015/11/12/smooth_user_interfaces_for_ios/">©ibireme-保持界面流畅的技巧</a></p>
 <p>#<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_29846663/article/details/68960512">©于海明-离屏渲染</a></p>
-<p>#<a target="_blank" rel="noopener" href="https://blog.csdn.net/bravegogo/article/details/80494455">©CSDN.bravegogo-光栅化</a></p>
 <p>#<a target="_blank" rel="noopener" href="http://texturegroup.org/docs/corner-rounding.html">©Texture-Corner Rounding</a></p>
 
                 
@@ -366,7 +362,7 @@
     
       <span class="category-chain">
         
-  <a href="/categories/%E6%8A%80%E6%9C%AF/" class="category-chain-item">技术</a>
+  <a href="/categories/OC/" class="category-chain-item">OC</a>
   
   
 
@@ -393,7 +389,7 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>Cell与离屏渲染</div>
+      <div>离屏渲染</div>
       <div>https://davidlii.cn/2018/01/20/tablecell.html</div>
     </div>
     <div class="license-meta">

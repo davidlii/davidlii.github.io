@@ -308,7 +308,7 @@
 <ul>
 <li>找到开发环境配置文件并复制到<code>xx.app</code>文件夹下</li>
 </ul>
-<p>如果是自己的 ipa 那么这个<code>.mobileprovision</code>文件可以直接使用现成的，从<code>Xcode-&gt;账户</code>中找到，show in finder 后复制一份重命名为<code>embedded.mobileprovision</code>，拖到<code>.app</code>文件夹下即可<br><br/></p>
+<p>如果是自己的 ipa 那么这个<code>.mobileprovision</code>文件可以直接使用现成的，从<code>Xcode-&gt;账户</code>中找到，show in finder 后复制一份重命名为<code>embedded.mobileprovision</code>，拖到<code>.app</code>文件夹下即可</p>
 <p>也可以使用命令行操作：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash"><span class="hljs-built_in">cp</span> xx.mobileprovision Payload/xx.app/embedded.mobileprovision</span><br></code></pre></td></tr></table></figure>
 <p>注意：复制到<code>xx.app</code>目录下的配置文件一定要命名为<code>embedded.mobileprovision</code>！</p>
@@ -353,8 +353,8 @@
 
 <h3 id="3-3-调试"><a href="#3-3-调试" class="headerlink" title="3.3.调试"></a>3.3.调试</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">ios-deploy -d -b Payload/xx.app</span><br></code></pre></td></tr></table></figure>
 
-<p>出现<code>success</code>字样，就说明成功了~<br><br/></p>
-<p>如果遇到错误提示：“Error: There was an internal API error. AMDeviceSecureInstallApplication(0, device, url, options, install_callback, 0)”,就可能存在有 framework 或者 dylib 未签名的情况。这时就需要把 app 文件夹下的 framework 全都签名。<br><br/></p>
+<p>出现<code>success</code>字样，就说明成功了~</p>
+<p>如果遇到错误提示：“Error: There was an internal API error. AMDeviceSecureInstallApplication(0, device, url, options, install_callback, 0)”,就可能存在有 framework 或者 dylib 未签名的情况。这时就需要把 app 文件夹下的 framework 全都签名。</p>
 <p>重新打包，生成新的ipa</p>
 <figure class="highlight haxe"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs haxe">$ zip -r <span class="hljs-keyword">new</span><span class="hljs-type"></span>.ipa Payload/<br></code></pre></td></tr></table></figure>
 
@@ -380,7 +380,7 @@
     
       <span class="category-chain">
         
-  <a href="/categories/%E8%AF%BE%E5%A4%96/" class="category-chain-item">课外</a>
+  <a href="/categories/%E5%85%B6%E4%BB%96/" class="category-chain-item">其他</a>
   
   
 
@@ -460,8 +460,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2019/03/12/dsym.html" title="dSYM分析crash日志">
-                        <span class="hidden-mobile">dSYM分析crash日志</span>
+                      <a href="/2019/03/12/dsym.html" title="dSYM+.crash解析">
+                        <span class="hidden-mobile">dSYM+.crash解析</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

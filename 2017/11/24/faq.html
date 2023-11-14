@@ -300,7 +300,7 @@
 <li>-viewDidDisappear:</li>
 <li>-dealloc</li>
 </ul>
-<p>通过<code>addChildViewController</code>将子VC添加到父VC容器中后，子VC与父VC的生命周期会同步进行，如：父VC的<code>-viewDidAppear</code>等触发时子VC的也会触发。<br><br/></p>
+<p>通过<code>addChildViewController</code>将子VC添加到父VC容器中后，子VC与父VC的生命周期会同步进行，如：父VC的<code>-viewDidAppear</code>等触发时子VC的也会触发。</p>
 <p>VC的生命周期是根据其<code>self.view</code>所处的状态而定的：在父VC中第一次访问子VC的<code>.view</code>属性时会先调用子VC中的<code>-loadView</code>，随后子VC中的<code>-viewDidLoad</code>也会触发，以便做进一步的设置；如果<code>.view</code>属性没被添加到一个已经展示的视图上，则其所属VC的<code>-viewWillAppear</code>不会调用。</p>
 <h3 id="2、VC跳转时生命周期调用顺序"><a href="#2、VC跳转时生命周期调用顺序" class="headerlink" title="2、VC跳转时生命周期调用顺序"></a>2、VC跳转时生命周期调用顺序</h3><ul>
 <li>情形1：由 A push 到 B 时：</li>
@@ -314,12 +314,12 @@
 
 <h3 id="3、宏定义使用错误案例"><a href="#3、宏定义使用错误案例" class="headerlink" title="3、宏定义使用错误案例"></a>3、宏定义使用错误案例</h3><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs arduino"><span class="hljs-meta">#<span class="hljs-keyword">define</span> MATH_MAX(a,b) a &gt; b ? a : b</span><br><br>- (<span class="hljs-type">void</span>)defineExmple<br>&#123;<br>    <span class="hljs-comment">//case1</span><br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;result: %d\n&quot;</span>,<span class="hljs-built_in">MATH_MAX</span>(<span class="hljs-number">2</span>,<span class="hljs-number">1</span>) + <span class="hljs-number">1</span>);<span class="hljs-comment">//结果：result: 2</span><br>    <span class="hljs-comment">//case2</span><br>    <span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;largest: %d\n&quot;</span>, <span class="hljs-built_in">MATH_MAX</span>(i++,<span class="hljs-number">0</span>));<span class="hljs-comment">//结果：largest: 2</span><br>    <span class="hljs-comment">//case3</span><br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;now i value = %d\n&quot;</span>, i);<span class="hljs-comment">//结果：now i value = 3</span><br>&#125;<br></code></pre></td></tr></table></figure>
 
-<p>输出结果都不是设想的值？这里涉及到编译器对“#”开头的行、自定义宏等宏的处理逻辑。<br><br/></p>
-<p>宏定义是在预编译阶段把宏的内容拷贝的源代码的相应位置，所以case1中<code>MATH_MAX(a,b)+1</code>就展开为<code>a&gt;b?a:b+1</code>，冒号后面变成了<code>b+1</code>。。这就跟设计之初的愿望相违背了~<br><br/></p>
+<p>输出结果都不是设想的值？这里涉及到编译器对“#”开头的行、自定义宏等宏的处理逻辑。</p>
+<p>宏定义是在预编译阶段把宏的内容拷贝的源代码的相应位置，所以case1中<code>MATH_MAX(a,b)+1</code>就展开为<code>a&gt;b?a:b+1</code>，冒号后面变成了<code>b+1</code>。。这就跟设计之初的愿望相违背了~</p>
 <p>同理，case2和case3在编译时，会变成：</p>
 <figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">printf</span>(<span class="hljs-string">&quot;largest: %d\n&quot;</span>, i++ &gt; <span class="hljs-number">0</span> ? i++ : <span class="hljs-number">0</span>);<br></code></pre></td></tr></table></figure>
 
-<p>这里i做了两次++运算，显然也不是设想之初的结果。<br><br/></p>
+<p>这里i做了两次++运算，显然也不是设想之初的结果。</p>
 <p>#修改case1：</p>
 <p>宏定义部分应该加上括号：</p>
 <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs css"><span class="hljs-selector-id">#define</span> MATH_MAX(<span class="hljs-selector-tag">a</span>,<span class="hljs-selector-tag">b</span>) (<span class="hljs-selector-tag">a</span> &gt; <span class="hljs-selector-tag">b</span> ? <span class="hljs-selector-tag">a</span> : b)<br></code></pre></td></tr></table></figure>
@@ -332,7 +332,7 @@
 <p>输出日志：</p>
 <figure class="highlight brainfuck"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs brainfuck"><span class="hljs-literal">++</span><span class="hljs-comment">a的值:68</span> <br><span class="hljs-literal">++</span><span class="hljs-comment">&amp;a:0x7ffee43cec64</span> <br><span class="hljs-literal">++</span><span class="hljs-comment">p保存的指针:0x7ffee43cec64</span> <br><span class="hljs-literal">++</span><span class="hljs-comment">*p的值:68</span> <br><span class="hljs-literal">++</span><span class="hljs-comment">变量p的地址:0x7ffee43cec58</span><br></code></pre></td></tr></table></figure>
 
-<p><code>*</code>是指针的标识，表示接下来的变量是一个<code>指针变量</code>；<code>&amp;</code>用来取变量的地址。<br><br/></p>
+<p><code>*</code>是指针的标识，表示接下来的变量是一个<code>指针变量</code>；<code>&amp;</code>用来取变量的地址。</p>
 <p>上面的示例中，<code>a</code>是一般变量，保存数值<code>68</code>；而<code>a</code>作为变量，系统会为其分配一个地址<code>0x7ffee43cec64</code>；<code>p</code>是初始值为空的指针变量，随后指向<code>&amp;a</code>，即变量<code>p</code>保存的是变量<code>a</code>的地址（<code>0x7ffee43cec64</code>）；<code>p</code>作为指针变量，其保存的指针所指向的值为 68，变量<code>p</code>自己的内存地址为<code>0x7ffee43cec58</code>。</p>
 <h3 id="5、NULL、nil、Nil、NSNull"><a href="#5、NULL、nil、Nil、NSNull" class="headerlink" title="5、NULL、nil、Nil、NSNull"></a>5、NULL、nil、Nil、NSNull</h3><p>1、前三者<code>NULL</code>、<code>nil</code>、<code>Nil</code>从本质上来讲都是<code>(void *)0</code>：</p>
 <ul>
@@ -359,8 +359,8 @@
 <h3 id="6、对象的比较-x3D-x3D-与isEqual"><a href="#6、对象的比较-x3D-x3D-与isEqual" class="headerlink" title="6、对象的比较&#x3D;&#x3D;与isEqual"></a>6、对象的比较&#x3D;&#x3D;与isEqual</h3><ul>
 <li>&#x3D;&#x3D;</li>
 </ul>
-<p>比较的是<code>值</code>。<br><br/></p>
-<p><code>基本数据类型</code>比较数值，数值相等即为真；<br><code>指针变量</code>比较变量内保存的<code>地址</code>，地址相同，即指向同一个数据对象，返回真。<br><br/></p>
+<p>比较的是<code>值</code>。</p>
+<p><code>基本数据类型</code>比较数值，数值相等即为真；<br><code>指针变量</code>比较变量内保存的<code>地址</code>，地址相同，即指向同一个数据对象，返回真。</p>
 <p>#示例1：</p>
 <figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs objectivec">- (<span class="hljs-type">void</span>)test&#123;<br>    <span class="hljs-built_in">NSString</span> *A = <span class="hljs-string">@&quot;Hello&quot;</span>; <span class="hljs-comment">//常量区</span><br>    <span class="hljs-built_in">NSString</span> *B = <span class="hljs-string">@&quot;Hello&quot;</span>; <span class="hljs-comment">//常量区</span><br>    <span class="hljs-built_in">NSString</span> *C = [[<span class="hljs-built_in">NSString</span> alloc] initWithString:<span class="hljs-string">@&quot;Hello&quot;</span>]; <span class="hljs-comment">//常量区</span><br>    <span class="hljs-built_in">NSString</span> *D = [[<span class="hljs-built_in">NSString</span> alloc] initWithString:<span class="hljs-string">@&quot;Hello&quot;</span>]; <span class="hljs-comment">//常量区</span><br>    <span class="hljs-built_in">NSString</span> *E = [<span class="hljs-built_in">NSString</span> stringWithFormat:<span class="hljs-string">@&quot;Hello&quot;</span>]; <span class="hljs-comment">//堆区</span><br>    <span class="hljs-built_in">NSString</span> *F = [<span class="hljs-built_in">NSString</span> stringWithFormat:<span class="hljs-string">@&quot;Hello&quot;</span>]; <span class="hljs-comment">//堆区</span><br>    <br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;A:%p&quot;</span>,A); <span class="hljs-comment">//打印A对象保存的指针</span><br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;B:%p&quot;</span>,B);<br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;C:%p&quot;</span>,C);<br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;D:%p&quot;</span>,D);<br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;E:%p&quot;</span>,E);<br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;F:%p&quot;</span>,F);<br>    <br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;A==B:%d&quot;</span>,A==B); <span class="hljs-comment">// 检测AB变量内保存的地址是否相同</span><br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;C==D:%d&quot;</span>,C==D);<br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;E==F:%d&quot;</span>,E==F);<br>    <br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;A==C:%d&quot;</span>,A==C);<br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;A==E:%d&quot;</span>,A==E);<br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;C==E:%d&quot;</span>,C==E);<br><br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;A isEqual: B : %d&quot;</span>,[A isEqual:B]);<br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;A isEqual: C : %d&quot;</span>,[A isEqual:C]);<br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;A isEqual: E : %d&quot;</span>,[A isEqual:E]);<br>&#125;<br></code></pre></td></tr></table></figure>
 
@@ -373,7 +373,7 @@
 <blockquote>
 <p>This method defines what it means for instances to be equal. </p>
 </blockquote>
-<p><code>isEqual:</code>默认情况下，效果与<code>==</code>一样，两个对象指向的<code>地址</code>相同时才返回真。<br><br/></p>
+<p><code>isEqual:</code>默认情况下，效果与<code>==</code>一样，两个对象指向的<code>地址</code>相同时才返回真。</p>
 <p>有时在创建子类时，需要你自己重写此方法的实现：</p>
 <figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs objectivec">- (<span class="hljs-type">BOOL</span>)isEqual:(<span class="hljs-type">id</span>)obj &#123;<br>    <span class="hljs-keyword">if</span> (obj == <span class="hljs-keyword">self</span>)&#123; <span class="hljs-comment">//先比较指针</span><br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">YES</span>;<br>    &#125;<br>    <span class="hljs-keyword">if</span> (!obj || ![obj isKindOfClass:[<span class="hljs-keyword">self</span> <span class="hljs-keyword">class</span>]])&#123; <span class="hljs-comment">//再比较类型</span><br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">NO</span>;<br>    &#125;<br>    <span class="hljs-keyword">return</span> [<span class="hljs-keyword">self</span> isEqualToUser:obj]; <span class="hljs-comment">//再比较自定义的属性</span><br>&#125;<br> <br>- (<span class="hljs-type">BOOL</span>)isEqualToUser:(User *)aUser &#123;<br> <span class="hljs-keyword">if</span> (<span class="hljs-keyword">self</span> == aUser)&#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">YES</span>;<br> &#125;<br> <span class="hljs-keyword">if</span> (![(<span class="hljs-type">id</span>)[<span class="hljs-keyword">self</span> name] isEqual:[aUser name]])&#123; <span class="hljs-comment">//比较属性</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">NO</span>;<br>    &#125;<br> &#125;<br> <span class="hljs-keyword">return</span> <span class="hljs-literal">YES</span>;<br>&#125; <br></code></pre></td></tr></table></figure>
 
@@ -388,7 +388,7 @@
 <p>输出日志：</p>
 <figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs stylus">++<span class="hljs-number">1</span><span class="hljs-selector-class">.obj</span>:<span class="hljs-number">0</span>x600002449230 ++&amp;obj:<span class="hljs-number">0</span>x7ffee57fac60 ++obj<span class="hljs-selector-class">.rc</span>:<span class="hljs-number">1</span><br>++++<span class="hljs-number">2</span><span class="hljs-selector-class">.obj</span><span class="hljs-selector-class">.rc</span>:<span class="hljs-number">2</span><br>++++<span class="hljs-number">3</span><span class="hljs-selector-class">.obj</span><span class="hljs-selector-class">.rc</span>:<span class="hljs-number">1</span><br></code></pre></td></tr></table></figure>
 
-<p>当对象被添加到集合中时，其引用计数会 +1；对象被移出集合时，其引用计数 -1。所以，实践中我们需要注意这种强引用关系及其可能引起的对象释放问题~<br><br/></p>
+<p>当对象被添加到集合中时，其引用计数会 +1；对象被移出集合时，其引用计数 -1。所以，实践中我们需要注意这种强引用关系及其可能引起的对象释放问题~</p>
 <p>那么，怎么实现弱引用容器呢？</p>
 <ul>
 <li>方案1：使用 NSValue 提供的两个类方法类存取对象：</li>
@@ -407,13 +407,13 @@
 </ul>
 <figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-keyword">static</span> <span class="hljs-built_in">NSString</span> *aStaticString;<br></code></pre></td></tr></table></figure>
 
-<p>修饰<code>局部变量</code>时，静态局部变量的作用范围为该函数体。它的值在编译期就会确定下来，并被存储到全局变量区。因此静态局部变量只会生成一份内存、只会初始化一次并供所有对象使用；静态局部变量的生命周期和程序相同，直到程序结束这个局部变量才会销毁。<br><br/></p>
-<p>修饰<code>全局变量</code>时，静态全局变量的作用域仅限于当前文件（.m），它也是被存储到全局变量区，生命周期与程序相同，程序结束时才会销毁。使用静态全局变量能避免在同一个文件中重复定义全局变量。<br><br/></p>
+<p>修饰<code>局部变量</code>时，静态局部变量的作用范围为该函数体。它的值在编译期就会确定下来，并被存储到全局变量区。因此静态局部变量只会生成一份内存、只会初始化一次并供所有对象使用；静态局部变量的生命周期和程序相同，直到程序结束这个局部变量才会销毁。</p>
+<p>修饰<code>全局变量</code>时，静态全局变量的作用域仅限于当前文件（.m），它也是被存储到全局变量区，生命周期与程序相同，程序结束时才会销毁。使用静态全局变量能避免在同一个文件中重复定义全局变量。</p>
 <p>static 强调的是静态，变量只创建一次，直到程序结束才销毁。静态变量的值是可以更新的，并且只要某个对象对静态变量做了修改，所有的对象都能访问更新后的值。</p>
 <ul>
 <li><strong>const</strong></li>
 </ul>
-<p><code>const</code>修饰的是常量，强调的是变量的值不可变。常量在第一次赋值之后不能再修改。<br><br/></p>
+<p><code>const</code>修饰的是常量，强调的是变量的值不可变。常量在第一次赋值之后不能再修改。</p>
 <p>在 OC 中一般是结合<code>static</code>使用，示例：</p>
 <figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-comment">//用法1</span><br><span class="hljs-keyword">static</span> <span class="hljs-built_in">NSString</span> * <span class="hljs-keyword">const</span> s1;<br><span class="hljs-comment">//用法2</span><br><span class="hljs-keyword">static</span> <span class="hljs-keyword">const</span> <span class="hljs-built_in">NSString</span> * s2;<br><span class="hljs-comment">//用法3</span><br><span class="hljs-keyword">static</span> <span class="hljs-built_in">NSString</span> <span class="hljs-keyword">const</span> * s3;<br><br><span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">AppDelegate</span></span><br><br>- (<span class="hljs-type">BOOL</span>)application:(<span class="hljs-built_in">UIApplication</span> *)application<br>didFinishLaunchingWithOptions:(<span class="hljs-built_in">NSDictionary</span> *)launchOptions<br>&#123;<br>    s1 = <span class="hljs-string">@&quot;A&quot;</span>;<span class="hljs-comment">//编译时会报错</span><br>    s2 = <span class="hljs-string">@&quot;B&quot;</span>;<span class="hljs-comment">//编译正常</span><br>    s3 = <span class="hljs-string">@&quot;C&quot;</span>;<span class="hljs-comment">//编译正常</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">YES</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
 
@@ -423,13 +423,13 @@
 <figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-keyword">static</span> <span class="hljs-keyword">const</span> <span class="hljs-built_in">NSString</span> * s2;<br></code></pre></td></tr></table></figure>
 
 <p><code>常量指针</code>，A modifiable pointer to a constant NSString object (its value can’t be modified)。这里<code>s2</code>和<code>s3</code>是指针，<code>*s2</code>和<code>*s3</code>是指针指向的值，const 修饰的是值，即值不可变，但字符串对象可以修改其指针，重新取别的值。</p>
-<h3 id="9、分类与扩展"><a href="#9、分类与扩展" class="headerlink" title="9、分类与扩展"></a>9、分类与扩展</h3><p><strong>代码组织形式上</strong>：<br><br/></p>
-<p>扩展通常是定义在原类的<code>m</code>文件中；而分类既可以定义在原类的<code>h</code>和<code>m</code>文件中，又可以存在于单独的<code>h</code>和<code>m</code>文件中，分类组织的方式不同导入的方式也会不同。从命名上来看，扩展相当于未命名的分类。<br><br/></p>
-<p><strong>方法定义上</strong>：<br><br/></p>
-<p>分类和扩展中都可以定义方法以达到扩展现有类的方法列表之目的，不同的是扩展中定义的方法必须在原类的<code>m</code>文件中提供实现；分类中定义的方法则不依赖于原类的实现文件，而是在自己的<code>@implementation</code>中提供实现，也就是说分类可以在不知道原类具体实现的情况下对原类进行扩展。另外，分类中可以重写原类的方法，重写后实例就不能访问原来的方法了。<br><br/></p>
-<p><strong>成员变量定义上</strong>：<br><br/></p>
-<p>扩展中可以定义成员变量，并且这些变量只对本类可见；分类中则不能定义成员变量，因为分类与原类的内存空间相互独立，原类初始化后实例大小已确定，不能再添加成员变量。<br><br/></p>
-<p><strong>属性定义上</strong>：<br><br/></p>
+<h3 id="9、分类与扩展"><a href="#9、分类与扩展" class="headerlink" title="9、分类与扩展"></a>9、分类与扩展</h3><p><strong>代码组织形式上</strong>：</p>
+<p>扩展通常是定义在原类的<code>m</code>文件中；而分类既可以定义在原类的<code>h</code>和<code>m</code>文件中，又可以存在于单独的<code>h</code>和<code>m</code>文件中，分类组织的方式不同导入的方式也会不同。从命名上来看，扩展相当于未命名的分类。</p>
+<p><strong>方法定义上</strong>：</p>
+<p>分类和扩展中都可以定义方法以达到扩展现有类的方法列表之目的，不同的是扩展中定义的方法必须在原类的<code>m</code>文件中提供实现；分类中定义的方法则不依赖于原类的实现文件，而是在自己的<code>@implementation</code>中提供实现，也就是说分类可以在不知道原类具体实现的情况下对原类进行扩展。另外，分类中可以重写原类的方法，重写后实例就不能访问原来的方法了。</p>
+<p><strong>成员变量定义上</strong>：</p>
+<p>扩展中可以定义成员变量，并且这些变量只对本类可见；分类中则不能定义成员变量，因为分类与原类的内存空间相互独立，原类初始化后实例大小已确定，不能再添加成员变量。</p>
+<p><strong>属性定义上</strong>：</p>
 <p>分类和扩展都可以定义属性，不同的是扩展中的属性会由编译器自动提供存取器；而分类中虽然定义了属性，编译器却不会为其提供存取器，需要我们自己通过<code>对象绑定机制</code>主动实现。</p>
 <h3 id="10、URL缓存策略"><a href="#10、URL缓存策略" class="headerlink" title="10、URL缓存策略"></a>10、URL缓存策略</h3><p>NSURLRequestCachePolicy 用来指定网络请求的缓存策略，具体的枚举和作用如下：</p>
 <figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs abnf"><span class="hljs-attribute">NSURLRequestUseProtocolCachePolicy</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span><br></code></pre></td></tr></table></figure>
@@ -449,7 +449,7 @@
 <p>本地缓存、代理和其他中介都要忽视他们的缓存，直接加载源数据。</p>
 <figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs abnf"><span class="hljs-attribute">NSURLRequestReloadRevalidatingCacheData</span> <span class="hljs-operator">=</span> <span class="hljs-number">5</span> //Unimplemented<br></code></pre></td></tr></table></figure>
 
-<p>向服务器发送一个请求，如果服务器确认缓存有效，则继续使用缓存，否则从源段加载数据。<br><br/></p>
+<p>向服务器发送一个请求，如果服务器确认缓存有效，则继续使用缓存，否则从源段加载数据。</p>
 <p>使用缓存的目的是为了降低对网络连接的依赖，减少对相同 URL 的多次请求，提高应用的响应速度。这里所说的缓存是指对 URL 请求响应体(NSCachedURLResponse)的缓存。iOS 中响应的缓存是通过 <a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/foundation/urlcache">NSURLCache</a> 来实现的，它会将<code>NSURLRequest</code>与<code>NSCachedURLResponse</code>进行映射，并保存在内存和磁盘中。你甚至可以指定两片缓存的容量大小和存储路径。</p>
 <hr>
 <p>相关参考：</p>
@@ -472,7 +472,7 @@
     
       <span class="category-chain">
         
-  <a href="/categories/%E6%8A%80%E6%9C%AF/" class="category-chain-item">技术</a>
+  <a href="/categories/OC/" class="category-chain-item">OC</a>
   
   
 
@@ -542,9 +542,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2017/11/25/idfa.html" title="iOS 设备唯一标识符">
+                      <a href="/2017/12/02/sandbox.html" title="沙盒 &amp; 本地持久化方案">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">iOS 设备唯一标识符</span>
+                        <span class="hidden-mobile">沙盒 &amp; 本地持久化方案</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     

@@ -16,12 +16,12 @@
   <meta name="author" content="Davidli">
   <meta name="keywords" content="Davidli">
   
-    <meta name="description" content="一、dSYM1.1.dSYM调试符号表，是苹果为调试和定位问题而使用的一种调试文件。调试符号信息在构建应用时就保存在Mach-O文件中了，而.dSYM就是从Mach-O文件中抽取调试信息而得到的一个单独的文件目录。它使用的是 DWARF 结构，在 .xcarchive 目录中其层次结构如下： 123456.xcarchive--dSYMs  |--Your.app.dSYM    |--Conte">
+    <meta name="description" content="一、dSYM1.dSYM调试符号表，是苹果为调试和定位问题而使用的一种调试文件。调试符号信息在构建应用时就保存在Mach-O文件中了，而.dSYM就是从Mach-O文件中抽取调试信息而得到的一个单独的文件目录。它使用的是 DWARF 结构，在 .xcarchive 目录中其层次结构如下： 123456.xcarchive--dSYMs  |--Your.app.dSYM    |--Content">
 <meta property="og:type" content="article">
-<meta property="og:title" content="dSYM分析crash日志">
+<meta property="og:title" content="dSYM+.crash解析">
 <meta property="og:url" content="https://davidlii.cn/2019/03/12/dsym.html">
 <meta property="og:site_name" content="Davidli">
-<meta property="og:description" content="一、dSYM1.1.dSYM调试符号表，是苹果为调试和定位问题而使用的一种调试文件。调试符号信息在构建应用时就保存在Mach-O文件中了，而.dSYM就是从Mach-O文件中抽取调试信息而得到的一个单独的文件目录。它使用的是 DWARF 结构，在 .xcarchive 目录中其层次结构如下： 123456.xcarchive--dSYMs  |--Your.app.dSYM    |--Conte">
+<meta property="og:description" content="一、dSYM1.dSYM调试符号表，是苹果为调试和定位问题而使用的一种调试文件。调试符号信息在构建应用时就保存在Mach-O文件中了，而.dSYM就是从Mach-O文件中抽取调试信息而得到的一个单独的文件目录。它使用的是 DWARF 结构，在 .xcarchive 目录中其层次结构如下： 123456.xcarchive--dSYMs  |--Your.app.dSYM    |--Content">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2019-03-12T13:00:57.000Z">
 <meta property="article:modified_time" content="2019-03-12T13:00:57.000Z">
@@ -33,7 +33,7 @@
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>dSYM分析crash日志 - Davidli</title>
+  <title>dSYM+.crash解析 - Davidli</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -198,7 +198,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="dSYM分析crash日志"></span>
+            <span id="subtitle" data-typed-text="dSYM+.crash解析"></span>
           
         </div>
 
@@ -278,12 +278,12 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">dSYM分析crash日志</h1>
+            <h1 style="display: none">dSYM+.crash解析</h1>
             
             
               <div class="markdown-body">
                 
-                <h2 id="一、dSYM"><a href="#一、dSYM" class="headerlink" title="一、dSYM"></a>一、<strong>dSYM</strong></h2><h4 id="1-1-dSYM"><a href="#1-1-dSYM" class="headerlink" title="1.1.dSYM"></a>1.1.dSYM</h4><p>调试符号表，是苹果为调试和定位问题而使用的一种调试文件。调试符号信息在构建应用时就保存在<code>Mach-O</code>文件中了，而<code>.dSYM</code>就是从<code>Mach-O</code>文件中抽取调试信息而得到的一个单独的文件目录。它使用的是 DWARF 结构，在 .xcarchive 目录中其层次结构如下：</p>
+                <h2 id="一、dSYM"><a href="#一、dSYM" class="headerlink" title="一、dSYM"></a>一、<strong>dSYM</strong></h2><h4 id="1-dSYM"><a href="#1-dSYM" class="headerlink" title="1.dSYM"></a>1.dSYM</h4><p>调试符号表，是苹果为调试和定位问题而使用的一种调试文件。调试符号信息在构建应用时就保存在<code>Mach-O</code>文件中了，而<code>.dSYM</code>就是从<code>Mach-O</code>文件中抽取调试信息而得到的一个单独的文件目录。它使用的是 DWARF 结构，在 .xcarchive 目录中其层次结构如下：</p>
 <figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs jboss-cli"><span class="hljs-string">.xcarchive</span><br><span class="hljs-params">--dSYMs</span><br>  |<span class="hljs-params">--Your</span>.app.dSYM<br>    |<span class="hljs-params">--Contents</span><br>      |<span class="hljs-params">--Resources</span><br>        |<span class="hljs-params">--DWARF</span><br></code></pre></td></tr></table></figure>
 
 <p>要生成 dSYM 文件，你可以在 Xcode 的<code>Build Settings</code>中这样设置：</p>
@@ -292,11 +292,11 @@
 <p>反之，如果你不想生成 dSYM 文件，则可以这样配置：</p>
 <figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs routeros">Generate <span class="hljs-built_in">Debug</span> Symbols = <span class="hljs-literal">NO</span><br>或者<br><span class="hljs-built_in">Debug</span> Information Format = <span class="hljs-string">&quot;DWARF&quot;</span><br></code></pre></td></tr></table></figure>
 
-<h4 id="1-2-DWARF"><a href="#1-2-DWARF" class="headerlink" title="1.2.DWARF"></a>1.2.DWARF</h4><p>DWARF（DebuggingWith Arbitrary Record Formats），是 ELF 和 Mach-O 等文件格式中用来存储和处理调试信息的标准格式，.dSYM中真正保存符号表数据的是 DWARF 文件。DWARF 中不同的数据都保存在相应的 section（节）中，ELF 文件里所有的 section 名称都以”.debug_”开头，如下表所示：</p>
+<h4 id="2-DWARF"><a href="#2-DWARF" class="headerlink" title="2.DWARF"></a>2.DWARF</h4><p>DWARF（DebuggingWith Arbitrary Record Formats），是 ELF 和 Mach-O 等文件格式中用来存储和处理调试信息的标准格式，<code>.dSYM</code>中真正保存符号表数据的是<code>DWARF</code>文件。DWARF 中不同的数据都保存在相应的<code>section</code>(节)中，ELF文件里所有的 section 名称都以<code>.debug_</code>开头，如下：</p>
 <figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs gherkin">|<span class="hljs-string"> Section Name         </span>|<span class="hljs-string"> Contents                                          </span>|<br>|<span class="hljs-string"> -------------------- </span>|<span class="hljs-string"> ------------------------------------------------  </span>|<br>|<span class="hljs-string"> .debug_abbrev        </span>|<span class="hljs-string"> Abbreviations used in the .debug_info section     </span>|<br>|<span class="hljs-string"> .debug_aranges       </span>|<span class="hljs-string"> A mapping between memory address and compilation  </span>|<br>|<span class="hljs-string"> .debug_frame         </span>|<span class="hljs-string"> Call Frame Information                            </span>|<br>|<span class="hljs-string"> .debug_info          </span>|<span class="hljs-string"> The core DWARF data containing DIEs               </span>|<br>|<span class="hljs-string"> .debug_line          </span>|<span class="hljs-string"> Line Number Program                               </span>|<br>|<span class="hljs-string"> .debug_loc           </span>|<span class="hljs-string"> Macro descriptions                                </span>|<br>|<span class="hljs-string"> .debug_macinfo       </span>|<span class="hljs-string"> A lookup table for global objects and functions   </span>|<br>|<span class="hljs-string"> .debug_pubnames      </span>|<span class="hljs-string"> A lookup table for global objects and functions   </span>|<span class="hljs-string"> </span><br><span class="hljs-string"></span>|<span class="hljs-string"> .debug_pubtypes      </span>|<span class="hljs-string"> A lookup table for global types                   </span>|<br>|<span class="hljs-string"> .debug_ranges        </span>|<span class="hljs-string"> Address ranges referenced by DIEs                 </span>|<br>|<span class="hljs-string"> .debug_str           </span>|<span class="hljs-string"> String table used by .debug_info</span><br></code></pre></td></tr></table></figure>
 
-<p>Mach-O中关于 section 的命名和ELF稍有区别，把名称前的.换成了_，例如.debug_info变成了_debug_info。</p>
-<p>保存在 DAWARF 中的信息是高度压缩的，可以通过 dwarfdump 命令从中提取出可读信息。前文所述的那些 section 中，定位 CrashLog 只需要用到.debug_info 和 .debug_line。由于解析出来的数据量较大，为了方便查看，就将其保存在文本中。两个 section 的数据提取方式如下：</p>
+<p>Mach-O中关于<code>section</code>的命名和ELF稍有区别，把名称前的<code>.</code>换成了<code>_</code>，例如<code>.debug_info</code>变成了<code>_debug_info</code>。</p>
+<p>保存在 DAWARF 中的信息是高度压缩的，可以通过<code>dwarfdump</code>命令从中提取出可读信息。前文所述的那些 section 中，定位闪退日志只需要用到<code>.debug_info</code>和<code>.debug_line</code>。由于解析出来的数据量较大，为了方便查看，就将其保存在文本中。两个 section 的数据提取方式如下：</p>
 <ul>
 <li>.debug_info</li>
 </ul>
@@ -306,47 +306,47 @@
 </ul>
 <figure class="highlight gauss"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs gauss">$ dwarfdump -e --<span class="hljs-keyword">debug</span>-<span class="hljs-keyword">line</span> YourApp.dSYM/Contents/Resources/DWARF &gt; <span class="hljs-keyword">line</span>-e.txt<br></code></pre></td></tr></table></figure>
 
-<h4 id="1-3-崩溃解析过程"><a href="#1-3-崩溃解析过程" class="headerlink" title="1.3.崩溃解析过程"></a>1.3.崩溃解析过程</h4><ul>
-<li>计算崩溃地址对应符号表中的地址</li>
+<h4 id="3-闪退解析过程"><a href="#3-闪退解析过程" class="headerlink" title="3.闪退解析过程"></a>3.闪退解析过程</h4><ul>
+<li>计算闪退地址对应符号表中的地址</li>
 </ul>
-<p>下面的第二章节中会详细讲解崩溃日志中的 stack address、load address 以及怎样计算崩溃地址在符号表中的 symbol address，这里以 0x52846 为例。</p>
+<p>下面的第二章节中会详细讲解闪退日志中的<code>stack address</code>、<code>load address</code>以及怎样计算闪退地址在符号表中的 <code>symbol address</code>，这里以 0x52846 为例。</p>
 <ul>
 <li>.debug_info</li>
 </ul>
-<p>.debug_info 中最基本的描述单元为DIE（Debug Information Entry），详情请参考 DWARF 官方网站，首先我们要根据符号表崩溃地址 0x52846 从.debug_info 中取出包含这个地址的DIE单元。为了简单起见，直接贴出了从 info-e.txt 中取出的对应DIE，其部分内容如下：</p>
+<p><code>.debug_info</code>中最基本的描述单元为DIE（Debug Information Entry），首先我们要根据符号表闪退地址<code>0x52846</code>从<code>.debug_info</code>中取出包含这个地址的DIE单元。为了简单起见，直接贴出了从 info-e.txt 中取出的对应DIE，其部分内容如下：</p>
 <figure class="highlight isbl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs isbl"><span class="hljs-number">0</span><span class="hljs-variable">x00062112</span>:     <span class="hljs-variable">function</span> [<span class="hljs-number">99</span>] *<br>                <span class="hljs-variable">low</span> <span class="hljs-function"><span class="hljs-title">pc</span>( <span class="hljs-number">0</span><span class="hljs-variable">x000502e0</span> )</span><br>                <span class="hljs-variable">high</span> <span class="hljs-function"><span class="hljs-title">pc</span>( <span class="hljs-number">0</span><span class="hljs-variable">x00053730</span> )</span><br>                <span class="hljs-variable">frame</span> <span class="hljs-function"><span class="hljs-title">base</span>( <span class="hljs-variable">r7</span> )</span><br>                <span class="hljs-variable"><span class="hljs-class">object</span></span> <span class="hljs-function"><span class="hljs-title">pointer</span>( &#123;<span class="hljs-number">0</span><span class="hljs-variable">x0006212a</span>&#125; )</span><br>                <span class="hljs-function"><span class="hljs-title">name</span>( <span class="hljs-string">&quot;-[OBDFirstConnectViewController showOilPricePickerView]&quot;</span> )</span><br>                <span class="hljs-variable">decl</span> <span class="hljs-function"><span class="hljs-title">file</span>( <span class="hljs-string">&quot;/YourSourcePath/OBDFirstConnectViewController.m&quot;</span> )</span><br>                <span class="hljs-variable">decl</span> <span class="hljs-function"><span class="hljs-title">line</span>( <span class="hljs-number">870</span> )</span><br>                <span class="hljs-function"><span class="hljs-title">prototyped</span>( <span class="hljs-number">0</span><span class="hljs-variable">x01</span> )</span><br>                <span class="hljs-variable">APPLE</span> <span class="hljs-variable">instruction</span> <span class="hljs-variable">set</span> <span class="hljs-function"><span class="hljs-title">architecture</span>( <span class="hljs-number">0</span><span class="hljs-variable">x01</span> )</span><br></code></pre></td></tr></table></figure>
 
-<p>可以看出，该DIE包含的是方法-[OBDFirstConnectViewController showOilPricePickerView]的内容，其地址范围是 0x000502e0–0x00053730，我们的目标地址 0x52846 正是在这个范围内，所以可以判定崩溃发生在该方法的某一行中。<br><br/></p>
-<p>需要指出的是，上面这段DIE是为了介绍方便直接贴出来的，实际应用的时候需要通过搜索算法找出包含目标符号表崩溃地址（这里是0x52846）的DIE。<br><br/></p>
+<p>可以看出，该DIE包含的是方法-[OBDFirstConnectViewController showOilPricePickerView]的内容，其地址范围是 0x000502e0–0x00053730，我们的目标地址 0x52846 正是在这个范围内，所以可以判定闪退发生在该方法的某一行中。</p>
+<p>需要指出的是，上面这段DIE是为了介绍方便直接贴出来的，实际应用的时候需要通过搜索算法找出包含目标符号表闪退地址（这里是0x52846）的DIE。</p>
 <p>从上述DIE中我们可以获取到这些信息：</p>
 <ol>
-<li>崩溃所在源码文件：&#x2F;YourSourcePath&#x2F;OBDFirstConnectViewController.m</li>
-<li>发生崩溃的方法：-[OBDFirstConnectViewController showOilPricePickerView]</li>
-<li>发生崩溃的方法在源文件中的行号：870</li>
+<li>闪退所在源码文件：&#x2F;YourSourcePath&#x2F;OBDFirstConnectViewController.m</li>
+<li>发生闪退的方法：-[OBDFirstConnectViewController showOilPricePickerView]</li>
+<li>发生闪退的方法在源文件中的行号：870</li>
 </ol>
 <ul>
 <li>. debug_line</li>
 </ul>
-<p>截止目前，我们可以获取到发生了崩溃的方法的相关信息，但要想确定崩溃发生的具体行号，还需要.debug_line 的帮助。<br><br/></p>
-<p>.debug_line 以一个方法为基本块，记了该方法中每一行对应的符号表地址。通过.debug_info 得知崩溃发生的方法地址范围是 0x000502e0–0x00053730，通过起始地址 0x000502e0 再解析. debug_line 得到的 line-e.txt 中直接搜索即可得到崩溃所在方法的. debug_line 数据，其中部分内容如下：</p>
+<p>截止目前，我们可以获取到发生了闪退的方法的相关信息，但要想确定闪退发生的具体行号，还需要.debug_line 的帮助。</p>
+<p>.debug_line 以一个方法为基本块，记了该方法中每一行对应的符号表地址。通过.debug_info 得知闪退发生的方法地址范围是 0x000502e0–0x00053730，通过起始地址 0x000502e0 再解析. debug_line 得到的 line-e.txt 中直接搜索即可得到闪退所在方法的. debug_line 数据，内容如下：</p>
 <figure class="highlight dns"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs dns"><span class="hljs-number">0</span>x000000<span class="hljs-number">00000502e0</span>    <span class="hljs-number">870</span> /YourSourcePath/OBDFirstConnectViewController.m<br><span class="hljs-number">0</span>x000000<span class="hljs-number">00000502e0</span>      <span class="hljs-number">0</span><br><span class="hljs-number">0</span>x000000<span class="hljs-number">00000502f0</span>    <span class="hljs-number">872</span><br><span class="hljs-number">0</span>x000000000005033c    <span class="hljs-number">873</span><br><span class="hljs-number">0</span>x00000<span class="hljs-number">00000050374</span>    <span class="hljs-number">874</span><br><span class="hljs-number">0</span>x000000000005039e    <span class="hljs-number">875</span><br><span class="hljs-number">0</span>x000000<span class="hljs-number">00000503c8</span>    <span class="hljs-number">876</span><br>...<br><span class="hljs-number">0</span>x00000<span class="hljs-number">00000052812</span>    <span class="hljs-number">880</span><br><span class="hljs-number">0</span>x000000000005283e    <span class="hljs-number">881</span><br><span class="hljs-number">0</span>x00000<span class="hljs-number">00000052846</span>    <span class="hljs-number">882</span><br><span class="hljs-number">0</span>x000000<span class="hljs-number">00000528c8</span>    <span class="hljs-number">883</span><br>...<br></code></pre></td></tr></table></figure>
 
-<p>. debug_line 段的第一行内容标识了该方法的起始符号表地址，行号及方法所在文件路径，通过之前得到的崩溃地址 0x52846 即可得知崩溃发生在 882 行。<br><br/></p>
-<p>至此我们已经根据崩溃地址解析出了崩溃发生位置的详细信息：</p>
+<p>. debug_line 段的第一行内容标识了该方法的起始符号表地址，行号及方法所在文件路径，通过之前得到的闪退地址<code>0x52846</code>即可得知闪退发生在<code>882</code>行。</p>
+<p>至此我们已经根据闪退地址解析出了闪退发生位置的详细信息：</p>
 <ol>
-<li>崩溃所在源码文件：&#x2F;YourSourcePath&#x2F;OBDFirstConnectViewController.m；</li>
-<li>发生崩溃的方法：-[OBDFirstConnectViewController showOilPricePickerView]；</li>
-<li>发生崩溃的方法在源文件中的行号：870；</li>
-<li>崩溃发生在源文件中得行号：882。</li>
+<li>闪退所在源码文件：&#x2F;YourSourcePath&#x2F;OBDFirstConnectViewController.m；</li>
+<li>发生闪退的方法：-[OBDFirstConnectViewController showOilPricePickerView]；</li>
+<li>发生闪退的方法在源文件中的行号：870；</li>
+<li>闪退发生在源文件中得行号：882。</li>
 </ol>
-<h2 id="二、-crash-日志文件"><a href="#二、-crash-日志文件" class="headerlink" title="二、**.crash 日志文件**"></a>二、**.crash 日志文件**</h2><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">Incident Identifier:</span> <span class="hljs-number">28593639</span><span class="hljs-number">-9021</span><span class="hljs-string">-4BF9-A730-0A4E644EE52E</span><br><span class="hljs-attr">CrashReporter Key:</span>   <span class="hljs-string">cf719616d48fff95262c17eaf002e4de3d3f9842</span><br><span class="hljs-attr">Hardware Model:</span>      <span class="hljs-string">iPhone8,1</span><br><span class="hljs-attr">Process:</span>             <span class="hljs-string">WeChat</span> [<span class="hljs-number">25431</span>]<br><span class="hljs-attr">Path:</span>                <span class="hljs-string">/var/../WeChat.app/WeChat</span><br><span class="hljs-attr">Identifier:</span>          <span class="hljs-string">com.tencent.xin</span><br><span class="hljs-attr">Version:</span>             <span class="hljs-number">6.5</span><span class="hljs-number">.7</span><span class="hljs-number">.32</span> <span class="hljs-string">(6.5.7)</span><br><span class="hljs-attr">Code Type:</span>           <span class="hljs-string">ARM-64</span> <span class="hljs-string">(Native)</span><br><span class="hljs-attr">Parent Process:</span>      <span class="hljs-string">launchd</span> [<span class="hljs-number">1</span>]<br><br><span class="hljs-attr">Date/Time:</span>           <span class="hljs-number">2017-04-29 14:12:13.13</span> <span class="hljs-string">+0800</span><br><span class="hljs-attr">Launch Time:</span>         <span class="hljs-number">2017-04-26 03:26:06.06</span> <span class="hljs-string">+0800</span><br><span class="hljs-attr">OS Version:</span>          <span class="hljs-string">iOS</span> <span class="hljs-number">9.3</span><span class="hljs-number">.5</span> <span class="hljs-string">(13G36)</span><br><span class="hljs-attr">Report Version:</span>      <span class="hljs-number">105</span><br><br><span class="hljs-attr">Exception Type:</span>  <span class="hljs-number">00000020</span><br><span class="hljs-attr">Exception Codes:</span> <span class="hljs-number">0x000000008badf00d</span><br><span class="hljs-attr">Exception Note:</span>  <span class="hljs-string">SIMULATED</span> <span class="hljs-string">(this</span> <span class="hljs-string">is</span> <span class="hljs-string">NOT</span> <span class="hljs-string">a</span> <span class="hljs-string">crash)</span><br><span class="hljs-attr">Highlighted by Thread:</span>  <span class="hljs-number">0</span><br><br><span class="hljs-attr">Thread 0 name:  Dispatch queue:</span> <span class="hljs-string">com.apple.main-thread</span><br><span class="hljs-attr">Thread 0:</span><br><span class="hljs-number">0</span>   <span class="hljs-string">libsystem_kernel.dylib</span>            <span class="hljs-number">0x0000000180f99014</span> <span class="hljs-number">0x180f98000</span> <span class="hljs-string">+</span> <span class="hljs-number">4116</span><br><span class="hljs-number">1</span>   <span class="hljs-string">libdispatch.dylib</span>                 <span class="hljs-number">0x0000000180e763e8</span> <span class="hljs-number">0x180e64000</span> <span class="hljs-string">+</span> <span class="hljs-number">74728</span><br><span class="hljs-number">2</span>   <span class="hljs-string">FrontBoardServices</span>                <span class="hljs-number">0x0000000182db63d4</span> <span class="hljs-number">0x182d94000</span> <span class="hljs-string">+</span> <span class="hljs-number">140244</span><br><span class="hljs-number">3</span>   <span class="hljs-string">FrontBoardServices</span>                <span class="hljs-number">0x0000000182d9e910</span> <span class="hljs-number">0x182d94000</span> <span class="hljs-string">+</span> <span class="hljs-number">43280</span><br><span class="hljs-number">15</span>  <span class="hljs-string">GraphicsServices</span>                  <span class="hljs-number">0x0000000182be0088</span> <span class="hljs-number">0x182bd4000</span> <span class="hljs-string">+</span> <span class="hljs-number">49288</span><br><span class="hljs-number">16</span>  <span class="hljs-string">UIKit</span>                             <span class="hljs-number">0x00000001865e6088</span> <span class="hljs-number">0x186568000</span> <span class="hljs-string">+</span> <span class="hljs-number">516232</span><br><span class="hljs-number">17</span>  <span class="hljs-string">WeChat</span>                            <span class="hljs-number">0x00000001000fbea4</span> <span class="hljs-number">0x100058000</span> <span class="hljs-string">+</span> <span class="hljs-number">671396</span><br><br><span class="hljs-attr">Binary Images:</span><br><span class="hljs-number">0x100058000</span> <span class="hljs-bullet">-</span> <span class="hljs-number">0x1033c3fff</span> <span class="hljs-string">WeChat</span> <span class="hljs-string">arm64</span>  <span class="hljs-string">&lt;8b7a21136f4434dfb2771b8a4218a0f1&gt;</span> <br><span class="hljs-string">/var/containers/Bundle/Application/26524DA8-D1E8-430D-8ECA-9D5ABE3CE3CA/WeChat.app/WeChat</span><br><span class="hljs-string">..</span><br></code></pre></td></tr></table></figure>
-<p>（上面是一个crash文件的大致内容，为了简洁删除了一部分）</p>
-<h4 id="2-1-参数"><a href="#2-1-参数" class="headerlink" title="2.1.参数"></a>2.1.参数</h4><ul>
+<h2 id="二、-crash文件"><a href="#二、-crash文件" class="headerlink" title="二、.crash文件"></a>二、.crash文件</h2><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">Incident Identifier:</span> <span class="hljs-number">28593639</span><span class="hljs-number">-9021</span><span class="hljs-string">-4BF9-A730-0A4E644EE52E</span><br><span class="hljs-attr">CrashReporter Key:</span>   <span class="hljs-string">cf719616d48fff95262c17eaf002e4de3d3f9842</span><br><span class="hljs-attr">Hardware Model:</span>      <span class="hljs-string">iPhone8,1</span><br><span class="hljs-attr">Process:</span>             <span class="hljs-string">WeChat</span> [<span class="hljs-number">25431</span>]<br><span class="hljs-attr">Path:</span>                <span class="hljs-string">/var/../WeChat.app/WeChat</span><br><span class="hljs-attr">Identifier:</span>          <span class="hljs-string">com.tencent.xin</span><br><span class="hljs-attr">Version:</span>             <span class="hljs-number">6.5</span><span class="hljs-number">.7</span><span class="hljs-number">.32</span> <span class="hljs-string">(6.5.7)</span><br><span class="hljs-attr">Code Type:</span>           <span class="hljs-string">ARM-64</span> <span class="hljs-string">(Native)</span><br><span class="hljs-attr">Parent Process:</span>      <span class="hljs-string">launchd</span> [<span class="hljs-number">1</span>]<br><br><span class="hljs-attr">Date/Time:</span>           <span class="hljs-number">2017-04-29 14:12:13.13</span> <span class="hljs-string">+0800</span><br><span class="hljs-attr">Launch Time:</span>         <span class="hljs-number">2017-04-26 03:26:06.06</span> <span class="hljs-string">+0800</span><br><span class="hljs-attr">OS Version:</span>          <span class="hljs-string">iOS</span> <span class="hljs-number">9.3</span><span class="hljs-number">.5</span> <span class="hljs-string">(13G36)</span><br><span class="hljs-attr">Report Version:</span>      <span class="hljs-number">105</span><br><br><span class="hljs-attr">Exception Type:</span>  <span class="hljs-number">00000020</span><br><span class="hljs-attr">Exception Codes:</span> <span class="hljs-number">0x000000008badf00d</span><br><span class="hljs-attr">Exception Note:</span>  <span class="hljs-string">SIMULATED</span> <span class="hljs-string">(this</span> <span class="hljs-string">is</span> <span class="hljs-string">NOT</span> <span class="hljs-string">a</span> <span class="hljs-string">crash)</span><br><span class="hljs-attr">Highlighted by Thread:</span>  <span class="hljs-number">0</span><br><br><span class="hljs-attr">Thread 0 name:  Dispatch queue:</span> <span class="hljs-string">com.apple.main-thread</span><br><span class="hljs-attr">Thread 0:</span><br><span class="hljs-number">0</span>   <span class="hljs-string">libsystem_kernel.dylib</span>            <span class="hljs-number">0x0000000180f99014</span> <span class="hljs-number">0x180f98000</span> <span class="hljs-string">+</span> <span class="hljs-number">4116</span><br><span class="hljs-number">1</span>   <span class="hljs-string">libdispatch.dylib</span>                 <span class="hljs-number">0x0000000180e763e8</span> <span class="hljs-number">0x180e64000</span> <span class="hljs-string">+</span> <span class="hljs-number">74728</span><br><span class="hljs-number">2</span>   <span class="hljs-string">FrontBoardServices</span>                <span class="hljs-number">0x0000000182db63d4</span> <span class="hljs-number">0x182d94000</span> <span class="hljs-string">+</span> <span class="hljs-number">140244</span><br><span class="hljs-number">3</span>   <span class="hljs-string">FrontBoardServices</span>                <span class="hljs-number">0x0000000182d9e910</span> <span class="hljs-number">0x182d94000</span> <span class="hljs-string">+</span> <span class="hljs-number">43280</span><br><span class="hljs-number">15</span>  <span class="hljs-string">GraphicsServices</span>                  <span class="hljs-number">0x0000000182be0088</span> <span class="hljs-number">0x182bd4000</span> <span class="hljs-string">+</span> <span class="hljs-number">49288</span><br><span class="hljs-number">16</span>  <span class="hljs-string">UIKit</span>                             <span class="hljs-number">0x00000001865e6088</span> <span class="hljs-number">0x186568000</span> <span class="hljs-string">+</span> <span class="hljs-number">516232</span><br><span class="hljs-number">17</span>  <span class="hljs-string">WeChat</span>                            <span class="hljs-number">0x00000001000fbea4</span> <span class="hljs-number">0x100058000</span> <span class="hljs-string">+</span> <span class="hljs-number">671396</span><br><br><span class="hljs-attr">Binary Images:</span><br><span class="hljs-number">0x100058000</span> <span class="hljs-bullet">-</span> <span class="hljs-number">0x1033c3fff</span> <span class="hljs-string">WeChat</span> <span class="hljs-string">arm64</span>  <span class="hljs-string">&lt;8b7a21136f4434dfb2771b8a4218a0f1&gt;</span> <br><span class="hljs-string">/var/containers/Bundle/Application/26524DA8-D1E8-430D-8ECA-9D5ABE3CE3CA/WeChat.app/WeChat</span><br><span class="hljs-string">..</span><br></code></pre></td></tr></table></figure>
+<p>上面是一个crash文件的大致内容，为了简洁删除了一部分。</p>
+<h4 id="1-参数"><a href="#1-参数" class="headerlink" title="1.参数"></a>1.参数</h4><ul>
 <li><strong>uuid：</strong></li>
 </ul>
 <figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">Incident</span> Identifier: <span class="hljs-number">28593639</span>-<span class="hljs-number">9021</span>-<span class="hljs-number">4</span>BF9-A730-<span class="hljs-number">0</span>A4E644EE52E<br></code></pre></td></tr></table></figure>
 
-<p>这是崩溃文件中的 uuid ，根据这个 uuid 可确定与 dSYM 文件是否匹配，方法如下：</p>
+<p>这是闪退文件中的 uuid ，根据这个 uuid 可确定与 dSYM 文件是否匹配，方法如下：</p>
 <figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs stylus">dwarfdump <span class="hljs-attr">--uuid</span> appName<span class="hljs-selector-class">.app</span>.dSYM/<br></code></pre></td></tr></table></figure>
 
 <p>这个命令行会打印出该 dSYM 文件内所有架构的 uuid。</p>
@@ -355,7 +355,7 @@
 </ul>
 <figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">Process</span>:             WeChat<span class="hljs-meta"> [25431]</span><br></code></pre></td></tr></table></figure>
 
-<p>上面 “WeChat” 表示的是崩溃所在进程的名字，括号中的数字即为此进程的ID。</p>
+<p>上面 “WeChat” 表示的是闪退所在进程的名字，括号中的数字即为此进程的ID。</p>
 <ul>
 <li><strong>CPU架构：</strong></li>
 </ul>
@@ -372,23 +372,20 @@
 <li>第四列，映射文件路径；</li>
 </ol>
 <ul>
-<li><strong>崩溃的堆栈信息（Thread Backtrace）：</strong></li>
+<li><strong>闪退的堆栈信息（Thread Backtrace）：</strong></li>
 </ul>
 <figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs x86asm"><span class="hljs-number">0</span>   libsystem_kernel<span class="hljs-number">.</span>dylib            <span class="hljs-number">0x0000000180f99014</span> <span class="hljs-number">0x180f98000</span> + <span class="hljs-number">4116</span><br><span class="hljs-number">1</span>   libdispatch<span class="hljs-number">.</span>dylib                 <span class="hljs-number">0x0000000180e763e8</span> <span class="hljs-number">0x180e64000</span> + <span class="hljs-number">74728</span><br><span class="hljs-number">2</span>   FrontBoardServices                <span class="hljs-number">0x0000000182db63d4</span> <span class="hljs-number">0x182d94000</span> + <span class="hljs-number">140244</span><br><span class="hljs-number">3</span>   FrontBoardServices                <span class="hljs-number">0x0000000182d9e910</span> <span class="hljs-number">0x182d94000</span> + <span class="hljs-number">43280</span><br>..<br><span class="hljs-number">15</span>  GraphicsServices                  <span class="hljs-number">0x0000000182be0088</span> <span class="hljs-number">0x182bd4000</span> + <span class="hljs-number">49288</span><br><span class="hljs-number">16</span>  UIKit                             <span class="hljs-number">0x00000001865e6088</span> <span class="hljs-number">0x186568000</span> + <span class="hljs-number">516232</span><br><span class="hljs-number">17</span>  WeChat                            <span class="hljs-number">0x00000001000fbea4</span> <span class="hljs-number">0x100058000</span> + <span class="hljs-number">671396</span><br></code></pre></td></tr></table></figure>
-
 
 <ol>
 <li>第一列：调用顺序；（0、1、2、3）</li>
 <li>第二列：二进制库名；（WeChat、UIKit）</li>
-<li>第三列：进程在运行时发生崩溃处的地址；(stack address)</li>
+<li>第三列：进程在运行时发生闪退处的地址；(stack address)</li>
 <li>第四列：进程运行时的起始地址；(load address)</li>
-<li>第五列：崩溃处距离进程起始地址的偏移量；(slide)</li>
+<li>第五列：闪退处距离进程起始地址的偏移量；(slide)</li>
 </ol>
 <p>注意！！这里的 “stack address” 与 “load address” 都是16进制的，而 “slide” 则是10进制的。</p>
-<hr>
-<h4 id="2-2-stack-address"><a href="#2-2-stack-address" class="headerlink" title="2.2.stack address"></a>2.2.stack address</h4><p>计算一下你就会发现，上面堆栈信息中，第四列+第五列 的内容与第三列在实质上是一样的。以下面的崩溃堆栈信息的第 9 行为例：</p>
+<h4 id="2-stack-address"><a href="#2-stack-address" class="headerlink" title="2.stack address"></a>2.stack address</h4><p>计算一下你就会发现，上面堆栈信息中，第四列+第五列 的内容与第三列在实质上是一样的。以下面的闪退堆栈信息的第 9 行为例：</p>
 <figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs x86asm">Thread <span class="hljs-number">0</span>:<br><span class="hljs-number">0</span>   libobjc<span class="hljs-number">.</span>A<span class="hljs-number">.</span>dylib         <span class="hljs-number">0x33f10f60</span> <span class="hljs-number">0x33efe000</span> + <span class="hljs-number">77664</span><br><span class="hljs-number">1</span>   Foundation              <span class="hljs-number">0x273526ac</span> <span class="hljs-number">0x2734a000</span> + <span class="hljs-number">34476</span><br><span class="hljs-number">9</span>   Your                    <span class="hljs-number">0x000f0846</span> <span class="hljs-number">0xa2000</span> + <span class="hljs-number">321606</span><br><span class="hljs-number">28</span>  Your                    <span class="hljs-number">0x0024643a</span> <span class="hljs-number">0xa2000</span> + <span class="hljs-number">1721402</span><br><span class="hljs-number">29</span>  libdyld<span class="hljs-number">.</span>dylib           <span class="hljs-number">0x34484aac</span> <span class="hljs-number">0x34483000</span> + <span class="hljs-number">6828</span><br><br>Binary Images:<br><span class="hljs-number">0xa2000</span> - <span class="hljs-number">0x541fff</span> Your armv7<br>/var/mobile/Containers/Bundle/Application/645D3184-4C20-<span class="hljs-number">4161</span>-924B-BDE170FA64CC/Your<span class="hljs-number">.</span>app/Your<br></code></pre></td></tr></table></figure>
-
 
 <figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs abnf">stack address <span class="hljs-operator">=</span> <span class="hljs-number">0</span>x000f0846<span class="hljs-comment">;</span><br>load address <span class="hljs-operator">=</span> <span class="hljs-number">0</span>xa2000<span class="hljs-comment">;</span><br><span class="hljs-attribute">slide</span> <span class="hljs-operator">=</span> <span class="hljs-number">321606</span><span class="hljs-comment">;</span><br></code></pre></td></tr></table></figure>
 
@@ -398,8 +395,8 @@
 <p>所以，我们可以得出这么一个公式：</p>
 <figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ebnf"><span class="hljs-attribute">stack address</span> = load address + slide;<br></code></pre></td></tr></table></figure>
 
-<p>注意！！这里 “stack address” 和 “load address” 均为程序在运行时的地址。要想利用符号表解析出崩溃对应位置，需要计算出符号表中对应的崩溃堆栈地址（symbol address）。</p>
-<h4 id="2-3-symbol-address"><a href="#2-3-symbol-address" class="headerlink" title="2.3.symbol address"></a>2.3.symbol address</h4><p>我们打开一个应用时，内核会为该应用创建一个新的进程，并把应用的二进制文件加载到一片虚拟地址空间中。iOS4.3 后为了阻止内存溢出攻击苹果在iOS中使用了 <a target="_blank" rel="noopener" href="https://ctinusdev.github.io/2017/08/20/Mach-OBasis_ASLR/">ASLR</a> 技术。这样进程每次启动时，地址空间都会被简单地随机化，所以每次加载时地址都不一样。这里的随机只是偏移不是搅乱，实现方式是通过内核将 Mach-O 的段“平移”某个随机数。<br><br/></p>
+<p>注意！！这里 “stack address” 和 “load address” 均为程序在运行时的地址。要想利用符号表解析出闪退对应位置，需要计算出符号表中对应的闪退堆栈地址（symbol address）。</p>
+<h4 id="3-symbol-address"><a href="#3-symbol-address" class="headerlink" title="3.symbol address"></a>3.symbol address</h4><p>我们打开一个应用时，内核会为该应用创建一个新的进程，并把应用的二进制文件加载到一片虚拟地址空间中。iOS4.3 后为了阻止内存溢出攻击苹果在iOS中使用了 <a target="_blank" rel="noopener" href="https://ctinusdev.github.io/2017/08/20/Mach-OBasis_ASLR/">ASLR</a> 技术。这样进程每次启动时，地址空间都会被简单地随机化，所以每次加载时地址都不一样。这里的随机只是偏移不是搅乱，实现方式是通过内核将 Mach-O 的段“平移”某个随机数。</p>
 <p>根据虚拟内存偏移量不变原理，只要提供了符号表 __TEXT 段的起始地址(vmaddr)，再加上偏移量（这里为0x4E846）就能得到符号表中的堆栈地址（symbol address），计算方法为：</p>
 <figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ebnf"><span class="hljs-attribute">symbol address</span> = vmaddr + slide;<br></code></pre></td></tr></table></figure>
 
@@ -416,35 +413,34 @@
 <p>可得出：</p>
 <figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-attr">0x52846</span> = <span class="hljs-number">0</span>x4000 + <span class="hljs-number">0</span>x4E846<span class="hljs-comment">;</span><br></code></pre></td></tr></table></figure>
 
-<p>即符号表中的崩溃地址 &#x3D; 0x52846，接下来就可以根据这个地址解析出崩溃位置了。</p>
-<hr>
-<h2 id="三、解析方案"><a href="#三、解析方案" class="headerlink" title="三、解析方案"></a>三、解析方案</h2><h3 id="dwarfdump"><a href="#dwarfdump" class="headerlink" title="dwarfdump"></a>dwarfdump</h3><p>命令如下：</p>
+<p>即符号表中的闪退地址 &#x3D; 0x52846，接下来就可以根据这个地址解析出闪退位置了。</p>
+<h2 id="三、解析方案"><a href="#三、解析方案" class="headerlink" title="三、解析方案"></a>三、解析方案</h2><h3 id="1-dwarfdump"><a href="#1-dwarfdump" class="headerlink" title="1.dwarfdump"></a>1.dwarfdump</h3><p>命令如下：</p>
 <figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs stata"><span class="hljs-variable">$dwarfdump</span> --<span class="hljs-keyword">arch</span> armv7 Your.<span class="hljs-keyword">app</span>.dSYM --<span class="hljs-keyword">lookup</span> 0x52846 | grep &#x27;<span class="hljs-keyword">Line</span> <span class="hljs-keyword">table</span>&#x27;<br></code></pre></td></tr></table></figure>
 
 <p>需要注意的是：这里的 armv7 是运行设备的 CPU 指令集，而不是二进制文件的指令集。比如 armv7 指令集的二进制文件运行在 arm64 指令集的设备上，这个地方应该写 arm64。</p>
 <ul>
-<li>–lookup 后面跟的一定是经过准确计算的符号表中的崩溃地址</li>
+<li>–lookup 后面跟的一定是经过准确计算的符号表中的闪退地址</li>
 <li>使用 dwarfdump 解析的结果较杂乱，因此使用 grep 命令抓取其中关键点展示出来</li>
 </ul>
 <p>运行结果如下：</p>
 <figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs pgsql"><span class="hljs-type">Line</span> <span class="hljs-keyword">table</span> dir : <span class="hljs-string">&#x27;/data/.../Src/OBDConnectSetting/Controller&#x27;</span><br><span class="hljs-type">Line</span> <span class="hljs-keyword">table</span> file: <span class="hljs-string">&#x27;OBDFirstConnectViewController.m&#x27;</span> <span class="hljs-type">line</span> <span class="hljs-number">882</span>, <span class="hljs-keyword">column</span> <span class="hljs-number">5</span> <span class="hljs-keyword">with</span> <span class="hljs-keyword">start</span> address <span class="hljs-number">0x000000000052768</span><br></code></pre></td></tr></table></figure>
 
-<p>其中第一行是编译时文件目录，第二行包含了崩溃发生的文件名称以及文件中具体行号等信息，有了这些信息就能准确定位崩溃原因啦。</p>
+<p>其中第一行是编译时文件目录，第二行包含了闪退发生的文件名称以及文件中具体行号等信息，有了这些信息就能准确定位闪退原因啦。</p>
 <hr>
-<h3 id="atos"><a href="#atos" class="headerlink" title="atos"></a>atos</h3><p>atos 命令可以解析出指定某一行的堆栈，使用方式如下：</p>
+<h3 id="2-atos"><a href="#2-atos" class="headerlink" title="2.atos"></a>2.atos</h3><p>atos 命令可以解析出指定某一行的堆栈，使用方式如下：</p>
 <figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-variable">$atos</span> -o <span class="hljs-regexp">/Users/</span>xxx<span class="hljs-regexp">/crash/</span>AppName.app/AppName -arch armv7 <span class="hljs-number">0</span>x52846<br></code></pre></td></tr></table></figure>
 
 <p>其执行结果如下：</p>
 <figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs scss">-<span class="hljs-selector-attr">[OBDFirstConnectViewController showOilPricePickerView]</span> (in Your) (OBDFirstConnectViewController.m:<span class="hljs-number">882</span>)<br></code></pre></td></tr></table></figure>
 
 <hr>
-<h3 id="无需计算崩溃地址"><a href="#无需计算崩溃地址" class="headerlink" title="无需计算崩溃地址"></a>无需计算崩溃地址</h3><p>atos 还提供了另外一种无需计算崩溃地址对应的符号表地址的方式，命令格式如下：</p>
+<h3 id="3-无需计算闪退地址"><a href="#3-无需计算闪退地址" class="headerlink" title="3.无需计算闪退地址"></a>3.无需计算闪退地址</h3><p>atos 还提供了另外一种无需计算闪退地址对应的符号表地址的方式，命令格式如下：</p>
 <figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-variable">$atos</span> -o Your.app.dSYM<span class="hljs-regexp">/Contents/</span>Resources<span class="hljs-regexp">/DWARF/</span>Your -arch armv7 -l [load address] [stack address]<br></code></pre></td></tr></table></figure>
 
-<p>其中 -l 选项指定了二进制文件在运行时的 <strong>load address</strong> (0xa2000)，后面跟的是崩溃发生时的 <strong>stack address</strong> (0x000f0846)。解析结果：</p>
+<p>其中 -l 选项指定了二进制文件在运行时的 <strong>load address</strong> (0xa2000)，后面跟的是闪退发生时的 <strong>stack address</strong> (0x000f0846)。解析结果：</p>
 <figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs scss">-<span class="hljs-selector-attr">[OBDFirstConnectViewController showOilPricePickerView]</span> (in Your) (OBDFirstConnectViewController.m:<span class="hljs-number">882</span>)<br></code></pre></td></tr></table></figure>
 
-<h3 id="shell脚本"><a href="#shell脚本" class="headerlink" title="shell脚本"></a>shell脚本</h3><p>桌面新建一个crash文件夹，把dSYM文件、友盟日志txt 及 shell 脚本放进来。</p>
+<h3 id="4-shell脚本"><a href="#4-shell脚本" class="headerlink" title="4.shell脚本"></a>4.shell脚本</h3><p>桌面新建一个crash文件夹，把dSYM文件、友盟日志txt 及 shell 脚本放进来。</p>
 <ul>
 <li>友盟日志内容：</li>
 </ul>
@@ -459,7 +455,7 @@
 <figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">.<span class="hljs-regexp">/trace_dsyms.sh Release.dSYM/</span> crash<br></code></pre></td></tr></table></figure>
 
 <hr>
-<h3 id="symbolicatecrash"><a href="#symbolicatecrash" class="headerlink" title="symbolicatecrash"></a>symbolicatecrash</h3><p><strong>symbolicatecrash</strong> 是Xcode自带的一个分析工具，可以通过机器上的崩溃日志和应用的.dSYM文件定位发生崩溃的位置，把crash日志中的地址替换成代码相应位置。<br><br/></p>
+<h3 id="5-symbolicatecrash"><a href="#5-symbolicatecrash" class="headerlink" title="5.symbolicatecrash"></a>5.symbolicatecrash</h3><p><strong>symbolicatecrash</strong> 是Xcode自带的一个分析工具，可以通过机器上的闪退日志和应用的.dSYM文件定位发生闪退的位置，把crash日志中的地址替换成代码相应位置。</p>
 <p>1、文件准备：<strong>.app</strong> 与 <strong>.dSYM</strong> 文件</p>
 <ul>
 <li>拷贝 <strong>.crash</strong> 文件到桌面新建的crash文件夹内；</li>
@@ -524,7 +520,7 @@
     
       <span class="category-chain">
         
-  <a href="/categories/%E8%AF%BE%E5%A4%96/" class="category-chain-item">课外</a>
+  <a href="/categories/%E5%85%B6%E4%BB%96/" class="category-chain-item">其他</a>
   
   
 
@@ -551,7 +547,7 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>dSYM分析crash日志</div>
+      <div>dSYM+.crash解析</div>
       <div>https://davidlii.cn/2019/03/12/dsym.html</div>
     </div>
     <div class="license-meta">

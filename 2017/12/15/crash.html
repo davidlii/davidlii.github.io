@@ -18,7 +18,7 @@
   
     <meta name="description" content="线上APP获取崩溃信息的方式： 使用系统 API 收集崩溃信息并上传到服务器。 使用友盟、Bugly 等第三方收集分析SDK。 使用 iTunes Connect 上的崩溃收集服务。  这里暂时只讲第一种。iOS提供了异常发生时的处理API，在程序启动的时候可以添加这样的Handler，这样程序发生异常的时候就可以对异常进行必要的处理。 1void NSSetUncaughtExceptionHa">
 <meta property="og:type" content="article">
-<meta property="og:title" content="iOS异常捕获">
+<meta property="og:title" content="异常捕获">
 <meta property="og:url" content="https://davidlii.cn/2017/12/15/crash.html">
 <meta property="og:site_name" content="Davidli">
 <meta property="og:description" content="线上APP获取崩溃信息的方式： 使用系统 API 收集崩溃信息并上传到服务器。 使用友盟、Bugly 等第三方收集分析SDK。 使用 iTunes Connect 上的崩溃收集服务。  这里暂时只讲第一种。iOS提供了异常发生时的处理API，在程序启动的时候可以添加这样的Handler，这样程序发生异常的时候就可以对异常进行必要的处理。 1void NSSetUncaughtExceptionHa">
@@ -33,7 +33,7 @@
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>iOS异常捕获 - Davidli</title>
+  <title>异常捕获 - Davidli</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -198,7 +198,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="iOS异常捕获"></span>
+            <span id="subtitle" data-typed-text="异常捕获"></span>
           
         </div>
 
@@ -278,7 +278,7 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">iOS异常捕获</h1>
+            <h1 style="display: none">异常捕获</h1>
             
             
               <div class="markdown-body">
@@ -303,7 +303,7 @@
 <p>崩溃后得到日志信息如下：</p>
 <figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs x86asm">+异常崩溃报告+<br><span class="hljs-symbol">name:</span><br>NSRangeException<br><span class="hljs-symbol">reason:</span><br>*** -[__NSSingleObjectArrayI objectAtIndex:]: index <span class="hljs-number">5</span> beyond bounds [<span class="hljs-number">0</span> .. <span class="hljs-number">0</span>]<br><span class="hljs-symbol">callStackSymbols:</span><br><span class="hljs-number">0</span>   CoreFoundation      <span class="hljs-number">0x00000001070dd1ab</span> __exceptionPreprocess + <span class="hljs-number">171</span><br><span class="hljs-number">1</span>   libobjc<span class="hljs-number">.</span>A<span class="hljs-number">.</span>dylib     <span class="hljs-number">0x0000000106772f41</span> objc_exception_throw + <span class="hljs-number">48</span><br><span class="hljs-number">2</span>   CoreFoundation      <span class="hljs-number">0x000000010711d2df</span> -[__NSSingleObjectArrayI objectAtIndex:] + <span class="hljs-number">111</span><br><span class="hljs-number">3</span>   ASDF                <span class="hljs-number">0x0000000105e5a8b2</span> -[AppDelegate application:didFinishLaunchingWithOptions:] + <span class="hljs-number">242</span><br>...<br><span class="hljs-number">28</span>  CoreFoundation      <span class="hljs-number">0x0000000107064b49</span> __CFRunLoopDoSources0 + <span class="hljs-number">185</span><br><span class="hljs-number">29</span>  CoreFoundation      <span class="hljs-number">0x000000010706412f</span> __CFRunLoopRun + <span class="hljs-number">1279</span><br><span class="hljs-number">30</span>  CoreFoundation      <span class="hljs-number">0x00000001070639b9</span> CFRunLoopRunSpecific + <span class="hljs-number">409</span><br><span class="hljs-number">31</span>  GraphicsServices    <span class="hljs-number">0x000000010c0ad9c6</span> GSEventRunModal + <span class="hljs-number">62</span><br><span class="hljs-number">32</span>  UIKit               <span class="hljs-number">0x00000001075585e8</span> UIApplicationMain + <span class="hljs-number">159</span><br><span class="hljs-number">33</span>  ASDF                <span class="hljs-number">0x0000000105e5bf4f</span> main + <span class="hljs-number">111</span><br><span class="hljs-number">34</span>  libdyld<span class="hljs-number">.</span>dylib       <span class="hljs-number">0x000000010aa71d81</span> start + <span class="hljs-number">1</span><br></code></pre></td></tr></table></figure>
 
-<p>但是，并不是所有的程序崩溃都是由于发生可以捕捉的异常的，有些时候引起崩溃的原因可能是：内存访问错误、重复释放等。上面的API对这些错误就无能为力了，因为这种错误它抛出的是Signal，所以必须要专门做Signal处理。<br><br/></p>
+<p>但是，并不是所有的程序崩溃都是由于发生可以捕捉的异常的，有些时候引起崩溃的原因可能是：内存访问错误、重复释放等。上面的API对这些错误就无能为力了，因为这种错误它抛出的是Signal，所以必须要专门做Signal处理。</p>
 <p>此时，可以使用下面的函数来注册signal异常时的回调函数：</p>
 <figure class="highlight qml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs qml"><span class="hljs-keyword">signal</span><span class="hljs-string"></span>(SIGABRT, signalExceptionHandler);<br></code></pre></td></tr></table></figure>
 
@@ -334,7 +334,7 @@
     
       <span class="category-chain">
         
-  <a href="/categories/%E8%AF%BE%E5%A4%96/" class="category-chain-item">课外</a>
+  <a href="/categories/OC/" class="category-chain-item">OC</a>
   
   
 
@@ -361,7 +361,7 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>iOS异常捕获</div>
+      <div>异常捕获</div>
       <div>https://davidlii.cn/2017/12/15/crash.html</div>
     </div>
     <div class="license-meta">
@@ -404,9 +404,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2017/12/16/memory-error.html" title="内存错误调试">
+                      <a href="/2017/12/16/memory-error.html" title="内存错误">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">内存错误调试</span>
+                        <span class="hidden-mobile">内存错误</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -414,8 +414,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2017/11/25/sandbox.html" title="沙盒 &amp; 本地持久化方案">
-                        <span class="hidden-mobile">沙盒 &amp; 本地持久化方案</span>
+                      <a href="/2017/12/11/idfa.html" title="设备唯一标识符">
+                        <span class="hidden-mobile">设备唯一标识符</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

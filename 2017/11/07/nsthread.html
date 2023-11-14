@@ -306,21 +306,19 @@
 </ul>
 <h3 id="2、并发-amp-并行"><a href="#2、并发-amp-并行" class="headerlink" title="2、并发 &amp; 并行"></a>2、并发 &amp; 并行</h3><p>1、场景：</p>
 <p>并发，一个处理器同时处理多个任务。 </p>
-<p>并行，多个处理器或多核的处理器同时处理多个不同的任务。<br><br/></p>
+<p>并行，多个处理器或多核的处理器同时处理多个不同的任务。</p>
 <p>2、概念区分：</p>
-<p><strong>并发</strong>(Concurrency)：在同一时刻只能有一条指令执行，但多个指令被快速的轮换执行，使得在宏观上具有多个线程同时执行的效果，但在微观上并不是同时执行的。<br><br/></p>
+<p><strong>并发</strong>(Concurrency)：在同一时刻只能有一条指令执行，但多个指令被快速的轮换执行，使得在宏观上具有多个线程同时执行的效果，但在微观上并不是同时执行的。</p>
 <p><strong>并行</strong>(Parallel)：在同一时刻，有多条指令在多个处理器上同时执行，无论从微观还是从宏观来看，二者都是一起执行的。</p>
-<h3 id="3、多线程"><a href="#3、多线程" class="headerlink" title="3、多线程"></a>3、多线程</h3><p><strong>为什么要有多线程？</strong><br><br/></p>
+<h3 id="3、多线程"><a href="#3、多线程" class="headerlink" title="3、多线程"></a>3、多线程</h3><p><strong>为什么要有多线程？</strong></p>
 <p>iOS应用中主线程用来处理界面更新、响应用户触摸事件等。在主线程中执行大量耗时操作会造成主线程阻塞，进而出现卡顿现象以致影响使用和用户体验。故需要将这种耗时操作放到其他的线程中执行。所以多线程编程是防止主线程堵塞，增加运行效率的最佳方法。</p>
-<br/>
-
 <p><strong>为什么不无限制的开辟N条新线程呢？</strong></p>
 <ul>
 <li>首先，线程的创建需要开销，占用一定得内存空间；</li>
 <li>其次，有N条线程时处理器需要在多条线程之间频繁调度，这也需要大量开销；</li>
 <li>最后，N条线程时还需要考虑到这些线程之间的通信和资源共享等问题。</li>
 </ul>
-<p><strong>有哪些多线程解决方案？</strong><br><br/></p>
+<p><strong>有哪些多线程解决方案？</strong></p>
 <p>iOS支持多个层次的多线程编程，层次越高的抽象程度越高，使用也越方便，也是苹果最推荐使用的方法。根据抽象程度由低到高列出如下：</p>
 <ul>
 <li><strong>NSThread ：</strong></li>
@@ -372,10 +370,9 @@
 </ul>
 <figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs crystal"><span class="hljs-variable">@synchronized</span>(<span class="hljs-keyword">self</span>)<br></code></pre></td></tr></table></figure>
 
-<p>#死亡<br><br/></p>
+<p>#死亡</p>
 <p>一般情况下（不考虑引用、runloop），线程执行完任务后会自动销毁。也可以在满足某条件后调用exit方法，强制线程退出。</p>
 <figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">[NSThread <span class="hljs-keyword">exit</span>];<br></code></pre></td></tr></table></figure>
-
 
 <h4 id="4-2-线程间通信"><a href="#4-2-线程间通信" class="headerlink" title="4.2.线程间通信"></a>4.2.线程间通信</h4><ul>
 <li>指定当前线程执行操作</li>
@@ -402,7 +399,7 @@
 </ul>
 <figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs ruby"><span class="hljs-variable">@synchronized</span>(<span class="hljs-variable language_">self</span>)  &#123;<br>    <span class="hljs-regexp">//</span> <span class="hljs-keyword">do</span> work<br>&#125;<br></code></pre></td></tr></table></figure>
 
-<h3 id="5、线程保活"><a href="#5、线程保活" class="headerlink" title="5、线程保活"></a>5、线程保活</h3><p>默认情况下，子线程在执行完任务之后，会自动销毁。如果想复用此线程或者继续在此线程上执行其他任务，则需要让此线程一直活着而不被销毁；<br><br/></p>
+<h3 id="5、线程保活"><a href="#5、线程保活" class="headerlink" title="5、线程保活"></a>5、线程保活</h3><p>默认情况下，子线程在执行完任务之后，会自动销毁。如果想复用此线程或者继续在此线程上执行其他任务，则需要让此线程一直活着而不被销毁；</p>
 <p>思路：给子线程所在runloop添加事件源，如端口或自定义source，保证此runloop不退出。需要停止子线程时，停止线程所在runloop即可~</p>
 <figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs less"><span class="hljs-comment">// 自定义线程</span><br><span class="hljs-variable">@interface</span> <span class="hljs-attribute">HelThread </span>: NSThread<br><span class="hljs-variable">@end</span><br><br><br><span class="hljs-comment">// 线程生命周期管理类</span><br><span class="hljs-variable">@interface</span> <span class="hljs-attribute">HelThreadHelper </span>: NSObject<br><br><span class="hljs-comment">/// 线程初始化</span><br><span class="hljs-comment">/// @param name 线程名</span><br><span class="hljs-built_in">-</span>(instancetype)<span class="hljs-attribute">initWithName</span>:(NSString*)name;<br><br><span class="hljs-comment">/// 开启线程</span><br><span class="hljs-selector-tag">-</span> (void)<span class="hljs-selector-tag">start</span>;<br><br><span class="hljs-comment">/// 停止当前线程</span><br><span class="hljs-selector-tag">-</span> (void)<span class="hljs-selector-tag">stop</span>;<br><br><span class="hljs-comment">/// 获取线程</span><br><span class="hljs-selector-tag">-</span>(NSThread *)<span class="hljs-selector-tag">getThread</span>;<br><br>@<span class="hljs-selector-tag">end</span><br></code></pre></td></tr></table></figure>
 
@@ -431,7 +428,7 @@
     
       <span class="category-chain">
         
-  <a href="/categories/%E6%8A%80%E6%9C%AF/" class="category-chain-item">技术</a>
+  <a href="/categories/OC/" class="category-chain-item">OC</a>
   
   
 

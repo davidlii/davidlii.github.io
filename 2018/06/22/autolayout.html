@@ -291,7 +291,7 @@
             
               <div class="markdown-body">
                 
-                <h2 id="1-Autoresizing"><a href="#1-Autoresizing" class="headerlink" title="#1.Autoresizing"></a>#1.Autoresizing</h2><p><code>Autoresizing</code>是苹果早期的界面适配方案，那时苹果的设备还不算多，iPhone 只有 4s 及其之前的产品，都是3.5英寸屏幕；iPad 也只有 iPad1、iPad2，都是9.7英寸。并且当时 iOS 上的应用很少需要适配横屏，所以<code>Autoresizing</code>能够满足绝大部分的适配需求。<br><br/></p>
+                <h2 id="1-Autoresizing"><a href="#1-Autoresizing" class="headerlink" title="#1.Autoresizing"></a>#1.Autoresizing</h2><p><code>Autoresizing</code>是苹果早期的界面适配方案，那时苹果的设备还不算多，iPhone 只有 4s 及其之前的产品，都是3.5英寸屏幕；iPad 也只有 iPad1、iPad2，都是9.7英寸。并且当时 iOS 上的应用很少需要适配横屏，所以<code>Autoresizing</code>能够满足绝大部分的适配需求。</p>
 <p>1.1.<code>xib</code>或者<code>故事板</code>(iOS5)中的6条线：</p>
 <p><img src="https://davidlii.nos-eastchina1.126.net/pic_AutoResizing.png" srcset="/img/loading.gif" lazyload alt="autoresizing"></p>
 <p>1.2.代码中的6个枚举值：</p>
@@ -300,9 +300,8 @@
 <p>这6个枚举值在实际应用时一般都是组合起来使用：</p>
 <figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-comment">// 跟随父视图的宽度和高度等比缩放，以保证上下左右边距都不变</span><br>view.autoresizingMask = <span class="hljs-built_in">UIViewAutoresizingFlexibleWidth</span> | <span class="hljs-built_in">UIViewAutoresizingFlexibleHeight</span>;<br></code></pre></td></tr></table></figure>
 
-
 <p>通过<code>Autoresizing</code>，你可以方便的设置某个控件<del><strong>相对于其父视图的布局</strong></del>但这也是它的最大缺点：它只能用于设置子视图相对于其父视图的布局，对于与其同级的兄弟视图，或者其他父视图内的子视图之间的位置关系，它能做的很少。</p>
-<h2 id="2-AutoLayout"><a href="#2-AutoLayout" class="headerlink" title="#2.AutoLayout"></a>#2.AutoLayout</h2><p>2012年 iOS6 发布，随之而来的设备是 4.0 英寸的 iPhone 5，我们需要适配的屏幕尺寸多了一个。为了减少开发者的适配工作量，苹果提供了基于<code>约束</code>的<code>AutoLayout</code>，即自动布局这一适配方案。<code>约束</code>条件控制了各控件之间的位置关系，且不局限于子控件与其父视图之间了，任意两个控件之间都可以设置约束关系。<br><br/></p>
+<h2 id="2-AutoLayout"><a href="#2-AutoLayout" class="headerlink" title="#2.AutoLayout"></a>#2.AutoLayout</h2><p>2012年 iOS6 发布，随之而来的设备是 4.0 英寸的 iPhone 5，我们需要适配的屏幕尺寸多了一个。为了减少开发者的适配工作量，苹果提供了基于<code>约束</code>的<code>AutoLayout</code>，即自动布局这一适配方案。<code>约束</code>条件控制了各控件之间的位置关系，且不局限于子控件与其父视图之间了，任意两个控件之间都可以设置约束关系。</p>
 <p>2.1.故事板中开启自动布局：</p>
 <p><img src="https://davidlii.nos-eastchina1.126.net/pic_autolayout.png" srcset="/img/loading.gif" lazyload alt="AutoLayout"></p>
 <p>2.2.代码中设置约束：</p>
@@ -326,8 +325,6 @@
 <li>参数4：constant</li>
 </ul>
 <p>默认倍数为1时的约束的值。</p>
-<br/>
-
 <p><strong>注意事项：</strong></p>
 <ul>
 <li>在添加约束之前，须确保控件已经添加到父视图中；</li>
@@ -340,7 +337,7 @@
 <li>Regular（宽大型）</li>
 <li>Any（任意，即compact或者Regular）</li>
 </ul>
-<p>这三种抽象尺寸的组合，可以描述任意类型的设备及其横竖屏状态、splitView等，比如：<br><br/></p>
+<p>这三种抽象尺寸的组合，可以描述任意类型的设备及其横竖屏状态、splitView等，比如：</p>
 <p>（w<strong>R</strong> h<strong>R</strong>）表示横竖屏状态下全屏的iPad：</p>
 <p><img src="https://davidlii.nos-eastchina1.126.net/pic_sizeclasses1.png" srcset="/img/loading.gif" lazyload alt="sizeclass1"><br><img src="https://davidlii.nos-eastchina1.126.net/pic_sizeclasses2.png" srcset="/img/loading.gif" lazyload alt="sizeclass2"></p>
 <p>（w<strong>C</strong> h<strong>R</strong>）表示竖屏状态下的iPhone，或者iPad上 1&#x2F;3 的 splitView：</p>
@@ -359,7 +356,7 @@
 <li>改变了视图层级，如新增子视图；</li>
 <li>屏幕旋转了；</li>
 </ul>
-<p>你也可以重写此方法，以便自定义视图及其子视图的布局信息。<br><br/></p>
+<p>你也可以重写此方法，以便自定义视图及其子视图的布局信息。</p>
 <p>此方法由系统自动调用，不建议我们手动调用。真有需要时使用 [view layoutIfNeeded] 来让系统自动触发此方法。</p>
 <figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs abnf">- (void)layoutIfNeeded<span class="hljs-comment">;</span><br></code></pre></td></tr></table></figure>
 
@@ -414,14 +411,14 @@
 </ul>
 <figure class="highlight arcade"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs arcade"><span class="hljs-comment">/* Base implementation sends -updateConstraints to the view.</span><br><span class="hljs-comment">When a view has a view controller, this message is sent </span><br><span class="hljs-comment">to the view controller during the autolayout updateConstraints </span><br><span class="hljs-comment">pass in lieu of sending updateConstraints directly to the view.</span><br><span class="hljs-comment"></span><br><span class="hljs-comment">You may override this method in a UIViewController subclass for </span><br><span class="hljs-comment">updating custom constraints instead of subclassing your view </span><br><span class="hljs-comment">and overriding -[UIView updateConstraints].</span><br><span class="hljs-comment"></span><br><span class="hljs-comment">Overrides must call super or send -updateConstraints to the view.</span><br><span class="hljs-comment">*/</span><br>- (<span class="hljs-keyword">void</span>)updateViewConstraints;<br></code></pre></td></tr></table></figure>
 
-<p>注意，这个<code>-updateViewConstraints</code>方法是 UIViewController 中的，不是 UIView 中的<code>-updateConstraints</code>方法。。“view 属于某个 VC”（比如 self.view），当此 view 需要执行<code>updateConstraints</code>时，会调用 VC 的<code>updateViewConstraints</code>，这样就不用你再自定义此 view 并重写其<code>updateConstraints</code>方法了。方法中需要调用其 super 方法。这个方法的默认实现是调用其所有 subview 的 updateConstraints 方法，这样就自上而下的完成了布局。<br><br/></p>
+<p>注意，这个<code>-updateViewConstraints</code>方法是 UIViewController 中的，不是 UIView 中的<code>-updateConstraints</code>方法。。“view 属于某个 VC”（比如 self.view），当此 view 需要执行<code>updateConstraints</code>时，会调用 VC 的<code>updateViewConstraints</code>，这样就不用你再自定义此 view 并重写其<code>updateConstraints</code>方法了。方法中需要调用其 super 方法。这个方法的默认实现是调用其所有 subview 的 updateConstraints 方法，这样就自上而下的完成了布局。 </p>
 <p>另外，updateViewConstraints、viewWillLayoutSubviews、viewDidLayoutSubviews 在当前 vc 布局过程中可能会被多次调用，这三个方法在离开当前控制器时也会被调用。</p>
 <h2 id="8-小结"><a href="#8-小结" class="headerlink" title="#8.小结"></a>#8.小结</h2><p>除了<code>self.view</code>外，其他视图的实际 frame 要在以下两个方法执行完之后才能确定：</p>
 <ul>
 <li>view 的 layoutSubViews;</li>
 <li>VC 的 viewDidLayoutSubviews;</li>
 </ul>
-<p>所以，当我们真的需要 frame 时要在这个两个时间点以后再去获取。这就是 viewDidLoad 里通过<code>setFrame</code>的方式修改原先在xib里拖动的约束代码无效的症结所在。因为 updateViewConstraints 在 viewDidLoad 后执行，会覆盖掉之前的设置的frame，所以无效。<br><br/></p>
+<p>所以，当我们真的需要 frame 时要在这个两个时间点以后再去获取。这就是 viewDidLoad 里通过<code>setFrame</code>的方式修改原先在xib里拖动的约束代码无效的症结所在。因为 updateViewConstraints 在 viewDidLoad 后执行，会覆盖掉之前的设置的frame，所以无效。</p>
 <p>另外需要注意一点：在使用 sb 或者 xib 加载 VC 时，viewDidLoad 中只有 self.view 的 frame 信息是准确的，其他所有的控件的 frame 都是它们在 sb 或 xib 中的原始尺寸，与当前设备可能不符。</p>
 <hr>
 <p>相关参考：</p>
@@ -444,7 +441,7 @@
     
       <span class="category-chain">
         
-  <a href="/categories/%E6%8A%80%E6%9C%AF/" class="category-chain-item">技术</a>
+  <a href="/categories/OC/" class="category-chain-item">OC</a>
   
   
 
