@@ -18,7 +18,7 @@
   
     <meta name="description" content="1.API To create a new class, start by calling objc_allocateClassPair. Then set the class’s attributes with functions like class_addMethod and class_addIvar. When you are done building the class, call">
 <meta property="og:type" content="article">
-<meta property="og:title" content="动态注册类">
+<meta property="og:title" content="新增类">
 <meta property="og:url" content="https://davidlii.cn/2017/09/01/runtime-addClass.html">
 <meta property="og:site_name" content="Davidli">
 <meta property="og:description" content="1.API To create a new class, start by calling objc_allocateClassPair. Then set the class’s attributes with functions like class_addMethod and class_addIvar. When you are done building the class, call">
@@ -33,7 +33,7 @@
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>动态注册类 - Davidli</title>
+  <title>新增类 - Davidli</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -198,7 +198,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="动态注册类"></span>
+            <span id="subtitle" data-typed-text="新增类"></span>
           
         </div>
 
@@ -278,7 +278,7 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">动态注册类</h1>
+            <h1 style="display: none">新增类</h1>
             
             
               <div class="markdown-body">
@@ -316,7 +316,7 @@
 <p>从日志中也可以得出结论：</p>
 <p>1、在类<code>allocate</code>与<code>register</code>之间可以添加<code>成员变量</code>、<code>属性</code>和<code>方法</code>；</p>
 <p>2、在<code>register</code>之后，即类结构固定之后<code>不能</code>再添加<code>成员变量</code>，但可以继续添加<code>属性</code>和<code>方法</code>；</p>
-<p>3、动态添加的属性，并不会创建其对应的以<code>_</code>开头的成员变量，实际上这一步需要由编译器来完成。</p>
+<p>3、动态添加的属性，不会创建对应的以<code>_</code>开头的成员变量，这一步需要由编译器来完成。</p>
 <p>ps: 热更新<code>JSPatch</code>就是在OC的 runtime 基础上实现的，大致原理是：JS传递字符串给OC，OC通过 Runtime 的运行时函数，调用和替换相应的OC方法。待后期慢慢研究。。</p>
 
                 
@@ -363,7 +363,7 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>动态注册类</div>
+      <div>新增类</div>
       <div>https://davidlii.cn/2017/09/01/runtime-addClass.html</div>
     </div>
     <div class="license-meta">
