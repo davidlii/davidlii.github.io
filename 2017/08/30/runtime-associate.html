@@ -16,18 +16,20 @@
   <meta name="author" content="Davidli">
   <meta name="keywords" content="Davidli">
   
-    <meta name="description" content="1.对象关联使用关联，我们可以在不修改类定义的前提下，为其对象增加存储空间。 适合的场景：  把某对象与特定对象相关联； 解决分类中属性不会自动生成getter、setter函数，调用时会闪退的问题；  1.1.创建关联1OBJC_EXPORT void objc_setAssociatedObject(id object, const void *key, id value, objc_Asso">
+    <meta name="description" content="1.对象关联使用关联，我们可以在不修改类定义的前提下，为其对象增加存储空间。 适合的场景：  把某对象与特定对象相关联； 解决分类中属性不会自动生成getter、setter函数，调用时会闪退的问题；  1.1.创建关联1OBJC_EXPORT void objc_setAssociatedObject(id object, const void *key, id value, objc_Ass">
 <meta property="og:type" content="article">
 <meta property="og:title" content="对象关联">
 <meta property="og:url" content="https://davidlii.cn/2017/08/30/runtime-associate.html">
 <meta property="og:site_name" content="Davidli">
-<meta property="og:description" content="1.对象关联使用关联，我们可以在不修改类定义的前提下，为其对象增加存储空间。 适合的场景：  把某对象与特定对象相关联； 解决分类中属性不会自动生成getter、setter函数，调用时会闪退的问题；  1.1.创建关联1OBJC_EXPORT void objc_setAssociatedObject(id object, const void *key, id value, objc_Asso">
+<meta property="og:description" content="1.对象关联使用关联，我们可以在不修改类定义的前提下，为其对象增加存储空间。 适合的场景：  把某对象与特定对象相关联； 解决分类中属性不会自动生成getter、setter函数，调用时会闪退的问题；  1.1.创建关联1OBJC_EXPORT void objc_setAssociatedObject(id object, const void *key, id value, objc_Ass">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://davidlii.nos-eastchina1.126.net/pic_runtime_associate.png">
 <meta property="article:published_time" content="2017-08-30T15:22:08.000Z">
 <meta property="article:modified_time" content="2019-09-29T04:21:08.000Z">
 <meta property="article:author" content="Davidli">
 <meta property="article:tag" content="runtime">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://davidlii.nos-eastchina1.126.net/pic_runtime_associate.png">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
@@ -283,7 +285,8 @@
             
               <div class="markdown-body">
                 
-                <h3 id="1-对象关联"><a href="#1-对象关联" class="headerlink" title="1.对象关联"></a>1.对象关联</h3><p>使用关联，我们可以在不修改类定义的前提下，为其对象增加存储空间。</p>
+                <p><img src="https://davidlii.nos-eastchina1.126.net/pic_runtime_associate.png" srcset="/img/loading.gif" lazyload alt="runtime对象关联"></p>
+<h3 id="1-对象关联"><a href="#1-对象关联" class="headerlink" title="1.对象关联"></a>1.对象关联</h3><p>使用关联，我们可以在不修改类定义的前提下，为其对象增加存储空间。</p>
 <p>适合的场景：</p>
 <ol>
 <li>把某对象与特定对象相关联；</li>

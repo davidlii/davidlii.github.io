@@ -16,18 +16,20 @@
   <meta name="author" content="Davidli">
   <meta name="keywords" content="Davidli">
   
-    <meta name="description" content="1.成员变量Ivar在objc&#x2F;runtime.h中，Ivar的描述如下： 1234567891011&#x2F;&#x2F;&#x2F; An opaque type that represents an instance variable.typedef struct objc_ivar *Ivar;struct objc_ivar &amp;#123;char *ivar_namechar *ivar_typeint ivar_">
+    <meta name="description" content="1.成员变量Ivar在objc&#x2F;runtime.h中，Ivar的描述如下： 1234567891011&#x2F;&#x2F;&#x2F; An opaque type that represents an instance variable.typedef struct objc_ivar *Ivar;struct objc_ivar &amp;#123;char *ivar_namechar *ivar_typeint ivar">
 <meta property="og:type" content="article">
 <meta property="og:title" content="成员变量、属性">
 <meta property="og:url" content="https://davidlii.cn/2017/08/25/runtime-ivar.html">
 <meta property="og:site_name" content="Davidli">
-<meta property="og:description" content="1.成员变量Ivar在objc&#x2F;runtime.h中，Ivar的描述如下： 1234567891011&#x2F;&#x2F;&#x2F; An opaque type that represents an instance variable.typedef struct objc_ivar *Ivar;struct objc_ivar &amp;#123;char *ivar_namechar *ivar_typeint ivar_">
+<meta property="og:description" content="1.成员变量Ivar在objc&#x2F;runtime.h中，Ivar的描述如下： 1234567891011&#x2F;&#x2F;&#x2F; An opaque type that represents an instance variable.typedef struct objc_ivar *Ivar;struct objc_ivar &amp;#123;char *ivar_namechar *ivar_typeint ivar">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://davidlii.nos-eastchina1.126.net/pic_runtime_ivars.png">
 <meta property="article:published_time" content="2017-08-25T09:58:19.000Z">
 <meta property="article:modified_time" content="2018-12-02T15:30:19.000Z">
 <meta property="article:author" content="Davidli">
 <meta property="article:tag" content="runtime">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://davidlii.nos-eastchina1.126.net/pic_runtime_ivars.png">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
@@ -283,7 +285,8 @@
             
               <div class="markdown-body">
                 
-                <h3 id="1-成员变量"><a href="#1-成员变量" class="headerlink" title="1.成员变量"></a>1.成员变量</h3><h4 id="Ivar"><a href="#Ivar" class="headerlink" title="Ivar"></a>Ivar</h4><p>在<code>objc/runtime.h</code>中，Ivar的描述如下：</p>
+                <p><img src="https://davidlii.nos-eastchina1.126.net/pic_runtime_ivars.png" srcset="/img/loading.gif" lazyload alt="runtime成员变量&amp;属性"></p>
+<h3 id="1-成员变量"><a href="#1-成员变量" class="headerlink" title="1.成员变量"></a>1.成员变量</h3><h4 id="Ivar"><a href="#Ivar" class="headerlink" title="Ivar"></a>Ivar</h4><p>在<code>objc/runtime.h</code>中，Ivar的描述如下：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-comment">/// An opaque type that represents an instance variable.</span><br><span class="hljs-keyword">typedef</span> <span class="hljs-keyword">struct</span> <span class="hljs-title class_">objc_ivar</span> *Ivar;<br><br><span class="hljs-keyword">struct</span> <span class="hljs-title class_">objc_ivar</span> &#123;<br><span class="hljs-type">char</span> *ivar_name<br><span class="hljs-type">char</span> *ivar_type<br><span class="hljs-type">int</span> ivar_offset<br><span class="hljs-meta">#<span class="hljs-keyword">ifdef</span> __LP64__</span><br><span class="hljs-type">int</span> space<br><span class="hljs-meta">#<span class="hljs-keyword">endif</span></span><br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>Ivar，对象的成员变量，是一个指向<code>objc_ivar</code>结构体的指针，包括名字与类型。</p>

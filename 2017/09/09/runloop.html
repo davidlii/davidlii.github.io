@@ -16,13 +16,14 @@
   <meta name="author" content="Davidli">
   <meta name="keywords" content="Davidli">
   
-    <meta name="description" content="1.Runloop Run loops are part of the fundamental infrastructure associated with threads.A run loop is an event processing loop that you use to schedule work and coordinate the receipt of incoming event">
+    <meta name="description" content="1.Runloop Run loops are part of the fundamental infrastructure associated with threads.A run loop is an event processing loop that you use to schedule work and coordinate the receipt of incoming even">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Runloop">
 <meta property="og:url" content="https://davidlii.cn/2017/09/09/runloop.html">
 <meta property="og:site_name" content="Davidli">
-<meta property="og:description" content="1.Runloop Run loops are part of the fundamental infrastructure associated with threads.A run loop is an event processing loop that you use to schedule work and coordinate the receipt of incoming event">
+<meta property="og:description" content="1.Runloop Run loops are part of the fundamental infrastructure associated with threads.A run loop is an event processing loop that you use to schedule work and coordinate the receipt of incoming even">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://davidlii.nos-eastchina1.126.net/pic_runloop_outline.png">
 <meta property="og:image" content="https://davidlii.nos-eastchina1.126.net/pic_runloop.jpg">
 <meta property="og:image" content="https://davidlii.nos-eastchina1.126.net/pic_perform_afterDelay.png">
 <meta property="article:published_time" content="2017-09-09T09:39:17.000Z">
@@ -30,7 +31,7 @@
 <meta property="article:author" content="Davidli">
 <meta property="article:tag" content="runloop">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://davidlii.nos-eastchina1.126.net/pic_runloop.jpg">
+<meta name="twitter:image" content="https://davidlii.nos-eastchina1.126.net/pic_runloop_outline.png">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
@@ -286,7 +287,8 @@
             
               <div class="markdown-body">
                 
-                <h2 id="1-Runloop"><a href="#1-Runloop" class="headerlink" title="1.Runloop"></a>1.Runloop</h2><blockquote>
+                <p><img src="https://davidlii.nos-eastchina1.126.net/pic_runloop_outline.png" srcset="/img/loading.gif" lazyload alt="Runloop大纲"></p>
+<h2 id="1-Runloop"><a href="#1-Runloop" class="headerlink" title="1.Runloop"></a>1.Runloop</h2><blockquote>
 <p>Run loops are part of the fundamental infrastructure associated with threads.A run loop is an event processing loop that you use to schedule work and coordinate the receipt of incoming events.The purpose of a run loop is to keep your thread busy when there is work to do and put your thread to sleep when there is none.</p>
 </blockquote>
 <p><code>Runloop</code>是处理事件的循环，与线程紧密相关。启动后所在线程相当于一直处在<code>do-while</code>循环中，从而避免没事做被系统自动回收；此时要销毁这个线程必须停止这个 Runloop。</p>

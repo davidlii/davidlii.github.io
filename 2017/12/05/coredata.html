@@ -16,13 +16,14 @@
   <meta name="author" content="Davidli">
   <meta name="keywords" content="Davidli">
   
-    <meta name="description" content="一.简介Core Data 是一个对象-关系映射持久化方案，处于应用与持久化存储之间，可以将应用中的对象转化成数据，保存在SQLite文件等持久化存储中，也可以缓存临时数据。在单台设备上 Core Data 支持回滚重做，在多台设备间使用同一 iCloud 账户同步数据时，Core Data 会自动将结构映射到 CloudKit 中。 在.xcdatamodeld数据模型中，可以定义数据类型与关系">
+    <meta name="description" content="一.简介Core Data 是一个对象-关系映射持久化方案，处于应用与持久化存储之间，可以将应用中的对象转化成数据，保存在SQLite文件等持久化存储中，也可以缓存临时数据。在单台设备上 Core Data 支持回滚重做，在多台设备间使用同一 iCloud 账户同步数据时，Core Data 会自动将结构映射到 CloudKit 中。 在.xcdatamodeld数据模型中，可以定义数据类型与关">
 <meta property="og:type" content="article">
 <meta property="og:title" content="数据库：Core Data">
 <meta property="og:url" content="https://davidlii.cn/2017/12/05/coredata.html">
 <meta property="og:site_name" content="Davidli">
-<meta property="og:description" content="一.简介Core Data 是一个对象-关系映射持久化方案，处于应用与持久化存储之间，可以将应用中的对象转化成数据，保存在SQLite文件等持久化存储中，也可以缓存临时数据。在单台设备上 Core Data 支持回滚重做，在多台设备间使用同一 iCloud 账户同步数据时，Core Data 会自动将结构映射到 CloudKit 中。 在.xcdatamodeld数据模型中，可以定义数据类型与关系">
+<meta property="og:description" content="一.简介Core Data 是一个对象-关系映射持久化方案，处于应用与持久化存储之间，可以将应用中的对象转化成数据，保存在SQLite文件等持久化存储中，也可以缓存临时数据。在单台设备上 Core Data 支持回滚重做，在多台设备间使用同一 iCloud 账户同步数据时，Core Data 会自动将结构映射到 CloudKit 中。 在.xcdatamodeld数据模型中，可以定义数据类型与关">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://davidlii.nos-eastchina1.126.net/pic_CoreData_outline.png">
 <meta property="og:image" content="https://davidlii.nos-eastchina1.126.net/pic_cd_persistence.png">
 <meta property="og:image" content="https://davidlii.nos-eastchina1.126.net/pic_cd_Undo.png">
 <meta property="og:image" content="https://davidlii.nos-eastchina1.126.net/pic_cd_backgroundTask.png">
@@ -43,7 +44,7 @@
 <meta property="article:author" content="Davidli">
 <meta property="article:tag" content="数据">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://davidlii.nos-eastchina1.126.net/pic_cd_persistence.png">
+<meta name="twitter:image" content="https://davidlii.nos-eastchina1.126.net/pic_CoreData_outline.png">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
@@ -299,7 +300,8 @@
             
               <div class="markdown-body">
                 
-                <h3 id="一-简介"><a href="#一-简介" class="headerlink" title="一.简介"></a>一.简介</h3><p>Core Data 是一个<code>对象-关系映射</code>持久化方案，处于应用与持久化存储之间，可以将应用中的对象转化成数据，保存在SQLite文件等持久化存储中，也可以缓存临时数据。在单台设备上 Core Data 支持回滚重做，在多台设备间使用同一 iCloud 账户同步数据时，Core Data 会自动将结构映射到 CloudKit 中。</p>
+                <p><img src="https://davidlii.nos-eastchina1.126.net/pic_CoreData_outline.png" srcset="/img/loading.gif" lazyload alt="CoreData大纲"></p>
+<h3 id="一-简介"><a href="#一-简介" class="headerlink" title="一.简介"></a>一.简介</h3><p>Core Data 是一个<code>对象-关系映射</code>持久化方案，处于应用与持久化存储之间，可以将应用中的对象转化成数据，保存在SQLite文件等持久化存储中，也可以缓存临时数据。在单台设备上 Core Data 支持回滚重做，在多台设备间使用同一 iCloud 账户同步数据时，Core Data 会自动将结构映射到 CloudKit 中。</p>
 <p>在<code>.xcdatamodeld</code>数据模型中，可以定义数据类型与关系、生成对应的类定义。Core Data 会自动管理数据对象并提供以下功能：</p>
 <ul>
 <li>持久化</li>
