@@ -525,7 +525,7 @@
 
 <p><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/foundation/nsoperation/1416837-start?language=objc">Begins the execution of the operation</a>，If you are implementing a concurrent operation, you must override this method and use it to initiate your operation。</p>
 <p>执行并发任务时“必须”重写此方法。</p>
-<p>在没有被重写时，<code>start</code>方法的默认实现里会更新当前任务的执行状态，之后执行<code>-main</code>函数。此方法也会做一些检查，以确保当前任务能正常执行：如果任务已被取消或已完成，则<code>-start</code>方法直接返回并且不会再调用<code>-main</code>方法；如果任务正在执行或者尚未准备就绪，则会抛出异常；</p>
+<p>在没有被重写时，<code>start</code>方法的默认实现里会更新当前任务的执行状态，之后调用<code>-main</code>函数。此方法也会做一些检查，以确保当前任务能正常执行：如果任务已被取消或已完成，则<code>-start</code>方法直接返回并且不会再调用<code>-main</code>方法；如果任务正在执行或者尚未准备就绪，则会抛出异常；</p>
 <blockquote>
 <p>An operation is not considered ready to execute if it is still dependent on other operations that have not yet finished.</p>
 </blockquote>

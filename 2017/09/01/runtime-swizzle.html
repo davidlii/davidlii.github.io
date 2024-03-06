@@ -16,12 +16,12 @@
   <meta name="author" content="Davidli">
   <meta name="keywords" content="Davidli">
   
-    <meta name="description" content="1.方法交换Method Swizzling 作用：动态交换两个方法的实现(即IMP指针)； 原理：在类的数据结构体中有一个”方法列表”，它存放着 SEL 与 IMP 的映射关系。Method Swizzling 就是对这个列表进行的操作，通过改变这种映射关系，完成两个方法IMP的交换； 使用场景：  类的原有方法无法满足新需求，需要扩展并替换。如数组新增对象时，检测对象是否为nil； 新增页面统">
+    <meta name="description" content="1.方法交换Method Swizzling 作用：动态交换两个方法的实现(即IMP指针)； 原理：在类的结构体中有一个methodLists，它存放着 SEL 与 IMP 的映射关系。Method Swizzling 就是对这个列表进行的操作，通过改变这种映射关系，完成两个方法IMP的交换； 使用场景：  类的原有方法无法满足新需求，需要扩展并替换。如数组新增对象时，检测对象是否为nil； 新增">
 <meta property="og:type" content="article">
 <meta property="og:title" content="方法交换">
 <meta property="og:url" content="https://davidlii.cn/2017/09/01/runtime-swizzle.html">
 <meta property="og:site_name" content="Davidli">
-<meta property="og:description" content="1.方法交换Method Swizzling 作用：动态交换两个方法的实现(即IMP指针)； 原理：在类的数据结构体中有一个”方法列表”，它存放着 SEL 与 IMP 的映射关系。Method Swizzling 就是对这个列表进行的操作，通过改变这种映射关系，完成两个方法IMP的交换； 使用场景：  类的原有方法无法满足新需求，需要扩展并替换。如数组新增对象时，检测对象是否为nil； 新增页面统">
+<meta property="og:description" content="1.方法交换Method Swizzling 作用：动态交换两个方法的实现(即IMP指针)； 原理：在类的结构体中有一个methodLists，它存放着 SEL 与 IMP 的映射关系。Method Swizzling 就是对这个列表进行的操作，通过改变这种映射关系，完成两个方法IMP的交换； 使用场景：  类的原有方法无法满足新需求，需要扩展并替换。如数组新增对象时，检测对象是否为nil； 新增">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2017-09-01T08:09:05.000Z">
 <meta property="article:modified_time" content="2017-09-01T08:09:05.000Z">
@@ -285,11 +285,11 @@
                 
                 <h3 id="1-方法交换"><a href="#1-方法交换" class="headerlink" title="1.方法交换"></a>1.方法交换</h3><p>Method Swizzling</p>
 <p>作用：动态交换两个方法的实现(即IMP指针)；</p>
-<p>原理：在类的数据结构体中有一个”方法列表”，它存放着 SEL 与 IMP 的映射关系。Method Swizzling 就是对这个列表进行的操作，通过改变这种映射关系，完成两个方法IMP的交换；</p>
+<p>原理：在类的结构体中有一个<code>methodLists</code>，它存放着 SEL 与 IMP 的映射关系。Method Swizzling 就是对这个列表进行的操作，通过改变这种映射关系，完成两个方法IMP的交换；</p>
 <p>使用场景：</p>
 <ol>
 <li>类的原有方法无法满足新需求，需要扩展并替换。如数组新增对象时，检测对象是否为nil；</li>
-<li>新增页面统计等功能时，需新建父类实现统计业务，再让相关类继承此类，这会造成重复劳动。如果在运行时事先替换viewDidLoad等为自己的统计方法，则只需要一次操作即可；</li>
+<li>新增页面统计等功能时，需新建父类实现统计业务，再让相关类继承此类，这会造成重复劳动。如果在运行时事先替换各viewDidLoad为自己的统计方法，则只需要一次操作即可；</li>
 </ol>
 <p>其核心代码是runtime的下面两个C语言API：</p>
 <figure class="highlight smali"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs smali">/** <br> * Exchanges the implementations of two methods.<br> * <br> * @param m1 Method to exchange with second method.<br> * @param m2 Method to exchange with first method.<br> * <br> * @note This is an atomic version of the following:<br> *  \code <br> *  IMP imp1 = method_getImplementation(m1);<br> *  IMP imp2 = method_getImplementation(m2);<br> *  method_setImplementation(m1, imp2);<br> *  method_setImplementation(m2, imp1);<br> *  \endcode<br> */<br>OBJC_EXPORT void method_exchangeImplementations(Method m1, Method m2)<br><br><br>/** <br> * Returns a specified<span class="hljs-built_in"> instance </span>method for a given class.<br> * <br> * @param cls The class you want to inspect.<br> * @param name The selector of the method you want to retrieve.<br> * <br> * @return The method that corresponds to the implementation of the selector specified by <br> *  \e name for the class specified by \e cls,<span class="hljs-built_in"> or </span>\c NULL<span class="hljs-built_in"> if </span>the specified class<span class="hljs-built_in"> or </span>its <br> *  superclasses do<span class="hljs-built_in"> not </span>contain an<span class="hljs-built_in"> instance </span>method with the specified selector.<br> *<br> * @note This function searches superclasses for implementations, whereas \c class_copyMethodList does not.<br> */<br>OBJC_EXPORT Method class_getInstanceMethod(Class cls, SEL name)<br></code></pre></td></tr></table></figure>
@@ -387,9 +387,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2017/09/01/runtime-addClass.html" title="新增类">
+                      <a href="/2017/09/01/runtime-addClass.html" title="新增类及其成员">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">新增类</span>
+                        <span class="hidden-mobile">新增类及其成员</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     

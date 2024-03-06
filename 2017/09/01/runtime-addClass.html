@@ -18,7 +18,7 @@
   
     <meta name="description" content="1.API To create a new class, start by calling objc_allocateClassPair. Then set the class’s attributes with functions like class_addMethod and class_addIvar. When you are done building the class, call">
 <meta property="og:type" content="article">
-<meta property="og:title" content="新增类">
+<meta property="og:title" content="新增类及其成员">
 <meta property="og:url" content="https://davidlii.cn/2017/09/01/runtime-addClass.html">
 <meta property="og:site_name" content="Davidli">
 <meta property="og:description" content="1.API To create a new class, start by calling objc_allocateClassPair. Then set the class’s attributes with functions like class_addMethod and class_addIvar. When you are done building the class, call">
@@ -33,7 +33,7 @@
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>新增类 - Davidli</title>
+  <title>新增类及其成员 - Davidli</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -198,7 +198,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="新增类"></span>
+            <span id="subtitle" data-typed-text="新增类及其成员"></span>
           
         </div>
 
@@ -278,7 +278,7 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">新增类</h1>
+            <h1 style="display: none">新增类及其成员</h1>
             
             
               <div class="markdown-body">
@@ -288,7 +288,7 @@
 </blockquote>
 <h4 id="1-1-增加类"><a href="#1-1-增加类" class="headerlink" title="1.1.增加类"></a>1.1.增加类</h4><figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">Class objc<span class="hljs-constructor">_allocateClassPair(Class <span class="hljs-params">superclass</span>, <span class="hljs-params">const</span> <span class="hljs-params">char</span> <span class="hljs-operator">*</span><span class="hljs-params">name</span>, <span class="hljs-params">size_t</span> <span class="hljs-params">extraBytes</span>)</span>;<br>void objc<span class="hljs-constructor">_registerClassPair(Class <span class="hljs-params">cls</span>)</span><br></code></pre></td></tr></table></figure>
 
-<p>这两个方法应该配对使用，在二者之间增加成员变量、属性、实例方法和类方法等。调用第二个方法即注册类，这之后类的结构也就固定下来，不能再向类中增加新的成员变量，但是可以增加属性和方法。其中后续增加的属性不会自动生成<code>_属性名</code>成员变量，也不会提供属性的setter与getter函数及其实现。</p>
+<p>这两个方法配对使用，在二者之间增加成员变量、属性、实例方法和类方法等。调用第二个方法即注册类，这之后类的结构也就固定下来，不能再向类中增加新的成员变量，但是可以增加属性和方法。其中新增的属性不会自动生成<code>_属性名</code>成员变量，也不会提供setter与getter函数及其实现。</p>
 <h4 id="1-2-增加方法"><a href="#1-2-增加方法" class="headerlink" title="1.2.增加方法"></a>1.2.增加方法</h4><figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">BOOL <span class="hljs-keyword">class</span><span class="hljs-constructor">_addMethod(Class <span class="hljs-params">cls</span>, SEL <span class="hljs-params">name</span>, IMP <span class="hljs-params">imp</span>, <span class="hljs-params">const</span> <span class="hljs-params">char</span> <span class="hljs-operator">*</span><span class="hljs-params">types</span>)</span>;<br></code></pre></td></tr></table></figure>
 
 <ul>
@@ -363,7 +363,7 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>新增类</div>
+      <div>新增类及其成员</div>
       <div>https://davidlii.cn/2017/09/01/runtime-addClass.html</div>
     </div>
     <div class="license-meta">

@@ -332,11 +332,11 @@
 <li>通过关联增加属性，只是把属性对象与类对象的实例相关联，并未真正增加类的成员变量；</li>
 <li>关联的对象与被关联的对象，两者的内存空间是分开的；</li>
 </ol>
-<h4 id="1-5-原理"><a href="#1-5-原理" class="headerlink" title="1.5.原理"></a>1.5.原理</h4><p>通过关联技术我们可以将对象与某个实例绑定到一起，或者在某个分类中实现属性的存取。但是在运行时被关联的属性并没有添加到 <code>category_t</code> 结构体中，也不会合并到原类对象里，而是存储在一个全局的 <code>AssociationsManager</code> 里。</p>
+<h4 id="1-5-原理"><a href="#1-5-原理" class="headerlink" title="1.5.原理"></a>1.5.原理</h4><p><code>关联</code>可以将对象与某个实例绑定到一起，或者在分类中实现属性值的存取。但是在运行时，被关联的属性并没有添加到 <code>category_t</code> 结构体中，也不会合并到原类对象里，而是存储在一个全局的管理器 <code>AssociationsManager</code> 里。</p>
 <blockquote>
 <p>所有的关联属性、获取关联属性、移除关联属性都是通过一个<code>AssociationsManager</code>来操作，类似于 OC 中 NSFileManager 的角色，通过传递进来的对象作为地址取出这个对象所对应的关联列表，然后通过<code>key</code>取出这个关联列表的关联属性 ObjcAssociation。ObjcAssociation 包含了 <code>关联策略</code> 和 <code>关联值</code>.</p>
 </blockquote>
-<p>更具体的源码可以参考<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/21555a36a29d">这篇文章</a>~</p>
+<p>更具体的源码可以参考<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/21555a36a29d">这里</a>~</p>
 <h3 id="2-分类特殊性"><a href="#2-分类特殊性" class="headerlink" title="2.分类特殊性"></a>2.分类特殊性</h3><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-meta">#import <span class="hljs-string">&lt;Foundation/Foundation.h&gt;</span></span><br><br><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">NSObject</span> (<span class="hljs-title">Associate</span>)</span><br>&#123;<br>    <span class="hljs-type">int</span> aInt;<span class="hljs-comment">//此处编译时会报错：“instance variables may not be placed in categories”</span><br>&#125;<br><span class="hljs-comment">//属性 分类中允许声明属性，但不会自动生成getter、setter函数；</span><br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">strong</span>) <span class="hljs-type">id</span> mAssociateObj;<br><br><span class="hljs-keyword">@end</span><br></code></pre></td></tr></table></figure>
 
 <ul>

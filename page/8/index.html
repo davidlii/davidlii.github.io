@@ -495,7 +495,7 @@
     
       <div class="col-12 col-md-4 m-auto index-img">
         <a href="/2017/09/01/runtime-addClass.html" target="_self">
-          <img src="/img/avatar.png" srcset="/img/loading.gif" lazyload alt="新增类">
+          <img src="/img/avatar.png" srcset="/img/loading.gif" lazyload alt="新增类及其成员">
         </a>
       </div>
     
@@ -503,7 +503,7 @@
       <h1 class="index-header">
         
         <a href="/2017/09/01/runtime-addClass.html" target="_self">
-          新增类
+          新增类及其成员
         </a>
       </h1>
 
@@ -577,7 +577,7 @@
       
       <a class="index-excerpt " href="/2017/09/01/runtime-swizzle.html" target="_self">
         <div>
-          1.方法交换Method Swizzling 作用：动态交换两个方法的实现(即IMP指针)； 原理：在类的数据结构体中有一个”方法列表”，它存放着 SEL 与 IMP 的映射关系。Method Swizzling 就是对这个列表进行的操作，通过改变这种映射关系，完成两个方法IMP的交换； 使用场景：  类的原有方法无法满足新需求，需要扩展并替换。如数组新增对象时，检测对象是否为nil； 新增页面统
+          1.方法交换Method Swizzling 作用：动态交换两个方法的实现(即IMP指针)； 原理：在类的结构体中有一个methodLists，它存放着 SEL 与 IMP 的映射关系。Method Swizzling 就是对这个列表进行的操作，通过改变这种映射关系，完成两个方法IMP的交换； 使用场景：  类的原有方法无法满足新需求，需要扩展并替换。如数组新增对象时，检测对象是否为nil； 新增
         </div>
       </a>
 
