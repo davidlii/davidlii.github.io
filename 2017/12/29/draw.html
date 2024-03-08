@@ -18,7 +18,7 @@
   
     <meta name="description" content="1.图层的绘制图层，即CALayer的绘有两种实现方案：  自己绘制； 交给代理对象绘制。  1.1.自己绘制图层自己绘制时，需要重写 -drawInContext 方法，具体步骤为：  调用 CALayer 对象的 setNeedsDisplay 方法触发重绘； 重写 drawInContext: 方法绘制新内容。  #示例1.1： 1234567891011121314151617181920">
 <meta property="og:type" content="article">
-<meta property="og:title" content="CALayer">
+<meta property="og:title" content="CALayer、动画、frame">
 <meta property="og:url" content="https://davidlii.cn/2017/12/29/draw.html">
 <meta property="og:site_name" content="Davidli">
 <meta property="og:description" content="1.图层的绘制图层，即CALayer的绘有两种实现方案：  自己绘制； 交给代理对象绘制。  1.1.自己绘制图层自己绘制时，需要重写 -drawInContext 方法，具体步骤为：  调用 CALayer 对象的 setNeedsDisplay 方法触发重绘； 重写 drawInContext: 方法绘制新内容。  #示例1.1： 1234567891011121314151617181920">
@@ -41,7 +41,7 @@
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>CALayer - Davidli</title>
+  <title>CALayer、动画、frame - Davidli</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -206,7 +206,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="CALayer"></span>
+            <span id="subtitle" data-typed-text="CALayer、动画、frame"></span>
           
         </div>
 
@@ -286,7 +286,7 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">CALayer</h1>
+            <h1 style="display: none">CALayer、动画、frame</h1>
             
             
               <div class="markdown-body">
@@ -336,7 +336,7 @@
 <li>图层的<code>contents</code>会从 backing store 中读取内容；</li>
 <li>图层将<code>contents</code>中的位图交给<code>GPU</code>进行合成、转换和渲染；</li>
 <li>GPU 将渲染结果放入<code>帧缓冲区</code>；</li>
-<li><code>视频控制器</code>会按照 VSync 信号逐行读取帧缓冲区的数据，经过可能的数模转换传递给<code>显示器</code>展示。</li>
+<li><code>视频控制器</code>按照 VSync 信号逐行读取帧缓冲区的数据，经过数模转换传递给<code>显示器</code>展示。</li>
 </ul>
 <p>除了设置视图的宽高、背景色来展示内容外，我们也可以直接给 layer.contents 赋值，这种情况下，显示内容时不再从<code>后备存储</code>中读取内容，而是直接使用<code>contents</code>中的位图。</p>
 <blockquote>
@@ -539,7 +539,7 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>CALayer</div>
+      <div>CALayer、动画、frame</div>
       <div>https://davidlii.cn/2017/12/29/draw.html</div>
     </div>
     <div class="license-meta">
@@ -592,8 +592,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2017/12/25/load.html" title="+load &amp; +initialize">
-                        <span class="hidden-mobile">+load &amp; +initialize</span>
+                      <a href="/2017/12/27/autolayout.html" title="UI布局 &amp; 适配">
+                        <span class="hidden-mobile">UI布局 &amp; 适配</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

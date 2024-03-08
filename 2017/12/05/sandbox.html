@@ -16,24 +16,24 @@
   <meta name="author" content="Davidli">
   <meta name="keywords" content="Davidli">
   
-    <meta name="description" content="分区及职责 栈区(stack)：存放局部变量和方法实参。  堆区(heap)：存放OC中使用new等方法创建的对象。  全局（静态）区：包括以下两个分区：   123.1. 数据段（Data segment）：初始化的全局变量和静态变量。3.2. BSS段：未初始化的全局变量和静态变量。   常量区(数据段)：const、@”x”常量字符串  代码段(Text segment)：程序的代码（ELF">
+    <meta name="description" content="1、沙盒 iOS程序默认情况下只能访问程序自己的目录，这个目录被称为“沙盒”。  沙盒的目录结构： 123456&quot;应用程序包&quot;- Documents- Library  *Caches  *Preferences- tmp  1.1.”应用程序包”:这里存放的是应用程序的源文件，包括资源文件和可执行文件。 12String *path &#x3D; [[NSBundle mainBund">
 <meta property="og:type" content="article">
-<meta property="og:title" content="内存分配">
-<meta property="og:url" content="https://davidlii.cn/2017/12/18/memory.html">
+<meta property="og:title" content="沙盒 &amp; 本地持久化方案">
+<meta property="og:url" content="https://davidlii.cn/2017/12/05/sandbox.html">
 <meta property="og:site_name" content="Davidli">
-<meta property="og:description" content="分区及职责 栈区(stack)：存放局部变量和方法实参。  堆区(heap)：存放OC中使用new等方法创建的对象。  全局（静态）区：包括以下两个分区：   123.1. 数据段（Data segment）：初始化的全局变量和静态变量。3.2. BSS段：未初始化的全局变量和静态变量。   常量区(数据段)：const、@”x”常量字符串  代码段(Text segment)：程序的代码（ELF">
+<meta property="og:description" content="1、沙盒 iOS程序默认情况下只能访问程序自己的目录，这个目录被称为“沙盒”。  沙盒的目录结构： 123456&quot;应用程序包&quot;- Documents- Library  *Caches  *Preferences- tmp  1.1.”应用程序包”:这里存放的是应用程序的源文件，包括资源文件和可执行文件。 12String *path &#x3D; [[NSBundle mainBund">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2017-12-18T09:57:48.000Z">
-<meta property="article:modified_time" content="2018-01-24T09:57:48.000Z">
+<meta property="article:published_time" content="2017-12-05T11:20:07.000Z">
+<meta property="article:modified_time" content="2017-12-02T11:20:07.000Z">
 <meta property="article:author" content="Davidli">
-<meta property="article:tag" content="内存管理">
+<meta property="article:tag" content="数据">
 <meta name="twitter:card" content="summary_large_image">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>内存分配 - Davidli</title>
+  <title>沙盒 &amp; 本地持久化方案 - Davidli</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -198,7 +198,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="内存分配"></span>
+            <span id="subtitle" data-typed-text="沙盒 &amp; 本地持久化方案"></span>
           
         </div>
 
@@ -209,8 +209,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2017-12-18 17:57" pubdate>
-          2017年12月18日 下午
+        <time datetime="2017-12-05 19:20" pubdate>
+          2017年12月5日 晚上
         </time>
       </span>
     
@@ -221,7 +221,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          825 字
+          3k 字
         
       </span>
     
@@ -232,7 +232,7 @@
         
         
         
-          7 分钟
+          26 分钟
         
       </span>
     
@@ -278,33 +278,59 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">内存分配</h1>
+            <h1 style="display: none">沙盒 &amp; 本地持久化方案</h1>
             
             
               <div class="markdown-body">
                 
-                <h3 id="分区及职责"><a href="#分区及职责" class="headerlink" title="分区及职责"></a>分区及职责</h3><ol>
-<li><p>栈区(stack)：存放局部变量和方法实参。</p>
-</li>
-<li><p>堆区(heap)：存放OC中使用new等方法创建的对象。</p>
-</li>
-<li><p>全局（静态）区：包括以下两个分区：</p>
-</li>
-</ol>
-<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">3</span>.<span class="hljs-number">1</span>. 数据段（Data segment）：初始化的全局变量和静态变量。<br><span class="hljs-attribute">3</span>.<span class="hljs-number">2</span>. BSS段：未初始化的全局变量和静态变量。<br></code></pre></td></tr></table></figure>
+                <h3 id="1、沙盒"><a href="#1、沙盒" class="headerlink" title="1、沙盒"></a>1、沙盒</h3><blockquote>
+<p>iOS程序默认情况下只能访问程序自己的目录，这个目录被称为“沙盒”。</p>
+</blockquote>
+<p>沙盒的目录结构：</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs markdown">&quot;应用程序包&quot;<br><span class="hljs-bullet">-</span> Documents<br><span class="hljs-bullet">-</span> Library<br>  <span class="hljs-emphasis">*Caches</span><br><span class="hljs-emphasis">  *</span>Preferences<br><span class="hljs-bullet">-</span> tmp<br></code></pre></td></tr></table></figure>
 
-<ol start="4">
-<li><p>常量区(数据段)：const、@”x”常量字符串</p>
-</li>
-<li><p>代码段(Text segment)：程序的代码（ELF）。</p>
-</li>
+<h4 id="1-1-”应用程序包”"><a href="#1-1-”应用程序包”" class="headerlink" title="1.1.”应用程序包”:"></a>1.1.”应用程序包”:</h4><p>这里存放的是应用程序的源文件，包括资源文件和可执行文件。</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs objectivec">String *path = [[<span class="hljs-built_in">NSBundle</span> mainBundle] bundlePath];<br><span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;%@&quot;</span>, path);<br></code></pre></td></tr></table></figure>
+
+<h4 id="1-2-Documents"><a href="#1-2-Documents" class="headerlink" title="1.2.Documents:"></a>1.2.Documents:</h4><p>最常用的目录，iTunes同步该应用时会同步此文件夹中的内容，适合存储重要数据。</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-built_in">NSString</span> *path = <span class="hljs-built_in">NSSearchPathForDirectoriesInDomains</span>(<br><span class="hljs-built_in">NSDocumentDirectory</span>,<br><span class="hljs-built_in">NSUserDomainMask</span>,<br><span class="hljs-literal">YES</span>).firstObject;<br><br><span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;%@&quot;</span>,path);<br></code></pre></td></tr></table></figure>
+
+<h4 id="1-3-Library-x2F-Caches"><a href="#1-3-Library-x2F-Caches" class="headerlink" title="1.3.Library&#x2F;Caches:"></a>1.3.Library&#x2F;Caches:</h4><p>iTunes不会同步此文件夹，适合存储体积大，不需要备份的非重要数据。</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-built_in">NSString</span> *path = <span class="hljs-built_in">NSSearchPathForDirectoriesInDomains</span>(<br><span class="hljs-built_in">NSCachesDirectory</span>,<br><span class="hljs-built_in">NSUserDomainMask</span>, <span class="hljs-literal">YES</span>).firstObject;<br><br><span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;%@&quot;</span>,path);<br></code></pre></td></tr></table></figure>
+
+<h4 id="1-4-Library-x2F-Preferences"><a href="#1-4-Library-x2F-Preferences" class="headerlink" title="1.4.Library&#x2F;Preferences:"></a>1.4.Library&#x2F;Preferences:</h4><p>iTunes同步该应用时会同步此文件夹中的内容，通常保存应用的设置信息。</p>
+<h4 id="1-5-tmp"><a href="#1-5-tmp" class="headerlink" title="1.5.tmp:"></a>1.5.tmp:</h4><p>iTunes不会同步此文件夹，系统可能在应用没运行时就删除该目录下的文件，所以此目录适合保存应用中的一些临时文件，用完就删除。</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-built_in">NSString</span> *path = <span class="hljs-built_in">NSTemporaryDirectory</span>();<br><span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;%@&quot;</span>, path);<br></code></pre></td></tr></table></figure>
+<hr>
+<h3 id="2、本地持久化方案"><a href="#2、本地持久化方案" class="headerlink" title="2、本地持久化方案"></a>2、本地持久化方案</h3><h4 id="2-1-plist文件"><a href="#2-1-plist文件" class="headerlink" title="2.1.plist文件"></a>2.1.plist文件</h4><p>通过XML文件的方式保存数据，支持保存的数据类型有：</p>
+<ol>
+<li>NSArray;</li>
+<li>NSMutableArray;</li>
+<li>NSDictionary;</li>
+<li>NSMutableDictionary;</li>
+<li>NSData;</li>
+<li>NSMutableData;</li>
+<li>NSString;</li>
+<li>NSMutableString;</li>
+<li>NSNumber;</li>
+<li>NSDate;</li>
 </ol>
-<h3 id="分配-amp-释放？"><a href="#分配-amp-释放？" class="headerlink" title="分配&amp;释放？"></a>分配&amp;释放？</h3><ul>
-<li>栈区：由编译器自动分配和释放。</li>
-<li>堆区：由程序员申请和释放，不释放会泄漏。</li>
-<li>BSS段\数据段\常量区\代码段：程序结束后由系统释放。</li>
-</ul>
-<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-type">int</span> age = <span class="hljs-number">24</span>;  <span class="hljs-comment">//全局初始化区（数据段）</span><br><span class="hljs-built_in">NSString</span> *name;<span class="hljs-comment">//全局未初始化区（BSS段）</span><br><span class="hljs-keyword">static</span> <span class="hljs-built_in">NSString</span> *sName = <span class="hljs-string">@&quot;Dav&quot;</span>;<span class="hljs-comment">//全局（静态初始化）区</span><br><br><span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">AppDelegate</span></span><br><br>-(<span class="hljs-type">BOOL</span>)application:(<span class="hljs-built_in">UIApplication</span> *)application<br>willFinishLaunchingWithOptions:(<span class="hljs-built_in">NSDictionary</span> *)launchOptions<br>&#123;<br>    <span class="hljs-type">int</span> aInt;<span class="hljs-comment">//栈</span><br>    <span class="hljs-built_in">NSString</span> *aName = <span class="hljs-string">@&quot;Dav&quot;</span>; <span class="hljs-comment">//Dav在常量区，对象aName的指针存储在栈区。</span><br>    <span class="hljs-comment">//对象aArr的指针在栈区，分配而来的8字节的区域在堆区，aArr的指针指向堆区的地址。</span><br>    <span class="hljs-built_in">NSMutableArray</span> *aArr = [<span class="hljs-built_in">NSMutableArray</span> arrayWithCapacity:<span class="hljs-number">1</span>]; <br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">YES</span>;<br>&#125;<br><br>- (<span class="hljs-built_in">NSInteger</span>)mathAddParam1:(<span class="hljs-built_in">NSInteger</span>)num1 Param2:(<span class="hljs-built_in">NSInteger</span>)num2<br>&#123;<br>    <span class="hljs-keyword">return</span> num1 + num2; <span class="hljs-comment">//num1和num2 在栈区</span><br>&#125;<br><span class="hljs-keyword">@end</span><br></code></pre></td></tr></table></figure>
+<p>plist读写数据示例：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-built_in">NSString</span> *path = <span class="hljs-built_in">NSSearchPathForDirectoriesInDomains</span>(<br><span class="hljs-built_in">NSDocumentDirectory</span>,<span class="hljs-built_in">NSUserDomainMask</span>,<span class="hljs-literal">YES</span>).firstObject;<br><br><span class="hljs-built_in">NSString</span> *fileName = [path stringByAppendingPathComponent:<span class="hljs-string">@&quot;nameXX.plist&quot;</span>];<br><br><span class="hljs-built_in">NSArray</span> *array = @[<span class="hljs-string">@&quot;1&quot;</span>, <span class="hljs-string">@&quot;2&quot;</span>, <span class="hljs-string">@&quot;3&quot;</span>];<br>[array writeToFile:fileName atomically:<span class="hljs-literal">YES</span>];<br><br><span class="hljs-built_in">NSArray</span> *result = [<span class="hljs-built_in">NSArray</span> arrayWithContentsOfFile:fileName];<br><span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;%@&quot;</span>, result);<br></code></pre></td></tr></table></figure>
+
+<h4 id="2-2-KeyChain-钥匙串"><a href="#2-2-KeyChain-钥匙串" class="headerlink" title="2.2.KeyChain 钥匙串"></a>2.2.KeyChain 钥匙串</h4><p>信息存储到钥匙串中之后，在应用删除重新安装时，仍然能取出之前保存的值。可以使用第三方库UICKeyChainStore实现钥匙串存储操作（<a target="_blank" rel="noopener" href="https://github.com/kishikawakatsumi/UICKeyChainStore">Github地址</a>）。</p>
+<h4 id="2-3-preference（偏好设置）"><a href="#2-3-preference（偏好设置）" class="headerlink" title="2.3.preference（偏好设置）"></a>2.3.preference（偏好设置）</h4><p>用来保存应用程序的配置信息的。如果需要立即写入文件的就必须调用synchronize方法，否则系统会根据I&#x2F;O情况不定时刻地保存到文件中。</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-regexp">//</span><span class="hljs-number">1</span>.获得NSUserDefaults文件<br>NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];<br><span class="hljs-regexp">//</span><span class="hljs-number">2</span>.向文件中写入内容<br>[userDefaults setObject:@<span class="hljs-string">&quot;AAA&quot;</span> forKey:@<span class="hljs-string">&quot;a&quot;</span>];<br><span class="hljs-regexp">//</span><span class="hljs-number">2.1</span>立即同步<br>[userDefaults synchronize];<br><br><span class="hljs-regexp">//</span><span class="hljs-number">3</span>.读取文件<br>NSString *name = [userDefaults objectForKey:@<span class="hljs-string">&quot;a&quot;</span>];<br>NSLog(@<span class="hljs-string">&quot;%@&quot;</span>, name);<br></code></pre></td></tr></table></figure>
+
+<h4 id="2-4-NSKeyedArchiver（归档）"><a href="#2-4-NSKeyedArchiver（归档）" class="headerlink" title="2.4.NSKeyedArchiver（归档）"></a>2.4.NSKeyedArchiver（归档）</h4><p>归档，只要遵循了 NSCoding 协议的对象都可以通过它实现序列化。</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">Person</span> : <span class="hljs-title">NSObject</span> &lt;<span class="hljs-title">NSCoding</span>&gt;</span><br><br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">copy</span>) <span class="hljs-built_in">NSString</span> *name;<br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">assign</span>) <span class="hljs-built_in">NSInteger</span> age;<br><br><span class="hljs-keyword">@end</span><br><br><span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">Person</span></span><br><span class="hljs-comment">//解档</span><br>- (<span class="hljs-keyword">instancetype</span>)initWithCoder:(<span class="hljs-built_in">NSCoder</span> *)aDecoder<br>&#123;<br><span class="hljs-keyword">if</span> ([<span class="hljs-variable language_">super</span> init]) &#123;<br><span class="hljs-keyword">self</span>.name = [aDecoder decodeObjectForKey:<span class="hljs-string">@&quot;name&quot;</span>];<br><span class="hljs-keyword">self</span>.age = [aDecoder decodeIntegerForKey:<span class="hljs-string">@&quot;age&quot;</span>];<br>&#125;<br><span class="hljs-keyword">return</span> <span class="hljs-keyword">self</span>;<br>&#125;<br><span class="hljs-comment">//归档</span><br>- (<span class="hljs-type">void</span>)encodeWithCoder:(<span class="hljs-built_in">NSCoder</span> *)aCoder<br>&#123;<br>[aCoder encodeObject:<span class="hljs-keyword">self</span>.name forKey:<span class="hljs-string">@&quot;name&quot;</span>];<br>[aCoder encodeInteger:<span class="hljs-keyword">self</span>.age forKey:<span class="hljs-string">@&quot;age&quot;</span>];<br>&#125;<br><span class="hljs-keyword">@end</span><br></code></pre></td></tr></table></figure>
+
+<p>存取示例：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-built_in">NSString</span> *file = [<span class="hljs-built_in">NSSearchPathForDirectoriesInDomains</span>(<br><span class="hljs-built_in">NSDocumentDirectory</span>, <span class="hljs-built_in">NSUserDomainMask</span>, <span class="hljs-literal">YES</span>).firstObject<br>stringByAppendingPathComponent:<span class="hljs-string">@&quot;person.data&quot;</span>];<br><span class="hljs-comment">//存</span><br>Person *person = [[Person alloc] init];<br>person.name = <span class="hljs-string">@&quot;III&quot;</span>;<br>person.age = <span class="hljs-number">20</span>;<br>[<span class="hljs-built_in">NSKeyedArchiver</span> archiveRootObject:person toFile:file];<br><span class="hljs-comment">//取</span><br>Person *newPerson = [<span class="hljs-built_in">NSKeyedUnarchiver</span> unarchiveObjectWithFile:file];<br><span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;++++%@&quot;</span>,newPerson.name);<br></code></pre></td></tr></table></figure>
+
+<p>如果需要归档的类是某个自定义类的子类时，就需要在归档和解档之前先实现父类的归档和解档方法。即 [super encodeWithCoder:aCoder] 和 [super initWithCoder:aDecoder] 方法;</p>
+<h4 id="2-5-CoreData"><a href="#2-5-CoreData" class="headerlink" title="2.5.CoreData"></a>2.5.CoreData</h4><p>未完待续。。</p>
+
                 
               </div>
             
@@ -337,7 +363,7 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">#内存管理</a>
+        <a href="/tags/%E6%95%B0%E6%8D%AE/">#数据</a>
       
     </div>
   
@@ -349,8 +375,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>内存分配</div>
-      <div>https://davidlii.cn/2017/12/18/memory.html</div>
+      <div>沙盒 &amp; 本地持久化方案</div>
+      <div>https://davidlii.cn/2017/12/05/sandbox.html</div>
     </div>
     <div class="license-meta">
       
@@ -362,7 +388,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2017年12月18日</div>
+          <div>2017年12月5日</div>
         </div>
       
       
@@ -402,8 +428,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2017/12/16/memory-error.html" title="内存错误">
-                        <span class="hidden-mobile">内存错误</span>
+                      <a href="/2017/12/02/coredata.html" title="数据库：Core Data">
+                        <span class="hidden-mobile">数据库：Core Data</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

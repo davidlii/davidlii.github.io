@@ -19,7 +19,7 @@
     <meta name="description" content="一.简介Core Data 是一个对象-关系映射持久化方案，处于应用与持久化存储之间，可以将应用中的对象转化成数据，保存在SQLite文件等持久化存储中，也可以缓存临时数据。在单台设备上 Core Data 支持回滚重做，在多台设备间使用同一 iCloud 账户同步数据时，Core Data 会自动将结构映射到 CloudKit 中。 在.xcdatamodeld数据模型中，可以定义数据类型与关">
 <meta property="og:type" content="article">
 <meta property="og:title" content="数据库：Core Data">
-<meta property="og:url" content="https://davidlii.cn/2017/12/05/coredata.html">
+<meta property="og:url" content="https://davidlii.cn/2017/12/02/coredata.html">
 <meta property="og:site_name" content="Davidli">
 <meta property="og:description" content="一.简介Core Data 是一个对象-关系映射持久化方案，处于应用与持久化存储之间，可以将应用中的对象转化成数据，保存在SQLite文件等持久化存储中，也可以缓存临时数据。在单台设备上 Core Data 支持回滚重做，在多台设备间使用同一 iCloud 账户同步数据时，Core Data 会自动将结构映射到 CloudKit 中。 在.xcdatamodeld数据模型中，可以定义数据类型与关">
 <meta property="og:locale" content="zh_CN">
@@ -39,7 +39,7 @@
 <meta property="og:image" content="https://davidlii.nos-eastchina1.126.net/pic_cd_parent_child_moc.png">
 <meta property="og:image" content="https://davidlii.nos-eastchina1.126.net/pic_cd_3moc.png">
 <meta property="og:image" content="https://davidlii.nos-eastchina1.126.net/pic_cd_entity.jpeg">
-<meta property="article:published_time" content="2017-12-05T03:34:32.000Z">
+<meta property="article:published_time" content="2017-12-02T03:34:32.000Z">
 <meta property="article:modified_time" content="2017-12-05T03:34:32.000Z">
 <meta property="article:author" content="Davidli">
 <meta property="article:tag" content="数据">
@@ -226,8 +226,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2017-12-05 11:34" pubdate>
-          2017年12月5日 中午
+        <time datetime="2017-12-02 11:34" pubdate>
+          2017年12月2日 中午
         </time>
       </span>
     
@@ -238,7 +238,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          36k 字
+          37k 字
         
       </span>
     
@@ -249,7 +249,7 @@
         
         
         
-          304 分钟
+          308 分钟
         
       </span>
     
@@ -397,6 +397,22 @@
 <td align="left">只在关系未指向任何目标实体时才删除源实体</td>
 </tr>
 </tbody></table>
+<ul>
+<li>No Action</li>
+</ul>
+<p>无操作，删除A后其关联的B没任何操作，不会将B中关联属性(A)指向nil。删除A后使用B的关联属性(A)，可能会导致其他问题，所以一般不推荐使用此配置。</p>
+<ul>
+<li>Nullify</li>
+</ul>
+<p>翻译为作废，默认选项，当A对象被删除时，B中指向的对象A会被置空，B本身不受影响，所以删除A不会删除B。例如，删除一个部门时，把员工对应的部门字段置为nil。</p>
+<ul>
+<li>Cascade</li>
+</ul>
+<p>级联，当A对象被删除时，A对象包含的对象B也会被删除。一般用在 1-N 的关系中，1 的一方被删除，则 N 的一方随之被全部级联删除。相反，在 N-1 的关系中，则一般不能使用级联关系，删除多的一方时一定不能直接级联删除一的一方。例如，删除了部门以后，所有的员工对象都要被删除。</p>
+<ul>
+<li>Deny</li>
+</ul>
+<p>拒绝，删除当前对象时，如果当前对象还指向其他关联对象，则当前对象不能被删除。例如，删除部门时，如果还有一个员工，删除操作就会被拒绝。</p>
 <h4 id="4-Cardinality-Type"><a href="#4-Cardinality-Type" class="headerlink" title="4.Cardinality Type"></a>4.Cardinality Type</h4><p>关系分为<code>对1</code>和<code>对多</code>两种类型。</p>
 <h4 id="5-Renaming-ID"><a href="#5-Renaming-ID" class="headerlink" title="5.Renaming ID"></a>5.Renaming ID</h4><p>给关系重命名后，需要将新model中关系的<code>renaming identifier</code>设置成原model中关系的名字。</p>
 <h3 id="六-Core-Data-Stack"><a href="#六-Core-Data-Stack" class="headerlink" title="六.Core Data Stack"></a>六.Core Data Stack</h3><p>创建数据模型文件后需要设置相关类以便真正操作数据对象，这些类被称为<code>Core Data Stack</code>。</p>
@@ -724,7 +740,7 @@
 <td align="left">丢弃冲突中所有的修改，保持持久化存储中的版本不变；</td>
 </tr>
 </tbody></table>
-<h3 id="十二-数据迁移"><a href="#十二-数据迁移" class="headerlink" title="十二.数据迁移"></a>十二.数据迁移</h3><p><code>MOM</code>用来描述持久化存储中数据的结构，Core Data 中只能使用 MOM 打开持久化存储，改变 MOM 中的任何一部分都会导致它与之前版本的存储产生冲突。例如在<code>.xcdatamodel</code>中增加新实体，修改实体的名字，增删属性等，那么老版本的持久化存储就不能使用了。需要通过<code>数据迁移</code>，将老版本存储中的数据迁移到新版本中。为了让 Core Data 知道如何迁移数据，有时我们需要主动提供一些信息，例如，创建一个<code>mapping model</code>映射文件。对于简单的变化，可以使用轻量级迁移功能。</p>
+<h3 id="十二-数据迁移"><a href="#十二-数据迁移" class="headerlink" title="十二.数据迁移"></a>十二.数据迁移</h3><p><code>MOM</code>用来描述持久化存储中数据的结构，Core Data 中只能使用 MOM 打开持久化存储，改变 MOM 中的任何一部分都会导致它与之前版本的存储产生冲突。例如在<code>.xcdatamodel</code>中增加新实体，修改实体的名字，增删属性等，那么老版本的持久化存储就不能使用了。需要通过<code>数据迁移</code>，将老版本存储中的数据迁移到新版本中。为了让 Core Data 知道如何迁移数据，有时我们需要主动提供一些信息，例如，创建一个<code>mapping model</code>映射文件。对于简单的变化，可以使用<code>轻量级迁移</code>功能。</p>
 <p>使用轻量级迁移功能时，Core Data 会根据前后<code>MOM</code>的不同，自动推断出一个<code>mapping model</code>，无需我们自己创建。轻量级迁移在我们项目的初期可能会非常有用，因为这一时期我们可能会经常性的改动模型文件，而又不希望频繁重新生成测试数据。当然，这些<code>小的</code>改动只能是以下这些操作：</p>
 <ul>
 <li>增、删、重命名属性；</li>
@@ -803,7 +819,7 @@
   <div class="license-box my-3">
     <div class="license-title">
       <div>数据库：Core Data</div>
-      <div>https://davidlii.cn/2017/12/05/coredata.html</div>
+      <div>https://davidlii.cn/2017/12/02/coredata.html</div>
     </div>
     <div class="license-meta">
       
@@ -815,7 +831,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2017年12月5日</div>
+          <div>2017年12月2日</div>
         </div>
       
       
@@ -845,9 +861,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2017/12/11/idfa.html" title="设备唯一标识符">
+                      <a href="/2017/12/05/sandbox.html" title="沙盒 &amp; 本地持久化方案">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">设备唯一标识符</span>
+                        <span class="hidden-mobile">沙盒 &amp; 本地持久化方案</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -855,8 +871,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2017/12/02/sandbox.html" title="沙盒 &amp; 本地持久化方案">
-                        <span class="hidden-mobile">沙盒 &amp; 本地持久化方案</span>
+                      <a href="/2017/11/24/faq.html" title="FAQ-常见问题">
+                        <span class="hidden-mobile">FAQ-常见问题</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

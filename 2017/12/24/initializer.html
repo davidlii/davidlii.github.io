@@ -299,7 +299,7 @@
 
 <p>上面的调用示例中，第一种在编译时会报错。因为不希望调用者使用此方法来初始化这个类对象，所以头文件中已把<code>init</code>方法声明为<code>NS_UNAVAILABLE</code>。</p>
 <h3 id="3、使用规范"><a href="#3、使用规范" class="headerlink" title="3、使用规范"></a>3、使用规范</h3><p>如果子类有<code>Designated Initializer</code>，那么这个<code>Designated Initializer</code> 中必须调用它直接父类的<code>Designated Initializer</code>，并且需要重写父类的<code>Designated Initializer</code>。</p>
-<p>如果子类有<code>Designated Initializer</code>，那么<code>Convenience Initializer</code>必须调用这个子类中其它初始化函数(包括<code>Designated Initializer</code>和 其他<code>Convenience Initializer</code>)，不能调用 super 的初始化函数。</p>
+<p>如果子类有<code>Designated Initializer</code>，那么<code>Convenience Initializer</code>必须调用这个子类中其它初始化函数(包括<code>Designated Initializer</code>和其他<code>Convenience Initializer</code>)，不能调用 super 的初始化函数。</p>
 <p>由上可以推理出：</p>
 <ul>
 <li>Convenience Initializer 只能调用自己类中的其他初始化方法。</li>
