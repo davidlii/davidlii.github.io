@@ -234,7 +234,7 @@
         
         
         
-          319 分钟
+          320 分钟
         
       </span>
     
@@ -351,7 +351,7 @@
 <p>打印日志：</p>
 <figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">willSet</span>:<span class="hljs-number">1</span><br><span class="hljs-attribute">didSet</span>:<span class="hljs-number">0</span><br></code></pre></td></tr></table></figure>
 
-<p>观察器在属性初始化过程中不会被调用。</p>
+<p>初始化方法中设置属性，以及在 willSet 和 didSet 中再次设置属性，都不会再次触发属性观察器。</p>
 <h4 id="4-4-延迟存储属性"><a href="#4-4-延迟存储属性" class="headerlink" title="4.4.延迟存储属性"></a>4.4.延迟存储属性</h4><p>第一次被调用时才会计算其初始值的属性。</p>
 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs SWIFT"><span class="hljs-keyword">struct</span> <span class="hljs-title class_">TextBool</span> &#123;<br>    <span class="hljs-keyword">init</span>()&#123;<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Init TextBool&quot;</span>)<br>        aInt <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;<br>    &#125;<br>    <span class="hljs-comment">// 存储属性</span><br>    <span class="hljs-keyword">var</span> aInt:<span class="hljs-type">Int</span><br>&#125;<br><br><span class="hljs-keyword">struct</span> <span class="hljs-title class_">Number</span><br>&#123;<br>    <span class="hljs-keyword">var</span> digits: <span class="hljs-type">Int</span><br>    <span class="hljs-keyword">let</span> pi <span class="hljs-operator">=</span> <span class="hljs-number">3.1415</span><br>    <span class="hljs-keyword">lazy</span> <span class="hljs-keyword">var</span> aBool <span class="hljs-operator">=</span> <span class="hljs-type">TextBool</span>() <span class="hljs-comment">//延迟属性</span><br>&#125;<br><br><span class="hljs-keyword">var</span> n <span class="hljs-operator">=</span> <span class="hljs-type">Number</span>(digits: <span class="hljs-number">1</span>)<br>n.digits <span class="hljs-operator">=</span> <span class="hljs-number">2</span><br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;<span class="hljs-subst">\(n.digits)</span>&quot;</span>)<br><span class="hljs-built_in">print</span>(n.aBool)<br></code></pre></td></tr></table></figure>
 <p>打印日志：</p>

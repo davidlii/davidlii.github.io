@@ -236,7 +236,7 @@
         
         
         
-          91 分钟
+          92 分钟
         
       </span>
     
@@ -407,6 +407,7 @@
 <p>所以，上面#示例1中的问题可以这样解决：</p>
 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs SWIFT"><span class="hljs-keyword">class</span> <span class="hljs-title class_">ViewController</span>: <span class="hljs-title class_">UIViewController</span> &#123;<br><br>    <span class="hljs-keyword">var</span> name :<span class="hljs-type">String</span>? <span class="hljs-operator">=</span> <span class="hljs-string">&quot;s&quot;</span><br>    <span class="hljs-keyword">var</span> sBlock:(()-&gt;())<span class="hljs-operator">?</span><br>    <br>    <span class="hljs-keyword">override</span> <span class="hljs-keyword">func</span> <span class="hljs-title function_">viewDidLoad</span>() &#123;<br>        <span class="hljs-keyword">super</span>.viewDidLoad()<br>        sBlock <span class="hljs-operator">=</span> &#123;<br>            [<span class="hljs-keyword">unowned</span> <span class="hljs-keyword">self</span>] <span class="hljs-keyword">in</span> <span class="hljs-comment">//定义捕获列表</span><br>            <span class="hljs-keyword">self</span>.name <span class="hljs-operator">=</span> <span class="hljs-string">&quot;x&quot;</span><br>        &#125;<br>    &#125;<br>    <br>    <span class="hljs-keyword">deinit</span>&#123;<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;++ deinited !&quot;</span>) <span class="hljs-comment">//能正常析构</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 
+<p>VC虽然强引用了闭包，但是闭包对VC的引用变成了弱引用，不增加VC的引用计数，当指向VC的其他强引用都被移除后，其引用计数为0，即可正常销毁。</p>
 <p>区分<code>weak</code>与<code>unowned</code>：</p>
 <ul>
 <li>weak</li>
@@ -436,8 +437,8 @@
 
 <p>两个实例都顺利析构并释放内存~</p>
 <p><strong>2.野指针问题</strong></p>
-<p><strong>weak</strong> 对象释放后弱引用也随即消失，继续访问该对象时程序会得到 nil，不会闪退。</p>
-<p><strong>unowned</strong> 对象在释放后，依然有一个无效的引用指向对象，它不是 Optional 也不指向 nil。如果继续访问该对象就会闪退。</p>
+<p><strong>weak</strong> 修饰可选对象，当对象释放时弱引用也随即消失，继续访问该对象时会得到 nil，不会闪退。</p>
+<p><strong>unowned</strong> 相当于OC中的<code>unsafe_unretained</code>，也不会增加引用计数，其修饰的对象被释放后，依然会有一个无效的引用指向该对象，它不能是 optional 也不指向 nil，继续访问该对象会闪退。</p>
 <h4 id="5-3-解决方案2-用结构体"><a href="#5-3-解决方案2-用结构体" class="headerlink" title="5.3.解决方案2:用结构体"></a>5.3.解决方案2:用结构体</h4><p>循环引用，从其命名来看实际上是两个问题：</p>
 <ul>
 <li>循环</li>
