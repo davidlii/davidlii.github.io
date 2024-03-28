@@ -451,13 +451,13 @@
 <p>1、<code>全局变量</code>、<code>静态变量</code>、<code>静态全局变量</code>在 block 内可以重新赋值，而<code>局部变量</code>不行。anInt 在 block 内部重新赋值时，编译器报错“variable is not assignable”。</p>
 <p>2、<code>全局变量</code>、<code>静态变量</code>、<code>静态全局变量</code>在初始化时都有默认值，block 内重新赋值后，最终打印出的都是重新修改之后的值。而<code>局部变量</code> anInt 初始化时 &#x3D; 0，在调用 block 之前重新赋值 &#x3D; 1；而 block 内打印的 anInt 的值仍为赋值前的<code>0</code>。这说明 block 内捕获的局部变量的值是 blok 声明之前的那个值。</p>
 <p>3、<code>局部变量</code>array 赋值时报错“variable is not assignable”，而执行 addObject 操作却不会报错。所以，block 中使用到的局部变量可以执行操作而不能赋值。</p>
-<p>4、block 捕获局部变量仅仅只捕获 block 闭包里面会用到的值，其他用不到的变量，它并不会去捕获。</p>
+<p>4、block 捕获局部变量仅捕获 block 闭包里面会用到的值，其他用不到的变量，它并不会去捕获。</p>
 <h3 id="6-问题来了"><a href="#6-问题来了" class="headerlink" title="#6.问题来了"></a>#6.问题来了</h3><p><em>为啥全局变量、静态变量在 block 内能修改，而局部变量不能修改？</em></p>
 <p>内存区域分为：堆区、栈区、全局区(数据区)、代码区。</p>
 <ul>
-<li>全局变量、静态全局变量都存储在全局区，所以在 block 内可以直接被修改。</li>
-<li>静态变量传递给 block 的是内存地址值，所以能在 block 里面直接改变值。</li>
-<li>局部变量是以值传递方式传递到 block 的构造函数里面去的。由于只捕获了局部变量的值，并非内存地址，所以 block 内部不能改变自动变量的值。</li>
+<li>全局变量、静态全局变量都存储在<code>全局区</code>，所以在 block 内可以直接被修改。</li>
+<li>静态变量传递给 block 的是<code>内存地址</code>值，所以能在 block 里面直接改变值。</li>
+<li>局部变量是以<code>值</code>的方式传递到 block 的构造函数里，block 内不能改变此自动变量的值。</li>
 </ul>
 <p>想要在 block 中修改变量的值，有2种方式：</p>
 <ul>
