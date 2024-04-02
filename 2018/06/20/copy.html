@@ -456,21 +456,21 @@
 <li>-initWithArray:copyItems:YES 返回的数组对象与原数组对象的指针不同，内部元素的指针也不相同，且自动调用了元素的拷贝协议方法；</li>
 </ul>
 <p>这些都印证了上面关于集合对象深拷贝、浅拷贝时内部元素的不同。</p>
-<h2 id="9-拷贝与集合的可变性"><a href="#9-拷贝与集合的可变性" class="headerlink" title="9.拷贝与集合的可变性"></a>9.拷贝与集合的可变性</h2><ul>
-<li>-copyWithZone:</li>
-</ul>
-<blockquote>
+<h2 id="9-拷贝与集合的可变性"><a href="#9-拷贝与集合的可变性" class="headerlink" title="9.拷贝与集合的可变性"></a>9.拷贝与集合的可变性</h2><h3 id="1-copyWithZone"><a href="#1-copyWithZone" class="headerlink" title="1.copyWithZone"></a>1.copyWithZone</h3><blockquote>
 <p>makes the surface level immutable. All deeper levels have the mutability they previously had.</p>
 </blockquote>
 <p>上层不可变，其他更深层对象的可变性与原对象相同。</p>
-<ul>
-<li>-initWithArray:copyItems:NO:</li>
-</ul>
+<p>#示例9.1：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">copy</span>) <span class="hljs-built_in">NSMutableArray</span> * array;<br></code></pre></td></tr></table></figure>
+<p>对<code>array</code>属性执行<code>add</code>操作会发生什么?</p>
+<p><code>copy</code>方法返回的集合是不可变集合，故而这里<code>array</code>属性实际上是不可变的，对其执行增删对象操作时会闪退。</p>
+<h3 id="2-copyItems-NO"><a href="#2-copyItems-NO" class="headerlink" title="2.copyItems:NO"></a>2.copyItems:NO</h3><figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs asciidoc"><span class="hljs-bullet">- </span>initWithArray:copyItems:NO:<br></code></pre></td></tr></table></figure>
+
 <blockquote>
 <p>gives the surface level the mutability of the class it is allocated as. All deeper levels have the mutability they previously had.</p>
 </blockquote>
 <p>上层可变性与其初始化时的类型保持一致，其他更深层的可变性与原对象相同。</p>
-<p>#示例9.1：</p>
+<p>#示例9.2：</p>
 <figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs objectivec">- (<span class="hljs-type">void</span>)testWithNoCopy<br>&#123;<br>    <span class="hljs-built_in">NSMutableArray</span> *element = [[<span class="hljs-built_in">NSMutableArray</span> alloc] initWithObjects:@(<span class="hljs-number">1</span>), <span class="hljs-literal">nil</span>];<br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;++++element:%p,elementClass:%@&quot;</span>,element,[element <span class="hljs-keyword">class</span>]);<br>    <br>    <span class="hljs-built_in">NSMutableArray</span> *mutArr1 = [[<span class="hljs-built_in">NSMutableArray</span> alloc] initWithObjects:element, <span class="hljs-literal">nil</span>];<br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;++++mutArr1:%p&quot;</span>,mutArr1);<br>    <br>    <span class="hljs-built_in">NSMutableArray</span> *mutArr2 = [[<span class="hljs-built_in">NSMutableArray</span> alloc] initWithArray:mutArr1 copyItems:<span class="hljs-literal">NO</span>];<br>    [mutArr2 addObject:@(<span class="hljs-number">2</span>)];<br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;++++mutArr2:%p, mutArr2Class:%@, mutArr2.count:%lu&quot;</span>,mutArr2,[mutArr2 <span class="hljs-keyword">class</span>],mutArr2.count);<br>    <br>    <span class="hljs-built_in">NSMutableArray</span> *arrAt0 = mutArr2[<span class="hljs-number">0</span>];<br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;++++arrAt0:%p, arrAt0Class:%@&quot;</span>,arrAt0,[arrAt0 <span class="hljs-keyword">class</span>]);<br>    <br>    [arrAt0 addObject:@(<span class="hljs-number">3</span>)];<br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;++++arrAt0.count:%lu&quot;</span>,(<span class="hljs-type">unsigned</span> <span class="hljs-type">long</span>)arrAt0.count);<br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;++++element.count:%lu&quot;</span>,(<span class="hljs-type">unsigned</span> <span class="hljs-type">long</span>)element.count);<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>输出日志：</p>
@@ -478,14 +478,13 @@
 
 <p>mutArr2 是通过-initWithArray:copyItems:NO 产生的新数组，内部元素从可变数组 mutArr1 中拷贝而来。示例中 [mutArr2 addObject:@(2)] 可以正常执行，说明 initWithArray:copyItems:NO 产生的 mutArr2 正如其创建时声明的那样，是一个可变数组，即：上层可变性与其初始化时的类型保持一致~</p>
 <p>arrAt0 作为 mutArr2 的子元素，指针与 element 相同，也就是说在创建 mutArr2 时只是拷贝了 mutArr1 中元素 element 的指针。因此，arrAt0 也是一个可变数组，能正常执行 [arrAt0 addObject:@(3)]，即：其他更深层的可变性与原对象相同。</p>
-<ul>
-<li>-initWithArray:copyItems:YES:</li>
-</ul>
+<h3 id="3-copyItems-YES"><a href="#3-copyItems-YES" class="headerlink" title="3.copyItems:YES"></a>3.copyItems:YES</h3><figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs asciidoc"><span class="hljs-bullet">- </span>initWithArray:copyItems:YES:<br></code></pre></td></tr></table></figure>
+
 <blockquote>
 <p>gives the surface level the mutability of the class it is allocated as. The next level is immutable, and all deeper levels have the mutability they previously had.</p>
 </blockquote>
 <p>上层可变性与其初始化时的类型保持一致，接下来的一层不可变，其他更深层的可变性与原对象相同。</p>
-<p>#示例9.2：</p>
+<p>#示例9.3：</p>
 <figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs objectivec">- (<span class="hljs-type">void</span>)testWithCopy<br>&#123;<br>    <span class="hljs-built_in">NSMutableArray</span> *inArr = [[<span class="hljs-built_in">NSMutableArray</span> alloc] initWithObjects:@(<span class="hljs-number">1</span>), <span class="hljs-literal">nil</span>];<br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;++++inArr:%p, inArrClass:%@&quot;</span>,inArr,[inArr <span class="hljs-keyword">class</span>]);<br>    <br>    <span class="hljs-built_in">NSMutableArray</span> *element = [[<span class="hljs-built_in">NSMutableArray</span> alloc] initWithObjects:inArr, <span class="hljs-literal">nil</span>];<br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;++++element:%p,elementClass:%@&quot;</span>,element,[element <span class="hljs-keyword">class</span>]);<br>    <br>    <span class="hljs-built_in">NSMutableArray</span> *mutArr1 = [[<span class="hljs-built_in">NSMutableArray</span> alloc] initWithObjects:element, <span class="hljs-literal">nil</span>];<br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;++++mutArr1:%p&quot;</span>,mutArr1);<br>    <br>    <span class="hljs-built_in">NSMutableArray</span> *mutArr2 = [[<span class="hljs-built_in">NSMutableArray</span> alloc] initWithArray:mutArr1 copyItems:<span class="hljs-literal">YES</span>];<br>    [mutArr2 addObject:@(<span class="hljs-number">2</span>)];<br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;++++mutArr2:%p, mutArr2Class:%@, mutArr2.count:%lu&quot;</span>,mutArr2,[mutArr2 <span class="hljs-keyword">class</span>],mutArr2.count);<br>    <br>    <span class="hljs-built_in">NSMutableArray</span> *arrAt0 = mutArr2[<span class="hljs-number">0</span>];<br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;++++arrAt0:%p, arrAt0Class:%@&quot;</span>,arrAt0,[arrAt0 <span class="hljs-keyword">class</span>]);<br>    <br>    <span class="hljs-built_in">NSMutableArray</span> *inArrAt0 = arrAt0[<span class="hljs-number">0</span>];<br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;++++inArrAt0:%p, inArrAt0Class:%@&quot;</span>,inArrAt0,[inArrAt0 <span class="hljs-keyword">class</span>]);<br>    <br>    [inArrAt0 addObject:@(<span class="hljs-number">3</span>)];<br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;++++inArrAt0.count:%lu&quot;</span>,(<span class="hljs-type">unsigned</span> <span class="hljs-type">long</span>)inArrAt0.count);<br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;++++inArr.count:%lu&quot;</span>,(<span class="hljs-type">unsigned</span> <span class="hljs-type">long</span>)inArr.count);<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>输出日志：</p>
@@ -498,17 +497,10 @@
 <blockquote>
 <p>结论5：集合的深拷贝，只是单层深拷贝，更深层开始元素就只是指针拷贝了~</p>
 </blockquote>
-<ul>
-<li>Archiving and unarchiving:</li>
-</ul>
-<blockquote>
+<h3 id="4-归解档"><a href="#4-归解档" class="headerlink" title="4.归解档"></a>4.归解档</h3><blockquote>
 <p>Archiving and unarchiving the collection leaves the mutability of all levels as it was before.</p>
 </blockquote>
 <p>所有层的可变性与原对象完全相同。</p>
-<p>#示例9.3：</p>
-<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">copy</span>) <span class="hljs-built_in">NSMutableArray</span> * array;<br></code></pre></td></tr></table></figure>
-<p>对<code>array</code>属性执行<code>add</code>操作会发生什么?</p>
-<p><code>copy</code>方法返回的集合是不可变集合，故而这里<code>array</code>属性实际上是不可变的，对其执行增删对象操作时会闪退。</p>
 <h2 id="10-集合的copy与mutableCopy"><a href="#10-集合的copy与mutableCopy" class="headerlink" title="10.集合的copy与mutableCopy"></a>10.集合的copy与mutableCopy</h2><p>#示例10.1：对不可变集合类对象的拷贝</p>
 <figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">Model *m = <span class="hljs-literal">[[M<span class="hljs-identifier">odel</span> <span class="hljs-identifier">alloc</span>]</span> init];<br>NSArray *element = @<span class="hljs-literal">[<span class="hljs-identifier">m</span>]</span>;<br>NSArray *oriArray = @<span class="hljs-literal">[<span class="hljs-identifier">element</span>]</span>;<br>NSMutableArray *copyArray = <span class="hljs-literal">[<span class="hljs-identifier">oriArray</span> <span class="hljs-identifier">copy</span>]</span>;<br>NSMutableArray *mutableCopyArray = <span class="hljs-literal">[<span class="hljs-identifier">oriArray</span> <span class="hljs-identifier">mutableCopy</span>]</span>;<br>    <br><span class="hljs-constructor">NSLog(@<span class="hljs-string">&quot;+++oriArr:%p,element:%p&quot;</span>,<span class="hljs-params">oriArray</span>,<span class="hljs-params">element</span>)</span>;<br><span class="hljs-constructor">NSLog(@<span class="hljs-string">&quot;++++copyArr:%p,indexAt0:%p&quot;</span>,<span class="hljs-params">copyArray</span>,<span class="hljs-params">copyArray</span>[0])</span>;<br><span class="hljs-constructor">NSLog(@<span class="hljs-string">&quot;++++mutableCopyArr:%p,indexAt0:%p&quot;</span>,<span class="hljs-params">mutableCopyArray</span>,<span class="hljs-params">mutableCopyArray</span>[0])</span>;<br></code></pre></td></tr></table></figure>
 
