@@ -16,12 +16,12 @@
   <meta name="author" content="Davidli">
   <meta name="keywords" content="Davidli">
   
-    <meta name="description" content="1.编译&#x2F;解释型语言 编译型语言  代码须编译成机器码才能在CPU上执行的语言，如OC和Swift，其优点是代码执行效率高。  解释型语言  解释型语言，如 JavaScript 和 Python，代码不需要经过编译器，而是通过解释器直接将代码解释成CPU可以执行的代码。编写灵活，但执行效率低一些~ 本篇主要关注编译型语言。编译过程可以划分为前端和后端两部分： 2.编译器前端：Clang">
+    <meta name="description" content="1.编译&#x2F;解释 编译型语言  代码须编译成机器码才能在CPU上执行的语言，如OC和Swift，其优点是代码执行效率高。  解释型语言  解释型语言，如 JavaScript 和 Python，代码不需要经过编译器，而是通过解释器直接将代码解释成CPU可以执行的代码。编写灵活，但执行效率低一些~ 本篇主要关注编译型语言。编译过程可以划分为前端和后端两部分： 2.Clang编译器前端将不同的">
 <meta property="og:type" content="article">
 <meta property="og:title" content="编译器">
 <meta property="og:url" content="https://davidlii.cn/2019/02/15/compile.html">
 <meta property="og:site_name" content="Davidli">
-<meta property="og:description" content="1.编译&#x2F;解释型语言 编译型语言  代码须编译成机器码才能在CPU上执行的语言，如OC和Swift，其优点是代码执行效率高。  解释型语言  解释型语言，如 JavaScript 和 Python，代码不需要经过编译器，而是通过解释器直接将代码解释成CPU可以执行的代码。编写灵活，但执行效率低一些~ 本篇主要关注编译型语言。编译过程可以划分为前端和后端两部分： 2.编译器前端：Clang">
+<meta property="og:description" content="1.编译&#x2F;解释 编译型语言  代码须编译成机器码才能在CPU上执行的语言，如OC和Swift，其优点是代码执行效率高。  解释型语言  解释型语言，如 JavaScript 和 Python，代码不需要经过编译器，而是通过解释器直接将代码解释成CPU可以执行的代码。编写灵活，但执行效率低一些~ 本篇主要关注编译型语言。编译过程可以划分为前端和后端两部分： 2.Clang编译器前端将不同的">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2019-02-14T16:20:54.000Z">
 <meta property="article:modified_time" content="2019-07-30T16:59:54.000Z">
@@ -221,7 +221,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2.2k 字
+          3k 字
         
       </span>
     
@@ -232,7 +232,7 @@
         
         
         
-          19 分钟
+          25 分钟
         
       </span>
     
@@ -283,7 +283,7 @@
             
               <div class="markdown-body">
                 
-                <h3 id="1-编译-x2F-解释型语言"><a href="#1-编译-x2F-解释型语言" class="headerlink" title="1.编译&#x2F;解释型语言"></a>1.编译&#x2F;解释型语言</h3><ul>
+                <h3 id="1-编译-x2F-解释"><a href="#1-编译-x2F-解释" class="headerlink" title="1.编译&#x2F;解释"></a>1.编译&#x2F;解释</h3><ul>
 <li>编译型语言</li>
 </ul>
 <p>代码须编译成机器码才能在CPU上执行的语言，如OC和Swift，其优点是代码执行效率高。</p>
@@ -292,7 +292,7 @@
 </ul>
 <p>解释型语言，如 JavaScript 和 Python，代码不需要经过编译器，而是通过解释器直接将代码解释成CPU可以执行的代码。编写灵活，但执行效率低一些~</p>
 <p>本篇主要关注编译型语言。编译过程可以划分为前端和后端两部分：</p>
-<h3 id="2-编译器前端：Clang"><a href="#2-编译器前端：Clang" class="headerlink" title="2.编译器前端：Clang"></a>2.编译器前端：Clang</h3><p>编译器前端将不同的高级编程语言经过词法分析、语法分析转化为与前端语言无关的统一的中间表示。iOS 中的编译器前端使用的是 Clang，它是一个 C++ 编写的、基于LLVM 的 C&#x2F;C++&#x2F;Objective-C&#x2F;Objective-C++ 编译器。其主要任务是处理一些和具体机器无关的针对语言的分析操作：</p>
+<h3 id="2-Clang"><a href="#2-Clang" class="headerlink" title="2.Clang"></a>2.Clang</h3><p>编译器前端将不同的高级编程语言经过词法分析、语法分析转化为与前端语言无关的统一的中间表示。iOS 中的编译器前端使用的是 Clang，它是一个 C++ 编写的、基于LLVM 的 C&#x2F;C++&#x2F;Objective-C&#x2F;Objective-C++ 编译器。其主要任务是处理一些和具体机器无关的针对语言的分析操作：</p>
 <p>预处理：</p>
 <ul>
 <li>符号化 (Tokenization)</li>
@@ -309,7 +309,7 @@
 <ul>
 <li>将 AST 转换为更低级的中间码 (LLVM IR)</li>
 </ul>
-<h3 id="3-编译器后端：LLVM"><a href="#3-编译器后端：LLVM" class="headerlink" title="3.编译器后端：LLVM"></a>3.编译器后端：LLVM</h3><p>编译器后端负责优化中间代码并生成对应平台的汇编代码。LLVM 属于编译器后端，其主要作用是：</p>
+<h3 id="3-LLVM"><a href="#3-LLVM" class="headerlink" title="3.LLVM"></a>3.LLVM</h3><p>编译器后端负责优化中间代码并生成对应平台的汇编代码。LLVM 属于编译器后端，其主要作用是：</p>
 <p>代码优化</p>
 <ul>
 <li>对生成的中间码做优化</li>
@@ -324,7 +324,33 @@
 <ul>
 <li>读取目标文件和库并解决未知符号问题，将它们编码进一个可执行文件或动态库中。</li>
 </ul>
-<h3 id="4-Xcode-build流程："><a href="#4-Xcode-build流程：" class="headerlink" title="4.Xcode build流程："></a>4.Xcode build流程：</h3><p>通过解析 Xcode 编译 log，可以发现 Xcode 是根据 target 分开进行编译的。每个 target 的具体的编译过程也可以通过展开 log 日志获得。基本的格式是先简明一句说明要干什么，再缩进的几行说明具体的操作。</p>
+<h3 id="4-Bitcode"><a href="#4-Bitcode" class="headerlink" title="4.Bitcode"></a>4.Bitcode</h3><p>一般的编译流程：OC -&gt; Clang AST -&gt; CIL IR -&gt; LLVM IR -&gt; MIR -&gt; Mach-O。</p>
+<p>bitcode 是 LLVM 中引入的一种中间代码，处在编译的LLVM IR这一阶段，尚未到 MIR。</p>
+<p>bitcode 文件提交到商店后，后续构建过程由苹果完成，它所做的事情之一就是剥离二进制符号(Binary symbol stripping)，即从二进制文件中删除某些非必要的元数据，优化二进制文件大小。</p>
+<p>发布新款设备后，苹果可以用 bitcode 生成对应芯片的MIR，无需开发者重新打包上传。</p>
+<p>更新：苹果曾强推 bitcode，但 Xcode 14 后遭到弃用~</p>
+<h3 id="5-Other-link"><a href="#5-Other-link" class="headerlink" title="5.Other link"></a>5.Other link</h3><p>在TARGET -&gt; Build Settings -&gt; Linking -&gt; Other linker Flags 中可配置链接参数，优化包体大小。</p>
+<ul>
+<li>-all_load</li>
+</ul>
+<p>将静态库中所有文件都加载到IPA里，包括没用的一些文件、函数等。</p>
+<ul>
+<li>-noall_load</li>
+</ul>
+<p>链接器默认的配置，只加载用到的那部分代码，没用到的会被优化掉，减小包体。</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs angelscript">OC是动态语言，如果调用的方法没有被编译进来，运行时会闪退。<br>编译时，如果发现没有此方法，会报错”<span class="hljs-built_in">ref</span>erenced <span class="hljs-keyword">from</span>..”。<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>-force_load&lt;文件&gt;</li>
+</ul>
+<p>加载指定的某些文件。导入静态库后找不到文件或方法，推荐使用这个参数。</p>
+<ul>
+<li>-ObjC</li>
+</ul>
+<p>如果工程里有OC和C++等代码，只将所有ObjC文件(.m、分类等)编译到IPA里。</p>
+<p>如果我们的工程与静态库里定义了同名类或函数，但工程仅仅是将此静态库打包到了工程里，并没有 import 它，则不会报错。因为链接时默认使用-noall_load参数，不会链接没用到的类和函数。</p>
+<p>反之如果使用 -all_load 或 -ObjC 参数，即使没用到，也会报错。</p>
+<h3 id="6-Xcode-build流程："><a href="#6-Xcode-build流程：" class="headerlink" title="6.Xcode build流程："></a>6.Xcode build流程：</h3><p>通过解析 Xcode 编译 log，可以发现 Xcode 是根据 target 分开进行编译的。每个 target 的具体的编译过程也可以通过展开 log 日志获得。基本的格式是先简明一句说明要干什么，再缩进的几行说明具体的操作。</p>
 <figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><code class="hljs routeros">Build target CodeMix of project CodeMix with configuration <span class="hljs-built_in">Debug</span><br><br>CompileC /Users/<span class="hljs-built_in">..</span>/XXViewController.o CodeMix/XXViewController.m <br>normal x86_64 objective-c com.apple.compilers.llvm.clang.1_0.compiler<br>    cd /Users/<span class="hljs-built_in">..</span>/CodeMix<br>    <span class="hljs-built_in">export</span> <span class="hljs-attribute">LANG</span>=en_US.US-ASCII<br>    <span class="hljs-built_in">export</span> <span class="hljs-attribute">PATH</span>=“../XXViewController.o<br><br>Ld /Users/<span class="hljs-built_in">..</span>/Debug-iphonesimulator/CodeMix.app/CodeMix normal x86_64<br>    cd /Users/<span class="hljs-built_in">..</span>/CodeMix<br>    <span class="hljs-built_in">export</span> <span class="hljs-attribute">IPHONES_DEPLOYMENT_TARGET</span>=11.2<br>    <span class="hljs-built_in">..</span><br><br>PhaseScriptExecution Run\<span class="hljs-built_in"> Script </span>/Users/<span class="hljs-built_in">..</span>/Script-0AC86E9E1FF6721A00098A24.sh<br>    cd /Users/Macmafia/Desktop/CodeMix<br>    <span class="hljs-built_in">export</span> <span class="hljs-attribute">ACTION</span>=build<br>    <span class="hljs-built_in">export</span> <span class="hljs-attribute">AD_HOC_CODE_SIGNING_ALLOWED</span>=<span class="hljs-literal">YES</span><br>    <span class="hljs-built_in">export</span> <span class="hljs-attribute">ALTERNATE_GROUP</span>=staff<br><br>    /bin/sh -c /Users/<span class="hljs-built_in">..</span>/Script-0AC86E9E1FF6721A00098A24.sh<br><br>PRAGMA <span class="hljs-attribute">foreign_keys</span>=OFF;<br>BEGIN TRANSACTION;<br>CREATE TABLE symbols(src text, des text);<br>COMMIT;<br><br>Touch /Users/<span class="hljs-built_in">..</span>/Build/Products/Debug-iphonesimulator/CodeMix.app<br>    cd /Users/<span class="hljs-built_in">..</span>/CodeMix<br>    <span class="hljs-built_in">export</span> <span class="hljs-attribute">PATH</span>=<span class="hljs-string">&quot;/Applications/Xcode.app/../Debug-iphonesimulator/CodeMix.app</span><br><span class="hljs-string"></span><br><span class="hljs-string">CodeSign /Users/../Debug-iphonesimulator/CodeMix.app</span><br><span class="hljs-string">    cd /Users/../CodeMix</span><br><span class="hljs-string">    export CODESIGN_ALLOCATE=/Applications/Xcode.app/../codesign_allocate</span><br><span class="hljs-string">    </span><br><span class="hljs-string">Signing Identity:     &quot;</span>-&quot;<br>    <span class="hljs-built_in">..</span><br>Build succeeded    2018/1/26 下午9:35<br></code></pre></td></tr></table></figure>
 
 <p>从上面日志可以看到，大致的过程是：</p>

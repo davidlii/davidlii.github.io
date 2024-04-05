@@ -16,12 +16,12 @@
   <meta name="author" content="Davidli">
   <meta name="keywords" content="Davidli">
   
-    <meta name="description" content="库？库是代码的集合、共享代码的一种方式。分为：  开源库：源代码公开，能看到具体的实现。（如SD、AF） 闭源库：源码不公开，是经过编译后的二进制文件，看不到具体实现。  其中，闭源库有两种形式：  静态库：.a 和 .framework 动态库：.dylib 和 .framework  问：framework 为啥即是静态库又是动态库呢？ 答：系统的.framework 是动态库，我们自己建的.">
+    <meta name="description" content="1.库？库是代码的集合、共享代码的一种方式。分为：  开源库：源代码公开，能看到具体的实现。（如SD、AF） 闭源库：源码不公开，是经过编译后的二进制文件，看不到具体实现。  其中，闭源库有两种形式：  静态库：.a 和 .framework 动态库：.dylib 和 .framework  问：framework 为啥即是静态库又是动态库？ 答：系统提供的.framework是动态库，我们自定义">
 <meta property="og:type" content="article">
 <meta property="og:title" content=".a &amp; .framework">
 <meta property="og:url" content="https://davidlii.cn/2018/01/25/framework.html">
 <meta property="og:site_name" content="Davidli">
-<meta property="og:description" content="库？库是代码的集合、共享代码的一种方式。分为：  开源库：源代码公开，能看到具体的实现。（如SD、AF） 闭源库：源码不公开，是经过编译后的二进制文件，看不到具体实现。  其中，闭源库有两种形式：  静态库：.a 和 .framework 动态库：.dylib 和 .framework  问：framework 为啥即是静态库又是动态库呢？ 答：系统的.framework 是动态库，我们自己建的.">
+<meta property="og:description" content="1.库？库是代码的集合、共享代码的一种方式。分为：  开源库：源代码公开，能看到具体的实现。（如SD、AF） 闭源库：源码不公开，是经过编译后的二进制文件，看不到具体实现。  其中，闭源库有两种形式：  静态库：.a 和 .framework 动态库：.dylib 和 .framework  问：framework 为啥即是静态库又是动态库？ 答：系统提供的.framework是动态库，我们自定义">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2018-01-25T14:49:33.000Z">
 <meta property="article:modified_time" content="2018-01-09T14:49:33.000Z">
@@ -221,7 +221,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          3.1k 字
+          3.8k 字
         
       </span>
     
@@ -232,7 +232,7 @@
         
         
         
-          26 分钟
+          32 分钟
         
       </span>
     
@@ -283,7 +283,7 @@
             
               <div class="markdown-body">
                 
-                <h3 id="库？"><a href="#库？" class="headerlink" title="库？"></a>库？</h3><p>库是代码的集合、共享代码的一种方式。分为：</p>
+                <h3 id="1-库？"><a href="#1-库？" class="headerlink" title="1.库？"></a>1.库？</h3><p>库是代码的集合、共享代码的一种方式。分为：</p>
 <ul>
 <li>开源库：源代码公开，能看到具体的实现。（如SD、AF）</li>
 <li>闭源库：源码不公开，是经过编译后的二进制文件，看不到具体实现。</li>
@@ -293,20 +293,34 @@
 <li>静态库：.a 和 .framework</li>
 <li>动态库：.dylib 和 .framework</li>
 </ul>
-<p>问：framework 为啥即是静态库又是动态库呢？</p>
-<p>答：系统的.framework 是动态库，我们自己建的.framework 是静态库。</p>
-<h4 id="1、静态库-与-动态库的区别？"><a href="#1、静态库-与-动态库的区别？" class="headerlink" title="1、静态库 与 动态库的区别？"></a>1、静态库 与 动态库的区别？</h4><ul>
-<li>静态库在编译阶段会成为 App 可执行文件的一部分，会增加可执行文件的大小。因为 App 尺寸变大，启动时需要加载的内容变多，所以可能导致 App 启动变慢。动态库则“智能”一些，它不会改变可执行文件的大小，只有 App 需要用到这个 dylib 时，系统才会把它加载进内存，成为进程的一部分。</li>
-<li>静态库在连接时会被完整的复制到可执行文件中，被多次使用就有多份冗余拷贝。动态库则不复制，由系统动态加载且只加载一次到内存，可供多个程序调用，节省内存。</li>
-</ul>
-<h4 id="2、-a-与-framework-的区别？"><a href="#2、-a-与-framework-的区别？" class="headerlink" title="2、.a 与.framework 的区别？"></a>2、.a 与.framework 的区别？</h4><ul>
-<li>.a是一个纯二进制文件，.framework 中除了有二进制文件之外还有资源文件。</li>
-<li>.a文件不能直接使用，至少要有.h文件配合，.framework 文件可以直接使用。</li>
-</ul>
-<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs jboss-cli"><span class="hljs-string">.a</span> + <span class="hljs-string">.h</span> + sourceFile = <span class="hljs-string">.framework</span><br></code></pre></td></tr></table></figure>
+<p>问：framework 为啥即是静态库又是动态库？</p>
+<p>答：系统提供的.framework是动态库，我们自定义的是静态库。</p>
+<p>系统提供的有UIKit.framework等，自定义的包括AFN.framework等。</p>
+<p>在早期，很多应用基于.framework动态库实现热更新，而苹果不允许这种行为，它禁止使用自定义动态库的应用上架。我们自己建的.framework中 Mach-O Type 需要设置为 Static Library，即静态库。现在苹果已经允许我们将.framework设置成动态库，只是苹果会在集成自定义动态库的应用上架时，再经过一次AppStore的签名，防止在线更新动态库。当然，自建的.dylib还是不允许。</p>
+<h3 id="2-静态库"><a href="#2-静态库" class="headerlink" title="2.静态库"></a>2.静态库</h3><p>静态库是在编译阶段进行链接，成为应用可执行文件的一部分，会增加包体的大小。</p>
+<p>多个应用使用相同的静态库时，各应用都会完整地复制一份到可执行文件中，内存中有冗余。</p>
+<p>因为可执行文件变大，启动时需加载的内容变多，可能会导致应用启动变慢。</p>
+<h3 id="3-动态库"><a href="#3-动态库" class="headerlink" title="3.动态库"></a>3.动态库</h3><p>动态库是在启动阶段进行链接，不包含在应用的可执行文件中，可有效减小包体大小。</p>
+<p>多个应用使用相同的动态库时，系统只会在内存中加载一次，多个应用共享，节省内存。</p>
+<p>动态库在多个应用程序间共享，系统和其他应用可更新此库，而不用更新所有依赖它的应用。</p>
+<h3 id="4-封装格式"><a href="#4-封装格式" class="headerlink" title="4.封装格式"></a>4.封装格式</h3><p>.a与.framework都是二进制文件的封装格式。</p>
+<h4 id="1-静态库-a"><a href="#1-静态库-a" class="headerlink" title="1.静态库.a"></a>1.静态库.a</h4><p>.m等文件在编译后会变成.o文件，而.a是多个.o的集合。</p>
+<p>.o是Mach-O文件类型，每个.o都包含 Mach header、Segment、section、Blob。</p>
+<p>多个.o中可能有相同的 Mach header 等冗余，所以包体会大于动态库的framework。</p>
+<h4 id="2-动态库-framework"><a href="#2-动态库-framework" class="headerlink" title="2.动态库.framework"></a>2.动态库.framework</h4><p>.framework可将库的代码与资源文件打包到一起，方便管理和分发。</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs stylus"><span class="hljs-selector-class">.framework</span> = (<span class="hljs-selector-class">.a</span> + <span class="hljs-selector-class">.h</span> + sourceFile)<br></code></pre></td></tr></table></figure>
 
-
-<h3 id="a-的制作？"><a href="#a-的制作？" class="headerlink" title=".a 的制作？"></a>.a 的制作？</h3><ul>
+<p>.a是一个纯二进制文件，.framework 中除了有二进制文件之外还有资源文件。</p>
+<p>.a不能直接使用，至少要有.h文件配合，.framework 文件可以直接使用。</p>
+<p>framework中所有.o文件的前三段合并到了一起，只有一个公共的 Mach header、Segment、Section，从而优化了.a中每个.o都含这些头块区的冗余问题，减小了包体。</p>
+<p>自己建的 framework 虽然叫动态库，但它的实质却是 Embedded Framework。</p>
+<ul>
+<li>基于沙盒，最终打包到ipa的&#x2F;framework目录(包括pods)，与其他应用隔离。</li>
+<li>需要签名，即使跟别的应用同名，也不共享。</li>
+<li>可以上架，但不允许热更新(AppStore会再一次签名)。</li>
+</ul>
+<p>不同应用使用同名自定义动态库framework，内存中并非只加载一份，而是分别打包、签名、加载各自的。它只是保留了与系统动态库相同的链接方式，但是仅能在各自的应用中使用。</p>
+<h3 id="5-制作-a"><a href="#5-制作-a" class="headerlink" title="5.制作.a"></a>5.制作.a</h3><ul>
 <li>新建 Cocoa Touch Static Library 工程，编写逻辑代码。</li>
 </ul>
 <figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs less"><span class="hljs-comment">//.h文件</span><br><span class="hljs-variable">@interface</span> <span class="hljs-attribute">Aframe </span>: NSObject<br>- (void)mathAdd;<br><span class="hljs-variable">@end</span><br><br><span class="hljs-comment">//.m文件</span><br>#import <span class="hljs-string">&quot;Aframe.h&quot;</span><br><span class="hljs-variable">@implementation</span> Aframe<br>- (void)mathAdd&#123;<br>    <span class="hljs-selector-tag">NSLog</span>(@<span class="hljs-string">&quot;1 + 1 = 2&quot;</span>);<br>&#125;<br>@<span class="hljs-selector-tag">end</span><br></code></pre></td></tr></table></figure>
@@ -339,7 +353,7 @@
 <p>将.h 以及上步导出的.a文件导入自己的工程中，调用.h 中的接口。</p>
 <figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-meta">#import <span class="hljs-string">&quot;AppDelegate.h&quot;</span></span><br><span class="hljs-meta">#import <span class="hljs-string">&quot;Aframe.h&quot;</span></span><br><br><span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">AppDelegate</span></span><br><br>- (<span class="hljs-type">void</span>)testLibA&#123;<br>    Aframe *aframe = [Aframe new];<br>    [aframe mathAdd];<br>&#125;<br><br>- (<span class="hljs-type">BOOL</span>)application:(<span class="hljs-built_in">UIApplication</span> *)application<br>didFinishLaunchingWithOptions:(<span class="hljs-built_in">NSDictionary</span> *)launchOptions<br>&#123;<br>    [<span class="hljs-keyword">self</span> testLibA];<br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">YES</span>;<br>&#125;<br><span class="hljs-keyword">@end</span><br></code></pre></td></tr></table></figure>
 
-<h3 id="framework的制作？"><a href="#framework的制作？" class="headerlink" title=".framework的制作？"></a>.framework的制作？</h3><ul>
+<h3 id="6-制作-framework"><a href="#6-制作-framework" class="headerlink" title="6.制作.framework"></a>6.制作.framework</h3><ul>
 <li>新建 Cocoa Touch Framework 工程，编写逻辑代码。</li>
 </ul>
 <figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-comment">//.h文件</span><br><span class="hljs-meta">#import <span class="hljs-string">&lt;Foundation/Foundation.h&gt;</span></span><br><br><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">MathTool</span> : <span class="hljs-title">NSObject</span></span><br>- (<span class="hljs-type">void</span>)mathAdd;<br><span class="hljs-keyword">@end</span><br><br><span class="hljs-comment">//.m文件</span><br><span class="hljs-meta">#import <span class="hljs-string">&quot;MathTool.h&quot;</span></span><br><br><span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">MathTool</span></span><br>- (<span class="hljs-type">void</span>)mathAdd&#123;<br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;1 + 1 = 2&quot;</span>);<br>&#125;<br><span class="hljs-keyword">@end</span><br></code></pre></td></tr></table></figure>
@@ -347,7 +361,7 @@
 <ul>
 <li>更改参数：</li>
 </ul>
-<figure class="highlight coq"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs coq">TARGETS-&gt;Build Settings-&gt;Dead Code Stripping 设置为NO。<br>TARGETS-&gt;Build Settings-&gt;Link With Stantard <span class="hljs-keyword">Libraries</span> 设置为NO。<br>Mach-O <span class="hljs-keyword">Type</span> 设置为 Static <span class="hljs-keyword">Library</span>。<br></code></pre></td></tr></table></figure>
+<figure class="highlight coq"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs coq">TARGETS-&gt;Build Settings-&gt;Dead Code Stripping 设置为NO。<br>TARGETS-&gt;Build Settings-&gt;Link With Stantard <span class="hljs-keyword">Libraries</span> 设置为NO。<br></code></pre></td></tr></table></figure>
 
 <ul>
 <li>设置需要暴露的头文件</li>
