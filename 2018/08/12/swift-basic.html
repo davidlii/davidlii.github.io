@@ -223,7 +223,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          39k 字
+          40k 字
         
       </span>
     
@@ -234,7 +234,7 @@
         
         
         
-          330 分钟
+          331 分钟
         
       </span>
     
@@ -474,11 +474,13 @@
 <ul>
 <li>5.函数重载</li>
 </ul>
-<p>Swift允许同名函数，需保证参数名不同。</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs SWIFT"><span class="hljs-keyword">func</span> <span class="hljs-title function_">samefunc</span>(<span class="hljs-params">a</span>:<span class="hljs-type">Int</span>)&#123;<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;++a:<span class="hljs-subst">\(a)</span>&quot;</span>)<br>&#125;<br><span class="hljs-keyword">func</span> <span class="hljs-title function_">samefunc</span>(<span class="hljs-params">b</span>:<span class="hljs-type">Int</span>)&#123; <span class="hljs-comment">// 函数签名：(b:Int)-&gt;void</span><br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;++b:<span class="hljs-subst">\(b)</span>&quot;</span>)<br>&#125;<br><span class="hljs-keyword">func</span> <span class="hljs-title function_">samefunc</span>(<span class="hljs-params">b</span>:<span class="hljs-type">Int</span>) -&gt; <span class="hljs-type">Int</span>&#123; <span class="hljs-comment">// 函数签名：(b:Int)-&gt;Int</span><br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;++b from (Int)-&gt;Int:<span class="hljs-subst">\(b)</span>&quot;</span>)<br>    <span class="hljs-keyword">return</span> b<br>&#125;<br><span class="hljs-keyword">func</span> <span class="hljs-title function_">samefunc</span>(<span class="hljs-params">c</span>:<span class="hljs-type">Int</span>) -&gt; <span class="hljs-type">Int</span>&#123;<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;++c from (Int)-&gt;Int:<span class="hljs-subst">\(c)</span>&quot;</span>)<br>    <span class="hljs-keyword">return</span> c<br>&#125;<br>samefunc(a: <span class="hljs-number">0</span>)<br>samefunc(b: <span class="hljs-number">0</span>) <span class="hljs-comment">//报错：Ambiguous use of &#x27;samefunc(b:)&#x27;</span><br>samefunc(c: <span class="hljs-number">1</span>)<br></code></pre></td></tr></table></figure>
+<p>Swift允许函数重载，需保证：函数名相同、参数标签不同、参数类型不同、参数个数不同。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs SWIFT"><span class="hljs-comment">// 1.原函数</span><br><span class="hljs-keyword">func</span> <span class="hljs-title function_">samefunc</span>(<span class="hljs-params">a</span>:<span class="hljs-type">Int</span>)&#123;<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;++a:<span class="hljs-subst">\(a)</span>&quot;</span>)<br>&#125;<br><span class="hljs-comment">// 2.参数标签不同</span><br><span class="hljs-keyword">func</span> <span class="hljs-title function_">samefunc</span>(<span class="hljs-params">b</span>:<span class="hljs-type">Int</span>)&#123;<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;++Int b:<span class="hljs-subst">\(b)</span>&quot;</span>)<br>&#125;<br><span class="hljs-comment">// 3.参数类型不同</span><br><span class="hljs-keyword">func</span> <span class="hljs-title function_">samefunc</span>(<span class="hljs-params">b</span>:<span class="hljs-type">Double</span>)&#123;<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;++Double b:<span class="hljs-subst">\(b)</span>&quot;</span>)<br>&#125;<br><span class="hljs-comment">// 4.参数个数不同</span><br><span class="hljs-keyword">func</span> <span class="hljs-title function_">samefunc</span>(<span class="hljs-params">a</span>:<span class="hljs-type">Int</span> ,<span class="hljs-params">b</span>:<span class="hljs-type">Double</span>)&#123;<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;++a:<span class="hljs-subst">\(a)</span>, b:<span class="hljs-subst">\(b)</span>&quot;</span>)<br>&#125;<br>samefunc(a: <span class="hljs-number">0</span>)<br>samefunc(b: <span class="hljs-number">0</span>)<br>samefunc(b: <span class="hljs-number">0.0</span>)<br>samefunc(a: <span class="hljs-number">0</span>, b: <span class="hljs-number">1</span>)<br></code></pre></td></tr></table></figure>
 
-<p>示例中虽然可以同时定义<code>(b:Int)-&gt;void</code>与<code>(b:Int)-&gt;Int</code>，但调用时会报错。</p>
-<p>所以，函数名与返回值类型都相同时，需要确保参数名不同时。</p>
+<p>注意：返回值类型与函数重载无关。函数名、参数个数&amp;类型&amp;标签都相同时，无论返回值类型是否相同，调用时都会报错。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs SWIFT"><span class="hljs-comment">// 5.返回值类型无关重载</span><br><span class="hljs-keyword">func</span> <span class="hljs-title function_">samefunc</span>(<span class="hljs-params">a</span>:<span class="hljs-type">Int</span>) -&gt; <span class="hljs-type">Int</span>&#123;<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;++a from (Int)-&gt;Int:<span class="hljs-subst">\(a)</span>&quot;</span>)<br>    <span class="hljs-keyword">return</span> a<br>&#125;<br>samefunc(a: <span class="hljs-number">0</span>) <span class="hljs-comment">//报错：Ambiguous use of &#x27;samefunc(a:)&#x27;</span><br></code></pre></td></tr></table></figure>
+
+<p>虽然可以同时定义<code>(a:Int)-&gt;void</code>与<code>(a:Int)-&gt;Int</code>，但调用时会报错。</p>
 <h3 id="7-结构体与类"><a href="#7-结构体与类" class="headerlink" title="7.结构体与类"></a>7.结构体与类</h3><p>相同点：</p>
 <ul>
 <li>定义属性和方法；</li>
