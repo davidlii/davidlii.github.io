@@ -234,7 +234,7 @@
         
         
         
-          325 分钟
+          330 分钟
         
       </span>
     
@@ -471,6 +471,14 @@
 </ul>
 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs SWIFT"><span class="hljs-keyword">func</span> <span class="hljs-title function_">someFunction</span>(<span class="hljs-params">a</span>: <span class="hljs-type">Int</span>, <span class="hljs-params">b</span>: <span class="hljs-type">Int</span> <span class="hljs-operator">=</span> <span class="hljs-number">12</span>) &#123;<br>    <span class="hljs-comment">// If you omit the second argument when calling this function, then</span><br>    <span class="hljs-comment">// the value of b is 12 inside the function body.</span><br>&#125;<br>someFunction(a: <span class="hljs-number">3</span>, b: <span class="hljs-number">6</span>) <span class="hljs-comment">// b is 6</span><br>someFunction(a: <span class="hljs-number">4</span>) <span class="hljs-comment">// b is 12</span><br></code></pre></td></tr></table></figure>
 
+<ul>
+<li>5.函数重载</li>
+</ul>
+<p>Swift允许同名函数，需保证参数名不同。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs SWIFT"><span class="hljs-keyword">func</span> <span class="hljs-title function_">samefunc</span>(<span class="hljs-params">a</span>:<span class="hljs-type">Int</span>)&#123;<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;++a:<span class="hljs-subst">\(a)</span>&quot;</span>)<br>&#125;<br><span class="hljs-keyword">func</span> <span class="hljs-title function_">samefunc</span>(<span class="hljs-params">b</span>:<span class="hljs-type">Int</span>)&#123; <span class="hljs-comment">// 函数签名：(b:Int)-&gt;void</span><br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;++b:<span class="hljs-subst">\(b)</span>&quot;</span>)<br>&#125;<br><span class="hljs-keyword">func</span> <span class="hljs-title function_">samefunc</span>(<span class="hljs-params">b</span>:<span class="hljs-type">Int</span>) -&gt; <span class="hljs-type">Int</span>&#123; <span class="hljs-comment">// 函数签名：(b:Int)-&gt;Int</span><br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;++b from (Int)-&gt;Int:<span class="hljs-subst">\(b)</span>&quot;</span>)<br>    <span class="hljs-keyword">return</span> b<br>&#125;<br><span class="hljs-keyword">func</span> <span class="hljs-title function_">samefunc</span>(<span class="hljs-params">c</span>:<span class="hljs-type">Int</span>) -&gt; <span class="hljs-type">Int</span>&#123;<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;++c from (Int)-&gt;Int:<span class="hljs-subst">\(c)</span>&quot;</span>)<br>    <span class="hljs-keyword">return</span> c<br>&#125;<br>samefunc(a: <span class="hljs-number">0</span>)<br>samefunc(b: <span class="hljs-number">0</span>) <span class="hljs-comment">//报错：Ambiguous use of &#x27;samefunc(b:)&#x27;</span><br>samefunc(c: <span class="hljs-number">1</span>)<br></code></pre></td></tr></table></figure>
+
+<p>示例中虽然可以同时定义<code>(b:Int)-&gt;void</code>与<code>(b:Int)-&gt;Int</code>，但调用时会报错。</p>
+<p>所以，函数名与返回值类型都相同时，需要确保参数名不同时。</p>
 <h3 id="7-结构体与类"><a href="#7-结构体与类" class="headerlink" title="7.结构体与类"></a>7.结构体与类</h3><p>相同点：</p>
 <ul>
 <li>定义属性和方法；</li>
@@ -636,6 +644,7 @@
 <li>static 可以修饰类中的元素，但不能修饰类本身;</li>
 <li>static 可以修饰结构体中的元素，但不能修饰结构体本身；</li>
 <li>static 不能修饰枚举及其元素；</li>
+<li>static 可以修饰存储属性；</li>
 <li>static 修饰的属性为静态属性，修饰的方法为静态方法，不能重写，需通过类型名来调用；</li>
 </ul>
 <p>#示例：</p>
@@ -645,6 +654,7 @@
 <ul>
 <li>class 只能用在类中，不能修饰结构体或枚举及它们的元素；</li>
 <li>class 修饰的属性和方法，可以被重写；</li>
+<li>class 不能修饰存储属性；</li>
 <li>class 修饰的属性是类属性，修饰的方法是类方法，可以通过“类名.xx”直接调用；</li>
 <li>class 可以修饰计算属性，不能修饰存储属性，因为存储属性属于类的实例；</li>
 </ul>
