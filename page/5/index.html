@@ -313,7 +313,7 @@
       
       <a class="index-excerpt " href="/2018/08/12/swift-basic.html" target="_self">
         <div>
-          1.String String.Index  表示字符在字符串中的位置： 1234567891011121314151617let greeting &#x3D; &quot;Guten Tag!&quot;greeting[greeting.startIndex]&#x2F;&#x2F; Ggreeting[greeting.index(before: greeting.endIndex)]&#x2F;&#x2F; !greeting[gre
+          1.运算符Swift的Int类型不在支持自增减运算符,比如 ++a, -—a,a-—,a++。 要支持这种方法，须重载运算符: 12345678910111213141516171819202122232425262728293031extension Int &amp;#123;    &#x2F;&#x2F;前缀++    static prefix  func ++(num:inout Int) -&gt; Int
         </div>
       </a>
 
