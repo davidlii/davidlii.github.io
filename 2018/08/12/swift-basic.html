@@ -234,7 +234,7 @@
         
         
         
-          342 分钟
+          343 分钟
         
       </span>
     
@@ -566,6 +566,7 @@
 <li>不能增加存储属性；</li>
 <li>不能为已有属性添加观察器；</li>
 </ul>
+<p>Swift 的<code>Extension</code>不能重写已有的方法，这是因为<code>Extension</code>的设计初衷是扩展类型的功能，而非修改已有的行为。如果你需要重写方法，你应该使用子类化，继承相应的类来重写其方法。</p>
 <p>Swift 的<code>Extension</code>与 OC 的<code>Category</code>都不能改变原类型的内存结构，而增加存储属性会改变内存结构。OC 中可使用<code>关联对象</code>达到给分类增加属性实现存取的效果，Swift 也可以参考这种做法：</p>
 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs SWIFT"><span class="hljs-keyword">struct</span> <span class="hljs-title class_">AssociatedKey</span> &#123;<br>    <span class="hljs-keyword">static</span> <span class="hljs-keyword">var</span> textKey: <span class="hljs-type">String</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;textKey&quot;</span><br>&#125;<br><br><span class="hljs-keyword">extension</span> <span class="hljs-title class_">Int</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">var</span> text: <span class="hljs-type">String</span>? &#123;<br>        <span class="hljs-keyword">get</span> &#123;<br>            <span class="hljs-keyword">return</span> objc_getAssociatedObject(<span class="hljs-keyword">self</span>, <span class="hljs-operator">&amp;</span><span class="hljs-type">AssociatedKey</span>.textKey) <span class="hljs-keyword">as?</span> <span class="hljs-type">String</span><br>        &#125;<br>        <span class="hljs-keyword">set</span> &#123;<br>            objc_setAssociatedObject(<span class="hljs-keyword">self</span>, <span class="hljs-operator">&amp;</span><span class="hljs-type">AssociatedKey</span>.textKey, newValue, .<span class="hljs-type">OBJC_ASSOCIATION_RETAIN_NONATOMIC</span>)<br>        &#125;<br>    &#125;<br>&#125;<br><span class="hljs-keyword">var</span> a <span class="hljs-operator">=</span> <span class="hljs-number">1</span><br>a.text <span class="hljs-operator">=</span> <span class="hljs-string">&quot;1&quot;</span>    <span class="hljs-comment">//存值</span><br><span class="hljs-built_in">print</span>(a.text<span class="hljs-operator">!</span>)  <span class="hljs-comment">//取值</span><br></code></pre></td></tr></table></figure>
 
