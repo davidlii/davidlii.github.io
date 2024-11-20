@@ -223,7 +223,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          21k 字
+          22k 字
         
       </span>
     
@@ -234,7 +234,7 @@
         
         
         
-          179 分钟
+          183 分钟
         
       </span>
     
@@ -441,6 +441,13 @@
 <figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs dart"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Point</span> </span>&#123; <span class="hljs-comment">// 父类</span><br>  <span class="hljs-built_in">num</span> x, y;<br>  Point.initWithXY(<span class="hljs-keyword">this</span>.x,<span class="hljs-keyword">this</span>.y)&#123;<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;called super init,x:<span class="hljs-subst">$x</span>,y:<span class="hljs-subst">$y</span>&#x27;</span>);<br>  &#125;<br>&#125;<br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SubPoint</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Point</span> </span>&#123; <span class="hljs-comment">// 子类</span><br>  <span class="hljs-built_in">num</span> z;<br>  SubPoint.initWithXYZ(<span class="hljs-built_in">num</span> x, y, <span class="hljs-keyword">this</span>.z): <span class="hljs-keyword">super</span>.initWithXY(x,y)&#123; <span class="hljs-comment">//注意这里调用父类构造函数的语法</span><br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;called sub init,x:<span class="hljs-subst">$x</span>,y:<span class="hljs-subst">$y</span>,z:<span class="hljs-subst">$z</span>&#x27;</span>);<br>  &#125;<br>&#125;<br><span class="hljs-keyword">void</span> main() &#123;<br>  <span class="hljs-keyword">var</span> p = SubPoint.initWithXYZ(<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>注意这里调用父类构造函数的语法：【在当前构造函数冒号 (:) 之后，函数体之前，声明调用父类构造函数】。</p>
+<ul>
+<li>工厂构造函数</li>
+</ul>
+<p>使用<code>factory</code>关键字定义，可以选择性地返回类的现有实例，而不必每次都创建新对象。</p>
+<p>用于单例模式或缓存对象，或者在构造函数返回的类型与定义的类本身不完全一致的情况下。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Database</span> &#123;<br>  <span class="hljs-comment">// 创建一个静态私有实例</span><br>  <span class="hljs-keyword">static</span> final <span class="hljs-title class_">Database</span> _instance = <span class="hljs-title class_">Database</span>.<span class="hljs-title function_">_internal</span>();<br><br>  <span class="hljs-comment">// 命名构造函数</span><br>  <span class="hljs-title class_">Database</span>.<span class="hljs-title function_">_internal</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-title function_">_connection</span>();<br>  &#125;<br><br>  <span class="hljs-comment">// 工厂构造函数，返回唯一实例</span><br>  factory <span class="hljs-title class_">Database</span>() &#123;<br>    <span class="hljs-keyword">return</span> _instance;<br>  &#125;<br><br>  <span class="hljs-keyword">void</span> <span class="hljs-title function_">_connection</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-title function_">print</span>(<span class="hljs-string">&#x27;Connected!&#x27;</span>);<br>  &#125;<br>&#125;<br><br><span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-keyword">var</span> db1 = <span class="hljs-title class_">Database</span>();<br>  <span class="hljs-keyword">var</span> db2 = <span class="hljs-title class_">Database</span>();       <span class="hljs-comment">//只输出一次 Connected!</span><br>  <span class="hljs-title function_">print</span>(<span class="hljs-title function_">identical</span>(db1, db2)); <span class="hljs-comment">// 输出 true，即 db1 和 db2 是同一个实例</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
 <ul>
 <li>常量构造函数</li>
 </ul>
